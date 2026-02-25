@@ -1,0 +1,147 @@
+{% schema %}
+{
+  "name": "Three Benefit Cards",
+  "tag": "section",
+  "class": "zen-benefit-section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Natural Ingredient"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Short Description",
+          "default": "Rich in botanical properties for holistic wellness."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name": "Three Benefit Cards",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="zen-benefit-wrapper">
+  <div class="zen-benefit-container">
+    {% for block in section.blocks %}
+      <div class="zen-card">
+        {% if block.settings.icon %}
+          <div class="zen-icon-wrapper">
+            <img src="{{ block.settings.icon | img_url: '100x100' }}" alt="" class="zen-icon" />
+          </div>
+        {% endif %}
+        <h3 class="zen-card-title">{{ block.settings.title }}</h3>
+        <p class="zen-card-text">{{ block.settings.text }}</p>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+.zen-benefit-wrapper {
+  padding: 50px 20px;
+  background-color: #f9f6f1;
+}
+
+.zen-benefit-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.zen-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  padding: 30px 20px;
+  width: 100%;
+  max-width: 320px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.zen-card:hover {
+  transform: scale(1.02);
+}
+
+.zen-icon-wrapper {
+  margin-bottom: 20px;
+}
+
+.zen-icon {
+  width: 60px;
+  height: 60px;
+  animation: gentle-pulse 2s ease-in-out infinite;
+}
+
+.zen-card-title {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #3a3a3a;
+  font-weight: 600;
+  font-family: sans-serif;
+}
+
+.zen-card-text {
+  font-size: 16px;
+  color: #5c5c5c;
+  font-family: sans-serif;
+  line-height: 1.5;
+}
+
+/* Animations */
+@keyframes gentle-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+}
+
+/* Mobile styles */
+@media screen and (max-width: 767px) {
+  .zen-benefit-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .zen-card {
+    max-width: 100%;
+  }
+
+  .zen-icon {
+    width: 50px;
+    height: 50px;
+  }
+
+  .zen-card-title {
+    font-size: 18px;
+  }
+
+  .zen-card-text {
+    font-size: 15px;
+  }
+}
+</style>

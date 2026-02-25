@@ -1,0 +1,515 @@
+<style>
+  :root {
+    /* Third Eye Chakra - Light Indigo Theme */
+    --zen-primary-indigo: #4c1d95;
+    --zen-accent-indigo: #7c3aed;
+    --zen-light-indigo: #a855f7;
+    --zen-bg-indigo: #f5f7ff;
+    --zen-text-gray: #6B7280;
+    --zen-white: #FFFFFF;
+  }
+
+  .zen-collections {
+    background: linear-gradient(135deg, var(--zen-bg-indigo) 0%, var(--zen-white) 100%);
+    position: relative;
+    overflow: hidden;
+    font-family: 'Noto Sans Japanese', -apple-system, BlinkMacSystemFont, sans-serif;
+    padding: 3rem 1.25rem 1.5rem;
+  }
+
+  .zen-collections::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(circle at 20% 80%, rgba(168, 85, 247, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(124, 58, 237, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .zen-collections .zen-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .zen-collections .zen-title {
+    font-family: 'Noto Sans Japanese', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 2rem;
+    color: var(--zen-primary-indigo);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  /* Responsive Design - Match testimonials exactly */
+  @media (min-width: 768px) {
+    .zen-collections .zen-title {
+      font-size: 3rem;
+    }
+  }
+
+  .zen-collections .zen-third-eye-icon {
+    display: flex;
+    justify-content: center;
+    margin: 1rem auto 2rem;
+    opacity: 0.3;
+    color: var(--zen-accent-indigo);
+  }
+
+  .zen-collections .zen-third-eye-icon img {
+    width: 2rem;
+    height: 2rem;
+    animation: gentle-pulse 4s infinite;
+    filter: hue-rotate(240deg) saturate(1.2);
+  }
+
+  @keyframes gentle-pulse {
+    0%, 100% { 
+      opacity: 0.2; 
+      transform: scale(1);
+    }
+    50% { 
+      opacity: 0.4; 
+      transform: scale(1.05);
+    }
+  }
+
+  .zen-collections .zen-subtitle {
+    font-size: 1.125rem;
+    color: var(--zen-text-gray);
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+    max-width: 42rem;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+
+  .zen-collections .zen-divider {
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(to right, var(--zen-accent-indigo), var(--zen-light-indigo));
+    margin: 0 auto 3rem;
+    border-radius: 999px;
+    animation: glow-line 3s infinite;
+  }
+
+  @keyframes glow-line {
+    0%, 100% { 
+      opacity: 0.8; 
+      width: 80px; 
+      box-shadow: 0 0 20px rgba(124, 58, 237, 0.3); 
+    }
+    50% { 
+      opacity: 1; 
+      width: 120px; 
+      box-shadow: 0 0 30px rgba(124, 58, 237, 0.3); 
+    }
+  }
+
+  .zen-collections .zen-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 32px;
+    max-width: 800px;
+    margin: 0 auto 32px;
+    padding: 0 20px;
+  }
+
+  /* Posizionamento speciale per il settimo elemento */
+  .zen-collections .zen-card:nth-child(7) {
+    grid-column: 2;
+    grid-row: 3;
+  }
+  
+  @media (max-width: 900px) {
+    .zen-collections .zen-grid { 
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(7, auto);
+      gap: 20px;
+      max-width: 280px;
+      justify-items: center;
+      margin: 0 auto 32px;
+      padding: 0;
+    }
+    .zen-collections .zen-card:nth-child(7) {
+      grid-column: 1;
+      grid-row: auto;
+    }
+    .zen-collections .zen-card {
+      justify-self: center;
+      align-self: center;
+      width: 100%;
+      max-width: 200px;
+    }
+  }
+
+  .zen-collections .zen-card {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(124, 58, 237, 0.2);
+    border-radius: 24px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(124, 58, 237, 0.15);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 2rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 180px;
+    text-align: center;
+    cursor: pointer;
+    opacity: 0;
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+
+  .zen-collections .zen-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(124, 58, 237, 0.4);
+    box-shadow: 0 12px 40px rgba(124, 58, 237, 0.25);
+  }
+
+  .zen-collections .zen-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+
+  .zen-collections .zen-card:hover .zen-icon {
+    transform: scale(1.05);
+  }
+
+  @media (min-width: 768px) {
+    .zen-collections .zen-icon {
+      width: 100px;
+      height: 100px;
+      margin-bottom: 16px;
+    }
+  }
+
+  .zen-collections .zen-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--zen-primary-indigo);
+    transition: color 0.3s ease;
+    margin: 0;
+    line-height: 1.3;
+    text-align: center;
+    max-width: 180px;
+    opacity: 0.9;
+  }
+  
+  .zen-collections .zen-card:hover .zen-name {
+    color: var(--zen-accent-indigo);
+    opacity: 1;
+  }
+
+  @media (min-width: 768px) {
+    .zen-collections .zen-name {
+      font-size: 16px;
+      max-width: 180px;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: initial;
+    }
+  }
+  
+  /* Animazioni avanzate */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Ritardi animazione per effetto scaglionato */
+  .zen-collections .zen-card:nth-child(1) { animation-delay: 0s; }
+  .zen-collections .zen-card:nth-child(2) { animation-delay: 0.1s; }
+  .zen-collections .zen-card:nth-child(3) { animation-delay: 0.2s; }
+  .zen-collections .zen-card:nth-child(4) { animation-delay: 0.3s; }
+  .zen-collections .zen-card:nth-child(5) { animation-delay: 0.4s; }
+  .zen-collections .zen-card:nth-child(6) { animation-delay: 0.5s; }
+  .zen-collections .zen-card:nth-child(7) { animation-delay: 0.6s; }
+
+  /* Footer e Call-to-Action */
+  .zen-collections .zen-footer {
+    text-align: center;
+    margin-top: 16px;
+    padding: 12px 20px 8px;
+  }
+
+  .zen-collections .zen-footer-text {
+    font-family: 'Noto Sans Japanese', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 1rem;
+    color: var(--zen-primary-indigo);
+    margin: 0 0 1.5rem;
+    line-height: 1.5;
+    opacity: 0.9;
+  }
+  
+  .zen-collections .zen-cta-button {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--zen-accent-indigo), var(--zen-light-indigo));
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-family: 'Noto Sans Japanese', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
+  }
+  
+  .zen-collections .zen-cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(124, 58, 237, 0.4);
+    background: linear-gradient(135deg, var(--zen-light-indigo), var(--zen-accent-indigo));
+  }
+  
+  /* Responsive mobile - Remove conflicting rule */
+  @media (max-width: 767px) {
+    .zen-collections .zen-title {
+      font-size: 2rem;
+    }
+    .zen-collections .zen-subtitle {
+      font-size: 16px;
+    }
+    .zen-collections {
+      padding: 32px 8px;
+    }
+    .zen-collections .zen-container {
+      padding: 0 8px;
+    }
+    .zen-collections .zen-icon {
+      width: 70px;
+      height: 70px;
+      margin-bottom: 10px;
+    }
+    .zen-collections .zen-name {
+      font-size: 13px;
+      max-width: 200px;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: initial;
+    }
+    .zen-collections .zen-icon img {
+      width: 70px !important;
+      height: 70px !important;
+    }
+  }
+
+  /* Viola chiaro pastello sull'icona, senza toccare layout/animazioni */
+.zen-collections .zen-third-eye-icon img {
+  /* sostituisce il filtro grigio esistente */
+  filter: invert(88%) sepia(16%) saturate(500%) hue-rotate(217deg) brightness(105%) contrast(98%) !important;
+}
+
+/* Colora l'icona in viola pastello senza cambiare layout/animazioni */
+.zen-collections .zen-third-eye-icon img {
+  /* rende il PNG “neutro” e lo ridisegna col colore via drop-shadow */
+  filter: brightness(0) saturate(100%) invert(100%) drop-shadow(0 0 0 #D6C4FF) !important;
+}
+
+/* Pastello viola per l'icona del Terzo Occhio */
+.zen-collections .zen-third-eye-icon img {
+  display: none; /* nasconde il PNG originale */
+}
+
+.zen-collections .zen-third-eye-icon::after {
+  content: "";
+  display: block;
+  width: 2rem;
+  height: 2rem;
+  background: #D6C4FF; /* viola chiaro pastello */
+  -webkit-mask: url("https://cdn-icons-png.flaticon.com/512/9726/9726597.png") center / contain no-repeat;
+          mask: url("https://cdn-icons-png.flaticon.com/512/9726/9726597.png") center / contain no-repeat;
+  animation: gentle-pulse 4s infinite;
+  margin: 0 auto;
+}
+
+/* Rendi visibile l'icona e tienila viola pastello */
+.zen-collections .zen-third-eye-icon { opacity: 1 !important; }
+.zen-collections .zen-third-eye-icon img {
+  filter: brightness(0) saturate(100%) invert(100%) drop-shadow(0 0 0 #D6C4FF) !important;
+}
+</style>
+
+<section class="zen-collections">
+  <div class="zen-container">
+    <header>
+      <h2 class="zen-title">
+        {% if section.settings.section_title != blank %}
+          {{ section.settings.section_title }}
+        {% else %}
+          Le Nostre Collezioni
+        {% endif %}
+      </h2>
+      
+      <!-- Third Eye Chakra Icon -->
+      <div class="zen-third-eye-icon">
+        <img src="https://cdn-icons-png.flaticon.com/512/9726/9726597.png" alt="Third Eye Chakra" width="32" height="32">
+      </div>
+      
+      <div class="zen-divider"></div>
+    </header>
+    
+    <div class="zen-grid">
+      <!-- Cosmesi Viso - Sahasrara (Corona) -->
+      <div class="zen-card" onclick="location.href='https://benesserezen.shop/collections/cosmetica?ose=false'">
+        <div class="zen-icon chakra1">
+          <img src="https://cdn-icons-png.flaticon.com/512/3519/3519672.png" alt="Sahasrara" width="80" height="80">
+        </div>
+        <h3 class="zen-name">Cosmesi Viso</h3>
+      </div>
+
+      <!-- Cosmesi Corpo - Ajna (Terzo Occhio) -->
+      <div class="zen-card" onclick="location.href='https://benesserezen.shop/collections/cosmesi-corpo?ose=false'">
+        <div class="zen-icon chakra2">
+          <img src="https://cdn-icons-png.flaticon.com/512/3519/3519675.png" alt="Ajna" width="80" height="80">
+        </div>
+        <h3 class="zen-name">Cosmesi Corpo</h3>
+      </div>
+
+      <!-- Igiene e Benessere - Vishuddha (Gola) -->
+      <div class="zen-card" onclick="location.href='https://benesserezen.shop/collections/cura-della-persona?ose=false'">
+        <div class="zen-icon chakra3">
+          <img src="https://cdn-icons-png.flaticon.com/512/3519/3519679.png" alt="Vishuddha" width="80" height="80">
+        </div>
+        <h3 class="zen-name">Igiene e Benessere della Persona</h3>
+      </div>
+
+      <!-- Prodotti Capelli - Anahata (Cuore) -->
+      <div class="zen-card" onclick="location.href='https://benesserezen.shop/collections/prodotti-per-capelli?ose=false'">
+        <div class="zen-icon chakra4">
+          <img src="https://cdn-icons-png.flaticon.com/512/3519/3519682.png" alt="Anahata" width="80" height="80">
+        </div>
+        <h3 class="zen-name">Prodotti per Capelli</h3>
+      </div>
+
+      <!-- Ayurveda Esterna - Manipura (Plesso Solare) -->
+      <div class="zen-card" onclick="location.href='https://benesserezen.shop/collections/ayurveda?ose=false'">
+        <div class="zen-icon chakra5">
+          <img src="https://cdn-icons-png.flaticon.com/512/4657/4657551.png" alt="Manipura" width="80" height="80">
+        </div>
+        <h3 class="zen-name">Prodotti Ayurvedici</h3>
+      </div>
+
+      <!-- Ayurveda Interna - Svadhisthana (Sacrale) -->
+      <div class="zen-card" onclick="location.href='https://benesserezen.shop/collections/te-e-tisane-ayurvediche'">
+        <div class="zen-icon chakra6">
+          <img src="https://cdn-icons-png.flaticon.com/512/3519/3519628.png" alt="Svadhisthana" width="80" height="80">
+        </div>
+        <h3 class="zen-name">Tè & Tisane Ayurvediche</h3>
+      </div>
+
+      <!-- Oggettistica - Muladhara (Radice) -->
+      <div class="zen-card" onclick="location.href='https://benesserezen.shop/collections/oggettistica-e-idee-regalo?ose=false'">
+        <div class="zen-icon chakra7">
+          <img src="https://cdn-icons-png.flaticon.com/512/3519/3519630.png" alt="Muladhara" width="80" height="80">
+        </div>
+        <h3 class="zen-name">Oggettistica e Idee Regalo</h3>
+      </div>
+    </div>
+    
+    <!-- Call-to-Action Footer -->
+    <div class="zen-footer">
+      <p class="zen-footer-text">
+        Esplora le nostre collezioni per trovare i prodotti perfetti per il tuo benessere
+      </p>
+      <a href="/collections/all" class="zen-cta-button">
+        Scopri Tutti i Prodotti
+      </a>
+    </div>
+    
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Zen Wellness Collections",
+  "class": "zen-collections-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Contenuti Sezione"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Titolo Sezione",
+      "default": "Le Nostre Collezioni"
+    },
+    {
+      "type": "textarea",
+      "id": "section_description", 
+      "label": "Descrizione Sezione",
+      "default": "Scopri la nostra selezione curata di prodotti per il benessere e la bellezza naturale"
+    },
+    {
+      "type": "header",
+      "content": "URL Collezioni"
+    },
+    {
+      "type": "url",
+      "id": "collection_1_url",
+      "label": "URL Cosmetici Viso",
+      "info": "Se vuoto, userà /collections/cosmetici-viso"
+    },
+    {
+      "type": "url",
+      "id": "collection_2_url",
+      "label": "URL Cosmetici Corpo",
+      "info": "Se vuoto, userà /collections/cosmetici-corpo"
+    },
+    {
+      "type": "url",
+      "id": "collection_3_url",
+      "label": "URL Igiene e Benessere",
+      "info": "Se vuoto, userà /collections/igiene-benessere"
+    },
+    {
+      "type": "url",
+      "id": "collection_4_url",
+      "label": "URL Prodotti Capelli",
+      "info": "Se vuoto, userà /collections/prodotti-capelli"
+    },
+    {
+      "type": "url",
+      "id": "collection_5_url",
+      "label": "URL Ayurveda",
+      "info": "Se vuoto, userà /collections/ayurveda"
+    },
+    {
+      "type": "url",
+      "id": "collection_6_url",
+      "label": "URL Ayurveda Interna",
+      "info": "Se vuoto, userà /collections/te-e-tisane-ayurvediche"
+    },
+    {
+      "type": "url",
+      "id": "collection_7_url",
+      "label": "URL Oggettistica e Regali",
+      "info": "Se vuoto, userà /collections/oggettistica-regalo"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Zen Wellness Collections"
+    }
+  ]
+}
+{% endschema %}

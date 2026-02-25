@@ -1,0 +1,15 @@
+<div id="ajax-loading-cart">
+  {% render 'cart-drawer' %}
+</div>
+
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll("[name='quantity']").forEach(input => {
+    input.addEventListener("change", function() {
+      let maxStock = parseInt(this.getAttribute("data-inventory-quantity")); // Recupera la quantità massima dal magazzino
+      if (parseInt(this.value) > maxStock) {
+        alert("Puoi acquistare al massimo " + maxStock + " unità di questo prodotto.");
+        this.value = maxStock;
+      }
+    });
+  });
+});

@@ -1,0 +1,107 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.footer.name",
+  "type": "footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "footer-2": {
+          "type": "text",
+          "settings": {
+            "open_by_default": false,
+            "heading_text": "BENESSERE ZEN",
+            "subtext": "<p><a href=\"/pages/chi-siamo\" target=\"_blank\" title=\"Chi Siamo\">Chi siamo</a></p><p><a href=\"/pages/cose-layurveda\" title=\"Cos'è l'Ayurveda\">Cos'è l'Ayurveda</a></p>",
+            "show_social_icons": false,
+            "image_width": 100,
+            "link_image_footer": "",
+            "open_new_window": false
+          }
+        },
+        "text_eUfLwV": {
+          "type": "text",
+          "settings": {
+            "open_by_default": false,
+            "heading_text": "NEGOZIO",
+            "subtext": "<p><a href=\"/collections/le-nostre-collezioni\" target=\"_blank\" title=\"Le Nostre Collezioni\">Esplora</a></p>",
+            "show_social_icons": false,
+            "image_width": 100,
+            "link_image_footer": "shopify://collections",
+            "open_new_window": false
+          }
+        },
+        "text_bfn9zt": {
+          "type": "text",
+          "settings": {
+            "open_by_default": false,
+            "heading_text": "ASSISTENZA",
+            "subtext": "<p><a href=\"/pages/contact\" target=\"_blank\" title=\"Contatti\">Contattaci</a></p>",
+            "show_social_icons": false,
+            "image_width": 50,
+            "link_image_footer": "",
+            "open_new_window": false
+          }
+        },
+        "text_mtXP7L": {
+          "type": "text",
+          "settings": {
+            "open_by_default": false,
+            "heading_text": "INFORMAZIONI LEGALI",
+            "subtext": "<p><a href=\"/policies/privacy-policy\" title=\"Privacy Policy\">Informativa sulla privacy</a></p><p><a href=\"https://benesserezen.shop//policies/terms-of-service\" title=\"https://benesserezen.shop//policies/terms-of-service\">Termini e condizioni di servizio</a></p><p><a href=\"https://benesserezen.shop/policies/refund-policy\" title=\"https://benesserezen.shop/policies/refund-policy\">Informativa sui resi</a></p>",
+            "show_social_icons": false,
+            "image_width": 100,
+            "link_image_footer": "",
+            "open_new_window": false
+          }
+        },
+        "text_yLqzqQ": {
+          "type": "text",
+          "settings": {
+            "open_by_default": false,
+            "heading_text": "SEGUICI",
+            "subtext": "<p></p><p></p>",
+            "show_social_icons": true,
+            "image_width": 100,
+            "link_image_footer": "",
+            "open_new_window": false
+          }
+        }
+      },
+      "block_order": [
+        "footer-2",
+        "text_eUfLwV",
+        "text_bfn9zt",
+        "text_mtXP7L",
+        "text_yLqzqQ"
+      ],
+      "settings": {
+        "columns_desktop": 5,
+        "show_language_selector": true,
+        "show_currency_selector": true,
+        "show_social_icons": false,
+        "payment_enable": true,
+        "custom_payment": "",
+        "show_copyright": true,
+        "add_copyright_text": "",
+        "additional_layout": "vertical",
+        "show_powered": false,
+        "enable_follow_on_shop": false,
+        "top_padding": 0,
+        "bottom_padding": 40,
+        "top_padding_mobile": 0,
+        "bottom_padding_mobile": 28
+      }
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}

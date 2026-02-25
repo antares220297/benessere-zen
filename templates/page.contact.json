@@ -1,0 +1,160 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "promotion-banner": {
+      "type": "promotion-banner",
+      "blocks": {
+        "text": {
+          "type": "image_banner",
+          "settings": {
+            "heading": "Contattaci",
+            "highlight_type": "underline",
+            "heading_size": 170,
+            "heading_tag": "h2",
+            "subheading": "",
+            "text": "",
+            "text_size": 130,
+            "content_box_type": "square",
+            "add_frame": false,
+            "color_content_box_light": "rgba(0,0,0,0)",
+            "color_content_box_dark": "rgba(0,0,0,0)"
+          }
+        }
+      },
+      "block_order": [
+        "text"
+      ],
+      "settings": {
+        "heading": "Promotion Banner",
+        "image": "shopify://shop_images/premium_photo-1675842663249-a8b70103dbaa.jpg",
+        "image_link": "",
+        "open_new_window": false,
+        "image_overlay_opacity": 70,
+        "content_position": "center",
+        "content_horizontal": 50,
+        "content_vertical": 50,
+        "position_content_mobile": "center",
+        "content_alignment": "center",
+        "show_hero": false,
+        "full_width": true,
+        "padding_full_width": false,
+        "rounded_corner_image": false,
+        "desktop_height": "450px",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "full_width_mobile": true,
+        "rounded_corner_image_mobile": false,
+        "mobile_height": "250px",
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "show_heading": false,
+        "heading_size": 100,
+        "heading_tag": "h1",
+        "show_breadcrumbs": true,
+        "show_breadcrumbs_border": false,
+        "full_width_breadcrumb": true,
+        "desktop_content_alignment": "text-left",
+        "mobile_content_alignment": "text-left",
+        "background_color_light": "#f2f2f2",
+        "text_color_light": "rgba(0,0,0,0)",
+        "textlink_color_light": "rgba(0,0,0,0)",
+        "background_color_dark": "#313131",
+        "text_color_dark": "rgba(0,0,0,0)",
+        "textlink_color_dark": "rgba(0,0,0,0)",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0
+      }
+    },
+    "contact_form_hRpJqh": {
+      "type": "contact-form",
+      "blocks": {
+        "name_LEJMBd": {
+          "type": "name",
+          "settings": {
+            "heading": "Nome",
+            "mark_as_required": true
+          }
+        },
+        "email_6YFYRy": {
+          "type": "email",
+          "settings": {
+            "heading": "Email"
+          }
+        },
+        "phone_kyUhFb": {
+          "type": "phone",
+          "settings": {
+            "heading": "Numero di telefono",
+            "mark_as_required": false
+          }
+        },
+        "message_46m3hB": {
+          "type": "message",
+          "settings": {
+            "heading": "Messaggio",
+            "mark_as_required": true
+          }
+        }
+      },
+      "block_order": [
+        "name_LEJMBd",
+        "email_6YFYRy",
+        "phone_kyUhFb",
+        "message_46m3hB"
+      ],
+      "settings": {
+        "heading": "Domande? Inviaci una mail!",
+        "highlight_type": "underline",
+        "heading_size": 100,
+        "heading_tag": "h2",
+        "heading_alignment": "center",
+        "text": "",
+        "background_color_light": "rgba(0,0,0,0)",
+        "background_color_dark": "rgba(0,0,0,0)",
+        "button_label": "Invia",
+        "button_alignment": "center",
+        "success_message": "Grazie per averci contattato. Ti risponderemo il prima possibile.",
+        "show_content": "none",
+        "form_alignment": "left",
+        "desktop_height": "550px",
+        "mobile_height": "400px",
+        "contact_heading": "Informazioni di contatto",
+        "highlight_type_1": "underline",
+        "heading_tag_2": "h2",
+        "infomation": "",
+        "address": "",
+        "phone_nummber": "",
+        "email_address": "",
+        "contact_text": "",
+        "full_width": false,
+        "show_section_divider": false,
+        "padding_top": 28,
+        "padding_bottom": 28,
+        "full_width_mobile": false,
+        "show_section_divider_mobile": false,
+        "padding_top_mobile": 28,
+        "padding_bottom_mobile": 28
+      }
+    }
+  },
+  "order": [
+    "promotion-banner",
+    "main",
+    "contact_form_hRpJqh"
+  ]
+}

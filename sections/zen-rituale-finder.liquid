@@ -1,0 +1,3969 @@
+{% comment %}
+  Zen Rituale Finder — v3.0 PREMIUM
+  - Advanced animations & micro-interactions
+  - Perfect mobile/touch optimization
+  - Enhanced conversion elements
+  - Accessibility improvements
+  - Cross-platform compatibility
+{% endcomment %}
+
+<section class="zen-quiz-section zen-quiz--aurora" id="zen-rituale-finder" data-section-id="{{ section.id }}">
+  <!-- Ambient particles -->
+  <div class="zen-particles" aria-hidden="true"></div>
+  
+  {% comment %}
+<!-- Trust badges -->
+  <div class="zen-trust-badges">
+    <div class="zen-trust-badge">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 11l3 3L22 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke="currentColor" stroke-width="2"/></svg>
+      <span>100% Naturale</span>
+    </div>
+    <div class="zen-trust-badge">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" stroke-width="2"/></svg>
+      <span>4.9/5 Recensioni</span>
+    </div>
+    <div class="zen-trust-badge">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="2"/></svg>
+      <span>Spedizione Sicura</span>
+    </div>
+  </div>
+{% endcomment %}
+
+  <div class="zen-quiz-container">
+    <header class="zen-quiz-header">
+      <div class="zen-header-content">
+        <h2 class="zen-quiz-title" data-aos="fade-up">{{ section.settings.title }}</h2>
+       <!-- Solar Plexus Chakra Icon -->
+<div class="zen-chakra-icon" data-aos="fade-up" data-aos-delay="50" aria-hidden="true">
+  <span class="chakra-glyph"></span>
+</div>
+<!-- Divider animata sotto l'icona -->
+<div class="zen-chakra-divider" aria-hidden="true"></div>
+        {% if section.settings.subtitle != blank %}
+          <p class="zen-quiz-intro" data-aos="fade-up" data-aos-delay="100">{{ section.settings.subtitle }}</p>
+        {% endif %}
+        
+        <!-- Users online indicator -->
+        <div class="zen-live-users" data-aos="fade-up" data-aos-delay="200">
+          <span class="zen-live-dot"></span>
+          <span class="zen-live-text"><strong class="js-users">12</strong> persone stanno completando il quiz ora</span>
+        </div>
+      </div>
+      
+      <div class="zen-quiz-progress" aria-label="Progresso del quiz">
+        <div class="zen-quiz-progress-bar">
+          <span class="zen-quiz-progress-fill"></span>
+          <span class="zen-quiz-progress-glow"></span>
+        </div>
+        <div class="zen-quiz-progress-text">
+          Passo <span class="js-step">1</span> di <span class="js-total">3</span>
+          <span class="zen-progress-emoji" aria-hidden="true">✨</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- STEPS -->
+    <div class="zen-quiz-steps" role="region" aria-live="polite">
+      <!-- STEP 1 -->
+      <div class="zen-quiz-step is-active" data-step="1">
+        <div class="zen-step-icon" aria-hidden="true">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M16 14c0-2.21-1.79-4-4-4s-4 1.79-4 4v4h8v-4z" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <h3 class="zen-quiz-question">Cosa vuoi trattare?</h3>
+        <p class="zen-question-hint">Scegli l'area su cui concentrare il tuo rituale di bellezza</p>
+        
+        <div class="zen-quiz-answers zen-answers--large">
+          <!-- VISO -->
+<button class="zen-quiz-answer zen-answer--premium" data-key="area" data-val="viso" aria-pressed="false">
+  <span class="zen-answer-icon">
+    <span class="zen-glyph zen-glyph--face" aria-hidden="true"></span>
+  </span>
+  <span class="zen-answer-text">Viso</span>
+  <span class="zen-answer-desc">Skincare completa per il viso</span>
+  <span class="zen-answer-badge">Più scelto</span>
+</button>
+          
+          <!-- CORPO -->
+<button class="zen-quiz-answer zen-answer--premium" data-key="area" data-val="corpo" aria-pressed="false">
+  <span class="zen-answer-icon">
+    <span class="zen-glyph zen-glyph--body" aria-hidden="true"></span>
+  </span>
+  <span class="zen-answer-text">Corpo</span>
+  <span class="zen-answer-desc">Trattamenti per tutto il corpo</span>
+</button>
+        </div>
+        
+        <div class="zen-quiz-nav">
+          <button class="zen-quiz-next zen-btn--premium" disabled>
+            <span>Continua</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+<!-- STEP 2 (FACE) -->
+<div class="zen-quiz-step" data-step="2-face" hidden>
+  <h3 class="zen-quiz-question">Com'è la tua pelle?</h3>
+  <p class="zen-question-hint">Seleziona fino a un massimo di 2 caratteristiche</p>
+
+  <div class="zen-quiz-answers zen-answers--tags">
+    <button class="zen-quiz-answer zen-answer--tag" data-multi="true" data-key="skin" data-val="dry" aria-pressed="false">
+      <span>Secca/Disidratata</span><span class="zen-tag-check">✓</span>
+    </button>
+    <button class="zen-quiz-answer zen-answer--tag" data-multi="true" data-key="skin" data-val="oily" aria-pressed="false">
+      <span>Mista/Grassa</span><span class="zen-tag-check">✓</span>
+    </button>
+    <button class="zen-quiz-answer zen-answer--tag" data-multi="true" data-key="skin" data-val="sensibile" aria-pressed="false">
+      <span>Sensibile</span><span class="zen-tag-check">✓</span>
+    </button>
+    <button class="zen-quiz-answer zen-answer--tag" data-multi="true" data-key="skin" data-val="asfittica" aria-pressed="false">
+      <span>Asfittica (spenta)</span><span class="zen-tag-check">✓</span>
+    </button>
+    <button class="zen-quiz-answer zen-answer--tag" data-multi="true" data-key="skin" data-val="rughe" aria-pressed="false">
+      <span>Con rughe</span><span class="zen-tag-check">✓</span>
+    </button>
+  </div>
+
+  <!-- SUB-QUESTION: Pori dilatati (visibile solo se Mista/Grassa) -->
+  <div class="zen-subq-pores" hidden aria-hidden="true">
+    <p class="zen-question-hint" style="margin-top:6px">Hai pori dilatati visibili?</p>
+    <div class="zen-quiz-answers zen-answers--tags">
+      <button class="zen-quiz-answer zen-answer--tag" data-key="pores" data-val="si" aria-pressed="false">
+        <span>Sì</span><span class="zen-tag-check">✓</span>
+      </button>
+      <button class="zen-quiz-answer zen-answer--tag" data-key="pores" data-val="no" aria-pressed="false">
+        <span>No</span><span class="zen-tag-check">✓</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="zen-quiz-nav">
+    <button class="zen-quiz-prev zen-btn--ghost"><span>Indietro</span></button>
+    <button class="zen-quiz-next zen-btn--premium" disabled><span>Continua</span></button>
+  </div>
+</div>
+
+<!-- STEP 3 (FACE) — EYES -->
+<div class="zen-quiz-step" data-step="eyes" hidden>
+  <h3 class="zen-quiz-question">Noti occhiaie/borse sotto agli occhi?</h3>
+  <p class="zen-question-hint">Servirà a proporre il contorno occhi più adatto</p>
+
+  <div class="zen-quiz-answers zen-answers--large">
+    <button class="zen-quiz-answer" data-key="eyes" data-val="si" aria-pressed="false">
+      <span class="zen-answer-text">Sì, si notano</span>
+    </button>
+    <button class="zen-quiz-answer" data-key="eyes" data-val="no" aria-pressed="false">
+      <span class="zen-answer-text">No, non particolarmente</span>
+    </button>
+  </div>
+
+  <div class="zen-quiz-nav">
+    <button class="zen-quiz-prev zen-btn--ghost"><span>Indietro</span></button>
+    <button class="zen-quiz-next zen-btn--premium" disabled><span>Continua</span></button>
+  </div>
+</div>
+
+<!-- STEP 4 (FACE) — STYLE -->
+<div class="zen-quiz-step" data-step="style" hidden>
+  <h3 class="zen-quiz-question">Scegli il tipo di rituale</h3>
+  <p class="zen-question-hint">Due percorsi, stesso obiettivo: pelle al top ✨</p>
+
+  <div class="zen-quiz-answers zen-answers--style">
+    <button class="zen-quiz-answer zen-answer--style" data-key="style" data-val="essenziale" aria-pressed="false" type="button">
+      <div class="zen-style-info">
+        <strong>Essenziale</strong>
+        <small>Routine quotidiana veloce: il massimo con il minimo.</small>
+      </div>
+    </button>
+
+    <button class="zen-quiz-answer zen-answer--style" data-key="style" data-val="completo" aria-pressed="false" type="button">
+      <div class="zen-style-info">
+        <strong>Completo</strong>
+        <small>La coccola più completa: esfolia, illumina e potenzia i risultati.</small>
+      </div>
+      <span class="zen-style-badge">Consigliato</span>
+    </button>
+  </div>
+
+  <div class="zen-quiz-nav">
+    <button class="zen-quiz-prev zen-btn--ghost" type="button"><span>Indietro</span></button>
+    <button class="zen-quiz-show-results zen-btn--premium" type="button" disabled><span>Vedi i risultati</span></button>
+  </div>
+</div>
+
+      <!-- BODY — STEP 1: Detergere -->
+<div class="zen-quiz-step" data-step="2-body-wash" data-allow-skip="true" hidden>
+  <h3 class="zen-quiz-question">Vuoi detergere?</h3>
+  <p class="zen-question-hint">Scegline uno, entrambi oppure nessuno.</p>
+  <div class="zen-quiz-answers zen-answers--products" data-key="body_wash"></div>
+  <div class="zen-quiz-nav">
+    <button class="zen-quiz-prev zen-btn--ghost"><span>Indietro</span></button>
+    <button class="zen-quiz-next zen-btn--premium"><span>Continua</span></button>
+  </div>
+</div>
+
+<!-- BODY — STEP 2: Esfoliare -->
+<div class="zen-quiz-step" data-step="2-body-scrub" data-allow-skip="true" hidden>
+  <h3 class="zen-quiz-question">Vuoi esfoliare?</h3>
+  <p class="zen-question-hint">Scegline uno, entrambi oppure nessuno.</p>
+  <div class="zen-quiz-answers zen-answers--products" data-key="body_scrub"></div>
+  <div class="zen-quiz-nav">
+    <button class="zen-quiz-prev zen-btn--ghost"><span>Indietro</span></button>
+    <button class="zen-quiz-next zen-btn--premium"><span>Continua</span></button>
+  </div>
+</div>
+
+<!-- BODY — STEP 3: Idratare -->
+<div class="zen-quiz-step" data-step="2-body-hydrate" data-allow-skip="true" hidden>
+  <h3 class="zen-quiz-question">Vuoi idratare?</h3>
+  <p class="zen-question-hint">Scegline uno, entrambi oppure nessuno.</p>
+  <div class="zen-quiz-answers zen-answers--products" data-key="body_hydrate"></div>
+  <div class="zen-quiz-nav">
+    <button class="zen-quiz-prev zen-btn--ghost"><span>Indietro</span></button>
+    <button class="zen-quiz-next zen-btn--premium"><span>Continua</span></button>
+  </div>
+</div>
+
+<!-- BODY — STEP 4: Deodoranti -->
+<div class="zen-quiz-step" data-step="2-body-deo" data-allow-skip="true" hidden>
+  <h3 class="zen-quiz-question">Vuoi un deodorante?</h3>
+  <p class="zen-question-hint">Scegline uno, entrambi oppure nessuno.</p>
+  <div class="zen-quiz-answers zen-answers--products" data-key="body_deo"></div>
+  <div class="zen-quiz-nav">
+    <button class="zen-quiz-prev zen-btn--ghost"><span>Indietro</span></button>
+    <button class="zen-quiz-next zen-btn--premium"><span>Continua</span></button>
+  </div>
+</div>
+
+<!-- BODY — STEP 5: Intimo -->
+<div class="zen-quiz-step" data-step="2-body-intimo" data-allow-skip="true" hidden>
+  <h3 class="zen-quiz-question">Vuoi un detergente intimo?</h3>
+  <div class="zen-quiz-answers zen-answers--products" data-key="body_intimo"></div>
+  <div class="zen-quiz-nav">
+    <button class="zen-quiz-prev zen-btn--ghost"><span>Indietro</span></button>
+    <button class="zen-quiz-next zen-btn--premium"><span>Continua</span></button>
+  </div>
+</div>
+
+<!-- BODY — STEP 6 (finale): Balsami labbra -->
+<div class="zen-quiz-step" data-step="2-body-lip" data-allow-skip="true" hidden>
+  <h3 class="zen-quiz-question">Vuoi proteggere le labbra?</h3>
+  <p class="zen-question-hint">Scegline uno, tutti oppure nessuno.</p>
+  <div class="zen-quiz-answers zen-answers--products" data-key="body_lip"></div>
+  <div class="zen-quiz-nav">
+    <button class="zen-quiz-prev zen-btn--ghost"><span>Indietro</span></button>
+    <button class="zen-quiz-show-results zen-btn--premium">
+      <span>Vedi i risultati</span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" stroke-width="2"/></svg>
+    </button>
+  </div>
+</div>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="zen-quiz-results" hidden aria-live="polite">
+      <div class="zen-results-confetti" aria-hidden="true"></div>
+      
+      <div class="zen-quiz-results-header">
+        <div class="zen-results-badge">
+          <svg width="60" height="60" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="var(--zen-primary)" stroke="var(--zen-primary)" stroke-width="1"/>
+          </svg>
+        </div>
+        <h3 class="zen-quiz-results-title">Il tuo Rituale Personalizzato è Pronto!</h3>
+        <p class="zen-quiz-results-sub">Abbiamo selezionato i prodotti perfetti per le tue esigenze</p>
+        
+        <!-- Limited time offer -->
+        <div class="zen-offer-banner">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+            <span>Offerta limitata: <strong><span class="js-offer-pct">15%</span> sull’intero rituale</strong> • <span class="js-timer-label">Scade tra</span> <span class="js-timer">09:59</span></span>        </div>
+      </div>
+
+      <div class="js-results-grid zen-results-grid"></div>
+
+      <!-- Trust elements -->
+      <div class="zen-results-trust">
+        <div class="zen-trust-item">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Garanzia 30 giorni soddisfatti o rimborsati</span>
+        </div>
+        <div class="zen-trust-item">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <rect x="3" y="11" width="18" height="10" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M7 11V7a5 5 0 0110 0v4" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          <span>Pagamento sicuro con SSL</span>
+        </div>
+      </div>
+
+      <div class="zen-results-footer">
+        <div class="zen-results-summary">
+          <div class="zen-results-total">
+            <span class="label">Totale rituale</span>
+            <strong class="js-total-price">—</strong>
+            <small class="zen-save-badge">Risparmi €12</small>
+          </div>
+          <div class="zen-shipping-info">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <rect x="1" y="3" width="15" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M16 8h4l3 3v5h-7V8z" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="6.5" cy="19.5" r="2.5" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="18.5" cy="19.5" r="2.5" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+            <span>Spedizione gratuita sopra €49</span>
+          </div>
+        </div>
+        
+        <div class="zen-results-actions">
+          <button class="zen-quiz-add-all zen-btn--cta" disabled>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <span>Aggiungi tutto al carrello</span>
+            <span class="zen-btn-shine"></span>
+          </button>
+          <button class="zen-quiz-restart zen-btn--text" type="button">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <path d="M1 4v6h6M23 20v-6h-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M20.49 9A9 9 0 005.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 013.51 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Ricomincia
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% style %}
+/* ===== PREMIUM DESIGN SYSTEM ===== */
+:root{
+  /* Manipura Gold — Warm Yellow Theme */
+  --zen-primary:       #E9B949; /* gold principale (≈ amber 400/500) */
+  --zen-cta:           #D99000; /* CTA più scura per contrasto AA */
+  --zen-ink:           #3F2E0A; /* testo principale, caldo e leggibile */
+  --zen-muted:         #7A6B45; /* testo attenuato */
+  --zen-bg:            #FFF7E9; /* sfondo sezione */
+  --zen-card:          #FFFAF0; /* sfondo card */
+  --zen-border:        #F1E2BD; /* bordi soft, non grigi */
+  --zen-media:         #F3E8D1; /* fondo media prodotto */
+  --zen-progress:      #B7791F; /* barra progresso/azioni scure */
+  
+  /* Premium shadows & effects */
+  --zen-shadow-sm: 0 2px 8px rgba(0,0,0,.04);
+  --zen-shadow: 0 10px 40px rgba(0,0,0,.08);
+  --zen-shadow-lg: 0 20px 60px rgba(0,0,0,.12);
+  --zen-shadow-xl: 0 25px 80px rgba(0,0,0,.15);
+  --zen-glow: 0 0 40px rgba(87,162,123,.3);
+  --zen-radius: 20px;
+  --zen-radius-sm: 12px;
+  --zen-radius-lg: 24px;
+  
+  /* Animations */
+  --zen-ease: cubic-bezier(.4,0,.2,1);
+  --zen-bounce: cubic-bezier(.68,-.55,.265,1.55);
+  --zen-smooth: cubic-bezier(.25,.46,.45,.94);
+}
+
+/* ICONA SOTTO L'HEADING — usa l’SVG caricato negli asset */
+.zen-quiz--aurora .zen-chakra-icon{
+  position: relative;
+  display:flex; justify-content:center;
+  margin: 12px auto 18px;
+  color:#F1C40F;               /* giallo del 3° chakra */
+  opacity:1;                   /* ben visibile */
+}
+
+/* riempiamo lo span con la forma dell’icona via mask, così prende currentColor */
+.zen-quiz--aurora .zen-chakra-icon .chakra-glyph{
+  width:40px; height:40px; display:inline-block;
+  background: currentColor;
+  -webkit-mask: url("https://cdn-icons-png.flaticon.com/512/3576/3576464.png") center / contain no-repeat;
+          mask: url("https://cdn-icons-png.flaticon.com/512/3576/3576464.png") center / contain no-repeat;
+  animation: chakra-pulse 3.2s ease-in-out infinite;
+  filter: drop-shadow(0 2px 6px rgba(241,196,15,.45));
+  z-index:1;
+}
+
+/* alone morbido dietro l’icona */
+.zen-quiz--aurora .zen-chakra-icon::before{
+  content:''; position:absolute; inset:0; margin:auto;
+  width:56px; height:56px; border-radius:50%;
+  background: radial-gradient(circle, rgba(241,196,15,.18), rgba(241,196,15,0) 65%);
+  filter: blur(1px); z-index:0; pointer-events:none;
+}
+
+/* linea che “respira” sotto l’icona */
+.zen-quiz--aurora .zen-chakra-divider{
+  width:90px; height:4px; border-radius:999px;
+  margin: 8px auto 28px;
+  background: linear-gradient(to right, #F1C40F, #F7DC6F);
+  animation: line-breath 3s ease-in-out infinite;
+  box-shadow: 0 0 14px rgba(241,196,15,.35);
+}
+
+/* animazioni */
+@keyframes chakra-pulse{
+  0%,100%{ opacity:.95; transform: scale(1); }
+  50%    { opacity:1;   transform: scale(1.08); }
+}
+@keyframes line-breath{
+  0%,100%{ width:90px;  opacity:.95; box-shadow:0 0 18px rgba(241,196,15,.35); }
+  50%    { width:132px; opacity:1;   box-shadow:0 0 26px rgba(241,196,15,.45); }
+}
+
+/* se altrove avevi questa base, la “schiaccia” qui */
+.zen-chakra-icon { opacity:1 !important; }
+
+/* Base styles */
+* { -webkit-tap-highlight-color: transparent; }
+
+.zen-quiz--aurora {
+  position: relative;
+  background: 
+    radial-gradient(ellipse 1400px 700px at 20% -5%, 
+      color-mix(in oklab, var(--zen-primary) 15%, transparent), transparent 55%),
+    radial-gradient(ellipse 1000px 600px at 85% 10%, 
+      color-mix(in oklab, var(--zen-primary) 12%, transparent), transparent 60%),
+    radial-gradient(ellipse 800px 500px at 50% 100%, 
+      color-mix(in oklab, var(--zen-primary) 8%, transparent), transparent 70%),
+    var(--zen-bg);
+  padding: 60px 20px 80px;
+  overflow: hidden;
+  min-height: 100vh;
+}
+
+/* Animated particles */
+.zen-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.zen-particles::before,
+.zen-particles::after {
+  content: '';
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, 
+    color-mix(in oklab, var(--zen-primary) 10%, transparent),
+    transparent 70%);
+  animation: float 20s infinite ease-in-out;
+}
+
+.zen-particles::before {
+  top: -200px;
+  left: -100px;
+  animation-delay: 0s;
+}
+
+.zen-particles::after {
+  bottom: -150px;
+  right: -100px;
+  animation-delay: -10s;
+  animation-duration: 25s;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(100px, -50px) scale(1.1); }
+  66% { transform: translate(-50px, 50px) scale(0.95); }
+}
+
+/* Trust badges */
+.zen-trust-badges {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.zen-trust-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(255,255,255,.9);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: 100px;
+  font-size: 13px;
+  color: var(--zen-ink);
+  animation: fadeInUp .6s var(--zen-ease) backwards;
+}
+
+.zen-trust-badge:nth-child(2) { animation-delay: .1s; }
+.zen-trust-badge:nth-child(3) { animation-delay: .2s; }
+
+.zen-trust-badge svg {
+  width: 16px;
+  height: 16px;
+  color: var(--zen-primary);
+}
+
+/* Container & Header */
+.zen-quiz-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.zen-header-content {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.zen-quiz-title {
+  margin: 0 0 12px;
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 200;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--zen-ink);
+  animation: fadeInUp .8s var(--zen-ease);
+}
+
+.zen-chakra-icon {
+  display: flex;
+  justify-content: center;
+  margin: 1rem auto 2rem;
+  opacity: 0.3;
+  color: #F4D03F;
+}
+
+.zen-chakra-icon svg {
+  width: 2rem;
+  height: 2rem;
+  animation: gentle-pulse 4s infinite;
+}
+
+@keyframes gentle-pulse {
+  0%, 100% { 
+    opacity: 0.2; 
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 0.4; 
+    transform: scale(1.05);
+  }
+}
+
+.zen-quiz-intro {
+  color: var(--zen-muted);
+  margin: 0 0 24px;
+  font-size: 18px;
+  opacity: 0.9;
+  animation: fadeInUp .8s .1s var(--zen-ease) backwards;
+}
+
+/* Live users indicator */
+.zen-live-users {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  background: rgba(255,255,255,.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(87,162,123,.2);
+  border-radius: 100px;
+  font-size: 14px;
+  color: var(--zen-ink);
+  animation: fadeInUp .8s .2s var(--zen-ease) backwards;
+}
+
+.zen-live-dot {
+  width: 8px;
+  height: 8px;
+  background: #22c55e;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: .5; transform: scale(1.2); }
+}
+
+/* Progress bar */
+.zen-quiz-progress {
+  margin: 0 0 40px;
+  animation: fadeIn .8s .3s var(--zen-ease) backwards;
+}
+
+.zen-quiz-progress-bar {
+  position: relative;
+  height: 8px;
+  background: rgba(255,255,255,.5);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0,0,0,.05);
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.zen-quiz-progress-fill {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    var(--zen-primary),
+    color-mix(in oklab, var(--zen-primary) 80%, white));
+  border-radius: 100px;
+  transition: width .6s var(--zen-smooth);
+  position: relative;
+}
+
+.zen-quiz-progress-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent,
+    rgba(255,255,255,.4),
+    transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.zen-quiz-progress-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--zen-muted);
+  font-size: 13px;
+  margin-top: 12px;
+  font-weight: 500;
+}
+
+.zen-progress-emoji {
+  font-size: 16px;
+  animation: rotate 3s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Steps */
+.zen-quiz-step {
+  background: rgba(255,255,255,.98);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: var(--zen-radius-lg);
+  padding: 40px 32px;
+  box-shadow: var(--zen-shadow-lg);
+  animation: slideInUp .6s var(--zen-ease);
+  position: relative;
+  overflow: hidden;
+}
+
+.zen-quiz-step::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, 
+    var(--zen-primary),
+    color-mix(in oklab, var(--zen-primary) 50%, transparent));
+  opacity: 0;
+  transition: opacity .3s;
+}
+
+.zen-quiz-step.is-active::before {
+  opacity: 1;
+}
+
+/* Step icon */
+.zen-step-icon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+  color: var(--zen-primary);
+  animation: fadeInScale .8s var(--zen-bounce);
+}
+
+.zen-step-icon svg {
+  width: 48px;
+  height: 48px;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Questions */
+.zen-quiz-question {
+  color: var(--zen-ink);
+  margin: 0 0 8px;
+  font-size: 28px;
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: -0.01em;
+  animation: fadeIn .6s .1s var(--zen-ease) backwards;
+}
+
+.zen-question-hint {
+  text-align: center;
+  color: var(--zen-muted);
+  margin: 0 0 32px;
+  font-size: 15px;
+  animation: fadeIn .6s .2s var(--zen-ease) backwards;
+}
+
+/* Answer styles */
+.zen-quiz-answers {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.zen-answers--large {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.zen-quiz-answer {
+  position: relative;
+  background: white;
+  border: 2px solid var(--zen-border);
+  border-radius: var(--zen-radius);
+  padding: 20px;
+  cursor: pointer;
+  transition: all .3s var(--zen-ease);
+  animation: fadeInUp .6s var(--zen-ease) backwards;
+}
+
+.zen-quiz-answer:nth-child(1) { animation-delay: .1s; }
+.zen-quiz-answer:nth-child(2) { animation-delay: .15s; }
+.zen-quiz-answer:nth-child(3) { animation-delay: .2s; }
+.zen-quiz-answer:nth-child(4) { animation-delay: .25s; }
+.zen-quiz-answer:nth-child(5) { animation-delay: .3s; }
+
+/* Premium answer card */
+.zen-answer--premium {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 32px 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.zen-answer--premium::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, 
+    transparent 40%,
+    rgba(87,162,123,.05));
+  opacity: 0;
+  transition: opacity .3s;
+}
+
+.zen-answer--premium:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--zen-shadow-lg);
+  border-color: var(--zen-primary);
+}
+
+.zen-answer--premium:hover::after {
+  opacity: 1;
+}
+
+.zen-answer--premium.is-selected {
+  background: linear-gradient(135deg, 
+    rgba(87,162,123,.08),
+    rgba(87,162,123,.03));
+  border-color: var(--zen-primary);
+  box-shadow: 0 0 0 4px rgba(87,162,123,.1), var(--zen-shadow-lg);
+  transform: scale(1.02);
+}
+
+.zen-answer-icon {
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, 
+    rgba(87,162,123,.1),
+    rgba(87,162,123,.05));
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  color: var(--zen-primary);
+  transition: all .3s var(--zen-ease);
+}
+
+.zen-answer--premium.is-selected .zen-answer-icon {
+  background: var(--zen-primary);
+  color: white;
+  transform: scale(1.1) rotate(5deg);
+}
+
+.zen-answer-text {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--zen-ink);
+  margin-bottom: 4px;
+}
+
+.zen-answer-desc {
+  font-size: 14px;
+  color: var(--zen-muted);
+}
+
+.zen-answer-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--zen-primary);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Tag style answers */
+.zen-answers--tags {
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.zen-answer--tag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 20px;
+  font-weight: 500;
+  position: relative;
+}
+
+.zen-tag-icon {
+  font-size: 20px;
+}
+
+.zen-tag-check {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 20px;
+  height: 20px;
+  background: var(--zen-primary);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  opacity: 0;
+  transform: scale(0);
+  transition: all .3s var(--zen-bounce);
+}
+
+.zen-answer--tag.is-selected .zen-tag-check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Goal answers */
+.zen-answers--goals {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.zen-answer--goal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 24px 20px;
+  gap: 8px;
+}
+
+.zen-goal-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.zen-goal-title {
+  font-weight: 600;
+  color: var(--zen-ink);
+  font-size: 16px;
+}
+
+.zen-goal-desc {
+  font-size: 13px;
+  color: var(--zen-muted);
+}
+
+/* ===== GOAL CARDS — hover + selected state ===== */
+.zen-answer--goal {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hover come gli altri */
+.zen-answer--goal:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--zen-shadow-lg);
+  border-color: var(--zen-primary);
+}
+
+/* Evidenza quando è selezionato */
+.zen-answer--goal.is-selected {
+  background: linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--zen-primary) 10%, white),
+    color-mix(in oklab, var(--zen-primary) 4%, white)
+  );
+  border-color: var(--zen-primary);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--zen-primary) 15%, transparent),
+              var(--zen-shadow-lg);
+  animation: zen-pop .28s var(--zen-bounce);
+}
+
+/* Spunta in alto a destra */
+.zen-answer--goal.is-selected::after {
+  content: '✓';
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--zen-primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* Animazione/feedback sull’icona */
+.zen-goal-icon {
+  transition: transform .3s var(--zen-bounce), filter .3s var(--zen-ease);
+}
+.zen-answer--goal.is-selected .zen-goal-icon {
+  transform: scale(1.15) rotate(-3deg);
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,.15));
+}
+
+/* Titolo un filo più “forte” quando selezionato */
+.zen-answer--goal.is-selected .zen-goal-title {
+  font-weight: 700;
+}
+
+/* Micro-animazione pop */
+@keyframes zen-pop {
+  from   { transform: scale(.98); opacity: .98; }
+  50%    { transform: scale(1.02); }
+  to     { transform: scale(1);    opacity: 1; }
+}
+
+/* Body & Style answers */
+.zen-answers--body {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.zen-answer--body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px;
+  font-weight: 500;
+}
+
+.zen-body-icon {
+  font-size: 24px;
+}
+
+.zen-answers--style {
+  grid-template-columns: 1fr;
+  max-width: 500px;
+  margin: 0 auto 32px;
+}
+
+.zen-answer--style {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 20px;
+  padding: 24px;
+  text-align: left;
+  position: relative;
+}
+
+.zen-style-number {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, 
+    rgba(87,162,123,.1),
+    rgba(87,162,123,.05));
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--zen-primary);
+}
+
+.zen-answer--style.is-selected .zen-style-number {
+  background: var(--zen-primary);
+  color: white;
+}
+
+.zen-style-info strong {
+  display: block;
+  font-size: 18px;
+  margin-bottom: 4px;
+  color: var(--zen-ink);
+}
+
+.zen-style-info small {
+  color: var(--zen-muted);
+  font-size: 14px;
+}
+
+.zen-style-time {
+  font-size: 13px;
+  color: var(--zen-muted);
+}
+
+.zen-style-badge {
+  position: absolute;
+  top: -8px;
+  right: 20px;
+  background: linear-gradient(135deg, #FFD700, #FFA500);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(255, 165, 0, 0.3);
+}
+
+/* ===== STYLE CARDS — chiarezza quantità + hover/selected ===== */
+
+/* Mostra la parola "prodotti" dentro il quadratino del numero */
+.zen-style-number{
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 56px; /* un filo più grande per ospitare la dicitura */
+  height: 56px;
+  padding-top: 4px;     /* sposta leggermente il numero in alto */
+  line-height: 1;
+}
+.zen-style-number::after{
+  content: 'prodotti';
+  position: absolute;
+  bottom: 6px;          /* dentro il riquadro */
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .3px;
+  text-transform: uppercase;
+  opacity: .65;
+}
+
+/* Hover come gli altri step */
+.zen-answer--style:hover{
+  transform: translateY(-4px);
+  box-shadow: var(--zen-shadow-lg);
+  border-color: var(--zen-primary);
+}
+
+/* Stato selezionato con micro-animazione + evidenza */
+.zen-answer--style.is-selected{
+  background: linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--zen-primary) 10%, white),
+    color-mix(in oklab, var(--zen-primary) 4%, white)
+  );
+  border-color: var(--zen-primary);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--zen-primary) 15%, transparent),
+              var(--zen-shadow-lg);
+  animation: zen-pop .28s var(--zen-bounce);
+}
+
+/* Numero più “hero” quando selezionato */
+.zen-answer--style.is-selected .zen-style-number{
+  background: var(--zen-primary);
+  color: #fff;
+  transform: scale(1.08);
+}
+
+/* Titolo/tempo un filo più forti da selezionato */
+.zen-answer--style.is-selected .zen-style-info strong{
+  color: var(--zen-ink);
+  font-weight: 800;
+}
+.zen-answer--style.is-selected .zen-style-time{
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,.08));
+}
+
+/* stessa micro-animazione già usata altrove */
+@keyframes zen-pop{
+  from { transform: scale(.98); opacity:.98; }
+  50%  { transform: scale(1.02); }
+  to   { transform: scale(1);    opacity:1; }
+}
+
+/* Mobile: rientro leggero così non tocca il testo */
+@media (max-width: 480px){
+  .zen-style-number{ width: 52px; height: 52px; }
+  .zen-style-number::after{ font-size: 9px; bottom: 5px; }
+}
+
+/* Navigation buttons */
+.zen-quiz-nav {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 32px;
+}
+
+.zen-btn--premium {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, 
+    var(--zen-cta),
+    color-mix(in oklab, var(--zen-cta) 85%, black));
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 28px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all .3s var(--zen-ease);
+  position: relative;
+  overflow: hidden;
+}
+
+.zen-btn--premium::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,.3);
+  transform: translate(-50%, -50%);
+  transition: width .6s, height .6s;
+}
+
+.zen-btn--premium:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.zen-btn--premium:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(87,162,123,.3);
+}
+
+.zen-btn--premium:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.zen-btn--ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  color: var(--zen-ink);
+  border: 2px solid var(--zen-border);
+  border-radius: 12px;
+  padding: 14px 24px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all .3s var(--zen-ease);
+}
+
+.zen-btn--ghost:hover {
+  background: var(--zen-bg);
+  border-color: var(--zen-primary);
+}
+
+.zen-btn--pulse {
+  animation: pulse-scale 2s infinite;
+}
+
+@keyframes pulse-scale {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* Results section */
+.zen-quiz-results {
+  animation: fadeIn .8s var(--zen-ease);
+  position: relative;
+}
+
+.zen-results-confetti {
+  position: absolute;
+  inset: -50px;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.zen-quiz-results-header {
+  text-align: center;
+  margin-bottom: 40px;
+  position: relative;
+  z-index: 2;
+}
+
+.zen-results-badge {
+  display: inline-flex;
+  margin-bottom: 24px;
+  animation: bounceIn 1s var(--zen-bounce);
+}
+
+@keyframes bounceIn {
+  from {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.zen-quiz-results-title {
+  font-size: 32px;
+  margin: 0 0 8px;
+  color: var(--zen-ink);
+  font-weight: 600;
+  animation: fadeInUp .8s .2s var(--zen-ease) backwards;
+}
+
+.zen-quiz-results-sub {
+  color: var(--zen-muted);
+  margin: 0 0 24px;
+  font-size: 16px;
+  animation: fadeInUp .8s .3s var(--zen-ease) backwards;
+}
+
+/* Offer banner */
+.zen-offer-banner {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, 
+    rgba(255,215,0,.1),
+    rgba(255,165,0,.1));
+  border: 2px solid rgba(255,165,0,.3);
+  border-radius: 100px;
+  font-size: 14px;
+  color: var(--zen-ink);
+  animation: fadeInUp .8s .4s var(--zen-ease) backwards;
+}
+
+.zen-offer-banner svg {
+  color: #FF6B35;
+}
+
+.js-timer {
+  font-weight: 700;
+  color: #FF6B35;
+}
+
+/* Results grid */
+.zen-results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-bottom: 32px;
+  position: relative;
+  z-index: 2;
+}
+
+/* Product cards */
+.zen-quiz-card {
+  background: white;
+  border: 1px solid var(--zen-border);
+  border-radius: var(--zen-radius);
+  overflow: hidden;
+  box-shadow: var(--zen-shadow);
+  transition: all .3s var(--zen-ease);
+  animation: fadeInUp .6s var(--zen-ease) backwards;
+  position: relative;
+}
+
+.zen-quiz-card:nth-child(1) { animation-delay: .1s; }
+.zen-quiz-card:nth-child(2) { animation-delay: .15s; }
+.zen-quiz-card:nth-child(3) { animation-delay: .2s; }
+.zen-quiz-card:nth-child(4) { animation-delay: .25s; }
+.zen-quiz-card:nth-child(5) { animation-delay: .3s; }
+.zen-quiz-card:nth-child(6) { animation-delay: .35s; }
+
+.zen-quiz-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--zen-shadow-xl);
+}
+
+.zen-quiz-card-media {
+  aspect-ratio: 1;
+  background: linear-gradient(135deg, #f5f5f5, #e8e8e8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.zen-quiz-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .6s var(--zen-ease);
+}
+
+.zen-quiz-card:hover .zen-quiz-card-media img {
+  transform: scale(1.1);
+}
+
+.zen-quiz-card-body {
+  padding: 20px;
+}
+
+.zen-quiz-card-title {
+  margin: 0 0 12px;
+  color: var(--zen-ink);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.zen-quiz-price {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.zen-quiz-price .now {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--zen-ink);
+}
+
+.zen-quiz-price .tax {
+  color: var(--zen-muted);
+  font-size: 12px;
+}
+
+/* Premium quantity selector */
+.zen-qty {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border: 2px solid var(--zen-border);
+  border-radius: 12px;
+  padding: 4px;
+  background: white;
+  margin-bottom: 16px;
+}
+
+.zen-qty button {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: none;
+  background: var(--zen-bg);
+  color: var(--zen-ink);
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.zen-qty button:hover:not(:disabled) {
+  background: var(--zen-primary);
+  color: white;
+  transform: scale(1.1);
+}
+
+.zen-qty button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.zen-qty input {
+  width: 50px;
+  text-align: center;
+  border: none;
+  background: transparent;
+  color: var(--zen-ink);
+  font-size: 18px;
+  font-weight: 700;
+  padding: 0;
+}
+
+.zen-qty input::-webkit-outer-spin-button,
+.zen-qty input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.zen-qty input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* Card actions */
+.zen-quiz-card-actions {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+
+.zen-quiz-btn {
+  background: var(--zen-cta);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.zen-quiz-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,.3);
+  transform: translate(-50%, -50%);
+  transition: width .6s, height .6s;
+}
+
+.zen-quiz-btn:hover::after {
+  width: 200px;
+  height: 200px;
+}
+
+.zen-quiz-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(87,162,123,.3);
+}
+
+.zen-quiz-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.zen-quiz-remove {
+  background: white;
+  color: var(--zen-ink);
+  border: 2px solid var(--zen-border);
+  padding: 12px;
+  width: auto;
+}
+
+.zen-quiz-remove:hover {
+  background: #fee;
+  border-color: #f87171;
+  color: #dc2626;
+}
+
+/* Trust elements */
+.zen-results-trust {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.zen-trust-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--zen-muted);
+}
+
+.zen-trust-item svg {
+  width: 20px;
+  height: 20px;
+  color: var(--zen-primary);
+}
+
+/* Results footer */
+.zen-results-footer {
+  background: rgba(255,255,255,.98);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: var(--zen-radius-lg);
+  padding: 32px;
+  box-shadow: var(--zen-shadow-lg);
+}
+
+.zen-results-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.zen-results-total {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.zen-results-total .label {
+  color: var(--zen-muted);
+  font-size: 14px;
+}
+
+.zen-results-total strong {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--zen-ink);
+}
+
+.zen-save-badge {
+  background: linear-gradient(135deg, #F4D03F, #F7DC6F);
+  color: black;
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.zen-shipping-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--zen-muted);
+  font-size: 14px;
+}
+
+.zen-shipping-info svg {
+  color: var(--zen-primary);
+}
+
+.zen-results-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+/* CTA button */
+.zen-btn--cta {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: linear-gradient(135deg, 
+    var(--zen-cta),
+    color-mix(in oklab, var(--zen-cta) 85%, black));
+  color: white;
+  border: none;
+  border-radius: 16px;
+  padding: 18px 32px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .3s var(--zen-ease);
+  position: relative;
+  overflow: hidden;
+}
+
+.zen-btn--cta::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, 
+    #FFD700, #FFA500, #FF69B4, #00CED1, #FFD700);
+  border-radius: 16px;
+  opacity: 0;
+  z-index: -1;
+  transition: opacity .3s;
+  background-size: 400%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.zen-btn--cta:hover::before {
+  opacity: 1;
+}
+
+.zen-btn--cta:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(87,162,123,.4);
+}
+
+.zen-btn--cta:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.zen-btn-shine {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent,
+    rgba(255,255,255,.4),
+    transparent);
+  animation: shine 3s infinite;
+}
+
+@keyframes shine {
+  0% { left: -100%; }
+  50%, 100% { left: 100%; }
+}
+
+.zen-btn--text {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  color: var(--zen-muted);
+  font-weight: 500;
+  cursor: pointer;
+  padding: 8px;
+  transition: all .3s;
+}
+
+.zen-btn--text:hover {
+  color: var(--zen-ink);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .zen-quiz--aurora {
+    padding: 40px 16px 60px;
+  }
+  
+  .zen-trust-badges {
+    gap: 12px;
+  }
+  
+  .zen-trust-badge {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+  
+  .zen-quiz-title {
+    font-size: 28px;
+  }
+  
+  .zen-quiz-step {
+    padding: 28px 20px;
+  }
+  
+  .zen-quiz-question {
+    font-size: 22px;
+  }
+  
+  .zen-answers--large {
+    grid-template-columns: 1fr;
+  }
+  
+  .zen-answer--premium {
+    padding: 24px 20px;
+  }
+  
+  .zen-answers--tags {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .zen-answers--goals,
+  .zen-answers--body {
+    grid-template-columns: 1fr;
+  }
+  
+  .zen-quiz-nav {
+    flex-direction: column;
+  }
+  
+  .zen-quiz-nav button {
+    width: 100%;
+  }
+  
+  .zen-results-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .zen-results-footer {
+    padding: 24px 20px;
+  }
+  
+  .zen-results-summary {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .zen-results-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .zen-btn--cta {
+    width: 100%;
+  }
+  
+}
+
+/* iOS specific fixes */
+@supports (-webkit-touch-callout: none) {
+  .zen-quiz-answer,
+  .zen-quiz-btn,
+  button {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  input[type="number"] {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+  
+  .zen-quiz-step {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+}
+
+/* Android specific fixes */
+@media (hover: none) and (pointer: coarse) {
+  .zen-quiz-answer:active {
+    transform: scale(0.98);
+  }
+  
+  .zen-btn--premium:active {
+    transform: scale(0.98);
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .zen-quiz-answer {
+    border-width: 3px;
+  }
+  
+  .zen-quiz-answer.is-selected {
+    outline: 3px solid var(--zen-primary);
+    outline-offset: 2px;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Print styles */
+@media print {
+  .zen-quiz--aurora { background: white; }
+  .zen-particles,
+  .zen-quiz-nav { display: none !important; }
+}
+
+/* ===== STYLE STEP — fix quantità + niente animazione on-click ===== */
+
+/* Riquadro numero: impilati numero + dicitura, centrati */
+.zen-style-number{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  line-height: 1;
+}
+
+/* La dicitura "prodotti" come riga sotto al numero (no absolute) */
+.zen-style-number::after{
+  content: 'prodotti';
+  position: static;      /* override del vecchio absolute */
+  bottom: auto; left: auto; transform: none;
+  margin-top: 2px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .3px;
+  opacity: .65;
+  white-space: nowrap;   /* evita l’andare a capo verticale */
+}
+
+/* Hover piacevole come negli altri step */
+.zen-answer--style:hover{
+  transform: translateY(-3px);
+  box-shadow: var(--zen-shadow-lg);
+  border-color: var(--zen-primary);
+}
+
+/* Stato selezionato: evidenza senza animazioni/scale */
+.zen-answer--style.is-selected{
+  background: linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--zen-primary) 10%, white),
+    color-mix(in oklab, var(--zen-primary) 4%,  white)
+  );
+  border-color: var(--zen-primary);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--zen-primary) 12%, transparent),
+              var(--zen-shadow);
+  animation: none !important;
+  transform: none !important;
+}
+
+/* Numero evidenziato ma senza “pop” */
+.zen-answer--style.is-selected .zen-style-number{
+  background: var(--zen-primary);
+  color: #fff;
+  transform: none;
+}
+
+/* Mobile fine-tuning */
+@media (max-width: 480px){
+  .zen-style-number{ width: 52px; height: 52px; }
+  .zen-style-number::after{ font-size: 9px; }
+}
+
+/* ===== UNIFIED ANSWER INTERACTIONS — uguali a Viso/Corpo ===== */
+
+/* 1) Base: stesso hover ovunque */
+.zen-quiz-answer{
+  transition: transform .25s var(--zen-ease),
+              box-shadow .25s var(--zen-ease),
+              border-color .25s var(--zen-ease),
+              background .25s var(--zen-ease);
+}
+.zen-quiz-answer:hover{
+  transform: translateY(-4px);
+  box-shadow: var(--zen-shadow-lg);
+  border-color: var(--zen-primary);
+}
+
+/* 2) Stato selezionato: stesso highlight per tutti (niente pop) */
+.zen-quiz-answer.is-selected{
+  background: linear-gradient(135deg,
+    color-mix(in oklab, var(--zen-primary) 10%, #fff),
+    color-mix(in oklab, var(--zen-primary) 4%,  #fff));
+  border-color: var(--zen-primary);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--zen-primary) 14%, transparent),
+              var(--zen-shadow-lg);
+  transform: none;
+  animation: none;
+}
+
+/* 3) Spegni ogni “saltello” specifico di tipo */
+.zen-answer--premium.is-selected,
+.zen-answer--goal.is-selected,
+.zen-answer--body.is-selected,
+.zen-answer--tag.is-selected,
+.zen-answer--style.is-selected{
+  transform: none !important;
+  animation: none !important;
+}
+
+/* 4) Icone/numero: stesso comportamento ovunque */
+:where(.zen-answer-icon, .zen-style-number){
+  transition: background .25s var(--zen-ease),
+              color .25s var(--zen-ease),
+              transform .25s var(--zen-ease),
+              filter .25s var(--zen-ease);
+}
+.zen-quiz-answer.is-selected :where(.zen-answer-icon, .zen-style-number){
+  background: var(--zen-primary);
+  color: #fff;
+  transform: scale(1.06);
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,.12));
+}
+
+/* Emoji (goal/body): piccolo accento coerente */
+:where(.zen-goal-icon, .zen-body-icon){
+  transition: transform .25s var(--zen-ease), filter .25s var(--zen-ease);
+}
+.zen-quiz-answer.is-selected :where(.zen-goal-icon, .zen-body-icon){
+  transform: scale(1.06);
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,.12));
+}
+
+/* 5) Check delle tag: allinealo al nuovo ring */
+.zen-answer--tag.is-selected .zen-tag-check{
+  box-shadow: 0 0 0 2px #fff,
+              0 0 0 4px color-mix(in oklab, var(--zen-primary) 20%, transparent);
+}
+
+/* 6) Touch: niente “rimbalzo” sul tap */
+@media (hover:none){
+  .zen-quiz-answer:active{ transform: translateY(-2px); }
+}
+
+/* — Opzionale: la velatura diagonale su hover come Viso/Corpo anche su tutte le card —
+.zen-quiz-answer::after{
+  content:'';
+  position:absolute; inset:0; border-radius:inherit;
+  background: linear-gradient(135deg, transparent 40%, rgba(87,162,123,.05));
+  opacity:0; transition: opacity .25s var(--zen-ease);
+}
+.zen-quiz-answer:hover::after{ opacity:1; }
+*/
+
+/* Fix spaziatura bollino quantità ("PRODOTTI") */
+.zen-style-number{
+  /* più respiro ai bordi */
+  padding: 8px 10px;
+  box-sizing: border-box;
+  gap: 3px;              /* spazio tra numero e label */
+  line-height: 1;
+  font-size: 22px;       /* leggermente più piccolo per non toccare i bordi */
+  /* se vuoi ancora più aria aumenta width/height di 2-4px */
+}
+
+.zen-style-number::after{
+  margin-top: 0;         /* già gestito da gap */
+  font-size: 10px;
+  letter-spacing: .4px;
+  opacity: .7;
+}
+
+/* Mobile fine-tuning */
+@media (max-width: 480px){
+  .zen-style-number{
+    padding: 5px 7px;
+    font-size: 20px;
+    gap: 2px;
+  }
+}
+
+/* opzionale */
+.zen-style-number{ width: 60px; height: 60px; }
+@media (max-width:480px){ .zen-style-number{ width:56px; height:56px; } }
+
+/* ===== BODY ANSWERS — check badge + hover/selected ===== */
+.zen-answer--body {
+  position: relative;
+  overflow: hidden;
+  padding-right: 48px; /* spazio per la spunta */
+}
+
+/* hover coerente */
+.zen-answer--body:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--zen-shadow-lg);
+  border-color: var(--zen-primary);
+}
+
+/* stato selezionato */
+.zen-answer--body.is-selected {
+  background: linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--zen-primary) 10%, white),
+    color-mix(in oklab, var(--zen-primary) 4%, white)
+  );
+  border-color: var(--zen-primary);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--zen-primary) 15%, transparent),
+              var(--zen-shadow-lg);
+}
+
+/* spunta in alto a destra */
+.zen-answer--body.is-selected::after {
+  content: '✓';
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--zen-primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* micro feedback sull’icona */
+.zen-answer--body .zen-body-icon {
+  transition: transform .3s var(--zen-bounce), filter .3s var(--zen-ease);
+}
+.zen-answer--body.is-selected .zen-body-icon {
+  transform: scale(1.1) rotate(-3deg);
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,.15));
+}
+
+/* === PATCH dimensioni + intensità icona solar plexus (quiz) === */
+.zen-quiz--aurora .zen-chakra-icon{
+  opacity: .5 !important;             /* leggermente meno opaca */
+  margin: 10px auto 12px;
+}
+
+/* più piccola (come nei testimonials) + stessa animazione */
+.zen-quiz--aurora .zen-chakra-icon .chakra-glyph{
+  width: 26px; 
+  height: 26px;
+  animation: gentle-pulse 4s infinite !important;
+  filter: drop-shadow(0 1px 2px rgba(241,196,15,.22));
+}
+
+/* halo proporzionato alla nuova dimensione */
+.zen-quiz--aurora .zen-chakra-icon::before{
+  width: 40px; 
+  height: 40px;
+  background: radial-gradient(circle, rgba(241,196,15,.1), rgba(241,196,15,0) 60%) !important;
+}
+
+/* divider coerente e più discreto */
+.zen-quiz--aurora .zen-chakra-divider{
+  width: 80px; height: 3px; border-radius: 999px;
+  margin: 6px auto 22px;
+  background: linear-gradient(to right, #F1C40F, #F7DC6F);
+  animation: line-breath 3s ease-in-out infinite;
+}
+
+/* pulsazione morbida (come testimonials) */
+@keyframes gentle-pulse{
+  0%,100% { opacity:.32; transform: scale(1); }
+  50%     { opacity:.52; transform: scale(1.05); }
+}
+
+@keyframes line-breath{
+  0%,100% { width:80px;  opacity:.95; box-shadow:0 0 14px rgba(241,196,15,.26); }
+  50%     { width:110px; opacity:1;    box-shadow:0 0 20px rgba(241,196,15,.32); }
+}
+
+/* un filo più grande da tablet in su, ma sempre sobria */
+@media (min-width: 768px){
+  .zen-quiz--aurora .zen-chakra-icon .chakra-glyph{ width: 28px; height: 28px; }
+  .zen-quiz--aurora .zen-chakra-icon::before{ width: 44px; height: 44px; }
+}
+
+/* Nascondi SOLO l'icona degli step (non il plesso solare) */
+.zen-quiz--aurora .zen-quiz-step .zen-step-icon{
+  display: none !important;
+}
+
+/* (opzionale) un filo di respiro al titolo senza l’icona */
+.zen-quiz--aurora .zen-quiz-step .zen-quiz-question{
+  margin-top: 4px;
+}
+
+/* Icon box + glyph (override giallo premium) */
+.zen-quiz--aurora .zen-answer-icon{
+  width:56px; height:56px; border-radius:16px;
+  display:flex; align-items:center; justify-content:center;
+  color: var(--zen-primary);
+  background: linear-gradient(135deg,
+    color-mix(in oklab, var(--zen-primary) 14%, #fff),
+    color-mix(in oklab, var(--zen-primary) 6%,  #fff));
+  transition: all .3s var(--zen-ease);
+}
+.zen-quiz--aurora .zen-answer--premium.is-selected .zen-answer-icon{
+  background: var(--zen-primary);
+  color:#fff;
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* Glyph monocromatico via mask — usa i link Flaticon */
+.zen-glyph{
+  width:30px; height:30px; display:inline-block;
+  background: currentColor;
+  -webkit-mask: center / contain no-repeat;
+          mask: center / contain no-repeat;
+}
+.zen-glyph--face{
+  -webkit-mask-image: url("https://cdn-icons-png.flaticon.com/512/828/828420.png");
+          mask-image: url("https://cdn-icons-png.flaticon.com/512/828/828420.png");
+}
+.zen-glyph--body{
+  -webkit-mask-image: url("https://cdn-icons-png.flaticon.com/512/4097/4097012.png");
+          mask-image: url("https://cdn-icons-png.flaticon.com/512/4097/4097012.png");
+}
+
+/* === ICON VISIBILITY BOOST === */
+:root{
+  --zen-icon:     #B67A00; /* tratto su card bianca (più scuro del primario) */
+  --zen-icon-on:  #3F2E0A; /* tratto su tile gialla */
+}
+
+/* tile icona: leggero fondo per far staccare anche su card bianca */
+.zen-answer-icon{
+  background: radial-gradient(ellipse at 50% 40%,
+              rgba(233,185,73,.14), rgba(233,185,73,.05) 60%, transparent 65%);
+  color: var(--zen-icon); /* colore del glifo */
+}
+
+/* quando la card è selezionata: il tratto diventa scuro, non bianco */
+.zen-answer--premium.is-selected .zen-answer-icon{
+  background: var(--zen-primary);
+  color: var(--zen-icon-on) !important;
+}
+
+/* glifo un po’ più grande + alone per “ispessire” le linee */
+.zen-glyph{ 
+  width: 34px; height: 34px;
+  /* alone scuro su sfondo chiaro */
+  filter: drop-shadow(0 0 1px rgba(63,46,10,.30))
+          drop-shadow(0 1px 1px rgba(63,46,10,.18));
+}
+
+/* su tile gialla: alone chiaro per staccare ancora di più */
+.zen-answer--premium.is-selected .zen-glyph{
+  filter: drop-shadow(0 0 1px rgba(255,255,255,.85))
+          drop-shadow(0 1px 1px rgba(255,255,255,.65));
+}
+
+/* opzionale: micro boost all’hover */
+.zen-answer--premium:hover .zen-glyph{
+  filter: drop-shadow(0 0 2px rgba(63,46,10,.35))
+          drop-shadow(0 2px 2px rgba(63,46,10,.25));
+}
+
+/* Stop rotazione icona nelle card Viso/Corpo */
+.zen-quiz--aurora .zen-answer--premium.is-selected .zen-answer-icon{
+  transform: scale(1.06) !important;   /* niente rotate */
+}
+
+/* (opzionale) togli anche il micro-tilt dalle altre icone tag/goal/body */
+.zen-quiz--aurora .zen-answer--goal.is-selected .zen-goal-icon,
+.zen-quiz--aurora .zen-answer--body.is-selected .zen-body-icon{
+  transform: scale(1.06) !important;   /* rimuove rotate(-3deg) */
+}
+
+/* Se la vuoi completamente statica (senza neppure lo scale) usa questo al posto del primo: */
+/* .zen-quiz--aurora .zen-answer--premium.is-selected .zen-answer-icon{ transform: none !important; } */
+
+/* === EYES STEP — compact answers === */
+.zen-quiz-step[data-step="eyes"] .zen-quiz-answers.zen-answers--large{
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* da 250 -> 180 */
+  gap: 12px;                                                  /* meno spazio */
+}
+
+.zen-quiz-step[data-step="eyes"] .zen-quiz-answer{
+  padding: 14px 16px;          /* da 20px -> 14/16 */
+  border-radius: 12px;         /* un filo meno arrotondato */
+  min-height: 44px;            /* touch target a11y */
+}
+
+.zen-quiz-step[data-step="eyes"] .zen-answer-text{
+  font-size: 16px;             /* da 20px -> 16 */
+  font-weight: 600;
+}
+
+/* micro-hover più sobrio */
+.zen-quiz-step[data-step="eyes"] .zen-quiz-answer:hover{
+  transform: translateY(-2px);
+  box-shadow: var(--zen-shadow);
+}
+
+/* Mobile fine-tuning */
+@media (max-width: 480px){
+  .zen-quiz-step[data-step="eyes"] .zen-quiz-answer{ padding: 12px 14px; }
+  .zen-quiz-step[data-step="eyes"] .zen-answer-text{ font-size: 15px; }
+}
+
+/* ——— Rimuovi visualmente i “minuti” nello step Style ——— */
+.zen-style-time{ display:none !important; }
+
+/* Le card Style tornano a 1 colonna (solo testo/info) */
+.zen-answers--style .zen-answer--style{
+  grid-template-columns: 1fr !important;
+}
+
+/* Step prodotti (anteprima) */
+.zen-answers--products{
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.zen-answer--product{
+  display:flex; flex-direction:column; align-items:center; text-align:center;
+  padding:14px 16px;
+}
+
+.zen-prod-thumb{
+  width:100%; aspect-ratio:1; background: var(--zen-media);
+  border-radius:12px; overflow:hidden; display:flex; align-items:center; justify-content:center;
+  margin-bottom:12px;
+}
+.zen-prod-thumb img{ width:100%; height:100%; object-fit:contain; }
+
+.zen-prod-title{ font-weight:600; font-size:14px; color:var(--zen-ink); }
+
+/* === Fix card singola (es. "Vuoi detergente intimo?") === */
+
+/* non farla allargare: centrala e limita la larghezza */
+.zen-quiz-answers .zen-quiz-answer:only-child{
+  max-width: 360px;      /* stessa taglia delle altre */
+  justify-self: center;  /* centra dentro la grid */
+  width: 100%;
+}
+
+/* media della card: usa lo stesso box quadrato delle altre */
+.zen-quiz-answers .zen-quiz-answer:only-child .zen-quiz-card-media,
+.zen-quiz-answers .zen-quiz-answer:only-child .zen-choice-media{
+  aspect-ratio: 1 / 1;
+  border-radius: var(--zen-radius);
+  overflow: hidden;
+}
+
+/* l’immagine riempie bene il box */
+.zen-quiz-answers .zen-quiz-answer:only-child img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* opzionale: se vuoi forzare la stessa griglia anche nello step intimo */
+.zen-quiz-step[data-step="body-intimo"] .zen-quiz-answers{
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  justify-items: center;
+}
+
+/* === RISULTATI: evita mega-card su desktop === */
+.zen-results-grid{
+  justify-items: center;     /* centra le card nella griglia */
+}
+
+/* card con dimensione massima uniforme (desktop) */
+@media (min-width: 992px){
+  .zen-results-grid .zen-quiz-card{
+    width: 100%;
+    max-width: 360px;        /* puoi usare 340–380 a gusto */
+    justify-self: center;
+  }
+
+  /* se c'è una sola card, resta compatta e centrata */
+  .zen-results-grid .zen-quiz-card:only-child{
+    max-width: 380px;
+  }
+}
+
+/* media sempre quadrato e coperto */
+.zen-quiz-card-media{
+  aspect-ratio: 1 / 1;
+  border-radius: var(--zen-radius);
+  overflow: hidden;
+}
+.zen-quiz-card-media img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* === Regole sconto: nota e stato === */
+.zen-offer-rule{
+  display:flex; align-items:center; gap:10px;
+  justify-content:center;
+  margin: 12px auto 0;
+  padding: 8px 12px;
+  border: 1.5px dashed color-mix(in oklab, var(--zen-primary) 45%, white);
+  border-radius: 999px;
+  font-size: 13px;
+  color: var(--zen-ink);
+  background: rgba(255,255,255,.8);
+}
+.zen-offer-rule .status{
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+.zen-offer-rule .status.is-active{
+  background: #16a34a15; color: #15803d; border: 1px solid #16a34a55;
+}
+.zen-offer-rule .status.is-inactive{
+  background: #f59e0b15; color: #b45309; border: 1px solid #f59e0b55;
+}
+
+/* Step Style: nascondi completamente il box numero/prodotti */
+.zen-answers--style .zen-style-number { display: none !important; }
+
+/* Card a 1 colonna, solo testo + badge “Consigliato” */
+.zen-answers--style .zen-answer--style{
+  grid-template-columns: 1fr !important;
+  align-items: flex-start;
+  padding: 20px 22px;
+}
+
+/* Tipografia più “catchy” per i sottotitoli */
+.zen-answers--style .zen-style-info small{
+  font-size: 15px;
+  line-height: 1.35;
+}
+
+{% endstyle %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const root = document.querySelector('#zen-rituale-finder[data-section-id="{{ section.id }}"]');
+  if (!root) return;
+
+  /* ========== ENHANCED PRODUCT CATALOG ========== */
+  const P = {
+    face: {
+      cleanser: { 
+        gentle: 'latte-detergente-idratante-lenitivo-250ml', 
+        purifying: 'latte-detergente-purificante-250ml' 
+      },
+      toner: { 
+        hydrating: 'tonico-viso-idratante-aloe-goji-fico-india-250ml', 
+        purifying: 'tonico-viso-purificante-250ml' 
+      },
+      serum: { 
+        detox: 'siero-booster-effetto-detox-purificante-30ml', 
+        vitaminC: 'siero-viso-vitamina-c-30ml', 
+        antiage: 'siero-viso-antiage-rigenerante-30ml', 
+        antiageHydra: 'siero-viso-intensivo-idratante-antiage-30ml' 
+      },
+      cream: { 
+        purifying: 'crema-viso-purificante-50ml', 
+        opacizzante: 'crema-viso-opacizzante-pori-dilatati-50ml', 
+        vitaminC: 'crema-viso-vitamina-c-50ml', 
+        lenitiva: 'crema-viso-lenitiva-50ml', 
+        ialuronico: 'crema-viso-acido-ialuronico-50ml', 
+        rimpolpante: 'crema-viso-antiage-rimpolpante-50ml', 
+        notte: 'crema-viso-anti-age-rigenerante-notte-50ml' 
+      },
+      mask: { 
+        detox: 'maschera-viso-detox-young-100ml', 
+        vitaminC: 'maschera-viso-vitamina-c-100ml', 
+        lift: 'maschera-viso-hidra-lift-100ml' 
+      },
+      scrub: 'scrub-viso-esfoliante-250-ml',
+      eye: { 
+  zafferano: 'contorno-occhi-effetto-distensivo',
+  collagene: 'contorno-occhi-aloe-vera-bio-collagene-vegetale-30ml'
+}
+
+    },
+    body: {
+      shower: { 
+        mirto: 'bagnoschiuma-cremoso-mirto-250ml', 
+        agrumi: 'bagnoschiuma-cremoso-agrumi-250ml' 
+      },
+      scrub: { 
+        mirto: 'talasso-scrub-al-mirto-300ml', 
+        agrumi: 'talasso-scrub-agli-agrumi-300ml' 
+      },
+      lotion: { 
+        lenitivo: 'latte-corpo-idratante-lenitivo-250ml', 
+        esotico: 'latte-corpo-idratante-essenza-esotica-250ml' 
+      },
+      cream: { 
+        drenante: 'crema-corpo-drenacomplex-250-ml', 
+      },
+      deo: { 
+        talco: 'deodorante-spray-naturale-allume-di-rocca-talco-100ml', 
+        the: 'deodorante-spray-naturale-allume-di-rocca-the-verde-100ml' 
+      },
+      intimo: 'detergente-intimo-rinfrescante-lenitivo-100ml',
+      lip: { 
+        ialuronico: 'lip-care-acido-ialuronico-45ml', 
+        spf: 'lip-care-spf-50-4-5ml', 
+        argan: 'lip-care-olio-di-argan-45ml', 
+        propoli: 'lip-care-propoli-miele-4-5ml' 
+      }
+    }
+  };
+
+  /* ========== STATE MANAGEMENT ========== */
+  const state = {
+  answers: {
+    area: null,
+    skin: new Set(),
+    pores: null,   // NEW: 'si' | 'no'
+    eyes: null,    // già introdotto
+    body: new Set(),
+    style: null
+  },
+  seq: ['1', '2-body', 'style'],
+  index: 0,
+  startTime: Date.now()
+};
+
+  const SKIN_MAX = 2;
+
+  /* ========== DOM ELEMENTS ========== */
+  const stepsWrap = root.querySelector('.zen-quiz-steps');
+  const resultsWrap = root.querySelector('.zen-quiz-results');
+  const progressFill = root.querySelector('.zen-quiz-progress-fill');
+  const stepText = root.querySelector('.js-step');
+  const totalText = root.querySelector('.js-total');
+  const resultsGrid = root.querySelector('.js-results-grid');
+  const totalPriceEl = root.querySelector('.js-total-price');
+  const addAllBtn = root.querySelector('.zen-quiz-add-all');
+  const timerEl = root.querySelector('.js-timer');
+  const usersEl = root.querySelector('.js-users');
+
+  // === Bundle nudge (tooltip) — GLOBALE ===
+const BUNDLE_TIP_KEY = 'zen_seen_bundle_tip';
+function maybeNudgeBundle(anchorBtn){
+  if (!anchorBtn) return;
+  if (localStorage.getItem(BUNDLE_TIP_KEY) === '1') return;
+  if (localStorage.getItem('zen_used_add_all') === '1') return;
+
+  const tip = document.createElement('div');
+  tip.className = 'zen-tip';
+  tip.setAttribute('role','status');
+  tip.innerHTML = DISCOUNT_RULE_TEXT;
+  anchorBtn.appendChild(tip);
+
+  requestAnimationFrame(() => tip.classList.add('is-in'));
+  addAllBtn?.classList.add('zen-tip-highlight');
+
+  setTimeout(() => {
+    tip.classList.remove('is-in');
+    setTimeout(() => tip.remove(), 200);
+    addAllBtn?.classList.remove('zen-tip-highlight');
+  }, 3500);
+
+  localStorage.setItem(BUNDLE_TIP_KEY, '1');
+}
+
+// segna che l’utente ha usato “Aggiungi tutto”
+addAllBtn?.addEventListener('click', () => {
+  localStorage.setItem('zen_used_add_all', '1');
+}, { once: true });
+
+  /* ========== OFFER/DISCOUNT CONSTANTS ========== */
+  // === OFFER/DISCOUNT CONSTANTS ===
+const OFFER_PCT = 0.15;
+const DISCOUNT_CODE = 'RITUALE15';
+const DISCOUNT_DURATION_MIN = 10;
+const APPLY_DISCOUNT_ON_ADD = true;
+
+// NEW: testo regola sconto (si aggiorna in base all'area)
+let DISCOUNT_RULE_TEXT = 'Il -15% si attiva quando scegli “Aggiungi tutto”.';
+
+// NEW: mappa handle -> categoria corpo (per copertura sezioni)
+const BODY_HANDLE_TO_CAT = (() => {
+  const map = {};
+  // doccia/bagnoschiuma
+  Object.values(P.body.shower || {}).forEach(h => map[h] = 'doccia');
+  // scrub
+  Object.values(P.body.scrub || {}).forEach(h => map[h] = 'scrub');
+  // idratazione (latte/crema)
+  Object.values(P.body.lotion || {}).forEach(h => map[h] = 'idratazione');
+  // deodoranti
+  Object.values(P.body.deo || {}).forEach(h => map[h] = 'deodoranti');
+  // opzionali
+  if (P.body.intimo) map[P.body.intimo] = 'intimo';
+  Object.values(P.body.lip || {}).forEach(h => map[h] = 'balsamo');
+  return map;
+})();
+
+// NEW: sezioni richieste per avere il -15% sul corpo
+const BODY_REQUIRED_SECTIONS = ['doccia','scrub','idratazione','deodoranti'];
+
+// NEW: memorizziamo la “baseline” dei risultati (viso)
+state.requiredHandles = [];
+state.requiredCount = 0;
+
+  /* ========== UTILITIES ========== */
+  const money = (c) => new Intl.NumberFormat('it-IT', {
+    style: 'currency',
+    currency: 'EUR'
+  }).format((c || 0) / 100);
+
+  const bySel = (sel) => root.querySelector(sel);
+
+  function updatePoresVisibility() {
+  const stepFace = root.querySelector('.zen-quiz-step[data-step="2-face"]');
+  if (!stepFace) return;
+  const box = stepFace.querySelector('.zen-subq-pores');
+  if (!box) return;
+
+  const oily = state.answers.skin.has('oily'); // Mista/Grassa
+  box.hidden = !oily;
+  box.setAttribute('aria-hidden', String(!oily));
+
+  if (!oily) {
+    state.answers.pores = null;
+    stepFace.querySelectorAll('.zen-quiz-answer[data-key="pores"]').forEach(b=>{
+      b.classList.remove('is-selected');
+      b.setAttribute('aria-pressed','false');
+    });
+  }
+}
+
+function validateFaceStepCTA() {
+  const stepFace = root.querySelector('.zen-quiz-step[data-step="2-face"]');
+  if (!stepFace) return;
+  const cta = stepFace.querySelector('.zen-quiz-next');
+  if (!cta) return;
+
+  const skinCount  = stepFace.querySelectorAll('.zen-quiz-answer[data-key="skin"].is-selected').length;
+  const needsPores = state.answers.skin.has('oily');  // serve la sotto-domanda solo se Mista/Grassa
+  const poresChosen = !!state.answers.pores;
+
+  cta.disabled = !(skinCount > 0 && (!needsPores || poresChosen));
+}
+
+function validateStyleCTA(){
+  const step = root.querySelector('.zen-quiz-step[data-step="style"]');
+  if (!step) return;
+  const cta = step.querySelector('.zen-quiz-show-results');
+  if (!cta) return;
+  const picked = !!step.querySelector('.zen-quiz-answer[data-key="style"].is-selected');
+  cta.disabled = !picked;
+}
+
+  // Tooltip persistente su hover/focus dei pulsanti "Aggiungi"
+function attachHoverTip(btn){
+  let hideT;
+  let tip = btn.querySelector('.zen-tip');
+  if(!tip){
+    tip = document.createElement('div');
+    tip.className = 'zen-tip';
+    tip.innerHTML = DISCOUNT_RULE_TEXT;
+    btn.appendChild(tip);
+  }
+
+  const show = () => { clearTimeout(hideT); tip.classList.add('is-in'); };
+  const hide = (delay = 1500) => {
+    clearTimeout(hideT);
+    hideT = setTimeout(() => tip.classList.remove('is-in'), delay);
+  };
+
+  ['mouseenter','focus'].forEach(ev => btn.addEventListener(ev, show));
+  ['mouseleave','blur'].forEach(ev => btn.addEventListener(ev, () => hide(1500)));
+
+  // 👉 chiudi SUBITO quando cliccano "Aggiungi"
+  btn.addEventListener('click', () => hide(0));
+
+  // touch: mostra e auto-nascondi
+  btn.addEventListener('touchstart', () => { show(); hide(1500); }, { passive:true });
+}
+
+// Messaggio soft dopo aggiunta singolo prodotto
+function showPostAddNudge(card){
+  let box = card.querySelector('.zen-bundle-hint');
+  if(!box){
+    box = document.createElement('div');
+    box.className = 'zen-bundle-hint';
+    box.innerHTML = `
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+        <path d="M12 8v4m0 4h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <span>Il <strong>-15%</strong> si applica al <em>set completo</em>. 
+        <button class="zen-link">Vedi “Aggiungi tutto”</button>
+      </span>`;
+    card.querySelector('.zen-quiz-card-body').appendChild(box);
+    box.querySelector('.zen-link')?.addEventListener('click', () => {
+      const cta = document.querySelector('.zen-quiz-add-all');
+      cta?.scrollIntoView({ behavior:'smooth', block:'center' });
+      cta?.classList.add('zen-tip-highlight');
+      setTimeout(() => cta?.classList.remove('zen-tip-highlight'), 1500);
+    }, { once:true });
+  }
+  box.classList.add('is-in');
+  setTimeout(() => box.classList.remove('is-in'), 3800);
+}
+
+  /* ========== HAPTIC FEEDBACK (Mobile) ========== */
+  function haptic(type = 'light') {
+    if ('vibrate' in navigator) {
+      const patterns = {
+        light: 10,
+        medium: 20,
+        heavy: 30,
+        success: [10, 50, 10]
+      };
+      navigator.vibrate(patterns[type] || 10);
+    }
+  }
+
+  /* ========== CONFETTI ANIMATION ========== */
+  function triggerConfetti() {
+    const container = root.querySelector('.zen-results-confetti');
+    if (!container) return;
+    
+    const colors = ['#FFD700', '#FF69B4', '#00CED1', '#98FB98', '#DDA0DD'];
+    const confettiCount = 50;
+    
+    for (let i = 0; i < confettiCount; i++) {
+      const confetti = document.createElement('div');
+      confetti.style.cssText = `
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background: ${colors[Math.floor(Math.random() * colors.length)]};
+        left: ${Math.random() * 100}%;
+        top: -10px;
+        opacity: ${Math.random() * 0.5 + 0.5};
+        transform: rotate(${Math.random() * 360}deg);
+        animation: confettiFall ${Math.random() * 3 + 2}s linear;
+      `;
+      container.appendChild(confetti);
+      
+      setTimeout(() => confetti.remove(), 5000);
+    }
+  }
+
+  /* ========== LIVE USERS SIMULATION ========== */
+  function updateLiveUsers() {
+    if (!usersEl) return;
+    const users = Math.floor(5 + Math.random() * 11); // 5..15
+    usersEl.textContent = users;
+  }
+  
+  setInterval(updateLiveUsers, 30000);
+
+  /* ========== COUNTDOWN TIMER ========== */
+  function updateTimer() {
+  if (!timerEl) return;
+
+  // reset programmato dopo l'add-to-cart (flag)
+  if (localStorage.getItem('zen_offer_should_reset') === '1') {
+    const fresh = Date.now() + DISCOUNT_DURATION_MIN * 60 * 1000;
+    localStorage.setItem('zen_offer_end', String(fresh));
+    localStorage.removeItem('zen_offer_should_reset');
+  }
+
+  let endTime = Number(localStorage.getItem('zen_offer_end') || 0);
+  if (!endTime) {
+    endTime = Date.now() + DISCOUNT_DURATION_MIN * 60 * 1000;
+    localStorage.setItem('zen_offer_end', String(endTime));
+  }
+
+  const timerLabel = root.querySelector('.js-timer-label');
+
+  const tick = () => {
+    const remaining = Math.max(0, endTime - Date.now());
+    const minutes = Math.floor(remaining / 60000);
+    const seconds = Math.floor((remaining % 60000) / 1000);
+
+    timerEl.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+    if (remaining <= 0) {
+      if (timerLabel) timerLabel.textContent = 'Scaduto';
+      timerEl.textContent = '0:00';
+      return; // stop
+    }
+
+    if (timerLabel && timerLabel.textContent !== 'Scade tra') {
+      timerLabel.textContent = 'Scade tra';
+    }
+    setTimeout(tick, 1000);
+  };
+
+  tick();
+}
+
+  /* ========== FLOW CONTROL ========== */
+  function setSequence() {
+  state.seq = (state.answers.area === 'viso')
+    ? ['1', '2-face', 'eyes', 'style']
+    : ['1', '2-body-wash', '2-body-scrub', '2-body-hydrate', '2-body-deo', '2-body-intimo', '2-body-lip'];
+  state.index = 0;
+  totalText.textContent = state.seq.length;
+  updateProgress();
+}
+
+if (state.answers.area === 'corpo') renderAllBodySteps();
+
+  function showStepAt(i) {
+  state.index = i;
+  const id = state.seq[i];
+  const target = bySel(`.zen-quiz-step[data-step="${id}"]`);
+
+  // Step mancante: evita schermata vuota
+  if (!target) {
+    if (id === 'style') return showResults();  // dopo "eyes" vai ai risultati
+    if (i < state.seq.length - 1) return showStepAt(i + 1);
+    return showResults();
+  }
+
+  if (id === 'style') validateStyleCTA();
+  if (id === '2-face') { updatePoresVisibility(); validateFaceStepCTA(); }
+
+  // (resto della funzione invariato)
+  root.querySelectorAll('.zen-quiz-step').forEach(s => {
+    s.hidden = s !== target;
+    s.classList.toggle('is-active', s === target);
+  });
+
+  stepsWrap.hidden = false;
+  resultsWrap.hidden = true;
+  updateProgress();
+
+  const next = target.querySelector('.zen-quiz-next, .zen-quiz-show-results');
+  const allowSkip = target.hasAttribute('data-allow-skip');
+  if (id !== '2-face' && next) {
+    next.disabled = allowSkip ? false : !target.querySelector('.zen-quiz-answer.is-selected');
+  }
+}
+    
+    // Scroll to top smoothly
+    //window.scrollTo({ top: root.offsetTop - 100, behavior: 'smooth' });
+
+  function updateProgress() {
+    const progress = (state.index / state.seq.length) * 100;
+    stepText.textContent = Math.min(state.index + 1, state.seq.length);
+    progressFill.style.width = progress + '%';
+  }
+
+  function goNext() {
+    if (state.index < state.seq.length - 1) {
+      haptic('light');
+      showStepAt(state.index + 1);
+    }
+  }
+
+  function goPrev() {
+    if (state.index > 0) {
+      haptic('light');
+      showStepAt(state.index - 1);
+    }
+  }
+
+  /* ========== ANSWER HANDLING ========== */
+  // CLICK SULLE CARD DEL QUIZ
+stepsWrap.addEventListener('click', (e) => {
+  const btn  = e.target.closest('.zen-quiz-answer');
+  if (!btn) return;
+
+  const step = btn.closest('.zen-quiz-step');
+  const key  = btn.dataset.key;
+  const val  = btn.dataset.val;
+  if (!key || !val) return;
+
+  haptic('light');
+
+  if (btn.dataset.multi === 'true') {
+    // --- scelte MULTIPLE (es. skin, goals, body) ---
+    const set = state.answers[key] instanceof Set ? state.answers[key] : new Set();
+
+    // limite max: al massimo 2 tipi di pelle
+    if (key === 'skin' && !set.has(val) && set.size >= SKIN_MAX) {
+      btn.classList.add('zen-shake');
+      setTimeout(() => btn.classList.remove('zen-shake'), 250);
+      return;
+    }
+
+    if (set.has(val)) {
+      set.delete(val);
+      btn.classList.remove('is-selected');
+      btn.setAttribute('aria-pressed', 'false');
+    } else {
+      set.add(val);
+      btn.classList.add('is-selected');
+      btn.setAttribute('aria-pressed', 'true');
+    }
+
+    state.answers[key] = set;
+
+    if (key === 'style') validateStyleCTA();
+
+  } else {
+    // --- scelte SINGOLE (es. area, style) ---
+    step.querySelectorAll(`.zen-quiz-answer[data-key="${key}"]`).forEach(b => {
+      b.classList.remove('is-selected');
+      b.setAttribute('aria-pressed', 'false');
+    });
+    btn.classList.add('is-selected');
+    btn.setAttribute('aria-pressed', 'true');
+    state.answers[key] = val;
+
+    // Se l'utente sceglie Viso/Corpo, aggiorna la sequenza degli step
+    if (key === 'area') setSequence();
+  }
+
+  // abilita/gestisci CTA dello step corrente
+const cta = step.querySelector('.zen-quiz-next, .zen-quiz-show-results');
+
+// NEW: se sto toccando pelle o pori, aggiorno subito visibilità e regole CTA
+if (key === 'skin' || key === 'pores') {
+  updatePoresVisibility();
+  validateFaceStepCTA();
+}
+
+// Se è lo step "2-face" uso la validazione dedicata (non il check generico)
+if (step.dataset.step === '2-face') {
+  validateFaceStepCTA();
+} else if (cta) {
+  const allowSkip = step.hasAttribute('data-allow-skip');
+  cta.disabled = allowSkip ? false : !step.querySelector('.zen-quiz-answer.is-selected');
+}
+});
+
+  /* ========== NAVIGATION ========== */
+  root.querySelectorAll('.zen-quiz-next').forEach(b => 
+    b.addEventListener('click', goNext)
+  );
+  
+  root.querySelectorAll('.zen-quiz-prev').forEach(b => 
+    b.addEventListener('click', goPrev)
+  );
+
+  // --- CLICK RISULTATI: versione robusta ---
+async function showResults(){
+  haptic('success');
+
+  const plan = composeHandles();     // { list: [...], error? }
+  if (plan?.error) {
+    showSkeleton(1);
+    resultsGrid.innerHTML = `
+      <div class="zen-empty-state"><p>${plan.error}</p></div>
+    `;
+    stepsWrap.hidden = true;
+    resultsWrap.hidden = false;
+    return;
+  }
+  const handles = plan.list || [];
+  showSkeleton(handles.length);
+
+  // baseline per le regole sconto
+  if (state.answers.area === 'viso') {
+    state.requiredHandles = handles.slice();
+    state.requiredCount   = handles.length;
+    DISCOUNT_RULE_TEXT = 'Il <strong>-15%</strong> si attiva solo mantenendo <em>tutti i prodotti</em> del rituale e usando “Aggiungi tutto”.';
+  } else {
+    state.requiredHandles = [];
+    state.requiredCount   = 0;
+    DISCOUNT_RULE_TEXT = 'Il <strong>-15%</strong> si attiva se scegli <em>almeno un prodotto per ogni sezione</em> e poi “Aggiungi tutto”.';
+  }
+
+  const completionTime = Math.round((Date.now() - state.startTime) / 1000);
+  console.log(`Quiz completed in ${completionTime} seconds`);
+
+  await buildResults(handles);
+
+  progressFill.style.width = '100%';
+  stepsWrap.hidden = true;
+  resultsWrap.hidden = false;
+
+  injectOfferRuleNote();   // NEW: mostra nota “attivo/non attivo”
+  updateOfferEligibility(); // NEW: calcola stato iniziale
+
+  triggerConfetti();
+  updateTimer();
+
+  setTimeout(() => {
+    resultsWrap.scrollIntoView({ behavior:'smooth', block:'start' });
+  }, 100);
+}
+
+// bind diretto (se il bottone esiste)
+const resBtn = bySel('.zen-quiz-show-results');
+if (resBtn) {
+  resBtn.addEventListener('click', () => {
+    if (!resBtn.disabled) showResults();
+  });
+}
+// delega (copre Safari/iOS e casi strani)
+root.addEventListener('click', (e) => {
+  const b = e.target.closest('.zen-quiz-show-results');
+  if (b && !b.disabled) showResults();
+});
+
+  /* ========== RESTART ========== */
+  bySel('.zen-quiz-restart').addEventListener('click', () => {
+    haptic('light');
+    
+    // Reset state
+    state.answers = { 
+  area: null,
+  // VISO
+  skin: new Set(),
+  pores: null,
+  eyes: null,
+  style: null,
+  // CORPO (nuovo)
+  body_wash:   new Set(),
+  body_scrub:  new Set(),
+  body_hydrate:new Set(),
+  body_deo:    new Set(),
+  body_intimo: new Set(),
+  body_lip:    new Set()
+};
+    state.seq = ['1', '2-body', 'style'];
+    state.index = 0;
+    state.startTime = Date.now();
+    
+    // Reset UI
+    root.querySelectorAll('.zen-quiz-answer').forEach(b => {
+      b.classList.remove('is-selected');
+      b.setAttribute('aria-pressed', 'false');
+    });
+    
+    addAllBtn.disabled = true;
+    resultsGrid.innerHTML = '';
+    totalPriceEl.textContent = '—';
+    totalText.textContent = state.seq.length;
+    
+    showStepAt(0);
+  });
+
+  // === NUOVA composeHandles — logica “bibbia” ===
+function composeHandles() {
+  const dedup = arr => arr.filter((h,i,a)=>h && a.indexOf(h)===i);
+  const style = state.answers.style || 'essenziale';
+
+  // ===== CORPO: invariato =====
+  // ===== CORPO: usa le selezioni degli step =====
+if (state.answers.area === 'corpo') {
+  const A = state.answers;
+  const list = [
+    ...Array.from(A.body_wash || []),
+    ...Array.from(A.body_scrub || []),
+    ...Array.from(A.body_hydrate || []),
+    ...Array.from(A.body_deo || []),
+    ...Array.from(A.body_intimo || []),
+    ...Array.from(A.body_lip || [])
+  ];
+  return { list: [...new Set(list.filter(Boolean))] };
+}
+
+  // ===== VISO: nuova mappatura =====
+  const skin  = state.answers.skin || new Set();    // 'dry','sensibile','oily','rughe','asfittica'
+  const pores = state.answers.pores;                // 'si' | 'no' | null
+  const has = k => skin.has(k);
+
+  const dry  = has('dry');
+  const sens = has('sensibile');
+  const oily = has('oily');
+  const rug  = has('rughe');
+  const asf  = has('asfittica');
+
+  let plan = null;
+
+  // -------- SCELTA SINGOLA --------
+  if (skin.size === 1) {
+    // SOLO secca/disidratata/sensibile
+    if (dry || sens) {
+      plan = {
+        cleanser: P.face.cleanser.gentle,
+        toner:    P.face.toner.hydrating,
+        serum:    P.face.serum.antiageHydra,   // idratante lenitivo
+        cream:    P.face.cream.lenitiva,
+        mask:     P.face.mask.lift,
+        night:    false
+      };
+    }
+    // SOLO grassa/mista con pori dilatati
+    else if (oily && pores === 'si') {
+      plan = {
+        cleanser: P.face.cleanser.purifying,
+        toner:    P.face.toner.purifying,
+        serum:    P.face.serum.detox,
+        cream:    P.face.cream.opacizzante,    // minimizzante
+        mask:     P.face.mask.detox,
+        night:    false
+      };
+    }
+    // SOLO grassa/mista senza pori dilatati
+    else if (oily && (pores === 'no' || pores == null)) {
+      plan = {
+        cleanser: P.face.cleanser.purifying,
+        toner:    P.face.toner.purifying,
+        serum:    P.face.serum.detox,
+        cream:    P.face.cream.purifying,
+        mask:     P.face.mask.detox,
+        night:    false
+      };
+    }
+    // SOLO con rughe
+    else if (rug) {
+      plan = {
+        cleanser: P.face.cleanser.gentle,
+        toner:    P.face.toner.hydrating,
+        serum:    P.face.serum.antiage,        // rigenerante
+        cream:    P.face.cream.rimpolpante,
+        mask:     P.face.mask.lift,
+        night:    true                         // crema notte nel completo
+      };
+    }
+    // SOLO asfittica (spenta)
+    else if (asf) {
+      plan = {
+        cleanser: P.face.cleanser.gentle,
+        toner:    P.face.toner.hydrating,
+        serum:    P.face.serum.vitaminC,
+        cream:    P.face.cream.vitaminC,
+        mask:     P.face.mask.vitaminC,
+        night:    true                         // crema notte nel completo
+      };
+    }
+  }
+
+  // -------- COMBINAZIONI CONSENTITE (solo queste) --------
+  if (!plan && skin.size === 2) {
+    // secca/disidrata/sensibile + rughe
+    if ((dry || sens) && rug) {
+      plan = {
+        cleanser: P.face.cleanser.gentle,
+        toner:    P.face.toner.hydrating,
+        serum:    P.face.serum.antiageHydra,
+        cream:    P.face.cream.rimpolpante,
+        mask:     P.face.mask.vitaminC,
+        night:    true
+      };
+    }
+    // =secca/disidratata + sensibile
+  if (dry && sens) {
+    plan = {
+      cleanser: P.face.cleanser.gentle,         // latte detergente idratante
+      toner:    P.face.toner.hydrating,         // tonico idratante lenitivo
+      serum:    P.face.serum.antiageHydra,      // siero idratante lenitivo
+      cream:    P.face.cream.lenitiva,          // crema lenitiva
+      mask:     P.face.mask.lift,               // maschera hydra lift (per "completo")
+      night:    false                           // niente crema notte in questa combo
+    };
+  }
+    // secca/disidrata/sensibile + asfittica
+    else if ((dry || sens) && asf) {
+      plan = {
+        cleanser: P.face.cleanser.gentle,
+        toner:    P.face.toner.hydrating,
+        serum:    P.face.serum.vitaminC,
+        cream:    P.face.cream.ialuronico,
+        mask:     P.face.mask.vitaminC,
+        night:    true
+      };
+    }
+    // mista/grassa + sensibile (crema dipende dai pori)
+    else if (oily && sens) {
+      plan = {
+        cleanser: P.face.cleanser.purifying,
+        toner:    P.face.toner.hydrating,
+        serum:    P.face.serum.antiageHydra,
+        cream:    (pores === 'si') ? P.face.cream.opacizzante : P.face.cream.purifying,
+        mask:     P.face.mask.detox,
+        night:    false
+      };
+    }
+    // mista/grassa + asfittica
+    else if (oily && asf) {
+      plan = {
+        cleanser: P.face.cleanser.purifying,
+        toner:    P.face.toner.hydrating,
+        serum:    P.face.serum.vitaminC,
+        cream:    P.face.cream.purifying,
+        mask:     P.face.mask.detox,
+        night:    false
+      };
+    }
+    // mista/grassa + con rughe
+    else if (oily && rug) {
+      plan = {
+        cleanser: P.face.cleanser.purifying,
+        toner:    P.face.toner.hydrating,
+        serum:    P.face.serum.detox,
+        cream:    P.face.cream.rimpolpante,
+        mask:     P.face.mask.lift,
+        night:    false
+      };
+    }
+    // asfittica + con rughe
+    else if (asf && rug) {
+      plan = {
+        cleanser: P.face.cleanser.gentle,
+        toner:    P.face.toner.hydrating,
+        serum:    P.face.serum.vitaminC,
+        cream:    P.face.cream.rimpolpante,
+        mask:     P.face.mask.vitaminC,
+        night:    true
+      };
+    }
+  }
+
+  // Se non rientra nei casi consentiti → ERRORE
+  if (!plan) {
+    return { error: 'La combinazione selezionata non è disponibile. Modifica uno dei due tipi di pelle e riprova.' };
+  }
+
+  // Pack Essenziale / Completo
+  const essenziale = dedup([plan.cleanser, plan.toner, plan.serum, plan.cream]);
+  const completo   = dedup([
+    ...essenziale,
+    P.face.scrub,                               // scrub ai granuli
+    plan.mask,
+    plan.night ? P.face.cream.notte : null
+  ]);
+
+  // Contorno occhi SOLO se l’utente ha risposto “Sì” (solo nel Completo)
+  // Contorno occhi (sempre nel Completo):
+// SÌ -> zafferano | NO/assenza risposta -> collagene
+const eyesPick = (state.answers.eyes === 'si')
+  ? P.face.eye.zafferano
+  : P.face.eye.collagene;
+
+completo.push(eyesPick);
+
+  return { list: style === 'essenziale' ? essenziale : completo };
+}
+  
+  const dedup = arr => arr.filter((h, i, a) => h && a.indexOf(h) === i);
+  const clamp = (list, style, limits) => dedup(list).slice(0, limits[style] || list.length);
+
+  /* ========== SKELETON LOADER ========== */
+  function showSkeleton(n = 6) {
+    resultsGrid.innerHTML = Array.from({ length: n }).map(() => `
+      <div class="zen-quiz-card">
+        <div class="zen-quiz-card-media skeleton-shimmer"></div>
+        <div class="zen-quiz-card-body">
+          <div class="skeleton-line" style="width: 70%"></div>
+          <div class="skeleton-line" style="width: 50%"></div>
+          <div class="skeleton-box"></div>
+        </div>
+      </div>
+    `).join('');
+    
+    addAllBtn.disabled = true;
+    totalPriceEl.textContent = '—';
+  }
+
+  /* ========== FETCH PRODUCTS ========== */
+  async function fetchProduct(handle) {
+    try {
+      const res = await fetch(`/products/${handle}.js`);
+      if (!res.ok) throw new Error('Not found ' + handle);
+      
+      const data = await res.json();
+      return {
+        handle: data.handle,
+        title: data.title,
+        image: (data.images && data.images[0]) || (data.featured_image || ''),
+        variants: data.variants || []
+      };
+    } catch (e) {
+      console.warn(e);
+      return null;
+    }
+  }
+
+  const BODY_STEPS_DEF = [
+  { step:'2-body-wash',    key:'body_wash',     handles:[P.body.shower.agrumi, P.body.shower.mirto] },
+  { step:'2-body-scrub',   key:'body_scrub',    handles:[P.body.scrub.agrumi,  P.body.scrub.mirto] },
+  { step:'2-body-hydrate', key:'body_hydrate',  handles:[P.body.lotion.lenitivo, P.body.lotion.esotico, P.body.crema].filter(Boolean) },
+  { step:'2-body-deo',     key:'body_deo',      handles:[P.body.deo.the, P.body.deo.talco] },
+  { step:'2-body-intimo',  key:'body_intimo',   handles:[P.body.intimo] },
+  { step:'2-body-lip',     key:'body_lip',      handles:[P.body.lip.ialuronico, P.body.lip.spf, P.body.lip.argan, P.body.lip.propoli] }
+];
+
+async function renderBodyStep(def){
+  const wrap = root.querySelector(`.zen-quiz-step[data-step="${def.step}"] .zen-answers--products[data-key="${def.key}"]`);
+  if (!wrap) return;
+  wrap.innerHTML = '';
+
+  const prods = await Promise.all(def.handles.map(h => fetchProduct(h)));
+  prods.filter(Boolean).forEach(p => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'zen-quiz-answer zen-answer--product';
+    btn.dataset.multi = 'true';
+    btn.dataset.key = def.key;
+    btn.dataset.val = p.handle;
+    btn.setAttribute('aria-pressed','false');
+    btn.innerHTML = `
+      <div class="zen-prod-thumb">${p.image ? `<img src="${p.image}" alt="${p.title.replace(/"/g,'&quot;')}" loading="lazy">` : ''}</div>
+      <div class="zen-prod-title">${p.title}</div>
+      <span class="zen-tag-check">✓</span>
+    `;
+    wrap.appendChild(btn);
+  });
+}
+
+async function renderAllBodySteps(){
+  for(const def of BODY_STEPS_DEF){ await renderBodyStep(def); }
+}
+
+  /* ========== BUILD RESULTS ========== */
+  async function buildResults(handles) {
+    const prods = await Promise.all(handles.map(h => fetchProduct(h)));
+    const clean = prods.filter(Boolean);
+    
+    resultsGrid.innerHTML = '';
+    
+    if (clean.length === 0) {
+      resultsGrid.innerHTML = `
+        <div class="zen-empty-state">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+            <path d="M8 15s1.5-2 4-2 4 2 4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="9" cy="9" r="1" fill="currentColor"/>
+            <circle cx="15" cy="9" r="1" fill="currentColor"/>
+          </svg>
+          <p>Nessuna combinazione trovata. Modifica le scelte e riprova.</p>
+        </div>
+      `;
+      return;
+    }
+    
+    let totalSavings = 0;
+    
+    clean.forEach((p, index) => {
+      const v = p.variants;
+      const first = v[0] || {};
+      const priceCents = Number(first.price || 0);
+      const compareCents = Number(first.compare_at_price || priceCents);
+      const savings = compareCents - priceCents;
+      const vid = first.id || null;
+      const maxQty = maxFromVariant(first);
+      const startQty = maxQty > 0 ? 1 : 0;
+      
+      if (savings > 0) totalSavings += savings;
+      
+      const card = document.createElement('div');
+      card.className = 'zen-quiz-card';
+      card.dataset.price = priceCents;
+      card.dataset.vid = vid || '';
+      card.style.animationDelay = `${index * 0.1}s`;
+      
+      const discountBadge = savings > 0 
+        ? `<span class="zen-discount-badge">-${Math.round((savings / compareCents) * 100)}%</span>` 
+        : '';
+      
+      card.innerHTML = `
+        <div class="zen-quiz-card-media">
+          ${discountBadge}
+          ${p.image ? `<img src="${p.image}" alt="${p.title.replace(/"/g, '&quot;')}" loading="lazy">` : ''}
+        </div>
+        <div class="zen-quiz-card-body">
+          <h4 class="zen-quiz-card-title">${p.title}</h4>
+          <div class="zen-quiz-price">
+            <span class="now">${money(priceCents)}</span>
+            ${savings > 0 ? `<span class="was">${money(compareCents)}</span>` : ''}
+            <span class="tax">IVA incl.</span>
+          </div>
+          <div class="zen-qty" role="group" aria-label="Quantità">
+            <button class="js-minus" type="button" aria-label="Diminuisci">−</button>
+            <input class="js-qty" type="number" min="0" max="${maxQty}" step="1" value="${startQty}" inputmode="numeric" />
+            <button class="js-plus" type="button" aria-label="Aumenta">+</button>
+          </div>
+          <div class="zen-quiz-card-actions">
+            <button class="zen-quiz-btn js-add-one"${maxQty === 0 ? ' disabled' : ''}>
+              <span>Aggiungi</span>
+            </button>
+            <button class="zen-quiz-btn zen-quiz-remove js-remove" data-handle="${p.handle}">
+              <span>×</span>
+            </button>
+          </div>
+        </div>
+      `;
+      
+      // Quantity controls
+      const qtyInput = card.querySelector('.js-qty');
+      const minus = card.querySelector('.js-minus');
+      const plus = card.querySelector('.js-plus');
+      const addBtn = card.querySelector('.js-add-one');
+      attachHoverTip(addBtn); // tooltip sempre su hover/focus
+      
+      function clampQty() {
+        const min = 0, max = Number(qtyInput.max || 0);
+        let val = parseInt(qtyInput.value || '0', 10);
+        if (isNaN(val)) val = 0;
+        val = Math.max(min, Math.min(max, val));
+        qtyInput.value = val;
+        minus.disabled = (val <= min);
+        plus.disabled = (val >= max);
+        addBtn.disabled = (max === 0 || val === 0);
+      }
+      
+      clampQty();
+      
+      minus.addEventListener('click', () => {
+  haptic('light');
+  qtyInput.value = (parseInt(qtyInput.value || '0', 10) || 0) - 1;
+  clampQty();
+  recomputeTotal();
+  toggleAddAll();
+  updateOfferEligibility(); // NEW
+});
+      
+      plus.addEventListener('click', () => {
+  haptic('light');
+  qtyInput.value = (parseInt(qtyInput.value || '0', 10) || 0) + 1;
+  clampQty();
+  recomputeTotal();
+  toggleAddAll();
+  updateOfferEligibility(); // NEW
+});
+      
+      qtyInput.addEventListener('input', () => {
+  clampQty();
+  recomputeTotal();
+  toggleAddAll();
+  updateOfferEligibility(); // NEW
+});
+      
+      // Add to cart (robusto e senza leak di variabili)
+addBtn.addEventListener('click', async (e) => {
+  const btn = e.currentTarget;
+  const id = card.dataset.vid;
+  const q = parseInt(qtyInput.value || '1', 10);
+
+  if (!id || q <= 0) return;
+
+  haptic('success');
+
+  const prevHTML = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>';
+
+  try {
+    await ajaxAdd([{ id: Number(id), quantity: q }], { openDrawer: true });
+
+    showPostAddNudge(card);
+
+    // segna uso / reset offerta
+    localStorage.setItem('zen_used_add_all', '1');
+    localStorage.setItem('zen_offer_should_reset', '1');
+
+    btn.innerHTML = '<span>Aggiunto ✓</span>';
+    setTimeout(() => {
+      btn.innerHTML = prevHTML;
+      btn.disabled = false;
+    }, 1200);
+  } catch (err) {
+    console.error('Add one failed', err);
+    alert('Impossibile aggiungere al carrello. Riprova.');
+    btn.innerHTML = prevHTML;
+    btn.disabled = false;
+  }
+});
+      
+      // Remove from results
+      card.querySelector('.js-remove').addEventListener('click', () => {
+        haptic('light');
+        card.style.animation = 'fadeOutScale 0.3s ease';
+        setTimeout(() => {
+          card.remove();
+          recomputeTotal();
+          toggleAddAll();
+          updateOfferEligibility(); // NEW
+        }, 300);
+      });
+      
+      resultsGrid.appendChild(card);
+    });
+    
+    // Update savings badge
+    if (totalSavings > 0) {
+      const saveBadge = root.querySelector('.zen-save-badge');
+      if (saveBadge) {
+        saveBadge.textContent = `Risparmi ${money(totalSavings)}`;
+      }
+    }
+    
+    recomputeTotal();
+    toggleAddAll();
+  }
+
+  function maxFromVariant(v) {
+    if (!v) return 0;
+    const policy = v.inventory_policy;
+    if (policy === 'deny') {
+      return Math.max(0, Number(v.inventory_quantity || 0));
+    }
+    return 99;
+  }
+
+  /* ========== TOTAL CALCULATION ========== */
+  function recomputeTotal() {
+    let sum = 0;
+    resultsGrid.querySelectorAll('.zen-quiz-card').forEach(card => {
+      const price = Number(card.dataset.price || 0);
+      const qty = parseInt(card.querySelector('.js-qty')?.value || '0', 10) || 0;
+      sum += price * qty;
+    });
+    totalPriceEl.textContent = money(sum);
+    // aggiorna il badge risparmio in base al 10% reale
+    const saveBadge = root.querySelector('.zen-save-badge');
+    if (saveBadge) {
+      const savings = Math.round(sum * OFFER_PCT);
+      saveBadge.textContent = `Risparmi ${money(savings)}`;
+    }
+    updateOfferEligibility(); // NEW
+  }
+
+  // NEW: determina se il -15% è applicabile secondo le regole
+function isDiscountEligible(){
+  // VISO: nessuna card rimossa e tutte con qty > 0
+  if (state.answers.area === 'viso') {
+    const cards = Array.from(resultsGrid.querySelectorAll('.zen-quiz-card'));
+    if (cards.length !== state.requiredCount) return false;
+    return cards.every(card => {
+      const q = parseInt(card.querySelector('.js-qty')?.value || '0', 10) || 0;
+      return q > 0;
+    });
+  }
+
+  // CORPO: almeno un prodotto in ogni sezione richiesta
+  const chosenHandles = Array.from(resultsGrid.querySelectorAll('.zen-quiz-card .js-remove'))
+    .map(b => b?.dataset?.handle).filter(Boolean);
+
+  const covered = new Set();
+  chosenHandles.forEach(h => {
+    const cat = BODY_HANDLE_TO_CAT[h] || inferBodyCategory(h);
+    if (cat) covered.add(cat);
+  });
+
+  return BODY_REQUIRED_SECTIONS.every(k => covered.has(k));
+}
+
+// Fallback euristico se in futuro arrivano handle nuovi
+function inferBodyCategory(handle=''){
+  if (/bagnoschiuma|shower|doccia/i.test(handle)) return 'doccia';
+  if (/scrub/i.test(handle)) return 'scrub';
+  if (/latte-corpo|lotion|crema-corpo/i.test(handle)) return 'idratazione';
+  if (/deodorante|deo/i.test(handle)) return 'deodoranti';
+  if (/intimo/i.test(handle)) return 'intimo';
+  if (/lip|balsamo/i.test(handle)) return 'balsamo';
+  return null;
+}
+
+// NEW: badge regola + stato (attivo/non attivo)
+function injectOfferRuleNote(){
+  let note = root.querySelector('.zen-offer-rule');
+  if (!note){
+    note = document.createElement('div');
+    note.className = 'zen-offer-rule';
+    // posiziona subito sotto al banner offerta
+    const banner = root.querySelector('.zen-offer-banner');
+    (banner?.parentNode || resultsWrap).insertBefore(note, banner?.nextSibling || resultsWrap.firstChild);
+  }
+  note.innerHTML = `
+    <span class="rule-text">${DISCOUNT_RULE_TEXT}</span>
+    <span class="status js-offer-status">Non attivo</span>
+  `;
+}
+
+// NEW: aggiorna stato visivo e tooltip
+function updateOfferEligibility(){
+  const active = isDiscountEligible();
+
+  // badge testo/colore
+  const el = root.querySelector('.js-offer-status');
+  if (el){
+    el.textContent = active ? 'Attivo' : 'Non attivo';
+    el.classList.toggle('is-active', active);
+    el.classList.toggle('is-inactive', !active);
+  }
+
+  // aggiorna il testo “Risparmi …” in base all’idoneità
+  const saveBadge = root.querySelector('.zen-save-badge');
+  if (saveBadge){
+    const sum = Array.from(resultsGrid.querySelectorAll('.zen-quiz-card')).reduce((acc, card) => {
+      const price = Number(card.dataset.price || 0);
+      const qty   = parseInt(card.querySelector('.js-qty')?.value || '0', 10) || 0;
+      return acc + price*qty;
+    }, 0);
+    if (active){
+      saveBadge.textContent = `Risparmi ${money(Math.round(sum * OFFER_PCT))}`;
+    } else {
+      saveBadge.textContent = 'Completa i requisiti per il -15%';
+    }
+  }
+}
+  
+  function toggleAddAll() {
+  const cards = resultsGrid.querySelectorAll('.zen-quiz-card');
+  let anyQty = false;
+  cards.forEach(card => {
+    const q = parseInt(card.querySelector('.js-qty')?.value || '0', 10) || 0;
+    if (q > 0) anyQty = true;
+  });
+  addAllBtn.disabled = !anyQty;
+}
+
+// Fallback: ricarica UI del carrello
+async function refreshCartSections(open = false) {
+  try {
+    const res = await fetch(`/?sections=cart-drawer,cart-icon-bubble`, {
+      headers: { 'X-Requested-With': 'XMLHttpRequest' },
+      credentials: 'same-origin'
+    });
+    const sections = await res.json();
+
+    // Sostituisci il drawer
+    const currentDrawer = document.querySelector('#shopify-section-cart-drawer');
+    if (currentDrawer && sections['cart-drawer']) {
+      const tmp = document.createElement('div');
+      tmp.innerHTML = sections['cart-drawer'];
+      const fresh = tmp.querySelector('#shopify-section-cart-drawer') || tmp.firstElementChild;
+      if (fresh) currentDrawer.replaceWith(fresh);
+    }
+
+    // Sostituisci il bubble/contatore
+    const currentBubble = document.querySelector('#cart-icon-bubble, .cart-count-bubble, #CartCount');
+    if (currentBubble && sections['cart-icon-bubble']) {
+      const tmp = document.createElement('div');
+      tmp.innerHTML = sections['cart-icon-bubble'];
+      const fresh = tmp.querySelector('#cart-icon-bubble, .cart-count-bubble, #CartCount') || tmp.firstElementChild;
+      if (fresh) currentBubble.replaceWith(fresh);
+    }
+
+    // Apri il cassetto se richiesto
+    if (open) {
+      const el = document.querySelector('cart-drawer');
+      if (el && typeof el.open === 'function') el.open();
+      else document.querySelector('[data-cart-toggle],[data-drawer-trigger="cart"]')?.click();
+    }
+  } catch (e) {
+    console.warn('refreshCartSections failed', e);
+  }
+}
+
+  /* ========== AJAX CART ========== */
+  // AJAX cart con error handling migliore
+async function ajaxAdd(items, { openDrawer = false } = {}) {
+  const resp = await fetch('/cart/add.js', {
+    method: 'POST',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest'
+    },
+    body: JSON.stringify({ items })
+  });
+
+  if (!resp.ok) {
+    let msg = 'Cart error';
+    try { const data = await resp.json(); msg = data?.description || data?.message || msg; } catch {}
+    throw new Error(msg);
+  }
+
+  document.dispatchEvent(new CustomEvent('cart:item-added'));
+  await refreshCartSections(openDrawer);
+
+  // a volte /cart/add.js non ritorna JSON valido: non blocchiamo il flusso
+  try { return await resp.json(); } catch { return null; }
+}
+
+  /* ========== ADD ALL TO CART ========== */
+  // --- FIX: handler robusto per "Aggiungi tutto" ---
+addAllBtn.addEventListener('click', async () => {
+  const items = [];
+  resultsGrid.querySelectorAll('.zen-quiz-card').forEach(card => {
+    const vid = Number(card.dataset.vid); // forza a Number
+    const qty = parseInt(card.querySelector('.js-qty')?.value || '0', 10) || 0;
+    if (vid && qty > 0) items.push({ id: vid, quantity: qty });
+  });
+  if (!items.length) return;
+
+  haptic('success');
+
+  const oldHTML = addAllBtn.innerHTML;
+  addAllBtn.disabled = true;
+  addAllBtn.innerHTML = '<span class="spinner"></span> <span>Aggiunta in corso…</span>';
+
+  try {
+    // opzionale: apri il drawer dopo l’aggiunta
+    await ajaxAdd(items, { openDrawer: true });
+
+    // reset timer promo alla prossima visualizzazione
+    localStorage.setItem('zen_offer_should_reset', '1');
+
+    // redirect con codice sconto solo se idoneo
+    const eligible = isDiscountEligible();
+    if (APPLY_DISCOUNT_ON_ADD && DISCOUNT_CODE && eligible) {
+      window.location.href = `/discount/${encodeURIComponent(DISCOUNT_CODE)}?redirect=/cart`;
+      return; // interrompe qui perché navighiamo
+    }
+
+    addAllBtn.innerHTML = '<span>Aggiunto tutto ✓</span>';
+    triggerConfetti();
+    setTimeout(() => { addAllBtn.innerHTML = oldHTML; addAllBtn.disabled = false; }, 1800);
+
+  } catch (err) {
+    console.error('Add all failed:', err);
+    alert(err?.message || 'Impossibile aggiungere i prodotti al carrello. Riprova.');
+    addAllBtn.innerHTML = oldHTML;
+    addAllBtn.disabled = false;
+  }
+});
+
+  /* ===== SAFETY PATCHES (Safari & co.) ===== */
+
+// 2) Assicurati che TUTTE le risposte siano <button type="button">
+//    (evita comportamenti strani in presenza di form annidati)
+root.querySelectorAll('.zen-quiz-answer').forEach(b => {
+  if (b.tagName === 'BUTTON') b.type = 'button';
+});
+
+// 5) Difensivo: al primo step del quiz, se c'è già una selezione, abilita "Continua"
+(() => {
+  const firstStep = root.querySelector('.zen-quiz-step.is-active');
+  const cta = firstStep?.querySelector('.zen-quiz-next, .zen-quiz-show-results');
+  if (firstStep && cta) {
+    cta.disabled = !firstStep.querySelector('.zen-quiz-answer.is-selected');
+  }
+})();
+
+  /* ========== KEYBOARD NAVIGATION ========== */
+document.addEventListener('keydown', (e) => {
+  if (!root.contains(e.target)) return;
+
+  const active  = root.querySelector('.zen-quiz-step.is-active');
+  const canNext = active?.querySelector('.zen-quiz-next:not(:disabled), .zen-quiz-show-results:not(:disabled)');
+  const canPrev = active?.querySelector('.zen-quiz-prev:not(:disabled)');
+
+  if (e.key === 'ArrowRight' && canNext) {
+    if (canNext.classList.contains('zen-quiz-show-results')) {
+      canNext.click();
+    } else {
+      goNext();
+    }
+  } else if (e.key === 'ArrowLeft' && canPrev) {
+    goPrev();
+  }
+});
+
+  /* ========== INITIALIZE ========== */
+  totalText.textContent = state.seq.length;
+  showStepAt(0);
+  renderAllBodySteps();
+  updateLiveUsers();
+  
+  // Add CSS for animations
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes confettiFall {
+      to {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+    
+    @keyframes fadeOutScale {
+      to {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+    }
+    
+    .skeleton-shimmer {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+    
+    .skeleton-line {
+      height: 16px;
+      background: #e8e8e8;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+    
+    .skeleton-box {
+      height: 40px;
+      background: #e8e8e8;
+      border-radius: 10px;
+    }
+    
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255,255,255,.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .zen-empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--zen-muted);
+    }
+    
+    .zen-empty-state svg {
+      color: var(--zen-border);
+      margin-bottom: 20px;
+    }
+    
+    .zen-discount-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: linear-gradient(135deg, #ff6b6b, #ff5252);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      z-index: 2;
+    }
+    
+    .zen-quiz-price .was {
+      text-decoration: line-through;
+      color: var(--zen-muted);
+      font-size: 14px;
+    }
+
+    /* Tooltip compatto sopra al pulsante */
+    /* lascia uscire il tooltip dal bottone "Aggiungi" */
+.zen-quiz-btn.js-add-one { overflow: visible; }
+/* contesto per z-index del tooltip */
+.zen-quiz-card-actions { position: relative; }
+
+.zen-tip{
+  position:absolute;
+  bottom:calc(100% + 10px);
+  left:50%;
+  transform:translateX(-50%) translateY(4px);
+  background: #111;            /* volendo: var(--zen-ink) */
+  color:#fff;
+  padding:8px 10px;
+  border-radius:10px;
+  font-size:12px;
+  line-height:1.3;
+  box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  pointer-events: none; /* non interferisce col mouse */
+  opacity:0;
+  transition: opacity .2s var(--zen-ease), transform .2s var(--zen-ease);
+  z-index: 60;
+  max-width: 260px;
+  text-align: center;
+}
+
+/* Alza il contesto del gruppo bottoni e del pulsante Aggiungi */
+.zen-quiz-card-actions { position: relative; z-index: 5; overflow: visible; }
+.zen-quiz-btn.js-add-one { position: relative; z-index: 6; overflow: visible; }
+
+/* La quantità ha un contesto più basso */
+.zen-qty { position: relative; z-index: 1; }
+
+/* Il tooltip sta sopra a tutto dentro la card */
+.zen-tip { z-index: 999; }
+
+/* Messaggio soft sotto la card dopo aggiunta singolo */
+.zen-bundle-hint{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 10px 12px;
+  background: rgba(87,162,123,.08);
+  border: 1.5px solid color-mix(in oklab, var(--zen-primary) 30%, white);
+  border-radius: 10px;
+  font-size: 13px;
+  color: var(--zen-ink);
+  opacity: 0; transform: translateY(-4px);
+  transition: all .25s var(--zen-ease);
+}
+
+.zen-bundle-hint.is-in{ opacity: 1; transform: none; }
+.zen-bundle-hint .zen-link{
+  background: none; border: 0; padding: 0;
+  color: var(--zen-primary); font-weight: 700; text-decoration: underline;
+  cursor: pointer;
+}
+
+.zen-tip::after{
+  content:'';
+  position:absolute;
+  top:100%; left:50%; transform:translateX(-50%);
+  border:6px solid transparent;
+  border-top-color:#111;       /* idem: var(--zen-ink) */
+}
+.zen-tip.is-in{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+
+/* leggero richiamo visivo sul CTA "Aggiungi tutto" */
+.zen-tip-highlight{
+  animation: zen-ring 1.1s ease-out 3;
+}
+@keyframes zen-ring{
+  0%   { box-shadow: 0 0 0 0 rgba(87,162,123,.45); }
+  100% { box-shadow: 0 0 0 18px rgba(87,162,123,0); }
+}
+  `;
+  document.head.appendChild(style);
+});
+</script>
+
+{% schema %}
+{
+  "name": "Zen Rituale Finder",
+  "class": "section-zen-rituale-finder",
+  "settings": [
+    { 
+      "type": "text", 
+      "id": "title", 
+      "label": "Titolo", 
+      "default": "Trova il tuo Rituale Perfetto" 
+    },
+    { 
+      "type": "text", 
+      "id": "subtitle", 
+      "label": "Sottotitolo", 
+      "default": "Rispondi ad alcune domande: ti suggeriamo noi il set ideale per te." 
+    },
+    { 
+      "type": "header", 
+      "content": "Colori — Palette Premium" 
+    },
+    { 
+      "type": "color", 
+      "id": "color_accent", 
+      "label": "Accento (Primario)", 
+      "default": "#57A27B" 
+    },
+    { 
+      "type": "color", 
+      "id": "color_cta", 
+      "label": "CTA (Add/Next)", 
+      "default": "#57A27B" 
+    },
+    { 
+      "type": "color", 
+      "id": "color_text", 
+      "label": "Testo principale", 
+      "default": "#1E1C18" 
+    },
+    { 
+      "type": "color", 
+      "id": "color_text_muted", 
+      "label": "Testo attenuato", 
+      "default": "#525151" 
+    },
+    { 
+      "type": "color", 
+      "id": "color_bg", 
+      "label": "Sfondo sezione", 
+      "default": "#F4EFE8" 
+    },
+    { 
+      "type": "color", 
+      "id": "color_card", 
+      "label": "Sfondo card", 
+      "default": "#F8F4ED" 
+    },
+    { 
+      "type": "color", 
+      "id": "color_border", 
+      "label": "Bordi", 
+      "default": "#C1C8C5" 
+    },
+    { 
+      "type": "color", 
+      "id": "color_media", 
+      "label": "Sfondo media prodotto", 
+      "default": "#313131" 
+    },
+    { 
+      "type": "color", 
+      "id": "color_progress", 
+      "label": "Barra di progresso", 
+      "default": "#4B8968" 
+    }
+  ],
+  "presets": [
+    { 
+      "name": "Zen Rituale Finder Premium" 
+    }
+  ]
+}
+{% endschema %}

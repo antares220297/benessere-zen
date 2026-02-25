@@ -1,0 +1,650 @@
+{% comment %}
+  Zen Bundle Builder (Progressivo) — Benessere Zen
+  Theme: Eurus
+  Features:
+    - Stepper 1–4: Detergi → Tratta → Idrata → Extra
+    - Live total + compare_at savings badge
+    - Stock-aware (inventory quantity / sold-out disabling)
+    - One-click "Aggiungi bundle al carrello"
+    - Upsell in Step 4 based on tag/metafield intersections with chosen items
+    - Data source: choose a collection per step from Theme Editor
+  Notes:
+    - Keep product counts reasonable per step (e.g., <= 24) for best perf.
+    - Metafield used for affinity (optional): product.metafields.custom.product_traits (list or comma string)
+{% endcomment %}
+<section id="zen-bundle-{{ section.id }}" class="zen-bundle-section" data-section-id="{{ section.id }}">
+  {%- assign step1 = section.settings.step1_collection -%}
+  {%- assign step2 = section.settings.step2_collection -%}
+  {%- assign step3 = section.settings.step3_collection -%}
+  {%- assign step4 = section.settings.step4_collection -%}
+  {%- assign max_per = section.settings.max_per | default: 24 -%}
+
+  <div class="zen-bundle-container">
+    <header class="zen-bundle-header">
+      <span class="zen-subtitle">Crea il tuo set</span>
+      <h2 class="zen-title">{{ section.settings.title }}</h2>
+      {% if section.settings.subtitle != blank %}
+        <p class="zen-intro">{{ section.settings.subtitle }}</p>
+      {% endif %}
+
+      <div class="zen-steps">
+        <div class="zen-step is-active" data-step="1"><span>1</span> Detergi</div>
+        <div class="zen-step" data-step="2"><span>2</span> Tratta</div>
+        <div class="zen-step" data-step="3"><span>3</span> Idrata</div>
+        <div class="zen-step" data-step="4"><span>4</span> Extra</div>
+      </div>
+
+      <div class="zen-progress">
+        <div class="zen-progress-bar"><span class="zen-progress-fill" style="width:0%"></span></div>
+      </div>
+    </header>
+
+    <!-- Steps -->
+    <div class="zen-bundle-steps" role="region" aria-live="polite">
+      <!-- STEP TEMPLATES -->
+      <div class="zen-bundle-step is-active" data-step="1">
+        <h3 class="zen-question">Scegli il tuo detergente</h3>
+        <div class="zen-grid js-grid-1"><!-- cards injected --></div>
+        <div class="zen-nav">
+          <button class="zen-next" disabled>Continua</button>
+        </div>
+      </div>
+
+      <div class="zen-bundle-step" data-step="2" hidden>
+        <h3 class="zen-question">Scegli il trattamento</h3>
+        <div class="zen-grid js-grid-2"><!-- cards injected --></div>
+        <div class="zen-nav">
+          <button class="zen-prev">Indietro</button>
+          <button class="zen-next" disabled>Continua</button>
+        </div>
+      </div>
+
+      <div class="zen-bundle-step" data-step="3" hidden>
+        <h3 class="zen-question">Scegli la crema/idratante</h3>
+        <div class="zen-grid js-grid-3"><!-- cards injected --></div>
+        <div class="zen-nav">
+          <button class="zen-prev">Indietro</button>
+          <button class="zen-next" disabled>Continua</button>
+        </div>
+      </div>
+
+      <div class="zen-bundle-step" data-step="4" hidden>
+        <h3 class="zen-question">Extra consigliati (opzionali)</h3>
+        <p class="zen-note">Aggiungi 1+ booster, maschera o tonico per massimizzare i risultati.</p>
+        <div class="zen-grid js-grid-4"><!-- cards injected (upsell first) --></div>
+        <div class="zen-nav">
+          <button class="zen-prev">Indietro</button>
+          <button class="zen-finish">Aggiungi bundle al carrello</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sticky Summary -->
+    <aside class="zen-summary">
+      <div class="zen-summary-inner">
+        <div class="zen-summary-line">
+          <span>Totale</span>
+          <strong class="js-total">—</strong>
+        </div>
+        <div class="zen-summary-badge js-saving" hidden>
+          <span class="badge-save"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.3 6.91 1-5 4.86 1.18 6.84L12 18.9l-6.18 3.1L7 14.16 2 9.3l6.91-1L12 2z" fill="currentColor"/></svg>
+          <b class="js-save-pct">-0%</b> risparmio</span>
+        </div>
+        <ul class="zen-picked js-picked"><!-- chosen items --></ul>
+        <button class="zen-checkout-all" disabled>
+          <svg width="18" height="18" viewBox="0 0 24 24"><path d="M1 1h3l1.68 10.39a1.5 1.5 0 0 0 1.5 1.21h7.58a1.5 1.5 0 0 0 1.5-1.21L18 5H5" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="8" cy="19" r="1"/><circle cx="16" cy="19" r="1"/></svg>
+          Aggiungi subito
+        </button>
+        <p class="zen-tax">IVA inclusa. Spedizione gratuita sopra €{{ section.settings.free_shipping_threshold | default: 50 }}</p>
+      </div>
+    </aside>
+  </div>
+
+  {%- comment -%} DATA PAYLOAD (server renders product data for each step) {%- endcomment -%}
+  <script type="application/json" id="zen-bundle-data-{{ section.id }}">
+  {
+    "steps": [
+      {
+        "index": 1,
+        "label": "Detergi",
+        "items": [
+          {%- if step1 != blank -%}
+            {%- for product in collections[step1].products limit: max_per -%}
+              {
+                "handle": {{ product.handle | json }},
+                "title": {{ product.title | json }},
+                "image": {{ product.featured_image | img_url: '600x600' | json }},
+                "tags": {{ product.tags | join: ',' | json }},
+                "traits": {{ product.metafields.custom.product_traits | default: blank | json }},
+                "variants": [
+                  {%- for v in product.variants -%}
+                    {
+                      "id": {{ v.id | json }},
+                      "title": {{ v.public_title | default: 'Default' | json }},
+                      "price": {{ v.price | json }},
+                      "compare_at_price": {{ v.compare_at_price | default: 0 | json }},
+                      "available": {{ v.available | json }},
+                      "inventory_management": {{ v.inventory_management | json }},
+                      "inventory_quantity": {{ v.inventory_quantity | default: 0 | json }}
+                    }{% unless forloop.last %},{% endunless %}
+                  {%- endfor -%}
+                ]
+              }{% unless forloop.last %},{% endunless %}
+            {%- endfor -%}
+          {%- endif -%}
+        ]
+      },
+      {
+        "index": 2,
+        "label": "Tratta",
+        "items": [
+          {%- if step2 != blank -%}
+            {%- for product in collections[step2].products limit: max_per -%}
+              {
+                "handle": {{ product.handle | json }},
+                "title": {{ product.title | json }},
+                "image": {{ product.featured_image | img_url: '600x600' | json }},
+                "tags": {{ product.tags | join: ',' | json }},
+                "traits": {{ product.metafields.custom.product_traits | default: blank | json }},
+                "variants": [
+                  {%- for v in product.variants -%}
+                    {
+                      "id": {{ v.id | json }},
+                      "title": {{ v.public_title | default: 'Default' | json }},
+                      "price": {{ v.price | json }},
+                      "compare_at_price": {{ v.compare_at_price | default: 0 | json }},
+                      "available": {{ v.available | json }},
+                      "inventory_management": {{ v.inventory_management | json }},
+                      "inventory_quantity": {{ v.inventory_quantity | default: 0 | json }}
+                    }{% unless forloop.last %},{% endunless %}
+                  {%- endfor -%}
+                ]
+              }{% unless forloop.last %},{% endunless %}
+            {%- endfor -%}
+          {%- endif -%}
+        ]
+      },
+      {
+        "index": 3,
+        "label": "Idrata",
+        "items": [
+          {%- if step3 != blank -%}
+            {%- for product in collections[step3].products limit: max_per -%}
+              {
+                "handle": {{ product.handle | json }},
+                "title": {{ product.title | json }},
+                "image": {{ product.featured_image | img_url: '600x600' | json }},
+                "tags": {{ product.tags | join: ',' | json }},
+                "traits": {{ product.metafields.custom.product_traits | default: blank | json }},
+                "variants": [
+                  {%- for v in product.variants -%}
+                    {
+                      "id": {{ v.id | json }},
+                      "title": {{ v.public_title | default: 'Default' | json }},
+                      "price": {{ v.price | json }},
+                      "compare_at_price": {{ v.compare_at_price | default: 0 | json }},
+                      "available": {{ v.available | json }},
+                      "inventory_management": {{ v.inventory_management | json }},
+                      "inventory_quantity": {{ v.inventory_quantity | default: 0 | json }}
+                    }{% unless forloop.last %},{% endunless %}
+                  {%- endfor -%}
+                ]
+              }{% unless forloop.last %},{% endunless %}
+            {%- endfor -%}
+          {%- endif -%}
+        ]
+      },
+      {
+        "index": 4,
+        "label": "Extra",
+        "items": [
+          {%- if step4 != blank -%}
+            {%- for product in collections[step4].products limit: max_per -%}
+              {
+                "handle": {{ product.handle | json }},
+                "title": {{ product.title | json }},
+                "image": {{ product.featured_image | img_url: '600x600' | json }},
+                "tags": {{ product.tags | join: ',' | json }},
+                "traits": {{ product.metafields.custom.product_traits | default: blank | json }},
+                "variants": [
+                  {%- for v in product.variants -%}
+                    {
+                      "id": {{ v.id | json }},
+                      "title": {{ v.public_title | default: 'Default' | json }},
+                      "price": {{ v.price | json }},
+                      "compare_at_price": {{ v.compare_at_price | default: 0 | json }},
+                      "available": {{ v.available | json }},
+                      "inventory_management": {{ v.inventory_management | json }},
+                      "inventory_quantity": {{ v.inventory_quantity | default: 0 | json }}
+                    }{% unless forloop.last %},{% endunless %}
+                  {%- endfor -%}
+                ]
+              }{% unless forloop.last %},{% endunless %}
+            {%- endfor -%}
+          {%- endif -%}
+        ]
+      }
+    ]
+  }
+  </script>
+</section>
+
+{% style %}
+:root{--zen-primary:#C8B89F;--zen-bg:#111;--zen-card:#1a1a1a;--zen-text:#fff;--zen-muted:#A0A0A0;--zen-border:#2A2A2A;--zen-ok:#22C55E;--zen-danger:#ef4444}
+.zen-bundle-section{background:var(--zen-bg);padding:70px 18px;position:relative;overflow:hidden}
+.zen-bundle-container{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 320px;gap:20px}
+.zen-bundle-header{grid-column:1/-1}
+.zen-subtitle{display:inline-block;padding:6px 14px;border:1px solid rgba(200,184,159,.25);border-radius:999px;color:var(--zen-primary);font-size:12px;letter-spacing:2px;text-transform:uppercase;background:rgba(200,184,159,.06)}
+.zen-title{margin:14px 0 6px;font-size:clamp(32px,4.6vw,52px);font-weight:300;color:#fff}
+.zen-intro{color:var(--zen-muted);margin:0 0 16px}
+.zen-steps{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.zen-step{background:#161616;border:1px solid var(--zen-border);border-radius:999px;color:#dcdcdc;padding:8px 12px;display:flex;align-items:center;gap:8px;font-size:13px}
+.zen-step span{background:rgba(200,184,159,.15);border:1px solid rgba(200,184,159,.35);color:#fff;padding:4px 8px;border-radius:999px}
+.zen-step.is-active{border-color:var(--zen-primary);color:#fff}
+.zen-progress-bar{height:4px;background:#1e1e1e;border-radius:4px;overflow:hidden}
+.zen-progress-fill{display:block;height:100%;background:linear-gradient(90deg,transparent,var(--zen-primary),transparent);width:0%}
+
+.zen-bundle-steps{grid-column:1/2}
+.zen-bundle-step{background:var(--zen-card);border:1px solid var(--zen-border);border-radius:16px;padding:18px}
+.zen-question{margin:0 0 10px;color:#fff;font-weight:700;font-size:18px}
+.zen-note{color:var(--zen-muted);margin:4px 0 14px}
+.zen-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.zen-card{background:#151515;border:1px solid var(--zen-border);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.zen-media{aspect-ratio:1;background:#0f0f0f;border-bottom:1px solid var(--zen-border);display:flex;align-items:center;justify-content:center}
+.zen-media img{width:100%;height:100%;object-fit:contain}
+.zen-body{padding:10px;display:flex;flex-direction:column;gap:8px}
+.zen-title-sm{margin:0;color:#fff;font-size:14px;font-weight:700}
+.zen-variant{display:flex;gap:6px}
+.zen-variant select{flex:1;background:#121212;border:1px solid var(--zen-border);border-radius:10px;color:#eaeaea;padding:8px}
+.zen-price{display:flex;align-items:baseline;gap:8px}
+.zen-now{color:#fff;font-weight:800}
+.zen-compare{color:#999;text-decoration:line-through;font-size:12px}
+.zen-stock{font-size:12px;color:#cfcfcf}
+.zen-actions{display:flex;gap:8px;margin-top:auto}
+.zen-pick{flex:1;background:var(--zen-primary);color:#242424;border:none;border-radius:10px;padding:9px 10px;font-weight:800;cursor:pointer}
+.zen-pick[disabled]{opacity:.5;cursor:not-allowed}
+.zen-remove{background:#262626;color:#eee;border:1px solid var(--zen-border);border-radius:10px;padding:9px 10px}
+.zen-nav{display:flex;justify-content:flex-end;gap:10px;margin-top:12px}
+.zen-prev,.zen-next,.zen-finish{background:#151515;border:1px solid var(--zen-border);color:#fff;border-radius:10px;padding:10px 14px}
+.zen-next[disabled]{opacity:.5;cursor:not-allowed}
+
+.zen-summary{grid-column:2/3;position:relative}
+.zen-summary-inner{position:sticky;top:12px;background:#161616;border:1px solid var(--zen-border);border-radius:16px;padding:16px}
+.zen-summary-line{display:flex;justify-content:space-between;color:#fff;margin-bottom:8px}
+.badge-save{display:inline-flex;gap:6px;align-items:center;background:rgba(200,184,159,.15);border:1px solid rgba(200,184,159,.35);color:#fff;border-radius:999px;padding:6px 10px;font-size:12px}
+.zen-picked{list-style:none;margin:12px 0 10px;padding:0;display:flex;flex-direction:column;gap:8px;max-height:280px;overflow:auto}
+.zen-picked li{display:flex;gap:8px;align-items:center;color:#ddd}
+.zen-picked img{width:36px;height:36px;border-radius:8px;object-fit:cover;border:1px solid var(--zen-border)}
+.zen-checkout-all{width:100%;background:var(--zen-ok);color:#fff;border:none;border-radius:12px;padding:12px 14px;font-weight:900}
+.zen-checkout-all[disabled]{opacity:.5;cursor:not-allowed}
+.zen-tax{color:#a5a5a5;font-size:12px;margin-top:8px}
+@media(max-width: 1024px){
+  .zen-bundle-container{grid-template-columns:1fr}
+  .zen-summary{grid-column:1/-1}
+}
+{% endstyle %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const root = document.getElementById('zen-bundle-{{ section.id }}');
+  if(!root) return;
+
+  // Load server JSON
+  const dataEl = document.getElementById('zen-bundle-data-{{ section.id }}');
+  let payload = { steps: [] };
+  try { payload = JSON.parse(dataEl.textContent || '{}'); } catch(e){ console.warn('Bundle JSON parse error', e); }
+
+  // DOM refs
+  const progressFill = root.querySelector('.zen-progress-fill');
+  const stepChips = root.querySelectorAll('.zen-step');
+  const stepPanels = root.querySelectorAll('.zen-bundle-step');
+  const totalEl = root.querySelector('.js-total');
+  const saveWrap = root.querySelector('.js-saving');
+  const savePctEl = root.querySelector('.js-save-pct');
+  const pickedList = root.querySelector('.js-picked');
+  const checkoutAll = root.querySelector('.zen-checkout-all');
+
+  // State
+  const state = {
+    step: 1,
+    picks: {
+      1: null, // {product, variant}
+      2: null,
+      3: null,
+      extras: [] // array of {product, variant}
+    }
+  };
+
+  // Helpers
+  const fmt = (c)=> new Intl.NumberFormat('it-IT',{style:'currency',currency:'EUR'}).format((c||0)/100);
+  const clamp = (n,min,max)=> Math.max(min, Math.min(max,n));
+  function updateProgress(){
+    const pct = ((state.step-1)/(4))*100;
+    progressFill.style.width = pct + '%';
+    stepChips.forEach(ch => ch.classList.toggle('is-active', Number(ch.dataset.step)===state.step));
+  }
+  function showStep(n){
+    state.step = clamp(n,1,4);
+    stepPanels.forEach(p => {
+      const isTarget = Number(p.dataset.step) === state.step;
+      p.toggleAttribute('hidden', !isTarget);
+      p.classList.toggle('is-active', isTarget);
+    });
+    updateProgress();
+    syncNavButtons();
+    if(state.step === 4){ buildUpsellOrdering(); }
+  }
+  function syncNavButtons(){
+    stepPanels.forEach(p=>{
+      const step = Number(p.dataset.step);
+      const nextBtn = p.querySelector('.zen-next');
+      const prevBtn = p.querySelector('.zen-prev');
+      if(prevBtn){ prevBtn.onclick = ()=> showStep(step-1); }
+      if(nextBtn){
+        const canGo = !!state.picks[step];
+        nextBtn.disabled = !canGo;
+        nextBtn.onclick = ()=> showStep(step+1);
+      }
+    });
+  }
+
+  // Render products per step
+  function makeCard(prod, stepIndex){
+    const firstAvail = (prod.variants||[]).find(v=>v.available) || prod.variants?.[0];
+    const priceNow = firstAvail ? Number(firstAvail.price||0) : 0;
+    const priceWas = firstAvail ? Number(firstAvail.compare_at_price||0) : 0;
+    const saving = priceWas>priceNow ? Math.round((1 - priceNow/priceWas)*100) : 0;
+
+    const card = document.createElement('article');
+    card.className = 'zen-card';
+    card.innerHTML = `
+      <div class="zen-media">${prod.image ? `<img src="${prod.image}" alt="${escapeHtml(prod.title)}" loading="lazy">` : ''}</div>
+      <div class="zen-body">
+        <h4 class="zen-title-sm">${escapeHtml(prod.title)}</h4>
+        <div class="zen-variant">
+          <select class="js-variant">
+            ${(prod.variants||[]).map(v=>{
+              const label = (v.title||'Default');
+              const p = Number(v.price||0);
+              const c = Number(v.compare_at_price||0);
+              const tag = v.available ? '' : ' (esaurito)';
+              return `<option value="${v.id}" data-price="${p}" data-compare="${c}" data-available="${v.available}" data-inv="${v.inventory_quantity||0}">${escapeHtml(label)} — ${fmt(p)}${!v.available?' • Esaurito':''}</option>`
+            }).join('')}
+          </select>
+        </div>
+        <div class="zen-price">
+          <span class="zen-now">${fmt(priceNow)}</span>
+          ${priceWas>priceNow ? `<span class="zen-compare">${fmt(priceWas)}</span>`:''}
+        </div>
+        <div class="zen-stock">${stockText(firstAvail)}</div>
+        <div class="zen-actions">
+          <button class="zen-pick" ${firstAvail && firstAvail.available ? '' : 'disabled'}>Seleziona</button>
+          <button class="zen-remove" hidden>Rimuovi</button>
+        </div>
+      </div>
+    `;
+
+    const sel = card.querySelector('.js-variant');
+    const btnPick = card.querySelector('.zen-pick');
+    const btnRemove = card.querySelector('.zen-remove');
+    const nowEl = card.querySelector('.zen-now');
+    const compareEl = card.querySelector('.zen-compare');
+    const stockEl = card.querySelector('.zen-stock');
+
+    sel.addEventListener('change', ()=>{
+      const opt = sel.selectedOptions[0];
+      const p = Number(opt.dataset.price||0);
+      const c = Number(opt.dataset.compare||0);
+      nowEl.textContent = fmt(p);
+      if(compareEl){
+        if(c>p){ compareEl.textContent = fmt(c); compareEl.hidden = false; } else { compareEl.hidden = true; }
+      }
+      stockEl.textContent = stockText({available: opt.dataset.available === 'true', inventory_management: true, inventory_quantity: Number(opt.dataset.inv||0)});
+      // If this card is the chosen one for the step, update pick
+      const pick = currentPickForStep(stepIndex);
+      if(pick && pick.product.handle === prod.handle){
+        updatePick(stepIndex, prod, variantById(prod, sel.value));
+      }
+      updateTotals();
+    });
+
+    btnPick.addEventListener('click', ()=>{
+      const variant = variantById(prod, sel.value);
+      updatePick(stepIndex, prod, variant);
+      btnPick.hidden = true;
+      btnRemove.hidden = true; // not needed here; selection is global for the step
+      // enable Next
+      syncNavButtons();
+      updateTotals();
+    });
+
+    // Allow selecting multiple in Step 4 (extras)
+    if(stepIndex === 4){
+      btnRemove.hidden = false;
+      btnPick.textContent = 'Aggiungi';
+      btnRemove.textContent = 'Rimuovi';
+      btnPick.addEventListener('click', ()=>{
+        const variant = variantById(prod, sel.value);
+        addExtra(prod, variant);
+        btnPick.disabled = true;
+        btnRemove.disabled = false;
+        updateTotals();
+      });
+      btnRemove.addEventListener('click', ()=>{
+        removeExtra(prod.handle);
+        btnPick.disabled = false;
+        btnRemove.disabled = true;
+        updateTotals();
+      });
+    }
+
+    // Pre-disable when no available variants
+    if(!(firstAvail && firstAvail.available)){ btnPick.disabled = true; }
+
+    return card;
+  }
+
+  function variantById(prod, id){
+    return (prod.variants||[]).find(v=> String(v.id) === String(id)) || prod.variants?.[0] || null;
+  }
+  function stockText(v){
+    if(!v) return '';
+    if(v.available === false) return 'Non disponibile';
+    if(String(v.inventory_management) === 'shopify' || v.inventory_management){
+      const q = Number(v.inventory_quantity||0);
+      if(q <= 0) return 'Non disponibile';
+      if(q <= 3) return `Solo ${q} disponibili`;
+      return `${q} disponibili`;
+    }
+    return 'Disponibile';
+  }
+
+  function renderStep(stepIndex){
+    const grid = root.querySelector('.js-grid-' + stepIndex);
+    const stepData = (payload.steps||[]).find(s => Number(s.index)===Number(stepIndex)) || {items:[]};
+    grid.innerHTML = '';
+    (stepData.items||[]).forEach(prod => grid.appendChild(makeCard(prod, stepIndex)));
+  }
+
+  // Picks management
+  function currentPickForStep(step){ return state.picks[step]; }
+  function updatePick(step, product, variant){
+    state.picks[step] = { product, variant };
+    renderPicked();
+  }
+  function addExtra(product, variant){
+    if(!state.picks.extras.find(x=>x.variant.id===variant.id)){
+      state.picks.extras.push({product, variant});
+      renderPicked();
+    }
+  }
+  function removeExtra(handle){
+    state.picks.extras = state.picks.extras.filter(x => x.product.handle !== handle);
+    renderPicked();
+  }
+
+  function renderPicked(){
+    pickedList.innerHTML = '';
+    [1,2,3].forEach(s=>{
+      const pick = state.picks[s];
+      if(pick){
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <img src="${pick.product.image || ''}" alt="">
+          <span>${escapeHtml(pick.product.title)}</span>
+          <span style="margin-left:auto;font-weight:700">${fmt(Number(pick.variant.price||0))}</span>
+        `;
+        pickedList.appendChild(li);
+      }
+    });
+    state.picks.extras.forEach(p=>{
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <img src="${p.product.image || ''}" alt="">
+        <span>${escapeHtml(p.product.title)}</span>
+        <span style="margin-left:auto;font-weight:700">${fmt(Number(p.variant.price||0))}</span>
+      `;
+      pickedList.appendChild(li);
+    });
+    // enable checkout when core 3 picked
+    const coreReady = !!(state.picks[1] && state.picks[2] && state.picks[3]);
+    checkoutAll.disabled = !coreReady;
+    root.querySelectorAll('.zen-finish').forEach(b => b.disabled = !coreReady);
+  }
+
+  // Totals
+  function computeTotals(){
+    const items = [];
+    [1,2,3].forEach(s=>{ if(state.picks[s]) items.push(state.picks[s]); });
+    state.picks.extras.forEach(x => items.push(x));
+    let now = 0, was = 0;
+    items.forEach(x=>{
+      const p = Number(x.variant.price||0);
+      const c = Number(x.variant.compare_at_price||0);
+      now += p;
+      was += c>p ? c : p;
+    });
+    return { now, was, pct: was>now ? Math.round((1 - now/was)*100) : 0 };
+  }
+  function updateTotals(){
+    const t = computeTotals();
+    totalEl.textContent = fmt(t.now);
+    if(t.pct>0){
+      savePctEl.textContent = `-${t.pct}%`;
+      saveWrap.hidden = false;
+    } else {
+      saveWrap.hidden = true;
+    }
+  }
+
+  // Upsell ordering for step 4: prioritize items sharing tags/traits with chosen core
+  function buildUpsellOrdering(){
+    const s4 = (payload.steps||[]).find(s => Number(s.index)===4);
+    if(!s4) return;
+    const coreTags = new Set();
+    [1,2,3].forEach(s=>{
+      const pick = state.picks[s];
+      if(pick){
+        (String(pick.product.tags||'').split(',').map(t=>t.trim()).filter(Boolean)).forEach(t=>coreTags.add(t));
+        const traits = arrFromTraits(pick.product.traits);
+        traits.forEach(t=>coreTags.add(t));
+      }
+    });
+    const scored = (s4.items||[]).map(prod=>{
+      const tags = new Set(String(prod.tags||'').split(',').map(t=>t.trim()).filter(Boolean));
+      arrFromTraits(prod.traits).forEach(t=>tags.add(t));
+      let score = 0;
+      tags.forEach(t=>{ if(coreTags.has(t)) score+=1; });
+      return { prod, score };
+    }).sort((a,b)=> b.score - a.score);
+
+    const grid = root.querySelector('.js-grid-4');
+    grid.innerHTML = '';
+    scored.forEach(entry => grid.appendChild(makeCard(entry.prod, 4)));
+  }
+  function arrFromTraits(traits){
+    if(!traits) return [];
+    if(Array.isArray(traits)) return traits;
+    if(typeof traits === 'string') return traits.split(',').map(s=>s.trim()).filter(Boolean);
+    return [];
+  }
+
+  // Add all to cart
+  async function ajaxAdd(items){
+    const resp = await fetch('/cart/add.js', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},
+      body: JSON.stringify({ items })
+    });
+    if(!resp.ok) throw new Error('cart');
+    document.dispatchEvent(new CustomEvent('cart:item-added',{detail:{count:items.length}}));
+  }
+  function collectItems(){
+    const items = [];
+    [1,2,3].forEach(s=>{
+      const pick = state.picks[s];
+      if(pick) items.push({ id: pick.variant.id, quantity: 1 });
+    });
+    state.picks.extras.forEach(x => items.push({ id: x.variant.id, quantity: 1 }));
+    return items;
+  }
+  checkoutAll.addEventListener('click', async ()=>{
+    const items = collectItems();
+    if(items.length===0) return;
+    checkoutAll.disabled = true;
+    checkoutAll.textContent = 'Aggiunta in corso…';
+    try{
+      await ajaxAdd(items);
+      checkoutAll.textContent = 'Aggiunto ✓';
+      setTimeout(()=>{ checkoutAll.textContent = 'Aggiungi subito'; checkoutAll.disabled = false; }, 1400);
+    }catch(e){
+      checkoutAll.textContent = 'Errore, riprova';
+      setTimeout(()=>{ checkoutAll.textContent = 'Aggiungi subito'; checkoutAll.disabled = false; }, 1400);
+    }
+  });
+  root.querySelectorAll('.zen-finish').forEach(btn=>{
+    btn.addEventListener('click', ()=> checkoutAll.click());
+  });
+
+  // Render all steps
+  [1,2,3].forEach(i => renderStep(i));
+  // Step 4 renders when opened (to apply upsell score)
+
+  // Step nav buttons
+  stepPanels.forEach(p=>{
+    const prev = p.querySelector('.zen-prev');
+    const next = p.querySelector('.zen-next');
+    if(prev) prev.addEventListener('click', ()=> showStep(state.step-1));
+    if(next) next.addEventListener('click', ()=> showStep(state.step+1));
+  });
+
+  // Init
+  updateProgress();
+  updateTotals();
+  renderPicked();
+  syncNavButtons();
+
+  // Utilities
+  function escapeHtml(s){ return (s||'').replace(/[&<>"']/g,(m)=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
+});
+</script>
+
+{% schema %}
+{
+  "name": "Zen Bundle Builder",
+  "class": "zen-bundle-builder",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Titolo", "default": "Crea il tuo Rituale" },
+    { "type": "text", "id": "subtitle", "label": "Sottotitolo", "default": "Scegli un prodotto per ogni step: Detergi → Tratta → Idrata. Aggiungi Extra per un boost mirato." },
+    { "type": "collection", "id": "step1_collection", "label": "Step 1 — Detergi (collezione)" },
+    { "type": "collection", "id": "step2_collection", "label": "Step 2 — Tratta (collezione)" },
+    { "type": "collection", "id": "step3_collection", "label": "Step 3 — Idrata (collezione)" },
+    { "type": "collection", "id": "step4_collection", "label": "Step 4 — Extra (collezione, facoltativa)" },
+    { "type": "range", "id": "max_per", "label": "Max prodotti per step", "min": 6, "max": 48, "step": 2, "default": 24 },
+    { "type": "text", "id": "free_shipping_threshold", "label": "Soglia spedizione gratuita (€)", "default": "50" }
+  ],
+  "presets": [
+    { "name": "Zen Bundle Builder" }
+  ]
+}
+{% endschema %}

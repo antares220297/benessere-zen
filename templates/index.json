@@ -1,0 +1,530 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "intro_mission_wB3Jqn": {
+      "type": "intro-mission",
+      "name": "Intro Mission with GIF",
+      "settings": {
+        "headline": "Il tuo viaggio verso la bellezza naturale inizia qui",
+        "headline_spacing_desktop": 24,
+        "headline_spacing_mobile": 0,
+        "headline_size_desktop": 48,
+        "headline_size_mobile": 24,
+        "subtext": "Ingredienti naturali, formule pure, benessere autentico.",
+        "subtext_spacing_desktop": 24,
+        "subtext_spacing_mobile": 0,
+        "subtext_size_desktop": 24,
+        "subtext_size_mobile": 16,
+        "cta_text": "Esplora",
+        "cta_link": "shopify://collections/all",
+        "cta_spacing_desktop": 24,
+        "cta_spacing_mobile": 0,
+        "cta_font_size_desktop": 16,
+        "cta_font_size_mobile": 15,
+        "cta_padding_vertical_desktop": 12,
+        "cta_padding_horizontal_desktop": 28,
+        "cta_padding_vertical_mobile": 10,
+        "cta_padding_horizontal_mobile": 24
+      }
+    },
+    "d557b959-57cb-476f-adb6-18808587f120": {
+      "type": "scrolling-banner",
+      "blocks": {
+        "template--21829637407021__d557b959-57cb-476f-adb6-18808587f120-text-1": {
+          "type": "text",
+          "settings": {
+            "text": "10% DI SCONTO PER I NUOVI CLIENTI",
+            "highlight_type": "underline",
+            "text_size": 120,
+            "text_color": "primary",
+            "spacing_left": 100,
+            "spacing_right": 100,
+            "spacing_left_mobile": 0,
+            "spacing_right_mobile": 0
+          }
+        }
+      },
+      "block_order": [
+        "template--21829637407021__d557b959-57cb-476f-adb6-18808587f120-text-1"
+      ],
+      "settings": {
+        "show_border": false,
+        "speed": 50,
+        "direction": "right",
+        "pause_hover": false,
+        "bg_light": "#4b8968",
+        "color_text_light": "#ffffff",
+        "color_text_light_2": "rgba(0,0,0,0)",
+        "color_heading_highlight_light": "rgba(0,0,0,0)",
+        "bg_dark": "#4b8968",
+        "color_text_dark": "#ffffff",
+        "color_text_dark_2": "rgba(0,0,0,0)",
+        "color_heading_highlight_dark": "rgba(0,0,0,0)",
+        "space_block": 60,
+        "padding_top": 28,
+        "padding_bottom": 28,
+        "space_block_mobile": 40,
+        "padding_top_mobile": 20,
+        "padding_bottom_mobile": 20
+      }
+    },
+    "zen_collections_Q8Gb6r": {
+      "type": "zen-collections",
+      "name": "Zen Wellness Collections",
+      "settings": {
+        "section_title": "Le Nostre Collezioni",
+        "section_description": "",
+        "collection_1_url": "shopify://collections/cosmetica",
+        "collection_2_url": "shopify://collections/cosmesi-corpo",
+        "collection_3_url": "shopify://collections/cura-della-persona",
+        "collection_4_url": "shopify://collections/prodotti-per-capelli",
+        "collection_5_url": "shopify://collections/ayurveda",
+        "collection_6_url": "shopify://collections/te-e-tisane-ayurvediche",
+        "collection_7_url": "shopify://collections/oggettistica-e-idee-regalo"
+      }
+    },
+    "why_us_PxVfDJ": {
+      "type": "why-us",
+      "name": "Why Us Cards",
+      "settings": {
+        "title": "Cosa ci rende diversi"
+      }
+    },
+    "testimonials_pkTryA": {
+      "type": "testimonials",
+      "blocks": {
+        "testimonial_9RaQt9": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Ho preso la crema viso lenitiva e mamma mia che freschezza! Con questo caldo estivo è davvero un sollievo sulla pelle, lascia una sensazione piacevolissima.",
+            "author_name": "Alice P.",
+            "author_title": "Cliente Verificata, Arezzo (AR)",
+            "rating": 5
+          }
+        },
+        "testimonial_mQmhMc": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Arrivato il pacco in due giorni, ben imballato. Ho preso il braccialetto con il quarzo rosa, molto bello, le pietre sono fredde al tatto. Mia nipote già me lo vuole rubare 😂",
+            "author_name": "Loredana G.",
+            "author_title": "Cliente Verificata, Seregno (MB)",
+            "rating": 5
+          }
+        },
+        "testimonial_8aNhcf": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Un’amica mi ha parlato dei loro prodotti e anche se ero scettica ho preso siero e crema illuminante. Dopo qualche settimana vedo già risultati! Sicuro proverò anche il resto.",
+            "author_name": "Enrica V.",
+            "author_title": "Cliente Verificato, Bressanone (BZ)",
+            "rating": 5
+          }
+        },
+        "testimonial_KyDjnT": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Devo dire che non sono uno che compra online, ma qui mi sono fidato e ho fatto bene. La tisana dei chakra è buonissima, non serve zucchero, e mi sento più leggero dopo cena.",
+            "author_name": "Antonio C.",
+            "author_title": "Cliente Verificato, Fano (PU)",
+            "rating": 5
+          }
+        },
+        "testimonial_qz396V": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Ho preso il ciondolo di ametista, bello lucente e non quei plasticoni che vendono in giro. Mia moglie contentissima, quindi ho fatto centro!",
+            "author_name": "Carlo M.",
+            "author_title": "Cliente Verificata, Bitonto (BA)",
+            "rating": 5
+          }
+        },
+        "testimonial_y66bHB": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Buon prodotto. Uso la crema mani tutte le sere e la pelle non mi tira più. Consiglio di usarla poco alla volta che è bella corposa.",
+            "author_name": "Maria Rosa F.",
+            "author_title": "Cliente Verificata, Caltagirone (CT)",
+            "rating": 4
+          }
+        },
+        "testimonial_TeiN3t": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Pacco arrivato un po' in ritardo per colpa del corriere ma il servizio clienti molto gentile. Ho preso un set di incensi e la confezione era davvero elegante.",
+            "author_name": "Emma T.",
+            "author_title": "Cliente Verificata, Conegliano (TV)",
+            "rating": 4
+          }
+        },
+        "testimonial_A8UwMD": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Gli oli essenziali durano un sacco e profumano tutta la stanza. Consigliati! Io ho preso quelli alla lavanda, al bergamotto e alla vaniglia.",
+            "author_name": "Giulia B.",
+            "author_title": "Cliente Verificata, Vercelli (VC)",
+            "rating": 5
+          }
+        },
+        "testimonial_Yz4Hhw": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Bella esperienza d'acquisto. Ho preso tre cose diverse e sono arrivate tutte ben confezionate. Non capita spesso di trovare negozi così attenti. Mi hanno anche aggiunto un pensierino!",
+            "author_name": "Simona L.",
+            "author_title": "Cliente Verificata, Pisticci (MT)",
+            "rating": 5
+          }
+        },
+        "testimonial_VcKyfm": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Il braccialetto alla sodalite è bellissimo, i colori sono vivi. Io non ci credo tanto a queste cose ma devo dire che da quando lo porto mi sento più tranquilla.",
+            "author_name": "Francesco D.",
+            "author_title": "Cliente Verificato, Asti (AT)",
+            "rating": 5
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_9RaQt9",
+        "testimonial_mQmhMc",
+        "testimonial_8aNhcf",
+        "testimonial_KyDjnT",
+        "testimonial_qz396V",
+        "testimonial_y66bHB",
+        "testimonial_TeiN3t",
+        "testimonial_A8UwMD",
+        "testimonial_Yz4Hhw",
+        "testimonial_VcKyfm"
+      ],
+      "name": "Zen Testimonials",
+      "settings": {
+        "heading": "Cosa Dicono i Nostri Clienti",
+        "subheading": "",
+        "show_arrows": true,
+        "show_pagination": true
+      }
+    },
+    "zen_rituale_finder_hmN839": {
+      "type": "zen-rituale-finder",
+      "disabled": true,
+      "name": "Zen Rituale Finder",
+      "settings": {
+        "title": "Trova il tuo Rituale Perfetto",
+        "subtitle": "Rispondi ad alcune domande: ti suggeriamo noi il set ideale per te.",
+        "color_accent": "#f7d759",
+        "color_cta": "#f1c40f",
+        "color_text": "#b8860b",
+        "color_text_muted": "#8b7355",
+        "color_bg": "#fffbf0",
+        "color_card": "#fdf2b8",
+        "color_border": "#e6c068",
+        "color_media": "#fcf3cf",
+        "color_progress": "#f7dc6f"
+      }
+    },
+    "zen_analisi_energetica_N7AbnP": {
+      "type": "zen-analisi-energetica",
+      "disabled": true,
+      "name": "Zen Energy Mapper",
+      "settings": {
+        "main_heading": "La Tua Mappa Energetica Personale",
+        "main_description": "Scopri il tuo equilibrio energetico attraverso un'analisi completa dei 7 chakra principali. Ricevi consigli personalizzati per migliorare il tuo benessere spirituale.",
+        "start_button_text": "Inizia il Test Energetico",
+        "card1_title": "Analisi Profonda",
+        "card1_text": "Percorso guidato per esplorare il tuo equilibrio energetico",
+        "card2_title": "Consigli Personalizzati",
+        "card2_text": "Suggerimenti specifici basati sul tuo profilo energetico unico",
+        "card3_title": "Prodotti Raccomandati",
+        "card3_text": "Selezione curata di prodotti per potenziare il tuo benessere",
+        "show_products": true,
+        "discount_code": "RITUALE15"
+      }
+    },
+    "interactive_collections_MRgFPT": {
+      "type": "InteractiveCollections",
+      "blocks": {
+        "collection_EeLPhN": {
+          "type": "collection",
+          "settings": {
+            "collection_handle": "linea-distensiva",
+            "badge_text": "",
+            "badge_type": "new",
+            "featured": false
+          }
+        },
+        "collection_rcQdHV": {
+          "type": "collection",
+          "settings": {
+            "collection_handle": "linea-rigenerante",
+            "badge_text": "",
+            "badge_type": "new",
+            "featured": false
+          }
+        },
+        "collection_a8VTJR": {
+          "type": "collection",
+          "settings": {
+            "collection_handle": "linea-purificante",
+            "badge_text": "",
+            "badge_type": "new",
+            "featured": false
+          }
+        },
+        "collection_C4EtjH": {
+          "type": "collection",
+          "settings": {
+            "collection_handle": "linea-lenitiva",
+            "badge_text": "",
+            "badge_type": "new",
+            "featured": false
+          }
+        },
+        "collection_wf7Nn4": {
+          "type": "collection",
+          "settings": {
+            "collection_handle": "linea-igiene-corpo",
+            "badge_text": "",
+            "badge_type": "new",
+            "featured": false
+          }
+        }
+      },
+      "block_order": [
+        "collection_EeLPhN",
+        "collection_rcQdHV",
+        "collection_a8VTJR",
+        "collection_C4EtjH",
+        "collection_wf7Nn4"
+      ],
+      "disabled": true,
+      "name": "Zen Bubble Collections",
+      "settings": {
+        "section_title": "Scopri la linea perfetta per te",
+        "layout": "grid",
+        "collections_per_row": 5,
+        "show_collection_count": true,
+        "primary_color": "#f28ba8"
+      }
+    },
+    "zen_bundle_builder_9gFaHR": {
+      "type": "zen-bundle-builder",
+      "disabled": true,
+      "name": "Zen Bundle Builder",
+      "settings": {
+        "title": "Crea il tuo Rituale",
+        "subtitle": "Scegli un prodotto per ogni step: Detergi → Tratta → Idrata. Aggiungi Extra per un boost mirato.",
+        "step1_collection": "",
+        "step2_collection": "",
+        "step3_collection": "",
+        "step4_collection": "",
+        "max_per": 24,
+        "free_shipping_threshold": "50"
+      }
+    },
+    "zen_ingredienti_viventi_TibMUk": {
+      "type": "zen-ingredienti-viventi",
+      "blocks": {
+        "ingredient_kPy9fB": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Acido Ialuronico",
+            "slug": "",
+            "inci": "Sodium Hyaluronate",
+            "short_desc": "Idrata intensamente e migliora l’elasticità cutanea.",
+            "benefits": "",
+            "usage": "",
+            "tags": "",
+            "products": []
+          }
+        }
+      },
+      "block_order": [
+        "ingredient_kPy9fB"
+      ],
+      "disabled": true,
+      "name": "Glossario",
+      "settings": {
+        "title": "Ingredienti Viventi",
+        "subtitle": "Scopri i benefici reali degli attivi presenti nelle nostre formule.",
+        "data_source": "manual",
+        "metaobject_type": "ingrediente",
+        "enable_search": true,
+        "enable_tags": true,
+        "max_items": 60
+      }
+    },
+    "collection_list_mBhw9k": {
+      "type": "collection-list",
+      "blocks": {
+        "featured_collection_T4GnmH": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "linea-distensiva"
+          }
+        },
+        "featured_collection_bxW4Mg": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "linea-purificante"
+          }
+        },
+        "featured_collection_JkgynL": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "linea-lenitiva"
+          }
+        },
+        "featured_collection_fXV6DB": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "linea-rigenerante"
+          }
+        }
+      },
+      "block_order": [
+        "featured_collection_T4GnmH",
+        "featured_collection_bxW4Mg",
+        "featured_collection_JkgynL",
+        "featured_collection_fXV6DB"
+      ],
+      "disabled": true,
+      "settings": {
+        "heading": "Scopri la linea perfetta per te",
+        "highlight_type": "underline",
+        "heading_size": 100,
+        "heading_tag": "h2",
+        "heading_alignment": "center",
+        "show_view_all": false,
+        "background_color_light": "",
+        "background_color_dark": "",
+        "collection_metafield": "",
+        "image_ratio": "square",
+        "title_size": 80,
+        "show_text_overlay": false,
+        "content_alignment": "center",
+        "content_position": "bottom",
+        "image_overlay_opacity": 5,
+        "title_color": "rgba(0,0,0,0)",
+        "text_light": "rgba(0,0,0,0)",
+        "title_color_dark": "rgba(0,0,0,0)",
+        "text_dark": "rgba(0,0,0,0)",
+        "show_item_count": false,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "enable_desktop_slider": true,
+        "swiper_on_mobile": true,
+        "spacing": 15,
+        "show_section_divider": false,
+        "full_width": false,
+        "padding_top": 28,
+        "padding_bottom": 28,
+        "spacing_mobile": 15,
+        "show_section_divider_mobile": false,
+        "padding_top_mobile": 28,
+        "padding_bottom_mobile": 28
+      }
+    },
+    "faq_FgMKeg": {
+      "type": "faq",
+      "blocks": {
+        "frequently_asked_question_UPBjQU": {
+          "type": "frequently_asked_question",
+          "settings": {
+            "icon": "leaf",
+            "another_icon": "",
+            "custom_icon": "",
+            "heading": "I vostri prodotti sono davvero naturali?",
+            "row_content": "<p>Sì, tutti i nostri prodotti sono realizzati con ingredienti naturali e selezionati con cura. Non contengono parabeni, siliconi o sostanze chimiche aggressive. Offriamo anche prodotti ispirati alla filosofia ayurvedica, ma il nostro assortimento include una varietà di cosmetici formulati per il benessere della pelle, indipendentemente dall’approccio ayurvedico.</p>"
+          }
+        },
+        "frequently_asked_question_WXLQt9": {
+          "type": "frequently_asked_question",
+          "settings": {
+            "icon": "heart",
+            "another_icon": "",
+            "custom_icon": "",
+            "heading": "I vostri cosmetici sono adatti a tutti i tipi di pelle?",
+            "row_content": "<p>Sì, abbiamo formulazioni studiate per ogni tipo di pelle, comprese quelle sensibili. Ogni prodotto è descritto con le sue proprietà specifiche per aiutarti a scegliere quello più adatto alle tue esigenze.</p>"
+          }
+        },
+        "frequently_asked_question_FjQnXP": {
+          "type": "frequently_asked_question",
+          "settings": {
+            "icon": "clock",
+            "another_icon": "",
+            "custom_icon": "",
+            "heading": "Quanto tempo impiega la spedizione?",
+            "row_content": "<p>Gli ordini vengono elaborati entro 24 ore e spediti in 1-3 giorni lavorativi. Per gli ordini superiori a 49€, la spedizione è gratuita.</p>"
+          }
+        },
+        "frequently_asked_question_Mei6iH": {
+          "type": "frequently_asked_question",
+          "settings": {
+            "icon": "box",
+            "another_icon": "",
+            "custom_icon": "",
+            "heading": "Posso restituire un prodotto se non sono soddisfatto?",
+            "row_content": "<p>Accettiamo resi entro 14 giorni dalla ricezione dell’ordine, purché il prodotto sia integro e non utilizzato. Contattaci per assistenza, saremo felici di aiutarti!</p>"
+          }
+        }
+      },
+      "block_order": [
+        "frequently_asked_question_UPBjQU",
+        "frequently_asked_question_WXLQt9",
+        "frequently_asked_question_FjQnXP",
+        "frequently_asked_question_Mei6iH"
+      ],
+      "settings": {
+        "heading": "FAQs",
+        "highlight_type": "underline",
+        "heading_size": 100,
+        "heading_tag": "h2",
+        "heading_alignment": "center",
+        "show_border": false,
+        "row_background": false,
+        "collapsible": true,
+        "show_view_all": false,
+        "view_all_position": "top",
+        "button_link": "",
+        "open_new_window": false,
+        "background_color_light": "rgba(0,0,0,0)",
+        "background_color_dark": "rgba(0,0,0,0)",
+        "enable_microdata_schema": false,
+        "desktop_layout": "1",
+        "image_alignment": "left",
+        "desktop_height": "400px",
+        "show_section_divider": false,
+        "make_full_page_width": false,
+        "padding_top": 28,
+        "padding_bottom": 28,
+        "image_alignment_mobile": "left",
+        "mobile_height": "250px",
+        "show_section_divider_mobile": false,
+        "padding_top_mobile": 28,
+        "padding_bottom_mobile": 28
+      }
+    }
+  },
+  "order": [
+    "intro_mission_wB3Jqn",
+    "d557b959-57cb-476f-adb6-18808587f120",
+    "zen_collections_Q8Gb6r",
+    "why_us_PxVfDJ",
+    "testimonials_pkTryA",
+    "zen_rituale_finder_hmN839",
+    "zen_analisi_energetica_N7AbnP",
+    "interactive_collections_MRgFPT",
+    "zen_bundle_builder_9gFaHR",
+    "zen_ingredienti_viventi_TibMUk",
+    "collection_list_mBhw9k",
+    "faq_FgMKeg"
+  ]
+}
