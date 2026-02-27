@@ -17,19 +17,19 @@
 
   {%- comment -%} LAYER 2: Testo che emerge durante lo scroll {%- endcomment -%}
   <div class="zen-hero__content">
-    <div class="zen-hero__text zen-hero__text--1" data-scroll-reveal="0.15">
+    <div class="zen-hero__text zen-hero__text--1" data-scroll-reveal="0.10">
       <span>{{ section.settings.text_1 | default: 'Respira.' }}</span>
     </div>
-    <div class="zen-hero__text zen-hero__text--2" data-scroll-reveal="0.35">
+    <div class="zen-hero__text zen-hero__text--2" data-scroll-reveal="0.30">
       <span>{{ section.settings.text_2 | default: 'Lascia andare.' }}</span>
     </div>
-    <div class="zen-hero__text zen-hero__text--3" data-scroll-reveal="0.55">
+    <div class="zen-hero__text zen-hero__text--3" data-scroll-reveal="0.50">
       <span>{{ section.settings.text_3 | default: 'Trova il tuo equilibrio.' }}</span>
     </div>
   </div>
 
   {%- comment -%} LAYER 3: CTA che appare alla fine dello scroll {%- endcomment -%}
-  <div class="zen-hero__cta" data-scroll-reveal="0.80">
+  <div class="zen-hero__cta" data-scroll-reveal="0.70">
     <a href="{{ section.settings.cta_link_1 | default: '/collections/all' }}" class="zen-hero__btn zen-hero__btn--primary">
       {{ section.settings.cta_text_1 | default: 'Esplora la Collezione' }}
     </a>
@@ -56,7 +56,7 @@
 
 .zen-hero {
   position: relative;
-  height: 300vh; /* 3 viewport heights di scroll */
+  height: 200vh; /* Reduced from 300vh to eliminate black gap */
   background: #0F0F0F;
 }
 
@@ -137,9 +137,14 @@
   text-shadow: 0 2px 20px rgba(0,0,0,0.5);
 }
 
-.zen-hero__text--1 span { font-size: clamp(2rem, 5vw, 4rem); font-weight: 300; font-style: italic; }
-.zen-hero__text--2 span { font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 400; }
-.zen-hero__text--3 span { font-size: clamp(1.5rem, 4vw, 3rem); font-weight: 300; color: #C9A84C; }
+.zen-hero__text--1 span,
+.zen-hero__text--2 span,
+.zen-hero__text--3 span {
+  font-size: clamp(36px, 6vw, 72px);
+  font-weight: 300;
+  font-style: italic;
+  color: #E8E8E8;
+}
 
 /* CTA buttons */
 .zen-hero__cta {
@@ -161,12 +166,12 @@
 
 .zen-hero__btn {
   display: inline-block;
-  padding: 14px 32px;
-  border-radius: 2px;
+  padding: 16px 40px;
+  border-radius: 4px;
   font-family: 'Josefin Sans', 'Lato', sans-serif;
   font-size: 14px;
   font-weight: 600;
-  letter-spacing: 1.5px;
+  letter-spacing: 2px;
   text-transform: uppercase;
   text-decoration: none;
   transition: all 0.3s ease;
@@ -176,22 +181,22 @@
 .zen-hero__btn--primary {
   background: #C9A84C;
   color: #0F0F0F;
-  border: 2px solid #C9A84C;
+  border: 1.5px solid #C9A84C;
 }
 
 .zen-hero__btn--primary:hover {
-  background: transparent;
-  color: #C9A84C;
+  background: #B8933B;
+  border-color: #B8933B;
+  color: #0F0F0F;
 }
 
 .zen-hero__btn--ghost {
   background: transparent;
   color: #C9A84C;
-  border: 2px solid rgba(201, 168, 76, 0.4);
+  border: 1.5px solid #C9A84C;
 }
 
 .zen-hero__btn--ghost:hover {
-  border-color: #C9A84C;
   background: rgba(201, 168, 76, 0.1);
 }
 
@@ -225,7 +230,7 @@
 
 /* ═══ MOBILE ═══ */
 @media (max-width: 768px) {
-  .zen-hero { height: 250vh; }
+  .zen-hero { height: 180vh; }
 
   .zen-hero__cta {
     flex-direction: column;
@@ -298,7 +303,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     /* ─── CTA ─── */
-    if (progress >= 0.80) {
+    if (progress >= 0.70) {
       cta.classList.add('is-visible');
     } else {
       cta.classList.remove('is-visible');

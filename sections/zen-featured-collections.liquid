@@ -8,6 +8,10 @@
   </div>
   <div class="zen-feat-coll__grid">
     {% for block in section.blocks %}
+      {%- liquid
+        assign coll_handle = block.settings.link | split: '/collections/' | last | split: '?' | first
+        assign coll_obj = collections[coll_handle]
+      -%}
       <a href="{{ block.settings.link | default: '#' }}" class="zen-feat-coll__card" {{ block.shopify_attributes }}>
         {% if block.settings.image != blank %}
           <img
@@ -16,8 +20,24 @@
             loading="lazy"
             class="zen-feat-coll__img"
           >
+        {% elsif coll_obj.image %}
+          <img
+            src="{{ coll_obj.image | image_url: width: 800 }}"
+            alt="{{ block.settings.title | escape }}"
+            loading="lazy"
+            class="zen-feat-coll__img"
+          >
+        {% elsif coll_obj.products.first.featured_image %}
+          <img
+            src="{{ coll_obj.products.first.featured_image | image_url: width: 800 }}"
+            alt="{{ block.settings.title | escape }}"
+            loading="lazy"
+            class="zen-feat-coll__img"
+          >
         {% else %}
-          <div class="zen-feat-coll__placeholder"></div>
+          <div class="zen-feat-coll__placeholder">
+            <span class="zen-feat-coll__placeholder-icon">&#10022;</span>
+          </div>
         {% endif %}
         <div class="zen-feat-coll__overlay">
           <h3 class="zen-feat-coll__card-title">{{ block.settings.title }}</h3>
@@ -83,7 +103,16 @@
 }
 
 .zen-feat-coll__placeholder {
-  background: linear-gradient(135deg, #1A1A2E, #16213E);
+  background: linear-gradient(135deg, #1A1A2E, #2D2D44);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.zen-feat-coll__placeholder-icon {
+  font-size: 48px;
+  color: #C9A84C;
+  opacity: 0.3;
 }
 
 .zen-feat-coll__card:hover .zen-feat-coll__img {
