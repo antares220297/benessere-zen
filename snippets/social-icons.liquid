@@ -1,6 +1,7 @@
 {%- if settings.social_facebook_link != blank -%}
   <li>
-    <a href="{{ settings.social_facebook_link }}" target="blank" aria-label="{{ 'general.social.links.facebook' | t }}" class="flex disable-effect hover-text-link w-11 h-11 pt-3 pr-3 pb-3 pl-3{% if footer %} border border-solid rounded-full{% endif %}">
+    <!-- FASE-0: Aggiunto target="_blank" e rel="noopener noreferrer" per sicurezza -->
+    <a href="{{ settings.social_facebook_link }}" target="_blank" rel="noopener noreferrer" aria-label="{{ 'general.social.links.facebook' | t }}" class="flex disable-effect hover-text-link w-11 h-11 pt-3 pr-3 pb-3 pl-3{% if footer %} border border-solid rounded-full{% endif %}">
       {%- render 'icon-media', icon: 'icon-facebook' -%}
     </a>
   </li>
@@ -21,7 +22,8 @@
 {%- endif -%}
 {%- if settings.social_instagram_link != blank -%}
   <li>
-    <a href="{{ settings.social_instagram_link }}" target="blank" aria-label="{{ 'general.social.links.instagram' | t }}" class="flex disable-effect hover-text-link w-11 h-11 pt-3 pr-3 pb-3 pl-3{% if footer %} border border-solid rounded-full{% endif %}">
+    <!-- FASE-0: Aggiunto target="_blank" e rel="noopener noreferrer" per sicurezza -->
+    <a href="{{ settings.social_instagram_link }}" target="_blank" rel="noopener noreferrer" aria-label="{{ 'general.social.links.instagram' | t }}" class="flex disable-effect hover-text-link w-11 h-11 pt-3 pr-3 pb-3 pl-3{% if footer %} border border-solid rounded-full{% endif %}">
       {%- render 'icon-media', icon: 'icon-instagram' -%}
     </a>
   </li>

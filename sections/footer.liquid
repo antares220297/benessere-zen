@@ -389,6 +389,11 @@
         {% endif %}       
       {%- endif -%}
     </div>
+    <!-- FASE-0: Dati legali obbligatori D.Lgs. 70/2003 -->
+    <div class="footer__legal-info" style="text-align: center; padding: 16px 0 8px; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 16px; font-size: 12px; color: #888; line-height: 1.8;">
+      <p style="margin: 0;">Benessere Zen di Balboni Simona — P.IVA: IT02091600383</p>
+      <p style="margin: 0;">Via M. Provenzali 1, 44042 Cento (FE) — Italia</p>
+    </div>
     <div class="flex flex-col items-center{% if section.settings.additional_layout == 'horizontal' %} lg:pl-14 lg:max-w-3xl{% endif %}">
       <div class="{% if section.settings.show_copyright %}mt-4 md:mt-4 base-link text-center{% if section.settings.additional_layout == 'vertical' %} lg:mt-4{% else %} lg:mt-0 lg:text-right{% endif %}{% endif %} p-break-words">
         {%- if section.settings.show_copyright -%}
