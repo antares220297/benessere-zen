@@ -1,12 +1,13 @@
-{% liquid 
-  assign num_loop = 8
+{% comment %} FASE-1: Ridotto num_loop da 8 a 2 per diminuire ripetizioni DOM da 24 a 6 {% endcomment %}
+{% liquid
+  assign num_loop = 2
   assign number = 1
   if section.blocks.size > 2
-    assign num_loop = 4
+    assign num_loop = 2
     assign number = 2
   endif
   if section.blocks.size > 5
-    assign num_loop = 2
+    assign num_loop = 1
   endif
   if section.blocks.size > 7
     assign num_loop = 1
