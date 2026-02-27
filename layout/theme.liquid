@@ -103,25 +103,13 @@
       </a>
 
       {% case settings.selected_preset %}
-        {% when "breath" %}
-          {% sections 'header-group-breath' %}
-        {% when "swirl" %}
-          {% sections 'header-group-swirl' %}
-        {% when "whiff" %}
-          {% sections 'header-group-whiff' %}
         {% when "puff" %}
           {% sections 'header-group-puff' %}
         {% else %}
           {% sections 'header-group' %}
       {% endcase %}
-      
+
       {% case settings.selected_preset %}
-        {% when "breath" %}
-          {% sections 'aside-group-breath' %}
-        {% when "swirl" %}
-          {% sections 'aside-group-swirl' %}
-        {% when "whiff" %}
-          {% sections 'aside-group-whiff' %}
         {% when "puff" %}
           {% sections 'aside-group-puff' %}
         {% else %}
@@ -133,12 +121,6 @@
       </main>
 
       {% case settings.selected_preset %}
-        {% when "breath" %}
-          {% sections 'footer-group-breath' %}
-        {% when "swirl" %}
-          {% sections 'footer-group-swirl' %}
-        {% when "whiff" %}
-          {% sections 'footer-group-whiff' %}
         {% when "puff" %}
           {% sections 'footer-group-puff' %}
         {% else %}
