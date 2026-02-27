@@ -416,42 +416,5 @@ document.addEventListener('DOMContentLoaded', function(){
 </script>
 
 {% schema %}
-{
-  "name": "Glossario",
-  "class": "zen-ingredienti-viventi",
-  "settings": [
-    { "type": "text", "id": "title", "label": "Titolo", "default": "Ingredienti Viventi" },
-    { "type": "text", "id": "subtitle", "label": "Sottotitolo", "default": "Scopri i benefici reali degli attivi presenti nelle nostre formule." },
-    { "type": "radio", "id": "data_source", "label": "Sorgente dati", "options": [
-        { "value": "metaobject", "label": "Metaobject (consigliato)" },
-        { "value": "manual", "label": "Manuale (blocchi)" }
-      ],
-      "default": "metaobject"
-    },
-    { "type": "text", "id": "metaobject_type", "label": "Handle metaobject", "default": "ingrediente", "info": "Esempio: ingrediente" },
-    { "type": "checkbox", "id": "enable_search", "label": "Abilita ricerca", "default": true },
-    { "type": "checkbox", "id": "enable_tags", "label": "Abilita tag filtro", "default": true },
-    { "type": "range", "id": "max_items", "label": "Numero massimo da mostrare", "min": 6, "max": 200, "step": 2, "default": 60 }
-  ],
-  "blocks": [
-    {
-      "type": "ingredient",
-      "name": "Ingrediente (manuale)",
-      "settings": [
-        { "type": "text", "id": "name", "label": "Nome", "default": "Acido Ialuronico" },
-        { "type": "text", "id": "slug", "label": "Slug (opzionale)" },
-        { "type": "text", "id": "inci", "label": "INCI", "default": "Sodium Hyaluronate" },
-        { "type": "text", "id": "short_desc", "label": "Descrizione breve", "default": "Idrata intensamente e migliora l’elasticità cutanea." },
-        { "type": "textarea", "id": "benefits", "label": "Benefici (testo o HTML breve)" },
-        { "type": "textarea", "id": "usage", "label": "Come si usa (testo o HTML breve)" },
-        { "type": "text", "id": "tags", "label": "Tag (separati da virgola)", "info": "Esempio: idratante,lenitivo" },
-        { "type": "image_picker", "id": "image", "label": "Immagine" },
-        { "type": "product_list", "id": "products", "label": "Prodotti correlati" }
-      ]
-    }
-  ],
-  "presets": [
-    { "name": "Glossario" }
-  ]
-}
+{"name":"Glossario","class":"zen-ingredienti-viventi","settings":[{"type":"text","id":"title","label":"Titolo","default":"Ingredienti Viventi"},{"type":"text","id":"subtitle","label":"Sottotitolo","default":"Scopri i benefici reali degli attivi presenti nelle nostre formule."},{"type":"radio","id":"data_source","label":"Sorgente dati","options":[{"value":"metaobject","label":"Metaobject (consigliato)"},{"value":"manual","label":"Manuale (blocchi)"}],"default":"metaobject"},{"type":"text","id":"metaobject_type","label":"Handle metaobject","default":"ingrediente","info":"Esempio: ingrediente"},{"type":"checkbox","id":"enable_search","label":"Abilita ricerca","default":true},{"type":"checkbox","id":"enable_tags","label":"Abilita tag filtro","default":true},{"type":"range","id":"max_items","label":"Numero massimo da mostrare","min":6,"max":200,"step":2,"default":60}],"blocks":[{"type":"ingredient","name":"Ingrediente (manuale)","settings":[{"type":"text","id":"name","label":"Nome","default":"Acido Ialuronico"},{"type":"text","id":"slug","label":"Slug (opzionale)"},{"type":"text","id":"inci","label":"INCI","default":"Sodium Hyaluronate"},{"type":"text","id":"short_desc","label":"Descrizione breve","default":"Idrata intensamente e migliora l’elasticità cutanea."},{"type":"textarea","id":"benefits","label":"Benefici (testo o HTML breve)"},{"type":"textarea","id":"usage","label":"Come si usa (testo o HTML breve)"},{"type":"text","id":"tags","label":"Tag (separati da virgola)","info":"Esempio: idratante,lenitivo"},{"type":"image_picker","id":"image","label":"Immagine"},{"type":"product_list","id":"products","label":"Prodotti correlati"}]}],"presets":[{"name":"Glossario"}]}
 {% endschema %}
