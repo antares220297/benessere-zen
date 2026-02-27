@@ -25,40 +25,30 @@
       {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
       {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
     </title>
-    {%- if settings.enable_organization_schema and template.name == 'index' -%}
-      {% liquid 
-        if settings.business_address_1 != nil
-          assign first_business_addr = settings.business_address_1 | split: ","
-        endif
-        if settings.business_address_2 != nil
-          assign second_business_addr = settings.business_address_2 | split: ","
-        endif
-      %}
+    <!-- FASE-1: Organization Schema Markup (sostituisce schema condizionale precedente) -->
+    {%- if template.name == 'index' -%}
       <script type="application/ld+json">
         {
-          "@context": "http://schema.org",
-          "@type": "{{ settings.site_type }}",
-          "name": "{{ settings.business_name }}",
-          "description": "{{ settings.business_description }}",
-          {% if settings.business_logo != blank %}
-          "logo": {{ settings.business_logo | image_url: width: 112 | prepend: "https:" | json }},
-          {% endif %}
-          "telephone": "{{ settings.business_phone }}",
-          "address": [{
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "name": "Benessere Zen",
+          "legalName": "Benessere Zen di Balboni Simona",
+          "url": "https://benesserezen.shop",
+          "logo": "https:{{ settings.business_logo | image_url: width: 500 }}",
+          "description": "Cristalli, incensi, prodotti ayurvedici e oggettistica per il benessere spirituale. Ingredienti naturali e spedizione gratuita sopra €49.",
+          "address": {
             "@type": "PostalAddress",
-            "streetAddress": "{{ first_business_addr[0] }}",
-            "addressLocality": "{{ first_business_addr[1] }}",
-            "addressRegion": "{{ first_business_addr[2] }}",
-            "postalCode": "{{ first_business_addr[3] }}",
-            "addressCountry": "{{ first_business_addr[4] }}"
-          },{
-            "streetAddress": "{{ second_business_addr[0] }}",
-            "addressLocality": "{{ second_business_addr[1] }}",
-            "addressRegion": "{{ second_business_addr[2] }}",
-            "postalCode": "{{ second_business_addr[3] }}",
-            "addressCountry": "{{ second_business_addr[4] }}"
-          }],
-          "email": "{{ settings.business_email }}"
+            "streetAddress": "Via M. Provenzali 1",
+            "addressLocality": "Cento",
+            "postalCode": "44042",
+            "addressRegion": "FE",
+            "addressCountry": "IT"
+          },
+          "vatID": "IT02091600383",
+          "sameAs": [
+            "https://www.instagram.com/benesserezen.shop",
+            "https://www.facebook.com/p/Benessere-Zen-61567917098683/"
+          ]
         }
       </script>
     {%- endif -%}
