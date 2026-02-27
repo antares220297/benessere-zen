@@ -1,0 +1,176 @@
+<!-- FASE-3B: Blog Preview "Il Giornale Zen" -->
+{%- assign blog_handle = section.settings.blog | default: 'news' -%}
+{%- assign blog_obj = blogs[blog_handle] -%}
+
+<section class="zen-blog" data-section-id="{{ section.id }}">
+  <div class="zen-blog__header">
+    <span class="zen-blog__eyebrow">{{ section.settings.eyebrow | default: 'Dal nostro blog' }}</span>
+    <h2 class="zen-blog__title">{{ section.settings.heading | default: 'Il Giornale Zen' }}</h2>
+  </div>
+
+  {% if blog_obj and blog_obj.articles_count > 0 %}
+    <div class="zen-blog__grid">
+      {% for article in blog_obj.articles limit: section.settings.limit | default: 3 %}
+        <a href="{{ article.url }}" class="zen-blog__card">
+          {% if article.image %}
+            <img
+              src="{{ article.image | image_url: width: 600 }}"
+              alt="{{ article.title | escape }}"
+              loading="lazy"
+              class="zen-blog__card-img"
+            >
+          {% else %}
+            <div class="zen-blog__card-placeholder"></div>
+          {% endif %}
+          <div class="zen-blog__card-body">
+            <time class="zen-blog__card-date" datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+              {{ article.published_at | date: '%d %B %Y' }}
+            </time>
+            <h3 class="zen-blog__card-title">{{ article.title }}</h3>
+            {% if article.excerpt_or_content != blank %}
+              <p class="zen-blog__card-excerpt">
+                {{ article.excerpt_or_content | strip_html | truncatewords: 20 }}
+              </p>
+            {% endif %}
+            <span class="zen-blog__card-link">Leggi →</span>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="zen-blog__empty">
+      Il blog è in arrivo. Iscriviti alla newsletter per non perdere i primi articoli.
+    </p>
+  {% endif %}
+
+  {% if blog_obj and section.settings.show_view_all %}
+    <div class="zen-blog__footer">
+      <a href="{{ blog_obj.url }}" class="zen-blog__view-all">
+        {{ section.settings.view_all_text | default: 'Tutti gli articoli →' }}
+      </a>
+    </div>
+  {% endif %}
+</section>
+
+<style>
+.zen-blog {
+  padding: 80px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.zen-blog__header { text-align: center; margin-bottom: 48px; }
+
+.zen-blog__eyebrow {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 11px; letter-spacing: 3px;
+  text-transform: uppercase; color: #C9A84C;
+  display: block; margin-bottom: 12px;
+}
+
+.zen-blog__title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 400; color: #E8E8E8; margin: 0;
+}
+
+.zen-blog__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.zen-blog__card {
+  text-decoration: none;
+  display: block;
+  border-radius: 4px;
+  overflow: hidden;
+  background: rgba(26, 26, 46, 0.3);
+  border: 1px solid rgba(232, 232, 232, 0.05);
+  transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+.zen-blog__card:hover {
+  border-color: rgba(201, 168, 76, 0.2);
+  transform: translateY(-4px);
+}
+
+.zen-blog__card-img {
+  width: 100%; aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+.zen-blog__card-placeholder {
+  aspect-ratio: 16 / 10;
+  background: linear-gradient(135deg, #1A1A2E, #16213E);
+}
+
+.zen-blog__card-body { padding: 20px; }
+
+.zen-blog__card-date {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 11px; letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(232, 232, 232, 0.35);
+  display: block; margin-bottom: 8px;
+}
+
+.zen-blog__card-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.2rem; font-weight: 500;
+  color: #E8E8E8; margin: 0 0 8px;
+  line-height: 1.3;
+}
+
+.zen-blog__card-excerpt {
+  font-family: 'Lato', sans-serif;
+  font-size: 14px; line-height: 1.6;
+  color: rgba(232, 232, 232, 0.5);
+  margin: 0 0 12px;
+}
+
+.zen-blog__card-link {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 12px; letter-spacing: 1.5px;
+  text-transform: uppercase; color: #C9A84C;
+}
+
+.zen-blog__empty {
+  text-align: center;
+  font-family: 'Lato', sans-serif;
+  color: rgba(232, 232, 232, 0.4);
+  font-style: italic;
+}
+
+.zen-blog__footer { text-align: center; margin-top: 40px; }
+
+.zen-blog__view-all {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 13px; letter-spacing: 1.5px;
+  text-transform: uppercase; color: #C9A84C;
+  text-decoration: none;
+  transition: letter-spacing 0.3s ease;
+}
+
+.zen-blog__view-all:hover { letter-spacing: 3px; }
+
+@media (max-width: 768px) {
+  .zen-blog { padding: 48px 16px; }
+  .zen-blog__grid { grid-template-columns: 1fr; }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Zen Blog Preview",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Etichetta", "default": "Dal nostro blog" },
+    { "type": "text", "id": "heading", "label": "Titolo", "default": "Il Giornale Zen" },
+    { "type": "text", "id": "blog", "label": "Handle del blog", "default": "news", "info": "L'handle del blog Shopify (es. 'news')" },
+    { "type": "range", "id": "limit", "label": "Numero articoli", "min": 1, "max": 6, "step": 1, "default": 3 },
+    { "type": "checkbox", "id": "show_view_all", "label": "Mostra 'Tutti gli articoli'", "default": true },
+    { "type": "text", "id": "view_all_text", "label": "Testo view all", "default": "Tutti gli articoli →" }
+  ],
+  "presets": [{ "name": "Zen Blog Preview" }]
+}
+{% endschema %}

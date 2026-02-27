@@ -1,0 +1,89 @@
+<!-- FASE-3B: Quiz CTA Banner -->
+<section class="zen-quiz-cta" data-section-id="{{ section.id }}">
+  <div class="zen-quiz-cta__inner">
+    <span class="zen-quiz-cta__icon">✦</span>
+    <h2 class="zen-quiz-cta__title">{{ section.settings.heading | default: 'Non sai da dove iniziare?' }}</h2>
+    <p class="zen-quiz-cta__text">{{ section.settings.text | default: 'Rispondi a 5 domande e scopri quali prodotti sono in sintonia con la tua energia. Ricevi un bundle personalizzato con il 15% di sconto.' }}</p>
+    <a href="{{ section.settings.cta_link | default: '/pages/quiz' }}" class="zen-quiz-cta__btn">
+      {{ section.settings.cta_text | default: 'Trova il Tuo Rituale' }}
+    </a>
+  </div>
+</section>
+
+<style>
+.zen-quiz-cta {
+  padding: 80px 20px;
+  background: linear-gradient(135deg, rgba(26, 26, 46, 0.8), rgba(15, 15, 15, 0.9));
+  border-top: 1px solid rgba(201, 168, 76, 0.08);
+  border-bottom: 1px solid rgba(201, 168, 76, 0.08);
+}
+
+.zen-quiz-cta__inner {
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.zen-quiz-cta__icon {
+  font-size: 28px;
+  color: #C9A84C;
+  display: block;
+  margin-bottom: 20px;
+  opacity: 0.7;
+}
+
+.zen-quiz-cta__title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+  font-weight: 400;
+  color: #E8E8E8;
+  margin: 0 0 16px;
+}
+
+.zen-quiz-cta__text {
+  font-family: 'Lato', sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+  color: rgba(232, 232, 232, 0.6);
+  margin: 0 0 32px;
+}
+
+.zen-quiz-cta__btn {
+  display: inline-block;
+  padding: 16px 40px;
+  background: #C9A84C;
+  color: #0F0F0F;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 2px solid #C9A84C;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.zen-quiz-cta__btn:hover {
+  background: transparent;
+  color: #C9A84C;
+}
+
+@media (max-width: 768px) {
+  .zen-quiz-cta { padding: 48px 16px; }
+  .zen-quiz-cta__btn { padding: 14px 32px; }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Zen Quiz CTA",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Titolo", "default": "Non sai da dove iniziare?" },
+    { "type": "textarea", "id": "text", "label": "Testo", "default": "Rispondi a 5 domande e scopri quali prodotti sono in sintonia con la tua energia. Ricevi un bundle personalizzato con il 15% di sconto." },
+    { "type": "text", "id": "cta_text", "label": "Testo pulsante", "default": "Trova il Tuo Rituale" },
+    { "type": "url", "id": "cta_link", "label": "Link pulsante" }
+  ],
+  "presets": [{ "name": "Zen Quiz CTA" }]
+}
+{% endschema %}

@@ -1,0 +1,338 @@
+<!-- FASE-3B: Chakra Explorer Interattivo -->
+<section class="zen-chakra" data-section-id="{{ section.id }}">
+  <div class="zen-chakra__header">
+    <span class="zen-chakra__eyebrow">{{ section.settings.eyebrow | default: 'Esplora per Energia' }}</span>
+    <h2 class="zen-chakra__title">{{ section.settings.heading | default: 'I 7 Chakra' }}</h2>
+    <p class="zen-chakra__subtitle">{{ section.settings.subheading | default: 'Seleziona un centro energetico per scoprire i prodotti che lo riequilibrano.' }}</p>
+  </div>
+
+  <div class="zen-chakra__body">
+    {%- comment -%} Silhouette con punti chakra {%- endcomment -%}
+    <div class="zen-chakra__figure">
+      <svg class="zen-chakra__silhouette" viewBox="0 0 200 500" aria-hidden="true">
+        {%- comment -%} Silhouette meditativa semplificata {%- endcomment -%}
+        <path class="zen-chakra__body-outline" d="
+          M100,40 C85,40 75,55 75,70 C75,85 85,95 100,95 C115,95 125,85 125,70 C125,55 115,40 100,40 Z
+          M70,100 C55,105 45,120 45,140 L45,200 C45,210 50,215 55,215 L65,215 L65,260
+          C55,265 50,280 50,300 L50,380 C50,395 55,400 60,400 L65,400 L65,460 C65,470 70,475 80,475
+          L80,475 L80,400 L85,400 L85,475 L95,475 L95,400 L100,400
+          L105,400 L105,475 L115,475 L115,400 L120,400 L120,475
+          C130,475 135,470 135,460 L135,400 L140,400 C145,400 150,395 150,380
+          L150,300 C150,280 145,265 135,260 L135,215 L145,215 C150,215 155,210 155,200
+          L155,140 C155,120 145,105 130,100 Z"
+          fill="none" stroke="rgba(232,232,232,0.1)" stroke-width="1"/>
+
+        {%- comment -%} I 7 punti chakra {%- endcomment -%}
+        {% for block in section.blocks %}
+          {% assign y_positions = '420,340,270,210,170,120,60' | split: ',' %}
+          {% assign chakra_colors = '#E53935,#FF7043,#FFD54F,#66BB6A,#42A5F5,#5C6BC0,#AB47BC' | split: ',' %}
+          {% assign idx = forloop.index0 %}
+          <g class="zen-chakra__point" data-chakra="{{ block.settings.handle }}" data-index="{{ idx }}">
+            <circle class="zen-chakra__glow"
+              cx="100" cy="{{ y_positions[idx] }}"
+              r="16" fill="{{ chakra_colors[idx] }}" opacity="0.15"/>
+            <circle class="zen-chakra__dot"
+              cx="100" cy="{{ y_positions[idx] }}"
+              r="8" fill="{{ chakra_colors[idx] }}" opacity="0.8"
+              style="cursor:pointer; transition: all 0.3s ease;"/>
+            <circle class="zen-chakra__ring"
+              cx="100" cy="{{ y_positions[idx] }}"
+              r="12" fill="none" stroke="{{ chakra_colors[idx] }}" stroke-width="1" opacity="0"/>
+          </g>
+        {% endfor %}
+      </svg>
+    </div>
+
+    {%- comment -%} Panel informativo {%- endcomment -%}
+    <div class="zen-chakra__panel" id="chakra-panel">
+      <div class="zen-chakra__panel-empty">
+        <p>← Seleziona un chakra per esplorare</p>
+      </div>
+      {% for block in section.blocks %}
+        {% assign chakra_colors = '#E53935,#FF7042,#FFD54F,#66BB6A,#42A5F5,#5C6BC0,#AB47BC' | split: ',' %}
+        {% assign idx = forloop.index0 %}
+        <div class="zen-chakra__panel-content" data-chakra-panel="{{ block.settings.handle }}" style="display:none;" {{ block.shopify_attributes }}>
+          <div class="zen-chakra__panel-dot" style="background: {{ chakra_colors[idx] }};"></div>
+          <h3 class="zen-chakra__panel-name" style="color: {{ chakra_colors[idx] }};">{{ block.settings.name }}</h3>
+          <p class="zen-chakra__panel-sanskrit">{{ block.settings.sanskrit }}</p>
+          <p class="zen-chakra__panel-desc">{{ block.settings.description }}</p>
+          <div class="zen-chakra__panel-tags">
+            <span>{{ block.settings.element | default: 'Terra' }}</span>
+            <span>{{ block.settings.quality | default: 'Stabilità' }}</span>
+          </div>
+          <a href="{{ block.settings.link | default: '#' }}" class="zen-chakra__panel-cta">
+            Scopri i prodotti →
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  {%- comment -%} Mobile: 7 cerchi orizzontali {%- endcomment -%}
+  <div class="zen-chakra__mobile-nav">
+    {% for block in section.blocks %}
+      {% assign chakra_colors = '#E53935,#FF7043,#FFD54F,#66BB6A,#42A5F5,#5C6BC0,#AB47BC' | split: ',' %}
+      {% assign idx = forloop.index0 %}
+      <button class="zen-chakra__mobile-dot" data-chakra="{{ block.settings.handle }}" data-index="{{ idx }}"
+        style="background: {{ chakra_colors[idx] }};" aria-label="{{ block.settings.name }}">
+      </button>
+    {% endfor %}
+  </div>
+</section>
+
+<style>
+/* ═══════════════════════════════════════════
+   ZEN CHAKRA EXPLORER
+   ═══════════════════════════════════════════ */
+.zen-chakra {
+  padding: 80px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.zen-chakra__header { text-align: center; margin-bottom: 48px; }
+
+.zen-chakra__eyebrow {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #C9A84C;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.zen-chakra__title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 400;
+  color: #E8E8E8;
+  margin: 0 0 12px;
+}
+
+.zen-chakra__subtitle {
+  font-family: 'Lato', sans-serif;
+  font-size: 15px;
+  color: rgba(232, 232, 232, 0.5);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.zen-chakra__body {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 60px;
+  align-items: center;
+  min-height: 500px;
+}
+
+.zen-chakra__figure {
+  display: flex;
+  justify-content: center;
+}
+
+.zen-chakra__silhouette { width: 200px; height: auto; }
+
+/* Hover e active sui punti chakra */
+.zen-chakra__point { cursor: pointer; }
+.zen-chakra__point:hover .zen-chakra__dot { opacity: 1; }
+.zen-chakra__point:hover .zen-chakra__glow { opacity: 0.3; }
+.zen-chakra__point:hover .zen-chakra__ring { opacity: 0.6; }
+.zen-chakra__point.is-active .zen-chakra__dot { opacity: 1; r: 10; }
+.zen-chakra__point.is-active .zen-chakra__glow { opacity: 0.4; r: 22; }
+.zen-chakra__point.is-active .zen-chakra__ring { opacity: 1; }
+
+/* Panel informativo */
+.zen-chakra__panel {
+  background: rgba(26, 26, 46, 0.5);
+  border: 1px solid rgba(232, 232, 232, 0.08);
+  border-radius: 8px;
+  padding: 40px;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+}
+
+.zen-chakra__panel-empty p {
+  font-family: 'Lato', sans-serif;
+  color: rgba(232, 232, 232, 0.3);
+  font-style: italic;
+}
+
+.zen-chakra__panel-dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  margin-bottom: 16px;
+}
+
+.zen-chakra__panel-name {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 2rem;
+  font-weight: 500;
+  margin: 0 0 4px;
+}
+
+.zen-chakra__panel-sanskrit {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: rgba(232, 232, 232, 0.4);
+  margin: 0 0 16px;
+}
+
+.zen-chakra__panel-desc {
+  font-family: 'Lato', sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+  color: rgba(232, 232, 232, 0.75);
+  margin: 0 0 20px;
+}
+
+.zen-chakra__panel-tags {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.zen-chakra__panel-tags span {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border: 1px solid rgba(232, 232, 232, 0.15);
+  border-radius: 2px;
+  color: rgba(232, 232, 232, 0.6);
+}
+
+.zen-chakra__panel-cta {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 13px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #C9A84C;
+  text-decoration: none;
+  transition: letter-spacing 0.3s ease;
+}
+
+.zen-chakra__panel-cta:hover { letter-spacing: 3px; }
+
+/* Mobile: cerchi orizzontali */
+.zen-chakra__mobile-nav {
+  display: none;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.zen-chakra__mobile-dot {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 0.6;
+}
+
+.zen-chakra__mobile-dot:hover,
+.zen-chakra__mobile-dot.is-active {
+  opacity: 1;
+  border-color: currentColor;
+  transform: scale(1.15);
+}
+
+@media (max-width: 768px) {
+  .zen-chakra { padding: 48px 16px; }
+  .zen-chakra__body {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .zen-chakra__figure { display: none; }
+  .zen-chakra__mobile-nav { display: flex; }
+  .zen-chakra__panel { padding: 24px; min-height: auto; }
+  .zen-chakra__panel-empty { display: none; }
+  /* Su mobile, mostra il primo chakra di default */
+  .zen-chakra__panel-content:first-of-type { display: block !important; }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const section = document.querySelector('.zen-chakra');
+  if (!section) return;
+
+  const points = section.querySelectorAll('.zen-chakra__point');
+  const mobileDots = section.querySelectorAll('.zen-chakra__mobile-dot');
+  const panels = section.querySelectorAll('.zen-chakra__panel-content');
+  const emptyPanel = section.querySelector('.zen-chakra__panel-empty');
+
+  function activateChakra(handle) {
+    // Deattiva tutti
+    points.forEach(p => p.classList.remove('is-active'));
+    mobileDots.forEach(d => d.classList.remove('is-active'));
+    panels.forEach(p => p.style.display = 'none');
+    if (emptyPanel) emptyPanel.style.display = 'none';
+
+    // Attiva il selezionato
+    const point = section.querySelector('.zen-chakra__point[data-chakra="' + handle + '"]');
+    const dot = section.querySelector('.zen-chakra__mobile-dot[data-chakra="' + handle + '"]');
+    const panel = section.querySelector('.zen-chakra__panel-content[data-chakra-panel="' + handle + '"]');
+
+    if (point) point.classList.add('is-active');
+    if (dot) dot.classList.add('is-active');
+    if (panel) panel.style.display = 'block';
+  }
+
+  // Event listeners SVG punti
+  points.forEach(function(point) {
+    point.addEventListener('click', function() { activateChakra(point.dataset.chakra); });
+  });
+
+  // Event listeners mobile dots
+  mobileDots.forEach(function(dot) {
+    dot.addEventListener('click', function() { activateChakra(dot.dataset.chakra); });
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "Zen Chakra Explorer",
+  "class": "zen-chakra-section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Etichetta sopra il titolo", "default": "Esplora per Energia" },
+    { "type": "text", "id": "heading", "label": "Titolo", "default": "I 7 Chakra" },
+    { "type": "text", "id": "subheading", "label": "Sottotitolo", "default": "Seleziona un centro energetico per scoprire i prodotti che lo riequilibrano." }
+  ],
+  "blocks": [
+    {
+      "type": "chakra",
+      "name": "Chakra",
+      "limit": 7,
+      "settings": [
+        { "type": "text", "id": "handle", "label": "Handle (per link)", "info": "Es: muladhara" },
+        { "type": "text", "id": "name", "label": "Nome", "default": "Muladhara" },
+        { "type": "text", "id": "sanskrit", "label": "Nome sanscrito", "default": "मूलाधार — Chakra della Radice" },
+        { "type": "textarea", "id": "description", "label": "Descrizione" },
+        { "type": "text", "id": "element", "label": "Elemento", "default": "Terra" },
+        { "type": "text", "id": "quality", "label": "Qualità", "default": "Stabilità" },
+        { "type": "url", "id": "link", "label": "Link collezione" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Zen Chakra Explorer",
+      "blocks": [
+        { "type": "chakra", "settings": { "handle": "muladhara", "name": "Muladhara", "sanskrit": "मूलाधार — Chakra della Radice", "description": "Il fondamento. Radicamento, sicurezza, connessione con la terra. Quando è in equilibrio ti senti stabile e presente.", "element": "Terra", "quality": "Stabilità" }},
+        { "type": "chakra", "settings": { "handle": "svadhisthana", "name": "Svadhisthana", "sanskrit": "स्वाधिष्ठान — Chakra Sacrale", "description": "Il centro creativo. Emozioni, piacere, fluidità. Quando è in equilibrio la creatività scorre liberamente.", "element": "Acqua", "quality": "Creatività" }},
+        { "type": "chakra", "settings": { "handle": "manipura", "name": "Manipura", "sanskrit": "मणिपूर — Chakra del Plesso Solare", "description": "Il fuoco interiore. Volontà, fiducia in sé, trasformazione. Quando è in equilibrio agisci con determinazione.", "element": "Fuoco", "quality": "Potere" }},
+        { "type": "chakra", "settings": { "handle": "anahata", "name": "Anahata", "sanskrit": "अनाहत — Chakra del Cuore", "description": "Il ponte tra terra e cielo. Amore, compassione, accettazione. Quando è in equilibrio ami senza condizioni.", "element": "Aria", "quality": "Amore" }},
+        { "type": "chakra", "settings": { "handle": "vishuddha", "name": "Vishuddha", "sanskrit": "विशुद्ध — Chakra della Gola", "description": "La voce dell'anima. Comunicazione, verità, espressione autentica. Quando è in equilibrio parli la tua verità.", "element": "Etere", "quality": "Comunicazione" }},
+        { "type": "chakra", "settings": { "handle": "ajna", "name": "Ajna", "sanskrit": "आज्ञा — Terzo Occhio", "description": "L'occhio interiore. Intuizione, saggezza, visione oltre il visibile. Quando è in equilibrio vedi con chiarezza.", "element": "Luce", "quality": "Intuizione" }},
+        { "type": "chakra", "settings": { "handle": "sahasrara", "name": "Sahasrara", "sanskrit": "सहस्रार — Chakra della Corona", "description": "La connessione universale. Spiritualità, illuminazione, unità con il tutto. Quando è in equilibrio ti senti parte del cosmo.", "element": "Coscienza", "quality": "Connessione" }}
+      ]
+    }
+  ]
+}
+{% endschema %}
