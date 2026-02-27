@@ -1,0 +1,400 @@
+<!-- FASE-3A: Hero Scroll-Driven con incenso -->
+{% comment %}
+  Hero scroll-driven animation.
+  Approccio attuale: GIF con effetti parallax/opacity su scroll.
+  Upgrade futuro: frame-by-frame su canvas quando i frame PNG saranno disponibili.
+{% endcomment %}
+
+<div id="zen-hero" class="zen-hero" data-section-id="{{ section.id }}">
+  {%- comment -%} LAYER 1: Background incenso {%- endcomment -%}
+  <div class="zen-hero__incense">
+    <div class="zen-hero__incense-media"
+         style="background-image: url('{{ section.settings.bg_image | default: 'https://cdn.shopify.com/s/files/1/0917/9719/3042/files/ezgif-60337eff04dad8.gif?v=1752838231' }}');">
+    </div>
+    {%- comment -%} Overlay fumo che si espande con lo scroll {%- endcomment -%}
+    <div class="zen-hero__smoke-overlay"></div>
+  </div>
+
+  {%- comment -%} LAYER 2: Testo che emerge durante lo scroll {%- endcomment -%}
+  <div class="zen-hero__content">
+    <div class="zen-hero__text zen-hero__text--1" data-scroll-reveal="0.15">
+      <span>{{ section.settings.text_1 | default: 'Respira.' }}</span>
+    </div>
+    <div class="zen-hero__text zen-hero__text--2" data-scroll-reveal="0.35">
+      <span>{{ section.settings.text_2 | default: 'Lascia andare.' }}</span>
+    </div>
+    <div class="zen-hero__text zen-hero__text--3" data-scroll-reveal="0.55">
+      <span>{{ section.settings.text_3 | default: 'Trova il tuo equilibrio.' }}</span>
+    </div>
+  </div>
+
+  {%- comment -%} LAYER 3: CTA che appare alla fine dello scroll {%- endcomment -%}
+  <div class="zen-hero__cta" data-scroll-reveal="0.80">
+    <a href="{{ section.settings.cta_link_1 | default: '/collections/all' }}" class="zen-hero__btn zen-hero__btn--primary">
+      {{ section.settings.cta_text_1 | default: 'Esplora la Collezione' }}
+    </a>
+    <a href="{{ section.settings.cta_link_2 | default: '/pages/quiz' }}" class="zen-hero__btn zen-hero__btn--ghost">
+      {{ section.settings.cta_text_2 | default: 'Fai il Quiz →' }}
+    </a>
+  </div>
+
+  {%- comment -%} Scroll indicator {%- endcomment -%}
+  <div class="zen-hero__scroll-hint">
+    <span>Scorri per esplorare</span>
+    <div class="zen-hero__scroll-arrow">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M12 5v14M5 12l7 7 7-7"/>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<style>
+/* ═══════════════════════════════════════════
+   ZEN HERO — Scroll-Driven Incense Experience
+   ═══════════════════════════════════════════ */
+
+.zen-hero {
+  position: relative;
+  height: 300vh; /* 3 viewport heights di scroll */
+  background: #0F0F0F;
+}
+
+/* Sticky container — resta fisso durante lo scroll */
+.zen-hero__incense {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.zen-hero__incense-media {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: brightness(0.7);
+  transition: transform 0.1s linear, filter 0.1s linear;
+  will-change: transform, filter, opacity;
+}
+
+/* Overlay fumo — si espande durante lo scroll */
+.zen-hero__smoke-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    rgba(15, 15, 15, 0.3) 40%,
+    rgba(15, 15, 15, 0.8) 70%,
+    #0F0F0F 100%
+  );
+  opacity: 0;
+  transition: opacity 0.1s linear;
+  will-change: opacity;
+}
+
+/* Container testi — posizionato sopra il media sticky */
+.zen-hero__content {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Singolo testo che emerge dal fumo */
+.zen-hero__text {
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  will-change: opacity, transform;
+  margin: 12px 0;
+}
+
+.zen-hero__text.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.zen-hero__text.is-fading {
+  opacity: 0;
+  transform: translateY(-20px) scale(1.02);
+}
+
+.zen-hero__text span {
+  font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  color: #E8E8E8;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+}
+
+.zen-hero__text--1 span { font-size: clamp(2rem, 5vw, 4rem); font-weight: 300; font-style: italic; }
+.zen-hero__text--2 span { font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 400; }
+.zen-hero__text--3 span { font-size: clamp(1.5rem, 4vw, 3rem); font-weight: 300; color: #C9A84C; }
+
+/* CTA buttons */
+.zen-hero__cta {
+  position: fixed;
+  bottom: 15vh;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 20px;
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 0.8s ease-out;
+  will-change: opacity;
+}
+
+.zen-hero__cta.is-visible {
+  opacity: 1;
+}
+
+.zen-hero__btn {
+  display: inline-block;
+  padding: 14px 32px;
+  border-radius: 2px;
+  font-family: 'Josefin Sans', 'Lato', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  pointer-events: auto;
+}
+
+.zen-hero__btn--primary {
+  background: #C9A84C;
+  color: #0F0F0F;
+  border: 2px solid #C9A84C;
+}
+
+.zen-hero__btn--primary:hover {
+  background: transparent;
+  color: #C9A84C;
+}
+
+.zen-hero__btn--ghost {
+  background: transparent;
+  color: #C9A84C;
+  border: 2px solid rgba(201, 168, 76, 0.4);
+}
+
+.zen-hero__btn--ghost:hover {
+  border-color: #C9A84C;
+  background: rgba(201, 168, 76, 0.1);
+}
+
+/* Scroll indicator */
+.zen-hero__scroll-hint {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  z-index: 4;
+  color: rgba(232, 232, 232, 0.5);
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: opacity 0.5s ease;
+}
+
+.zen-hero__scroll-arrow {
+  animation: hero-bounce 2s ease-in-out infinite;
+}
+
+@keyframes hero-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+/* ═══ MOBILE ═══ */
+@media (max-width: 768px) {
+  .zen-hero { height: 250vh; }
+
+  .zen-hero__cta {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    bottom: 12vh;
+  }
+
+  .zen-hero__btn {
+    padding: 12px 28px;
+    font-size: 13px;
+  }
+}
+</style>
+
+<script>
+/* ═══════════════════════════════════════════
+   ZEN HERO — Scroll Controller
+   ═══════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', function() {
+  var hero = document.getElementById('zen-hero');
+  if (!hero) return;
+
+  var media = hero.querySelector('.zen-hero__incense-media');
+  var smokeOverlay = hero.querySelector('.zen-hero__smoke-overlay');
+  var texts = hero.querySelectorAll('.zen-hero__text');
+  var cta = hero.querySelector('.zen-hero__cta');
+  var scrollHint = hero.querySelector('.zen-hero__scroll-hint');
+
+  function onScroll() {
+    var rect = hero.getBoundingClientRect();
+    var heroHeight = hero.offsetHeight;
+    var scrolled = -rect.top;
+    var progress = Math.max(0, Math.min(1, scrolled / (heroHeight - window.innerHeight)));
+
+    if (rect.bottom < 0 || rect.top > window.innerHeight) {
+      hero.style.visibility = 'hidden';
+      return;
+    }
+    hero.style.visibility = 'visible';
+
+    /* ─── EFFETTI SUL MEDIA (incenso) ─── */
+    var scale = 1 + progress * 0.3;
+    var blur = progress > 0.6 ? (progress - 0.6) * 25 : 0;
+    var mediaOpacity = progress > 0.7 ? 1 - ((progress - 0.7) / 0.3) : 1;
+
+    media.style.transform = 'scale(' + scale + ')';
+    media.style.filter = 'brightness(' + (0.7 - progress * 0.3) + ') blur(' + blur + 'px)';
+    media.style.opacity = mediaOpacity;
+
+    /* ─── OVERLAY FUMO ─── */
+    smokeOverlay.style.opacity = Math.min(1, progress * 1.5);
+
+    /* ─── TESTI ─── */
+    for (var i = 0; i < texts.length; i++) {
+      var text = texts[i];
+      var threshold = parseFloat(text.getAttribute('data-scroll-reveal'));
+      var fadeOutAt = threshold + 0.25;
+
+      if (progress >= threshold && progress < fadeOutAt) {
+        text.classList.add('is-visible');
+        text.classList.remove('is-fading');
+      } else if (progress >= fadeOutAt) {
+        text.classList.remove('is-visible');
+        text.classList.add('is-fading');
+      } else {
+        text.classList.remove('is-visible');
+        text.classList.remove('is-fading');
+      }
+    }
+
+    /* ─── CTA ─── */
+    if (progress >= 0.80) {
+      cta.classList.add('is-visible');
+    } else {
+      cta.classList.remove('is-visible');
+    }
+
+    /* ─── SCROLL HINT ─── */
+    if (scrollHint) {
+      scrollHint.style.opacity = progress < 0.1 ? 1 : Math.max(0, 1 - progress * 5);
+    }
+  }
+
+  /* Throttle con requestAnimationFrame */
+  var ticking = false;
+  window.addEventListener('scroll', function() {
+    if (!ticking) {
+      requestAnimationFrame(function() {
+        onScroll();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
+
+  /* Init */
+  onScroll();
+});
+</script>
+
+{% schema %}
+{
+  "name": "Zen Hero Scroll",
+  "class": "zen-hero-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Sfondo"
+    },
+    {
+      "type": "text",
+      "id": "bg_image",
+      "label": "URL immagine/GIF di sfondo",
+      "info": "Inserisci l'URL completo della GIF o immagine. Usa Content > Files per caricarla."
+    },
+    {
+      "type": "header",
+      "content": "Testi (appaiono durante lo scroll)"
+    },
+    {
+      "type": "text",
+      "id": "text_1",
+      "label": "Testo 1 (appare per primo)",
+      "default": "Respira."
+    },
+    {
+      "type": "text",
+      "id": "text_2",
+      "label": "Testo 2 (appare per secondo)",
+      "default": "Lascia andare."
+    },
+    {
+      "type": "text",
+      "id": "text_3",
+      "label": "Testo 3 (appare per terzo, in oro)",
+      "default": "Trova il tuo equilibrio."
+    },
+    {
+      "type": "header",
+      "content": "Call to Action"
+    },
+    {
+      "type": "text",
+      "id": "cta_text_1",
+      "label": "Testo pulsante primario",
+      "default": "Esplora la Collezione"
+    },
+    {
+      "type": "url",
+      "id": "cta_link_1",
+      "label": "Link pulsante primario"
+    },
+    {
+      "type": "text",
+      "id": "cta_text_2",
+      "label": "Testo pulsante secondario",
+      "default": "Fai il Quiz →"
+    },
+    {
+      "type": "url",
+      "id": "cta_link_2",
+      "label": "Link pulsante secondario"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Zen Hero Scroll"
+    }
+  ]
+}
+{% endschema %}

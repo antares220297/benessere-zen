@@ -1,0 +1,87 @@
+<!-- FASE-3A: Trust Bar -->
+<section class="zen-trust-bar" data-section-id="{{ section.id }}">
+  <div class="zen-trust-bar__inner">
+    <div class="zen-trust-bar__item">
+      <span class="zen-trust-bar__icon">★★★★★</span>
+      <span class="zen-trust-bar__text">{{ section.settings.text_1 | default: '4.8/5 dai nostri clienti' }}</span>
+    </div>
+    <div class="zen-trust-bar__item">
+      <span class="zen-trust-bar__icon">🌿</span>
+      <span class="zen-trust-bar__text">{{ section.settings.text_2 | default: '100% Naturale' }}</span>
+    </div>
+    <div class="zen-trust-bar__item">
+      <span class="zen-trust-bar__icon">🚚</span>
+      <span class="zen-trust-bar__text">{{ section.settings.text_3 | default: 'Spedizione 24-48h' }}</span>
+    </div>
+    <div class="zen-trust-bar__item">
+      <span class="zen-trust-bar__icon">🔄</span>
+      <span class="zen-trust-bar__text">{{ section.settings.text_4 | default: 'Reso facile 14 giorni' }}</span>
+    </div>
+  </div>
+</section>
+
+<style>
+.zen-trust-bar {
+  background: #1A1A2E;
+  padding: 20px 0;
+  border-top: 1px solid rgba(201, 168, 76, 0.1);
+  border-bottom: 1px solid rgba(201, 168, 76, 0.1);
+}
+
+.zen-trust-bar__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 16px;
+}
+
+.zen-trust-bar__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.zen-trust-bar__icon {
+  font-size: 18px;
+  color: #C9A84C;
+}
+
+.zen-trust-bar__text {
+  font-family: 'Josefin Sans', 'Lato', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #E8E8E8;
+}
+
+@media (max-width: 768px) {
+  .zen-trust-bar__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    justify-items: center;
+  }
+
+  .zen-trust-bar__text {
+    font-size: 11px;
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Zen Trust Bar",
+  "settings": [
+    { "type": "text", "id": "text_1", "label": "Testo 1", "default": "4.8/5 dai nostri clienti" },
+    { "type": "text", "id": "text_2", "label": "Testo 2", "default": "100% Naturale" },
+    { "type": "text", "id": "text_3", "label": "Testo 3", "default": "Spedizione 24-48h" },
+    { "type": "text", "id": "text_4", "label": "Testo 4", "default": "Reso facile 14 giorni" }
+  ],
+  "presets": [{ "name": "Zen Trust Bar" }]
+}
+{% endschema %}
