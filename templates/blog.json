@@ -7,21 +7,4 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
-{
-  "sections": {
-    "main": {
-      "type": "main-blog",
-      "settings": {
-        "full_width_breadcrumb": false,
-        "show_image": true,
-        "show_author": true,
-        "show_date": true,
-        "padding_top": 0,
-        "padding_bottom": 60
-      }
-    }
-  },
-  "order": [
-    "main"
-  ]
-}
+{"sections":{"main":{"type":"main-blog","settings":{"full_width_breadcrumb":false,"show_image":true,"show_author":true,"show_date":true,"padding_top":0,"padding_bottom":60}}},"order":["main"]}

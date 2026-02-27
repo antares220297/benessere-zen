@@ -630,21 +630,5 @@ document.addEventListener('DOMContentLoaded', function(){
 </script>
 
 {% schema %}
-{
-  "name": "Zen Bundle Builder",
-  "class": "zen-bundle-builder",
-  "settings": [
-    { "type": "text", "id": "title", "label": "Titolo", "default": "Crea il tuo Rituale" },
-    { "type": "text", "id": "subtitle", "label": "Sottotitolo", "default": "Scegli un prodotto per ogni step: Detergi → Tratta → Idrata. Aggiungi Extra per un boost mirato." },
-    { "type": "collection", "id": "step1_collection", "label": "Step 1 — Detergi (collezione)" },
-    { "type": "collection", "id": "step2_collection", "label": "Step 2 — Tratta (collezione)" },
-    { "type": "collection", "id": "step3_collection", "label": "Step 3 — Idrata (collezione)" },
-    { "type": "collection", "id": "step4_collection", "label": "Step 4 — Extra (collezione, facoltativa)" },
-    { "type": "range", "id": "max_per", "label": "Max prodotti per step", "min": 6, "max": 48, "step": 2, "default": 24 },
-    { "type": "text", "id": "free_shipping_threshold", "label": "Soglia spedizione gratuita (€)", "default": "50" }
-  ],
-  "presets": [
-    { "name": "Zen Bundle Builder" }
-  ]
-}
+{"name":"Zen Bundle Builder","class":"zen-bundle-builder","settings":[{"type":"text","id":"title","label":"Titolo","default":"Crea il tuo Rituale"},{"type":"text","id":"subtitle","label":"Sottotitolo","default":"Scegli un prodotto per ogni step: Detergi → Tratta → Idrata. Aggiungi Extra per un boost mirato."},{"type":"collection","id":"step1_collection","label":"Step 1 — Detergi (collezione)"},{"type":"collection","id":"step2_collection","label":"Step 2 — Tratta (collezione)"},{"type":"collection","id":"step3_collection","label":"Step 3 — Idrata (collezione)"},{"type":"collection","id":"step4_collection","label":"Step 4 — Extra (collezione, facoltativa)"},{"type":"range","id":"max_per","label":"Max prodotti per step","min":6,"max":48,"step":2,"default":24},{"type":"text","id":"free_shipping_threshold","label":"Soglia spedizione gratuita (€)","default":"50"}],"presets":[{"name":"Zen Bundle Builder"}]}
 {% endschema %}

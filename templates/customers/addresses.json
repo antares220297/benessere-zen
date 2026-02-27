@@ -7,17 +7,4 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
-{
-  "sections": {
-    "main": {
-      "type": "main-addresses",
-      "settings": {
-        "top_padding": 52,
-        "bottom_padding": 52
-      }
-    }
-  },
-  "order": [
-    "main"
-  ]
-}
+{"sections":{"main":{"type":"main-addresses","settings":{"top_padding":52,"bottom_padding":52}}},"order":["main"]}
