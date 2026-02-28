@@ -1,7 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap');
+
 /* === Homepage: heading UNIFICATI SOLO PER LE SEZIONI (Eurus) === */
 :root{
-  --zen-heading-font: 'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  --zen-heading-weight: 500;
+  --zen-heading-font: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --zen-heading-weight: 600;
   --zen-heading-lh: 1.2;
   --zen-heading-mb: 20px;
 }
