@@ -1,0 +1,192 @@
+{% comment %}
+  Zen Social Proof Counter — Metriche di credibilità animate
+  3 contatori con animazione count-up al primo scroll in viewport.
+  I numeri sono configurabili dal Theme Customizer.
+{% endcomment %}
+
+<section class="zen-social-proof" data-section-id="{{ section.id }}">
+  <div class="zen-social-proof__container">
+
+    <div class="zen-social-proof__grid">
+      <!-- Counter 1 -->
+      <div class="zen-social-proof__item">
+        <div class="zen-social-proof__number" data-count-to="{{ section.settings.count_1 | default: 1247 }}">0</div>
+        <div class="zen-social-proof__label">{{ section.settings.label_1 | default: 'rituali spediti in Italia' }}</div>
+      </div>
+
+      <!-- Separator -->
+      <div class="zen-social-proof__sep" aria-hidden="true">✦</div>
+
+      <!-- Counter 2 -->
+      <div class="zen-social-proof__item">
+        <div class="zen-social-proof__number" data-count-to="{{ section.settings.count_2 | default: 342 }}">0</div>
+        <div class="zen-social-proof__label">{{ section.settings.label_2 | default: 'cristalli hanno trovato casa questo mese' }}</div>
+      </div>
+
+      <!-- Separator -->
+      <div class="zen-social-proof__sep" aria-hidden="true">✦</div>
+
+      <!-- Counter 3 -->
+      <div class="zen-social-proof__item">
+        <div class="zen-social-proof__number" data-count-to="{{ section.settings.count_3 | default: 98 }}" data-suffix="{{ section.settings.suffix_3 | default: '%' }}">0</div>
+        <div class="zen-social-proof__label">{{ section.settings.label_3 | default: 'clienti soddisfatti' }}</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+/* ═══════════════════════════════════════════
+   ZEN SOCIAL PROOF COUNTER
+   ═══════════════════════════════════════════ */
+.zen-social-proof {
+  background: #0D0D14;
+  padding: 56px 20px;
+  border-top: 1px solid rgba(201, 168, 76, 0.06);
+  border-bottom: 1px solid rgba(201, 168, 76, 0.06);
+}
+
+.zen-social-proof__container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.zen-social-proof__grid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+}
+
+.zen-social-proof__item {
+  text-align: center;
+  flex: 1;
+}
+
+.zen-social-proof__number {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 300;
+  color: #C9A84C;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
+.zen-social-proof__label {
+  font-family: 'Lato', sans-serif;
+  font-size: 13px;
+  color: rgba(232, 232, 232, 0.5);
+  line-height: 1.5;
+  max-width: 200px;
+  margin: 0 auto;
+}
+
+.zen-social-proof__sep {
+  color: rgba(201, 168, 76, 0.2);
+  font-size: 10px;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .zen-social-proof__grid {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .zen-social-proof__sep {
+    display: none;
+  }
+
+  .zen-social-proof { padding: 48px 16px; }
+}
+
+/* Reduced motion: skip animation, show final values immediately */
+@media (prefers-reduced-motion: reduce) {
+  .zen-social-proof__number {
+    transition: none;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var section = document.querySelector('.zen-social-proof');
+  if (!section) return;
+
+  var counters = section.querySelectorAll('.zen-social-proof__number');
+  var animated = false;
+
+  function animateCounters() {
+    if (animated) return;
+    animated = true;
+
+    counters.forEach(function(counter) {
+      var target = parseInt(counter.getAttribute('data-count-to')) || 0;
+      var suffix = counter.getAttribute('data-suffix') || '';
+      var duration = 2000;
+      var start = 0;
+      var startTime = null;
+
+      /* Respect reduced motion */
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        counter.textContent = target.toLocaleString('it-IT') + suffix;
+        return;
+      }
+
+      function step(timestamp) {
+        if (!startTime) startTime = timestamp;
+        var progress = Math.min((timestamp - startTime) / duration, 1);
+        /* Ease-out cubic */
+        var eased = 1 - Math.pow(1 - progress, 3);
+        var current = Math.floor(eased * target);
+        counter.textContent = current.toLocaleString('it-IT') + suffix;
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        } else {
+          counter.textContent = target.toLocaleString('it-IT') + suffix;
+        }
+      }
+
+      requestAnimationFrame(step);
+    });
+  }
+
+  if ('IntersectionObserver' in window) {
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          animateCounters();
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    observer.observe(section);
+  } else {
+    animateCounters();
+  }
+});
+</script>
+
+{% schema %}
+{
+  "name": "Zen Social Proof",
+  "class": "zen-social-proof-section",
+  "settings": [
+    { "type": "header", "content": "Contatore 1" },
+    { "type": "number", "id": "count_1", "label": "Numero", "default": 1247 },
+    { "type": "text", "id": "label_1", "label": "Etichetta", "default": "rituali spediti in Italia" },
+    { "type": "header", "content": "Contatore 2" },
+    { "type": "number", "id": "count_2", "label": "Numero", "default": 342 },
+    { "type": "text", "id": "label_2", "label": "Etichetta", "default": "cristalli hanno trovato casa questo mese" },
+    { "type": "header", "content": "Contatore 3" },
+    { "type": "number", "id": "count_3", "label": "Numero", "default": 98 },
+    { "type": "text", "id": "suffix_3", "label": "Suffisso (es: %)", "default": "%" },
+    { "type": "text", "id": "label_3", "label": "Etichetta", "default": "clienti soddisfatti" }
+  ],
+  "presets": [{ "name": "Zen Social Proof" }]
+}
+{% endschema %}
