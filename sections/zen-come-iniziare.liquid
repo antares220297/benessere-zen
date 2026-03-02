@@ -1,0 +1,318 @@
+{% comment %}
+  Zen Come Iniziare — Educational micro-guide cards
+  3 guide card per neofiti del wellness spirituale.
+  Ogni card ha icona SVG, titolo, descrizione, tempo di lettura.
+{% endcomment %}
+
+<section class="zen-come-iniziare" data-section-id="{{ section.id }}">
+  <div class="zen-come-iniziare__container">
+
+    <!-- Header -->
+    <header class="zen-come-iniziare__header">
+      <span class="zen-come-iniziare__eyebrow">{{ section.settings.eyebrow | default: 'Per chi inizia' }}</span>
+      <h2 class="zen-come-iniziare__title">
+        {{ section.settings.heading | default: 'Come' }}
+        <em>{{ section.settings.heading_accent | default: 'Iniziare' }}</em>
+      </h2>
+      <p class="zen-come-iniziare__subtitle">{{ section.settings.subtitle | default: 'Tre guide essenziali per muovere i primi passi nel tuo viaggio di benessere spirituale.' }}</p>
+      <div class="zen-come-iniziare__divider" aria-hidden="true"></div>
+    </header>
+
+    <!-- Cards grid -->
+    <div class="zen-come-iniziare__grid">
+      {% for block in section.blocks %}
+        <a href="{{ block.settings.link | default: '#' }}"
+            class="zen-come-iniziare__card"
+            data-card-index="{{ forloop.index0 }}"
+           {{ block.shopify_attributes }}>
+
+          <div class="zen-come-iniziare__card-top">
+            <!-- Icon -->
+            <div class="zen-come-iniziare__icon-box" style="--card-color: {{ block.settings.color | default: '#C9A84C' }};">
+              {% if block.settings.icon_type == 'cristallo' %}
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+              {% elsif block.settings.icon_type == 'incenso' %}
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <path d="M12 22V8M12 8c0 0-3-2-3-5s3-3 3-3 3 0 3 3-3 5-3 5z"/>
+                  <path d="M8 22h8" stroke-linecap="round"/>
+                </svg>
+              {% else %}
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <path d="M17 8h1a4 4 0 1 1 0 8h-1M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8zM6 2v4M10 2v4M14 2v4"/>
+                </svg>
+              {% endif %}
+            </div>
+            <!-- Reading time -->
+            <span class="zen-come-iniziare__time">
+              Lettura {{ block.settings.reading_time | default: '3 min' }}
+            </span>
+          </div>
+
+          <h3 class="zen-come-iniziare__card-title">{{ block.settings.title }}</h3>
+          <p class="zen-come-iniziare__card-text">{{ block.settings.description }}</p>
+
+          <span class="zen-come-iniziare__card-link" style="--card-color: {{ block.settings.color | default: '#C9A84C' }};">
+            Leggi la guida <span class="zen-come-iniziare__arrow">→</span>
+          </span>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+/* ═══════════════════════════════════════════
+   ZEN COME INIZIARE — Educational Guides
+   ═══════════════════════════════════════════ */
+.zen-come-iniziare {
+  background: #0F0F0F;
+  padding: 80px 20px;
+}
+
+.zen-come-iniziare__container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Header */
+.zen-come-iniziare__header {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.zen-come-iniziare__eyebrow {
+  display: block;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #C9A84C;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.zen-come-iniziare__title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(32px, 4.5vw, 52px);
+  font-weight: 300;
+  color: #E8E8E8;
+  margin: 0 0 14px;
+  line-height: 1.25;
+}
+
+.zen-come-iniziare__title em {
+  color: #C9A84C;
+  font-style: italic;
+}
+
+.zen-come-iniziare__subtitle {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 15px;
+  color: rgba(232, 232, 232, 0.6);
+  max-width: 540px;
+  margin: 0 auto 22px;
+  line-height: 1.6;
+}
+
+.zen-come-iniziare__divider {
+  width: 50px;
+  height: 2px;
+  margin: 0 auto;
+  background: linear-gradient(90deg, transparent, #C9A84C, transparent);
+}
+
+/* Cards */
+.zen-come-iniziare__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.zen-come-iniziare__card {
+  position: relative;
+  padding: 36px 28px;
+  border-radius: 20px;
+  background: #111118;
+  border: 1px solid rgba(201, 168, 76, 0.1);
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.4s ease;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.zen-come-iniziare__card.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.zen-come-iniziare__card:hover {
+  transform: translateY(-4px);
+  border-color: var(--card-color, rgba(201, 168, 76, 0.3));
+  background: rgba(201, 168, 76, 0.04);
+}
+
+.zen-come-iniziare__card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.zen-come-iniziare__icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--card-color) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--card-color) 25%, transparent);
+  color: var(--card-color);
+}
+
+.zen-come-iniziare__time {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(232, 232, 232, 0.45);
+}
+
+.zen-come-iniziare__card-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: #E8E8E8;
+  margin: 0 0 10px;
+  line-height: 1.3;
+}
+
+.zen-come-iniziare__card-text {
+  font-size: 14px;
+  color: rgba(232, 232, 232, 0.6);
+  line-height: 1.6;
+  margin: 0 0 20px;
+  flex-grow: 1;
+}
+
+.zen-come-iniziare__card-link {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--card-color, #C9A84C);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: all 0.3s ease;
+}
+
+.zen-come-iniziare__card:hover .zen-come-iniziare__card-link {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.zen-come-iniziare__arrow {
+  transition: transform 0.2s ease;
+}
+
+.zen-come-iniziare__card:hover .zen-come-iniziare__arrow {
+  transform: translateX(3px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .zen-come-iniziare__grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .zen-come-iniziare { padding: 60px 16px; }
+
+  .zen-come-iniziare__card-link {
+    opacity: 0.7;
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zen-come-iniziare__card {
+    opacity: 1;
+    transform: none;
+    transition: border-color 0.3s ease, background 0.3s ease;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var cards = document.querySelectorAll('.zen-come-iniziare__card');
+  if (!cards.length) return;
+
+  if ('IntersectionObserver' in window) {
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          var idx = parseInt(entry.target.getAttribute('data-card-index')) || 0;
+          setTimeout(function() {
+            entry.target.classList.add('is-visible');
+          }, idx * 120);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    cards.forEach(function(card) { observer.observe(card); });
+  } else {
+    cards.forEach(function(card) { card.classList.add('is-visible'); });
+  }
+});
+</script>
+
+{% schema %}
+{
+  "name": "Zen Come Iniziare",
+  "class": "zen-come-iniziare-section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Per chi inizia" },
+    { "type": "text", "id": "heading", "label": "Titolo", "default": "Come" },
+    { "type": "text", "id": "heading_accent", "label": "Titolo accento (in oro)", "default": "Iniziare" },
+    { "type": "textarea", "id": "subtitle", "label": "Sottotitolo", "default": "Tre guide essenziali per muovere i primi passi nel tuo viaggio di benessere spirituale." }
+  ],
+  "blocks": [
+    {
+      "type": "guide_card",
+      "name": "Guida",
+      "limit": 4,
+      "settings": [
+        { "type": "text", "id": "title", "label": "Titolo guida", "default": "Come purificare un cristallo" },
+        { "type": "textarea", "id": "description", "label": "Descrizione breve", "default": "Acqua corrente, luce lunare, salvia — 3 metodi per ricaricare l'energia delle tue pietre." },
+        { "type": "select", "id": "icon_type", "label": "Tipo icona", "options": [
+          { "value": "cristallo", "label": "Cristallo" },
+          { "value": "incenso", "label": "Incenso" },
+          { "value": "te", "label": "Tè" }
+        ], "default": "cristallo" },
+        { "type": "color", "id": "color", "label": "Colore accento", "default": "#C9A84C" },
+        { "type": "text", "id": "reading_time", "label": "Tempo di lettura", "default": "3 min" },
+        { "type": "url", "id": "link", "label": "Link alla guida" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Zen Come Iniziare",
+      "blocks": [
+        { "type": "guide_card", "settings": { "title": "Come purificare un cristallo", "description": "Acqua corrente, luce lunare, salvia — 3 metodi per ricaricare l'energia delle tue pietre.", "icon_type": "cristallo", "color": "#E63946", "reading_time": "3 min" } },
+        { "type": "guide_card", "settings": { "title": "Come bruciare l'incenso rituale", "description": "Scegli il momento, prepara lo spazio, imposta un'intenzione. Il fumo è il messaggero.", "icon_type": "incenso", "color": "#FF8C42", "reading_time": "2 min" } },
+        { "type": "guide_card", "settings": { "title": "Come preparare un tè meditativo", "description": "L'acqua giusta, il tempo di infusione, il respiro consapevole tra un sorso e l'altro.", "icon_type": "te", "color": "#06D6A0", "reading_time": "4 min" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
