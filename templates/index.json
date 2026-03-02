@@ -345,6 +345,149 @@
         "padding_bottom_mobile": 36
       }
     },
+    "zen_rituale_momento_H4a01": {
+      "type": "zen-rituale-momento",
+      "blocks": {
+        "bundle_item_1": {
+          "type": "bundle_item",
+          "settings": { "item_name": "Salvia Bianca" }
+        },
+        "bundle_item_2": {
+          "type": "bundle_item",
+          "settings": { "item_name": "Quarzo Rosa" }
+        },
+        "bundle_item_3": {
+          "type": "bundle_item",
+          "settings": { "item_name": "Tè Anahata" }
+        }
+      },
+      "block_order": ["bundle_item_1", "bundle_item_2", "bundle_item_3"],
+      "settings": {
+        "eyebrow": "Il Rituale del Momento",
+        "heading": "Tempo di",
+        "heading_accent": "",
+        "text": "",
+        "cta_text": "Scopri il Bundle Stagionale",
+        "cta_link": "",
+        "price": "",
+        "compare_price": ""
+      }
+    },
+    "zen_come_iniziare_H4a02": {
+      "type": "zen-come-iniziare",
+      "blocks": {
+        "guide_1": {
+          "type": "guide_card",
+          "settings": {
+            "title": "Come purificare un cristallo",
+            "description": "Acqua corrente, luce lunare, salvia — 3 metodi per ricaricare l'energia delle tue pietre.",
+            "icon_type": "cristallo",
+            "color": "#E63946",
+            "reading_time": "3 min",
+            "link": ""
+          }
+        },
+        "guide_2": {
+          "type": "guide_card",
+          "settings": {
+            "title": "Come bruciare l'incenso rituale",
+            "description": "Scegli il momento, prepara lo spazio, imposta un'intenzione. Il fumo è il messaggero.",
+            "icon_type": "incenso",
+            "color": "#FF8C42",
+            "reading_time": "2 min",
+            "link": ""
+          }
+        },
+        "guide_3": {
+          "type": "guide_card",
+          "settings": {
+            "title": "Come preparare un tè meditativo",
+            "description": "L'acqua giusta, il tempo di infusione, il respiro consapevole tra un sorso e l'altro.",
+            "icon_type": "te",
+            "color": "#06D6A0",
+            "reading_time": "4 min",
+            "link": ""
+          }
+        }
+      },
+      "block_order": ["guide_1", "guide_2", "guide_3"],
+      "settings": {
+        "eyebrow": "Per chi inizia",
+        "heading": "Come",
+        "heading_accent": "Iniziare",
+        "subtitle": "Tre guide essenziali per muovere i primi passi nel tuo viaggio di benessere spirituale."
+      }
+    },
+    "zen_completa_rituale_H4a03": {
+      "type": "zen-completa-rituale",
+      "blocks": {
+        "bundle_rad": {
+          "type": "bundle",
+          "settings": {
+            "bundle_name": "Rituale del Radicamento",
+            "chakra_name": "Muladhara",
+            "color": "#E63946",
+            "item_1": "Diaspro Rosso",
+            "item_2": "Incenso Patchouli",
+            "item_3": "Tè Muladhara",
+            "item_4": "Portaincenso in legno",
+            "price": "€38,90",
+            "compare_price": "€47,60",
+            "savings": "Risparmi il 18%",
+            "cta_text": "Aggiungi al Carrello",
+            "cta_link": ""
+          }
+        },
+        "bundle_int": {
+          "type": "bundle",
+          "settings": {
+            "bundle_name": "Rituale dell'Intuizione",
+            "chakra_name": "Ajna",
+            "color": "#6A4C93",
+            "item_1": "Ametista",
+            "item_2": "Incenso Nag Champa",
+            "item_3": "Tè Ajna",
+            "item_4": "Sacchetto in velluto",
+            "price": "€42,90",
+            "compare_price": "€52,30",
+            "savings": "Risparmi il 18%",
+            "cta_text": "Aggiungi al Carrello",
+            "cta_link": ""
+          }
+        },
+        "bundle_ser": {
+          "type": "bundle",
+          "settings": {
+            "bundle_name": "Rituale della Serenità",
+            "chakra_name": "Anahata",
+            "color": "#06D6A0",
+            "item_1": "Quarzo Rosa",
+            "item_2": "Salvia Bianca",
+            "item_3": "Tè Anahata",
+            "item_4": "Candela alla soia",
+            "price": "€36,90",
+            "compare_price": "€44,80",
+            "savings": "Risparmi il 18%",
+            "cta_text": "Aggiungi al Carrello",
+            "cta_link": ""
+          }
+        }
+      },
+      "block_order": ["bundle_rad", "bundle_int", "bundle_ser"],
+      "settings": {
+        "eyebrow": "Bundle Esclusivi",
+        "heading": "Completa il Tuo",
+        "heading_accent": "Rituale",
+        "subtitle": "Ogni bundle è un'esperienza completa — cristallo, incenso, tè e accessorio, scelti per lavorare in sinergia."
+      }
+    },
+    "why_us_PxVfDJ": {
+      "type": "why-us",
+      "name": "Why Us Cards",
+      "settings": {
+        "title": "Cosa ci rende diversi"
+      }
+    },
     "faq_FgMKeg": {
       "type": "faq",
       "blocks": {
@@ -452,9 +595,13 @@
     "zen_hero_scroll_F3a01",
     "d557b959-57cb-476f-adb6-18808587f120",
     "zen_trust_bar_F3a02",
+    "zen_rituale_momento_H4a01",
     "zen_brand_story_yWq88C",
+    "zen_come_iniziare_H4a02",
+    "why_us_PxVfDJ",
     "zen_bestseller_F3a04",
     "zen_chakra_explorer_aR4hTK",
+    "zen_completa_rituale_H4a03",
     "zen_feat_coll_F3a03",
     "zen_quiz_cta_D7pGhe",
     "zen_newsletter_F3a05",
