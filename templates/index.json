@@ -350,18 +350,28 @@
       "blocks": {
         "bundle_item_1": {
           "type": "bundle_item",
-          "settings": { "item_name": "Salvia Bianca" }
+          "settings": {
+            "item_name": "Salvia Bianca"
+          }
         },
         "bundle_item_2": {
           "type": "bundle_item",
-          "settings": { "item_name": "Quarzo Rosa" }
+          "settings": {
+            "item_name": "Quarzo Rosa"
+          }
         },
         "bundle_item_3": {
           "type": "bundle_item",
-          "settings": { "item_name": "Tè Anahata" }
+          "settings": {
+            "item_name": "Tè Anahata"
+          }
         }
       },
-      "block_order": ["bundle_item_1", "bundle_item_2", "bundle_item_3"],
+      "block_order": [
+        "bundle_item_1",
+        "bundle_item_2",
+        "bundle_item_3"
+      ],
       "settings": {
         "eyebrow": "Il Rituale del Momento",
         "heading": "Tempo di",
@@ -410,7 +420,11 @@
           }
         }
       },
-      "block_order": ["guide_1", "guide_2", "guide_3"],
+      "block_order": [
+        "guide_1",
+        "guide_2",
+        "guide_3"
+      ],
       "settings": {
         "eyebrow": "Per chi inizia",
         "heading": "Come",
@@ -473,7 +487,11 @@
           }
         }
       },
-      "block_order": ["bundle_rad", "bundle_int", "bundle_ser"],
+      "block_order": [
+        "bundle_rad",
+        "bundle_int",
+        "bundle_ser"
+      ],
       "settings": {
         "eyebrow": "Bundle Esclusivi",
         "heading": "Completa il Tuo",
@@ -589,6 +607,193 @@
         "padding_top_mobile": 28,
         "padding_bottom_mobile": 28
       }
+    },
+    "zen_social_proof_H4b02": {
+      "type": "zen-social-proof",
+      "settings": {
+        "count_1": 1247,
+        "label_1": "rituali spediti in Italia",
+        "count_2": 342,
+        "label_2": "cristalli hanno trovato casa questo mese",
+        "count_3": 98,
+        "suffix_3": "%",
+        "label_3": "clienti soddisfatti"
+      }
+    },
+    "zen_voci_cerchio_H4b03": {
+      "type": "zen-voci-cerchio",
+      "blocks": {
+        "ugc_1": {
+          "type": "ugc_card",
+          "settings": {
+            "quote": "L'ametista che ho ricevuto è stupenda",
+            "username": "@elena_m",
+            "alt_text": "Cristallo ametista"
+          }
+        },
+        "ugc_2": {
+          "type": "ugc_card",
+          "settings": {
+            "quote": "La salvia bianca ha cambiato i miei rituali",
+            "username": "@marco.zen",
+            "alt_text": "Salvia bianca"
+          }
+        },
+        "ugc_3": {
+          "type": "ugc_card",
+          "settings": {
+            "quote": "Il tè dei 7 chakra è diventato il mio preferito",
+            "username": "@giulia_yoga",
+            "alt_text": "Tè dei chakra"
+          }
+        },
+        "ugc_4": {
+          "type": "ugc_card",
+          "settings": {
+            "quote": "Spedizione velocissima e packaging curato",
+            "username": "@laura_b",
+            "alt_text": "Packaging Benessere Zen"
+          }
+        }
+      },
+      "block_order": [
+        "ugc_1",
+        "ugc_2",
+        "ugc_3",
+        "ugc_4"
+      ],
+      "settings": {
+        "eyebrow": "La Nostra Comunità",
+        "heading": "Voci dal",
+        "heading_accent": "Cerchio",
+        "instagram_url": "https://www.instagram.com/benesserezen.shop",
+        "instagram_text": "Seguici su Instagram"
+      }
+    },
+    "zen_blog_preview_H4b01": {
+      "type": "zen-blog-preview",
+      "settings": {
+        "eyebrow": "Dal nostro blog",
+        "heading": "Il Giornale Zen",
+        "blog": "news",
+        "limit": 3,
+        "show_view_all": true,
+        "view_all_text": "Tutti gli articoli →"
+      }
+    },
+    "testimonials_pkTryA": {
+      "type": "testimonials",
+      "blocks": {
+        "testimonial_9RaQt9": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Ho preso la crema viso lenitiva e mamma mia che freschezza! Con questo caldo estivo è davvero un sollievo sulla pelle, lascia una sensazione piacevolissima.",
+            "author_name": "Alice P.",
+            "author_title": "Cliente Verificata, Arezzo (AR)",
+            "rating": 5
+          }
+        },
+        "testimonial_mQmhMc": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Arrivato il pacco in due giorni, ben imballato. Ho preso il braccialetto con il quarzo rosa, molto bello, le pietre sono fredde al tatto. Mia nipote già me lo vuole rubare 😂",
+            "author_name": "Loredana G.",
+            "author_title": "Cliente Verificata, Seregno (MB)",
+            "rating": 5
+          }
+        },
+        "testimonial_8aNhcf": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Un’amica mi ha parlato dei loro prodotti e anche se ero scettica ho preso siero e crema illuminante. Dopo qualche settimana vedo già risultati! Sicuro proverò anche il resto.",
+            "author_name": "Enrica V.",
+            "author_title": "Cliente Verificato, Bressanone (BZ)",
+            "rating": 5
+          }
+        },
+        "testimonial_KyDjnT": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Devo dire che non sono uno che compra online, ma qui mi sono fidato e ho fatto bene. La tisana dei chakra è buonissima, non serve zucchero, e mi sento più leggero dopo cena.",
+            "author_name": "Antonio C.",
+            "author_title": "Cliente Verificato, Fano (PU)",
+            "rating": 5
+          }
+        },
+        "testimonial_qz396V": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Ho preso il ciondolo di ametista, bello lucente e non quei plasticoni che vendono in giro. Mia moglie contentissima, quindi ho fatto centro!",
+            "author_name": "Carlo M.",
+            "author_title": "Cliente Verificata, Bitonto (BA)",
+            "rating": 5
+          }
+        },
+        "testimonial_y66bHB": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Buon prodotto. Uso la crema mani tutte le sere e la pelle non mi tira più. Consiglio di usarla poco alla volta che è bella corposa.",
+            "author_name": "Maria Rosa F.",
+            "author_title": "Cliente Verificata, Caltagirone (CT)",
+            "rating": 4
+          }
+        },
+        "testimonial_TeiN3t": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Pacco arrivato un po' in ritardo per colpa del corriere ma il servizio clienti molto gentile. Ho preso un set di incensi e la confezione era davvero elegante.",
+            "author_name": "Emma T.",
+            "author_title": "Cliente Verificata, Conegliano (TV)",
+            "rating": 4
+          }
+        },
+        "testimonial_A8UwMD": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Gli oli essenziali durano un sacco e profumano tutta la stanza. Consigliati! Io ho preso quelli alla lavanda, al bergamotto e alla vaniglia.",
+            "author_name": "Giulia B.",
+            "author_title": "Cliente Verificata, Vercelli (VC)",
+            "rating": 5
+          }
+        },
+        "testimonial_Yz4Hhw": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Bella esperienza d'acquisto. Ho preso tre cose diverse e sono arrivate tutte ben confezionate. Non capita spesso di trovare negozi così attenti. Mi hanno anche aggiunto un pensierino!",
+            "author_name": "Simona L.",
+            "author_title": "Cliente Verificata, Pisticci (MT)",
+            "rating": 5
+          }
+        },
+        "testimonial_VcKyfm": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Il braccialetto alla sodalite è bellissimo, i colori sono vivi. Io non ci credo tanto a queste cose ma devo dire che da quando lo porto mi sento più tranquilla.",
+            "author_name": "Francesco D.",
+            "author_title": "Cliente Verificato, Asti (AT)",
+            "rating": 5
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_9RaQt9",
+        "testimonial_mQmhMc",
+        "testimonial_8aNhcf",
+        "testimonial_KyDjnT",
+        "testimonial_qz396V",
+        "testimonial_y66bHB",
+        "testimonial_TeiN3t",
+        "testimonial_A8UwMD",
+        "testimonial_Yz4Hhw",
+        "testimonial_VcKyfm"
+      ],
+      "name": "Zen Testimonials",
+      "settings": {
+        "heading": "Cosa Dicono i Nostri Clienti",
+        "subheading": "",
+        "show_arrows": true,
+        "show_pagination": true
+      }
     }
   },
   "order": [
@@ -597,12 +802,16 @@
     "zen_trust_bar_F3a02",
     "zen_rituale_momento_H4a01",
     "zen_brand_story_yWq88C",
+    "zen_social_proof_H4b02",
     "zen_come_iniziare_H4a02",
     "why_us_PxVfDJ",
     "zen_bestseller_F3a04",
     "zen_chakra_explorer_aR4hTK",
     "zen_completa_rituale_H4a03",
     "zen_feat_coll_F3a03",
+    "testimonials_pkTryA",
+    "zen_voci_cerchio_H4b03",
+    "zen_blog_preview_H4b01",
     "zen_quiz_cta_D7pGhe",
     "zen_newsletter_F3a05",
     "faq_FgMKeg"
