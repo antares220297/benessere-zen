@@ -52,7 +52,7 @@
   <div class="zen-hero__scroll-hint">
     <span>Scorri per esplorare</span>
     <div class="zen-hero__scroll-arrow">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
         <path d="M12 5v14M5 12l7 7 7-7"/>
       </svg>
     </div>
@@ -394,6 +394,9 @@
     animation: none;
     box-shadow: 0 0 15px #FF6B3D, 0 0 40px rgba(255, 107, 61, 0.3);
   }
+  .zen-hero__scroll-arrow {
+    animation: none;
+  }
 }
 </style>
 
@@ -404,6 +407,14 @@
 document.addEventListener('DOMContentLoaded', function() {
   var hero = document.getElementById('zen-hero');
   if (!hero) return;
+
+  /* Rispetta reduced motion: mostra tutto subito, no parallax */
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    hero.querySelectorAll('.zen-hero__text').forEach(function(t) { t.classList.add('is-visible'); });
+    var ctaEl = hero.querySelector('.zen-hero__cta');
+    if (ctaEl) ctaEl.classList.add('is-visible');
+    return;
+  }
 
   var media = hero.querySelector('.zen-hero__incense-media');
   var smokeOverlay = hero.querySelector('.zen-hero__smoke-overlay');

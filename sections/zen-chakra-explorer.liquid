@@ -1,5 +1,5 @@
 <!-- FASE-3B: Chakra Explorer Interattivo -->
-<section class="zen-chakra" data-section-id="{{ section.id }}">
+<section class="zen-chakra" data-section-id="{{ section.id }}" data-zen-reveal>
   <div class="zen-chakra__header">
     <span class="zen-chakra__eyebrow">{{ section.settings.eyebrow | default: 'Esplora per Energia' }}</span>
     <h2 class="zen-chakra__title">{{ section.settings.heading | default: 'I 7 Chakra' }}</h2>
@@ -173,7 +173,7 @@
 }
 
 .zen-chakra__panel-sanskrit {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-style: italic;
   font-size: 14px;
   color: rgba(232, 232, 232, 0.4);

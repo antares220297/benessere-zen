@@ -2,7 +2,7 @@
 {%- assign blog_handle = section.settings.blog | default: 'news' -%}
 {%- assign blog_obj = blogs[blog_handle] -%}
 
-<section class="zen-blog" data-section-id="{{ section.id }}">
+<section class="zen-blog" data-section-id="{{ section.id }}" data-zen-reveal>
   <div class="zen-blog__header">
     <span class="zen-blog__eyebrow">{{ section.settings.eyebrow | default: 'Dal nostro blog' }}</span>
     <h2 class="zen-blog__title">{{ section.settings.heading | default: 'Il Giornale Zen' }}</h2>
