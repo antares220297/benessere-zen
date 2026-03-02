@@ -87,6 +87,7 @@
       $dispatch('init-run'); runDispatch = false;
     }"
   >
+    {% render 'zen-scroll-progress' %}
     <div class="main-container flex flex-col min-h-screen relative">
       <a class="skip-to-content absolute -z-10 button button-solid hidden lg:block pt-2.5 pb-2.5 pl-6 pr-6 lg:pt-3 lg:pb-3 mt-0.5 ml-0.5 leading-normal justify-center cursor-pointer focus-visible:z-60" href="#MainContent">
         {{ 'accessibility.skip_to_text' | t }}
@@ -187,5 +188,6 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 </script>
+    {% render 'zen-grain-overlay' %}
   </body>
 </html>
