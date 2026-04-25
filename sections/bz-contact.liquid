@@ -1,0 +1,312 @@
+{%- comment -%}
+  BenesserEZen — Contact section.
+
+  Two columns on desktop: native Shopify {% form 'contact' %} on
+  the left, sede + social on the right. Stacks to single column
+  on mobile (form first, info second).
+
+  Native Shopify contact form posts to Shopify and emails the
+  shop owner. Honours form.posted_successfully? to swap the form
+  for a Cormorant italic confirmation.
+{%- endcomment -%}
+
+<section
+  class="bz-contact color-{{ section.settings.color_scheme }} gradient isolate"
+  data-section-id="{{ section.id }}"
+>
+  <div class="page-width bz-contact__inner">
+    <div class="bz-contact__grid">
+
+      <div class="bz-contact__form-col">
+        {%- if section.settings.form_heading != blank -%}
+          <p class="bz-label bz-reveal">{{ section.settings.form_heading }}</p>
+        {%- endif -%}
+        {%- if section.settings.form_subtext != blank -%}
+          <p class="bz-body bz-reveal" data-delay="1">{{ section.settings.form_subtext }}</p>
+        {%- endif -%}
+
+        {%- form 'contact', id: 'bz-contact-form-' | append: section.id, class: 'bz-contact__form bz-reveal', 'data-delay': '2' -%}
+          {%- if form.posted_successfully? -%}
+            <p class="bz-contact__success">{{ section.settings.success_text | default: 'Grazie. Ti rispondiamo entro 24 ore.' }}</p>
+          {%- else -%}
+            <label class="visually-hidden" for="bz-contact-name-{{ section.id }}">Nome</label>
+            <input
+              class="bz-contact__input"
+              type="text"
+              id="bz-contact-name-{{ section.id }}"
+              name="contact[name]"
+              placeholder="Il tuo nome"
+              autocomplete="name"
+              required
+            >
+            <label class="visually-hidden" for="bz-contact-email-{{ section.id }}">Email</label>
+            <input
+              class="bz-contact__input"
+              type="email"
+              id="bz-contact-email-{{ section.id }}"
+              name="contact[email]"
+              placeholder="La tua email"
+              autocorrect="off"
+              autocapitalize="off"
+              autocomplete="email"
+              required
+            >
+            <label class="visually-hidden" for="bz-contact-message-{{ section.id }}">Messaggio</label>
+            <textarea
+              class="bz-contact__textarea"
+              id="bz-contact-message-{{ section.id }}"
+              name="contact[body]"
+              placeholder="Il tuo messaggio"
+              rows="5"
+              required
+            ></textarea>
+
+            {%- if form.errors -%}
+              <p class="bz-contact__error">{{ form.errors | default_errors }}</p>
+            {%- endif -%}
+
+            <button class="bz-btn bz-contact__submit" type="submit">
+              {{ section.settings.submit_text | default: 'Invia messaggio' }}
+            </button>
+          {%- endif -%}
+        {%- endform -%}
+      </div>
+
+      <div class="bz-contact__info">
+        <p class="bz-label bz-reveal">{{ section.settings.info_heading | default: 'Dove siamo' }}</p>
+        <address class="bz-contact__address bz-body bz-reveal" data-delay="1">{{ section.settings.address | newline_to_br | default: 'Benessere Zen di Balboni Simona<br>Via M. Provenzali 1<br>44042 Cento (FE) — Italia<br>P.IVA IT02091600383' }}</address>
+
+        {%- if section.settings.email != blank -%}
+          <p class="bz-contact__email bz-reveal" data-delay="2">
+            <a href="mailto:{{ section.settings.email }}">{{ section.settings.email }}</a>
+          </p>
+        {%- endif -%}
+
+        <hr class="bz-divider bz-contact__rule">
+
+        <p class="bz-label bz-reveal" data-delay="3">{{ section.settings.social_heading | default: 'Seguici' }}</p>
+        <div class="bz-contact__socials bz-reveal" data-delay="4">
+          {%- if settings.social_instagram_link != blank -%}
+            <a class="bz-contact__social" href="{{ settings.social_instagram_link }}" target="_blank" rel="noopener">Instagram</a>
+          {%- endif -%}
+          {%- if settings.social_facebook_link != blank -%}
+            <a class="bz-contact__social" href="{{ settings.social_facebook_link }}" target="_blank" rel="noopener">Facebook</a>
+          {%- endif -%}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% style %}
+  .bz-contact {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  .bz-contact__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
+  .bz-contact__form-col,
+  .bz-contact__info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+  }
+  .bz-contact__form-col .bz-label,
+  .bz-contact__info .bz-label { margin: 0; }
+
+  /* === Form === */
+  .bz-contact__form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    margin-top: 0.6rem;
+  }
+  .bz-contact__input,
+  .bz-contact__textarea {
+    background: transparent;
+    border: 1px solid var(--bz-border);
+    color: var(--bz-text);
+    font-family: var(--bz-font-body);
+    font-size: 1.4rem;
+    line-height: 1.5;
+    padding: 1.2rem 1.4rem;
+    transition: border-color var(--bz-duration) var(--bz-ease);
+  }
+  .bz-contact__textarea {
+    resize: vertical;
+    min-height: 12rem;
+  }
+  .bz-contact__input:focus,
+  .bz-contact__textarea:focus {
+    outline: none;
+    border-color: var(--bz-gold);
+  }
+  .bz-contact__input::placeholder,
+  .bz-contact__textarea::placeholder {
+    color: var(--bz-muted);
+    font-style: italic;
+  }
+  .bz-contact__submit {
+    align-self: flex-start;
+    margin-top: 0.6rem;
+  }
+  .bz-contact__error {
+    margin: 0;
+    padding: 0.8rem 1.2rem;
+    border: 1px solid rgba(204, 51, 51, 0.5);
+    background: rgba(204, 51, 51, 0.08);
+    color: var(--bz-text);
+    font-family: var(--bz-font-body);
+    font-size: 1.2rem;
+  }
+  .bz-contact__success {
+    margin: 0;
+    font-family: var(--bz-font-display);
+    font-style: italic;
+    font-size: 1.8rem;
+    color: var(--bz-gold);
+  }
+
+  /* === Info === */
+  .bz-contact__address {
+    margin: 0;
+    font-style: normal;
+    line-height: 1.8;
+  }
+  .bz-contact__email {
+    margin: 0.4rem 0 0;
+  }
+  .bz-contact__email a {
+    color: var(--bz-gold);
+    text-decoration: none;
+    border-bottom: 1px solid var(--bz-border-gold);
+  }
+  .bz-contact__rule { margin: 2rem 0; }
+
+  .bz-contact__socials {
+    display: flex;
+    gap: 1.6rem;
+    flex-wrap: wrap;
+  }
+  .bz-contact__social {
+    font-family: var(--bz-font-ui);
+    font-size: 1.1rem;
+    letter-spacing: 0.3rem;
+    text-transform: uppercase;
+    color: var(--bz-muted);
+    text-decoration: none;
+    transition: color var(--bz-duration) var(--bz-ease);
+  }
+  .bz-contact__social:hover { color: var(--bz-gold); }
+
+  @media (min-width: 990px) {
+    .bz-contact__grid {
+      grid-template-columns: 1.1fr 1fr;
+      gap: 6rem;
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "BZ Contatti",
+  "class": "bz-contact-section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "default": "scheme-4",
+      "label": "Schema colore"
+    },
+    {
+      "type": "header",
+      "content": "Form"
+    },
+    {
+      "type": "text",
+      "id": "form_heading",
+      "label": "Etichetta form",
+      "default": "Scrivici"
+    },
+    {
+      "type": "textarea",
+      "id": "form_subtext",
+      "label": "Sottotesto form",
+      "default": "Domande, ordini particolari, richieste di consulenza. Ti rispondiamo entro 24 ore."
+    },
+    {
+      "type": "text",
+      "id": "submit_text",
+      "label": "Testo bottone",
+      "default": "Invia messaggio"
+    },
+    {
+      "type": "text",
+      "id": "success_text",
+      "label": "Messaggio dopo invio",
+      "default": "Grazie. Ti rispondiamo entro 24 ore."
+    },
+    {
+      "type": "header",
+      "content": "Informazioni sede"
+    },
+    {
+      "type": "text",
+      "id": "info_heading",
+      "label": "Etichetta info",
+      "default": "Dove siamo"
+    },
+    {
+      "type": "textarea",
+      "id": "address",
+      "label": "Indirizzo",
+      "default": "Benessere Zen di Balboni Simona\nVia M. Provenzali 1\n44042 Cento (FE) — Italia\nP.IVA IT02091600383"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email contatto",
+      "default": "info@benesserezen.shop"
+    },
+    {
+      "type": "text",
+      "id": "social_heading",
+      "label": "Etichetta social",
+      "default": "Seguici"
+    },
+    {
+      "type": "header",
+      "content": "Spaziatura"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding alto",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding basso",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 96
+    }
+  ],
+  "presets": [
+    {
+      "name": "BZ Contatti"
+    }
+  ]
+}
+{% endschema %}
