@@ -1,0 +1,279 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Josefin+Sans:wght@300;400;500;600&family=Lato:wght@300;400;700&display=swap');
+
+/* === BenesserEZen — Brand Tokens === */
+:root {
+  /* Backgrounds */
+  --bz-bg:           #0F0F0F;
+  --bz-bg-2:         #111118;
+  --bz-bg-3:         #1A1A2E;
+
+  /* Gold accent */
+  --bz-gold:         #C9A84C;
+  --bz-gold-light:   #E8D27A;
+  --bz-gold-dim:     rgba(201, 168, 76, 0.25);
+
+  /* Text */
+  --bz-text:         #E8E8E8;
+  --bz-muted:        rgba(232, 232, 232, 0.45);
+
+  /* Borders */
+  --bz-border:       rgba(232, 232, 232, 0.07);
+  --bz-border-gold:  rgba(201, 168, 76, 0.25);
+
+  /* Typography */
+  --bz-font-display: 'Cormorant Garamond', Georgia, serif;
+  --bz-font-ui:      'Josefin Sans', sans-serif;
+  --bz-font-body:    'Lato', sans-serif;
+
+  /* Motion */
+  --bz-ease:          cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --bz-ease-out:      cubic-bezier(0.0, 0.0, 0.2, 1);
+  --bz-duration:      0.4s;
+  --bz-duration-slow: 0.8s;
+
+  /* 7 Chakra — colori categoriali (usati in navigazione, badge, card) */
+  --chakra-1: #CC3333;   /* Muladhara    — Radice        */
+  --chakra-2: #E07030;   /* Svadhisthana — Sacrale       */
+  --chakra-3: #C9A020;   /* Manipura     — Plesso Solare */
+  --chakra-4: #2ECC71;   /* Anahata      — Cuore         */
+  --chakra-5: #3399DD;   /* Vishuddha    — Gola          */
+  --chakra-6: #7744CC;   /* Ajna         — Terzo Occhio  */
+  --chakra-7: #9B59B6;   /* Sahasrara    — Corona        */
+}
+
+/* === Homepage: heading UNIFICATI SOLO PER LE SEZIONI (Eurus) === */
+:root{
+  --zen-heading-font: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --zen-heading-weight: 600;
+  --zen-heading-lh: 1.2;
+  --zen-heading-mb: 20px;
+}
+
+/* Marker homepage (Eurus mette la classe sul <main>) */
+main.theme-template-index,
+#MainContent.theme-template-index {}
+
+/* --- SOLO TITOLI DI SEZIONE --- */
+/* (non tocca i titoli delle card: niente .collection-list .title, niente .multicolumn .title) */
+main.theme-template-index :is(
+  .title-wrapper-with-link .title, /* sezione standard */
+  .section-header .title,          /* variante Eurus */
+  .section-title,                  /* fallback generico */
+  .rich-text__heading,             /* Rich text */
+  .image-with-text__heading,       /* Immagine + testo */
+  .testimonials__heading,          /* Testimonianze */
+  .zen-title,                      /* Why-us */
+  .zen-quiz-title                  /* Quiz */
+){
+  font-family: var(--zen-heading-font) !important;
+  font-weight: var(--zen-heading-weight) !important;
+  line-height: var(--zen-heading-lh) !important;
+  letter-spacing: normal !important;
+  margin-bottom: var(--zen-heading-mb) !important;
+  font-size: clamp(32px, 5vw, 48px) !important;
+}
+
+/* --- (OPZIONALE) Salvaguardia esplicita: reset per titoli dentro le card --- */
+/* Se qualcosa fosse rimasto “contagiato”, riportalo allo stile originale del tema */
+main.theme-template-index :is(
+  .collection-list .card .title,
+  .collection-list .card__heading,
+  .collection-card__title,
+  .multicolumn .card .title,
+  .multicolumn-card__title
+){
+  font-family: inherit !important;
+  font-weight: inherit !important;
+  line-height: inherit !important;
+  letter-spacing: inherit !important;
+  font-size: inherit !important;
+  margin-bottom: inherit !important;
+}
+
+/* ═══════════════════════════════════════════
+   ZEN HOMEPAGE — Spacing & Border Harmony (Task Doc 5)
+   ═══════════════════════════════════════════ */
+
+/* --- Separatori sottili tra sezioni con sfondo diverso --- */
+.zen-story + .zen-social-proof-section,
+.zen-come-iniziare-section + [data-section-id],
+.zen-completa-section + [data-section-id] {
+  border-top: 1px solid rgba(201, 168, 76, 0.06);
+}
+
+/* --- Padding consistency: sezioni "contenuto" hanno 80px top/bottom --- */
+/* Le sezioni "barre" (trust-bar, social-proof) mantengono il loro padding ridotto */
+@media (min-width: 769px) {
+  .zen-story,
+  .zen-come-iniziare,
+  .zen-chakra,
+  .zen-feat-coll,
+  .zen-blog,
+  .zen-voci,
+  .zen-completa {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+}
+
+/* Mobile: padding più stretto e uniforme */
+@media (max-width: 768px) {
+  .zen-story,
+  .zen-come-iniziare,
+  .zen-chakra,
+  .zen-feat-coll,
+  .zen-blog,
+  .zen-voci,
+  .zen-completa,
+  .zen-rituale-momento {
+    padding-top: 56px;
+    padding-bottom: 56px;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+/* --- Rimuovi gap visivo tra trust-bar e la sezione successiva --- */
+.zen-trust-bar {
+  margin-bottom: 0;
+}
+
+/* --- Social proof: bordo sottile separatore --- */
+.zen-social-proof {
+  border-top: 1px solid rgba(201, 168, 76, 0.06);
+  border-bottom: 1px solid rgba(201, 168, 76, 0.06);
+}
+
+/* --- Smooth background transitions tra sezioni con gradient diversi --- */
+.zen-rituale-momento,
+.zen-completa {
+  position: relative;
+}
+
+.zen-rituale-momento::before,
+.zen-completa::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(to bottom, #0F0F0F, transparent);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.zen-rituale-momento::after,
+.zen-completa::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(to top, #0F0F0F, transparent);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* === BenesserEZen — Base Typography === */
+
+/* Label sopra i titoli di sezione */
+.bz-label {
+  font-family: var(--bz-font-ui);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--bz-gold);
+}
+
+/* Titolo principale di sezione */
+.bz-title {
+  font-family: var(--bz-font-display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1.1;
+  color: var(--bz-text);
+}
+
+/* Sottotitolo / body di sezione */
+.bz-body {
+  font-family: var(--bz-font-body);
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.9;
+  color: var(--bz-muted);
+}
+
+/* Divisore oro */
+.bz-divider {
+  width: 40px;
+  height: 1px;
+  background: var(--bz-gold);
+  opacity: 0.5;
+  border: none;
+  margin: 0;
+}
+
+/* Pulsante bordo oro */
+.bz-btn {
+  display: inline-block;
+  font-family: var(--bz-font-ui);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 13px 36px;
+  border: 1px solid var(--bz-gold);
+  color: var(--bz-gold);
+  background: transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background var(--bz-duration) var(--bz-ease),
+              color var(--bz-duration) var(--bz-ease);
+}
+.bz-btn:hover {
+  background: var(--bz-gold);
+  color: var(--bz-bg);
+}
+
+/* Pulsante ghost (bordo bianco traslucido) */
+.bz-btn-ghost {
+  display: inline-block;
+  font-family: var(--bz-font-ui);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 13px 36px;
+  border: 1px solid var(--bz-border);
+  color: var(--bz-muted);
+  background: transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color var(--bz-duration) var(--bz-ease),
+              color var(--bz-duration) var(--bz-ease);
+}
+.bz-btn-ghost:hover {
+  border-color: rgba(232, 232, 232, 0.35);
+  color: var(--bz-text);
+}
+
+/* === Scroll Reveal === */
+.bz-reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity var(--bz-duration-slow) var(--bz-ease-out),
+              transform var(--bz-duration-slow) var(--bz-ease-out);
+}
+.bz-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.bz-reveal[data-delay="1"] { transition-delay: 0.1s; }
+.bz-reveal[data-delay="2"] { transition-delay: 0.2s; }
+.bz-reveal[data-delay="3"] { transition-delay: 0.3s; }
+.bz-reveal[data-delay="4"] { transition-delay: 0.4s; }
+.bz-reveal[data-delay="5"] { transition-delay: 0.5s; }
