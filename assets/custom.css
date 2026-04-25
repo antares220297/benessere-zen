@@ -175,3 +175,105 @@ main.theme-template-index :is(
   pointer-events: none;
   z-index: 1;
 }
+
+/* === BenesserEZen — Base Typography === */
+
+/* Label sopra i titoli di sezione */
+.bz-label {
+  font-family: var(--bz-font-ui);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--bz-gold);
+}
+
+/* Titolo principale di sezione */
+.bz-title {
+  font-family: var(--bz-font-display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1.1;
+  color: var(--bz-text);
+}
+
+/* Sottotitolo / body di sezione */
+.bz-body {
+  font-family: var(--bz-font-body);
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.9;
+  color: var(--bz-muted);
+}
+
+/* Divisore oro */
+.bz-divider {
+  width: 40px;
+  height: 1px;
+  background: var(--bz-gold);
+  opacity: 0.5;
+  border: none;
+  margin: 0;
+}
+
+/* Pulsante bordo oro */
+.bz-btn {
+  display: inline-block;
+  font-family: var(--bz-font-ui);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 13px 36px;
+  border: 1px solid var(--bz-gold);
+  color: var(--bz-gold);
+  background: transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background var(--bz-duration) var(--bz-ease),
+              color var(--bz-duration) var(--bz-ease);
+}
+.bz-btn:hover {
+  background: var(--bz-gold);
+  color: var(--bz-bg);
+}
+
+/* Pulsante ghost (bordo bianco traslucido) */
+.bz-btn-ghost {
+  display: inline-block;
+  font-family: var(--bz-font-ui);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 13px 36px;
+  border: 1px solid var(--bz-border);
+  color: var(--bz-muted);
+  background: transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color var(--bz-duration) var(--bz-ease),
+              color var(--bz-duration) var(--bz-ease);
+}
+.bz-btn-ghost:hover {
+  border-color: rgba(232, 232, 232, 0.35);
+  color: var(--bz-text);
+}
+
+/* === Scroll Reveal === */
+.bz-reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity var(--bz-duration-slow) var(--bz-ease-out),
+              transform var(--bz-duration-slow) var(--bz-ease-out);
+}
+.bz-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.bz-reveal[data-delay="1"] { transition-delay: 0.1s; }
+.bz-reveal[data-delay="2"] { transition-delay: 0.2s; }
+.bz-reveal[data-delay="3"] { transition-delay: 0.3s; }
+.bz-reveal[data-delay="4"] { transition-delay: 0.4s; }
+.bz-reveal[data-delay="5"] { transition-delay: 0.5s; }
