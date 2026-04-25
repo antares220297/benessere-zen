@@ -59,6 +59,18 @@
         "heading": "I rituali più amati"
       }
     },
+    "bz_brand_story": {
+      "type": "bz-brand-story",
+      "settings": {
+        "color_scheme": "scheme-4",
+        "eyebrow": "La nostra storia",
+        "quote": "Non vendiamo prodotti.\nCuriamo rituali per chi cerca la propria verità.",
+        "body": "<p>BenesserEZen nasce da una trasformazione personale e dal desiderio di condividere il potere dei rituali quotidiani. Ogni cristallo, incenso e oggetto è scelto a mano, con cura, perché diventi parte del tuo percorso.</p>",
+        "cta_text": "La nostra storia →",
+        "cta_link": "/pages/about",
+        "tag": "Est. 2023 · Cento, Italia"
+      }
+    },
     "image_banner": {
       "type": "image-banner",
       "blocks": {
@@ -262,6 +274,7 @@
     "bz_hero_main",
     "bz_chakra_portal",
     "bz_collections",
+    "bz_brand_story",
     "image_banner",
     "rich_text",
     "featured_collection",
