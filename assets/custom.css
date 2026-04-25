@@ -552,3 +552,27 @@ fieldset.product-form__input legend.form__label {
   color: var(--bz-muted);
   line-height: 1.8;
 }
+
+/* === Sticky ATC mobile ===
+   Dawn ships no native mobile ATC pin. The buy-buttons block sits
+   inside .product__info-container — pin it to the bottom of the
+   viewport while the user scrolls within the product info block.
+   Falls back to static once the section ends, so it doesn't block
+   the recommendations area. */
+@media (max-width: 749px) {
+  .product__info-container .product-form {
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
+    margin: 0 -1.5rem -1rem;
+    padding: 1.2rem 1.5rem 1.4rem;
+    background: rgba(15, 15, 15, 0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid var(--bz-border-gold);
+  }
+  /* Trim the gap between description/accordions and the sticky bar */
+  .product__info-container .product-form__buttons {
+    margin-top: 0;
+  }
+}
