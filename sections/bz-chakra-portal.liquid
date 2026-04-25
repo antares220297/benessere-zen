@@ -29,10 +29,10 @@
 >
   <div class="page-width bz-portal__inner">
     <header class="bz-portal__header">
-      <p class="bz-label">{{ section.settings.eyebrow | default: 'Sistema dei 7 chakra' }}</p>
-      <h2 class="bz-title">{{ section.settings.heading | default: 'Quale energia stai cercando?' }}</h2>
+      <p class="bz-label bz-reveal">{{ section.settings.eyebrow | default: 'Sistema dei 7 chakra' }}</p>
+      <h2 class="bz-title bz-reveal" data-delay="1">{{ section.settings.heading | default: 'Quale energia stai cercando?' }}</h2>
       {%- if section.settings.subtext != blank -%}
-        <p class="bz-body bz-portal__subtext">{{ section.settings.subtext }}</p>
+        <p class="bz-body bz-portal__subtext bz-reveal" data-delay="2">{{ section.settings.subtext }}</p>
       {%- endif -%}
     </header>
 
