@@ -449,3 +449,106 @@ details[open] > .header__menu-item,
 .footer .list-social__link:hover {
   transform: translateY(-1px);
 }
+
+/* === Product page brand overrides ===
+   Hooks Dawn's main-product classes (verified against
+   sections/main-product.liquid + assets/section-main-product.css):
+   .product__title, .price-item, .product-form__submit,
+   .product__description, .product__info-container. */
+
+.product__title h1,
+.product__title h2 {
+  font-family: var(--bz-font-display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(2.4rem, 4vw, 4rem);
+  line-height: 1.1;
+  color: var(--bz-text);
+  letter-spacing: 0;
+}
+
+.product__text.caption-with-letter-spacing {
+  font-family: var(--bz-font-ui);
+  letter-spacing: 0.3rem;
+  text-transform: uppercase;
+  color: var(--bz-muted);
+}
+
+.price .price-item,
+.price__regular .price-item--regular,
+.price__sale .price-item--regular,
+.price__sale .price-item--last,
+.price__sale .price-item--sale {
+  font-family: var(--bz-font-ui);
+  color: var(--bz-gold);
+  font-size: 1.6rem;
+  letter-spacing: 0.2rem;
+}
+.price__sale .price-item--regular {
+  color: var(--bz-muted);
+  text-decoration: line-through;
+}
+
+/* ATC button — gold solid, brand UI font */
+.product-form__submit,
+.shopify-payment-button__button--unbranded {
+  background: var(--bz-gold);
+  color: var(--bz-bg);
+  border: none;
+  font-family: var(--bz-font-ui);
+  font-weight: 400;
+  font-size: 1.2rem;
+  letter-spacing: 0.3rem;
+  text-transform: uppercase;
+  transition: background var(--bz-duration) var(--bz-ease),
+              color var(--bz-duration) var(--bz-ease);
+}
+.product-form__submit:hover,
+.product-form__submit:focus-visible,
+.shopify-payment-button__button--unbranded:hover {
+  background: var(--bz-gold-light);
+  color: var(--bz-bg);
+}
+.product-form__submit:disabled {
+  background: var(--bz-border);
+  color: var(--bz-muted);
+  cursor: not-allowed;
+}
+
+/* Description body */
+.product__description,
+.product__description.rte {
+  font-family: var(--bz-font-body);
+  font-size: 1.5rem;
+  line-height: 1.9;
+  color: var(--bz-muted);
+}
+.product__description p { margin: 0 0 1.4rem; }
+.product__description p:last-child { margin-bottom: 0; }
+
+/* Variant picker labels and pills */
+.product-form__input .form__label,
+fieldset.product-form__input legend.form__label {
+  font-family: var(--bz-font-ui);
+  font-size: 1.1rem;
+  letter-spacing: 0.25rem;
+  text-transform: uppercase;
+  color: var(--bz-muted);
+}
+
+/* Collapsible accordions ("Ingredienti", "Spedizione", ecc.) */
+.product .accordion summary,
+.product .product__accordion summary {
+  font-family: var(--bz-font-ui);
+  font-size: 1.2rem;
+  letter-spacing: 0.25rem;
+  text-transform: uppercase;
+  color: var(--bz-text);
+  border-top: 1px solid var(--bz-border);
+  padding: 1.6rem 0;
+}
+.product .accordion .accordion__content {
+  font-family: var(--bz-font-body);
+  color: var(--bz-muted);
+  line-height: 1.8;
+}
