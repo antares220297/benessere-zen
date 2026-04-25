@@ -22,8 +22,14 @@
           <nav class="menu-drawer__navigation">
             <ul class="menu-drawer__menu has-submenu list-menu" role="list">
               {%- for link in section.settings.menu.links -%}
+                {%- liquid
+                  assign bz_is_chakra = false
+                  if link.handle == 'chakra' or link.url contains '/collections/chakra'
+                    assign bz_is_chakra = true
+                  endif
+                -%}
                 <li>
-                  {%- if link.links != blank -%}
+                  {%- if link.links != blank or bz_is_chakra -%}
                     <details id="Details-menu-drawer-menu-item-{{ forloop.index }}">
                       <summary
                         id="HeaderDrawer-{{ link.handle }}"
@@ -49,6 +55,9 @@
                             </span>
                             {{ link.title | escape }}
                           </button>
+                          {%- if bz_is_chakra -%}
+                            {% render 'bz-megamenu-chakra', layout: 'mobile' %}
+                          {%- else -%}
                           <ul class="menu-drawer__menu list-menu" role="list" tabindex="-1">
                             {%- for childlink in link.links -%}
                               <li>
@@ -116,6 +125,7 @@
                               </li>
                             {%- endfor -%}
                           </ul>
+                          {%- endif -%}
                         </div>
                       </div>
                     </details>
