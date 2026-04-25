@@ -1,0 +1,325 @@
+{%- comment -%}
+  BenesserEZen — "Completa il rituale" cross-sell.
+
+  Pulls 3 complementary products from Shopify's recommendations API
+  (/recommendations/products.json?intent=complementary). Renders
+  brand-styled cards client-side. If the API returns no items the
+  section hides itself.
+
+  Optional fallback collection (section setting) — if set, its first
+  3 products are server-rendered and used until the API responds.
+{%- endcomment -%}
+
+{%- liquid
+  assign fallback_collection = section.settings.fallback_collection
+-%}
+
+<section
+  class="bz-ritual color-{{ section.settings.color_scheme }} gradient isolate"
+  data-section-id="{{ section.id }}"
+>
+  <div class="page-width bz-ritual__inner">
+    <header class="bz-ritual__header">
+      <p class="bz-label bz-reveal">{{ section.settings.eyebrow | default: 'Completa il rituale' }}</p>
+      <h2 class="bz-title bz-reveal" data-delay="1">{{ section.settings.heading | default: 'Abbinato spesso con' }}</h2>
+    </header>
+
+    <div
+      class="bz-ritual__grid"
+      id="bz-ritual-grid-{{ section.id }}"
+      data-product-id="{{ product.id }}"
+      data-limit="{{ section.settings.products_to_show | default: 3 }}"
+    >
+      {%- if fallback_collection != blank and fallback_collection.products.size > 0 -%}
+        {%- assign limit = section.settings.products_to_show | default: 3 -%}
+        {%- for p in fallback_collection.products limit: limit -%}
+          <a class="bz-ritual-card bz-reveal" data-delay="{{ forloop.index0 | plus: 1 }}" href="{{ p.url }}">
+            <div class="bz-ritual-card__media">
+              {%- if p.featured_image != blank -%}
+                {{
+                  p.featured_image
+                  | image_url: width: 800
+                  | image_tag:
+                    class: 'bz-ritual-card__img',
+                    loading: 'lazy',
+                    widths: '300, 500, 800',
+                    sizes: '(min-width: 990px) 25vw, 50vw'
+                }}
+              {%- endif -%}
+              <div class="bz-ritual-card__overlay" aria-hidden="true"></div>
+            </div>
+            <div class="bz-ritual-card__body">
+              <h3 class="bz-ritual-card__title">{{ p.title | escape }}</h3>
+              <span class="bz-ritual-card__price">{{ p.price | money }}</span>
+              <span class="bz-ritual-card__cta">Scopri <span aria-hidden="true">→</span></span>
+            </div>
+          </a>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% style %}
+  .bz-ritual {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  .bz-ritual__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+  }
+  .bz-ritual__header {
+    text-align: center;
+    max-width: 60rem;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+  .bz-ritual__header .bz-label,
+  .bz-ritual__header .bz-title { margin: 0; }
+
+  .bz-ritual__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2rem;
+  }
+  .bz-ritual__grid:empty { display: none; }
+
+  /* === Card === */
+  .bz-ritual-card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    background: var(--bz-bg-2);
+    border: 1px solid var(--bz-border);
+    transition: border-color var(--bz-duration) var(--bz-ease),
+                transform var(--bz-duration) var(--bz-ease);
+  }
+  .bz-ritual-card:hover {
+    border-color: var(--bz-border-gold);
+    transform: translateY(-2px);
+  }
+  .bz-ritual-card:focus-visible {
+    outline: 2px solid var(--bz-gold);
+    outline-offset: -2px;
+  }
+
+  .bz-ritual-card__media {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: rgba(15, 15, 15, 0.6);
+  }
+  .bz-ritual-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.7s var(--bz-ease);
+  }
+  .bz-ritual-card:hover .bz-ritual-card__img {
+    transform: scale(1.05);
+  }
+  .bz-ritual-card__overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 50%);
+  }
+
+  .bz-ritual-card__body {
+    padding: 1.6rem 1.8rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .bz-ritual-card__title {
+    margin: 0;
+    font-family: var(--bz-font-display);
+    font-style: italic;
+    font-weight: 300;
+    font-size: 1.6rem;
+    line-height: 1.2;
+    color: var(--bz-text);
+  }
+  .bz-ritual-card__price {
+    font-family: var(--bz-font-ui);
+    font-size: 1.1rem;
+    letter-spacing: 0.2rem;
+    color: var(--bz-gold);
+  }
+  .bz-ritual-card__cta {
+    margin-top: 0.4rem;
+    font-family: var(--bz-font-ui);
+    font-size: 1rem;
+    letter-spacing: 0.3rem;
+    text-transform: uppercase;
+    color: var(--bz-muted);
+    transition: color var(--bz-duration) var(--bz-ease);
+  }
+  .bz-ritual-card:hover .bz-ritual-card__cta {
+    color: var(--bz-gold);
+  }
+
+  @media (max-width: 989px) {
+    .bz-ritual__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 599px) {
+    .bz-ritual__grid { grid-template-columns: 1fr; }
+  }
+{% endstyle %}
+
+<script>
+  (function () {
+    var SECTION_ID = '{{ section.id }}';
+    var grid = document.getElementById('bz-ritual-grid-' + SECTION_ID);
+    if (!grid) return;
+
+    var productId = grid.getAttribute('data-product-id');
+    var limit     = parseInt(grid.getAttribute('data-limit'), 10) || 3;
+    if (!productId) {
+      if (!grid.children.length) grid.parentElement.parentElement.style.display = 'none';
+      return;
+    }
+
+    function moneyFormat(cents) {
+      var n = cents / 100;
+      try {
+        return n.toLocaleString('it-IT', { style: 'currency', currency: 'EUR' });
+      } catch (e) {
+        return '€' + n.toFixed(2).replace('.', ',');
+      }
+    }
+
+    function renderCard(p, idx) {
+      var img = p.featured_image || (p.images && p.images[0]);
+      var imgSrc = '';
+      if (img) {
+        var raw = typeof img === 'string' ? img : (img.src || img.url || '');
+        imgSrc = raw.replace(/\.(jpg|jpeg|png|webp|gif)/i, '_500x.$1');
+      }
+      var price = p.price !== undefined ? moneyFormat(p.price) : '';
+
+      var card = document.createElement('a');
+      card.className = 'bz-ritual-card bz-reveal';
+      card.setAttribute('data-delay', String(Math.min(idx + 1, 5)));
+      card.href = p.url;
+      card.innerHTML =
+        '<div class="bz-ritual-card__media">' +
+          (imgSrc ? '<img class="bz-ritual-card__img" src="' + imgSrc + '" alt="" loading="lazy">' : '') +
+          '<div class="bz-ritual-card__overlay" aria-hidden="true"></div>' +
+        '</div>' +
+        '<div class="bz-ritual-card__body">' +
+          '<h3 class="bz-ritual-card__title">' + p.title + '</h3>' +
+          (price ? '<span class="bz-ritual-card__price">' + price + '</span>' : '') +
+          '<span class="bz-ritual-card__cta">Scopri <span aria-hidden="true">→</span></span>' +
+        '</div>';
+      return card;
+    }
+
+    var url = '/recommendations/products.json?product_id=' + encodeURIComponent(productId)
+            + '&limit=' + limit
+            + '&intent=complementary';
+
+    fetch(url, { credentials: 'same-origin' })
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+      .then(function (data) {
+        var products = (data && data.products) || [];
+        if (products.length === 0) {
+          if (!grid.children.length) {
+            var section = grid.closest('.bz-ritual');
+            if (section) section.style.display = 'none';
+          }
+          return;
+        }
+        grid.innerHTML = '';
+        products.slice(0, limit).forEach(function (p, i) {
+          grid.appendChild(renderCard(p, i));
+        });
+      })
+      .catch(function () {
+        /* keep server-rendered fallback if any; otherwise hide. */
+        if (!grid.children.length) {
+          var section = grid.closest('.bz-ritual');
+          if (section) section.style.display = 'none';
+        }
+      });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "BZ Completa il Rituale",
+  "class": "bz-product-ritual-section",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "default": "scheme-4",
+      "label": "Schema colore"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Etichetta",
+      "default": "Completa il rituale"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titolo",
+      "default": "Abbinato spesso con"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "label": "Prodotti da mostrare",
+      "default": 3
+    },
+    {
+      "type": "collection",
+      "id": "fallback_collection",
+      "label": "Collection fallback",
+      "info": "Se l'API recommendations non restituisce risultati, mostra i primi prodotti di questa collection."
+    },
+    {
+      "type": "header",
+      "content": "Spaziatura"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding alto",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding basso",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "presets": [
+    {
+      "name": "BZ Completa il Rituale"
+    }
+  ]
+}
+{% endschema %}
