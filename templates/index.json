@@ -71,6 +71,29 @@
         "tag": "Est. 2023 · Cento, Italia"
       }
     },
+    "bz_quiz_cta": {
+      "type": "bz-quiz-cta",
+      "settings": {
+        "color_scheme": "scheme-4",
+        "badge": "Quiz dell’anima",
+        "heading": "Quale chakra ha bisogno di te oggi?",
+        "subtext": "5 domande. Un rituale su misura. Il tuo bundle personalizzato con il 15% di sconto.",
+        "cta_text": "Inizia il quiz →",
+        "quiz_link": "/pages/quiz"
+      }
+    },
+    "bz_newsletter": {
+      "type": "bz-newsletter",
+      "settings": {
+        "color_scheme": "scheme-4",
+        "eyebrow": "Il Giornale Zen",
+        "heading": "Iscriviti per ricevere i nostri rituali",
+        "subtext": "Guide ai cristalli, rituali lunari, meditazioni guidate. Niente spam — solo bellezza.",
+        "placeholder": "la-tua-anima@dominio.it",
+        "btn_text": "Iscriviti",
+        "fine_print": "Niente spam. Solo bellezza."
+      }
+    },
     "image_banner": {
       "type": "image-banner",
       "blocks": {
@@ -275,6 +298,8 @@
     "bz_chakra_portal",
     "bz_collections",
     "bz_brand_story",
+    "bz_quiz_cta",
+    "bz_newsletter",
     "image_banner",
     "rich_text",
     "featured_collection",
