@@ -1,0 +1,29 @@
+{
+  "sections": {
+    "bz_quiz_hero": {
+      "type": "bz-page-hero",
+      "settings": {
+        "color_scheme": "scheme-4",
+        "eyebrow": "Quiz dell'anima",
+        "heading": "Trova il tuo rituale",
+        "subtext": "",
+        "padding_top": 96,
+        "padding_bottom": 24
+      }
+    },
+    "bz_quiz_main": {
+      "type": "bz-quiz",
+      "settings": {
+        "color_scheme": "scheme-4",
+        "discount_code": "RITUALE15",
+        "discount_pct": 15,
+        "padding_top": 32,
+        "padding_bottom": 96
+      }
+    }
+  },
+  "order": [
+    "bz_quiz_hero",
+    "bz_quiz_main"
+  ]
+}
