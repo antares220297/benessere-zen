@@ -1,0 +1,239 @@
+{%- comment -%}
+  BenesserEZen — Product spiritual properties.
+
+  Reads metafields from the 'bz' namespace with section settings as
+  fallback so the section degrades gracefully even before the
+  metafields are configured in Shopify Admin.
+
+  Expected metafields (Shopify Admin > Settings > Custom data >
+  Products):
+    bz.chakra_id        integer 1-7
+    bz.chakra_name      single line text
+    bz.element          single line text
+    bz.intention        single line text
+    bz.ritual_use       multi line text
+{%- endcomment -%}
+
+{%- liquid
+  assign chakra_id    = product.metafields.bz.chakra_id.value | default: section.settings.chakra_id
+  assign chakra_name  = product.metafields.bz.chakra_name.value | default: section.settings.chakra_name
+  assign element_val  = product.metafields.bz.element.value | default: section.settings.element
+  assign intention_val = product.metafields.bz.intention.value | default: section.settings.intention
+  assign ritual_use   = product.metafields.bz.ritual_use.value | default: section.settings.ritual_use
+
+  assign chakra_id_int = chakra_id | plus: 0
+  if chakra_id_int < 1 or chakra_id_int > 7
+    assign chakra_id_int = 1
+  endif
+-%}
+
+<section
+  class="bz-spirit color-{{ section.settings.color_scheme }} gradient isolate"
+  data-section-id="{{ section.id }}"
+>
+  <div class="page-width bz-spirit__inner">
+    <div class="bz-spirit__grid">
+
+      <div class="bz-spirit__item">
+        <p class="bz-label">Chakra</p>
+        <div class="bz-spirit__chakra" style="--chakra-c: var(--chakra-{{ chakra_id_int }}); --chakra-c-rgb: var(--chakra-{{ chakra_id_int }}-rgb);">
+          <span class="bz-spirit__chakra-glyph">
+            {%- render 'bz-chakra-glyph', chakra_id: chakra_id_int, size: 32 -%}
+          </span>
+          <span class="bz-spirit__chakra-name">{{ chakra_name }}</span>
+        </div>
+      </div>
+
+      {%- if element_val != blank -%}
+        <div class="bz-spirit__item">
+          <p class="bz-label">Elemento</p>
+          <span class="bz-spirit__value">{{ element_val }}</span>
+        </div>
+      {%- endif -%}
+
+      {%- if intention_val != blank -%}
+        <div class="bz-spirit__item">
+          <p class="bz-label">Intenzione</p>
+          <span class="bz-spirit__value">{{ intention_val }}</span>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.show_mantra -%}
+        {%- assign mantras = 'LAM,VAM,RAM,YAM,HAM,OM,AH' | split: ',' -%}
+        {%- assign mantra_idx = chakra_id_int | minus: 1 -%}
+        <div class="bz-spirit__item">
+          <p class="bz-label">Mantra</p>
+          <span class="bz-spirit__mantra" style="color: var(--chakra-{{ chakra_id_int }});">{{ mantras[mantra_idx] }}</span>
+        </div>
+      {%- endif -%}
+
+      {%- if ritual_use != blank -%}
+        <div class="bz-spirit__item bz-spirit__item--wide">
+          <p class="bz-label">Come usarlo nel rituale</p>
+          <p class="bz-body bz-spirit__ritual">{{ ritual_use }}</p>
+        </div>
+      {%- endif -%}
+
+    </div>
+  </div>
+</section>
+
+{% style %}
+  .bz-spirit {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  .bz-spirit__inner {
+    border-top: 1px solid var(--bz-border-gold);
+    padding-top: 4rem;
+  }
+  .bz-spirit__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 3rem 4rem;
+  }
+  .bz-spirit__item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  .bz-spirit__item--wide {
+    grid-column: 1 / -1;
+    margin-top: 1rem;
+    padding-top: 2.4rem;
+    border-top: 1px solid var(--bz-border);
+  }
+  .bz-spirit__item .bz-label { margin: 0; }
+
+  .bz-spirit__chakra {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.2rem;
+    color: var(--chakra-c, var(--bz-gold));
+  }
+  .bz-spirit__chakra-glyph {
+    display: inline-flex;
+    color: var(--chakra-c, var(--bz-gold));
+  }
+  .bz-spirit__chakra-name {
+    font-family: var(--bz-font-display);
+    font-style: italic;
+    font-size: 1.8rem;
+    color: var(--chakra-c, var(--bz-text));
+  }
+
+  .bz-spirit__value {
+    font-family: var(--bz-font-display);
+    font-style: italic;
+    font-size: 1.8rem;
+    color: var(--bz-text);
+  }
+  .bz-spirit__mantra {
+    font-family: var(--bz-font-display);
+    font-style: italic;
+    font-size: 2rem;
+    letter-spacing: 0.2rem;
+  }
+  .bz-spirit__ritual {
+    margin: 0;
+    max-width: 70rem;
+  }
+
+  @media (max-width: 989px) {
+    .bz-spirit__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 749px) {
+    .bz-spirit__grid { grid-template-columns: 1fr; gap: 2rem; }
+    .bz-spirit__item--wide { padding-top: 1.6rem; }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "BZ Proprietà Spirituali",
+  "class": "bz-product-spiritual-section",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "default": "scheme-4",
+      "label": "Schema colore"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_mantra",
+      "label": "Mostra il mantra del chakra",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Fallback (usati solo se i metafield bz.* non sono valorizzati)"
+    },
+    {
+      "type": "range",
+      "id": "chakra_id",
+      "min": 1,
+      "max": 7,
+      "step": 1,
+      "label": "Chakra",
+      "default": 1
+    },
+    {
+      "type": "text",
+      "id": "chakra_name",
+      "label": "Nome chakra",
+      "default": "Radice"
+    },
+    {
+      "type": "text",
+      "id": "element",
+      "label": "Elemento",
+      "default": "Terra"
+    },
+    {
+      "type": "text",
+      "id": "intention",
+      "label": "Intenzione",
+      "default": "Radicamento · Stabilità"
+    },
+    {
+      "type": "textarea",
+      "id": "ritual_use",
+      "label": "Come usarlo nel rituale",
+      "default": "Tieni il cristallo nel palmo della mano dominante. Inspira profondamente. Visualizza una luce dorata che ti collega alla terra."
+    },
+    {
+      "type": "header",
+      "content": "Spaziatura"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding alto",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding basso",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "presets": [
+    {
+      "name": "BZ Proprietà Spirituali"
+    }
+  ]
+}
+{% endschema %}
