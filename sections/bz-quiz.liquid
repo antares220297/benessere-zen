@@ -365,6 +365,18 @@
     margin-right: 1.4rem;
     vertical-align: middle;
   }
+  .bz-quiz__option[disabled] {
+    cursor: default;
+  }
+
+  .bz-quiz__question-wrap {
+    transition: opacity 0.3s var(--bz-ease, ease),
+                transform 0.3s var(--bz-ease, ease);
+  }
+  .bz-quiz__question-wrap.is-exiting {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
 
   /* ── Phase 3 · Result ──────────────────────────────────── */
   .bz-quiz__phase--result {
@@ -602,7 +614,267 @@
 {% endstyle %}
 
 <script>
-  // JS — Parte B
+  (function () {
+    'use strict';
+
+    /* 9 domande — copia esatta da overhaul/components/Quiz.jsx.
+       NON modificare il testo: il copy è stato studiato e testato.
+       c = indice chakra 0–6 (0 Radice → 6 Corona). */
+    var QUESTIONS = [
+      {
+        q: 'Qual è la sensazione più ricorrente nel tuo corpo, in questo momento?',
+        sub: 'Ascolta prima di rispondere.',
+        options: [
+          { t: 'Tensione tra le scapole, voglia di chiudermi.', c: 3 },
+          { t: 'Pesantezza alle gambe, terra che manca.',       c: 0 },
+          { t: 'Nodo in gola, parole trattenute.',              c: 4 },
+          { t: 'Fatica agli occhi, mente iperattiva.',          c: 5 }
+        ]
+      },
+      {
+        q: 'La tua giornata ideale inizia con...',
+        sub: 'Non quella che hai, quella che vorresti.',
+        options: [
+          { t: 'Silenzio, luce bassa, lunga meditazione.',      c: 6 },
+          { t: 'Movimento intenso, cuore che pompa.',           c: 2 },
+          { t: 'Acqua calda, cura lenta, musica.',              c: 1 },
+          { t: 'Scrittura, conversazione importante.',          c: 4 }
+        ]
+      },
+      {
+        q: 'Quando ti senti bloccato/a, cosa manca davvero?',
+        sub: '',
+        options: [
+          { t: 'Fiducia nel prossimo passo.',                   c: 2 },
+          { t: 'Sicurezza economica, stabilità.',               c: 0 },
+          { t: 'Qualcuno che mi veda per davvero.',             c: 3 },
+          { t: 'Una visione chiara del futuro.',                c: 5 }
+        ]
+      },
+      {
+        q: 'Il tuo colore preferito, in questo momento della vita...',
+        sub: 'Il primo che pensi, non il più bello.',
+        options: [
+          { t: 'Verde salvia, verde foresta.',                  c: 3 },
+          { t: 'Rosso terra, ruggine.',                         c: 0 },
+          { t: 'Viola profondo, quasi nero.',                   c: 6 },
+          { t: 'Oro caldo, giallo ambra.',                      c: 2 }
+        ]
+      },
+      {
+        q: 'Preferisci...',
+        sub: '',
+        options: [
+          { t: 'Un libro di poesie in silenzio.',               c: 5 },
+          { t: 'Ballare fino all\'alba.',                       c: 1 },
+          { t: 'Una conversazione vera a mezzanotte.',          c: 4 },
+          { t: 'Un\'escursione a piedi nudi.',                  c: 0 }
+        ]
+      },
+      {
+        q: 'Cosa eviti, anche se sai che ti farebbe bene?',
+        sub: '',
+        options: [
+          { t: 'Esprimere quello che sento.',                   c: 4 },
+          { t: 'Dire no, mettere confini.',                     c: 2 },
+          { t: 'Lasciarmi amare.',                              c: 3 },
+          { t: 'Fermarmi a non fare nulla.',                    c: 6 }
+        ]
+      },
+      {
+        q: 'Il tuo rapporto con la creatività è...',
+        sub: '',
+        options: [
+          { t: 'Fiume in piena, fatico a contenerlo.',          c: 1 },
+          { t: 'Deserto, aspetto la pioggia.',                  c: 1 },
+          { t: 'Regolare, pratica quotidiana.',                 c: 2 },
+          { t: 'Non so più cosa mi piace davvero.',             c: 5 }
+        ]
+      },
+      {
+        q: 'Quando ti svegli di notte, a cosa pensi?',
+        sub: '',
+        options: [
+          { t: 'Al conto in banca, alle bollette.',             c: 0 },
+          { t: 'A una persona che non c\'è più.',               c: 3 },
+          { t: 'A sogni che non ricordo ma che mi agitano.',    c: 6 },
+          { t: 'A una decisione che rimando.',                  c: 2 }
+        ]
+      },
+      {
+        q: 'Cosa chiedi al tuo rituale quotidiano?',
+        sub: 'Ultima domanda. Rispondi dal ventre.',
+        options: [
+          { t: 'Di farmi tornare a casa, dentro me.',           c: 0 },
+          { t: 'Di aprirmi, di farmi sentire di nuovo.',        c: 3 },
+          { t: 'Di calmare la mente.',                          c: 6 },
+          { t: 'Di ritrovare la mia voce.',                     c: 4 }
+        ]
+      }
+    ];
+
+    var TOTAL = QUESTIONS.length;
+    var ADVANCE_DELAY = 400;
+    var TRANSITION_MS = 300;
+
+    document.querySelectorAll('.bz-quiz').forEach(initQuiz);
+
+    function initQuiz(root) {
+      var phases = {
+        intro:     root.querySelector('[data-phase="intro"]'),
+        questions: root.querySelector('[data-phase="questions"]'),
+        result:    root.querySelector('[data-phase="result"]')
+      };
+      var startBtn      = root.querySelector('[data-action="start"]');
+      var restartBtn    = root.querySelector('[data-action="restart"]');
+      var questionWrap  = root.querySelector('.bz-quiz__question-wrap');
+      var progressFill  = root.querySelector('.bz-quiz__progress-fill');
+      var progressLabel = root.querySelector('.bz-quiz__progress-label');
+
+      var state = freshState();
+
+      if (startBtn) {
+        startBtn.addEventListener('click', function () {
+          state = freshState();
+          showPhase('questions');
+          renderQuestion(0, false);
+        });
+      }
+
+      if (restartBtn) {
+        restartBtn.addEventListener('click', function () {
+          state = freshState();
+          showPhase('intro');
+        });
+      }
+
+      function freshState() {
+        return {
+          phase:     'intro',
+          current:   0,
+          tally:     [0, 0, 0, 0, 0, 0, 0],
+          dominant:  null,
+          secondary: null
+        };
+      }
+
+      function showPhase(name) {
+        var next = phases[name];
+        var current = root.querySelector('.bz-quiz__phase.is-active');
+        if (!next || next === current) return;
+
+        if (current) {
+          current.classList.add('is-exiting');
+          setTimeout(function () {
+            current.classList.remove('is-active', 'is-exiting');
+            next.classList.add('is-active');
+          }, TRANSITION_MS);
+        } else {
+          next.classList.add('is-active');
+        }
+        state.phase = name;
+      }
+
+      function updateProgress(idx) {
+        var pct = ((idx + 1) / TOTAL) * 100;
+        if (progressFill)  progressFill.style.width = pct + '%';
+        if (progressLabel) progressLabel.textContent = pad(idx + 1) + ' / ' + pad(TOTAL);
+      }
+
+      function buildQuestionHTML(idx) {
+        var q = QUESTIONS[idx];
+        var html = '<div class="bz-quiz__question">';
+        html += '<span class="bz-quiz__question-num">Domanda ' + pad(idx + 1) + '</span>';
+        html += '<h3 class="bz-quiz__question-text">' + escapeHtml(q.q) + '</h3>';
+        if (q.sub) {
+          html += '<p class="bz-quiz__question-sub">&mdash; ' + escapeHtml(q.sub) + '</p>';
+        }
+        html += '<div class="bz-quiz__options" role="radiogroup">';
+        q.options.forEach(function (o, i) {
+          html += '<button type="button" class="bz-quiz__option" data-chakra="' + o.c + '" role="radio" aria-checked="false">';
+          html += '<span class="bz-quiz__option-num">0' + (i + 1) + '</span>';
+          html += '<span class="bz-quiz__option-text">' + escapeHtml(o.t) + '</span>';
+          html += '</button>';
+        });
+        html += '</div></div>';
+        return html;
+      }
+
+      function injectQuestion(idx) {
+        questionWrap.innerHTML = buildQuestionHTML(idx);
+        questionWrap.querySelectorAll('.bz-quiz__option').forEach(function (btn) {
+          btn.addEventListener('click', function () { handleAnswer(btn); });
+        });
+      }
+
+      function renderQuestion(idx, animate) {
+        state.current = idx;
+        updateProgress(idx);
+        if (animate) {
+          questionWrap.classList.add('is-exiting');
+          setTimeout(function () {
+            injectQuestion(idx);
+            questionWrap.classList.remove('is-exiting');
+          }, TRANSITION_MS);
+        } else {
+          injectQuestion(idx);
+        }
+      }
+
+      function handleAnswer(btn) {
+        var chakraIdx = parseInt(btn.dataset.chakra, 10);
+        if (isNaN(chakraIdx) || chakraIdx < 0 || chakraIdx > 6) return;
+        if (btn.disabled) return;
+
+        questionWrap.querySelectorAll('.bz-quiz__option').forEach(function (b) {
+          b.disabled = true;
+        });
+        btn.classList.add('is-selected');
+        btn.setAttribute('aria-checked', 'true');
+
+        state.tally[chakraIdx] += 1;
+
+        var isLast = state.current >= TOTAL - 1;
+        setTimeout(function () {
+          if (isLast) {
+            calculateResult();
+            showPhase('result');
+          } else {
+            renderQuestion(state.current + 1, true);
+          }
+        }, ADVANCE_DELAY);
+      }
+
+      /* Tally → dominante + secondario.
+         Mirrors Quiz.jsx: conta occorrenze, sort desc, primo è dominante.
+         Tie-break = ordine di inserimento delle chiavi (cioè il chakra
+         che ha raggiunto quel punteggio per primo). */
+      function calculateResult() {
+        var sorted = state.tally
+          .map(function (count, idx) { return { idx: idx, count: count }; })
+          .filter(function (e) { return e.count > 0; })
+          .sort(function (a, b) { return b.count - a.count; });
+
+        state.dominant  = sorted.length > 0 ? sorted[0].idx + 1 : 4;
+        state.secondary = sorted.length > 1 ? sorted[1].idx + 1 : 7;
+
+        // Esposto sul DOM così la Parte C (rendering risultato) lo trova.
+        root.dataset.dominant  = state.dominant;
+        root.dataset.secondary = state.secondary;
+      }
+    }
+
+    function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+    function escapeHtml(s) {
+      return String(s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+  })();
 </script>
 
 {% schema %}
