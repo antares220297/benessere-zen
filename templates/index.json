@@ -12,6 +12,15 @@
         "cta_link_2": ""
       }
     },
+    "bz_chakra_portal": {
+      "type": "bz-chakra-portal",
+      "settings": {
+        "color_scheme": "scheme-4",
+        "eyebrow": "Sistema dei 7 chakra",
+        "heading": "Quale energia stai cercando?",
+        "subtext": "I sette centri energetici del corpo sono la nostra mappa. Passa il mouse su un chakra per scoprirlo."
+      }
+    },
     "image_banner": {
       "type": "image-banner",
       "blocks": {
@@ -213,6 +222,7 @@
   },
   "order": [
     "bz_hero_main",
+    "bz_chakra_portal",
     "image_banner",
     "rich_text",
     "featured_collection",

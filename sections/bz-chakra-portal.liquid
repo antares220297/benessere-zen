@@ -1,0 +1,440 @@
+{%- comment -%}
+  BenesserEZen — Chakra Portal (interactive 7-node dial)
+
+  Hover/focus on a node → preview the chakra in the centre panel and
+  the info-bar. Click on a node → navigate to that chakra's collection
+  (the per-node href is rendered server-side from the Liquid mirror
+  array below, so middle-click and right-click work natively).
+
+  Live data feed at runtime: window.BZ_CHAKRAS (assets/bz-chakras.js,
+  loaded with defer in layout/theme.liquid). The Liquid mirror array
+  is only the seed for the initial render and the fallback hrefs.
+{%- endcomment -%}
+
+{%- liquid
+  assign collections = 'cristalli-radice,cristalli-sacrale,cristalli-plesso,cristalli-cuore,cristalli-gola,cristalli-terzo-occhio,cristalli-corona' | split: ','
+  assign sk = 'Mūlādhāra,Svādhiṣṭhāna,Maṇipūra,Anāhata,Viśuddha,Ājñā,Sahasrāra' | split: ','
+  assign it = 'Radice,Sacrale,Plesso Solare,Cuore,Gola,Terzo Occhio,Corona' | split: ','
+  assign elements = 'Terra,Acqua,Fuoco,Aria,Etere,Luce,Cosmo' | split: ','
+  assign mantras = 'LAM,VAM,RAM,YAM,HAM,OM,AH' | split: ','
+  assign intents = 'Radicamento · Stabilità,Creatività · Fluidità,Volontà · Potere personale,Amore · Compassione,Espressione · Verità,Intuizione · Visione interiore,Coscienza · Connessione universale' | split: ','
+  assign products = 'Ematite, ossidiana, tormalina nera,Corniola, calcite arancio, ambra,Citrino, occhio di tigre, pirite,Quarzo rosa, avventurina, malachite,Turchese, acquamarina, sodalite,Lapislazzuli, fluorite viola, kyanite,Ametista, selenite, cristallo di rocca' | split: '|'
+  assign default_id = 4
+  assign default_idx = default_id | minus: 1
+-%}
+
+<section
+  class="bz-portal color-{{ section.settings.color_scheme }} gradient isolate{% if section.settings.padding_top > 0 or section.settings.padding_bottom > 0 %} section-{{ section.id }}-padding{% endif %}"
+  data-section-id="{{ section.id }}"
+>
+  <div class="page-width bz-portal__inner">
+    <header class="bz-portal__header">
+      <p class="bz-label">{{ section.settings.eyebrow | default: 'Sistema dei 7 chakra' }}</p>
+      <h2 class="bz-title">{{ section.settings.heading | default: 'Quale energia stai cercando?' }}</h2>
+      {%- if section.settings.subtext != blank -%}
+        <p class="bz-body bz-portal__subtext">{{ section.settings.subtext }}</p>
+      {%- endif -%}
+    </header>
+
+    <div class="bz-portal__dial" id="bz-portal-dial-{{ section.id }}">
+      <svg class="bz-portal__rings" viewBox="0 0 480 480" aria-hidden="true">
+        <circle cx="240" cy="240" r="232" stroke="var(--bz-border-gold)" stroke-width="1" fill="none" stroke-dasharray="1 4" opacity="0.6"/>
+        <circle cx="240" cy="240" r="180" stroke="var(--bz-border)" stroke-width="1" fill="none" opacity="0.5"/>
+        <circle cx="240" cy="240" r="110" stroke="var(--bz-border-gold)" stroke-width="1" fill="none" opacity="0.4"/>
+      </svg>
+
+      {%- for n in (1..7) -%}
+        {%- assign i = forloop.index0 -%}
+        {%- assign angle = i | times: 360.00 | divided_by: 7.0 -%}
+        <a
+          class="bz-portal__node{% if n == default_id %} is-active{% endif %}"
+          href="{{ routes.collections_url }}/{{ collections[i] }}"
+          data-chakra="{{ n }}"
+          aria-label="{{ sk[i] }} — {{ it[i] }}"
+          style="--angle: {{ angle }}deg; --chakra-c: var(--chakra-{{ n }}); --chakra-c-rgb: var(--chakra-{{ n }}-rgb);"
+        >
+          <span class="bz-portal__node-glyph" aria-hidden="true">
+            {%- render 'bz-chakra-glyph', chakra_id: n, size: 36 -%}
+          </span>
+          <span class="visually-hidden">{{ sk[i] }} — {{ it[i] }}</span>
+        </a>
+      {%- endfor -%}
+
+      <div
+        class="bz-portal__center"
+        id="bz-portal-center-{{ section.id }}"
+        style="--chakra-c: var(--chakra-{{ default_id }});"
+      >
+        <span class="bz-portal__center-num" data-bz-num>0{{ default_id }} / 07</span>
+        <span class="bz-portal__center-sk" data-bz-sk>{{ sk[default_idx] }}</span>
+        <span class="bz-portal__center-it" data-bz-it>{{ it[default_idx] }}</span>
+        <span class="bz-portal__center-intent" data-bz-intent>{{ intents[default_idx] }}</span>
+        <span class="bz-portal__center-mantra" data-bz-mantra>{{ mantras[default_idx] }}</span>
+      </div>
+    </div>
+
+    <div
+      class="bz-portal__infobar"
+      id="bz-portal-infobar-{{ section.id }}"
+      style="--chakra-c: var(--chakra-{{ default_id }}); --chakra-c-rgb: var(--chakra-{{ default_id }}-rgb);"
+    >
+      <div class="bz-portal__infobar-cell">
+        <span class="bz-label">Collezione</span>
+        <span class="bz-portal__infobar-product" data-bz-products>{{ products[default_idx] }}</span>
+      </div>
+      <div class="bz-portal__infobar-cell">
+        <span class="bz-label">Elemento</span>
+        <span class="bz-portal__infobar-element" data-bz-element>{{ elements[default_idx] }}</span>
+      </div>
+      <a
+        class="bz-btn bz-portal__infobar-cta"
+        href="{{ routes.collections_url }}/{{ collections[default_idx] }}"
+        data-bz-cta
+      >
+        Entra nella collezione <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+{% style %}
+  .bz-portal { padding-top: 8rem; padding-bottom: 8rem; }
+  .bz-portal__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4rem;
+  }
+
+  .bz-portal__header {
+    text-align: center;
+    max-width: 60rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+  .bz-portal__header .bz-label { margin: 0; }
+  .bz-portal__header .bz-title { margin: 0; }
+  .bz-portal__subtext { margin: 0; }
+
+  /* === Dial === */
+  .bz-portal__dial {
+    --dial-size: 48rem;
+    --dial-radius: 21rem;
+    position: relative;
+    width: var(--dial-size);
+    height: var(--dial-size);
+    flex-shrink: 0;
+  }
+  .bz-portal__rings {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  /* === Nodes === */
+  .bz-portal__node {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 6.4rem;
+    height: 6.4rem;
+    margin: -3.2rem 0 0 -3.2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--bz-border);
+    border-radius: 50%;
+    background: rgba(15, 15, 15, 0.6);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    color: var(--bz-muted);
+    text-decoration: none;
+    transform:
+      rotate(var(--angle))
+      translateY(calc(-1 * var(--dial-radius)))
+      rotate(calc(-1 * var(--angle)));
+    transition: border-color var(--bz-duration) var(--bz-ease),
+                color var(--bz-duration) var(--bz-ease),
+                box-shadow var(--bz-duration) var(--bz-ease),
+                transform var(--bz-duration) var(--bz-ease);
+    will-change: transform;
+  }
+  .bz-portal__node-glyph { display: inline-flex; }
+  .bz-portal__node:hover,
+  .bz-portal__node:focus-visible,
+  .bz-portal__node.is-active {
+    border-color: var(--chakra-c, var(--bz-gold));
+    color: var(--chakra-c, var(--bz-gold));
+    box-shadow: 0 0 24px rgba(var(--chakra-c-rgb, 201, 168, 76), 0.4);
+    transform:
+      rotate(var(--angle))
+      translateY(calc(-1 * var(--dial-radius)))
+      rotate(calc(-1 * var(--angle)))
+      scale(1.18);
+    outline: none;
+  }
+
+  /* === Centre panel === */
+  .bz-portal__center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 18rem;
+    height: 18rem;
+    border-radius: 50%;
+    border: 1px solid var(--bz-border-gold);
+    background: rgba(15, 15, 15, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    text-align: center;
+    padding: 1.6rem;
+    transition: border-color var(--bz-duration) var(--bz-ease),
+                box-shadow var(--bz-duration) var(--bz-ease);
+    box-shadow: 0 0 32px rgba(var(--chakra-c-rgb, 201, 168, 76), 0.18);
+    pointer-events: none;
+  }
+  .bz-portal__center-num {
+    font-family: var(--bz-font-ui);
+    font-size: 1rem;
+    letter-spacing: 0.4rem;
+    text-transform: uppercase;
+    color: var(--bz-gold);
+  }
+  .bz-portal__center-sk {
+    font-family: var(--bz-font-display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 2.6rem;
+    line-height: 1.1;
+    color: var(--chakra-c, var(--bz-text));
+    transition: color var(--bz-duration) var(--bz-ease);
+  }
+  .bz-portal__center-it {
+    font-family: var(--bz-font-ui);
+    font-size: 1.1rem;
+    letter-spacing: 0.3rem;
+    text-transform: uppercase;
+    color: var(--bz-text);
+  }
+  .bz-portal__center-intent {
+    font-family: var(--bz-font-body);
+    font-size: 1.1rem;
+    color: var(--bz-muted);
+    margin-top: 0.4rem;
+  }
+  .bz-portal__center-mantra {
+    margin-top: 0.6rem;
+    font-family: var(--bz-font-display);
+    font-style: italic;
+    font-size: 1.4rem;
+    letter-spacing: 0.2rem;
+    color: var(--bz-gold);
+  }
+
+  /* === Info bar === */
+  .bz-portal__infobar {
+    width: 100%;
+    max-width: 60rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 2.4rem;
+    align-items: center;
+    padding: 2rem 2.4rem;
+    border: 1px solid var(--bz-border);
+    border-left: 3px solid var(--chakra-c, var(--bz-gold));
+    background: rgba(17, 17, 24, 0.7);
+    transition: border-left-color var(--bz-duration) var(--bz-ease);
+  }
+  .bz-portal__infobar-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    min-width: 0;
+  }
+  .bz-portal__infobar-cell .bz-label { margin: 0; }
+  .bz-portal__infobar-product,
+  .bz-portal__infobar-element {
+    font-family: var(--bz-font-body);
+    font-size: 1.3rem;
+    color: var(--bz-text);
+    line-height: 1.5;
+  }
+  .bz-portal__infobar-cta { white-space: nowrap; }
+
+  /* === Responsive === */
+  @media (max-width: 989px) {
+    .bz-portal__dial { --dial-size: 38rem; --dial-radius: 16.5rem; }
+    .bz-portal__node { width: 5.6rem; height: 5.6rem; margin: -2.8rem 0 0 -2.8rem; }
+    .bz-portal__center { width: 14rem; height: 14rem; }
+    .bz-portal__center-sk { font-size: 2.2rem; }
+  }
+  @media (max-width: 749px) {
+    .bz-portal { padding-top: 6rem; padding-bottom: 6rem; }
+    .bz-portal__dial { --dial-size: 30rem; --dial-radius: 13rem; }
+    .bz-portal__node { width: 4.8rem; height: 4.8rem; margin: -2.4rem 0 0 -2.4rem; }
+    .bz-portal__center { width: 11rem; height: 11rem; padding: 1rem; }
+    .bz-portal__center-sk { font-size: 1.8rem; }
+    .bz-portal__center-intent,
+    .bz-portal__center-mantra { display: none; }
+    .bz-portal__infobar {
+      grid-template-columns: 1fr;
+      gap: 1.6rem;
+      padding: 1.6rem;
+    }
+    .bz-portal__infobar-cta {
+      justify-self: stretch;
+      text-align: center;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bz-portal__node { transition: none; }
+    .bz-portal__node:hover,
+    .bz-portal__node:focus-visible,
+    .bz-portal__node.is-active {
+      transform:
+        rotate(var(--angle))
+        translateY(calc(-1 * var(--dial-radius)))
+        rotate(calc(-1 * var(--angle)));
+    }
+  }
+{% endstyle %}
+
+<script>
+  (function () {
+    var SECTION_ID = '{{ section.id }}';
+    var dial = document.getElementById('bz-portal-dial-' + SECTION_ID);
+    if (!dial) return;
+
+    var center  = document.getElementById('bz-portal-center-' + SECTION_ID);
+    var infobar = document.getElementById('bz-portal-infobar-' + SECTION_ID);
+    if (!center || !infobar) return;
+
+    var nodes      = dial.querySelectorAll('.bz-portal__node');
+    var elNum      = center.querySelector('[data-bz-num]');
+    var elSk       = center.querySelector('[data-bz-sk]');
+    var elIt       = center.querySelector('[data-bz-it]');
+    var elIntent   = center.querySelector('[data-bz-intent]');
+    var elMantra   = center.querySelector('[data-bz-mantra]');
+    var elProducts = infobar.querySelector('[data-bz-products]');
+    var elElement  = infobar.querySelector('[data-bz-element]');
+    var elCta      = infobar.querySelector('[data-bz-cta]');
+
+    function pad2(n) { return n < 10 ? '0' + n : '' + n; }
+
+    function activate(id) {
+      var data = window.BZ_CHAKRAS && window.BZ_CHAKRAS[id - 1];
+      if (!data) return;
+
+      elNum.textContent     = pad2(id) + ' / 07';
+      elSk.textContent      = data.sk;
+      elIt.textContent      = data.it;
+      elIntent.textContent  = data.intent;
+      elMantra.textContent  = data.mantra;
+      elProducts.textContent = data.products;
+      elElement.textContent  = data.element;
+      elCta.setAttribute('href', '/collections/' + data.collection);
+
+      var rgb   = 'var(--chakra-' + id + '-rgb)';
+      var color = 'var(--chakra-' + id + ')';
+      center.style.setProperty('--chakra-c', color);
+      center.style.setProperty('--chakra-c-rgb', rgb);
+      infobar.style.setProperty('--chakra-c', color);
+      infobar.style.setProperty('--chakra-c-rgb', rgb);
+
+      for (var i = 0; i < nodes.length; i++) nodes[i].classList.remove('is-active');
+      var active = dial.querySelector('.bz-portal__node[data-chakra="' + id + '"]');
+      if (active) active.classList.add('is-active');
+    }
+
+    function bind() {
+      nodes.forEach(function (node) {
+        var id = parseInt(node.getAttribute('data-chakra'), 10);
+        node.addEventListener('mouseenter', function () { activate(id); });
+        node.addEventListener('focus',      function () { activate(id); });
+      });
+    }
+
+    /* BZ_CHAKRAS is loaded with defer, like this script (but as an
+       external file) — order is guaranteed in modern browsers, but
+       be defensive in the theme editor where sections re-mount. */
+    function ready() {
+      if (!window.BZ_CHAKRAS) {
+        return setTimeout(ready, 50);
+      }
+      bind();
+    }
+    ready();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "BZ Chakra Portal",
+  "class": "bz-chakra-portal-section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "default": "scheme-4",
+      "label": "Schema colore"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Etichetta",
+      "default": "Sistema dei 7 chakra"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titolo",
+      "default": "Quale energia stai cercando?"
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Sottotesto",
+      "default": "I sette centri energetici del corpo sono la nostra mappa. Passa il mouse su un chakra per scoprirlo."
+    },
+    {
+      "type": "header",
+      "content": "Spaziatura"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding alto",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding basso",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "presets": [
+    {
+      "name": "BZ Chakra Portal"
+    }
+  ]
+}
+{% endschema %}
