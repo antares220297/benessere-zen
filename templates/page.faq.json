@@ -1,0 +1,66 @@
+{
+  "sections": {
+    "hero": {
+      "type": "bz-page-hero",
+      "settings": {
+        "color_scheme": "scheme-4",
+        "eyebrow": "Domande frequenti",
+        "heading": "FAQ",
+        "subtext": "Le risposte alle domande che ci vengono poste più spesso. Se non trovi quello che cerchi, scrivici.",
+        "padding_top": 96,
+        "padding_bottom": 24
+      }
+    },
+    "faq": {
+      "type": "bz-faq",
+      "blocks": {
+        "q1": {
+          "type": "item",
+          "settings": {
+            "question": "Come vengono selezionati i cristalli?",
+            "answer": "<p>Ogni pietra è scelta a mano per qualità, energia e provenienza etica. Lavoriamo solo con fornitori che possiamo verificare di persona, scartando tutto ciò che non ci convince — anche quando significa rimanere senza prodotto per qualche settimana.</p>"
+          }
+        },
+        "q2": {
+          "type": "item",
+          "settings": {
+            "question": "I prodotti sono certificati naturali?",
+            "answer": "<p>Sì. Tutti i cristalli, gli incensi e gli oli essenziali provengono da fornitori certificati. Per i prodotti ayurvedici verifichiamo le certificazioni biologiche e di tradizione.</p>"
+          }
+        },
+        "q3": {
+          "type": "item",
+          "settings": {
+            "question": "Quanto tempo per la spedizione?",
+            "answer": "<p>2-4 giorni lavorativi in Italia con corriere espresso. Per ordini superiori a 49€ la spedizione è gratuita. Riceverai il numero di tracking via email appena il pacco lascia il nostro magazzino a Cento.</p>"
+          }
+        },
+        "q4": {
+          "type": "item",
+          "settings": {
+            "question": "Posso restituire un prodotto?",
+            "answer": "<p>Sì, hai 14 giorni dalla ricezione per ripensarci. Il prodotto deve essere integro e nella confezione originale. Scrivici a info@benesserezen.shop e ti guidiamo nella procedura.</p>"
+          }
+        },
+        "q5": {
+          "type": "item",
+          "settings": {
+            "question": "Come capisco quale chakra lavora su di me?",
+            "answer": "<p>Abbiamo creato un quiz di 5 domande che ti suggerisce il chakra su cui concentrarti adesso, insieme a un bundle personalizzato di prodotti con il 15% di sconto. <a href=\"/pages/quiz\">Inizia il quiz →</a></p>"
+          }
+        }
+      },
+      "block_order": ["q1", "q2", "q3", "q4", "q5"],
+      "settings": {
+        "color_scheme": "scheme-4",
+        "heading": "",
+        "padding_top": 24,
+        "padding_bottom": 96
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "faq"
+  ]
+}

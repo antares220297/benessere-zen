@@ -1,0 +1,213 @@
+{%- comment -%}
+  BenesserEZen — FAQ accordion.
+
+  Native HTML <details>/<summary> — zero JS. Each block exposes a
+  question (text) and an answer (richtext). The summary's default
+  triangle marker is suppressed and replaced with a rotating + sign
+  on the right. open state turns the headline gold.
+{%- endcomment -%}
+
+<section
+  class="bz-faq color-{{ section.settings.color_scheme }} gradient isolate"
+  data-section-id="{{ section.id }}"
+>
+  <div class="bz-faq__inner page-width page-width--narrow">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="bz-title bz-faq__heading bz-reveal">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="bz-faq__list">
+        {%- for block in section.blocks -%}
+          <details class="bz-faq__item bz-reveal" data-delay="{{ forloop.index0 | at_most: 5 }}" {{ block.shopify_attributes }}>
+            <summary class="bz-faq__question">
+              <span class="bz-faq__q-text">{{ block.settings.question }}</span>
+              <span class="bz-faq__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="bz-faq__answer">
+              {{ block.settings.answer }}
+            </div>
+          </details>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% style %}
+  .bz-faq {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  .bz-faq__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+  .bz-faq__heading {
+    margin: 0;
+    text-align: center;
+  }
+
+  .bz-faq__list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .bz-faq__item {
+    border-bottom: 1px solid var(--bz-border);
+    padding: 1.6rem 0;
+  }
+  .bz-faq__item:first-child {
+    border-top: 1px solid var(--bz-border);
+  }
+
+  /* Strip default disclosure markers */
+  .bz-faq__question {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    font-family: var(--bz-font-ui);
+    font-size: 1.3rem;
+    line-height: 1.4;
+    letter-spacing: 0.2rem;
+    text-transform: uppercase;
+    color: var(--bz-text);
+    transition: color var(--bz-duration) var(--bz-ease);
+  }
+  .bz-faq__question::-webkit-details-marker { display: none; }
+  .bz-faq__question::marker { content: ''; }
+
+  .bz-faq__item[open] .bz-faq__question { color: var(--bz-gold); }
+
+  /* + → × icon */
+  .bz-faq__icon {
+    flex-shrink: 0;
+    width: 1.6rem;
+    height: 1.6rem;
+    position: relative;
+    transition: transform var(--bz-duration) var(--bz-ease);
+  }
+  .bz-faq__icon::before,
+  .bz-faq__icon::after {
+    content: '';
+    position: absolute;
+    background: var(--bz-gold);
+    transition: transform var(--bz-duration) var(--bz-ease);
+  }
+  .bz-faq__icon::before {
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 1px;
+    transform: translateY(-50%);
+  }
+  .bz-faq__icon::after {
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    transform: translateX(-50%);
+  }
+  .bz-faq__item[open] .bz-faq__icon { transform: rotate(45deg); }
+
+  .bz-faq__answer {
+    padding: 1.4rem 0 0.6rem;
+    padding-right: 4rem;
+    font-family: var(--bz-font-body);
+    font-size: 1.5rem;
+    line-height: 1.8;
+    color: var(--bz-muted);
+  }
+  .bz-faq__answer p { margin: 0 0 1.2rem; }
+  .bz-faq__answer p:last-child { margin-bottom: 0; }
+  .bz-faq__answer a {
+    color: var(--bz-gold);
+    text-decoration: none;
+    border-bottom: 1px solid var(--bz-border-gold);
+  }
+
+  @media (max-width: 749px) {
+    .bz-faq__answer { padding-right: 1.6rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bz-faq__icon,
+    .bz-faq__icon::before,
+    .bz-faq__icon::after { transition: none; }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "BZ FAQ",
+  "class": "bz-faq-section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "default": "scheme-4",
+      "label": "Schema colore"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titolo (opzionale)",
+      "default": "Domande frequenti"
+    },
+    {
+      "type": "header",
+      "content": "Spaziatura"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding alto",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding basso",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 96
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Domanda",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Domanda",
+          "default": "Domanda di esempio"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Risposta",
+          "default": "<p>Risposta di esempio.</p>"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 30,
+  "presets": [
+    {
+      "name": "BZ FAQ"
+    }
+  ]
+}
+{% endschema %}
