@@ -1,11 +1,18 @@
 {
   "sections": {
+    "bz_collection_hero": {
+      "type": "bz-collection-hero",
+      "settings": {
+        "padding_top": 96,
+        "padding_bottom": 48
+      }
+    },
     "banner": {
       "type": "main-collection-banner",
       "settings": {
         "show_collection_description": true,
         "show_collection_image": false,
-        "color_scheme": "scheme-1"
+        "color_scheme": "scheme-4"
       }
     },
     "product-grid": {
@@ -26,6 +33,7 @@
     }
   },
   "order": [
+    "bz_collection_hero",
     "banner",
     "product-grid"
   ]
