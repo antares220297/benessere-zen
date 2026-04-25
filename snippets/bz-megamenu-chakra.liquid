@@ -1,0 +1,70 @@
+{%- comment -%}
+  BenesserEZen — Chakra mega-menu panel.
+
+  Server-rendered 7-chakra navigation. Dawn opens/closes via native
+  <details> + .mega-menu[open] visibility — no JS needed here.
+
+  Usage:
+    {% render 'bz-megamenu-chakra', layout: 'desktop' %}
+    {% render 'bz-megamenu-chakra', layout: 'mobile' %}
+
+  Data is hardcoded (mirrors window.BZ_CHAKRAS) because it must be
+  available pre-hydration.
+{%- endcomment -%}
+
+{%- assign layout = layout | default: 'desktop' -%}
+
+{%- liquid
+  assign roman = 'I,II,III,IV,V,VI,VII' | split: ','
+  assign slugs = 'muladhara,svadhisthana,manipura,anahata,vishuddha,ajna,sahasrara' | split: ','
+  assign sk = 'Mūlādhāra,Svādhiṣṭhāna,Maṇipūra,Anāhata,Viśuddha,Ājñā,Sahasrāra' | split: ','
+  assign it = 'Radice,Sacrale,Plesso Solare,Cuore,Gola,Terzo Occhio,Corona' | split: ','
+  assign collections = 'cristalli-radice,cristalli-sacrale,cristalli-plesso,cristalli-cuore,cristalli-gola,cristalli-terzo-occhio,cristalli-corona' | split: ','
+  assign intent = 'Radicamento,Creatività,Volontà,Amore,Espressione,Intuizione,Coscienza' | split: ','
+-%}
+
+{%- if layout == 'mobile' -%}
+  <ul class="bz-chakra-mobile list-unstyled" role="list">
+    {%- for n in (1..7) -%}
+      {%- assign i = forloop.index0 -%}
+      <li class="bz-chakra-mobile__row" style="--chakra-c: var(--chakra-{{ n }}); --chakra-c-rgb: var(--chakra-{{ n }}-rgb);">
+        <a href="{{ routes.collections_url }}/{{ collections[i] }}" class="bz-chakra-mobile__link">
+          <span class="bz-chakra-mobile__glyph" aria-hidden="true">
+            {%- render 'bz-chakra-glyph', chakra_id: n, size: 36 -%}
+          </span>
+          <span class="bz-chakra-mobile__text">
+            <span class="bz-chakra-mobile__sk">{{ sk[i] }}</span>
+            <span class="bz-chakra-mobile__it">{{ it[i] }}</span>
+          </span>
+          <span class="bz-chakra-mobile__arrow" aria-hidden="true">→</span>
+        </a>
+      </li>
+    {%- endfor -%}
+  </ul>
+{%- else -%}
+  <div class="bz-chakra-mega">
+    <div class="bz-chakra-mega__rule" aria-hidden="true"></div>
+    <ul class="bz-chakra-mega__grid list-unstyled" role="list">
+      {%- for n in (1..7) -%}
+        {%- assign i = forloop.index0 -%}
+        <li class="bz-chakra-col" style="--chakra-c: var(--chakra-{{ n }}); --chakra-c-rgb: var(--chakra-{{ n }}-rgb);">
+          <a href="{{ routes.collections_url }}/{{ collections[i] }}" class="bz-chakra-col__link">
+            <span class="bz-chakra-col__glyph" aria-hidden="true">
+              {%- render 'bz-chakra-glyph', chakra_id: n, size: 48 -%}
+            </span>
+            <span class="bz-chakra-col__roman">{{ roman[i] }}</span>
+            <span class="bz-chakra-col__sk">{{ sk[i] }}</span>
+            <span class="bz-chakra-col__it">{{ it[i] }}</span>
+            <span class="bz-chakra-col__intent">{{ intent[i] }}</span>
+            <span class="bz-chakra-col__cta">Scopri <span aria-hidden="true">→</span></span>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+    <div class="bz-chakra-mega__footer">
+      <a href="{{ routes.collections_url }}/all" class="bz-chakra-mega__all">
+        Esplora tutti i chakra <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+{%- endif -%}

@@ -39,6 +39,15 @@
   --chakra-5: #3399DD;   /* Vishuddha    — Gola          */
   --chakra-6: #7744CC;   /* Ajna         — Terzo Occhio  */
   --chakra-7: #9B59B6;   /* Sahasrara    — Corona        */
+
+  /* RGB triplets — used for rgba() with variable opacity */
+  --chakra-1-rgb: 204, 51, 51;
+  --chakra-2-rgb: 224, 112, 48;
+  --chakra-3-rgb: 201, 160, 32;
+  --chakra-4-rgb: 46, 204, 113;
+  --chakra-5-rgb: 51, 153, 221;
+  --chakra-6-rgb: 119, 68, 204;
+  --chakra-7-rgb: 155, 89, 182;
 }
 
 /* === BenesserEZen — Base Typography === */
@@ -187,5 +196,184 @@
 }
 details[open] > .header__menu-item,
 .header__menu-item .header__active-menu-item {
+  color: var(--bz-gold);
+}
+
+/* === Chakra mega-menu — desktop panel (inside .mega-menu__content) === */
+.bz-chakra-mega {
+  width: 100%;
+  background: var(--bz-bg-2);
+  padding: 4rem 0 3rem;
+}
+.bz-chakra-mega__rule {
+  width: 4rem;
+  height: 1px;
+  margin: 0 auto 3.2rem;
+  background: var(--bz-gold);
+  opacity: 0.5;
+}
+.bz-chakra-mega__grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0;
+  max-width: var(--page-width);
+  margin: 0 auto;
+  padding: 0 var(--page-width-margin, 0);
+}
+.bz-chakra-col {
+  margin: 0;
+}
+.bz-chakra-col__link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 2.4rem 1.2rem 2rem;
+  text-align: center;
+  color: var(--bz-muted);
+  text-decoration: none;
+  border-right: 1px solid var(--bz-border);
+  transition: background var(--bz-duration) var(--bz-ease),
+              color var(--bz-duration) var(--bz-ease);
+}
+.bz-chakra-col:last-child .bz-chakra-col__link {
+  border-right: none;
+}
+.bz-chakra-col__glyph {
+  display: inline-flex;
+  color: var(--bz-muted);
+  transition: color var(--bz-duration) var(--bz-ease),
+              transform var(--bz-duration) var(--bz-ease);
+}
+.bz-chakra-col__roman {
+  font-family: var(--bz-font-ui);
+  font-size: 1rem;
+  letter-spacing: 0.4rem;
+  color: var(--bz-gold);
+  text-transform: uppercase;
+}
+.bz-chakra-col__sk {
+  font-family: var(--bz-font-display);
+  font-style: italic;
+  font-size: 1.8rem;
+  line-height: 1.1;
+  color: var(--bz-text);
+}
+.bz-chakra-col__it {
+  font-family: var(--bz-font-ui);
+  font-size: 1rem;
+  letter-spacing: 0.25rem;
+  text-transform: uppercase;
+  color: var(--bz-muted);
+}
+.bz-chakra-col__intent {
+  font-family: var(--bz-font-body);
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: var(--bz-muted);
+  margin-top: 0.4rem;
+}
+.bz-chakra-col__cta {
+  margin-top: 0.8rem;
+  font-family: var(--bz-font-ui);
+  font-size: 1rem;
+  letter-spacing: 0.25rem;
+  text-transform: uppercase;
+  color: var(--bz-gold);
+  opacity: 0;
+  transform: translateY(0.4rem);
+  transition: opacity var(--bz-duration) var(--bz-ease),
+              transform var(--bz-duration) var(--bz-ease);
+}
+.bz-chakra-col__link:hover {
+  background: rgba(var(--chakra-c-rgb, 201, 168, 76), 0.08);
+}
+.bz-chakra-col__link:hover .bz-chakra-col__glyph {
+  color: var(--chakra-c, var(--bz-gold));
+  transform: translateY(-2px);
+}
+.bz-chakra-col__link:hover .bz-chakra-col__sk {
+  color: var(--chakra-c, var(--bz-text));
+}
+.bz-chakra-col__link:hover .bz-chakra-col__cta {
+  opacity: 1;
+  transform: translateY(0);
+}
+.bz-chakra-col__link:focus-visible {
+  outline: 2px solid var(--bz-gold);
+  outline-offset: -2px;
+}
+.bz-chakra-mega__footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 2.4rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--bz-border);
+}
+.bz-chakra-mega__all {
+  font-family: var(--bz-font-ui);
+  font-size: 1.1rem;
+  font-weight: 400;
+  letter-spacing: 0.3rem;
+  text-transform: uppercase;
+  color: var(--bz-gold);
+  text-decoration: none;
+  transition: color var(--bz-duration) var(--bz-ease);
+}
+.bz-chakra-mega__all:hover {
+  color: var(--bz-gold-light);
+}
+
+/* === Chakra mega-menu — mobile drawer list === */
+.bz-chakra-mobile {
+  margin: 0;
+  padding: 0;
+}
+.bz-chakra-mobile__row {
+  border-bottom: 1px solid var(--bz-border);
+}
+.bz-chakra-mobile__row:last-child {
+  border-bottom: none;
+}
+.bz-chakra-mobile__link {
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+  padding: 1.6rem 1.2rem;
+  color: var(--bz-text);
+  text-decoration: none;
+  transition: background var(--bz-duration) var(--bz-ease);
+}
+.bz-chakra-mobile__link:hover,
+.bz-chakra-mobile__link:focus-visible {
+  background: rgba(var(--chakra-c-rgb, 201, 168, 76), 0.08);
+  outline: none;
+}
+.bz-chakra-mobile__glyph {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: var(--chakra-c, var(--bz-gold));
+}
+.bz-chakra-mobile__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  flex-grow: 1;
+}
+.bz-chakra-mobile__sk {
+  font-family: var(--bz-font-display);
+  font-style: italic;
+  font-size: 1.6rem;
+  color: var(--bz-text);
+}
+.bz-chakra-mobile__it {
+  font-family: var(--bz-font-ui);
+  font-size: 1rem;
+  letter-spacing: 0.2rem;
+  text-transform: uppercase;
+  color: var(--bz-muted);
+}
+.bz-chakra-mobile__arrow {
+  font-size: 1.4rem;
   color: var(--bz-gold);
 }
