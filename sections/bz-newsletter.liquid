@@ -1,0 +1,248 @@
+{%- comment -%}
+  BenesserEZen — Newsletter signup.
+
+  Native Shopify {% form 'customer' %} — no third-party scripts.
+  Klaviyo (or any other ESP that listens to Shopify customer create
+  webhooks) picks up subscribers automatically.
+{%- endcomment -%}
+
+<section
+  class="bz-newsletter color-{{ section.settings.color_scheme }} gradient isolate"
+  data-section-id="{{ section.id }}"
+>
+  <div class="page-width bz-newsletter__inner">
+    <p class="bz-label bz-reveal">{{ section.settings.eyebrow | default: 'Il Giornale Zen' }}</p>
+    <h2 class="bz-title bz-reveal" data-delay="1">{{ section.settings.heading | default: 'Iscriviti per ricevere i nostri rituali' }}</h2>
+    {%- if section.settings.subtext != blank -%}
+      <p class="bz-body bz-newsletter__subtext bz-reveal" data-delay="2">{{ section.settings.subtext }}</p>
+    {%- endif -%}
+
+    {%- form 'customer', id: 'bz-newsletter-form-' | append: section.id, class: 'bz-newsletter__form-wrapper' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+
+      {%- if form.posted_successfully? -%}
+        <p class="bz-newsletter__success bz-reveal">{{ section.settings.success_text | default: 'Grazie. Controlla la tua casella per confermare l’iscrizione.' }}</p>
+      {%- else -%}
+        <div class="bz-newsletter__form bz-reveal" data-delay="3">
+          <label class="visually-hidden" for="bz-newsletter-email-{{ section.id }}">Email</label>
+          <input
+            class="bz-newsletter__input"
+            type="email"
+            id="bz-newsletter-email-{{ section.id }}"
+            name="contact[email]"
+            placeholder="{{ section.settings.placeholder | default: 'la-tua-anima@dominio.it' }}"
+            autocorrect="off"
+            autocapitalize="off"
+            autocomplete="email"
+            required
+          >
+          <button class="bz-newsletter__btn" type="submit" name="commit">
+            {{ section.settings.btn_text | default: 'Iscriviti' }}
+          </button>
+        </div>
+
+        {%- if form.errors -%}
+          <p class="bz-newsletter__error">
+            {{ form.errors | default_errors }}
+          </p>
+        {%- endif -%}
+
+        {%- if section.settings.fine_print != blank -%}
+          <p class="bz-newsletter__fine">{{ section.settings.fine_print }}</p>
+        {%- endif -%}
+      {%- endif -%}
+    {%- endform -%}
+  </div>
+</section>
+
+{% style %}
+  .bz-newsletter {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  .bz-newsletter__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.6rem;
+    max-width: 56rem;
+    margin: 0 auto;
+  }
+  .bz-newsletter__inner .bz-label,
+  .bz-newsletter__inner .bz-title { margin: 0; }
+  .bz-newsletter__subtext { margin: 0; max-width: 48rem; }
+
+  .bz-newsletter__form-wrapper {
+    width: 100%;
+    margin-top: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .bz-newsletter__form {
+    display: flex;
+    width: 100%;
+    max-width: 48rem;
+    border: 1px solid var(--bz-border);
+    transition: border-color var(--bz-duration) var(--bz-ease);
+  }
+  .bz-newsletter__form:focus-within {
+    border-color: var(--bz-gold);
+  }
+
+  .bz-newsletter__input {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 1.4rem 1.8rem;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--bz-text);
+    font-family: var(--bz-font-body);
+    font-size: 1.4rem;
+    letter-spacing: 0.05rem;
+  }
+  .bz-newsletter__input::placeholder {
+    color: var(--bz-muted);
+    font-style: italic;
+  }
+
+  .bz-newsletter__btn {
+    flex-shrink: 0;
+    padding: 0 2.4rem;
+    background: var(--bz-gold);
+    color: var(--bz-bg);
+    border: none;
+    cursor: pointer;
+    font-family: var(--bz-font-ui);
+    font-size: 1.1rem;
+    font-weight: 400;
+    letter-spacing: 0.3rem;
+    text-transform: uppercase;
+    transition: background var(--bz-duration) var(--bz-ease),
+                color var(--bz-duration) var(--bz-ease);
+  }
+  .bz-newsletter__btn:hover {
+    background: var(--bz-gold-light);
+  }
+
+  .bz-newsletter__fine {
+    margin: 0;
+    font-family: var(--bz-font-ui);
+    font-size: 1rem;
+    letter-spacing: 0.2rem;
+    text-transform: uppercase;
+    color: var(--bz-muted);
+  }
+  .bz-newsletter__error {
+    margin: 0;
+    color: var(--bz-text);
+    font-family: var(--bz-font-body);
+    font-size: 1.2rem;
+    padding: 0.8rem 1.4rem;
+    border: 1px solid rgba(204, 51, 51, 0.5);
+    background: rgba(204, 51, 51, 0.08);
+  }
+  .bz-newsletter__success {
+    margin: 0;
+    font-family: var(--bz-font-display);
+    font-style: italic;
+    font-size: 1.6rem;
+    color: var(--bz-gold);
+  }
+
+  @media (max-width: 749px) {
+    .bz-newsletter__form { flex-direction: column; }
+    .bz-newsletter__input { width: 100%; padding: 1.4rem; }
+    .bz-newsletter__btn  { width: 100%; padding: 1.4rem; }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "BZ Newsletter",
+  "class": "bz-newsletter-section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "default": "scheme-4",
+      "label": "Schema colore"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Etichetta",
+      "default": "Il Giornale Zen"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titolo",
+      "default": "Iscriviti per ricevere i nostri rituali"
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Sottotesto",
+      "default": "Guide ai cristalli, rituali lunari, meditazioni guidate. Niente spam — solo bellezza."
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Placeholder email",
+      "default": "la-tua-anima@dominio.it"
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Testo bottone",
+      "default": "Iscriviti"
+    },
+    {
+      "type": "text",
+      "id": "fine_print",
+      "label": "Testo fine",
+      "default": "Niente spam. Solo bellezza."
+    },
+    {
+      "type": "text",
+      "id": "success_text",
+      "label": "Messaggio dopo iscrizione",
+      "default": "Grazie. Controlla la tua casella per confermare l’iscrizione."
+    },
+    {
+      "type": "header",
+      "content": "Spaziatura"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding alto",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 96
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding basso",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 96
+    }
+  ],
+  "presets": [
+    {
+      "name": "BZ Newsletter"
+    }
+  ]
+}
+{% endschema %}

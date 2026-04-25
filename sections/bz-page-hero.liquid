@@ -1,0 +1,113 @@
+{%- comment -%}
+  BenesserEZen — Reusable static page hero.
+
+  Centred kicker → headline → subtext → gold rule. The headline
+  defaults to page.title so the merchant can leave the "Heading"
+  setting blank and still get a sensible label.
+{%- endcomment -%}
+
+<section
+  class="bz-page-hero color-{{ section.settings.color_scheme }} gradient isolate"
+  data-section-id="{{ section.id }}"
+>
+  <div class="page-width bz-page-hero__inner">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="bz-label bz-reveal">{{ section.settings.eyebrow }}</p>
+    {%- endif -%}
+
+    <h1 class="bz-title bz-reveal" data-delay="1">
+      {{ section.settings.heading | default: page.title | escape }}
+    </h1>
+
+    {%- if section.settings.subtext != blank -%}
+      <p class="bz-body bz-page-hero__subtext bz-reveal" data-delay="2">{{ section.settings.subtext }}</p>
+    {%- endif -%}
+
+    <hr class="bz-divider bz-reveal" data-delay="3">
+  </div>
+</section>
+
+{% style %}
+  .bz-page-hero {
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+  }
+  .bz-page-hero__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.4rem;
+    max-width: 60rem;
+    margin: 0 auto;
+  }
+  .bz-page-hero__inner .bz-label,
+  .bz-page-hero__inner .bz-title { margin: 0; }
+  .bz-page-hero__subtext { margin: 0; }
+  .bz-page-hero .bz-divider { margin: 1.6rem auto 0; }
+
+  @media (max-width: 749px) {
+    .bz-page-hero {
+      padding: 6rem 0 3rem;
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "BZ Page Hero",
+  "class": "bz-page-hero-section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "default": "scheme-4",
+      "label": "Schema colore"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Etichetta sopra il titolo"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titolo",
+      "info": "Lascia vuoto per usare il titolo della pagina."
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Sottotesto"
+    },
+    {
+      "type": "header",
+      "content": "Spaziatura"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding alto",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 96
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding basso",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "presets": [
+    {
+      "name": "BZ Page Hero"
+    }
+  ]
+}
+{% endschema %}

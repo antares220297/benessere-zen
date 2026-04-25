@@ -1,819 +1,106 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
-    "zen_hero_scroll_F3a01": {
-      "type": "zen-hero-scroll",
+    "bz_hero_main": {
+      "type": "bz-hero",
       "settings": {
-        "bg_image": "",
         "text_1": "Respira.",
         "text_2": "Lascia andare.",
         "text_3": "Trova il tuo equilibrio.",
-        "cta_text_1": "Esplora la Collezione",
-        "cta_link_1": "/collections/all",
-        "cta_text_2": "Fai il Quiz →",
-        "cta_link_2": "/pages/quiz"
+        "cta_text_1": "Scopri la collezione",
+        "cta_link_1": "shopify://collections/all",
+        "cta_text_2": "Fai il quiz →",
+        "cta_link_2": ""
       }
     },
-    "d557b959-57cb-476f-adb6-18808587f120": {
-      "type": "scrolling-banner",
+    "bz_chakra_portal": {
+      "type": "bz-chakra-portal",
+      "settings": {
+        "color_scheme": "scheme-4",
+        "eyebrow": "Sistema dei 7 chakra",
+        "heading": "Quale energia stai cercando?",
+        "subtext": "I sette centri energetici del corpo sono la nostra mappa. Passa il mouse su un chakra per scoprirlo."
+      }
+    },
+    "bz_collections": {
+      "type": "bz-collections",
       "blocks": {
-        "template--21829637407021__d557b959-57cb-476f-adb6-18808587f120-text-1": {
-          "type": "text",
-          "settings": {
-            "text": "10% DI SCONTO PER I NUOVI CLIENTI",
-            "highlight_type": "underline",
-            "text_size": 120,
-            "text_color": "primary",
-            "spacing_left": 100,
-            "spacing_right": 100,
-            "spacing_left_mobile": 0,
-            "spacing_right_mobile": 0
-          }
-        }
-      },
-      "block_order": [
-        "template--21829637407021__d557b959-57cb-476f-adb6-18808587f120-text-1"
-      ],
-      "settings": {
-        "show_border": false,
-        "speed": 50,
-        "direction": "right",
-        "pause_hover": false,
-        "bg_light": "#1A1A2E",
-        "color_text_light": "#C9A84C",
-        "color_text_light_2": "rgba(0,0,0,0)",
-        "color_heading_highlight_light": "rgba(0,0,0,0)",
-        "bg_dark": "#1A1A2E",
-        "color_text_dark": "#C9A84C",
-        "color_text_dark_2": "rgba(0,0,0,0)",
-        "color_heading_highlight_dark": "rgba(0,0,0,0)",
-        "space_block": 60,
-        "padding_top": 28,
-        "padding_bottom": 28,
-        "space_block_mobile": 40,
-        "padding_top_mobile": 20,
-        "padding_bottom_mobile": 20
-      }
-    },
-    "zen_trust_bar_F3a02": {
-      "type": "zen-trust-bar",
-      "settings": {
-        "text_1": "Selezionato con cura",
-        "text_2": "100% Naturale",
-        "text_3": "Spedizione 24-48h",
-        "text_4": "Reso facile 14 giorni"
-      }
-    },
-    "zen_brand_story_yWq88C": {
-      "type": "zen-brand-story",
-      "name": "Zen Brand Story",
-      "settings": {
-        "image_alt": "",
-        "eyebrow": "La Nostra Storia",
-        "heading": "Benessere Zen",
-        "text": "Benessere Zen nasce dalla convinzione che il vero benessere parta dall'interno. Selezioniamo cristalli, incensi, tè e strumenti per la meditazione da tutto il mondo, scegliendo solo ciò che porta energia autentica. Non siamo un semplice negozio — siamo compagni di viaggio nel tuo percorso di consapevolezza.",
-        "cta_text": "Scopri di più su di noi →",
-        "cta_link": "/pages/chi-siamo"
-      }
-    },
-    "zen_chakra_explorer_aR4hTK": {
-      "type": "zen-chakra-explorer",
-      "blocks": {
-        "chakra_ekP8xp": {
-          "type": "chakra",
-          "settings": {
-            "handle": "muladhara",
-            "name": "Muladhara",
-            "sanskrit": "मूलाधार — Chakra della Radice",
-            "description": "Il fondamento. Radicamento, sicurezza, connessione con la terra. Quando è in equilibrio ti senti stabile e presente.",
-            "element": "Terra",
-            "quality": "Stabilità",
-            "link": ""
-          }
-        },
-        "chakra_ADRk6h": {
-          "type": "chakra",
-          "settings": {
-            "handle": "svadhisthana",
-            "name": "Svadhisthana",
-            "sanskrit": "स्वाधिष्ठान — Chakra Sacrale",
-            "description": "Il centro creativo. Emozioni, piacere, fluidità. Quando è in equilibrio la creatività scorre liberamente.",
-            "element": "Acqua",
-            "quality": "Creatività",
-            "link": ""
-          }
-        },
-        "chakra_PWmNBK": {
-          "type": "chakra",
-          "settings": {
-            "handle": "manipura",
-            "name": "Manipura",
-            "sanskrit": "मणिपूर — Chakra del Plesso Solare",
-            "description": "Il fuoco interiore. Volontà, fiducia in sé, trasformazione. Quando è in equilibrio agisci con determinazione.",
-            "element": "Fuoco",
-            "quality": "Potere",
-            "link": ""
-          }
-        },
-        "chakra_mxzxcW": {
-          "type": "chakra",
-          "settings": {
-            "handle": "anahata",
-            "name": "Anahata",
-            "sanskrit": "अनाहत — Chakra del Cuore",
-            "description": "Il ponte tra terra e cielo. Amore, compassione, accettazione. Quando è in equilibrio ami senza condizioni.",
-            "element": "Aria",
-            "quality": "Amore",
-            "link": ""
-          }
-        },
-        "chakra_ELggJD": {
-          "type": "chakra",
-          "settings": {
-            "handle": "vishuddha",
-            "name": "Vishuddha",
-            "sanskrit": "विशुद्ध — Chakra della Gola",
-            "description": "La voce dell'anima. Comunicazione, verità, espressione autentica. Quando è in equilibrio parli la tua verità.",
-            "element": "Etere",
-            "quality": "Comunicazione",
-            "link": ""
-          }
-        },
-        "chakra_kEwjD8": {
-          "type": "chakra",
-          "settings": {
-            "handle": "ajna",
-            "name": "Ajna",
-            "sanskrit": "आज्ञा — Terzo Occhio",
-            "description": "L'occhio interiore. Intuizione, saggezza, visione oltre il visibile. Quando è in equilibrio vedi con chiarezza.",
-            "element": "Luce",
-            "quality": "Intuizione",
-            "link": ""
-          }
-        },
-        "chakra_kz7QBY": {
-          "type": "chakra",
-          "settings": {
-            "handle": "sahasrara",
-            "name": "Sahasrara",
-            "sanskrit": "सहस्रार — Chakra della Corona",
-            "description": "La connessione universale. Spiritualità, illuminazione, unità con il tutto. Quando è in equilibrio ti senti parte del cosmo.",
-            "element": "Coscienza",
-            "quality": "Connessione",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "chakra_ekP8xp",
-        "chakra_ADRk6h",
-        "chakra_PWmNBK",
-        "chakra_mxzxcW",
-        "chakra_ELggJD",
-        "chakra_kEwjD8",
-        "chakra_kz7QBY"
-      ],
-      "name": "Zen Chakra Explorer",
-      "settings": {
-        "eyebrow": "Esplora per Energia",
-        "heading": "I 7 Chakra",
-        "subheading": "Seleziona un centro energetico per scoprire i prodotti che lo riequilibrano."
-      }
-    },
-    "zen_feat_coll_F3a03": {
-      "type": "zen-featured-collections",
-      "blocks": {
-        "coll_card_cristalli": {
-          "type": "collection_card",
-          "settings": {
-            "title": "Cristalli & Pietre",
-            "link": "/collections/cristalli-pietre"
-          }
-        },
-        "coll_card_incensi": {
-          "type": "collection_card",
-          "settings": {
-            "title": "Incensi & Purificazione",
-            "link": "/collections/incensi-purificazione"
-          }
-        },
-        "coll_card_te": {
-          "type": "collection_card",
-          "settings": {
-            "title": "Tè & Infusi",
-            "link": "/collections/te-infusi"
-          }
-        },
-        "coll_card_meditazione": {
-          "type": "collection_card",
-          "settings": {
-            "title": "Meditazione & Mindfulness",
-            "link": "/collections/meditazione-mindfulness"
-          }
-        }
-      },
-      "block_order": [
-        "coll_card_cristalli",
-        "coll_card_incensi",
-        "coll_card_te",
-        "coll_card_meditazione"
-      ],
-      "settings": {
-        "heading": "Esplora le Collezioni",
-        "subheading": "Strumenti selezionati per il tuo viaggio interiore"
-      }
-    },
-    "zen_quiz_cta_D7pGhe": {
-      "type": "zen-quiz-cta",
-      "name": "Zen Quiz CTA",
-      "settings": {
-        "heading": "Non sai da dove iniziare?",
-        "text": "Rispondi a 5 domande e scopri quali prodotti sono in sintonia con la tua energia. Ricevi un bundle personalizzato con il 15% di sconto.",
-        "cta_text": "Trova il Tuo Rituale",
-        "cta_link": ""
-      }
-    },
-    "zen_bestseller_F3a04": {
-      "type": "featured-collection",
-      "blocks": {
-        "bestseller_coll_block": {
+        "col_root": {
           "type": "collection",
           "settings": {
-            "collection": "all",
-            "show_description": false,
-            "show_vendor": false,
-            "show_rating": true,
-            "show_quickview": true,
-            "show_promotion": false
+            "chakra_id": 1,
+            "title_override": "Cristalli Radice",
+            "subtitle": "Mūlādhāra · Radicamento",
+            "cta_label": "Scopri"
+          }
+        },
+        "col_heart": {
+          "type": "collection",
+          "settings": {
+            "chakra_id": 4,
+            "title_override": "Cristalli Cuore",
+            "subtitle": "Anāhata · Compassione",
+            "cta_label": "Scopri"
+          }
+        },
+        "col_crown": {
+          "type": "collection",
+          "settings": {
+            "chakra_id": 7,
+            "title_override": "Cristalli Corona",
+            "subtitle": "Sahasrāra · Coscienza",
+            "cta_label": "Scopri"
           }
         }
       },
-      "block_order": [
-        "bestseller_coll_block"
-      ],
+      "block_order": ["col_root", "col_heart", "col_crown"],
       "settings": {
-        "title": "I Più Amati",
-        "highlight_type": "underline",
-        "heading_size": 100,
-        "heading_tag": "h2",
-        "heading_alignment": "center",
-        "subheading": "",
-        "text": "",
-        "show_view_all": true,
-        "view_all_position": "bottom",
-        "title_size": 120,
-        "title_style": "none",
-        "enable_desktop_slider": false,
-        "swiper_on_mobile": true,
-        "auto_play": false,
-        "columns_desktop": 4,
-        "rows_desktop": 1,
-        "spacing": 28,
-        "full_width": false,
-        "show_section_divider": false,
-        "padding_top": 40,
-        "padding_bottom": 40,
-        "columns_mobile": "2",
-        "spacing_mobile": 16,
-        "full_width_mobile": false,
-        "show_section_divider_mobile": false,
-        "padding_top_mobile": 28,
-        "padding_bottom_mobile": 28
+        "color_scheme": "scheme-4",
+        "eyebrow": "Collezioni in evidenza",
+        "heading": "I rituali più amati"
       }
     },
-    "zen_newsletter_F3a05": {
-      "type": "newsletter",
-      "blocks": {
-        "newsletter_heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "Unisciti al Viaggio",
-            "highlight_type": "underline",
-            "heading_size": 100,
-            "heading_tag": "h2"
-          }
-        },
-        "newsletter_text": {
-          "type": "paragraph",
-          "settings": {
-            "text": "<p>Iscriviti per ricevere il 10% di sconto sul primo ordine, guide sui cristalli e rituali esclusivi.</p>"
-          }
-        },
-        "newsletter_form": {
-          "type": "email_form",
-          "settings": {
-            "button_label": "Iscriviti",
-            "form_width": "small"
-          }
-        }
-      },
-      "block_order": [
-        "newsletter_heading",
-        "newsletter_text",
-        "newsletter_form"
-      ],
+    "bz_brand_story": {
+      "type": "bz-brand-story",
       "settings": {
-        "background_color_light": "#1A1A2E",
-        "heading_light": "#C9A84C",
-        "text_light": "#E8E8E8",
-        "button_light": "#C9A84C",
-        "button_text_light": "#0F0F0F",
-        "button_hover_light": "#B8933B",
-        "button_text_hover_light": "#0F0F0F",
-        "background_color_dark": "#1A1A2E",
-        "heading_dark": "#C9A84C",
-        "text_dark": "#E8E8E8",
-        "button_dark": "#C9A84C",
-        "button_text_dark": "#0F0F0F",
-        "button_hover_dark": "#B8933B",
-        "button_text_hover_dark": "#0F0F0F",
-        "desktop_height": "natural",
-        "show_section_divider": false,
-        "padding_top": 48,
-        "padding_bottom": 48,
-        "mobile_height": "natural",
-        "show_section_divider_mobile": false,
-        "padding_top_mobile": 36,
-        "padding_bottom_mobile": 36
+        "color_scheme": "scheme-4",
+        "eyebrow": "La nostra storia",
+        "quote": "Non vendiamo prodotti.\nCuriamo rituali per chi cerca la propria verità.",
+        "body": "<p>BenesserEZen nasce da una trasformazione personale e dal desiderio di condividere il potere dei rituali quotidiani. Ogni cristallo, incenso e oggetto è scelto a mano, con cura, perché diventi parte del tuo percorso.</p>",
+        "cta_text": "La nostra storia →",
+        "cta_link": "/pages/about",
+        "tag": "Est. 2023 · Cento, Italia"
       }
     },
-    "zen_rituale_momento_H4a01": {
-      "type": "zen-rituale-momento",
-      "blocks": {
-        "bundle_item_1": {
-          "type": "bundle_item",
-          "settings": {
-            "item_name": "Salvia Bianca"
-          }
-        },
-        "bundle_item_2": {
-          "type": "bundle_item",
-          "settings": {
-            "item_name": "Quarzo Rosa"
-          }
-        },
-        "bundle_item_3": {
-          "type": "bundle_item",
-          "settings": {
-            "item_name": "Tè Anahata"
-          }
-        }
-      },
-      "block_order": [
-        "bundle_item_1",
-        "bundle_item_2",
-        "bundle_item_3"
-      ],
+    "bz_quiz_cta": {
+      "type": "bz-quiz-cta",
       "settings": {
-        "eyebrow": "Il Rituale del Momento",
-        "heading": "Tempo di",
-        "heading_accent": "",
-        "text": "",
-        "cta_text": "Scopri il Bundle Stagionale",
-        "cta_link": "",
-        "price": "",
-        "compare_price": ""
+        "color_scheme": "scheme-4",
+        "badge": "Quiz dell’anima",
+        "heading": "Quale chakra ha bisogno di te oggi?",
+        "subtext": "5 domande. Un rituale su misura. Il tuo bundle personalizzato con il 15% di sconto.",
+        "cta_text": "Inizia il quiz →",
+        "quiz_link": "/pages/quiz"
       }
     },
-    "zen_come_iniziare_H4a02": {
-      "type": "zen-come-iniziare",
-      "blocks": {
-        "guide_1": {
-          "type": "guide_card",
-          "settings": {
-            "title": "Come purificare un cristallo",
-            "description": "Acqua corrente, luce lunare, salvia — 3 metodi per ricaricare l'energia delle tue pietre.",
-            "icon_type": "cristallo",
-            "color": "#E63946",
-            "reading_time": "3 min",
-            "link": ""
-          }
-        },
-        "guide_2": {
-          "type": "guide_card",
-          "settings": {
-            "title": "Come bruciare l'incenso rituale",
-            "description": "Scegli il momento, prepara lo spazio, imposta un'intenzione. Il fumo è il messaggero.",
-            "icon_type": "incenso",
-            "color": "#FF8C42",
-            "reading_time": "2 min",
-            "link": ""
-          }
-        },
-        "guide_3": {
-          "type": "guide_card",
-          "settings": {
-            "title": "Come preparare un tè meditativo",
-            "description": "L'acqua giusta, il tempo di infusione, il respiro consapevole tra un sorso e l'altro.",
-            "icon_type": "te",
-            "color": "#06D6A0",
-            "reading_time": "4 min",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "guide_1",
-        "guide_2",
-        "guide_3"
-      ],
+    "bz_newsletter": {
+      "type": "bz-newsletter",
       "settings": {
-        "eyebrow": "Per chi inizia",
-        "heading": "Come",
-        "heading_accent": "Iniziare",
-        "subtitle": "Tre guide essenziali per muovere i primi passi nel tuo viaggio di benessere spirituale."
-      }
-    },
-    "zen_completa_rituale_H4a03": {
-      "type": "zen-completa-rituale",
-      "blocks": {
-        "bundle_rad": {
-          "type": "bundle",
-          "settings": {
-            "bundle_name": "Rituale del Radicamento",
-            "chakra_name": "Muladhara",
-            "color": "#E63946",
-            "item_1": "Diaspro Rosso",
-            "item_2": "Incenso Patchouli",
-            "item_3": "Tè Muladhara",
-            "item_4": "Portaincenso in legno",
-            "price": "€38,90",
-            "compare_price": "€47,60",
-            "savings": "Risparmi il 18%",
-            "cta_text": "Aggiungi al Carrello",
-            "cta_link": ""
-          }
-        },
-        "bundle_int": {
-          "type": "bundle",
-          "settings": {
-            "bundle_name": "Rituale dell'Intuizione",
-            "chakra_name": "Ajna",
-            "color": "#6A4C93",
-            "item_1": "Ametista",
-            "item_2": "Incenso Nag Champa",
-            "item_3": "Tè Ajna",
-            "item_4": "Sacchetto in velluto",
-            "price": "€42,90",
-            "compare_price": "€52,30",
-            "savings": "Risparmi il 18%",
-            "cta_text": "Aggiungi al Carrello",
-            "cta_link": ""
-          }
-        },
-        "bundle_ser": {
-          "type": "bundle",
-          "settings": {
-            "bundle_name": "Rituale della Serenità",
-            "chakra_name": "Anahata",
-            "color": "#06D6A0",
-            "item_1": "Quarzo Rosa",
-            "item_2": "Salvia Bianca",
-            "item_3": "Tè Anahata",
-            "item_4": "Candela alla soia",
-            "price": "€36,90",
-            "compare_price": "€44,80",
-            "savings": "Risparmi il 18%",
-            "cta_text": "Aggiungi al Carrello",
-            "cta_link": ""
-          }
-        }
-      },
-      "block_order": [
-        "bundle_rad",
-        "bundle_int",
-        "bundle_ser"
-      ],
-      "settings": {
-        "eyebrow": "Bundle Esclusivi",
-        "heading": "Completa il Tuo",
-        "heading_accent": "Rituale",
-        "subtitle": "Ogni bundle è un'esperienza completa — cristallo, incenso, tè e accessorio, scelti per lavorare in sinergia."
-      }
-    },
-    "why_us_PxVfDJ": {
-      "type": "why-us",
-      "name": "Why Us Cards",
-      "settings": {
-        "title": "Cosa ci rende diversi"
-      }
-    },
-    "faq_FgMKeg": {
-      "type": "faq",
-      "blocks": {
-        "faq_naturali": {
-          "type": "frequently_asked_question",
-          "settings": {
-            "icon": "leaf",
-            "another_icon": "",
-            "custom_icon": "",
-            "heading": "I vostri prodotti sono davvero naturali?",
-            "row_content": "<p>Assolutamente sì. Ogni prodotto nel nostro catalogo è selezionato per la sua autenticità e qualità. I nostri incensi sono realizzati con resine e erbe pure, i cristalli sono naturali e non trattati, e i tè ayurvedici provengono da coltivazioni biologiche certificate.</p>"
-          }
-        },
-        "faq_purifica_cristallo": {
-          "type": "frequently_asked_question",
-          "settings": {
-            "icon": "none",
-            "another_icon": "",
-            "custom_icon": "",
-            "heading": "Come si purifica un cristallo?",
-            "row_content": "<p>Esistono diversi metodi: puoi lasciarlo sotto l’acqua corrente, esporlo alla luce della luna piena, bruciare salvia o palo santo vicino ad esso, oppure appoggiarlo su una drusa di ametista. Nella scheda di ogni cristallo trovi le istruzioni specifiche.</p>"
-          }
-        },
-        "faq_spedizione": {
-          "type": "frequently_asked_question",
-          "settings": {
-            "icon": "none",
-            "another_icon": "",
-            "custom_icon": "",
-            "heading": "Quanto tempo impiega la spedizione?",
-            "row_content": "<p>Spediamo entro 24-48 ore lavorative. La consegna avviene in 2-4 giorni lavorativi in tutta Italia. Per ordini superiori a €49 la spedizione è gratuita.</p>"
-          }
-        },
-        "faq_reso": {
-          "type": "frequently_asked_question",
-          "settings": {
-            "icon": "none",
-            "another_icon": "",
-            "custom_icon": "",
-            "heading": "Posso restituire un prodotto se non sono soddisfatto?",
-            "row_content": "<p>Sì, hai 14 giorni dalla ricezione per effettuare un reso. Il prodotto deve essere integro e nella confezione originale. Contattaci e ti guideremo nella procedura.</p>"
-          }
-        },
-        "faq_incenso": {
-          "type": "frequently_asked_question",
-          "settings": {
-            "icon": "none",
-            "another_icon": "",
-            "custom_icon": "",
-            "heading": "Come scelgo l’incenso giusto per me?",
-            "row_content": "<p>Dipende dalla tua intenzione: la salvia bianca è ideale per purificare gli ambienti, il palo santo per la meditazione, il sandalo per il relax, il nag champa per la concentrazione. Puoi anche fare il nostro quiz ‘Trova il tuo Rituale’ per ricevere suggerimenti personalizzati.</p>"
-          }
-        },
-        "faq_sconto": {
-          "type": "frequently_asked_question",
-          "settings": {
-            "icon": "none",
-            "another_icon": "",
-            "custom_icon": "",
-            "heading": "Offrite codici sconto?",
-            "row_content": "<p>Sì! Iscrivendoti alla nostra newsletter ricevi subito un 10% di sconto sul primo ordine. Inoltre, seguici su Instagram per promozioni esclusive e offerte lampo.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "faq_naturali",
-        "faq_purifica_cristallo",
-        "faq_spedizione",
-        "faq_reso",
-        "faq_incenso",
-        "faq_sconto"
-      ],
-      "settings": {
-        "heading": "FAQs",
-        "highlight_type": "underline",
-        "heading_size": 100,
-        "heading_tag": "h2",
-        "heading_alignment": "center",
-        "show_border": false,
-        "row_background": false,
-        "collapsible": true,
-        "show_view_all": false,
-        "view_all_position": "top",
-        "button_link": "",
-        "open_new_window": false,
-        "background_color_light": "#0F0F0F",
-        "background_color_dark": "#0F0F0F",
-        "enable_microdata_schema": false,
-        "desktop_layout": "1",
-        "image_alignment": "left",
-        "desktop_height": "400px",
-        "show_section_divider": false,
-        "make_full_page_width": false,
-        "padding_top": 28,
-        "padding_bottom": 28,
-        "image_alignment_mobile": "left",
-        "mobile_height": "250px",
-        "show_section_divider_mobile": false,
-        "padding_top_mobile": 28,
-        "padding_bottom_mobile": 28
-      }
-    },
-    "zen_social_proof_H4b02": {
-      "type": "zen-social-proof",
-      "settings": {
-        "count_1": 1247,
-        "label_1": "rituali spediti in Italia",
-        "count_2": 342,
-        "label_2": "cristalli hanno trovato casa questo mese",
-        "count_3": 98,
-        "suffix_3": "%",
-        "label_3": "clienti soddisfatti"
-      }
-    },
-    "zen_voci_cerchio_H4b03": {
-      "type": "zen-voci-cerchio",
-      "blocks": {
-        "ugc_1": {
-          "type": "ugc_card",
-          "settings": {
-            "quote": "L'ametista che ho ricevuto è stupenda",
-            "username": "@elena_m",
-            "alt_text": "Cristallo ametista"
-          }
-        },
-        "ugc_2": {
-          "type": "ugc_card",
-          "settings": {
-            "quote": "La salvia bianca ha cambiato i miei rituali",
-            "username": "@marco.zen",
-            "alt_text": "Salvia bianca"
-          }
-        },
-        "ugc_3": {
-          "type": "ugc_card",
-          "settings": {
-            "quote": "Il tè dei 7 chakra è diventato il mio preferito",
-            "username": "@giulia_yoga",
-            "alt_text": "Tè dei chakra"
-          }
-        },
-        "ugc_4": {
-          "type": "ugc_card",
-          "settings": {
-            "quote": "Spedizione velocissima e packaging curato",
-            "username": "@laura_b",
-            "alt_text": "Packaging Benessere Zen"
-          }
-        }
-      },
-      "block_order": [
-        "ugc_1",
-        "ugc_2",
-        "ugc_3",
-        "ugc_4"
-      ],
-      "settings": {
-        "eyebrow": "La Nostra Comunità",
-        "heading": "Voci dal",
-        "heading_accent": "Cerchio",
-        "instagram_url": "https://www.instagram.com/benesserezen.shop",
-        "instagram_text": "Seguici su Instagram"
-      }
-    },
-    "zen_blog_preview_H4b01": {
-      "type": "zen-blog-preview",
-      "settings": {
-        "eyebrow": "Dal nostro blog",
-        "heading": "Il Giornale Zen",
-        "blog": "news",
-        "limit": 3,
-        "show_view_all": true,
-        "view_all_text": "Tutti gli articoli →"
-      }
-    },
-    "testimonials_pkTryA": {
-      "type": "testimonials",
-      "blocks": {
-        "testimonial_9RaQt9": {
-          "type": "testimonial",
-          "settings": {
-            "quote": "Ho preso la crema viso lenitiva e mamma mia che freschezza! Con questo caldo estivo è davvero un sollievo sulla pelle, lascia una sensazione piacevolissima.",
-            "author_name": "Alice P.",
-            "author_title": "Cliente Verificata, Arezzo (AR)",
-            "rating": 5
-          }
-        },
-        "testimonial_mQmhMc": {
-          "type": "testimonial",
-          "settings": {
-            "quote": "Arrivato il pacco in due giorni, ben imballato. Ho preso il braccialetto con il quarzo rosa, molto bello, le pietre sono fredde al tatto. Mia nipote già me lo vuole rubare 😂",
-            "author_name": "Loredana G.",
-            "author_title": "Cliente Verificata, Seregno (MB)",
-            "rating": 5
-          }
-        },
-        "testimonial_8aNhcf": {
-          "type": "testimonial",
-          "settings": {
-            "quote": "Un’amica mi ha parlato dei loro prodotti e anche se ero scettica ho preso siero e crema illuminante. Dopo qualche settimana vedo già risultati! Sicuro proverò anche il resto.",
-            "author_name": "Enrica V.",
-            "author_title": "Cliente Verificato, Bressanone (BZ)",
-            "rating": 5
-          }
-        },
-        "testimonial_KyDjnT": {
-          "type": "testimonial",
-          "settings": {
-            "quote": "Devo dire che non sono uno che compra online, ma qui mi sono fidato e ho fatto bene. La tisana dei chakra è buonissima, non serve zucchero, e mi sento più leggero dopo cena.",
-            "author_name": "Antonio C.",
-            "author_title": "Cliente Verificato, Fano (PU)",
-            "rating": 5
-          }
-        },
-        "testimonial_qz396V": {
-          "type": "testimonial",
-          "settings": {
-            "quote": "Ho preso il ciondolo di ametista, bello lucente e non quei plasticoni che vendono in giro. Mia moglie contentissima, quindi ho fatto centro!",
-            "author_name": "Carlo M.",
-            "author_title": "Cliente Verificata, Bitonto (BA)",
-            "rating": 5
-          }
-        },
-        "testimonial_y66bHB": {
-          "type": "testimonial",
-          "settings": {
-            "quote": "Buon prodotto. Uso la crema mani tutte le sere e la pelle non mi tira più. Consiglio di usarla poco alla volta che è bella corposa.",
-            "author_name": "Maria Rosa F.",
-            "author_title": "Cliente Verificata, Caltagirone (CT)",
-            "rating": 4
-          }
-        },
-        "testimonial_TeiN3t": {
-          "type": "testimonial",
-          "settings": {
-            "quote": "Pacco arrivato un po' in ritardo per colpa del corriere ma il servizio clienti molto gentile. Ho preso un set di incensi e la confezione era davvero elegante.",
-            "author_name": "Emma T.",
-            "author_title": "Cliente Verificata, Conegliano (TV)",
-            "rating": 4
-          }
-        },
-        "testimonial_A8UwMD": {
-          "type": "testimonial",
-          "settings": {
-            "quote": "Gli oli essenziali durano un sacco e profumano tutta la stanza. Consigliati! Io ho preso quelli alla lavanda, al bergamotto e alla vaniglia.",
-            "author_name": "Giulia B.",
-            "author_title": "Cliente Verificata, Vercelli (VC)",
-            "rating": 5
-          }
-        },
-        "testimonial_Yz4Hhw": {
-          "type": "testimonial",
-          "settings": {
-            "quote": "Bella esperienza d'acquisto. Ho preso tre cose diverse e sono arrivate tutte ben confezionate. Non capita spesso di trovare negozi così attenti. Mi hanno anche aggiunto un pensierino!",
-            "author_name": "Simona L.",
-            "author_title": "Cliente Verificata, Pisticci (MT)",
-            "rating": 5
-          }
-        },
-        "testimonial_VcKyfm": {
-          "type": "testimonial",
-          "settings": {
-            "quote": "Il braccialetto alla sodalite è bellissimo, i colori sono vivi. Io non ci credo tanto a queste cose ma devo dire che da quando lo porto mi sento più tranquilla.",
-            "author_name": "Francesco D.",
-            "author_title": "Cliente Verificato, Asti (AT)",
-            "rating": 5
-          }
-        }
-      },
-      "block_order": [
-        "testimonial_9RaQt9",
-        "testimonial_mQmhMc",
-        "testimonial_8aNhcf",
-        "testimonial_KyDjnT",
-        "testimonial_qz396V",
-        "testimonial_y66bHB",
-        "testimonial_TeiN3t",
-        "testimonial_A8UwMD",
-        "testimonial_Yz4Hhw",
-        "testimonial_VcKyfm"
-      ],
-      "name": "Zen Testimonials",
-      "settings": {
-        "heading": "Cosa Dicono i Nostri Clienti",
-        "subheading": "",
-        "show_arrows": true,
-        "show_pagination": true
+        "color_scheme": "scheme-4",
+        "eyebrow": "Il Giornale Zen",
+        "heading": "Iscriviti per ricevere i nostri rituali",
+        "subtext": "Guide ai cristalli, rituali lunari, meditazioni guidate. Niente spam — solo bellezza.",
+        "placeholder": "la-tua-anima@dominio.it",
+        "btn_text": "Iscriviti",
+        "fine_print": "Niente spam. Solo bellezza."
       }
     }
   },
   "order": [
-    "zen_hero_scroll_F3a01",
-    "d557b959-57cb-476f-adb6-18808587f120",
-    "zen_trust_bar_F3a02",
-    "zen_rituale_momento_H4a01",
-    "zen_brand_story_yWq88C",
-    "zen_social_proof_H4b02",
-    "zen_come_iniziare_H4a02",
-    "why_us_PxVfDJ",
-    "zen_bestseller_F3a04",
-    "zen_chakra_explorer_aR4hTK",
-    "zen_completa_rituale_H4a03",
-    "zen_feat_coll_F3a03",
-    "testimonials_pkTryA",
-    "zen_voci_cerchio_H4b03",
-    "zen_blog_preview_H4b01",
-    "zen_quiz_cta_D7pGhe",
-    "zen_newsletter_F3a05",
-    "faq_FgMKeg"
+    "bz_hero_main",
+    "bz_chakra_portal",
+    "bz_collections",
+    "bz_brand_story",
+    "bz_quiz_cta",
+    "bz_newsletter"
   ]
 }

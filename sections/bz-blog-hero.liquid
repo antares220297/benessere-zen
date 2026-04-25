@@ -1,0 +1,109 @@
+{%- comment -%}
+  BenesserEZen — Blog list hero ("Il Giornale Zen").
+
+  Editorial header for the blog index. Mirrors bz-page-hero in
+  spirit but defaults to the blog title and uses the brand
+  publication name as eyebrow.
+{%- endcomment -%}
+
+<section
+  class="bz-blog-hero color-{{ section.settings.color_scheme }} gradient isolate"
+  data-section-id="{{ section.id }}"
+>
+  <div class="page-width bz-blog-hero__inner">
+    <p class="bz-label bz-reveal">{{ section.settings.eyebrow | default: 'Il Giornale Zen' }}</p>
+    <h1 class="bz-title bz-reveal" data-delay="1">{{ section.settings.heading | default: blog.title | default: 'Il Giornale Zen' }}</h1>
+    {%- if section.settings.subtext != blank -%}
+      <p class="bz-body bz-blog-hero__subtext bz-reveal" data-delay="2">{{ section.settings.subtext }}</p>
+    {%- endif -%}
+    <hr class="bz-divider bz-reveal" data-delay="3">
+  </div>
+</section>
+
+{% style %}
+  .bz-blog-hero {
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+  }
+  .bz-blog-hero__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.4rem;
+    max-width: 60rem;
+    margin: 0 auto;
+  }
+  .bz-blog-hero__inner .bz-label,
+  .bz-blog-hero__inner .bz-title { margin: 0; }
+  .bz-blog-hero__subtext { margin: 0; }
+  .bz-blog-hero .bz-divider { margin: 1.6rem auto 0; }
+
+  @media (max-width: 749px) {
+    .bz-blog-hero { padding: 6rem 0 3rem; }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "BZ Blog Hero",
+  "class": "bz-blog-hero-section",
+  "enabled_on": {
+    "templates": ["blog"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "default": "scheme-4",
+      "label": "Schema colore"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Etichetta",
+      "default": "Il Giornale Zen"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titolo",
+      "info": "Lascia vuoto per usare il titolo del blog."
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Sottotesto",
+      "default": "Guide ai cristalli, rituali lunari, meditazioni guidate."
+    },
+    {
+      "type": "header",
+      "content": "Spaziatura"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding alto",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 96
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding basso",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "presets": [
+    {
+      "name": "BZ Blog Hero"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,186 @@
+{%- comment -%}
+  BenesserEZen — Chakra collection hero.
+
+  Reads collection metafields (namespace 'bz') to render a chakra-
+  themed hero above the standard Dawn banner. If chakra_id isn't
+  set on the collection, the section renders nothing — so the same
+  template works for any non-chakra collection (gift cards,
+  promo) without showing wrong content.
+
+  Required metafields (Shopify Admin > Settings > Custom data >
+  Collections):
+    bz.chakra_id        integer 1-7         e.g. 4
+    bz.chakra_roman     single line text    e.g. IV
+    bz.chakra_name_sk   single line text    e.g. Anāhata
+    bz.intention        single line text    e.g. Amore · Compassione
+{%- endcomment -%}
+
+{%- liquid
+  assign chakra_id = collection.metafields.bz.chakra_id.value
+  assign chakra_id_int = chakra_id | plus: 0
+  if chakra_id_int < 1 or chakra_id_int > 7
+    assign chakra_id_int = 0
+  endif
+
+  assign roman      = collection.metafields.bz.chakra_roman.value
+  assign sk_name    = collection.metafields.bz.chakra_name_sk.value
+  assign intent_val = collection.metafields.bz.intention.value
+-%}
+
+{%- if chakra_id_int > 0 -%}
+  <section
+    class="bz-collection-hero gradient"
+    data-section-id="{{ section.id }}"
+    style="--hero-chakra: var(--chakra-{{ chakra_id_int }}); --hero-chakra-rgb: var(--chakra-{{ chakra_id_int }}-rgb);"
+  >
+    <div class="bz-collection-hero__inner page-width">
+      <div class="bz-collection-hero__glyph" aria-hidden="true">
+        {%- render 'bz-chakra-glyph', chakra_id: chakra_id_int, size: 160 -%}
+      </div>
+
+      <div class="bz-collection-hero__identity">
+        {%- if roman != blank -%}
+          <span class="bz-collection-hero__num">{{ roman }}</span>
+        {%- endif -%}
+
+        {%- if sk_name != blank -%}
+          <h1 class="bz-collection-hero__sk">{{ sk_name }}</h1>
+        {%- endif -%}
+
+        <p class="bz-collection-hero__it">{{ collection.title | escape }}</p>
+      </div>
+
+      {%- if intent_val != blank -%}
+        <p class="bz-collection-hero__intent">{{ intent_val }}</p>
+      {%- endif -%}
+
+      <hr class="bz-divider bz-collection-hero__rule">
+    </div>
+  </section>
+{%- endif -%}
+
+{% style %}
+  .bz-collection-hero {
+    position: relative;
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+    background:
+      radial-gradient(ellipse at center, rgba(var(--hero-chakra-rgb), 0.10) 0%, transparent 65%),
+      var(--bz-bg);
+    color: var(--bz-text);
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .bz-collection-hero__inner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.4rem;
+  }
+  .bz-collection-hero__glyph {
+    width: 16rem;
+    height: 16rem;
+    color: var(--hero-chakra, var(--bz-gold));
+    opacity: 0.28;
+  }
+  .bz-collection-hero__glyph svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .bz-collection-hero__identity {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    margin-top: 0.8rem;
+  }
+  .bz-collection-hero__num {
+    font-family: var(--bz-font-ui);
+    font-size: 1.1rem;
+    letter-spacing: 0.5rem;
+    text-transform: uppercase;
+    color: var(--hero-chakra, var(--bz-gold));
+  }
+  .bz-collection-hero__sk {
+    margin: 0;
+    font-family: var(--bz-font-display);
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(2.8rem, 5vw, 4.4rem);
+    line-height: 1.05;
+    color: var(--bz-text);
+  }
+  .bz-collection-hero__it {
+    margin: 0;
+    font-family: var(--bz-font-ui);
+    font-size: 1.1rem;
+    letter-spacing: 0.4rem;
+    text-transform: uppercase;
+    color: var(--bz-muted);
+  }
+
+  .bz-collection-hero__intent {
+    margin: 0.4rem 0 0;
+    font-family: var(--bz-font-ui);
+    font-size: 1.1rem;
+    letter-spacing: 0.3rem;
+    text-transform: uppercase;
+    color: var(--bz-muted);
+  }
+
+  .bz-collection-hero__rule {
+    margin: 2rem auto 0;
+  }
+
+  @media (max-width: 749px) {
+    .bz-collection-hero { padding: 4rem 0 3rem; }
+    .bz-collection-hero__glyph { width: 12rem; height: 12rem; }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "BZ Collection Hero",
+  "class": "bz-collection-hero-section",
+  "enabled_on": {
+    "templates": ["collection"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Questa sezione legge i metafield della collection (namespace 'bz'). Se 'chakra_id' non è valorizzato, l'intera sezione resta invisibile."
+    },
+    {
+      "type": "header",
+      "content": "Spaziatura"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding alto",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 96
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding basso",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "presets": [
+    {
+      "name": "BZ Collection Hero"
+    }
+  ]
+}
+{% endschema %}

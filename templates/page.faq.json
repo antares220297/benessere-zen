@@ -1,10 +1,66 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
-{"sections":{"promotion-banner":{"type":"promotion-banner","blocks":{"text":{"type":"image_banner","settings":{"heading":"FAQs","heading_size":170,"subheading":"","text":"Answers to Your Questions","text_size":130,"content_box_type":"square","add_frame":false,"color_content_box_light":"rgba(0,0,0,0)","color_content_box_dark":"rgba(0,0,0,0)"}}},"block_order":["text"],"settings":{"heading":"Promotion Banner","image_link":"","open_new_window":false,"image_overlay_opacity":20,"content_position":"center","content_horizontal":50,"content_vertical":50,"position_content_mobile":"center","content_alignment":"center","show_hero":false,"desktop_height":"450px","padding_top":0,"padding_bottom":0,"mobile_height":"250px","padding_top_mobile":0,"padding_bottom_mobile":0}},"main":{"type":"main-page","settings":{"show_heading":false,"heading_size":100,"desktop_content_alignment":"text-left","mobile_content_alignment":"text-left","background_color_light":"#f2f2f2","text_color_light":"rgba(0,0,0,0)","textlink_color_light":"rgba(0,0,0,0)","background_color_dark":"#313131","text_color_dark":"rgba(0,0,0,0)","textlink_color_dark":"rgba(0,0,0,0)","padding_top":0,"padding_bottom":0,"padding_top_mobile":0,"padding_bottom_mobile":0}},"faq":{"type":"faq","blocks":{"block-1":{"type":"frequently_asked_question","settings":{"icon":"faq","custom_icon":"","heading":"Frequently asked question","row_content":"<p>Use this text to answer questions in as much detail as possible for your customers.</p>"}},"block-2":{"type":"frequently_asked_question","settings":{"icon":"faq","custom_icon":"","heading":"Frequently asked question","row_content":"<p>Use this text to answer questions in as much detail as possible for your customers.</p>"}},"block-3":{"type":"frequently_asked_question","settings":{"icon":"faq","custom_icon":"","heading":"Frequently asked question","row_content":"<p>Use this text to answer questions in as much detail as possible for your customers.</p>"}},"block-4":{"type":"frequently_asked_question","settings":{"icon":"faq","custom_icon":"","heading":"Frequently asked question","row_content":"<p>Use this text to answer questions in as much detail as possible for your customers.</p>"}}},"block_order":["block-1","block-2","block-3","block-4"],"settings":{"heading":"","heading_size":100,"heading_alignment":"center","row_background":false,"collapsible":true,"show_view_all":false,"button_link":"","open_new_window":false,"desktop_layout":"1","show_section_divider":false,"padding_top":56,"padding_bottom":100,"show_section_divider_mobile":false,"padding_top_mobile":20,"padding_bottom_mobile":64}},"image-with-text":{"type":"image-with-text","blocks":{"heading":{"type":"heading","settings":{"subheading":"","heading":"Frequently asked questions","heading_base_size":90,"text":"<p>Can’t find what you are looking for?Our people are here to help you?</p>"}},"button":{"type":"button","settings":{"button_label":"Contact us","button_link":"","open_new_window":false}}},"block_order":["heading","button"],"settings":{"video_url":"","video_alt_text":"","enable_video_autoplay":false,"desktop_height":"450px","mobile_height":"400px","desktop_image_width":"medium","image_layout":"normal","image_corner_radius":0,"content_layout":"no-overlap","text_position":"center","text_alignment":"start","background_color_light":"#f6f6f6","background_color_dark":"#2a2a2a","image_alignment":"left","full_width":false,"top_padding":28,"bottom_padding":52,"image_alignment_mobile":"left","full_width_mobile":true,"top_padding_mobile":0,"bottom_padding_mobile":0}}},"order":["promotion-banner","main","faq","image-with-text"]}
+{
+  "sections": {
+    "hero": {
+      "type": "bz-page-hero",
+      "settings": {
+        "color_scheme": "scheme-4",
+        "eyebrow": "Domande frequenti",
+        "heading": "FAQ",
+        "subtext": "Le risposte alle domande che ci vengono poste più spesso. Se non trovi quello che cerchi, scrivici.",
+        "padding_top": 96,
+        "padding_bottom": 24
+      }
+    },
+    "faq": {
+      "type": "bz-faq",
+      "blocks": {
+        "q1": {
+          "type": "item",
+          "settings": {
+            "question": "Come vengono selezionati i cristalli?",
+            "answer": "<p>Ogni pietra è scelta a mano per qualità, energia e provenienza etica. Lavoriamo solo con fornitori che possiamo verificare di persona, scartando tutto ciò che non ci convince — anche quando significa rimanere senza prodotto per qualche settimana.</p>"
+          }
+        },
+        "q2": {
+          "type": "item",
+          "settings": {
+            "question": "I prodotti sono certificati naturali?",
+            "answer": "<p>Sì. Tutti i cristalli, gli incensi e gli oli essenziali provengono da fornitori certificati. Per i prodotti ayurvedici verifichiamo le certificazioni biologiche e di tradizione.</p>"
+          }
+        },
+        "q3": {
+          "type": "item",
+          "settings": {
+            "question": "Quanto tempo per la spedizione?",
+            "answer": "<p>2-4 giorni lavorativi in Italia con corriere espresso. Per ordini superiori a 49€ la spedizione è gratuita. Riceverai il numero di tracking via email appena il pacco lascia il nostro magazzino a Cento.</p>"
+          }
+        },
+        "q4": {
+          "type": "item",
+          "settings": {
+            "question": "Posso restituire un prodotto?",
+            "answer": "<p>Sì, hai 14 giorni dalla ricezione per ripensarci. Il prodotto deve essere integro e nella confezione originale. Scrivici a info@benesserezen.shop e ti guidiamo nella procedura.</p>"
+          }
+        },
+        "q5": {
+          "type": "item",
+          "settings": {
+            "question": "Come capisco quale chakra lavora su di me?",
+            "answer": "<p>Abbiamo creato un quiz di 5 domande che ti suggerisce il chakra su cui concentrarti adesso, insieme a un bundle personalizzato di prodotti con il 15% di sconto. <a href=\"/pages/quiz\">Inizia il quiz →</a></p>"
+          }
+        }
+      },
+      "block_order": ["q1", "q2", "q3", "q4", "q5"],
+      "settings": {
+        "color_scheme": "scheme-4",
+        "heading": "",
+        "padding_top": 24,
+        "padding_bottom": 96
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "faq"
+  ]
+}

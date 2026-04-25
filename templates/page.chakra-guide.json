@@ -1,0 +1,43 @@
+{
+  "sections": {
+    "hero": {
+      "type": "bz-page-hero",
+      "settings": {
+        "color_scheme": "scheme-4",
+        "eyebrow": "Guida ai 7 chakra",
+        "heading": "Il sistema dei chakra",
+        "subtext": "Una mappa antica, un linguaggio contemporaneo. Sette centri energetici per leggere l’equilibrio tra corpo, mente e anima.",
+        "padding_top": 96,
+        "padding_bottom": 24
+      }
+    },
+    "guide": {
+      "type": "bz-chakra-guide",
+      "settings": {
+        "color_scheme": "scheme-4",
+        "intro": "Sette centri energetici, un percorso. Espandi ogni chakra per scoprire elemento, mantra, cristalli e un rituale concreto da provare oggi.",
+        "first_open": true,
+        "padding_top": 24,
+        "padding_bottom": 48
+      }
+    },
+    "quiz_cta": {
+      "type": "bz-quiz-cta",
+      "settings": {
+        "color_scheme": "scheme-4",
+        "badge": "Quiz dell’anima",
+        "heading": "Non sai da dove iniziare?",
+        "subtext": "Cinque domande, un suggerimento personalizzato. Scopri il chakra su cui concentrarti adesso e ricevi un bundle dedicato con il 15% di sconto.",
+        "cta_text": "Inizia il quiz →",
+        "quiz_link": "/pages/quiz",
+        "padding_top": 80,
+        "padding_bottom": 96
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "guide",
+    "quiz_cta"
+  ]
+}

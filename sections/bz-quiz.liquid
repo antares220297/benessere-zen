@@ -1,0 +1,1127 @@
+{%- comment -%}
+  BenesserEZen — Quiz "Trova il tuo rituale".
+
+  Standalone section, three phases: intro → questions → result.
+  All CSS inline ({% style %}), all JS inline (<script>). Zero
+  external libraries. Reuses bz-chakras.js (window.BZ_CHAKRAS) and
+  the bz-chakra-glyph snippet. Without JS, the <noscript> block
+  renders the 9 questions statically.
+{%- endcomment -%}
+
+{%- liquid
+  assign discount_code = section.settings.discount_code | default: 'RITUALE15'
+  assign discount_pct = section.settings.discount_pct | default: 15
+-%}
+
+<section
+  class="bz-quiz-section color-{{ section.settings.color_scheme }} gradient isolate"
+  data-section-id="{{ section.id }}"
+>
+  <div
+    id="bz-quiz-{{ section.id }}"
+    class="bz-quiz"
+    data-discount-code="{{ discount_code | escape }}"
+    data-discount-pct="{{ discount_pct }}"
+  >
+    {%- comment -%} ═══════ Phase 1 — Intro ═══════ {%- endcomment -%}
+    <div class="bz-quiz__phase bz-quiz__phase--intro is-active" data-phase="intro">
+      <div class="bz-quiz__mandala" aria-hidden="true">
+        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+          <g stroke="var(--bz-gold)" stroke-width="0.6" fill="none" opacity="0.5">
+            <circle cx="200" cy="200" r="190"/>
+            <circle cx="200" cy="200" r="155" stroke-dasharray="2 5"/>
+            <circle cx="200" cy="200" r="120"/>
+            <circle cx="200" cy="200" r="85" stroke-dasharray="3 6"/>
+            <circle cx="200" cy="200" r="50"/>
+            <path d="M 200 30 L 347 285 L 53 285 Z"/>
+            <path d="M 200 370 L 53 115 L 347 115 Z"/>
+            <line x1="10" y1="200" x2="390" y2="200" stroke-dasharray="1 8"/>
+            <line x1="200" y1="10" x2="200" y2="390" stroke-dasharray="1 8"/>
+          </g>
+        </svg>
+      </div>
+
+      <div class="bz-quiz__intro-inner">
+        <span class="bz-quiz__eyebrow">Quiz dell&rsquo;anima</span>
+        <h2 class="bz-quiz__intro-title">Trova il tuo rituale</h2>
+        <p class="bz-quiz__intro-lead">
+          9 domande. Qualche minuto di onestà con te stesso.<br>
+          Il tuo chakra, il tuo bundle personalizzato.
+        </p>
+
+        <div class="bz-quiz__dots" aria-hidden="true">
+          {%- for i in (1..7) -%}
+            {%- assign delay = i | minus: 1 | times: 0.15 -%}
+            <span
+              class="bz-quiz__dot"
+              style="background: var(--chakra-{{ i }}); box-shadow: 0 0 14px rgba(var(--chakra-{{ i }}-rgb), 0.55); animation-delay: {{ delay }}s;"
+            ></span>
+          {%- endfor -%}
+        </div>
+
+        <button type="button" class="bz-btn bz-quiz__start" data-action="start">
+          Inizia &rarr;
+        </button>
+      </div>
+    </div>
+
+    {%- comment -%} ═══════ Phase 2 — Questions ═══════ {%- endcomment -%}
+    <div class="bz-quiz__phase bz-quiz__phase--questions" data-phase="questions" aria-live="polite">
+      <div class="bz-quiz__progress" aria-hidden="true">
+        <div class="bz-quiz__progress-track">
+          <div class="bz-quiz__progress-fill" style="width: 0%"></div>
+        </div>
+        <span class="bz-quiz__progress-label">01 / 09</span>
+      </div>
+
+      <div class="bz-quiz__question-wrap">
+        {%- comment -%} JS injects the current question here. {%- endcomment -%}
+      </div>
+    </div>
+
+    {%- comment -%} ═══════ Phase 3 — Result ═══════ {%- endcomment -%}
+    <div class="bz-quiz__phase bz-quiz__phase--result" data-phase="result">
+      <div class="bz-quiz__result-head">
+        <span class="bz-quiz__eyebrow">Il tuo chakra da riequilibrare</span>
+        <div class="bz-quiz__result-glyph" data-slot="glyph">
+          {%- comment -%} JS clones the matching glyph template here. {%- endcomment -%}
+        </div>
+        <div class="bz-quiz__result-name" data-slot="name">
+          {%- comment -%}
+            JS injects:
+            <span class="bz-quiz__result-sk">N · Saṃskṛta</span>
+            <span class="bz-quiz__result-it">Nome italiano</span>
+            <span class="bz-quiz__result-intent">Intenzione</span>
+          {%- endcomment -%}
+        </div>
+        <hr class="bz-quiz__result-divider">
+        <p class="bz-quiz__result-desc" data-slot="desc"></p>
+      </div>
+
+      <div class="bz-quiz__bundle">
+        <div class="bz-quiz__bundle-head">
+          <span class="bz-quiz__eyebrow">Il tuo rituale personalizzato</span>
+          <h3 class="bz-quiz__bundle-title">Tre oggetti scelti per il tuo riequilibrio.</h3>
+        </div>
+
+        <div class="bz-quiz__bundle-grid" data-slot="bundle">
+          {%- comment -%} JS renders 3 product cards (or placeholders) here. {%- endcomment -%}
+        </div>
+
+        <div class="bz-quiz__bundle-discount">
+          &minus;{{ discount_pct }}% &middot; Codice <strong>{{ discount_code }}</strong>
+        </div>
+      </div>
+
+      <div class="bz-quiz__actions">
+        <button type="button" class="bz-btn bz-quiz__add-bundle" data-action="add-bundle">
+          Aggiungi il bundle al carrello
+        </button>
+        <button type="button" class="bz-btn-ghost bz-quiz__restart" data-action="restart">
+          Rifare il quiz
+        </button>
+      </div>
+    </div>
+
+    {%- comment -%} Hidden glyph templates — JS clones the right one into the result. {%- endcomment -%}
+    <div class="bz-quiz__glyph-templates" hidden aria-hidden="true">
+      {%- for i in (1..7) -%}
+        <template data-chakra="{{ i }}">
+          {%- render 'bz-chakra-glyph', chakra_id: i, size: 120 -%}
+        </template>
+      {%- endfor -%}
+    </div>
+
+    {%- comment -%} No-JS fallback: static list of all questions. {%- endcomment -%}
+    <noscript>
+      <div class="bz-quiz__static">
+        <p class="bz-quiz__static-note">
+          Il quiz interattivo richiede JavaScript. Qui sotto trovi le 9 domande in forma statica.
+        </p>
+        <ol class="bz-quiz__static-list">
+          {%- assign static_questions = 'Qual è la sensazione più ricorrente nel tuo corpo, in questo momento?|La tua giornata ideale inizia con...|Quando ti senti bloccato/a, cosa manca davvero?|Il tuo colore preferito, in questo momento della vita...|Preferisci...|Cosa eviti, anche se sai che ti farebbe bene?|Il tuo rapporto con la creatività è...|Quando ti svegli di notte, a cosa pensi?|Cosa chiedi al tuo rituale quotidiano?' | split: '|' -%}
+          {%- for q in static_questions -%}
+            <li>{{ q }}</li>
+          {%- endfor -%}
+        </ol>
+      </div>
+    </noscript>
+  </div>
+</section>
+
+{% style %}
+  .bz-quiz-section {
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+  }
+
+  .bz-quiz {
+    position: relative;
+    max-width: 76rem;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    min-height: 80vh;
+  }
+
+  /* ── Phases ────────────────────────────────────────────── */
+  .bz-quiz__phase {
+    display: none;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s var(--bz-ease, ease), transform 0.3s var(--bz-ease, ease);
+  }
+  .bz-quiz__phase.is-active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .bz-quiz__phase.is-exiting {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  /* ── Shared eyebrow ────────────────────────────────────── */
+  .bz-quiz__eyebrow {
+    display: inline-block;
+    font-family: var(--bz-font-ui);
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 0.4rem;
+    text-transform: uppercase;
+    color: var(--bz-gold);
+  }
+
+  /* ── Phase 1 · Intro ───────────────────────────────────── */
+  .bz-quiz__phase--intro {
+    position: relative;
+    text-align: center;
+    padding: 4rem 0 2rem;
+    overflow: hidden;
+  }
+  .bz-quiz__mandala {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: min(56rem, 90vw);
+    height: min(56rem, 90vw);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    opacity: 0.3;
+    color: var(--bz-gold);
+    animation: bzQuizMandala 60s linear infinite;
+    will-change: transform;
+    z-index: 0;
+  }
+  .bz-quiz__mandala svg { width: 100%; height: 100%; display: block; }
+  @keyframes bzQuizMandala {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to   { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+  .bz-quiz__intro-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    max-width: 56rem;
+    margin: 0 auto;
+  }
+  .bz-quiz__intro-title {
+    font-family: var(--bz-font-display);
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(3.2rem, 6vw, 5.6rem);
+    line-height: 1.05;
+    color: var(--bz-text);
+    margin: 0;
+  }
+  .bz-quiz__intro-lead {
+    font-family: var(--bz-font-body);
+    font-size: 1.5rem;
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--bz-muted);
+    margin: 0;
+    max-width: 48rem;
+  }
+  .bz-quiz__dots {
+    display: flex;
+    gap: 1.4rem;
+    margin: 0.4rem 0 0.6rem;
+  }
+  .bz-quiz__dot {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    animation: bzQuizDotPulse 2s ease-in-out infinite;
+  }
+  @keyframes bzQuizDotPulse {
+    0%, 100% { transform: scale(0.8); opacity: 0.5; }
+    50%      { transform: scale(1.25); opacity: 1; }
+  }
+  .bz-quiz__start {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    padding: 1.6rem 4rem;
+  }
+
+  /* ── Phase 2 · Questions ───────────────────────────────── */
+  .bz-quiz__progress {
+    display: flex;
+    align-items: center;
+    gap: 1.6rem;
+    margin-bottom: 4rem;
+  }
+  .bz-quiz__progress-track {
+    flex: 1;
+    height: 2px;
+    background: var(--bz-border);
+    position: relative;
+    overflow: hidden;
+  }
+  .bz-quiz__progress-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    background: var(--bz-gold);
+    transition: width 0.4s var(--bz-ease, ease);
+  }
+  .bz-quiz__progress-label {
+    font-family: var(--bz-font-ui);
+    font-size: 1rem;
+    letter-spacing: 0.3rem;
+    text-transform: uppercase;
+    color: var(--bz-muted);
+    min-width: 6rem;
+    text-align: right;
+  }
+
+  .bz-quiz__question {
+    text-align: center;
+    max-width: 64rem;
+    margin: 0 auto;
+  }
+  .bz-quiz__question-num {
+    display: block;
+    font-family: var(--bz-font-ui);
+    font-size: 1rem;
+    letter-spacing: 0.4rem;
+    text-transform: uppercase;
+    color: var(--bz-gold);
+    margin-bottom: 1.6rem;
+  }
+  .bz-quiz__question-text {
+    font-family: var(--bz-font-display);
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(2.6rem, 4vw, 3.6rem);
+    line-height: 1.25;
+    color: var(--bz-text);
+    margin: 0;
+  }
+  .bz-quiz__question-sub {
+    font-family: var(--bz-font-display);
+    font-style: italic;
+    font-size: 1.5rem;
+    color: var(--bz-muted);
+    margin: 1.2rem 0 0;
+  }
+  .bz-quiz__options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.4rem;
+    margin-top: 4rem;
+  }
+  .bz-quiz__option {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 2rem 2.4rem;
+    background: var(--bz-bg-2);
+    border: 1px solid var(--bz-border);
+    color: var(--bz-text);
+    font-family: var(--bz-font-body);
+    font-size: 1.5rem;
+    font-weight: 300;
+    line-height: 1.6;
+    cursor: pointer;
+    transition: border-color 0.3s var(--bz-ease, ease),
+                background 0.3s var(--bz-ease, ease),
+                transform 0.3s var(--bz-ease, ease);
+  }
+  .bz-quiz__option:hover {
+    border-color: var(--bz-border-gold);
+    background: var(--bz-bg-3, var(--bz-bg-2));
+  }
+  .bz-quiz__option.is-selected {
+    border-color: var(--bz-gold);
+    background: linear-gradient(0deg, rgba(201, 168, 76, 0.06), rgba(201, 168, 76, 0.06)), var(--bz-bg-2);
+  }
+  .bz-quiz__option-num {
+    display: inline-block;
+    font-family: var(--bz-font-ui);
+    font-size: 1rem;
+    letter-spacing: 0.28rem;
+    color: var(--bz-gold);
+    margin-right: 1.4rem;
+    vertical-align: middle;
+  }
+  .bz-quiz__option[disabled] {
+    cursor: default;
+  }
+
+  .bz-quiz__question-wrap {
+    transition: opacity 0.3s var(--bz-ease, ease),
+                transform 0.3s var(--bz-ease, ease);
+  }
+  .bz-quiz__question-wrap.is-exiting {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  /* ── Phase 3 · Result ──────────────────────────────────── */
+  .bz-quiz__phase--result {
+    --quiz-color: var(--bz-gold);
+  }
+  .bz-quiz__result-head {
+    text-align: center;
+    max-width: 64rem;
+    margin: 0 auto 6rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.6rem;
+  }
+  .bz-quiz__result-glyph {
+    color: var(--quiz-color);
+    margin: 1rem 0 0.4rem;
+    line-height: 0;
+  }
+  .bz-quiz__result-name {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .bz-quiz__result-sk {
+    font-family: var(--bz-font-display);
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(3rem, 5vw, 4.8rem);
+    line-height: 1;
+    color: var(--quiz-color);
+  }
+  .bz-quiz__result-it {
+    font-family: var(--bz-font-ui);
+    font-size: 1.1rem;
+    letter-spacing: 0.4rem;
+    text-transform: uppercase;
+    color: var(--bz-muted);
+  }
+  .bz-quiz__result-intent {
+    font-family: var(--bz-font-ui);
+    font-size: 1rem;
+    letter-spacing: 0.3rem;
+    text-transform: uppercase;
+    color: var(--bz-muted);
+  }
+  .bz-quiz__result-divider {
+    width: 4rem;
+    height: 1px;
+    background: var(--bz-gold);
+    border: none;
+    opacity: 0.6;
+    margin: 1rem 0;
+  }
+  .bz-quiz__result-desc {
+    font-family: var(--bz-font-body);
+    font-size: 1.5rem;
+    font-weight: 300;
+    line-height: 1.9;
+    color: var(--bz-muted);
+    margin: 0;
+    max-width: 56rem;
+  }
+
+  .bz-quiz__bundle {
+    border: 1px solid var(--bz-border);
+    background: var(--bz-bg-2);
+    padding: 4rem 3rem;
+    margin-bottom: 3rem;
+  }
+  .bz-quiz__bundle-head {
+    text-align: center;
+    margin-bottom: 3.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+  .bz-quiz__bundle-title {
+    font-family: var(--bz-font-display);
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(2rem, 3vw, 2.8rem);
+    color: var(--bz-text);
+    margin: 0;
+  }
+  .bz-quiz__bundle-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+  .bz-quiz__bundle-card {
+    border: 1px solid var(--bz-border);
+    background: rgba(15, 15, 15, 0.5);
+    padding: 1.6rem;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    transition: border-color 0.3s var(--bz-ease, ease);
+  }
+  .bz-quiz__bundle-card:hover {
+    border-color: var(--bz-border-gold);
+  }
+  .bz-quiz__bundle-card-image {
+    aspect-ratio: 1 / 1;
+    background: rgba(255, 255, 255, 0.02);
+    overflow: hidden;
+    position: relative;
+  }
+  .bz-quiz__bundle-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .bz-quiz__bundle-card-image--placeholder::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, rgba(201, 168, 76, 0.08), transparent 70%);
+  }
+  .bz-quiz__bundle-card-title {
+    font-family: var(--bz-font-display);
+    font-style: italic;
+    font-weight: 300;
+    font-size: 1.8rem;
+    line-height: 1.3;
+    color: var(--bz-text);
+    margin: 0;
+  }
+  .bz-quiz__bundle-card-price {
+    font-family: var(--bz-font-ui);
+    font-size: 1.1rem;
+    letter-spacing: 0.2rem;
+    color: var(--bz-gold);
+    margin-top: auto;
+  }
+  .bz-quiz__bundle-card-placeholder {
+    font-family: var(--bz-font-ui);
+    font-size: 0.95rem;
+    letter-spacing: 0.2rem;
+    text-transform: uppercase;
+    color: var(--bz-muted);
+  }
+  .bz-quiz__bundle-discount {
+    text-align: center;
+    font-family: var(--bz-font-ui);
+    font-size: 1rem;
+    letter-spacing: 0.3rem;
+    text-transform: uppercase;
+    color: var(--bz-gold);
+    padding: 1.4rem 0 0;
+    border-top: 1px solid var(--bz-border);
+  }
+  .bz-quiz__bundle-discount strong {
+    font-weight: 400;
+    color: var(--bz-gold-light);
+    letter-spacing: 0.4rem;
+  }
+
+  .bz-quiz__actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.4rem;
+  }
+  .bz-quiz__add-bundle {
+    font-size: 1.1rem;
+    padding: 1.6rem 4rem;
+  }
+  .bz-quiz__add-bundle.is-loading {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  /* ── No-JS fallback ───────────────────────────────────── */
+  .bz-quiz__static {
+    max-width: 64rem;
+    margin: 0 auto;
+    padding: 4rem 0;
+  }
+  .bz-quiz__static-note {
+    color: var(--bz-muted);
+    font-family: var(--bz-font-body);
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  .bz-quiz__static-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+    color: var(--bz-text);
+    font-family: var(--bz-font-display);
+    font-style: italic;
+    font-size: 1.8rem;
+    line-height: 1.5;
+    list-style-position: inside;
+  }
+
+  /* ── Responsive ───────────────────────────────────────── */
+  @media (max-width: 749px) {
+    .bz-quiz {
+      padding: 2rem 1.6rem;
+    }
+    .bz-quiz__phase--intro {
+      padding: 2rem 0 1rem;
+    }
+    .bz-quiz__options {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin-top: 3rem;
+    }
+    .bz-quiz__progress {
+      margin-bottom: 3rem;
+    }
+    .bz-quiz__bundle {
+      padding: 2.4rem 1.6rem;
+    }
+    .bz-quiz__bundle-grid {
+      grid-template-columns: 1fr;
+      gap: 1.4rem;
+    }
+    .bz-quiz__intro-lead br { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bz-quiz__mandala { animation: none; }
+    .bz-quiz__dot    { animation: none; opacity: 0.85; }
+    .bz-quiz__phase  { transition: none; }
+  }
+{% endstyle %}
+
+<script>
+  (function () {
+    'use strict';
+
+    /* 9 domande — copia esatta da overhaul/components/Quiz.jsx.
+       NON modificare il testo: il copy è stato studiato e testato.
+       c = indice chakra 0–6 (0 Radice → 6 Corona). */
+    var QUESTIONS = [
+      {
+        q: 'Qual è la sensazione più ricorrente nel tuo corpo, in questo momento?',
+        sub: 'Ascolta prima di rispondere.',
+        options: [
+          { t: 'Tensione tra le scapole, voglia di chiudermi.', c: 3 },
+          { t: 'Pesantezza alle gambe, terra che manca.',       c: 0 },
+          { t: 'Nodo in gola, parole trattenute.',              c: 4 },
+          { t: 'Fatica agli occhi, mente iperattiva.',          c: 5 }
+        ]
+      },
+      {
+        q: 'La tua giornata ideale inizia con...',
+        sub: 'Non quella che hai, quella che vorresti.',
+        options: [
+          { t: 'Silenzio, luce bassa, lunga meditazione.',      c: 6 },
+          { t: 'Movimento intenso, cuore che pompa.',           c: 2 },
+          { t: 'Acqua calda, cura lenta, musica.',              c: 1 },
+          { t: 'Scrittura, conversazione importante.',          c: 4 }
+        ]
+      },
+      {
+        q: 'Quando ti senti bloccato/a, cosa manca davvero?',
+        sub: '',
+        options: [
+          { t: 'Fiducia nel prossimo passo.',                   c: 2 },
+          { t: 'Sicurezza economica, stabilità.',               c: 0 },
+          { t: 'Qualcuno che mi veda per davvero.',             c: 3 },
+          { t: 'Una visione chiara del futuro.',                c: 5 }
+        ]
+      },
+      {
+        q: 'Il tuo colore preferito, in questo momento della vita...',
+        sub: 'Il primo che pensi, non il più bello.',
+        options: [
+          { t: 'Verde salvia, verde foresta.',                  c: 3 },
+          { t: 'Rosso terra, ruggine.',                         c: 0 },
+          { t: 'Viola profondo, quasi nero.',                   c: 6 },
+          { t: 'Oro caldo, giallo ambra.',                      c: 2 }
+        ]
+      },
+      {
+        q: 'Preferisci...',
+        sub: '',
+        options: [
+          { t: 'Un libro di poesie in silenzio.',               c: 5 },
+          { t: 'Ballare fino all\'alba.',                       c: 1 },
+          { t: 'Una conversazione vera a mezzanotte.',          c: 4 },
+          { t: 'Un\'escursione a piedi nudi.',                  c: 0 }
+        ]
+      },
+      {
+        q: 'Cosa eviti, anche se sai che ti farebbe bene?',
+        sub: '',
+        options: [
+          { t: 'Esprimere quello che sento.',                   c: 4 },
+          { t: 'Dire no, mettere confini.',                     c: 2 },
+          { t: 'Lasciarmi amare.',                              c: 3 },
+          { t: 'Fermarmi a non fare nulla.',                    c: 6 }
+        ]
+      },
+      {
+        q: 'Il tuo rapporto con la creatività è...',
+        sub: '',
+        options: [
+          { t: 'Fiume in piena, fatico a contenerlo.',          c: 1 },
+          { t: 'Deserto, aspetto la pioggia.',                  c: 1 },
+          { t: 'Regolare, pratica quotidiana.',                 c: 2 },
+          { t: 'Non so più cosa mi piace davvero.',             c: 5 }
+        ]
+      },
+      {
+        q: 'Quando ti svegli di notte, a cosa pensi?',
+        sub: '',
+        options: [
+          { t: 'Al conto in banca, alle bollette.',             c: 0 },
+          { t: 'A una persona che non c\'è più.',               c: 3 },
+          { t: 'A sogni che non ricordo ma che mi agitano.',    c: 6 },
+          { t: 'A una decisione che rimando.',                  c: 2 }
+        ]
+      },
+      {
+        q: 'Cosa chiedi al tuo rituale quotidiano?',
+        sub: 'Ultima domanda. Rispondi dal ventre.',
+        options: [
+          { t: 'Di farmi tornare a casa, dentro me.',           c: 0 },
+          { t: 'Di aprirmi, di farmi sentire di nuovo.',        c: 3 },
+          { t: 'Di calmare la mente.',                          c: 6 },
+          { t: 'Di ritrovare la mia voce.',                     c: 4 }
+        ]
+      }
+    ];
+
+    var TOTAL = QUESTIONS.length;
+    var ADVANCE_DELAY = 400;
+    var TRANSITION_MS = 300;
+
+    /* Bundle per chakra (3 prodotti ciascuno).
+       Gli handle qui sotto sono PLACEHOLDER. Simona deve sostituirli
+       con gli handle reali dei prodotti Shopify una volta scelti i
+       21 prodotti del catalogo bundle. */
+    var CHAKRA_BUNDLES = {
+      // TODO: sostituire con handle reali
+      1: ['bundle-chakra-1-prodotto-1', 'bundle-chakra-1-prodotto-2', 'bundle-chakra-1-prodotto-3'],
+      // TODO: sostituire con handle reali
+      2: ['bundle-chakra-2-prodotto-1', 'bundle-chakra-2-prodotto-2', 'bundle-chakra-2-prodotto-3'],
+      // TODO: sostituire con handle reali
+      3: ['bundle-chakra-3-prodotto-1', 'bundle-chakra-3-prodotto-2', 'bundle-chakra-3-prodotto-3'],
+      // TODO: sostituire con handle reali
+      4: ['bundle-chakra-4-prodotto-1', 'bundle-chakra-4-prodotto-2', 'bundle-chakra-4-prodotto-3'],
+      // TODO: sostituire con handle reali
+      5: ['bundle-chakra-5-prodotto-1', 'bundle-chakra-5-prodotto-2', 'bundle-chakra-5-prodotto-3'],
+      // TODO: sostituire con handle reali
+      6: ['bundle-chakra-6-prodotto-1', 'bundle-chakra-6-prodotto-2', 'bundle-chakra-6-prodotto-3'],
+      // TODO: sostituire con handle reali
+      7: ['bundle-chakra-7-prodotto-1', 'bundle-chakra-7-prodotto-2', 'bundle-chakra-7-prodotto-3']
+    };
+
+    /* Descrizione 2-3 frasi per ogni chakra, mostrata sotto al nome. */
+    var CHAKRA_DESCRIPTIONS = {
+      1: 'Quando le radici tremano, il corpo cerca terra. Hai bisogno di rallentare, di sentire il peso del tuo essere, di tornare alle cose che restano.',
+      2: 'L’acqua del piacere e della creatività si è fatta densa. È il momento di muoverti, di sentire, di lasciar fluire ciò che resta trattenuto.',
+      3: 'Il fuoco interno chiede di essere riacceso. Ritrova la tua volontà — il sì alle cose che ti nutrono, il no a ciò che ti consuma.',
+      4: 'Il petto si è chiuso, anche solo un poco. Il cuore chiede di ricordare la tenerezza, prima verso te stesso, poi verso il mondo.',
+      5: 'Qualcosa non è stato detto. Il chakra della gola ti invita a ritrovare la tua voce, a esprimere la verità che porti dentro.',
+      6: 'La visione interiore si è offuscata. Fidati dell’intuizione, guarda oltre il rumore quotidiano per ritrovare la direzione.',
+      7: 'Il legame con il più grande di te si è assottigliato. Concediti silenzio, spazio, una pausa dal fare — la connessione torna quando smetti di cercarla.'
+    };
+
+    document.querySelectorAll('.bz-quiz').forEach(initQuiz);
+
+    function initQuiz(root) {
+      var phases = {
+        intro:     root.querySelector('[data-phase="intro"]'),
+        questions: root.querySelector('[data-phase="questions"]'),
+        result:    root.querySelector('[data-phase="result"]')
+      };
+      var startBtn      = root.querySelector('[data-action="start"]');
+      var restartBtn    = root.querySelector('[data-action="restart"]');
+      var addBundleBtn  = root.querySelector('[data-action="add-bundle"]');
+      var questionWrap  = root.querySelector('.bz-quiz__question-wrap');
+      var progressFill  = root.querySelector('.bz-quiz__progress-fill');
+      var progressLabel = root.querySelector('.bz-quiz__progress-label');
+      var glyphSlot     = root.querySelector('[data-slot="glyph"]');
+      var nameSlot      = root.querySelector('[data-slot="name"]');
+      var descSlot      = root.querySelector('[data-slot="desc"]');
+      var bundleSlot    = root.querySelector('[data-slot="bundle"]');
+      var resultPhase   = phases.result;
+
+      var state = freshState();
+      // Loaded products for the current result, used by add-to-cart.
+      var currentBundle = [];
+      // Cache of /products/<handle>.js responses across quiz attempts.
+      var productCache = {};
+
+      if (startBtn) {
+        startBtn.addEventListener('click', function () {
+          state = freshState();
+          showPhase('questions');
+          renderQuestion(0, false);
+        });
+      }
+
+      if (restartBtn) {
+        restartBtn.addEventListener('click', function () {
+          state = freshState();
+          currentBundle = [];
+          showPhase('intro');
+        });
+      }
+
+      if (addBundleBtn) {
+        addBundleBtn.addEventListener('click', addBundleToCart);
+      }
+
+      function freshState() {
+        return {
+          phase:     'intro',
+          current:   0,
+          tally:     [0, 0, 0, 0, 0, 0, 0],
+          dominant:  null,
+          secondary: null
+        };
+      }
+
+      function showPhase(name) {
+        var next = phases[name];
+        var current = root.querySelector('.bz-quiz__phase.is-active');
+        if (!next || next === current) return;
+
+        if (current) {
+          current.classList.add('is-exiting');
+          setTimeout(function () {
+            current.classList.remove('is-active', 'is-exiting');
+            next.classList.add('is-active');
+          }, TRANSITION_MS);
+        } else {
+          next.classList.add('is-active');
+        }
+        state.phase = name;
+      }
+
+      function updateProgress(idx) {
+        var pct = ((idx + 1) / TOTAL) * 100;
+        if (progressFill)  progressFill.style.width = pct + '%';
+        if (progressLabel) progressLabel.textContent = pad(idx + 1) + ' / ' + pad(TOTAL);
+      }
+
+      function buildQuestionHTML(idx) {
+        var q = QUESTIONS[idx];
+        var html = '<div class="bz-quiz__question">';
+        html += '<span class="bz-quiz__question-num">Domanda ' + pad(idx + 1) + '</span>';
+        html += '<h3 class="bz-quiz__question-text">' + escapeHtml(q.q) + '</h3>';
+        if (q.sub) {
+          html += '<p class="bz-quiz__question-sub">&mdash; ' + escapeHtml(q.sub) + '</p>';
+        }
+        html += '<div class="bz-quiz__options" role="radiogroup">';
+        q.options.forEach(function (o, i) {
+          html += '<button type="button" class="bz-quiz__option" data-chakra="' + o.c + '" role="radio" aria-checked="false">';
+          html += '<span class="bz-quiz__option-num">0' + (i + 1) + '</span>';
+          html += '<span class="bz-quiz__option-text">' + escapeHtml(o.t) + '</span>';
+          html += '</button>';
+        });
+        html += '</div></div>';
+        return html;
+      }
+
+      function injectQuestion(idx) {
+        questionWrap.innerHTML = buildQuestionHTML(idx);
+        questionWrap.querySelectorAll('.bz-quiz__option').forEach(function (btn) {
+          btn.addEventListener('click', function () { handleAnswer(btn); });
+        });
+      }
+
+      function renderQuestion(idx, animate) {
+        state.current = idx;
+        updateProgress(idx);
+        if (animate) {
+          questionWrap.classList.add('is-exiting');
+          setTimeout(function () {
+            injectQuestion(idx);
+            questionWrap.classList.remove('is-exiting');
+          }, TRANSITION_MS);
+        } else {
+          injectQuestion(idx);
+        }
+      }
+
+      function handleAnswer(btn) {
+        var chakraIdx = parseInt(btn.dataset.chakra, 10);
+        if (isNaN(chakraIdx) || chakraIdx < 0 || chakraIdx > 6) return;
+        if (btn.disabled) return;
+
+        questionWrap.querySelectorAll('.bz-quiz__option').forEach(function (b) {
+          b.disabled = true;
+        });
+        btn.classList.add('is-selected');
+        btn.setAttribute('aria-checked', 'true');
+
+        state.tally[chakraIdx] += 1;
+
+        var isLast = state.current >= TOTAL - 1;
+        setTimeout(function () {
+          if (isLast) {
+            calculateResult();
+            renderResult(state.dominant);
+            showPhase('result');
+          } else {
+            renderQuestion(state.current + 1, true);
+          }
+        }, ADVANCE_DELAY);
+      }
+
+      /* Tally → dominante + secondario.
+         Mirrors Quiz.jsx: conta occorrenze, sort desc, primo è dominante.
+         Tie-break = ordine di inserimento delle chiavi (cioè il chakra
+         che ha raggiunto quel punteggio per primo). */
+      function calculateResult() {
+        var sorted = state.tally
+          .map(function (count, idx) { return { idx: idx, count: count }; })
+          .filter(function (e) { return e.count > 0; })
+          .sort(function (a, b) { return b.count - a.count; });
+
+        state.dominant  = sorted.length > 0 ? sorted[0].idx + 1 : 4;
+        state.secondary = sorted.length > 1 ? sorted[1].idx + 1 : 7;
+
+        root.dataset.dominant  = state.dominant;
+        root.dataset.secondary = state.secondary;
+      }
+
+      function renderResult(chakraId) {
+        var chakra = (window.BZ_CHAKRAS || [])[chakraId - 1];
+        if (!chakra) return;
+
+        if (resultPhase) resultPhase.style.setProperty('--quiz-color', chakra.hex);
+
+        var template = root.querySelector('.bz-quiz__glyph-templates template[data-chakra="' + chakraId + '"]');
+        if (glyphSlot && template && template.content) {
+          glyphSlot.innerHTML = '';
+          glyphSlot.appendChild(template.content.cloneNode(true));
+        }
+
+        if (nameSlot) {
+          nameSlot.innerHTML =
+            '<span class="bz-quiz__result-sk">' + escapeHtml(chakra.sk) + '</span>' +
+            '<span class="bz-quiz__result-it">' + escapeHtml(chakra.it) + '</span>' +
+            '<span class="bz-quiz__result-intent">' + escapeHtml(chakra.intent) + '</span>';
+        }
+
+        if (descSlot) {
+          descSlot.textContent = CHAKRA_DESCRIPTIONS[chakraId] || '';
+        }
+
+        var handles = CHAKRA_BUNDLES[chakraId] || [];
+        renderBundle(handles);
+      }
+
+      function renderBundle(handles) {
+        if (!bundleSlot) return;
+        currentBundle = handles.map(function (h) {
+          return { handle: h, variantId: null, ok: false };
+        });
+
+        // Render skeletons immediately, then upgrade each card on fetch.
+        bundleSlot.innerHTML = handles.map(function (h, i) {
+          return '<div class="bz-quiz__bundle-card" data-bundle-slot="' + i + '" aria-busy="true">' +
+                   '<div class="bz-quiz__bundle-card-image bz-quiz__bundle-card-image--placeholder"></div>' +
+                   '<span class="bz-quiz__bundle-card-placeholder">In arrivo&hellip;</span>' +
+                 '</div>';
+        }).join('');
+
+        handles.forEach(function (handle, i) {
+          fetchProduct(handle).then(function (product) {
+            currentBundle[i] = { handle: handle, variantId: product.variants[0].id, ok: true };
+            replaceCard(i, productCardHTML(product));
+          }).catch(function () {
+            replaceCard(i, placeholderCardHTML(handle));
+          });
+        });
+      }
+
+      function fetchProduct(handle) {
+        if (productCache[handle]) return Promise.resolve(productCache[handle]);
+        return fetch('/products/' + encodeURIComponent(handle) + '.js', {
+          headers: { 'Accept': 'application/json' }
+        }).then(function (res) {
+          if (!res.ok) throw new Error('product not found: ' + handle);
+          return res.json();
+        }).then(function (product) {
+          productCache[handle] = product;
+          return product;
+        });
+      }
+
+      function replaceCard(index, html) {
+        var card = bundleSlot.querySelector('[data-bundle-slot="' + index + '"]');
+        if (!card) return;
+        var holder = document.createElement('div');
+        holder.innerHTML = html;
+        var fresh = holder.firstElementChild;
+        fresh.dataset.bundleSlot = String(index);
+        card.replaceWith(fresh);
+      }
+
+      function productCardHTML(product) {
+        var image = product.featured_image || (product.images && product.images[0]) || '';
+        var imgTag = image
+          ? '<img src="' + escapeHtml(image) + '" alt="' + escapeHtml(product.title) + '" loading="lazy">'
+          : '';
+        return '<a href="/products/' + encodeURIComponent(product.handle) + '" class="bz-quiz__bundle-card">' +
+                 '<div class="bz-quiz__bundle-card-image' + (image ? '' : ' bz-quiz__bundle-card-image--placeholder') + '">' + imgTag + '</div>' +
+                 '<h4 class="bz-quiz__bundle-card-title">' + escapeHtml(product.title) + '</h4>' +
+                 '<div class="bz-quiz__bundle-card-price">' + formatPrice(product.price) + '</div>' +
+               '</a>';
+      }
+
+      function placeholderCardHTML(handle) {
+        return '<div class="bz-quiz__bundle-card">' +
+                 '<div class="bz-quiz__bundle-card-image bz-quiz__bundle-card-image--placeholder"></div>' +
+                 '<span class="bz-quiz__bundle-card-placeholder">Prodotto in arrivo</span>' +
+               '</div>';
+      }
+
+      /* Add the 3 bundle products to the cart in sequence, then redirect
+         to /discount/<code>?redirect=/cart so Shopify auto-applies the
+         discount and lands on the cart page. */
+      function addBundleToCart() {
+        var available = currentBundle.filter(function (b) { return b.variantId; });
+        if (available.length === 0 || addBundleBtn.classList.contains('is-loading')) return;
+
+        var defaultLabel = addBundleBtn.textContent;
+        addBundleBtn.classList.add('is-loading');
+        addBundleBtn.disabled = true;
+
+        function addNext(i) {
+          if (i >= available.length) {
+            var code = root.dataset.discountCode || 'RITUALE15';
+            window.location.href = '/discount/' + encodeURIComponent(code) + '?redirect=/cart';
+            return;
+          }
+          fetch('/cart/add.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({ id: available[i].variantId, quantity: 1 })
+          }).then(function (res) {
+            if (!res.ok) throw new Error('cart add failed: ' + available[i].handle);
+            addNext(i + 1);
+          }).catch(function (err) {
+            console.error('Quiz bundle:', err);
+            // Continue with the rest — partial bundle is better than nothing.
+            addNext(i + 1);
+          });
+        }
+        addNext(0);
+      }
+    }
+
+    function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+    function formatPrice(cents) {
+      var n = Number(cents);
+      if (!isFinite(n)) return '';
+      try {
+        var currency = (window.Shopify && window.Shopify.currency && window.Shopify.currency.active) || 'EUR';
+        return new Intl.NumberFormat('it-IT', { style: 'currency', currency: currency }).format(n / 100);
+      } catch (e) {
+        return '€ ' + (n / 100).toFixed(2).replace('.', ',');
+      }
+    }
+
+    function escapeHtml(s) {
+      return String(s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "BZ Quiz Rituale",
+  "class": "bz-quiz-section-wrap",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "default": "scheme-4",
+      "label": "Schema colore"
+    },
+    {
+      "type": "header",
+      "content": "Bundle & sconto"
+    },
+    {
+      "type": "text",
+      "id": "discount_code",
+      "label": "Codice sconto bundle",
+      "default": "RITUALE15",
+      "info": "Da creare in Shopify Admin → Discounts. Si applica automaticamente al carrello."
+    },
+    {
+      "type": "range",
+      "id": "discount_pct",
+      "min": 5,
+      "max": 30,
+      "step": 5,
+      "unit": "%",
+      "label": "% sconto mostrato",
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "Spaziatura"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding alto",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding basso",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 96
+    }
+  ],
+  "presets": [
+    {
+      "name": "BZ Quiz Rituale"
+    }
+  ]
+}
+{% endschema %}

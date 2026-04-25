@@ -1,0 +1,205 @@
+{%- comment -%}
+  BenesserEZen — Quiz CTA.
+
+  Centred call-out: rotating mandala backdrop (CSS only), gold badge,
+  title, subtext, 7 chakra dots pulsing in sequence, gold button.
+{%- endcomment -%}
+
+<section
+  class="bz-quiz-cta color-{{ section.settings.color_scheme }} gradient isolate"
+  data-section-id="{{ section.id }}"
+>
+  <div class="bz-quiz-cta__mandala" aria-hidden="true">
+    <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="var(--bz-gold)" stroke-width="0.6" fill="none" opacity="0.5">
+        <circle cx="200" cy="200" r="190"/>
+        <circle cx="200" cy="200" r="155" stroke-dasharray="2 5"/>
+        <circle cx="200" cy="200" r="120"/>
+        <circle cx="200" cy="200" r="85" stroke-dasharray="3 6"/>
+        <circle cx="200" cy="200" r="50"/>
+        <path d="M 200 30 L 347 285 L 53 285 Z"/>
+        <path d="M 200 370 L 53 115 L 347 115 Z"/>
+        <line x1="10" y1="200" x2="390" y2="200" stroke-dasharray="1 8"/>
+        <line x1="200" y1="10" x2="200" y2="390" stroke-dasharray="1 8"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="page-width bz-quiz-cta__inner">
+    <span class="bz-quiz-cta__badge bz-reveal">{{ section.settings.badge | default: 'Quiz dell’anima' }}</span>
+    <h2 class="bz-title bz-reveal" data-delay="1">{{ section.settings.heading | default: 'Quale chakra ha bisogno di te oggi?' }}</h2>
+    {%- if section.settings.subtext != blank -%}
+      <p class="bz-body bz-quiz-cta__subtext bz-reveal" data-delay="2">{{ section.settings.subtext }}</p>
+    {%- endif -%}
+
+    <div class="bz-quiz-cta__dots bz-reveal" data-delay="3" aria-hidden="true">
+      {%- for i in (1..7) -%}
+        {%- assign delay = i | minus: 1 | times: 0.15 -%}
+        <span
+          class="bz-quiz-cta__dot"
+          style="background: var(--chakra-{{ i }}); box-shadow: 0 0 14px rgba(var(--chakra-{{ i }}-rgb), 0.55); animation-delay: {{ delay }}s;"
+        ></span>
+      {%- endfor -%}
+    </div>
+
+    <a
+      class="bz-btn bz-reveal"
+      data-delay="4"
+      href="{{ section.settings.quiz_link | default: '/pages/quiz' }}"
+    >
+      {{ section.settings.cta_text | default: 'Inizia il quiz →' }}
+    </a>
+  </div>
+</section>
+
+{% style %}
+  .bz-quiz-cta {
+    position: relative;
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    overflow: hidden;
+  }
+  .bz-quiz-cta__mandala {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: min(72rem, 90vw);
+    height: min(72rem, 90vw);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    opacity: 0.35;
+    color: var(--bz-gold);
+    animation: bzQuizMandala 60s linear infinite;
+    will-change: transform;
+  }
+  .bz-quiz-cta__mandala svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  @keyframes bzQuizMandala {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to   { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+
+  .bz-quiz-cta__inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 2rem;
+    max-width: 64rem;
+    margin: 0 auto;
+  }
+
+  .bz-quiz-cta__badge {
+    display: inline-block;
+    padding: 0.6rem 1.4rem;
+    border: 1px solid var(--bz-border-gold);
+    color: var(--bz-gold);
+    font-family: var(--bz-font-ui);
+    font-size: 1rem;
+    letter-spacing: 0.4rem;
+    text-transform: uppercase;
+  }
+
+  .bz-quiz-cta__inner .bz-title { margin: 0; }
+  .bz-quiz-cta__subtext { margin: 0; max-width: 50rem; }
+
+  .bz-quiz-cta__dots {
+    display: flex;
+    gap: 1.4rem;
+    margin: 0.6rem 0 0.4rem;
+  }
+  .bz-quiz-cta__dot {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    animation: bzQuizDotPulse 2s ease-in-out infinite;
+  }
+  @keyframes bzQuizDotPulse {
+    0%, 100% { transform: scale(0.8); opacity: 0.5; }
+    50%      { transform: scale(1.25); opacity: 1; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bz-quiz-cta__mandala { animation: none; }
+    .bz-quiz-cta__dot     { animation: none; opacity: 0.85; }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "BZ Quiz CTA",
+  "class": "bz-quiz-cta-section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "default": "scheme-4",
+      "label": "Schema colore"
+    },
+    {
+      "type": "text",
+      "id": "badge",
+      "label": "Badge",
+      "default": "Quiz dell’anima"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titolo",
+      "default": "Quale chakra ha bisogno di te oggi?"
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Sottotesto",
+      "default": "5 domande. Un rituale su misura. Il tuo bundle personalizzato con il 15% di sconto."
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA",
+      "default": "Inizia il quiz →"
+    },
+    {
+      "type": "url",
+      "id": "quiz_link",
+      "label": "Link quiz",
+      "default": "/pages/quiz"
+    },
+    {
+      "type": "header",
+      "content": "Spaziatura"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding alto",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 96
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding basso",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 96
+    }
+  ],
+  "presets": [
+    {
+      "name": "BZ Quiz CTA"
+    }
+  ]
+}
+{% endschema %}

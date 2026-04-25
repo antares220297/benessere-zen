@@ -1,10 +1,30 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
-{"sections":{"main":{"type":"main-blog","settings":{"full_width_breadcrumb":false,"show_image":true,"show_author":true,"show_date":true,"padding_top":0,"padding_bottom":60}}},"order":["main"]}
+{
+  "sections": {
+    "bz_blog_hero": {
+      "type": "bz-blog-hero",
+      "settings": {
+        "color_scheme": "scheme-4",
+        "eyebrow": "Il Giornale Zen",
+        "subtext": "Guide ai cristalli, rituali lunari, meditazioni guidate. Letture brevi per portare la pratica nel quotidiano.",
+        "padding_top": 96,
+        "padding_bottom": 24
+      }
+    },
+    "main": {
+      "type": "main-blog",
+      "settings": {
+        "layout": "collage",
+        "show_image": true,
+        "image_height": "medium",
+        "show_date": true,
+        "show_author": false,
+        "padding_top": 24,
+        "padding_bottom": 80
+      }
+    }
+  },
+  "order": [
+    "bz_blog_hero",
+    "main"
+  ]
+}

@@ -1,0 +1,302 @@
+{%- comment -%}
+  BenesserEZen — Chakra Guide.
+
+  Editorial accordion: 7 expandable rows (one per chakra) listing
+  sanskrit name, italian name, element, mantra, intent, recommended
+  crystals, ritual hint, and a CTA to the chakra collection.
+
+  Server-rendered with hardcoded Liquid arrays (mirror of
+  window.BZ_CHAKRAS) for SEO and zero-JS readability.
+{%- endcomment -%}
+
+{%- liquid
+  assign roman = 'I,II,III,IV,V,VI,VII' | split: ','
+  assign sk = 'Mūlādhāra,Svādhiṣṭhāna,Maṇipūra,Anāhata,Viśuddha,Ājñā,Sahasrāra' | split: ','
+  assign it = 'Radice,Sacrale,Plesso Solare,Cuore,Gola,Terzo Occhio,Corona' | split: ','
+  assign elements = 'Terra,Acqua,Fuoco,Aria,Etere,Luce,Cosmo' | split: ','
+  assign mantras = 'LAM,VAM,RAM,YAM,HAM,OM,AH' | split: ','
+  assign intents = 'Radicamento · Stabilità,Creatività · Fluidità,Volontà · Potere personale,Amore · Compassione,Espressione · Verità,Intuizione · Visione interiore,Coscienza · Connessione universale' | split: ','
+  assign products = 'Ematite, ossidiana, tormalina nera|Corniola, calcite arancio, ambra|Citrino, occhio di tigre, pirite|Quarzo rosa, avventurina, malachite|Turchese, acquamarina, sodalite|Lapislazzuli, fluorite viola, kyanite|Ametista, selenite, cristallo di rocca' | split: '|'
+  assign rituals = 'Cammina a piedi nudi sulla terra. Tieni il cristallo nella mano dominante. Inspira a fondo, immagina radici dorate scendere dalla colonna verso il centro della Terra.|Bagno con sale rosa e oli essenziali agrumati. Posiziona il cristallo sul ventre. Lascia che la creatività rifluisca senza giudizio.|Esponi il cristallo al sole del mattino. Tienilo all''altezza dello stomaco mentre dichiari un''intenzione concreta da realizzare oggi.|Mano destra sul cuore, sinistra sulla pietra. Quattro respiri lunghi. Ripeti silenziosamente: «Sono al sicuro, sono amata».|Cantando a bassa voce — un mantra, un nome, una verità — tieni il cristallo davanti alla gola. Sentine la vibrazione.|Meditazione di cinque minuti con la pietra fra le sopracciglia. Occhi chiusi. Osserva quale immagine emerge dal silenzio.|Posiziona il cristallo sopra la testa o sull''altare. Non chiedere nulla — semplicemente ricevi.' | split: '|'
+  assign collections = 'cristalli-radice,cristalli-sacrale,cristalli-plesso,cristalli-cuore,cristalli-gola,cristalli-terzo-occhio,cristalli-corona' | split: ','
+-%}
+
+<section
+  class="bz-cg color-{{ section.settings.color_scheme }} gradient isolate"
+  data-section-id="{{ section.id }}"
+>
+  <div class="page-width page-width--narrow bz-cg__inner">
+    {%- if section.settings.intro != blank -%}
+      <p class="bz-body bz-cg__intro bz-reveal">{{ section.settings.intro }}</p>
+    {%- endif -%}
+
+    <div class="bz-cg__list">
+      {%- for n in (1..7) -%}
+        {%- assign i = forloop.index0 -%}
+        {%- assign open_attr = '' -%}
+        {%- if section.settings.first_open and forloop.first -%}
+          {%- assign open_attr = 'open' -%}
+        {%- endif -%}
+        <details
+          class="bz-cg__row bz-reveal"
+          data-delay="{{ forloop.index0 | at_most: 5 }}"
+          style="--chakra-c: var(--chakra-{{ n }}); --chakra-c-rgb: var(--chakra-{{ n }}-rgb);"
+          {{ open_attr }}
+        >
+          <summary class="bz-cg__head">
+            <span class="bz-cg__glyph" aria-hidden="true">
+              {%- render 'bz-chakra-glyph', chakra_id: n, size: 36 -%}
+            </span>
+            <span class="bz-cg__id">
+              <span class="bz-cg__num">{{ roman[i] }}</span>
+              <span class="bz-cg__sk">{{ sk[i] }}</span>
+              <span class="bz-cg__it">{{ it[i] }}</span>
+            </span>
+            <span class="bz-cg__plus" aria-hidden="true"></span>
+          </summary>
+          <div class="bz-cg__body">
+            <dl class="bz-cg__props">
+              <div class="bz-cg__prop">
+                <dt class="bz-label">Elemento</dt>
+                <dd class="bz-cg__prop-val">{{ elements[i] }}</dd>
+              </div>
+              <div class="bz-cg__prop">
+                <dt class="bz-label">Mantra</dt>
+                <dd class="bz-cg__prop-val bz-cg__prop-val--mantra">{{ mantras[i] }}</dd>
+              </div>
+              <div class="bz-cg__prop">
+                <dt class="bz-label">Intenzione</dt>
+                <dd class="bz-cg__prop-val">{{ intents[i] }}</dd>
+              </div>
+              <div class="bz-cg__prop">
+                <dt class="bz-label">Cristalli consigliati</dt>
+                <dd class="bz-cg__prop-val">{{ products[i] }}</dd>
+              </div>
+            </dl>
+
+            <div class="bz-cg__ritual">
+              <p class="bz-label">Rituale</p>
+              <p class="bz-body">{{ rituals[i] }}</p>
+            </div>
+
+            <a class="bz-btn-ghost bz-cg__cta" href="{{ routes.collections_url }}/{{ collections[i] }}">
+              Esplora i cristalli {{ it[i] | downcase }} <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </details>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% style %}
+  .bz-cg {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  .bz-cg__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+  .bz-cg__intro {
+    margin: 0;
+    text-align: center;
+    max-width: 56rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .bz-cg__list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .bz-cg__row {
+    border-bottom: 1px solid var(--bz-border);
+  }
+  .bz-cg__row:first-child {
+    border-top: 1px solid var(--bz-border);
+  }
+
+  .bz-cg__head {
+    list-style: none;
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 1.6rem;
+    padding: 1.8rem 0;
+  }
+  .bz-cg__head::-webkit-details-marker { display: none; }
+
+  .bz-cg__glyph {
+    display: inline-flex;
+    color: var(--chakra-c, var(--bz-gold));
+    transition: transform var(--bz-duration) var(--bz-ease);
+  }
+  .bz-cg__row[open] .bz-cg__glyph { transform: scale(1.1); }
+
+  .bz-cg__id {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .bz-cg__num {
+    font-family: var(--bz-font-ui);
+    font-size: 1rem;
+    letter-spacing: 0.4rem;
+    color: var(--chakra-c, var(--bz-gold));
+    text-transform: uppercase;
+  }
+  .bz-cg__sk {
+    font-family: var(--bz-font-display);
+    font-style: italic;
+    font-size: 1.8rem;
+    line-height: 1.1;
+    color: var(--bz-text);
+  }
+  .bz-cg__it {
+    font-family: var(--bz-font-ui);
+    font-size: 1rem;
+    letter-spacing: 0.25rem;
+    text-transform: uppercase;
+    color: var(--bz-muted);
+  }
+
+  .bz-cg__plus {
+    flex-shrink: 0;
+    width: 1.6rem;
+    height: 1.6rem;
+    position: relative;
+    transition: transform var(--bz-duration) var(--bz-ease);
+  }
+  .bz-cg__plus::before,
+  .bz-cg__plus::after {
+    content: '';
+    position: absolute;
+    background: var(--chakra-c, var(--bz-gold));
+  }
+  .bz-cg__plus::before {
+    left: 0; right: 0; top: 50%; height: 1px;
+    transform: translateY(-50%);
+  }
+  .bz-cg__plus::after {
+    top: 0; bottom: 0; left: 50%; width: 1px;
+    transform: translateX(-50%);
+  }
+  .bz-cg__row[open] .bz-cg__plus { transform: rotate(45deg); }
+
+  .bz-cg__body {
+    padding: 0.4rem 0 2.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .bz-cg__props {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.6rem 2.4rem;
+    margin: 0;
+  }
+  .bz-cg__prop {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .bz-cg__prop dt { margin: 0; }
+  .bz-cg__prop dd { margin: 0; }
+  .bz-cg__prop-val {
+    font-family: var(--bz-font-display);
+    font-style: italic;
+    font-size: 1.6rem;
+    color: var(--bz-text);
+  }
+  .bz-cg__prop-val--mantra {
+    color: var(--chakra-c, var(--bz-gold));
+    letter-spacing: 0.2rem;
+  }
+
+  .bz-cg__ritual {
+    border-left: 2px solid var(--chakra-c, var(--bz-border-gold));
+    padding: 0.4rem 0 0.4rem 1.6rem;
+  }
+  .bz-cg__ritual .bz-label { margin: 0 0 0.6rem; }
+  .bz-cg__ritual .bz-body  { margin: 0; }
+
+  .bz-cg__cta {
+    align-self: flex-start;
+  }
+
+  @media (max-width: 749px) {
+    .bz-cg__head {
+      grid-template-columns: auto 1fr auto;
+      gap: 1.2rem;
+    }
+    .bz-cg__sk { font-size: 1.6rem; }
+    .bz-cg__props { grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bz-cg__glyph,
+    .bz-cg__plus,
+    .bz-cg__plus::before,
+    .bz-cg__plus::after { transition: none; }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "BZ Chakra Guide",
+  "class": "bz-chakra-guide-section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "default": "scheme-4",
+      "label": "Schema colore"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Intro",
+      "default": "Sette centri energetici, un percorso. Espandi ogni chakra per scoprire elemento, mantra, cristalli e un rituale concreto da provare oggi."
+    },
+    {
+      "type": "checkbox",
+      "id": "first_open",
+      "label": "Apri il primo chakra di default",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Spaziatura"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding alto",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding basso",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 96
+    }
+  ],
+  "presets": [
+    {
+      "name": "BZ Chakra Guide"
+    }
+  ]
+}
+{% endschema %}

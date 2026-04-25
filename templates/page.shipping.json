@@ -1,0 +1,26 @@
+{
+  "sections": {
+    "hero": {
+      "type": "bz-page-hero",
+      "settings": {
+        "color_scheme": "scheme-4",
+        "eyebrow": "Politiche",
+        "heading": "Spedizioni e resi",
+        "subtext": "Tempi, costi e procedure. Tutto chiaro, tutto trasparente.",
+        "padding_top": 96,
+        "padding_bottom": 24
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 80
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "main"
+  ]
+}

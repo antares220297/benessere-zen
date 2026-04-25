@@ -1,0 +1,26 @@
+{
+  "sections": {
+    "hero": {
+      "type": "bz-page-hero",
+      "settings": {
+        "color_scheme": "scheme-4",
+        "eyebrow": "La nostra storia",
+        "heading": "Chi siamo",
+        "subtext": "BenesserEZen nasce da una trasformazione personale e dal desiderio di condividere il potere dei rituali quotidiani.",
+        "padding_top": 96,
+        "padding_bottom": 48
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 60
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "main"
+  ]
+}

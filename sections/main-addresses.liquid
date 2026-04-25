@@ -1,376 +1,271 @@
-{%  liquid 
-  if settings.lang_direction contains request.locale.iso_code
-    assign is_rtl = true
-  else
-    assign is_rtl = false
-  endif
-%}
+{{ 'customer.css' | asset_url | stylesheet_tag }}
+
+<script src="{{ 'customer.js' | asset_url }}" defer></script>
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
 {%- paginate customer.addresses by 5 -%}
-  <div
-    class="page-width pl-5 pr-5 pt-[{{ section.settings.top_padding_mobile }}px] md:pt-[{{ section.settings.top_padding }}px] pb-[{{ section.settings.bottom_padding_mobile }}px] md:pb-[{{ section.settings.bottom_padding }}px]"
-    data-customer-addresses
-    x-data="xCustomerAddresses"
-  >
-    <h1 class="h2 text-center mb-5">{{ 'customer.addresses.title' | t }}</h1>
-    <a class="nav-link relative effect-inline block w-fit mr-auto ml-auto mb-7 lg:hover:text-[rgb(var(--colors-text-link))]" href="{{ routes.account_url }}" data-no-instant>
+  <div class="customer addresses section-{{ section.id }}-padding" data-customer-addresses>
+    <h1>{{ 'customer.addresses.title' | t }}</h1>
+    <a href="{{ routes.account_url }}">
       {{ 'customer.account.return' | t }}
     </a>
-    <div class="text-center" data-address>
+
+    <div data-address>
       <button
-        class="button button-solid pt-2.5 pb-2.5 md:pt-3 md:pb-3 leading-normal pl-12 pr-12 bg-[var(--colors-button)]"
         type="button"
+        aria-expanded="false"
         aria-controls="AddAddress"
-        @click="handleAddEdit('0')"
       >
-        {% assign button_label = 'customer.addresses.add_new' | t %}
-        <span class="flex items-center justify-center">
-          {% render 'button-label', button_label: button_label, show_button_style: 'primary' %}
-        </span>
+        {{ 'customer.addresses.add_new' | t }}
       </button>
-      <div id="AddAddress" x-cloak x-show="activeAddEditFormIds.includes('0')">
-        <h2 id="AddressNewHeading" class="text-large mt-12 md:mt-20 mb-4">{{ 'customer.addresses.add_new' | t }}</h2>
+      <div id="AddAddress">
+        <h2 id="AddressNewHeading">{{ 'customer.addresses.add_new' | t }}</h2>
         {%- form 'customer_address', customer.new_address, aria-labelledBy: 'AddressNewHeading' -%}
-          <div class="max-w-[570px] mr-auto ml-auto flex gap-2.5">
-            <div class="relative mb-2.5 w-1/2">
-              <input
-                id="AddressFirstNameNew"
-                class="w-full input border pl-5 pr-5 pt-5 pb-1 md:pl-6 md:pb-2 focus:outline-none focus:border-current bg-transparent placeholder:opacity-0{% if settings.edges_type == 'rounded_corners' %} !rounded-md{% else %} rounded-none{% endif %}{% if is_rtl %} text-right{% endif %}"
-                type="text"
-                name="address[first_name]"
-                value="{{ form.first_name }}"
-                autocomplete="given-name"
-                placeholder="{{ 'customer.addresses.first_name' | t }}"
-              >
-              <label
-                class="absolute top-1/2{% if is_rtl %} right-5 lg:right-6{% else %} left-5 lg:left-6{% endif %} -translate-y-1/2 input_focus:text-xs input_focus:top-3.5 input_not_empty:top-3.5 input_not_empty:text-xs"
-                for="AddressFirstNameNew"
-              >
-                {{ 'customer.addresses.first_name' | t }}
-              </label>
-            </div>
-            <div class="relative mb-2.5 w-1/2">
-              <input
-                id="AddressLastNameNew"
-                class="w-full input border pl-5 pr-5 pt-5 pb-1 md:pl-6 md:pb-2 focus:outline-none focus:border-current bg-transparent placeholder:opacity-0{% if settings.edges_type == 'rounded_corners' %} !rounded-md{% else %} rounded-none{% endif %}{% if is_rtl %} text-right{% endif %}"
-                type="text"
-                name="address[last_name]"
-                value="{{ form.last_name }}"
-                autocomplete="family-name"
-                placeholder="{{ 'customer.addresses.last_name' | t }}"
-              >
-              <label
-                class="absolute top-1/2{% if is_rtl %} right-5 lg:right-6{% else %} left-5 lg:left-6{% endif %} -translate-y-1/2 input_focus:text-xs input_focus:top-3.5 input_not_empty:top-3.5 input_not_empty:text-xs"
-                for="AddressLastNameNew"
-              >
-                {{ 'customer.addresses.last_name' | t }}
-              </label>
-            </div>
-          </div>
-          <div class="relative mr-auto ml-auto mb-2.5 max-w-[570px]">
+          <div class="field">
             <input
-              id="AddressCompanyNew"
-              class="w-full input border pl-5 pr-5 pt-5 pb-1 md:pl-6 md:pb-2 focus:outline-none focus:border-current bg-transparent placeholder:opacity-0{% if settings.edges_type == 'rounded_corners' %} !rounded-md{% else %} rounded-none{% endif %}{% if is_rtl %} text-right{% endif %}"
               type="text"
+              id="AddressFirstNameNew"
+              name="address[first_name]"
+              value="{{ form.first_name }}"
+              autocomplete="given-name"
+              placeholder="{{ 'customer.addresses.first_name' | t }}"
+            >
+            <label for="AddressFirstNameNew">{{ 'customer.addresses.first_name' | t }}</label>
+          </div>
+          <div class="field">
+            <input
+              type="text"
+              id="AddressLastNameNew"
+              name="address[last_name]"
+              value="{{ form.last_name }}"
+              autocomplete="family-name"
+              placeholder="{{ 'customer.addresses.last_name' | t }}"
+            >
+            <label for="AddressLastNameNew">{{ 'customer.addresses.last_name' | t }}</label>
+          </div>
+          <div class="field">
+            <input
+              type="text"
+              id="AddressCompanyNew"
               name="address[company]"
               value="{{ form.company }}"
               autocomplete="organization"
               placeholder="{{ 'customer.addresses.company' | t }}"
             >
-            <label
-              class="absolute top-1/2{% if is_rtl %} right-5 lg:right-6{% else %} left-5 lg:left-6{% endif %} -translate-y-1/2 input_focus:text-xs input_focus:top-3.5 input_not_empty:top-3.5 input_not_empty:text-xs"
-              for="AddressCompanyNew"
-            >
-              {{ 'customer.addresses.company' | t }}
-            </label>
+            <label for="AddressCompanyNew">{{ 'customer.addresses.company' | t }}</label>
           </div>
-          <div class="relative mr-auto ml-auto mb-2.5 max-w-[570px]">
+          <div class="field">
             <input
-              id="AddressAddress1New"
-              class="w-full input border pl-5 pr-5 pt-5 pb-1 md:pl-6 md:pb-2 focus:outline-none focus:border-current bg-transparent placeholder:opacity-0{% if settings.edges_type == 'rounded_corners' %} !rounded-md{% else %} rounded-none{% endif %}{% if is_rtl %} text-right{% endif %}"
               type="text"
+              id="AddressAddress1New"
               name="address[address1]"
               value="{{ form.address1 }}"
               autocomplete="address-line1"
               placeholder="{{ 'customer.addresses.address1' | t }}"
             >
-            <label
-              class="absolute top-1/2{% if is_rtl %} right-5 lg:right-6{% else %} left-5 lg:left-6{% endif %} -translate-y-1/2 input_focus:text-xs input_focus:top-3.5 input_not_empty:top-3.5 input_not_empty:text-xs"
-              for="AddressAddress1New"
-            >
-              {{ 'customer.addresses.address1' | t }}
-            </label>
+            <label for="AddressAddress1New">{{ 'customer.addresses.address1' | t }}</label>
           </div>
-          <div class="relative mr-auto ml-auto mb-2.5 max-w-[570px]">
+          <div class="field">
             <input
-              id="AddressAddress2New"
-              class="w-full input border pl-5 pr-5 pt-5 pb-1 md:pl-6 md:pb-2 focus:outline-none focus:border-current bg-transparent placeholder:opacity-0{% if settings.edges_type == 'rounded_corners' %} !rounded-md{% else %} rounded-none{% endif %}{% if is_rtl %} text-right{% endif %}"
               type="text"
+              id="AddressAddress2New"
               name="address[address2]"
               value="{{ form.address2 }}"
               autocomplete="address-line2"
               placeholder="{{ 'customer.addresses.address2' | t }}"
             >
-            <label
-              class="absolute top-1/2{% if is_rtl %} right-5 lg:right-6{% else %} left-5 lg:left-6{% endif %} -translate-y-1/2 input_focus:text-xs input_focus:top-3.5 input_not_empty:top-3.5 input_not_empty:text-xs"
-              for="AddressAddress2New"
-            >
-              {{ 'customer.addresses.address2' | t }}
-            </label>
+            <label for="AddressAddress2New">{{ 'customer.addresses.address2' | t }}</label>
           </div>
-          <div class="relative mr-auto ml-auto mb-2.5 max-w-[570px]">
+          <div class="field">
             <input
-              id="AddressCityNew"
-              class="w-full input border pl-5 pr-5 pt-5 pb-1 md:pl-6 md:pb-2 focus:outline-none focus:border-current bg-transparent placeholder:opacity-0{% if settings.edges_type == 'rounded_corners' %} !rounded-md{% else %} rounded-none{% endif %}{% if is_rtl %} text-right{% endif %}"
               type="text"
-              name="address[city]" 
+              id="AddressCityNew"
+              name="address[city]"
               value="{{ form.city }}"
               autocomplete="address-level2"
               placeholder="{{ 'customer.addresses.city' | t }}"
             >
-            <label
-              class="absolute top-1/2{% if is_rtl %} right-5 lg:right-6{% else %} left-5 lg:left-6{% endif %} -translate-y-1/2 input_focus:text-xs input_focus:top-3.5 input_not_empty:top-3.5 input_not_empty:text-xs"
-              for="AddressCityNew"
-            >
-              {{ 'customer.addresses.city' | t }}
-            </label>
+            <label for="AddressCityNew">{{ 'customer.addresses.city' | t }}</label>
           </div>
-          <div class="eurus mr-auto ml-auto mb-2.5 max-w-[570px]">
-            <label class="block text-left rtl:text-right mt-1 mb-2" for="AddressCountryNew">{{ 'customer.addresses.country' | t }}</label>
-            <div class="relative">
+          <div>
+            <label for="AddressCountryNew">{{ 'customer.addresses.country' | t }}</label>
+            <div class="select">
               <select
                 id="AddressCountryNew"
-                class="w-full input border pl-5 pr-5 pt-3.5 pb-3.5 focus:outline-none focus:border-current bg-transparent placeholder:opacity-0{% if settings.edges_type == 'rounded_corners' %} !rounded-md{% else %} rounded-none{% endif %}{% if is_rtl %} text-right{% endif %}"
                 name="address[country]"
                 data-default="{{ form.country }}"
                 autocomplete="country"
               >
                 {{ all_country_option_tags }}
               </select>
-              <span class="block w-3 h-3 absolute top-1/2{% if is_rtl %} left-5{% else %} right-5{% endif %} -translate-y-1/2 -z-10">{% render 'icon-alls', icon: 'icon-caret' %}</span>
+              <span class="svg-wrapper">
+                {{- 'icon-caret.svg' | inline_asset_content -}}
+              </span>
             </div>
           </div>
-          <div
-            id="AddressProvinceContainerNew"
-            class="relative eurus mr-auto ml-auto mb-2.5 max-w-[570px]"
-            style="display:none;"
-          >
-            <label class="block text-left mt-1 mb-2" for="AddressProvinceNew">{{ 'customer.addresses.province' | t }}</label>
-            <div class="select relative">
+          <div id="AddressProvinceContainerNew" style="display: none">
+            <label for="AddressProvinceNew">{{ 'customer.addresses.province' | t }}</label>
+            <div class="select">
               <select
                 id="AddressProvinceNew"
-                class="w-full input border pl-5 pr-5 pt-3.5 pb-3.5 focus:outline-none focus:border-current bg-transparent placeholder:opacity-0{% if settings.edges_type == 'rounded_corners' %} !rounded-md{% else %} rounded-none{% endif %}{% if is_rtl %} text-right{% endif %}"
                 name="address[province]"
                 data-default="{{ form.province }}"
                 autocomplete="address-level1"
-              >
-              </select>
-              <span class="block w-3 h-3 absolute top-1/2{% if is_rtl %} left-5{% else %} right-5{% endif %} -translate-y-1/2 -z-10">{% render 'icon-alls', icon: 'icon-caret' %}</span>
+              ></select>
+              <span class="svg-wrapper">
+                {{- 'icon-caret.svg' | inline_asset_content -}}
+              </span>
             </div>
           </div>
-          <div class="relative mr-auto ml-auto mb-2.5 max-w-[570px]">
+          <div class="field">
             <input
-              id="AddressZipNew"
-              class="w-full input border pl-5 pr-5 pt-5 pb-1 md:pl-6 md:pb-2 focus:outline-none focus:border-current bg-transparent placeholder:opacity-0{% if settings.edges_type == 'rounded_corners' %} !rounded-md{% else %} rounded-none{% endif %}{% if is_rtl %} text-right{% endif %}"
               type="text"
+              id="AddressZipNew"
               name="address[zip]"
               value="{{ form.zip }}"
               autocapitalize="characters"
               autocomplete="postal-code"
               placeholder="{{ 'customer.addresses.zip' | t }}"
             >
-            <label
-              class="absolute top-1/2{% if is_rtl %} right-5 lg:right-6{% else %} left-5 lg:left-6{% endif %} -translate-y-1/2 input_focus:text-xs input_focus:top-3.5 input_not_empty:top-3.5 input_not_empty:text-xs"
-              for="AddressZipNew"
-            >
-              {{ 'customer.addresses.zip' | t }}
-            </label>
+            <label for="AddressZipNew">{{ 'customer.addresses.zip' | t }}</label>
           </div>
-          <div class="relative mr-auto ml-auto mb-2.5 max-w-[570px]">
-            <input 
-              id="AddressPhoneNew"
-              class="w-full input border pl-5 pr-5 pt-5 pb-1 md:pl-6 md:pb-2 focus:outline-none focus:border-current bg-transparent placeholder:opacity-0{% if settings.edges_type == 'rounded_corners' %} !rounded-md{% else %} rounded-none{% endif %}{% if is_rtl %} text-right{% endif %}"
+          <div class="field">
+            <input
               type="tel"
+              id="AddressPhoneNew"
               name="address[phone]"
               value="{{ form.phone }}"
               autocomplete="tel"
               placeholder="{{ 'customer.addresses.phone' | t }}"
             >
-            <label
-              class="absolute top-1/2{% if is_rtl %} right-5 lg:right-6{% else %} left-5 lg:left-6{% endif %} -translate-y-1/2 input_focus:text-xs input_focus:top-3.5 input_not_empty:top-3.5 input_not_empty:text-xs"
-              for="AddressPhoneNew"
-            >
-              {{ 'customer.addresses.phone' | t }}
-            </label>
+            <label for="AddressPhoneNew">{{ 'customer.addresses.phone' | t }}</label>
           </div>
-          <div class="flex items-center mr-auto ml-auto mt-1 mb-8 max-w-[570px] eurus">
-            <input
-              id="address_default_address_new"
-              class="checkbox checkbox-checked{% if is_rtl %} ml-2{% else %} mr-2{% endif %} h-4 w-4 border checked:border-[rgba(var(--colors-text-link))] checked:bg-[rgba(var(--colors-text-link))] relative cursor-pointer{% if settings.edges_type == 'rounded_corners' %} rounded{% else %} rounded-none{% endif %}{% if is_rtl %} text-right{% endif %}"
-              type="checkbox"
-              name="address[default]"
-              value="1"
-            >
+          <div>
+            {{ form.set_as_default_checkbox }}
             <label for="address_default_address_new">{{ 'customer.addresses.set_default' | t }}</label>
           </div>
-          <div class="max-w-[570px] mr-auto ml-auto mb-2.5">
-            <button class="button button-solid w-full block mr-auto ml-auto pt-2.5 pb-2.5 md:pt-3 md:pb-3 mt-8 leading-normal">
-              {% assign button_label = 'customer.addresses.add' | t %}
-              <span class="flex items-center justify-center">
-                {% render 'button-label', button_label: button_label, show_button_style: 'primary' %}
-              </span>
-            </button>
-            <a class="cursor-pointer inline-block mr-auto ml-auto mt-5" type="reset" @click="handleCancel('0')">{{ 'customer.addresses.cancel' | t }}</a>
+          <div>
+            <button>{{ 'customer.addresses.add' | t }}</button>
+            <button type="reset">{{ 'customer.addresses.cancel' | t }}</button>
           </div>
         {%- endform -%}
       </div>
     </div>
-    <ul class="text-center" role="list">
+
+    <ul role="list">
       {%- for address in customer.addresses -%}
-        <li class="relative block mt-12" data-address>
+        <li data-address>
           {%- if address == customer.default_address -%}
-            <h2 class="text-large mb-6 md:mb-8 anm-fade-element" x-intersect.once="$el.classList.add('is-visible')">{{ 'customer.addresses.default' | t }}</h2>
+            <h2>{{ 'customer.addresses.default' | t }}</h2>
           {%- endif -%}
-          <div class="mb-7 anm-fade-element" x-intersect.once="$el.classList.add('is-visible')">{{ address | format_address }}</div>
-          <div class="anm-fade-element" x-intersect.once="$el.classList.add('is-visible')">
-            <button
-              id="EditFormButton_{{ address.id }}"
-              class="button button-outline pl-9 pr-9 pt-2.5 pb-2.5 md:pt-3 md:pb-3 min-w-[120px] leading-normal"
-              type="button"
-              aria-label="{{ 'customer.addresses.edit_address' | t }} {{ forloop.index }}"
-              aria-controls="EditAddress_{{ address.id }}"
-              @click="handleAddEdit('{{ address.id }}')"
-            >
-              {{ 'customer.addresses.edit' | t }}
-            </button>
-            <button
-              class="button button-outline pl-9 pr-9 pt-2.5 pb-2.5 md:pt-3 md:pb-3 min-w-[120px] leading-normal"
-              type="button"
-              aria-label="{{ 'customer.addresses.delete' | t }} {{ forloop.index }}"
-              data-target="{{ address.url }}"
-              data-confirm-message="{{ 'customer.addresses.delete_confirm' | t }}"
-              @click="handleDelete"
-            >
-              {{ 'customer.addresses.delete' | t }}
-            </button>
-          </div>
-          <div id="EditAddress_{{ address.id }}" x-cloak class="eurus" x-show="activeAddEditFormIds.includes('{{ address.id }}')">
-            <h2 class="text-large mt-12 md:mt-20 mb-4">{{ 'customer.addresses.edit_address' | t }}</h2>
+          {{ address | format_address }}
+          <button
+            type="button"
+            id="EditFormButton_{{ address.id }}"
+            aria-label="{{ 'customer.addresses.edit_address' | t }} {{ forloop.index }}"
+            aria-controls="EditAddress_{{ address.id }}"
+            aria-expanded="false"
+            data-address-id="{{ address.id }}"
+          >
+            {{ 'customer.addresses.edit' | t }}
+          </button>
+          <button
+            type="button"
+            aria-label="{{ 'customer.addresses.delete' | t }} {{ forloop.index }}"
+            data-target="{{ address.url }}"
+            data-confirm-message="{{ 'customer.addresses.delete_confirm' | t }}"
+          >
+            {{ 'customer.addresses.delete' | t }}
+          </button>
+          <div id="EditAddress_{{ address.id }}">
+            <h2>{{ 'customer.addresses.edit_address' | t }}</h2>
             {%- form 'customer_address', address -%}
-              <div class="max-w-[570px] mr-auto ml-auto flex gap-2.5">
-                <div class="relative mb-2.5 w-1/2">
-                  <input
-                    id="AddressFirstName_{{ form.id }}"
-                    class="w-full input border pl-5 pr-5 pt-5 pb-1 md:pl-6 md:pb-2 focus:outline-none focus:border-current bg-transparent placeholder:opacity-0{% if settings.edges_type == 'rounded_corners' %} !rounded-md{% else %} rounded-none{% endif %}{% if is_rtl %} text-right{% endif %}"
-                    type="text"
-                    name="address[first_name]"
-                    value="{{ form.first_name }}"
-                    autocomplete="given-name"
-                    placeholder="{{ 'customer.addresses.first_name' | t }}"
-                  >
-                  <label
-                    class="absolute top-1/2{% if is_rtl %} right-5 lg:right-6{% else %} left-5 lg:left-6{% endif %} -translate-y-1/2 input_focus:text-xs input_focus:top-3.5 input_not_empty:top-3.5 input_not_empty:text-xs"
-                    for="AddressFirstName_{{ form.id }}"
-                  >
-                    {{ 'customer.addresses.first_name' | t }}
-                  </label>
-                </div>
-                <div class="relative mb-2.5 w-1/2">
-                  <input
-                    id="AddressLastName_{{ form.id }}"
-                    class="w-full input border pl-5 pr-5 pt-5 pb-1 md:pl-6 md:pb-2 focus:outline-none focus:border-current bg-transparent placeholder:opacity-0{% if settings.edges_type == 'rounded_corners' %} !rounded-md{% else %} rounded-none{% endif %}{% if is_rtl %} text-right{% endif %}"
-                    type="text"
-                    name="address[last_name]"
-                    value="{{ form.last_name }}"
-                    autocomplete="family-name"
-                    placeholder="{{ 'customer.addresses.last_name' | t }}"
-                  >
-                  <label
-                    class="absolute top-1/2{% if is_rtl %} right-5 lg:right-6{% else %} left-5 lg:left-6{% endif %} -translate-y-1/2 input_focus:text-xs input_focus:top-3.5 input_not_empty:top-3.5 input_not_empty:text-xs"
-                    for="AddressLastName_{{ form.id }}"
-                  >
-                    {{ 'customer.addresses.last_name' | t }}
-                  </label>
-                </div>
-              </div>
-              <div class="relative mr-auto ml-auto mb-2.5 max-w-[570px]">
+              <div class="field">
                 <input
-                  id="AddressCompany_{{ form.id }}"
-                  class="w-full input border pl-5 pr-5 pt-5 pb-1 md:pl-6 md:pb-2 focus:outline-none focus:border-current bg-transparent placeholder:opacity-0{% if settings.edges_type == 'rounded_corners' %} !rounded-md{% else %} rounded-none{% endif %}{% if is_rtl %} text-right{% endif %}"
                   type="text"
+                  id="AddressFirstName_{{ form.id }}"
+                  name="address[first_name]"
+                  value="{{ form.first_name }}"
+                  autocomplete="given-name"
+                  placeholder="{{ 'customer.addresses.first_name' | t }}"
+                >
+                <label for="AddressFirstName_{{ form.id }}">{{ 'customer.addresses.first_name' | t }}</label>
+              </div>
+              <div class="field">
+                <input
+                  type="text"
+                  id="AddressLastName_{{ form.id }}"
+                  name="address[last_name]"
+                  value="{{ form.last_name }}"
+                  autocomplete="family-name"
+                  placeholder="{{ 'customer.addresses.last_name' | t }}"
+                >
+                <label for="AddressLastName_{{ form.id }}">{{ 'customer.addresses.last_name' | t }}</label>
+              </div>
+              <div class="field">
+                <input
+                  type="text"
+                  id="AddressCompany_{{ form.id }}"
                   name="address[company]"
                   value="{{ form.company }}"
                   autocomplete="organization"
                   placeholder="{{ 'customer.addresses.company' | t }}"
                 >
-                <label
-                  class="absolute top-1/2{% if is_rtl %} right-5 lg:right-6{% else %} left-5 lg:left-6{% endif %} -translate-y-1/2 input_focus:text-xs input_focus:top-3.5 input_not_empty:top-3.5 input_not_empty:text-xs"
-                  for="AddressCompany_{{ form.id }}"
-                >
-                  {{ 'customer.addresses.company' | t }}
-                </label>
+                <label for="AddressCompany_{{ form.id }}">{{ 'customer.addresses.company' | t }}</label>
               </div>
-              <div class="relative mr-auto ml-auto mb-2.5 max-w-[570px]">
+              <div class="field">
                 <input
-                  id="AddressAddress1_{{ form.id }}"
-                  class="w-full input border pl-5 pr-5 pt-5 pb-1 md:pl-6 md:pb-2 focus:outline-none focus:border-current bg-transparent placeholder:opacity-0{% if settings.edges_type == 'rounded_corners' %} !rounded-md{% else %} rounded-none{% endif %}{% if is_rtl %} text-right{% endif %}"
                   type="text"
+                  id="AddressAddress1_{{ form.id }}"
                   name="address[address1]"
                   value="{{ form.address1 }}"
                   autocomplete="address-line1"
                   placeholder="{{ 'customer.addresses.address1' | t }}"
                 >
-                <label
-                  class="absolute top-1/2{% if is_rtl %} right-5 lg:right-6{% else %} left-5 lg:left-6{% endif %} -translate-y-1/2 input_focus:text-xs input_focus:top-3.5 input_not_empty:top-3.5 input_not_empty:text-xs"
-                  for="AddressAddress1_{{ form.id }}"
-                >
-                  {{ 'customer.addresses.address1' | t }}
-                </label>
+                <label for="AddressAddress1_{{ form.id }}">{{ 'customer.addresses.address1' | t }}</label>
               </div>
-              <div class="relative mr-auto ml-auto mb-2.5 max-w-[570px]">
+              <div class="field">
                 <input
-                  id="AddressAddress2_{{ form.id }}"
-                  class="w-full input border pl-5 pr-5 pt-5 pb-1 md:pl-6 md:pb-2 focus:outline-none focus:border-current bg-transparent placeholder:opacity-0{% if settings.edges_type == 'rounded_corners' %} !rounded-md{% else %} rounded-none{% endif %}{% if is_rtl %} text-right{% endif %}"
                   type="text"
+                  id="AddressAddress2_{{ form.id }}"
                   name="address[address2]"
                   value="{{ form.address2 }}"
                   autocomplete="address-line2"
                   placeholder="{{ 'customer.addresses.address2' | t }}"
                 >
-                <label
-                  class="absolute top-1/2{% if is_rtl %} right-5 lg:right-6{% else %} left-5 lg:left-6{% endif %} -translate-y-1/2 input_focus:text-xs input_focus:top-3.5 input_not_empty:top-3.5 input_not_empty:text-xs"
-                  for="AddressAddress2_{{ form.id }}"
-                >
-                  {{ 'customer.addresses.address2' | t }}
-                </label>
+                <label for="AddressAddress2_{{ form.id }}">{{ 'customer.addresses.address2' | t }}</label>
               </div>
-              <div class="relative mr-auto ml-auto mb-2.5 max-w-[570px]">
+              <div class="field">
                 <input
-                  id="AddressCity_{{ form.id }}"
-                  class="w-full input border pl-5 pr-5 pt-5 pb-1 md:pl-6 md:pb-2 focus:outline-none focus:border-current bg-transparent placeholder:opacity-0{% if settings.edges_type == 'rounded_corners' %} !rounded-md{% else %} rounded-none{% endif %}{% if is_rtl %} text-right{% endif %}"
                   type="text"
+                  id="AddressCity_{{ form.id }}"
                   name="address[city]"
                   value="{{ form.city }}"
                   autocomplete="address-level2"
                   placeholder="{{ 'customer.addresses.city' | t }}"
                 >
-                <label
-                  class="absolute top-1/2{% if is_rtl %} right-5 lg:right-6{% else %} left-5 lg:left-6{% endif %} -translate-y-1/2 input_focus:text-xs input_focus:top-3.5 input_not_empty:top-3.5 input_not_empty:text-xs"
-                  for="AddressCity_{{ form.id }}"
-                >
-                  {{ 'customer.addresses.city' | t }}
-                </label>
+                <label for="AddressCity_{{ form.id }}">{{ 'customer.addresses.city' | t }}</label>
               </div>
-              <div class="mr-auto ml-auto mb-2.5 max-w-[570px]">
-                <label
-                  class="block text-left mt-1 mb-2 rtl:text-right"
-                  for="AddressCountry_{{ form.id }}"
-                >
+              <div>
+                <label for="AddressCountry_{{ form.id }}">
                   {{ 'customer.addresses.country' | t }}
                 </label>
-                <div class="relative">
+                <div class="select">
                   <select
                     id="AddressCountry_{{ form.id }}"
-                    class="w-full input border pl-5 pr-5 pt-3.5 pb-3.5 focus:outline-none focus:border-current bg-transparent placeholder:opacity-0{% if settings.edges_type == 'rounded_corners' %} !rounded-md{% else %} rounded-none{% endif %}{% if is_rtl %} text-right{% endif %}"
                     name="address[country]"
                     data-address-country-select
                     data-default="{{ form.country }}"
@@ -379,97 +274,148 @@
                   >
                     {{ all_country_option_tags }}
                   </select>
-                  <span class="block w-3 h-3 absolute top-1/2{% if is_rtl %} left-5{% else %} right-5{% endif %} -translate-y-1/2 -z-10">{% render 'icon-alls', icon: 'icon-caret' %}</span>
+                  <span class="svg-wrapper">
+                    {{- 'icon-caret.svg' | inline_asset_content -}}
+                  </span>
                 </div>
               </div>
-              <div id="AddressProvinceContainer_{{ form.id }}"  class="mr-auto ml-auto mb-2.5 max-w-[570px]" style="display:none;">
-                <label 
-                  class="block text-left mt-1 mb-2" 
-                  for="AddressProvince_{{ form.id }}"
-                >
+              <div id="AddressProvinceContainer_{{ form.id }}" style="display:none;">
+                <label for="AddressProvince_{{ form.id }}">
                   {{ 'customer.addresses.province' | t }}
                 </label>
-                <div class="relative">
+                <div class="select">
                   <select
                     id="AddressProvince_{{ form.id }}"
-                    class="w-full input border pl-5 pr-5 pt-3.5 pb-3.5 focus:outline-none focus:border-current bg-transparent placeholder:opacity-0{% if settings.edges_type == 'rounded_corners' %} !rounded-md{% else %} rounded-none{% endif %}{% if is_rtl %} text-right{% endif %}"
                     name="address[province]"
                     data-default="{{ form.province }}"
                     autocomplete="address-level1"
-                  >
-                  </select>
-                  <span class="block w-3 h-3 absolute top-1/2{% if is_rtl %} left-5{% else %} right-5{% endif %} -translate-y-1/2 -z-10">{% render 'icon-alls', icon: 'icon-caret' %}</span>
+                  ></select>
+                  <span class="svg-wrapper">
+                    {{- 'icon-caret.svg' | inline_asset_content -}}
+                  </span>
                 </div>
               </div>
-              <div class="relative mr-auto ml-auto mb-2.5 max-w-[570px]">
+              <div class="field">
                 <input
-                  id="AddressZip_{{ form.id }}"
-                  class="w-full input border pl-5 pr-5 pt-5 md:pl-6 pb-1 md:pb-2 focus:outline-none focus:border-current bg-transparent placeholder:opacity-0{% if settings.edges_type == 'rounded_corners' %} !rounded-md{% else %} rounded-none{% endif %}{% if is_rtl %} text-right{% endif %}"
                   type="text"
+                  id="AddressZip_{{ form.id }}"
                   name="address[zip]"
                   value="{{ form.zip }}"
                   autocapitalize="characters"
                   autocomplete="postal-code"
                   placeholder="{{ 'customer.addresses.zip' | t }}"
                 >
-                <label
-                  class="absolute top-1/2{% if is_rtl %} right-5 lg:right-6{% else %} left-5 lg:left-6{% endif %} -translate-y-1/2 input_focus:text-xs input_focus:top-3.5 input_not_empty:top-3.5 input_not_empty:text-xs"
-                  for="AddressZip_{{ form.id }}"
-                >
-                  {{ 'customer.addresses.zip' | t }}
-                </label>
+                <label for="AddressZip_{{ form.id }}">{{ 'customer.addresses.zip' | t }}</label>
               </div>
-              <div class="relative mr-auto ml-auto mb-2.5 max-w-[570px]">
+              <div class="field">
                 <input
-                  id="AddressPhone_{{ form.id }}"
-                  class="w-full input border pl-5 pr-5 pt-5 md:pl-6 pb-1 md:pb-2 focus:outline-none focus:border-current bg-transparent placeholder:opacity-0{% if settings.edges_type == 'rounded_corners' %} !rounded-md{% else %} rounded-none{% endif %}{% if is_rtl %} text-right{% endif %}"
                   type="tel"
+                  id="AddressPhone_{{ form.id }}"
                   name="address[phone]"
                   value="{{ form.phone }}"
                   autocomplete="tel"
                   placeholder="{{ 'customer.addresses.phone' | t }}"
                 >
-                <label
-                  class="absolute top-1/2{% if is_rtl %} right-5 lg:right-6{% else %} left-5 lg:left-6{% endif %} -translate-y-1/2 input_focus:text-xs input_focus:top-3.5 input_not_empty:top-3.5 input_not_empty:text-xs"
-                  for="AddressPhone_{{ form.id }}"
-                >
-                  {{ 'customer.addresses.phone' | t }}
-                </label>
+                <label for="AddressPhone_{{ form.id }}">{{ 'customer.addresses.phone' | t }}</label>
               </div>
-                <div class="flex items-center mr-auto ml-auto mt-1 mb-8 max-w-[570px]">
-                <input
-                  id="address_default_address_new"
-                  class="checkbox checkbox-checked{% if is_rtl %} ml-2{% else %} mr-2{% endif %} h-4 w-4 border checked:border-[rgba(var(--colors-text-link))] checked:bg-[rgba(var(--colors-text-link))] relative cursor-pointer{% if settings.edges_type == 'rounded_corners' %} rounded{% else %} rounded-none{% endif %}{% if is_rtl %} text-right{% endif %}"
-                  type="checkbox"
-                  name="address[default]"
-                  value="1"
-                >
+              <div>
+                {{ form.set_as_default_checkbox }}
                 <label for="address_default_address_{{ form.id }}">
                   {{ 'customer.addresses.set_default' | t }}
                 </label>
               </div>
-              <div class="max-w-[570px] mr-auto ml-auto mb-2.5">
-                <button class="button button-solid w-full block mr-auto ml-auto pt-2.5 pb-2.5 md:pt-3 md:pb-3 mt-8 leading-normal">
-                  {% assign button_label = 'customer.addresses.update' | t %}
-                  <span class="flex items-center justify-center">
-                    {% render 'button-label', button_label: button_label, show_button_style: 'primary' %}
-                  </span>
-                </button>
-                <button class="cursor-pointer inline-block mr-auto ml-auto mt-5" type="reset" @click="handleCancel('{{ address.id }}')">{{ 'customer.addresses.cancel' | t }}</button>
+              <div>
+                <button>{{ 'customer.addresses.update' | t }}</button>
+                <button type="reset">{{ 'customer.addresses.cancel' | t }}</button>
               </div>
             {%- endform -%}
           </div>
         </li>
       {%- endfor -%}
     </ul>
+
     {%- if paginate.pages > 1 -%}
-      <div class="flex justify-center mt-14">
-        {% render 'pagination', paginate: paginate, paginate_type: section.settings.paginate_type %}
-      </div>
+      {%- if paginate.parts.size > 0 -%}
+        <nav class="pagination" role="navigation" aria-label="{{ 'general.pagination.label' | t }}">
+          <ul role="list">
+            {%- if paginate.previous -%}
+              <li>
+                <a href="{{ paginate.previous.url }}" aria-label="{{ 'general.pagination.previous' | t }}">
+                  <span class="svg-wrapper">
+                    {{- 'icon-caret.svg' | inline_asset_content -}}
+                  </span>
+                </a>
+              </li>
+            {%- endif -%}
+
+            {%- for part in paginate.parts -%}
+              <li>
+                {%- if part.is_link -%}
+                  <a href="{{ part.url }}" aria-label="{{ 'general.pagination.page' | t: number: part.title }}">
+                    {{- part.title -}}
+                  </a>
+                {%- else -%}
+                  {%- if part.title == paginate.current_page -%}
+                    <span aria-current="page" aria-label="{{ 'general.pagination.page' | t: number: part.title }}">
+                      {{- part.title -}}
+                    </span>
+                  {%- else -%}
+                    <span>{{ part.title }}</span>
+                  {%- endif -%}
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+
+            {%- if paginate.next -%}
+              <li>
+                <a href="{{ paginate.next.url }}" aria-label="{{ 'general.pagination.next' | t }}">
+                  <span class="svg-wrapper">
+                    {{- 'icon-caret.svg' | inline_asset_content -}}
+                  </span>
+                </a>
+              </li>
+            {%- endif -%}
+          </ul>
+        </nav>
+      {%- endif -%}
     {%- endif -%}
   </div>
 {%- endpaginate -%}
-<script src="{{ 'customer-addresses.js' | asset_url }}" defer></script>
+
+<script>
+  window.addEventListener('load', () => {
+    typeof CustomerAddresses !== 'undefined' && new CustomerAddresses();
+  });
+</script>
+
 {% schema %}
-{"name":"t:sections.main-addresses.name","settings":[{"type":"select","id":"paginate_type","options":[{"value":"circle","label":"t:sections.main-collection-product-grid.settings.paginate_type.options__1.label"},{"value":"underline","label":"t:sections.main-collection-product-grid.settings.paginate_type.options__2.label"}],"default":"circle","label":"t:sections.main-collection-product-grid.settings.paginate_type.label"},{"type":"header","content":"t:sections.all.padding.section_padding_heading"},{"type":"range","id":"top_padding","min":0,"max":100,"step":4,"unit":"px","label":"t:sections.all.padding.padding_top","default":52},{"type":"range","id":"bottom_padding","min":0,"max":100,"step":4,"unit":"px","label":"t:sections.all.padding.padding_bottom","default":52},{"type":"header","content":"t:sections.all.padding.section_layout_mobile"},{"type":"range","id":"top_padding_mobile","min":0,"max":100,"step":4,"unit":"px","label":"t:sections.all.padding.padding_top","default":52},{"type":"range","id":"bottom_padding_mobile","min":0,"max":100,"step":4,"unit":"px","label":"t:sections.all.padding.padding_bottom","default":52}]}
+{
+  "name": "t:sections.main-addresses.name",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ]
+}
 {% endschema %}
