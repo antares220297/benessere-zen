@@ -880,3 +880,147 @@ body.template-blog .article-card__footer a:hover {
   background: var(--bz-gold);
   color: var(--bz-bg);
 }
+
+/* === Article page (template-article) ===
+   Hooks Dawn classes verified in sections/main-article.liquid:
+   .article-template, .article-template__title, .article-template
+   __content, .article-template__back, .caption-with-letter-spacing.
+   No color_scheme in main-article schema — body class scoping. */
+
+body.template-article {
+  background: var(--bz-bg);
+  color: var(--bz-text);
+}
+
+body.template-article .article-template__title {
+  font-family: var(--bz-font-display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(2.6rem, 5vw, 4.4rem);
+  line-height: 1.05;
+  color: var(--bz-text);
+  letter-spacing: 0;
+  margin-bottom: 1.6rem;
+}
+
+body.template-article .caption-with-letter-spacing,
+body.template-article .article-template .circle-divider {
+  font-family: var(--bz-font-ui);
+  font-size: 1rem;
+  letter-spacing: 0.3rem;
+  text-transform: uppercase;
+  color: var(--bz-muted);
+}
+
+/* Hero image frame */
+body.template-article .article-template__hero {
+  border: 1px solid var(--bz-border);
+}
+
+/* === Article body content (.rte) === */
+body.template-article .article-template__content,
+body.template-article .article-template__content.rte {
+  font-family: var(--bz-font-body);
+  font-size: 1.6rem;
+  line-height: 1.9;
+  color: var(--bz-muted);
+}
+body.template-article .article-template__content p {
+  margin: 0 0 1.6rem;
+}
+body.template-article .article-template__content h2 {
+  font-family: var(--bz-font-display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(2.2rem, 3.6vw, 3rem);
+  color: var(--bz-text);
+  margin: 4rem 0 1.4rem;
+}
+body.template-article .article-template__content h3 {
+  font-family: var(--bz-font-display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(1.8rem, 2.6vw, 2.2rem);
+  color: var(--bz-text);
+  margin: 3rem 0 1.2rem;
+}
+body.template-article .article-template__content h4 {
+  font-family: var(--bz-font-ui);
+  font-size: 1.2rem;
+  letter-spacing: 0.3rem;
+  text-transform: uppercase;
+  color: var(--bz-gold);
+  margin: 2.4rem 0 1rem;
+}
+body.template-article .article-template__content a {
+  color: var(--bz-gold);
+  text-decoration: none;
+  border-bottom: 1px solid var(--bz-border-gold);
+  transition: border-color var(--bz-duration) var(--bz-ease);
+}
+body.template-article .article-template__content a:hover {
+  border-bottom-color: var(--bz-gold);
+}
+body.template-article .article-template__content strong,
+body.template-article .article-template__content b {
+  color: var(--bz-text);
+  font-weight: 400;
+}
+body.template-article .article-template__content em,
+body.template-article .article-template__content i {
+  color: var(--bz-text);
+  font-style: italic;
+}
+body.template-article .article-template__content blockquote {
+  border-left: 2px solid var(--bz-gold);
+  padding: 0.8rem 0 0.8rem 2rem;
+  margin: 2.4rem 0;
+  font-family: var(--bz-font-display);
+  font-style: italic;
+  font-size: 1.8rem;
+  line-height: 1.5;
+  color: var(--bz-text);
+}
+body.template-article .article-template__content ul,
+body.template-article .article-template__content ol {
+  padding-left: 1.6rem;
+  margin: 0 0 1.6rem;
+}
+body.template-article .article-template__content li {
+  margin-bottom: 0.6rem;
+}
+body.template-article .article-template__content hr {
+  border: none;
+  border-top: 1px solid var(--bz-border);
+  margin: 3rem auto;
+  width: 6rem;
+}
+
+/* Social share row + back link */
+body.template-article .article-template__social-sharing {
+  border-top: 1px solid var(--bz-border);
+  border-bottom: 1px solid var(--bz-border);
+  padding: 2rem 0;
+  margin: 3rem 0 2rem;
+}
+body.template-article .article-template__back .article-template__link {
+  font-family: var(--bz-font-ui);
+  font-size: 1.05rem;
+  letter-spacing: 0.3rem;
+  text-transform: uppercase;
+  color: var(--bz-gold);
+  text-decoration: none;
+}
+body.template-article .article-template__back .article-template__link:hover {
+  color: var(--bz-gold-light);
+}
+
+/* Comments — keep readable but quietly branded */
+body.template-article .article-template__comment-wrapper {
+  background: var(--bz-bg-2);
+  border-top: 1px solid var(--bz-border-gold);
+}
+body.template-article .article-template__comments-comment {
+  border-bottom: 1px solid var(--bz-border);
+  padding: 1.6rem 0;
+}
