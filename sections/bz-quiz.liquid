@@ -717,6 +717,38 @@
     var ADVANCE_DELAY = 400;
     var TRANSITION_MS = 300;
 
+    /* Bundle per chakra (3 prodotti ciascuno).
+       Gli handle qui sotto sono PLACEHOLDER. Simona deve sostituirli
+       con gli handle reali dei prodotti Shopify una volta scelti i
+       21 prodotti del catalogo bundle. */
+    var CHAKRA_BUNDLES = {
+      // TODO: sostituire con handle reali
+      1: ['bundle-chakra-1-prodotto-1', 'bundle-chakra-1-prodotto-2', 'bundle-chakra-1-prodotto-3'],
+      // TODO: sostituire con handle reali
+      2: ['bundle-chakra-2-prodotto-1', 'bundle-chakra-2-prodotto-2', 'bundle-chakra-2-prodotto-3'],
+      // TODO: sostituire con handle reali
+      3: ['bundle-chakra-3-prodotto-1', 'bundle-chakra-3-prodotto-2', 'bundle-chakra-3-prodotto-3'],
+      // TODO: sostituire con handle reali
+      4: ['bundle-chakra-4-prodotto-1', 'bundle-chakra-4-prodotto-2', 'bundle-chakra-4-prodotto-3'],
+      // TODO: sostituire con handle reali
+      5: ['bundle-chakra-5-prodotto-1', 'bundle-chakra-5-prodotto-2', 'bundle-chakra-5-prodotto-3'],
+      // TODO: sostituire con handle reali
+      6: ['bundle-chakra-6-prodotto-1', 'bundle-chakra-6-prodotto-2', 'bundle-chakra-6-prodotto-3'],
+      // TODO: sostituire con handle reali
+      7: ['bundle-chakra-7-prodotto-1', 'bundle-chakra-7-prodotto-2', 'bundle-chakra-7-prodotto-3']
+    };
+
+    /* Descrizione 2-3 frasi per ogni chakra, mostrata sotto al nome. */
+    var CHAKRA_DESCRIPTIONS = {
+      1: 'Quando le radici tremano, il corpo cerca terra. Hai bisogno di rallentare, di sentire il peso del tuo essere, di tornare alle cose che restano.',
+      2: 'L’acqua del piacere e della creatività si è fatta densa. È il momento di muoverti, di sentire, di lasciar fluire ciò che resta trattenuto.',
+      3: 'Il fuoco interno chiede di essere riacceso. Ritrova la tua volontà — il sì alle cose che ti nutrono, il no a ciò che ti consuma.',
+      4: 'Il petto si è chiuso, anche solo un poco. Il cuore chiede di ricordare la tenerezza, prima verso te stesso, poi verso il mondo.',
+      5: 'Qualcosa non è stato detto. Il chakra della gola ti invita a ritrovare la tua voce, a esprimere la verità che porti dentro.',
+      6: 'La visione interiore si è offuscata. Fidati dell’intuizione, guarda oltre il rumore quotidiano per ritrovare la direzione.',
+      7: 'Il legame con il più grande di te si è assottigliato. Concediti silenzio, spazio, una pausa dal fare — la connessione torna quando smetti di cercarla.'
+    };
+
     document.querySelectorAll('.bz-quiz').forEach(initQuiz);
 
     function initQuiz(root) {
@@ -727,11 +759,21 @@
       };
       var startBtn      = root.querySelector('[data-action="start"]');
       var restartBtn    = root.querySelector('[data-action="restart"]');
+      var addBundleBtn  = root.querySelector('[data-action="add-bundle"]');
       var questionWrap  = root.querySelector('.bz-quiz__question-wrap');
       var progressFill  = root.querySelector('.bz-quiz__progress-fill');
       var progressLabel = root.querySelector('.bz-quiz__progress-label');
+      var glyphSlot     = root.querySelector('[data-slot="glyph"]');
+      var nameSlot      = root.querySelector('[data-slot="name"]');
+      var descSlot      = root.querySelector('[data-slot="desc"]');
+      var bundleSlot    = root.querySelector('[data-slot="bundle"]');
+      var resultPhase   = phases.result;
 
       var state = freshState();
+      // Loaded products for the current result, used by add-to-cart.
+      var currentBundle = [];
+      // Cache of /products/<handle>.js responses across quiz attempts.
+      var productCache = {};
 
       if (startBtn) {
         startBtn.addEventListener('click', function () {
@@ -744,8 +786,13 @@
       if (restartBtn) {
         restartBtn.addEventListener('click', function () {
           state = freshState();
+          currentBundle = [];
           showPhase('intro');
         });
+      }
+
+      if (addBundleBtn) {
+        addBundleBtn.addEventListener('click', addBundleToCart);
       }
 
       function freshState() {
@@ -838,6 +885,7 @@
         setTimeout(function () {
           if (isLast) {
             calculateResult();
+            renderResult(state.dominant);
             showPhase('result');
           } else {
             renderQuestion(state.current + 1, true);
@@ -858,13 +906,149 @@
         state.dominant  = sorted.length > 0 ? sorted[0].idx + 1 : 4;
         state.secondary = sorted.length > 1 ? sorted[1].idx + 1 : 7;
 
-        // Esposto sul DOM così la Parte C (rendering risultato) lo trova.
         root.dataset.dominant  = state.dominant;
         root.dataset.secondary = state.secondary;
+      }
+
+      function renderResult(chakraId) {
+        var chakra = (window.BZ_CHAKRAS || [])[chakraId - 1];
+        if (!chakra) return;
+
+        if (resultPhase) resultPhase.style.setProperty('--quiz-color', chakra.hex);
+
+        var template = root.querySelector('.bz-quiz__glyph-templates template[data-chakra="' + chakraId + '"]');
+        if (glyphSlot && template && template.content) {
+          glyphSlot.innerHTML = '';
+          glyphSlot.appendChild(template.content.cloneNode(true));
+        }
+
+        if (nameSlot) {
+          nameSlot.innerHTML =
+            '<span class="bz-quiz__result-sk">' + escapeHtml(chakra.sk) + '</span>' +
+            '<span class="bz-quiz__result-it">' + escapeHtml(chakra.it) + '</span>' +
+            '<span class="bz-quiz__result-intent">' + escapeHtml(chakra.intent) + '</span>';
+        }
+
+        if (descSlot) {
+          descSlot.textContent = CHAKRA_DESCRIPTIONS[chakraId] || '';
+        }
+
+        var handles = CHAKRA_BUNDLES[chakraId] || [];
+        renderBundle(handles);
+      }
+
+      function renderBundle(handles) {
+        if (!bundleSlot) return;
+        currentBundle = handles.map(function (h) {
+          return { handle: h, variantId: null, ok: false };
+        });
+
+        // Render skeletons immediately, then upgrade each card on fetch.
+        bundleSlot.innerHTML = handles.map(function (h, i) {
+          return '<div class="bz-quiz__bundle-card" data-bundle-slot="' + i + '" aria-busy="true">' +
+                   '<div class="bz-quiz__bundle-card-image bz-quiz__bundle-card-image--placeholder"></div>' +
+                   '<span class="bz-quiz__bundle-card-placeholder">In arrivo&hellip;</span>' +
+                 '</div>';
+        }).join('');
+
+        handles.forEach(function (handle, i) {
+          fetchProduct(handle).then(function (product) {
+            currentBundle[i] = { handle: handle, variantId: product.variants[0].id, ok: true };
+            replaceCard(i, productCardHTML(product));
+          }).catch(function () {
+            replaceCard(i, placeholderCardHTML(handle));
+          });
+        });
+      }
+
+      function fetchProduct(handle) {
+        if (productCache[handle]) return Promise.resolve(productCache[handle]);
+        return fetch('/products/' + encodeURIComponent(handle) + '.js', {
+          headers: { 'Accept': 'application/json' }
+        }).then(function (res) {
+          if (!res.ok) throw new Error('product not found: ' + handle);
+          return res.json();
+        }).then(function (product) {
+          productCache[handle] = product;
+          return product;
+        });
+      }
+
+      function replaceCard(index, html) {
+        var card = bundleSlot.querySelector('[data-bundle-slot="' + index + '"]');
+        if (!card) return;
+        var holder = document.createElement('div');
+        holder.innerHTML = html;
+        var fresh = holder.firstElementChild;
+        fresh.dataset.bundleSlot = String(index);
+        card.replaceWith(fresh);
+      }
+
+      function productCardHTML(product) {
+        var image = product.featured_image || (product.images && product.images[0]) || '';
+        var imgTag = image
+          ? '<img src="' + escapeHtml(image) + '" alt="' + escapeHtml(product.title) + '" loading="lazy">'
+          : '';
+        return '<a href="/products/' + encodeURIComponent(product.handle) + '" class="bz-quiz__bundle-card">' +
+                 '<div class="bz-quiz__bundle-card-image' + (image ? '' : ' bz-quiz__bundle-card-image--placeholder') + '">' + imgTag + '</div>' +
+                 '<h4 class="bz-quiz__bundle-card-title">' + escapeHtml(product.title) + '</h4>' +
+                 '<div class="bz-quiz__bundle-card-price">' + formatPrice(product.price) + '</div>' +
+               '</a>';
+      }
+
+      function placeholderCardHTML(handle) {
+        return '<div class="bz-quiz__bundle-card">' +
+                 '<div class="bz-quiz__bundle-card-image bz-quiz__bundle-card-image--placeholder"></div>' +
+                 '<span class="bz-quiz__bundle-card-placeholder">Prodotto in arrivo</span>' +
+               '</div>';
+      }
+
+      /* Add the 3 bundle products to the cart in sequence, then redirect
+         to /discount/<code>?redirect=/cart so Shopify auto-applies the
+         discount and lands on the cart page. */
+      function addBundleToCart() {
+        var available = currentBundle.filter(function (b) { return b.variantId; });
+        if (available.length === 0 || addBundleBtn.classList.contains('is-loading')) return;
+
+        var defaultLabel = addBundleBtn.textContent;
+        addBundleBtn.classList.add('is-loading');
+        addBundleBtn.disabled = true;
+
+        function addNext(i) {
+          if (i >= available.length) {
+            var code = root.dataset.discountCode || 'RITUALE15';
+            window.location.href = '/discount/' + encodeURIComponent(code) + '?redirect=/cart';
+            return;
+          }
+          fetch('/cart/add.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({ id: available[i].variantId, quantity: 1 })
+          }).then(function (res) {
+            if (!res.ok) throw new Error('cart add failed: ' + available[i].handle);
+            addNext(i + 1);
+          }).catch(function (err) {
+            console.error('Quiz bundle:', err);
+            // Continue with the rest — partial bundle is better than nothing.
+            addNext(i + 1);
+          });
+        }
+        addNext(0);
       }
     }
 
     function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+    function formatPrice(cents) {
+      var n = Number(cents);
+      if (!isFinite(n)) return '';
+      try {
+        var currency = (window.Shopify && window.Shopify.currency && window.Shopify.currency.active) || 'EUR';
+        return new Intl.NumberFormat('it-IT', { style: 'currency', currency: currency }).format(n / 100);
+      } catch (e) {
+        return '€ ' + (n / 100).toFixed(2).replace('.', ',');
+      }
+    }
 
     function escapeHtml(s) {
       return String(s)
