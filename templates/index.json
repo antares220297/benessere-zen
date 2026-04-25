@@ -21,6 +21,44 @@
         "subtext": "I sette centri energetici del corpo sono la nostra mappa. Passa il mouse su un chakra per scoprirlo."
       }
     },
+    "bz_collections": {
+      "type": "bz-collections",
+      "blocks": {
+        "col_root": {
+          "type": "collection",
+          "settings": {
+            "chakra_id": 1,
+            "title_override": "Cristalli Radice",
+            "subtitle": "Mūlādhāra · Radicamento",
+            "cta_label": "Scopri"
+          }
+        },
+        "col_heart": {
+          "type": "collection",
+          "settings": {
+            "chakra_id": 4,
+            "title_override": "Cristalli Cuore",
+            "subtitle": "Anāhata · Compassione",
+            "cta_label": "Scopri"
+          }
+        },
+        "col_crown": {
+          "type": "collection",
+          "settings": {
+            "chakra_id": 7,
+            "title_override": "Cristalli Corona",
+            "subtitle": "Sahasrāra · Coscienza",
+            "cta_label": "Scopri"
+          }
+        }
+      },
+      "block_order": ["col_root", "col_heart", "col_crown"],
+      "settings": {
+        "color_scheme": "scheme-4",
+        "eyebrow": "Collezioni in evidenza",
+        "heading": "I rituali più amati"
+      }
+    },
     "image_banner": {
       "type": "image-banner",
       "blocks": {
@@ -223,6 +261,7 @@
   "order": [
     "bz_hero_main",
     "bz_chakra_portal",
+    "bz_collections",
     "image_banner",
     "rich_text",
     "featured_collection",
