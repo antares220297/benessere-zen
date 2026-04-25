@@ -8,3 +8,6 @@
 ehthumbs.db
 Thumbs.db
 .shopify
+
+# Local design references (not part of the Shopify theme)
+overhaul/
