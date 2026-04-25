@@ -576,3 +576,158 @@ fieldset.product-form__input legend.form__label {
     margin-top: 0;
   }
 }
+
+/* === Collection page brand overrides ===
+   Hooks Dawn classes verified in main-collection-banner.liquid,
+   main-collection-product-grid.liquid, component-card.css,
+   component-facets.css, component-pagination.css. */
+
+/* Banner — only renders for non-chakra collections (chakra ones
+   are hidden via show_collection_description=false in template) */
+.collection-hero__title {
+  font-family: var(--bz-font-display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(2.4rem, 4vw, 3.6rem);
+  color: var(--bz-text);
+  letter-spacing: 0;
+}
+.collection-hero__description {
+  font-family: var(--bz-font-body);
+  font-size: 1.5rem;
+  line-height: 1.8;
+  color: var(--bz-muted);
+}
+
+/* Product card */
+.card-wrapper .card,
+.card-wrapper .card .card__inner {
+  background: transparent;
+}
+.card .card__heading,
+.card .card__heading a {
+  font-family: var(--bz-font-display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 1.8rem;
+  line-height: 1.2;
+  color: var(--bz-text);
+  letter-spacing: 0;
+  text-decoration: none;
+}
+.card .card-information .price,
+.card .card-information .price-item,
+.card .card-information .price-item--regular,
+.card .card-information .price-item--sale {
+  font-family: var(--bz-font-ui);
+  font-size: 1.2rem;
+  letter-spacing: 0.2rem;
+  color: var(--bz-gold);
+}
+.card-information .price__sale .price-item--regular {
+  color: var(--bz-muted);
+  text-decoration: line-through;
+}
+.card .card__media {
+  border: 1px solid transparent;
+  transition: border-color var(--bz-duration) var(--bz-ease);
+}
+.card-wrapper:hover .card__media,
+.card-wrapper:focus-within .card__media {
+  border-color: var(--bz-border-gold);
+}
+.card-wrapper .card__inner:after,
+.card-wrapper .card:after {
+  display: none; /* drop Dawn's default shadow halo */
+}
+
+/* === Filters / sort === */
+.facets,
+.facets-vertical-form,
+.facet-filters {
+  font-family: var(--bz-font-ui);
+}
+.facets__heading,
+.facet-filters__label,
+.facets__display-date {
+  font-family: var(--bz-font-ui);
+  font-size: 1.1rem;
+  letter-spacing: 0.25rem;
+  text-transform: uppercase;
+  color: var(--bz-muted);
+}
+.facets-container summary,
+.facets__summary,
+.facets__disclosure-vertical summary {
+  font-family: var(--bz-font-ui);
+  font-size: 1.2rem;
+  letter-spacing: 0.25rem;
+  text-transform: uppercase;
+  color: var(--bz-text);
+  border-top: 1px solid var(--bz-border);
+  padding: 1.4rem 0;
+}
+.facets__list .facet-checkbox label,
+.facets__list .facet-checkbox {
+  font-family: var(--bz-font-body);
+  color: var(--bz-text);
+}
+.active-facets__button {
+  border: 1px solid var(--bz-border-gold);
+  color: var(--bz-gold);
+  background: transparent;
+}
+.active-facets__button:hover {
+  background: rgba(201, 168, 76, 0.08);
+}
+
+/* Sort select */
+.facets__form .select__select,
+.facet-filters__field .select select {
+  background: transparent;
+  border: 1px solid var(--bz-border);
+  color: var(--bz-text);
+  font-family: var(--bz-font-ui);
+  font-size: 1.1rem;
+  letter-spacing: 0.2rem;
+  text-transform: uppercase;
+}
+
+/* Result count */
+.collection .product-count,
+.product-count__text {
+  font-family: var(--bz-font-ui);
+  font-size: 1rem;
+  letter-spacing: 0.25rem;
+  text-transform: uppercase;
+  color: var(--bz-muted);
+}
+
+/* === Pagination === */
+.pagination-wrapper {
+  margin-top: 4rem;
+}
+.pagination__list {
+  gap: 0.6rem;
+}
+.pagination__item {
+  font-family: var(--bz-font-ui);
+  font-size: 1.1rem;
+  letter-spacing: 0.2rem;
+  color: var(--bz-muted);
+  border: 1px solid var(--bz-border);
+  background: transparent;
+  text-decoration: none;
+  transition: border-color var(--bz-duration) var(--bz-ease),
+              color var(--bz-duration) var(--bz-ease);
+}
+.pagination__item:hover {
+  border-color: var(--bz-gold);
+  color: var(--bz-gold);
+}
+.pagination__item.pagination__item--current,
+.pagination__item--current {
+  border-color: var(--bz-gold);
+  color: var(--bz-gold);
+  background: rgba(201, 168, 76, 0.08);
+}
