@@ -1,5 +1,15 @@
 {
   "sections": {
+    "bz_blog_hero": {
+      "type": "bz-blog-hero",
+      "settings": {
+        "color_scheme": "scheme-4",
+        "eyebrow": "Il Giornale Zen",
+        "subtext": "Guide ai cristalli, rituali lunari, meditazioni guidate. Letture brevi per portare la pratica nel quotidiano.",
+        "padding_top": 96,
+        "padding_bottom": 24
+      }
+    },
     "main": {
       "type": "main-blog",
       "settings": {
@@ -8,12 +18,13 @@
         "image_height": "medium",
         "show_date": true,
         "show_author": false,
-        "padding_top": 36,
-        "padding_bottom": 36
+        "padding_top": 24,
+        "padding_bottom": 80
       }
     }
   },
   "order": [
+    "bz_blog_hero",
     "main"
   ]
 }
