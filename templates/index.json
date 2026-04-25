@@ -1,5 +1,17 @@
 {
   "sections": {
+    "bz_hero_main": {
+      "type": "bz-hero",
+      "settings": {
+        "text_1": "Respira.",
+        "text_2": "Lascia andare.",
+        "text_3": "Trova il tuo equilibrio.",
+        "cta_text_1": "Scopri la collezione",
+        "cta_link_1": "shopify://collections/all",
+        "cta_text_2": "Fai il quiz →",
+        "cta_link_2": ""
+      }
+    },
     "image_banner": {
       "type": "image-banner",
       "blocks": {
@@ -200,6 +212,7 @@
     }
   },
   "order": [
+    "bz_hero_main",
     "image_banner",
     "rich_text",
     "featured_collection",
