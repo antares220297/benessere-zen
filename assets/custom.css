@@ -377,3 +377,75 @@ details[open] > .header__menu-item,
   font-size: 1.4rem;
   color: var(--bz-gold);
 }
+
+/* === Footer brand overrides ===
+   Dawn classes confirmed from sections/footer.liquid + section-footer.css:
+   .footer, .footer__content-top/bottom, .footer-block__heading,
+   .footer-block__brand-info, .footer__copyright, .copyright__content.
+   Social uses .list-social / .list-social__link / .list-social__item
+   (from snippets/social-icons.liquid). */
+
+.footer {
+  border-top: 1px solid var(--bz-border-gold);
+}
+
+/* Block headings ("Quick links", "Info", brand headline …) */
+.footer-block__heading {
+  font-family: var(--bz-font-display);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--bz-gold);
+  letter-spacing: 0.2rem;
+}
+
+/* Footer link lists — link_list block + brand block links */
+.footer-block__details-content a,
+.footer-block__brand-info a {
+  font-family: var(--bz-font-ui);
+  font-size: 1.1rem;
+  letter-spacing: 0.2rem;
+  text-transform: uppercase;
+  color: var(--bz-muted);
+  text-decoration: none;
+  transition: color var(--bz-duration) var(--bz-ease);
+}
+.footer-block__details-content a:hover,
+.footer-block__details-content a:focus-visible,
+.footer-block__brand-info a:hover,
+.footer-block__brand-info a:focus-visible {
+  color: var(--bz-gold);
+  text-decoration: none;
+}
+
+/* Copyright row — UI font, muted, low emphasis */
+.footer__copyright .copyright__content {
+  font-family: var(--bz-font-ui);
+  font-size: 1rem;
+  letter-spacing: 0.2rem;
+  text-transform: uppercase;
+  color: var(--bz-muted);
+  opacity: 0.7;
+}
+.footer__copyright .copyright__content a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--bz-duration) var(--bz-ease);
+}
+.footer__copyright .copyright__content a:hover,
+.footer__copyright .copyright__content a:focus-visible {
+  color: var(--bz-gold);
+  opacity: 1;
+}
+
+/* Social icons in the footer — gold tint on hover */
+.footer .list-social__link {
+  transition: color var(--bz-duration) var(--bz-ease),
+              transform var(--bz-duration) var(--bz-ease);
+}
+.footer .list-social__link:hover .icon,
+.footer .list-social__link:focus-visible .icon {
+  color: var(--bz-gold);
+}
+.footer .list-social__link:hover {
+  transform: translateY(-1px);
+}
