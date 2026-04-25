@@ -1,4 +1,45 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Josefin+Sans:wght@300;400;500;600&family=Lato:wght@300;400;700&display=swap');
+
+/* === BenesserEZen — Brand Tokens === */
+:root {
+  /* Backgrounds */
+  --bz-bg:           #0F0F0F;
+  --bz-bg-2:         #111118;
+  --bz-bg-3:         #1A1A2E;
+
+  /* Gold accent */
+  --bz-gold:         #C9A84C;
+  --bz-gold-light:   #E8D27A;
+  --bz-gold-dim:     rgba(201, 168, 76, 0.25);
+
+  /* Text */
+  --bz-text:         #E8E8E8;
+  --bz-muted:        rgba(232, 232, 232, 0.45);
+
+  /* Borders */
+  --bz-border:       rgba(232, 232, 232, 0.07);
+  --bz-border-gold:  rgba(201, 168, 76, 0.25);
+
+  /* Typography */
+  --bz-font-display: 'Cormorant Garamond', Georgia, serif;
+  --bz-font-ui:      'Josefin Sans', sans-serif;
+  --bz-font-body:    'Lato', sans-serif;
+
+  /* Motion */
+  --bz-ease:          cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --bz-ease-out:      cubic-bezier(0.0, 0.0, 0.2, 1);
+  --bz-duration:      0.4s;
+  --bz-duration-slow: 0.8s;
+
+  /* 7 Chakra — colori categoriali (usati in navigazione, badge, card) */
+  --chakra-1: #CC3333;   /* Muladhara    — Radice        */
+  --chakra-2: #E07030;   /* Svadhisthana — Sacrale       */
+  --chakra-3: #C9A020;   /* Manipura     — Plesso Solare */
+  --chakra-4: #2ECC71;   /* Anahata      — Cuore         */
+  --chakra-5: #3399DD;   /* Vishuddha    — Gola          */
+  --chakra-6: #7744CC;   /* Ajna         — Terzo Occhio  */
+  --chakra-7: #9B59B6;   /* Sahasrara    — Corona        */
+}
 
 /* === Homepage: heading UNIFICATI SOLO PER LE SEZIONI (Eurus) === */
 :root{
