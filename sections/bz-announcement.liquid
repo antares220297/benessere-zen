@@ -22,7 +22,11 @@
       <div class="rot{% if message_count == 1 %} is-single{% endif %}" aria-hidden="true">
         {%- for block in section.blocks -%}
           {%- if block.settings.text != blank -%}
-            <span {{ block.shopify_attributes }}>{{ block.settings.text | escape }}</span>
+            {%- assign mobile_text = block.settings.text_mobile | default: block.settings.text -%}
+            <span {{ block.shopify_attributes }}{% if mobile_text.size > 42 %} class="is-long"{% endif %}>
+              <span class="ann-long">{{ block.settings.text | escape }}</span>
+              <span class="ann-short">{{ mobile_text | escape }}</span>
+            </span>
           {%- endif -%}
         {%- endfor -%}
       </div>
@@ -78,6 +82,12 @@
           "id": "text",
           "label": "Testo",
           "info": "Lascia vuoto per nascondere. Conferma tempi di ritiro e giorni di reso prima di pubblicare: non sono dati di checkout."
+        },
+        {
+          "type": "text",
+          "id": "text_mobile",
+          "label": "Testo breve su telefono",
+          "info": "Se è vuoto si usa il testo intero. Su schermi stretti una frase lunga scorre, non viene tagliata a metà."
         }
       ]
     }

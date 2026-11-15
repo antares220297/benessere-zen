@@ -1,23 +1,77 @@
 /* Announcement bar: narrow screens and reduced motion. */
 
+.ann-short {
+  display: none;
+}
+
 @media (max-width: 860px) {
   .bz .ann .rot {
-    width: min(250px, 68vw);
+    width: calc(100vw - 32px);
+    max-width: calc(100vw - 32px);
+    text-align: center;
   }
 
   .bz .ann .pill {
     display: none;
   }
+
+  .bz .ann .rot > span {
+    text-align: center;
+  }
+
+  .ann-long {
+    display: none;
+  }
+
+  .ann-short {
+    display: inline;
+  }
+
+  .bz .ann .rot > span.is-long {
+    display: block;
+    width: max-content;
+    text-align: left;
+    animation: bz-marquee 14s linear infinite;
+  }
+
+  .bz .ann .rot > span.is-long .ann-long {
+    display: inline;
+  }
+
+  .bz .ann .rot > span.is-long .ann-short {
+    display: none;
+  }
+}
+
+@keyframes bz-marquee {
+  0%,
+  12% {
+    transform: translateX(0);
+  }
+  88%,
+  100% {
+    transform: translateX(calc(-100% + (100vw - 32px)));
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bz .ann .rot span {
+  .bz .ann .rot > span.is-long {
+    animation: none;
+    width: auto;
+    max-width: 100%;
+    text-align: center;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bz .ann .rot > span {
     animation: none;
     opacity: 0;
     transform: none;
   }
 
-  .bz .ann .rot span:first-child {
+  .bz .ann .rot > span:first-child {
     opacity: 1;
   }
 }

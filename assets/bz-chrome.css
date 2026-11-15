@@ -443,8 +443,14 @@
     cursor: pointer;
   }
 
+  .bz-header {
+    column-gap: 10px;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
   .bz-brand {
-    justify-self: center;
+    justify-self: start;
     gap: 9px;
   }
 
@@ -502,6 +508,38 @@
     height: 34px;
     padding: 0 13px;
     font-size: 13.5px;
+  }
+}
+
+@media (max-width: 600px) {
+  .bz-search__panel {
+    grid-template-columns: 1fr;
+    left: 0;
+    right: 0;
+    width: auto;
+    padding: 16px;
+    gap: 18px;
+  }
+
+  .bz-search__results {
+    order: -1;
+  }
+
+  .bz-hit {
+    grid-template-columns: 56px minmax(0, 1fr) auto;
+  }
+
+  .bz-hit__price {
+    white-space: nowrap;
+  }
+
+  .bz-chips {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .bz-chip {
+    width: auto;
   }
 }
 

@@ -538,19 +538,22 @@
         "msg-ritiro": {
           "type": "message",
           "settings": {
-            "text": "Ritiro gratuito in negozio, di solito pronto in 4 ore"
+            "text": "Ritiro gratuito in negozio, di solito pronto in 4 ore",
+            "text_mobile": "Ritiro gratuito in negozio, in 4 ore"
           }
         },
         "msg-reso": {
           "type": "message",
           "settings": {
-            "text": "Reso entro 14 giorni"
+            "text": "Reso entro 14 giorni",
+            "text_mobile": "Reso entro 14 giorni"
           }
         },
         "msg-negozio": {
           "type": "message",
           "settings": {
-            "text": "Ogni pezzo del sito è anche in negozio"
+            "text": "Ogni pezzo del sito è anche in negozio",
+            "text_mobile": "Ogni pezzo è anche in negozio"
           }
         }
       },
