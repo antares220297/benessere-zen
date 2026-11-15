@@ -13,8 +13,16 @@
     </div>
     <div class="bz-grid">
       {%- if section.settings.collection != blank -%}
-        {%- for item in section.settings.collection.products limit: section.settings.limit -%}
-          {% render 'bz-card', product: item %}
+        {%- assign shown = 0 -%}
+        {%- assign room = section.settings.limit | plus: 1 -%}
+        {%- for item in section.settings.collection.products limit: room -%}
+          {%- unless product != blank and item.id == product.id -%}
+            {% render 'bz-card', product: item %}
+            {%- assign shown = shown | plus: 1 -%}
+          {%- endunless -%}
+          {%- if shown == section.settings.limit -%}
+            {%- break -%}
+          {%- endif -%}
         {%- endfor -%}
       {%- endif -%}
     </div>

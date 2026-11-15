@@ -56,6 +56,7 @@
   height: 46px; margin-bottom: 12px; padding: 0 16px;
   border-radius: 999px; border: 1px solid rgba(238,231,219,.24); background: #201e1b;
 }
+.bz-side__search svg { width: 17px; height: 17px; stroke: #c9a96e; fill: none; stroke-width: 1.7; flex: none; }
 .bz-side__search input {
   flex: 1; border: 0; background: transparent; color: #eee7db; font: inherit; font-size: 14px; outline: none;
 }
@@ -63,6 +64,17 @@
 .bz-filters details { border-bottom: 1px solid rgba(238,231,219,.11); }
 .bz-filters summary { min-height: 48px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; list-style: none; font-weight: 500; }
 .bz-filters summary::-webkit-details-marker { display: none; }
+.bz-filters summary i {
+  width: 28px; height: 28px; border-radius: 50%; border: 1px solid rgba(201,169,110,.7);
+  display: grid; place-items: center; position: relative; flex: none;
+}
+.bz-filters summary i::before, .bz-filters summary i::after {
+  content: ""; position: absolute; background: #c9a96e;
+}
+.bz-filters summary i::before { width: 12px; height: 1.5px; }
+.bz-filters summary i::after { width: 1.5px; height: 12px; }
+.bz-filters details[open] summary i { background: #c9a96e; transform: rotate(45deg); }
+.bz-filters details[open] summary i::before, .bz-filters details[open] summary i::after { background: #17130d; }
 .bz-filters label { display: flex; align-items: center; gap: 10px; padding: 6px 0; color: #cdc4b4; font-size: 14px; }
 .bz-filters input[type="checkbox"] { accent-color: #c9a96e; width: 16px; height: 16px; }
 .bz-swatch { width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(255,255,255,.25); flex: none; }
@@ -77,15 +89,19 @@
 .bz-coll__tools select, .bz-sort, .bz-view {
   height: 40px; border-radius: 999px; border: 1px solid rgba(238,231,219,.24); background: #201e1b; color: #eee7db;
 }
-.bz-sort { display: inline-flex; align-items: center; padding: 0 14px; }
+.bz-sort { display: inline-flex; align-items: center; gap: 8px; padding: 0 14px; position: relative; }
+.bz-sort select { appearance: none; border: 0; background: transparent; color: inherit; font: inherit; padding-right: 16px; }
+.bz-sort svg, .bz-msort svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; }
 .bz-view { display: inline-flex; overflow: hidden; }
-.bz-view button { width: 40px; height: 40px; border: 0; background: transparent; color: #958d7f; }
-.bz-view button.is-on { color: #eee7db; }
+.bz-view button { width: 40px; height: 40px; border: 0; background: transparent; color: #958d7f; display: grid; place-items: center; }
+.bz-view button svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
+.bz-view button.is-on { color: #c9a96e; }
 .bz-chip-on {
   display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 12px;
   border-radius: 999px; border: 1px solid rgba(238,231,219,.24); color: #eee7db; text-decoration: none; font-size: 13px;
 }
-.bz-mobile-filters { display: none; }
+.bz-chip-on svg { width: 11px; height: 11px; stroke: currentColor; fill: none; stroke-width: 2; }
+.bz-mfilters, .bz-msort { display: none; }
 
 .bz-cgrid { display: grid; width: 100%; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
 .bz-cgrid.is-list { grid-template-columns: 1fr; }
@@ -115,7 +131,14 @@
   .bz-clay { grid-template-columns: 1fr; padding: 16px 14px 40px; }
   .bz-side { display: none; }
   .bz-side.is-open { display: block; position: fixed; z-index: 60; inset: 12px; overflow: auto; background: #141312; border-radius: 28px; padding: 16px; border: 1px solid rgba(238,231,219,.24); }
-  .bz-mobile-filters { display: flex; gap: 8px; overflow: auto; margin-bottom: 12px; }
+  .bz-mfilters { display: flex; gap: 8px; overflow: auto; margin-bottom: 10px; scrollbar-width: none; }
+  .bz-mfilters button {
+    height: 36px; padding: 0 14px; border-radius: 999px; border: 1px solid rgba(238,231,219,.24);
+    background: transparent; color: #eee7db; font: inherit; font-size: 13.5px; white-space: nowrap;
+  }
+  .bz-mfilters button.is-on { background: #eee7db; color: #17130d; border-color: #eee7db; }
+  .bz-msort { display: inline-flex; align-items: center; gap: 8px; height: 40px; margin-bottom: 12px; padding: 0 14px; border-radius: 999px; border: 1px solid rgba(238,231,219,.24); }
+  .bz-view, .bz-coll__tools .bz-sort { display: none; }
   .bz-cgrid { grid-template-columns: 1fr 1fr; }
   .bz-promo { grid-column: span 2; }
 }

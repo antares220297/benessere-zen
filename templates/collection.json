@@ -1003,7 +1003,7 @@
         "promo-2": {
           "type": "promo",
           "settings": {
-            "position": 13,
+            "position": 11,
             "style": "hours",
             "figure": "4 ore",
             "title": "",
@@ -1023,13 +1023,6 @@
     }
   },
   "order": [
-    "bz_collection",
-    "banner",
-    "rich_text_8QeJPk",
-    "9f05d7f2-771d-4719-b577-9d92b6324fe2",
-    "product-grid",
-    "452b73dc-329c-4733-af44-416b15bd417c",
-    "related_blog_posts_XFFFah",
-    "2e4a4d21-3575-4e0a-856f-6019f708f7d8"
+    "bz_collection"
   ]
 }

@@ -45,23 +45,25 @@
     <aside class="bz-side" data-bz-side>
       <form method="get" action="{{ collection.url }}">
         <label class="bz-side__search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg>
           <input type="search" name="q" value="{{ request.params.q | escape }}" placeholder="Cerca in questa collezione" data-bz-q aria-label="Cerca in questa collezione">
         </label>
         <div class="bz-filters">
           {%- if collection.filters.size == 0 -%}
-            <details open><summary>Tipo</summary>
+            <details open><summary>Tipo <i aria-hidden="true"></i></summary>
               {%- for type in collection.all_types -%}
                 <label><input type="checkbox" data-bz-type value="{{ type | escape }}">{{ type | escape }}</label>
               {%- endfor -%}
             </details>
-            <details open><summary>Prezzo</summary>
+            <details open><summary>Prezzo <i aria-hidden="true"></i></summary>
               <div class="bz-range"><input type="range" min="0" max="20000" value="0" data-bz-price="min" aria-label="Prezzo minimo"><input type="range" min="0" max="20000" value="20000" data-bz-price="max" aria-label="Prezzo massimo"></div>
-              <div class="bz-range__ends"><span>0 €</span><span>200 €</span></div>
+              <div class="bz-range__ends"><span>4 €</span><span>45 €</span></div>
             </details>
+            <details><summary>Intenzione <i aria-hidden="true"></i></summary></details>
           {%- endif -%}
           {%- for filter in collection.filters -%}
             <details open>
-              <summary>{{ filter.label | escape }}</summary>
+              <summary>{{ filter.label | escape }} <i aria-hidden="true"></i></summary>
               {%- case filter.type -%}
                 {%- when 'price_range' -%}
                   <div class="bz-range">
@@ -92,17 +94,20 @@
       </form>
     </aside>
     <div>
-      <div class="bz-mobile-filters">
-        <button type="button" class="bz-pill" data-bz-open-filters>Filtri</button>
+      <div class="bz-mfilters">
+        <button type="button" class="is-on" data-bz-open-filters>Filtri</button>
+        <button type="button" data-bz-open-filters>Tipo</button>
+        <button type="button" data-bz-open-filters>Pietra</button>
+        <button type="button" data-bz-open-filters>Prezzo</button>
+        <button type="button" data-bz-open-filters>Ordina</button>
       </div>
+      <div class="bz-msort"><span>Più scelti</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></div>
       <div class="bz-coll__tools">
         <span>
           <span data-bz-count>{{ collection.products_count }}</span> pezzi
-          {%- if request.params['filter.v.availability'] == '1' -%}
-            <a class="bz-chip-on" href="{{ collection.url }}">Disponibili</a>
-          {%- endif -%}
+          <a class="bz-chip-on" href="{{ collection.url }}">Disponibili <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></a>
         </span>
-        <span>
+        <span class="bz-tools-right">
           <label class="bz-sort">
             <select data-bz-sort aria-label="Ordina">
               {%- for option in collection.sort_options -%}
@@ -114,8 +119,8 @@
             <input type="hidden" name="sort_by" value="{{ collection.sort_by }}">
           </form>
           <span class="bz-view">
-            <button type="button" class="is-on" data-bz-view="grid" aria-label="Griglia">▦</button>
-            <button type="button" data-bz-view="list" aria-label="Elenco">≡</button>
+            <button type="button" class="is-on" data-bz-view="grid" aria-label="Griglia"><svg viewBox="0 0 16 16"><rect x="1" y="1" width="6" height="6" rx="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/></svg></button>
+            <button type="button" data-bz-view="list" aria-label="Elenco"><svg viewBox="0 0 16 16"><rect x="1" y="2" width="14" height="3" rx="1.5"/><rect x="1" y="7" width="14" height="3" rx="1.5"/><rect x="1" y="12" width="14" height="3" rx="1.5"/></svg></button>
           </span>
         </span>
       </div>
