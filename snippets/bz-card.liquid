@@ -1,0 +1,51 @@
+{% doc %}
+  Product card used on the homepage rail and, later, on collection grids.
+  @param {product} product - Product to render
+  @param {boolean} [eager] - Load the photo immediately
+{% enddoc %}
+
+{%- liquid
+  assign variant = product.selected_or_first_available_variant
+  assign cents_num = product.price | modulo: 100
+  assign euros = product.price | minus: cents_num | divided_by: 100
+  assign cents = cents_num | prepend: '00' | slice: -2, 2
+  assign secondary = product.images[1]
+  assign photo_alt = product.featured_image.alt | default: product.title
+  assign eager_load = false
+  if eager
+    assign eager_load = true
+  endif
+-%}
+
+<article class="bz-card{% unless product.available %} is-sold{% endunless %}">
+  {%- if product.available -%}
+    <form class="bz-card__form" action="{{ routes.cart_add_url }}" method="post">
+      <input type="hidden" name="id" value="{{ variant.id }}">
+      <button class="bz-card__add" type="submit" aria-label="Aggiungi {{ product.title | escape }}">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
+    </form>
+  {%- endif -%}
+  <a class="bz-card__photo" href="{{ product.url }}">
+    {%- if variant.inventory_management != blank and variant.inventory_quantity == 1 and product.available -%}
+      <span class="bz-badge">Ultimo pezzo</span>
+    {%- elsif product.available == false -%}
+      <span class="bz-badge bz-badge--quiet">Esaurito</span>
+    {%- endif -%}
+    {%- if product.featured_image != blank -%}
+      {%- if eager_load -%}
+        {{ product.featured_image | image_url: width: 800 | image_tag: alt: photo_alt, class: 'bz-card__img', widths: '240, 400, 600, 800', sizes: '(min-width: 860px) 18vw, 46vw', loading: 'eager', width: 400, height: 400 }}
+      {%- else -%}
+        {{ product.featured_image | image_url: width: 800 | image_tag: alt: photo_alt, class: 'bz-card__img', widths: '240, 400, 600, 800', sizes: '(min-width: 860px) 18vw, 46vw', loading: 'lazy', width: 400, height: 400 }}
+      {%- endif -%}
+    {%- endif -%}
+    {%- if secondary != blank -%}
+      {{ secondary | image_url: width: 800 | image_tag: alt: '', class: 'bz-card__img bz-card__img--alt', widths: '240, 400, 800', sizes: '(min-width: 860px) 18vw, 46vw', loading: 'lazy', width: 400, height: 400 }}
+    {%- endif -%}
+  </a>
+  <a class="bz-card__name" href="{{ product.url }}">{{ product.title | escape }}</a>
+  {%- if product.type != blank -%}
+    <p class="bz-card__meta"><span class="bz-card__dot" aria-hidden="true"></span>{{ product.type | escape }}</p>
+  {%- endif -%}
+  <p class="bz-card__price">{{ euros }}<sup>,{{ cents }}</sup> €</p>
+</article>

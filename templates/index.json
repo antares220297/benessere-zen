@@ -511,9 +511,184 @@
         "padding_top_mobile": 28,
         "padding_bottom_mobile": 28
       }
+    },
+    "bz_hero": {
+      "type": "bz-hero",
+      "blocks": {
+        "tile-pietre": {
+          "type": "tile",
+          "settings": {
+            "tone": "am",
+            "badge": "Novità",
+            "title": "Pietre",
+            "title_accent": "da tasca",
+            "text": "Burattate e grezze, da tenere vicino.",
+            "button_label": "Scegli la tua",
+            "collection": "pietre-burattate"
+          }
+        },
+        "tile-regali": {
+          "type": "tile",
+          "settings": {
+            "tone": "ox",
+            "figure": "25",
+            "figure_unit": "€",
+            "text": "Regali piccoli: pietre, ciondoli, scatole in velluto.",
+            "button_label": "Idee regalo",
+            "collection": "scatole-porta-gioielli"
+          }
+        }
+      },
+      "block_order": [
+        "tile-pietre",
+        "tile-regali"
+      ],
+      "settings": {
+        "heading": "Un rituale",
+        "heading_accent": "da portare addosso",
+        "text": "Mala, bracciali e ciondoli in pietra naturale. Quello che vedi qui lo trovi anche in negozio, da toccare con mano.",
+        "image_alt": "Mala in onice nero con nappa nera su legno scuro",
+        "collection": "mala-tibetani",
+        "primary_label": "Scopri i mala",
+        "primary_link": "/collections/mala-tibetani",
+        "secondary_label": "Tutti i gioielli",
+        "secondary_link": "/collections/gioielli-con-pietre"
+      }
+    },
+    "bz_spheres": {
+      "type": "bz-spheres",
+      "blocks": {
+        "sphere-0": {
+          "type": "sphere",
+          "settings": {
+            "label": "Mala",
+            "collection": "mala-tibetani",
+            "show_all": false
+          }
+        },
+        "sphere-1": {
+          "type": "sphere",
+          "settings": {
+            "label": "Bracciali",
+            "collection": "collane-e-braccialetti",
+            "show_all": false
+          }
+        },
+        "sphere-2": {
+          "type": "sphere",
+          "settings": {
+            "label": "Ciondoli",
+            "collection": "gioielli-con-pietre",
+            "show_all": false
+          }
+        },
+        "sphere-3": {
+          "type": "sphere",
+          "settings": {
+            "label": "Pietre",
+            "collection": "pietre-burattate",
+            "show_all": false
+          }
+        },
+        "sphere-4": {
+          "type": "sphere",
+          "settings": {
+            "label": "Palo santo",
+            "collection": "smudge-e-palo-santo",
+            "show_all": false
+          }
+        },
+        "sphere-5": {
+          "type": "sphere",
+          "settings": {
+            "label": "Candele",
+            "collection": "candele-e-brucia-candele",
+            "show_all": false
+          }
+        },
+        "sphere-6": {
+          "type": "sphere",
+          "settings": {
+            "label": "Pendoli",
+            "collection": "pendoli",
+            "show_all": false
+          }
+        },
+        "sphere-7": {
+          "type": "sphere",
+          "settings": {
+            "label": "Scatole",
+            "collection": "scatole-porta-gioielli",
+            "show_all": false
+          }
+        },
+        "sphere-8": {
+          "type": "sphere",
+          "settings": {
+            "label": "Tutto",
+            "collection": "all",
+            "show_all": true
+          }
+        }
+      },
+      "block_order": [
+        "sphere-0",
+        "sphere-1",
+        "sphere-2",
+        "sphere-3",
+        "sphere-4",
+        "sphere-5",
+        "sphere-6",
+        "sphere-7",
+        "sphere-8"
+      ],
+      "settings": {
+        "label": "Categorie"
+      }
+    },
+    "bz_picked": {
+      "type": "bz-picked",
+      "blocks": {
+        "tab-scelti": {
+          "type": "list",
+          "settings": {
+            "label": "Più scelti",
+            "collection": "gioielli-con-pietre"
+          }
+        },
+        "tab-novita": {
+          "type": "list",
+          "settings": {
+            "label": "Novità",
+            "collection": "mala-tibetani"
+          }
+        },
+        "tab-ultimi": {
+          "type": "list",
+          "settings": {
+            "label": "Ultimi pezzi",
+            "collection": "pietre-burattate"
+          }
+        }
+      },
+      "block_order": [
+        "tab-scelti",
+        "tab-novita",
+        "tab-ultimi"
+      ],
+      "settings": {
+        "heading": "I più",
+        "heading_accent": "scelti",
+        "link_label": "Vedi tutti",
+        "link": "/collections/gioielli-con-pietre",
+        "limit": 5
+      }
     }
   },
   "order": [
+    "bz_hero",
+    "bz_spheres",
+    "bz_picked",
     "intro_mission_wB3Jqn",
     "d557b959-57cb-476f-adb6-18808587f120",
     "zen_collections_Q8Gb6r",
