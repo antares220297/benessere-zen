@@ -1,0 +1,549 @@
+/* Home middle: promo bento, stone cards, ritual set. */
+
+.bz-mid {
+  color: #eee7db;
+  font-family: Figtree, var(--sans), system-ui, sans-serif;
+  background: #141312;
+}
+
+.bz-mid,
+.bz-mid * {
+  box-sizing: border-box;
+}
+
+.bz-mid h2,
+.bz-mid h3 {
+  font-family: Baskervville, var(--serif), Georgia, serif;
+  font-weight: 400;
+  color: #eee7db;
+}
+
+.bz-mid em {
+  font-style: italic;
+  color: #c9a96e;
+}
+
+.bz-promo {
+  background: #241a2f;
+  padding: 28px 24px 48px;
+}
+
+.bz-bento {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 270px 270px;
+  gap: 14px;
+}
+
+.bz-bento__lead,
+.bz-bento__stat,
+.bz-bento__product,
+.bz-bento__link {
+  position: relative;
+  border-radius: 28px;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.bz-bento__lead {
+  grid-column: span 2;
+  grid-row: span 2;
+  background: radial-gradient(120% 100% at 0 100%, #26211b, #0d0c0b 65%);
+  color: inherit;
+}
+
+.bz-bento__lead img.bz-bento__photo {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 62%;
+  height: 100%;
+  object-fit: cover;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 55%);
+  mask-image: linear-gradient(90deg, transparent, #000 55%);
+}
+
+.bz-bento__copy {
+  position: absolute;
+  left: 36px;
+  bottom: 34px;
+  max-width: 50%;
+}
+
+.bz-bento__copy h2 {
+  font-size: clamp(34px, 3.2vw, 50px);
+  line-height: 1.02;
+  margin: 0 0 14px;
+}
+
+.bz-bento__copy p {
+  max-width: 40ch;
+  font-size: 15px;
+  color: #cdc4b4;
+  margin: 0 0 16px;
+}
+
+.bz-mchips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 20px;
+}
+
+.bz-mchips a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 14px 0 4px;
+  border-radius: 999px;
+  background: rgba(238, 231, 219, 0.07);
+  border: 1px solid rgba(238, 231, 219, 0.11);
+  color: inherit;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.bz-mchips img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.bz-mchips b {
+  font-family: Baskervville, Georgia, serif;
+  font-weight: 400;
+  font-size: 15px;
+  color: #e3cb95;
+}
+
+.bz-bento__stat {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid rgba(201, 169, 110, 0.45);
+  background: transparent;
+}
+
+.bz-bento__stat p,
+.bz-bento__link p {
+  margin: 0;
+  color: #cdc4b4;
+  font-size: 14px;
+}
+
+.bz-bento__stat p.bz-figure,
+.bz-figure {
+  font-family: Baskervville, Georgia, serif;
+  font-size: 84px;
+  line-height: 0.85;
+  margin: 0;
+  color: inherit;
+}
+
+.bz-figure small {
+  font-size: 0.45em;
+}
+
+.bz-figure--gold {
+  color: #e3cb95;
+}
+
+.bz-bento__stat--gold {
+  background: linear-gradient(140deg, #e3cb95, #b8955a);
+  border: 0;
+  color: #17130d;
+}
+
+.bz-bento__stat--gold p {
+  color: #3a2f1f;
+}
+
+.bz-bento__product {
+  display: block;
+  background: #201e1b;
+  color: inherit;
+  text-decoration: none;
+}
+
+.bz-bento__product img {
+  width: 100%;
+  height: 78%;
+  object-fit: cover;
+}
+
+.bz-bento__product > span {
+  position: absolute;
+  left: 20px;
+  right: 18px;
+  bottom: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.bz-bento__product .bz-price {
+  white-space: nowrap;
+}
+
+.bz-bento__product b {
+  display: block;
+  font-weight: 500;
+  font-size: 14.5px;
+}
+
+.bz-bento__product .bz-price {
+  font-family: Baskervville, Georgia, serif;
+  font-size: 22px;
+}
+
+.bz-bento__link {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 24px;
+  text-decoration: none;
+  color: inherit;
+  background: radial-gradient(130% 100% at 100% 0%, #6a4f86, #2a2036 70%);
+}
+
+.bz-bento__link h3 {
+  font-size: 30px;
+  line-height: 1.05;
+  margin: 0 0 10px;
+}
+
+.bz-stones {
+  padding: 40px 24px 48px;
+  background: #141312;
+}
+
+.bz-stones__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.bz-stones h2 {
+  font-size: clamp(30px, 3vw, 44px);
+  line-height: 1.05;
+  margin: 0;
+}
+
+.bz-stonegrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.bz-stone {
+  position: relative;
+  display: block;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #201e1b;
+  border: 1px solid rgba(238, 231, 219, 0.11);
+  color: #eee7db;
+  text-decoration: none;
+}
+
+.bz-stone:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 6px 6px 0 var(--bz-stone, #c9a96e);
+}
+
+.bz-stone__band {
+  display: block;
+  height: 64px;
+  background: linear-gradient(120deg, var(--bz-stone, #958d7f), transparent 120%);
+}
+
+.bz-stone__orb {
+  position: absolute;
+  left: 18px;
+  top: 24px;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #201e1b;
+}
+
+.bz-stone__orb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bz-stone__price {
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: rgba(20, 19, 18, 0.7);
+  border: 1px solid rgba(238, 231, 219, 0.24);
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+}
+
+.bz-stone__body {
+  padding: 78px 18px 16px;
+}
+
+.bz-stone h3 {
+  font-size: 24px;
+  margin: 0 0 4px;
+}
+
+.bz-stone p {
+  margin: 0;
+  min-height: 40px;
+  font-size: 13.5px;
+  color: #cdc4b4;
+}
+
+.bz-wear,
+.bz-wear-labels {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+}
+
+.bz-wear {
+  margin: 14px 0 8px;
+}
+
+.bz-wear span {
+  height: 5px;
+  border-radius: 3px;
+  background: rgba(238, 231, 219, 0.1);
+}
+
+.bz-wear span.is-on {
+  background: var(--bz-stone, #c9a96e);
+}
+
+.bz-wear-labels {
+  font-size: 10.5px;
+  color: #958d7f;
+}
+
+.bz-wear-labels .is-on {
+  color: #cdc4b4;
+}
+
+.bz-note {
+  margin: 14px 0 0;
+  color: #958d7f;
+  font-size: 12.5px;
+}
+
+.bz-ritual {
+  background: #2a141b;
+  padding: 36px 24px 56px;
+}
+
+.bz-ritual__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.bz-ritual h2 {
+  font-size: clamp(30px, 3vw, 44px);
+  margin: 0;
+}
+
+.bz-set {
+  display: grid;
+  grid-template-columns: 1fr 1.05fr;
+  gap: 14px;
+}
+
+.bz-set__card {
+  background: #1c1416;
+  border: 1px solid rgba(238, 231, 219, 0.12);
+  border-radius: 28px;
+  padding: 30px;
+  box-shadow: 8px 8px 0 rgba(201, 169, 110, 0.22);
+}
+
+.bz-set__card > p {
+  margin: 0 0 8px;
+  color: #958d7f;
+}
+
+.bz-set__row {
+  display: grid;
+  grid-template-columns: 22px 64px 1fr auto;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px dashed rgba(238, 231, 219, 0.24);
+}
+
+.bz-set__row input {
+  accent-color: #c9a96e;
+  width: 18px;
+  height: 18px;
+}
+
+.bz-set__row img {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.bz-set__row small {
+  display: block;
+  color: #958d7f;
+  font-size: 12.5px;
+}
+
+.bz-set__row .bz-price {
+  font-family: Baskervville, Georgia, serif;
+  font-size: 20px;
+}
+
+.bz-set__total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.bz-set__sum {
+  font-family: Baskervville, Georgia, serif;
+  font-size: 32px;
+}
+
+.bz-set__visual {
+  position: relative;
+  min-height: 440px;
+  border-radius: 28px;
+  overflow: hidden;
+  background: #0d0c0b;
+}
+
+.bz-set__visual img,
+.bz-set__visual [data-bz-shot] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.bz-set__visual img {
+  object-fit: cover;
+}
+
+.bz-set__visual div {
+  position: absolute;
+  left: 28px;
+  right: 28px;
+  bottom: 26px;
+}
+
+.bz-set__visual h3 {
+  font-size: 30px;
+  margin: 0 0 8px;
+}
+
+.bz-set__visual p {
+  margin: 0;
+  color: #cdc4b4;
+  max-width: 42ch;
+}
+
+.bz-pane {
+  display: none;
+}
+
+.bz-pane.is-on {
+  display: block;
+}
+
+@media (max-width: 860px) {
+  .bz-promo,
+  .bz-stones,
+  .bz-ritual {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .bz-bento {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+  }
+
+  .bz-bento__lead {
+    grid-column: span 2;
+    grid-row: auto;
+    height: 520px;
+  }
+
+  .bz-bento__lead img.bz-bento__photo {
+    width: 100%;
+    height: 60%;
+    -webkit-mask-image: linear-gradient(0deg, transparent, #000 50%);
+    mask-image: linear-gradient(0deg, transparent, #000 50%);
+  }
+
+  .bz-bento__copy {
+    left: 18px;
+    right: 18px;
+    bottom: 20px;
+    max-width: none;
+  }
+
+  .bz-bento__stat,
+  .bz-bento__product,
+  .bz-bento__link {
+    min-height: 200px;
+  }
+
+  .bz-bento__stat p.bz-figure,
+  .bz-figure {
+    font-size: 58px;
+  }
+
+  .bz-bento__copy h2 {
+    font-size: 34px;
+  }
+
+  .bz-stonegrid {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: 72%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .bz-set {
+    grid-template-columns: 1fr;
+  }
+
+  .bz-set__visual {
+    min-height: 280px;
+    order: -1;
+  }
+
+  .bz-set__total {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

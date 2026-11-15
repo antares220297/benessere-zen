@@ -683,12 +683,212 @@
         "link": "/collections/gioielli-con-pietre",
         "limit": 5
       }
+    },
+    "bz_promo": {
+      "type": "bz-promo",
+      "settings": {
+        "heading": "108 grani,",
+        "heading_accent": "uno alla volta",
+        "text": "Il mala nasce per contare i mantra: 108 grani da far scorrere tra le dita, fino alla nappa. Oggi si porta anche al collo o avvolto al polso.",
+        "image_alt": "Mala in cristallo di rocca",
+        "collection": "mala-tibetani",
+        "button_label": "Vedi i mala",
+        "button_link": "/collections/mala-tibetani",
+        "stat_value": "4",
+        "stat_unit": "ore",
+        "stat_text": "Ordini qui e lo ritiri gratis in negozio. Di solito è pronto in 4 ore.",
+        "stat_link_label": "Come funziona",
+        "stat_link": "/pages/il-negozio",
+        "featured_product": "palo-santo-mala-con-grano-guru",
+        "side_title": "Pendoli",
+        "side_accent": "e divinazione",
+        "side_label": "Pendoli e teli",
+        "side_collection": "pendoli",
+        "side_link": "/collections/pendoli",
+        "shipping_amount": 50,
+        "shipping_text": "Da qui la spedizione è gratuita, in tutta Italia."
+      }
+    },
+    "bz_stones": {
+      "type": "bz-stones",
+      "blocks": {
+        "stone-0": {
+          "type": "stone",
+          "settings": {
+            "name": "Ossidiana",
+            "text": "Vetro vulcanico. Nella pratica, pietra di protezione.",
+            "color": "#5a5a66",
+            "bracelet": true,
+            "pendant": true,
+            "mala": false,
+            "loose": false,
+            "link": "/search?q=ossidiana",
+            "collection": "pietre-burattate"
+          }
+        },
+        "stone-1": {
+          "type": "stone",
+          "settings": {
+            "name": "Ametista",
+            "text": "Da sempre legata alla meditazione.",
+            "color": "#7b4fa0",
+            "bracelet": true,
+            "pendant": true,
+            "mala": true,
+            "loose": false,
+            "link": "/search?q=ametista",
+            "collection": "pietre-burattate"
+          }
+        },
+        "stone-2": {
+          "type": "stone",
+          "settings": {
+            "name": "Tormalina nera",
+            "text": "Protezione spirituale, per tradizione.",
+            "color": "#4a4a55",
+            "bracelet": true,
+            "pendant": true,
+            "mala": false,
+            "loose": false,
+            "link": "/search?q=tormalina+nera",
+            "collection": "pietre-burattate"
+          }
+        },
+        "stone-3": {
+          "type": "stone",
+          "settings": {
+            "name": "Lapislazzuli",
+            "text": "Il blu degli antichi Egizi, legato alla verità.",
+            "color": "#2d4fa3",
+            "bracelet": true,
+            "pendant": true,
+            "mala": false,
+            "loose": false,
+            "link": "/search?q=lapislazzuli",
+            "collection": "pietre-burattate"
+          }
+        },
+        "stone-4": {
+          "type": "stone",
+          "settings": {
+            "name": "Quarzo rosa",
+            "text": "La pietra del cuore e degli affetti.",
+            "color": "#c98a96",
+            "bracelet": true,
+            "pendant": true,
+            "mala": false,
+            "loose": false,
+            "link": "/search?q=quarzo+rosa",
+            "collection": "pietre-burattate"
+          }
+        },
+        "stone-5": {
+          "type": "stone",
+          "settings": {
+            "name": "Shungite",
+            "text": "Nera, dalla Carelia. Radicamento.",
+            "color": "#55555c",
+            "bracelet": false,
+            "pendant": true,
+            "mala": false,
+            "loose": false,
+            "link": "/search?q=shungite",
+            "collection": "pietre-burattate"
+          }
+        },
+        "stone-6": {
+          "type": "stone",
+          "settings": {
+            "name": "Pirite",
+            "text": "L'oro degli sciocchi, simbolo di abbondanza.",
+            "color": "#b39a5a",
+            "bracelet": true,
+            "pendant": false,
+            "mala": false,
+            "loose": true,
+            "link": "/search?q=pirite",
+            "collection": "pietre-burattate"
+          }
+        },
+        "stone-7": {
+          "type": "stone",
+          "settings": {
+            "name": "Cristallo di rocca",
+            "text": "Nella pratica accompagna l'intenzione.",
+            "color": "#a9b4bd",
+            "bracelet": true,
+            "pendant": true,
+            "mala": true,
+            "loose": false,
+            "link": "/search?q=cristallo+di+rocca",
+            "collection": "pietre-burattate"
+          }
+        }
+      },
+      "block_order": [
+        "stone-0",
+        "stone-1",
+        "stone-2",
+        "stone-3",
+        "stone-4",
+        "stone-5",
+        "stone-6",
+        "stone-7"
+      ],
+      "settings": {
+        "heading": "Scegli dalla",
+        "heading_accent": "pietra",
+        "note": "I significati appartengono alla tradizione e alla pratica spirituale; non sostituiscono pareri o terapie mediche."
+      }
+    },
+    "bz_ritual": {
+      "type": "bz-ritual",
+      "blocks": {
+        "set-nero": {
+          "type": "set",
+          "settings": {
+            "label": "Tutto nero",
+            "product_1": "mala-108-perle-onice-nero-qualita-aa",
+            "product_2": "bracciale-tormalina-nera-elastico",
+            "product_3": "ciondolo-larme-obsideinne-noire",
+            "caption_title": "Pietre scure,",
+            "caption_accent": "da portare a strati",
+            "caption": "Onice, tormalina e ossidiana: il mala lungo al collo, il bracciale e il ciondolo vicini."
+          }
+        },
+        "set-ametista": {
+          "type": "set",
+          "settings": {
+            "label": "Ametista",
+            "product_1": "mala-ametista-108-perle",
+            "product_2": "bracciale-ametista-naturale",
+            "product_3": "ciondolo-ametista-grezza",
+            "caption_title": "Ametista,",
+            "caption_accent": "da portare a strati",
+            "caption": "Mala, bracciale e ciondolo in ametista, da mettere insieme."
+          }
+        }
+      },
+      "block_order": [
+        "set-nero",
+        "set-ametista"
+      ],
+      "settings": {
+        "heading": "Completa",
+        "heading_accent": "il rituale",
+        "link_label": "Tutti i set",
+        "link": "/collections/gioielli-con-pietre",
+        "intro": "Tre pezzi che stanno bene insieme, al collo e al polso. Togli quello che hai già."
+      }
     }
   },
   "order": [
     "bz_hero",
     "bz_spheres",
     "bz_picked",
+    "bz_promo",
+    "bz_stones",
+    "bz_ritual",
     "intro_mission_wB3Jqn",
     "d557b959-57cb-476f-adb6-18808587f120",
     "zen_collections_Q8Gb6r",
