@@ -1,0 +1,33 @@
+{{ 'bz-tokens.css' | asset_url | stylesheet_tag }}
+{{ 'bz-bottom.css' | asset_url | stylesheet_tag }}
+
+<section class="bz bz-bottom bz-news">
+  <div class="bz-news__card">
+    <h2>{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h2>
+    <div>
+      {% form 'customer' %}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <input type="email" name="contact[email]" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ section.settings.placeholder | escape }}" aria-label="{{ section.settings.placeholder | escape }}" required>
+        <button type="submit">{{ section.settings.button_label | escape }}</button>
+      {% endform %}
+      {%- if section.settings.note != blank -%}
+        <small>{{ section.settings.note | escape }}</small>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "class": "bz-home",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Titolo", "default": "Pietre nuove," },
+    { "type": "text", "id": "heading_accent", "label": "Titolo in corsivo", "default": "prima degli scaffali" },
+    { "type": "text", "id": "placeholder", "label": "Segnaposto", "default": "La tua email" },
+    { "type": "text", "id": "button_label", "label": "Pulsante", "default": "Iscriviti" },
+    { "type": "text", "id": "note", "label": "Nota", "default": "Una mail al mese con arrivi e pezzi che tornano disponibili." }
+  ],
+  "presets": [{ "name": "Newsletter" }]
+}
+{% endschema %}

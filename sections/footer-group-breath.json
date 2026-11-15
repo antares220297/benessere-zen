@@ -24,7 +24,7 @@
         "paragraph": {
           "type": "paragraph",
           "settings": {
-            "text": "<p>Get the first look at new products, collaborations, events, sales and more<\/p>"
+            "text": "<p>Get the first look at new products, collaborations, events, sales and more</p>"
           }
         },
         "form": {
@@ -72,7 +72,7 @@
             "heading_menu": "Need help",
             "icon_1": "question-mark",
             "custom_icon": "",
-            "title_1": "Got questions? Call us 24\/7",
+            "title_1": "Got questions? Call us 24/7",
             "text_1": "1908474783",
             "text_link_1": "",
             "open_new_window_1": false,
@@ -86,7 +86,7 @@
             "enable_text_link_2": true,
             "icon_3": "chat-bubble",
             "custom_icon_3": "",
-            "title_3": "Available 24\/7 via chat",
+            "title_3": "Available 24/7 via chat",
             "text_3": "Chat With US",
             "text_link_3": "",
             "open_new_window_3": false,
@@ -121,7 +121,7 @@
           "type": "text",
           "settings": {
             "heading_text": "Let's connect",
-            "subtext": "<p>Follow us on our Social Media Channels.<\/p>",
+            "subtext": "<p>Follow us on our Social Media Channels.</p>",
             "show_social_icons": true
           }
         }
@@ -146,10 +146,76 @@
         "bottom_padding": 40,
         "top_padding_mobile": 0,
         "bottom_padding_mobile": 28
+      },
+      "disabled": true
+    },
+    "bz_footer": {
+      "type": "bz-footer",
+      "blocks": {
+        "col-shop": {
+          "type": "links",
+          "settings": {
+            "heading": "Negozio",
+            "label_1": "Gioielli con pietre",
+            "link_1": "/collections/gioielli-con-pietre",
+            "label_2": "Mala tibetani",
+            "link_2": "/collections/mala-tibetani",
+            "label_3": "Pietre e cristalli",
+            "link_3": "/collections/pietre-burattate",
+            "label_4": "Incensi e palo santo",
+            "link_4": "/collections/incensi-e-palo-santo"
+          }
+        },
+        "col-help": {
+          "type": "links",
+          "settings": {
+            "heading": "Aiuto",
+            "label_1": "Spedizioni",
+            "link_1": "/pages/spedizioni",
+            "label_2": "Ritiro in negozio",
+            "link_2": "/pages/il-negozio",
+            "label_3": "Resi",
+            "link_3": "/policies/refund-policy",
+            "label_4": "Contatti",
+            "link_4": "/pages/contatti"
+          }
+        },
+        "col-social": {
+          "type": "links",
+          "settings": {
+            "heading": "Seguici",
+            "label_1": "Instagram",
+            "link_1": "",
+            "label_2": "Facebook",
+            "link_2": "",
+            "label_3": "TikTok",
+            "link_3": ""
+          }
+        },
+        "col-pay": {
+          "type": "payments",
+          "settings": {
+            "heading": "Pagamenti",
+            "methods": "Visa, Mastercard, PayPal, Apple Pay, Google Pay"
+          }
+        }
+      },
+      "block_order": [
+        "col-shop",
+        "col-help",
+        "col-social",
+        "col-pay"
+      ],
+      "settings": {
+        "word_first": "Benessere",
+        "word_second": "Zen",
+        "about": "Gioielli in pietra naturale, mala e oggetti per i tuoi rituali. Via Provenzali 1, Cento (FE).",
+        "vat": "P. IVA da inserire"
       }
     }
   },
   "order": [
+    "bz_footer",
     "newsletter",
     "footer"
   ]
