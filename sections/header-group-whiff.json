@@ -178,10 +178,163 @@
         "msg-reso",
         "msg-negozio"
       ]
+    },
+    "bz-header": {
+      "type": "bz-header",
+      "settings": {
+        "wordmark_lead": "Benessere",
+        "wordmark_accent": "Zen",
+        "shop_label": "Il negozio",
+        "shop_url": "/pages/il-negozio",
+        "account_label": "Account",
+        "wishlist_label": "Preferiti",
+        "cart_label": "Carrello",
+        "menu_label": "Categorie",
+        "search_label": "Cerca",
+        "placeholder_words": "ametista\nmala\npalo santo\ntormalina nera\nquarzo rosa",
+        "placeholder_before": "Cerca ",
+        "placeholder_after": ", un regalo, una pietra…",
+        "queries_title": "Le più cercate",
+        "stones_title": "Per pietra",
+        "results_title": "In evidenza",
+        "results_link": "Vedi tutti i risultati",
+        "search_collection": "gioielli-con-pietre"
+      },
+      "blocks": {
+        "link-gioielli": {
+          "type": "link",
+          "settings": {
+            "label": "Gioielli",
+            "link": "/collections/gioielli-con-pietre",
+            "style": "default"
+          }
+        },
+        "link-mala": {
+          "type": "link",
+          "settings": {
+            "label": "Mala",
+            "link": "/collections/mala-tibetani",
+            "style": "default"
+          }
+        },
+        "link-pietre": {
+          "type": "link",
+          "settings": {
+            "label": "Pietre e cristalli",
+            "link": "/collections/pietre-burattate",
+            "style": "default"
+          }
+        },
+        "link-casa": {
+          "type": "link",
+          "settings": {
+            "label": "Casa e rituali",
+            "link": "/collections/candele-e-brucia-candele",
+            "style": "default"
+          }
+        },
+        "link-pendoli": {
+          "type": "link",
+          "settings": {
+            "label": "Pendoli",
+            "link": "/collections/pendoli",
+            "style": "default"
+          }
+        },
+        "link-ultimi": {
+          "type": "link",
+          "settings": {
+            "label": "Ultimi pezzi",
+            "link": "/collections/all?sort_by=created-descending",
+            "style": "accent"
+          }
+        },
+        "link-regali": {
+          "type": "link",
+          "settings": {
+            "label": "Regali sotto 25 €",
+            "link": "/search?q=regalo",
+            "style": "pill"
+          }
+        },
+        "query-0": {
+          "type": "query",
+          "settings": {
+            "label": "Mala"
+          }
+        },
+        "query-1": {
+          "type": "query",
+          "settings": {
+            "label": "Tormalina nera"
+          }
+        },
+        "query-2": {
+          "type": "query",
+          "settings": {
+            "label": "Palo santo"
+          }
+        },
+        "query-3": {
+          "type": "query",
+          "settings": {
+            "label": "Quarzo rosa"
+          }
+        },
+        "query-4": {
+          "type": "query",
+          "settings": {
+            "label": "Pendolo"
+          }
+        },
+        "query-5": {
+          "type": "query",
+          "settings": {
+            "label": "Regali sotto 25 €"
+          }
+        },
+        "stone-0": {
+          "type": "stone",
+          "settings": {
+            "label": "Ametista"
+          }
+        },
+        "stone-1": {
+          "type": "stone",
+          "settings": {
+            "label": "Lapislazzuli"
+          }
+        },
+        "stone-2": {
+          "type": "stone",
+          "settings": {
+            "label": "Ossidiana"
+          }
+        }
+      },
+      "block_order": [
+        "link-gioielli",
+        "link-mala",
+        "link-pietre",
+        "link-casa",
+        "link-pendoli",
+        "link-ultimi",
+        "link-regali",
+        "query-0",
+        "query-1",
+        "query-2",
+        "query-3",
+        "query-4",
+        "query-5",
+        "stone-0",
+        "stone-1",
+        "stone-2"
+      ]
     }
   },
   "order": [
     "bz-announcement",
+    "bz-header",
     "announcement-bar",
     "header",
     "mobile-navigation"
