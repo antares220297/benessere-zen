@@ -68,7 +68,7 @@
         "announcement-bar-1"
       ],
       "settings": {
-        "enable": true,
+        "enable": false,
         "show_only_on_homepage": false,
         "enable_carousel_on_desktop": true,
         "backgound_color": "#ffffff",
@@ -145,9 +145,43 @@
         "colors_text_link_dark": "#9b814f",
         "divider_color_dark": "#263135"
       }
+    },
+    "bz-announcement": {
+      "type": "bz-announcement",
+      "settings": {
+        "region_label": "Annunci",
+        "free_shipping_threshold": 50,
+        "pill_text": "Spedizione gratuita da [soglia] €"
+      },
+      "blocks": {
+        "msg-ritiro": {
+          "type": "message",
+          "settings": {
+            "text": "Ritiro gratuito in negozio, di solito pronto in 4 ore"
+          }
+        },
+        "msg-reso": {
+          "type": "message",
+          "settings": {
+            "text": "Reso entro 14 giorni"
+          }
+        },
+        "msg-negozio": {
+          "type": "message",
+          "settings": {
+            "text": "Ogni pezzo del sito è anche in negozio"
+          }
+        }
+      },
+      "block_order": [
+        "msg-ritiro",
+        "msg-reso",
+        "msg-negozio"
+      ]
     }
   },
   "order": [
+    "bz-announcement",
     "announcement-bar",
     "header",
     "mobile-navigation"

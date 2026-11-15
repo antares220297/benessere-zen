@@ -1,0 +1,23 @@
+/* Announcement bar: narrow screens and reduced motion. */
+
+@media (max-width: 860px) {
+  .bz .ann .rot {
+    width: min(250px, 68vw);
+  }
+
+  .bz .ann .pill {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bz .ann .rot span {
+    animation: none;
+    opacity: 0;
+    transform: none;
+  }
+
+  .bz .ann .rot span:first-child {
+    opacity: 1;
+  }
+}

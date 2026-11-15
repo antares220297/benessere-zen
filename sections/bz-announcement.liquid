@@ -1,0 +1,111 @@
+{{ 'bz-tokens.css' | asset_url | stylesheet_tag }}
+{{ 'bz-announcement.css' | asset_url | stylesheet_tag }}
+{{ 'bz-announcement-mobile.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign threshold = section.settings.free_shipping_threshold
+  assign pill = section.settings.pill_text | replace: '[soglia]', threshold
+  assign message_count = 0
+  for block in section.blocks
+    if block.settings.text != blank
+      assign message_count = message_count | plus: 1
+    endif
+  endfor
+-%}
+
+<div class="bz">
+  <div class="ann" role="region" aria-label="{{ section.settings.region_label | escape }}">
+    {%- if threshold > 0 and pill != blank -%}
+      <span class="pill pill-gold">{{ pill | escape }}</span>
+    {%- endif -%}
+    {%- if message_count > 0 -%}
+      <div class="rot{% if message_count == 1 %} is-single{% endif %}" aria-hidden="true">
+        {%- for block in section.blocks -%}
+          {%- if block.settings.text != blank -%}
+            <span {{ block.shopify_attributes }}>{{ block.settings.text | escape }}</span>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      <p class="bz-sr">
+        {%- for block in section.blocks -%}
+          {%- if block.settings.text != blank -%}
+            {{ block.settings.text | escape }}.
+          {%- endif -%}
+        {%- endfor -%}
+      </p>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Barra annuncio",
+  "class": "bz-announcement",
+  "max_blocks": 3,
+  "settings": [
+    {
+      "type": "text",
+      "id": "region_label",
+      "label": "Etichetta per lettori di schermo",
+      "default": "Annunci"
+    },
+    {
+      "type": "range",
+      "id": "free_shipping_threshold",
+      "min": 0,
+      "max": 300,
+      "step": 1,
+      "unit": "€",
+      "label": "Soglia spedizione gratuita",
+      "info": "Soglia attuale del negozio: 50 €. 0 nasconde la pillola.",
+      "default": 50
+    },
+    {
+      "type": "text",
+      "id": "pill_text",
+      "label": "Testo della pillola",
+      "info": "Scrivi [soglia] dove deve comparire l'importo.",
+      "default": "Spedizione gratuita da [soglia] €"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "message",
+      "name": "Messaggio",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Testo",
+          "info": "Lascia vuoto per nascondere. Conferma tempi di ritiro e giorni di reso prima di pubblicare: non sono dati di checkout."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Barra annuncio",
+      "blocks": [
+        {
+          "type": "message",
+          "settings": {
+            "text": "Ritiro gratuito in negozio, di solito pronto in 4 ore"
+          }
+        },
+        {
+          "type": "message",
+          "settings": {
+            "text": "Reso entro 14 giorni"
+          }
+        },
+        {
+          "type": "message",
+          "settings": {
+            "text": "Ogni pezzo del sito è anche in negozio"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

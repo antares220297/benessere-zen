@@ -1,0 +1,93 @@
+/* Desktop announcement bar. No media queries; mobile and reduced motion are separate. */
+
+.shopify-section.bz-announcement {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+}
+
+.bz .ann,
+.bz .ann * {
+  box-sizing: border-box;
+}
+
+.bz .ann {
+  height: 36px;
+  background: var(--deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.55;
+  color: var(--ivory2);
+  border-bottom: 1px solid var(--line);
+  font-family: var(--sans);
+}
+
+.bz .ann .pill {
+  height: 22px;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 12px;
+  border-radius: 999px;
+  flex: none;
+}
+
+.bz .pill-gold {
+  background: var(--gold);
+  color: #17130d;
+}
+
+.bz .ann .rot {
+  position: relative;
+  height: 20px;
+  overflow: hidden;
+  width: 360px;
+  flex: none;
+}
+
+.bz .ann .rot span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: left;
+  white-space: nowrap;
+  animation: bz-rot 12s infinite;
+  opacity: 0;
+}
+
+.bz .ann .rot span:nth-child(2) {
+  animation-delay: 4s;
+}
+
+.bz .ann .rot span:nth-child(3) {
+  animation-delay: 8s;
+}
+
+.bz .ann .rot.is-single span {
+  animation: none;
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes bz-rot {
+  0% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  4%, 30% {
+    opacity: 1;
+    transform: none;
+  }
+  34%, 100% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+}
