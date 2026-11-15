@@ -10,7 +10,42 @@
   - Seasonal tags with pre-select if applicable
 {% endcomment %}
 
-<section id="zen-portal-hero" class="zen-portal-hero">
+<section id="nt-hero" class="nt-hero nt-noise">
+  <div class="nt-hero__media">
+    {% if section.settings.bg_image != blank %}
+      {{ section.settings.bg_image | image_url: width: 2000 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '600, 900, 1400, 2000', sizes: '100vw', alt: section.settings.bg_alt, class: 'zph-bg-image' }}
+    {% endif %}
+    <div class="nt-hero__shade" style="opacity: 1"></div>
+  </div>
+  <div class="nt-hero__copy page-width">
+    {% if section.settings.kicker != blank %}
+      <p class="nt-kicker">{{ section.settings.kicker | escape }}</p>
+    {% endif %}
+    {% if section.settings.title != blank %}
+      <h1 class="zph-title">
+        {%- assign title_parts = section.settings.title | split: '*' -%}
+        {%- if title_parts.size == 3 -%}
+          {{ title_parts[0] | escape }}<em>{{ title_parts[1] | escape }}</em>{{ title_parts[2] | escape }}
+        {%- else -%}
+          {{ section.settings.title | escape }}
+        {%- endif -%}
+      </h1>
+    {% endif %}
+    {% if section.settings.subtitle != blank %}
+      <p class="nt-hero__sub">{{ section.settings.subtitle | escape }}</p>
+    {% endif %}
+    <div class="nt-hero__actions">
+      {% if section.settings.primary_cta_label != blank and section.settings.primary_cta_link != blank %}
+        <a href="{{ section.settings.primary_cta_link }}" class="button button-solid">{{ section.settings.primary_cta_label | escape }}</a>
+      {% endif %}
+      {% if section.settings.quiz_cta_label != blank and section.settings.quiz_cta_link != blank %}
+        <a href="{{ section.settings.quiz_cta_link }}" class="nt-text-link">{{ section.settings.quiz_cta_label | escape }}</a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% if section.settings.enable_finder %}
+<section id="zen-portal-hero" class="zen-portal-hero" hidden>
   <div class="zph-bg">
     {% if section.settings.bg_video_url != blank %}
       <video class="zph-video" autoplay muted loop playsinline aria-hidden="true">
@@ -173,6 +208,7 @@
     </div>
   {% endif %}
 </section>
+{% endif %}
 
 <style>
   /* Core Styles */

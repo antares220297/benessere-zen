@@ -1,0 +1,11 @@
+{% doc %}
+  Roman chapter number and a short gold rule. Renders nothing when chapter is blank.
+
+  @param {string} chapter - Roman numeral, for example II
+
+  @example
+  {% render 'chapter-label', chapter: section.settings.chapter %}
+{% enddoc %}
+{%- if chapter != blank -%}
+  <p class="nt-chapter">{{ chapter | escape }}</p>
+{%- endif -%}

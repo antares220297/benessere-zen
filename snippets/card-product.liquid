@@ -236,6 +236,7 @@
                   src="{{ card_product.featured_media | image_url: width: 1500 }}"
                   sizes="{{ sizes }}"
                   alt="{{ card_product.featured_media.alt | split: "#" | first | escape }}"
+                  {% if request.page_type != 'product' %}style="view-transition-name: product-{{ card_product.id }}"{% endif %}
                   class="w-full preview-img motion-reduce aspect-{{ media_aspect_ratio }} relative{% if media_aspect_ratio != "natural" %} h-full min-h-full{% endif %} object-cover{% if card_product.media[1] != nil and settings.product_image_type == 'hover_to_reveal_second_image' %} image-first-hover group-hover:opacity-0{% elsif settings.product_image_type != 'slide_img' %} image-hover{% endif %}{% if animation_loading and loading != 'eager' %} animate_transition_image{% endif %}"
                   loading="{{ loading | default: 'lazy' }}"
                   width="{{ card_product.featured_media.width }}"

@@ -45,6 +45,7 @@
             <{{ section.settings.heading_tag }} class="title--{{ section.id }} h2 leading-tight {{ section.settings.title_position }} ltr{% if section.settings.show_collection_image and collection.image %} image-treatment-text{% endif %}">
               {{ collection.title | escape }}
             </{{ section.settings.heading_tag }}>
+            <p class="nt-count {{ section.settings.title_position }}">{{ 'notturno.collection_count' | t: count: collection.products_count }}</p>
           </div>
         {% endif %}
         {%- if section.settings.show_collection_image and collection.image -%}

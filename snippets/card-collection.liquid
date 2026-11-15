@@ -177,7 +177,9 @@
       {%- if card_collection != blank -%}
         <p
           class="text-[rgba(var(--colors-heading))] p-break-words transition duration-200">
-          {%- if card_collection.title != blank -%}
+          {%- if block.settings.label != blank -%}
+            {{- block.settings.label | escape -}}
+          {%- elsif card_collection.title != blank -%}
             {{- card_collection.title | escape -}}
           {%- else -%}
             {{ 'onboarding.collection_title' | t }}

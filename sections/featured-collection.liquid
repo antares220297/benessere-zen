@@ -38,6 +38,7 @@
   <div class="pl-5 pr-5{% unless section.settings.heading_alignment contains 'center' %} flex items-center{% endunless %} heading-{{ section.settings.heading_alignment }}{% unless section.settings.full_width %} page-width{% endunless %}">
     {%- if section.settings.title != blank or section.settings.text != blank or section.settings.subheading != blank -%}
       <div class="section-header flex-auto mb-5 lg:mb-2">
+        {% render 'chapter-label', chapter: section.settings.chapter %}
         {%- if section.settings.subheading != blank -%}
           <p class="rte mb-1.5">{{ section.settings.subheading }}</p>
         {% endif %}
@@ -133,6 +134,11 @@
       "default": "Featured collections",
       "label": "t:sections.all.text.heading",
       "info": "t:settings_schema.typography.settings.heading_highlight_type.info"
+    },
+    {
+      "type": "text",
+      "id": "chapter",
+      "label": "Capitolo"
     },
     {
       "type": "select",

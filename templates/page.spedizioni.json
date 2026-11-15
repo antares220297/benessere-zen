@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "intro": {
+      "type": "notturno-prose",
+      "settings": {
+        "heading": "Spedizioni",
+        "text": "<p>La spedizione gratuita parte dalla soglia scritta nella barra in alto e accanto al pulsante di acquisto. Sotto soglia, il costo si vede prima del pagamento.</p><p>I tempi in scheda sono una stima in giorni lavorativi. La consegna, salvo patto diverso, è entro 30 giorni.</p><p>Puoi anche ritirare gratis in negozio, a Cento, di solito pronto in 4 ore. Via M. Provenzali 1.</p>"
+      }
+    }
+  },
+  "order": ["intro"]
+}

@@ -85,12 +85,12 @@
       </div>
       <button 
         id="CloseCart"
-        class="cursor-pointer absolute w-11 h-11 pt-4 pr-4 pb-4 pl-4 z-10 top-1 lg:top-auto lg:end-10{% if is_rtl %} left-3 {% else %} right-3{% endif %}"
+        class="cursor-pointer absolute w-12 h-12 z-10 top-1 lg:top-auto lg:end-10{% if is_rtl %} left-3 {% else %} right-3{% endif %}"
         @click="$store.xModal.removeFocus(); $store.xMiniCart.hideCart();" 
       >
         {% render 'icon-alls', icon: 'icon-close' %}
       </button>
-      <h2 class="relative pl-5 pr-5 lg:pl-14 lg:pr-14 pt-4 pb-4 md:pt-3 md:pb-3 z-0 text-medium">{{ 'sections.cart.title' | t }}</h2>
+      <h2 class="relative pl-5 pr-5 lg:pl-14 lg:pr-14 pt-4 pb-4 md:pt-3 md:pb-3 z-0 text-medium">{{ 'notturno.cart_count' | t: count: cart.item_count }}</h2>
       <div class="flex-1 overflow-auto scrollbar-body grow lg:pl-14 lg:pr-14 pb-4" :class="$store.xMiniCart.loading ? 'opacity-0': 'opacity-1'">
         <div class="border-t flex flex-col h-full relative">
           {%- if cart == empty -%}
@@ -168,7 +168,7 @@
                   -%}
                 </div>
               {% endif %}
-              {% render 'freeshipping' %}
+              {% render 'cart-milestones' %}
               {% render 'bz-purchase-note' %}
               
               {% if settings.show_in_cart_items == 'show_cart' %}
@@ -694,6 +694,21 @@
                             if forloop.first
                               assign product_id = item.product.id
                             endif
+                            if item.product.metafields.custom.completa_il_set.value != blank
+                              for prod in item.product.metafields.custom.completa_il_set.value
+                                if prod.available
+                                  assign productId = prod.id | append: ","
+                                  unless productIds contains productId
+                                    assign productIds = productIds | append: productId
+                                    assign productCount = productCount | plus: 1
+                                    render 'mini-card-product', card_product: prod, media_aspect_ratio: settings.product_image_ratio, ratio: ratio, class_splide: " splide__slide x-splide-slide w-3/4 lg:w-full"
+                                  endunless
+                                endif
+                                if productCount >= maxItems
+                                  break
+                                endif
+                              endfor
+                            endif
                             if item.product.metafields.cart.upsell.value.count > 0
                               for prod in item.product.metafields.cart.upsell.value
                                 if prod.available
@@ -1022,6 +1037,17 @@
               {%- endif -%}
 
             </div>
+            <p>{{ 'notturno.vat_included_ship' | t }}</p>
+              <p>{{ 'notturno.cart_trust' | t }}</p>
+              {%- if settings.gift_wrapping_product != blank -%}
+                {%- assign gift_variant = settings.gift_wrapping_product.selected_or_first_available_variant -%}
+                {%- if gift_variant.available -%}
+                  {% form 'product', settings.gift_wrapping_product %}
+                    <input type="hidden" name="id" value="{{ gift_variant.id }}">
+                    <button class="button button-outline" type="submit" name="add">{{ 'notturno.add_gift' | t }} · {{ gift_variant.price | money }}</button>
+                  {% endform %}
+                {%- endif -%}
+              {%- endif -%}
             <div class="flex flex-col lg:gap-1 text-center mt-3 pl-5 pr-5 lg:pl-0 lg:pr-0 lg:float-left" :class="show && '{% if is_rtl %} lg:pl-14 lg:pr-0{% else %} lg:pr-14 lg:pl-0{% endif %} lg:w-7/12'" {{ block.shopify_attributes }}>
               <div class="flex">
                 {% unless settings.hide_view_cart_button %}
@@ -1093,7 +1119,8 @@
               rows="4" 
               cols="50" 
               class="w-full pl-4 pr-4 pt-4 pb-4 border border-solid bg-[rgba(var(--background-color),1)] focus-within:outline-none placeholder:text-current placeholder:opacity-60{% if settings.edges_type == 'rounded_corners' %} !rounded-md{% endif %}"
-              placeholder="{{ 'sections.cart.note' | t }}"
+              maxlength="200"
+              placeholder="{{ 'notturno.note_help' | t }}"
               @change="$store.xCartHelper.updateCart({ note: $el.value})"
             >{{- cart.note -}}</textarea>
           </div>

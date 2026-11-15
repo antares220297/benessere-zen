@@ -61,6 +61,7 @@
 
 <div class="{% if section.index == 1 %}preload-image {% endif %}ltr pb-[{{ section.settings.padding_bottom_mobile }}px] pt-[{{ section.settings.padding_top_mobile }}px] md:pb-[{{ section.settings.padding_bottom }}px] md:pt-[{{ section.settings.padding_top }}px]">
   {% if section.settings.heading != blank %}
+    {% render 'chapter-label', chapter: section.settings.chapter %}
     <{{ section.settings.heading_tag }} class="heading-{{ section.id }} mb-5 md:mb-9 text-{{ section.settings.heading_alignment }} h2 block pb-2 leading-tight p-break-words px-5{% unless section.settings.full_width %} page-width{% endunless %}">
       {% render 'heading-highlight',
         headingId: section.id,
@@ -68,6 +69,9 @@
         highlight_type: section.settings.highlight_type
       %}
     </{{ section.settings.heading_tag }}>
+    {%- if section.settings.text != blank -%}
+      <p class="px-5{% unless section.settings.full_width %} page-width{% endunless %}">{{ section.settings.text | escape }}</p>
+    {%- endif -%}
   {% endif %} 
   <div class="flex flex-wrap relative items-center{% if section.settings.image_alignment == "right" %} md:flex-row-reverse{% endif %}{% if section.settings.full_width %}{% if section.settings.padding_full_width %} md:px-5{% endif %}{% else %} page-width px-0{% if section.settings.image_alignment == 'layered' %} md:px-5{% else %} md:px-32{% endif %}{% endif %}">
     <div 
@@ -423,6 +427,16 @@
       "label": "t:sections.all.text.heading",
       "default": "Shop our looks",
       "info": "t:settings_schema.typography.settings.heading_highlight_type.info"
+    },
+    {
+      "type": "text",
+      "id": "chapter",
+      "label": "Capitolo"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Testo"
     },
     {
       "type": "select",

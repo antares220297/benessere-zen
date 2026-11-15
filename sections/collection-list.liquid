@@ -104,7 +104,8 @@
 
 {% render 'section-divider' %}
 
-<div class="pt-[{{ section.settings.padding_top_mobile }}px] md:pt-[{{ section.settings.padding_top }}px] pb-[{{ section.settings.padding_bottom_mobile }}px] md:pb-[{{ section.settings.padding_bottom }}px]">
+<div class="pt-[{{ section.settings.padding_top_mobile }}px] md:pt-[{{ section.settings.padding_top }}px] pb-[{{ section.settings.padding_bottom_mobile }}px] md:pb-[{{ section.settings.padding_bottom }}px]{% if section.settings.arch_images %} notturno-arches{% endif %}">
+  {% render 'chapter-label', chapter: section.settings.chapter %}
   {%- unless section.settings.heading == blank -%}
     <div class="text-center mb-5{% unless section.settings.heading_alignment contains 'center' %} flex items-center{% endunless %} heading-{{ section.settings.heading_alignment }} pr-5 pl-5{% unless section.settings.full_width %} page-width{% endunless %}">
       <{{ section.settings.heading_tag }} class="heading-{{ section.id }} section-header h2 block leading-tight flex-auto p-break-words">
@@ -298,6 +299,17 @@
       "default": "Collection list",
       "label": "t:sections.all.text.heading",
       "info": "t:settings_schema.typography.settings.heading_highlight_type.info"
+    },
+    {
+      "type": "text",
+      "id": "chapter",
+      "label": "Capitolo"
+    },
+    {
+      "type": "checkbox",
+      "id": "arch_images",
+      "label": "Nicchie ad arco",
+      "default": false
     },
     {
       "type": "select",
@@ -684,6 +696,16 @@
           "type": "collection",
           "id": "collection",
           "label": "t:sections.collection-list.blocks.featured_collection.settings.collection.label"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Etichetta, se diversa dal nome della collezione"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link, se non usi la collezione"
         }
       ]
     },

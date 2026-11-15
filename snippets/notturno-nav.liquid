@@ -1,0 +1,133 @@
+{% doc %}
+  Six-item menu. One DOM for desktop and the mobile drawer.
+  Collection URLs that are not in the catalog yet are marked in the theme editor by changing the link.
+
+  @example
+  {% render 'notturno-nav' %}
+{% enddoc %}
+<nav class="nt-nav" id="nt-nav" aria-label="{{ 'notturno.menu' | t }}">
+  <button class="nt-drawer__close" type="button" data-nt-close aria-label="{{ 'notturno.close' | t }}">×</button>
+  <ul class="nt-nav__list">
+    <li>
+      <a href="{{ collections['gioielli-con-pietre'].url }}">{{ 'notturno.nav_bijoux' | t }}</a>
+      <button type="button" data-nt-sub aria-expanded="false" aria-controls="nt-sub-bijoux">{{ 'notturno.nav_bijoux' | t }}</button>
+      <div class="nt-mega nt-drawer__sub" id="nt-sub-bijoux">
+        <div>
+          <h3>{{ 'notturno.col_category' | t }}</h3>
+          <a href="{{ routes.search_url }}?type=product&q=bracciale">{{ 'notturno.link_bracelets' | t }}</a>
+          <a href="{{ routes.search_url }}?type=product&q=collana">{{ 'notturno.link_necklaces' | t }}</a>
+          <a href="{{ routes.search_url }}?type=product&q=orecchini">{{ 'notturno.link_earrings' | t }}</a>
+          <a href="{{ routes.search_url }}?type=product&q=anello">{{ 'notturno.link_rings' | t }}</a>
+          <a href="{{ collections['mala-tibetani'].url }}">{{ 'notturno.link_mala' | t }}</a>
+          <a href="{{ routes.search_url }}?type=product&q=cavigliera">{{ 'notturno.link_anklets' | t }}</a>
+          <a href="{{ collections['gioielli-con-pietre'].url }}">{{ 'notturno.see_all' | t }}</a>
+        </div>
+        <div>
+          <h3>{{ 'notturno.col_inspire' | t }}</h3>
+          <a href="{{ collections['ambra-baltica'].url }}">{{ 'notturno.link_amber' | t }}</a>
+          <a href="{{ routes.search_url }}?type=product&q=acciaio">{{ 'notturno.link_steel' | t }}</a>
+          <a href="{{ routes.search_url }}?type=product&q=argento">{{ 'notturno.link_silver' | t }}</a>
+          <a href="{{ routes.search_url }}?type=product&q=albero+della+vita">{{ 'notturno.link_tree' | t }}</a>
+          <a href="{{ routes.search_url }}?type=product&q=fatima">{{ 'notturno.link_fatima' | t }}</a>
+          <a href="{{ routes.search_url }}?type=product&q=occhio">{{ 'notturno.link_eye' | t }}</a>
+        </div>
+        <a class="nt-mega__card" href="{{ collections['gioielli-con-pietre'].url }}"><em>{{ 'notturno.card_chosen' | t }}</em></a>
+      </div>
+    </li>
+    <li>
+      <a href="{{ collections['pietre-burattate'].url }}">{{ 'notturno.nav_stones' | t }}</a>
+      <button type="button" data-nt-sub aria-expanded="false" aria-controls="nt-sub-stones">{{ 'notturno.nav_stones' | t }}</button>
+      <div class="nt-mega nt-drawer__sub" id="nt-sub-stones">
+        <div>
+          <h3>{{ 'notturno.col_category' | t }}</h3>
+          <a href="{{ collections['pietre-burattate'].url }}">{{ 'notturno.link_tumbled' | t }}</a>
+          <a href="{{ routes.search_url }}?type=product&q=grezza">{{ 'notturno.link_raw' | t }}</a>
+          <a href="{{ routes.search_url }}?type=product&q=punta">{{ 'notturno.link_points' | t }}</a>
+          <a href="{{ routes.search_url }}?type=product&q=selenite">{{ 'notturno.link_selenite' | t }}</a>
+          <a href="{{ collections['pendoli'].url }}">{{ 'notturno.link_pendulum' | t }}</a>
+          <a href="{{ collections['pietre-burattate'].url }}">{{ 'notturno.see_all' | t }}</a>
+        </div>
+        <div>
+          <h3>{{ 'notturno.col_inspire' | t }}</h3>
+          <a href="{{ routes.root_url }}#nt-stones">{{ 'notturno.by_name' | t }}</a>
+          <a href="{{ routes.search_url }}?type=product&q=pietra">{{ 'notturno.by_color' | t }}</a>
+        </div>
+        <a class="nt-mega__card" href="{{ routes.root_url }}#nt-stones"><em>{{ 'notturno.card_index' | t }}</em></a>
+      </div>
+    </li>
+    <li>
+      <a href="{{ routes.root_url }}#nt-stones">{{ 'notturno.nav_intent' | t }}</a>
+      <button type="button" data-nt-sub aria-expanded="false" aria-controls="nt-sub-intent">{{ 'notturno.nav_intent' | t }}</button>
+      <div class="nt-mega nt-drawer__sub" id="nt-sub-intent">
+        <div>
+          <h3>{{ 'notturno.col_category' | t }}</h3>
+          <a href="{{ routes.search_url }}?type=product&q=protezione">{{ 'notturno.intent_guard' | t }}</a>
+          <a href="{{ routes.search_url }}?type=product&q=amore">{{ 'notturno.intent_love' | t }}</a>
+          <a href="{{ routes.search_url }}?type=product&q=calma">{{ 'notturno.intent_calm' | t }}</a>
+          <a href="{{ routes.search_url }}?type=product&q=abbondanza">{{ 'notturno.intent_plenty' | t }}</a>
+          <a href="{{ routes.search_url }}?type=product&q=radicamento">{{ 'notturno.intent_root' | t }}</a>
+        </div>
+        <div>
+          <h3>{{ 'notturno.col_inspire' | t }}</h3>
+          <a href="{{ routes.search_url }}?type=product&q=zodiaco">{{ 'notturno.link_zodiac' | t }}</a>
+          <a href="{{ routes.search_url }}?type=product&q=nascita">{{ 'notturno.link_birth' | t }}</a>
+        </div>
+        <a class="nt-mega__card" href="{{ routes.search_url }}?type=product&q=intenzione"><em>{{ 'notturno.card_intent' | t }}</em></a>
+      </div>
+    </li>
+    <li>
+      <a href="{{ collections['incensi-e-brucia-incensi-1'].url }}">{{ 'notturno.nav_rite' | t }}</a>
+      <button type="button" data-nt-sub aria-expanded="false" aria-controls="nt-sub-rite">{{ 'notturno.nav_rite' | t }}</button>
+      <div class="nt-mega nt-drawer__sub" id="nt-sub-rite">
+        <div>
+          <h3>{{ 'notturno.col_category' | t }}</h3>
+          <a href="{{ collections['incensi-e-brucia-incensi-1'].url }}">{{ 'notturno.link_incense' | t }}</a>
+          <a href="{{ routes.search_url }}?type=product&q=brucia">{{ 'notturno.link_burner' | t }}</a>
+          <a href="{{ collections['smudge-e-palo-santo'].url }}">{{ 'notturno.link_sage' | t }}</a>
+          <a href="{{ routes.search_url }}?type=product&q=candela">{{ 'notturno.link_candle' | t }}</a>
+          <a href="{{ collections['lampade-di-sale'].url }}">{{ 'notturno.link_salt' | t }}</a>
+        </div>
+        <div>
+          <h3>{{ 'notturno.col_inspire' | t }}</h3>
+          <a href="{{ collections['roll-on-ai-fiori-di-bach'].url }}">{{ 'notturno.link_bach' | t }}</a>
+          <a href="{{ collections['ayurveda'].url }}">{{ 'notturno.link_ayurveda' | t }}</a>
+          <a href="{{ collections['cosmesi-viso'].url }}">{{ 'notturno.link_care' | t }}</a>
+        </div>
+      </div>
+    </li>
+    <li>
+      <a href="{{ collections['gioielli-con-pietre'].url }}">{{ 'notturno.nav_gifts' | t }}</a>
+      <button type="button" data-nt-sub aria-expanded="false" aria-controls="nt-sub-gifts">{{ 'notturno.nav_gifts' | t }}</button>
+      <div class="nt-mega nt-drawer__sub" id="nt-sub-gifts">
+        <div>
+          <h3>{{ 'notturno.col_category' | t }}</h3>
+          <a href="{{ collections['pietre-burattate'].url }}">{{ 'notturno.band_low' | t }}</a>
+          <a href="{{ collections['gioielli-con-pietre'].url }}">{{ 'notturno.band_mid' | t }}</a>
+          <a href="{{ collections['mala-tibetani'].url }}">{{ 'notturno.band_high' | t }}</a>
+          <a href="{{ collections['incensi-e-brucia-incensi-1'].url }}">{{ 'notturno.band_sets' | t }}</a>
+          <a href="{{ routes.search_url }}?type=product&q=gift+card">{{ 'notturno.link_giftcard' | t }}</a>
+        </div>
+        <div>
+          <h3>{{ 'notturno.col_inspire' | t }}</h3>
+          <a href="{{ routes.search_url }}?type=product&q=donna">{{ 'notturno.for_her' | t }}</a>
+          <a href="{{ routes.search_url }}?type=product&q=uomo">{{ 'notturno.for_him' | t }}</a>
+          <a href="{{ routes.search_url }}?type=product&q=compleanno">{{ 'notturno.for_birthday' | t }}</a>
+          <a href="{{ routes.search_url }}?type=product&q=laurea">{{ 'notturno.for_degree' | t }}</a>
+        </div>
+        <a class="nt-mega__card" href="{{ collections['gioielli-con-pietre'].url }}"><em>{{ 'notturno.card_gifts' | t }}</em></a>
+      </div>
+    </li>
+    <li>
+      <a href="{{ routes.all_products_collection_url }}?sort_by=created-descending">{{ 'notturno.nav_new' | t }}</a>
+    </li>
+  </ul>
+  <div class="nt-drawer__foot">
+    <a href="{{ routes.account_url }}">{{ 'notturno.account' | t }}</a>
+    <a href="{{ pages['il-negozio'].url }}">{{ 'notturno.the_shop' | t }}</a>
+    <a href="{{ pages['il-negozio'].url }}#ritiro">{{ 'notturno.pickup_link' | t }}</a>
+    {%- if settings.whatsapp_number != blank -%}
+      <a href="https://wa.me/{{ settings.whatsapp_number | remove: '+' | remove: ' ' }}">WhatsApp</a>
+    {%- endif -%}
+  </div>
+</nav>
+<div class="nt-drawer-shade" data-nt-close></div>

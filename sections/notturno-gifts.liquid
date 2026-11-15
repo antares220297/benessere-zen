@@ -1,0 +1,55 @@
+<section data-reveal>
+  <div class="nt-page">
+    {% render 'chapter-label', chapter: section.settings.chapter %}
+    <h2>{{ section.settings.heading | escape }}</h2>
+    {%- if section.settings.text != blank -%}
+      <p class="nt-prose">{{ section.settings.text | escape }}</p>
+    {%- endif -%}
+    <div class="nt-grid nt-entries nt-entries--4">
+      {%- for block in section.blocks -%}
+        {%- if block.settings.url != blank -%}
+          <a class="nt-entry" href="{{ block.settings.url }}" {{ block.shopify_attributes }}>
+        {%- else -%}
+          <div class="nt-entry" {{ block.shopify_attributes }}>
+        {%- endif -%}
+          <p class="nt-entry__label">{{ block.settings.title | escape }}</p>
+          {%- if block.settings.note != blank -%}
+            <p class="nt-entry__note">{{ block.settings.note | escape }}</p>
+          {%- endif -%}
+        {%- if block.settings.url != blank -%}
+          </a>
+        {%- else -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    {%- if settings.gift_wrapping_product != blank and section.settings.gift_note != blank -%}
+      <p>{{ section.settings.gift_note | escape }}</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Regali per fascia",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "chapter", "label": "Capitolo", "default": "VII" },
+    { "type": "text", "id": "heading", "label": "Titolo", "default": "Regali, per fascia" },
+    { "type": "textarea", "id": "text", "label": "Testo", "default": "Il prezzo è quello scritto in scheda." },
+    { "type": "text", "id": "gift_note", "label": "Nota confezione", "info": "Compare solo se il prodotto confezione è impostato.", "default": "Confezione antracite e biglietto con dedica, nel carrello." }
+  ],
+  "blocks": [
+    {
+      "type": "band",
+      "name": "Fascia",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Fascia" },
+        { "type": "text", "id": "note", "label": "Dove porta, in una riga" },
+        { "type": "url", "id": "url", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Regali per fascia" }]
+}
+{% endschema %}

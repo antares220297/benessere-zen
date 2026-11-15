@@ -112,6 +112,7 @@
     class="{% unless section.settings.full_width %} page-width{% endunless %} pl-5 pr-5 mx-auto mb-5 lg:mb-10{% unless section.settings.heading_alignment contains 'center' %} flex items-center{% endunless %} heading-{{ section.settings.heading_alignment }}"
   > 
     <div class="flex-auto">
+      {% render 'chapter-label', chapter: section.settings.chapter %}
       {%- if section.settings.heading != blank -%}
         <{{ section.settings.heading_tag }} class="heading-{{ section.id }} section-header h2 block leading-tight p-break-words">
           {% render 'heading-highlight',
@@ -328,6 +329,11 @@
       "default": "Blog posts",
       "label": "t:sections.all.text.heading",
       "info": "t:settings_schema.typography.settings.heading_highlight_type.info"
+    },
+    {
+      "type": "text",
+      "id": "chapter",
+      "label": "Capitolo"
     },
     {
       "type": "select",

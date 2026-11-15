@@ -388,7 +388,11 @@
           {%- endif -%}
         </div>
 
-        {%- render 'header-megamenu-block', logo_above: logo_above, logo_center: logo_center, select_motion: section.settings.select_motion, transparent: transparent -%}
+        {%- if section.settings.use_notturno_nav -%}
+          {% render 'notturno-nav' %}
+        {%- else -%}
+          {%- render 'header-megamenu-block', logo_above: logo_above, logo_center: logo_center, select_motion: section.settings.select_motion, transparent: transparent -%}
+        {%- endif -%}
 
       </header>
       {%- unless template == 'cart' -%}
@@ -448,6 +452,12 @@
       "default": "main-menu",
       "label": "t:sections.header.settings.menu.label",
       "info": "t:sections.header.settings.menu.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_notturno_nav",
+      "label": "Menu Notturno",
+      "default": false
     },
     {
       "type": "select",

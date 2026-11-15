@@ -248,6 +248,9 @@
         {% if block.settings.text != blank %}
           <div class="min-w-max space-blocks-{{ section.id }} space-block-{{ block.id }} whitespace-nowrap text-color-{{ block.settings.text_color }}{% if settings.lang_direction contains request.locale.iso_code %} rtl{% endif %}">
             <p class="empty:hidden heading-{{ block.id }} text--{{ block.id }} font-medium">
+              {%- if block.settings.link != blank -%}
+                <a class="nt-text-link" href="{{ block.settings.link }}">
+              {%- endif -%}
               {% render 'heading-highlight',
                 headingId: block.id,
                 heading: block.settings.text,
@@ -255,6 +258,9 @@
                 color_heading_highlight_dark: section.settings.color_heading_highlight_dark,
                 color_heading_highlight_light: section.settings.color_heading_highlight_light
               %}
+              {%- if block.settings.link != blank -%}
+                </a>
+              {%- endif -%}
             </p>
           </div>
         {% endif %}
@@ -280,8 +286,8 @@
     {% endcase %}
   {% endfor %}
 {% endcapture %}
-<div x-intersect.once.margin.200px="$store.xScrollPromotion.load($el)" class="text-[rgb(var(--colors-text))] section-{{ section.id }} ltr"
-  >
+<div x-intersect.once.margin.200px="$store.xScrollPromotion.load($el)" class="text-[rgb(var(--colors-text))] section-{{ section.id }} ltr">
+  <button type="button" class="nt-marquee-pause" aria-pressed="false" data-pause="{{ 'notturno.pause' | t }}" data-play="{{ 'notturno.play' | t }}">{{ 'notturno.pause' | t }}</button>
   <div class="bg-{{ section.id }} w-full overflow-hidden {% if section.settings.show_border %} border-y border-solid{% endif %} pb-[{{ section.settings.padding_bottom_mobile }}px] pt-[{{ section.settings.padding_top_mobile }}px] md:pb-[{{ section.settings.padding_bottom }}px] md:pt-[{{ section.settings.padding_top }}px]">
     <div class="flex flex-nowrap whitespace-nowrap min-w-full">
       <div class="flex shrink-0 whitespace-nowrap items-center el_animate element-{{ section.id }}">
@@ -855,6 +861,11 @@
           "default": "Talk about your brand",
           "label": "t:sections.all.text.text",
           "info": "t:settings_schema.typography.settings.heading_highlight_type.info"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
         },
         {
           "type": "select",

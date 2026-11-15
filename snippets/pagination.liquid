@@ -27,7 +27,7 @@
       <p class="mb-3">{{ 'general.global.showing_items' | t: item: count_item, total: paginate.items }}</p>
       {%- if paginate.next -%}
         <button class="button button-outline relative pl-9 pr-9 pt-3.5 pb-3.5" @click="loadData('{{ paginate.next.url }}{{ anchor }}')">
-          <span :class="loading && 'opacity-0'">{{ 'general.global.load_more' | t }}</span>
+          <span :class="loading && 'opacity-0'">{{ 'general.global.load_more' | t: count: products_per_page }}</span>
           <div class="lg:inline-block animate-spin w-4 h-4 md:w-5 md:h-5 absolute top-[calc(50%-8px)] left-[calc(50%-8px)] md:top-[calc(50%-10px)] md:left-[calc(50%-10px)]" x-show="loading" x-cloak>
             {% render 'icon-alls', icon: 'icon-loading' %}
           </div>

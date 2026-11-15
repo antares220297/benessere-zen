@@ -477,6 +477,11 @@
             </div>
           {%- endif -%} 
         </div>
+        <div class="nt-filter-apply md:hidden">
+          <button type="button" class="button button-solid" @click.prevent="_filterRemoveFocus(); show = false; $store.xPopup.close()">
+            {{ 'notturno.show_results' | t: count: results.products_count }}
+          </button>
+        </div>
       </div>
     </div>
   {% endif %}

@@ -17,49 +17,50 @@
         "announcement-bar-0": {
           "type": "announcement",
           "settings": {
-            "icon": "truck",
-            "another_icon": "",
-            "custom_icon": "",
-            "text": "Spedizione gratuita da [soglia] · Ritiro gratuito a Cento · Recesso 14 giorni",
-            "text_size": 100,
-            "link": "",
-            "open_new_window": false,
-            "button_label_or_code": "",
-            "button_link": "shopify://collections/all",
-            "open_new_window_button": false,
-            "button_color": "rgba(0,0,0,0)",
-            "button_text_color": "#ffffff",
-            "button_color_dark": "rgba(0,0,0,0)",
-            "button_text_color_dark": "#ffffff",
-            "timezone": "-4",
-            "end_year": 2023,
-            "end_month": "1",
-            "end_day": "1",
-            "end_hour": "1",
-            "end_minute": "0"
+            "icon": "none",
+            "text": "Spedizione gratuita da [soglia]",
+            "text_size": 100
+          }
+        },
+        "announcement-bar-1": {
+          "type": "announcement",
+          "settings": {
+            "icon": "none",
+            "text": "Ritiro gratuito in negozio, pronto in 4 ore",
+            "text_size": 100
+          }
+        },
+        "announcement-bar-2": {
+          "type": "announcement",
+          "settings": {
+            "icon": "none",
+            "text": "Reso entro 14 giorni",
+            "text_size": 100
           }
         }
       },
       "block_order": [
-        "announcement-bar-0"
+        "announcement-bar-0",
+        "announcement-bar-1",
+        "announcement-bar-2"
       ],
       "custom_css": [],
       "settings": {
         "enable": true,
         "show_only_on_homepage": false,
-        "enable_sticky_bar": true,
-        "enable_carousel_on_desktop": false,
-        "backgound_color": "#3E4A36",
-        "text_color": "#FFFFFF",
+        "enable_sticky_bar": false,
+        "enable_carousel_on_desktop": true,
+        "backgound_color": "#141316",
+        "text_color": "#EDE6DA",
         "textlink_color_light": "rgba(0,0,0,0)",
-        "backgound_color_dark": "#3E4A36",
-        "text_color_dark": "#FFFFFF",
+        "backgound_color_dark": "#141316",
+        "text_color_dark": "#EDE6DA",
         "textlink_color_dark": "rgba(0,0,0,0)",
         "menu": "",
         "menu_position": "right",
         "auto_switch_bar": false,
         "change_bar_every": 5,
-        "show_navigation": false,
+        "show_navigation": true,
         "show_social_icons": false,
         "alignment": "left",
         "show_language_selector": false,
@@ -457,23 +458,23 @@
       ],
       "settings": {
         "menu": "",
-        "select_motion": "click",
+        "select_motion": "hover",
         "full_width": false,
         "logo_position": "left-center",
         "mobile_header_layout": "left-right",
-        "sticky_header_type": "always",
+        "sticky_header_type": "on-scroll-up",
         "logo": "shopify://shop_images/Untitled_design_2-modified.png",
         "logo_dark": "shopify://shop_images/Untitled_design_2-modified.png",
         "logo_width": 80,
         "logo_width_mobile": 60,
         "show_social_icons": false,
-        "enable_on_homepage": false,
+        "enable_on_homepage": true,
         "enable_on_collection_page": false,
         "logo_transparent": "shopify://shop_images/Untitled_design_2-modified.png",
         "shadow": 30,
-        "text_color_light": "#2B2B2B",
+        "text_color_light": "#EDE6DA",
         "textlink_color_light": "rgba(0,0,0,0)",
-        "text_color_dark": "#F7F3EC",
+        "text_color_dark": "#EDE6DA",
         "textlink_color_dark": "rgba(0,0,0,0)",
         "shadow_color": "#000000",
         "shadow_color_dark": "#000000",
@@ -489,7 +490,8 @@
         "padding_bottom": 24,
         "show_section_divider_mobile": false,
         "padding_top_mobile": 16,
-        "padding_bottom_mobile": 16
+        "padding_bottom_mobile": 16,
+        "use_notturno_nav": true
       }
     },
     "mobile-navigation": {

@@ -74,6 +74,7 @@
 <div
   id="product-media-{{ section.id }}"
   class="{% if enable_sticky_image %}sticky top-[calc(var(--height-header)+5rem)] quick-view:top-0{% endif %}"
+  style="view-transition-name: product-{{ product.id }}"
   x-data='xProductMedia({{ settings }})'
   {% if show_media_with_variant_selected and product.has_only_default_variant == false and product.media.size > 0 %}
     data-media-with-variant-selected="true"

@@ -1,0 +1,15 @@
+{
+  "sections": {
+    "intro": {
+      "type": "notturno-prose",
+      "settings": {
+        "kicker": "Cento",
+        "heading": "Il negozio",
+        "text": "<p>Siamo in via M. Provenzali 1, a Cento, in provincia di Ferrara. I pezzi del sito sono in vetrina.</p><p id=\"ritiro\">Ordini online e ritiri gratis, di solito pronto in 4 ore. Oppure passi, e lo vedi prima.</p><p>Lunedì, martedì, mercoledì, venerdì e sabato: 9:30-12:30 e 16:00-19:30. Giovedì: 9:00-13:00.</p><p><a href=\"mailto:info@benesserezen.shop\">info@benesserezen.shop</a></p>",
+        "button_label": "Come arrivare",
+        "button_link": "https://maps.google.com/?q=Via+Provenzali+1+Cento+Ferrara"
+      }
+    }
+  },
+  "order": ["intro"]
+}

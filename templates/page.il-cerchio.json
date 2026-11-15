@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "intro": {
+      "type": "notturno-prose",
+      "settings": {
+        "heading": "Il Cerchio",
+        "text": "<p>Il Cerchio è il nome del programma punti. Tre passi, quando è attivo: ti iscrivi, i punti si sommano in negozio e sugli ordini online, li usi sull'acquisto dopo.</p><p>I punti compaiono qui quando il programma è collegato. Fino ad allora questa pagina spiega solo come funziona.</p>"
+      }
+    }
+  },
+  "order": ["intro"]
+}

@@ -2,6 +2,7 @@
   <div class="bz-reviews">
     <div class="bz-reviews__inner">
       {%- if section.settings.heading != blank -%}
+        {% render 'chapter-label', chapter: section.settings.chapter %}
         <h2 class="bz-reviews__title">{{ section.settings.heading | escape }}</h2>
       {%- endif -%}
       {%- for block in section.blocks -%}
@@ -53,6 +54,11 @@
       "id": "heading",
       "label": "Titolo",
       "default": "Recensioni"
+    },
+    {
+      "type": "text",
+      "id": "chapter",
+      "label": "Capitolo"
     }
   ],
   "blocks": [

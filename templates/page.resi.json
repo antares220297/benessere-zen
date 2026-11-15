@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "intro": {
+      "type": "notturno-prose",
+      "settings": {
+        "heading": "Resi e recesso",
+        "text": "<p>Hai 14 giorni dalla consegna per recedere, senza motivazione. Se l'ordine ha più pezzi, il termine parte dall'ultimo che ricevi.</p><p>La restituzione è a carico di chi acquista, salvo pezzo difettoso o errore nostro. Il rimborso arriva entro 14 giorni dalla comunicazione del recesso.</p><p>Scrivi a info@benesserezen.shop con il numero d'ordine. Ti rispondiamo con l'indirizzo per la restituzione.</p><p>Modulo: «Io sottoscritto comunico il recesso dal contratto per l'ordine numero ___, ricevuto il ___.» Invia il testo a info@benesserezen.shop. Ti confermiamo di averlo ricevuto.</p>"
+      }
+    }
+  },
+  "order": ["intro"]
+}

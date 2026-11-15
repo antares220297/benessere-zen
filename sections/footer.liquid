@@ -394,7 +394,7 @@
         {%- if settings.business_vat != blank -%}
           <p class="bz-seller-vat">P. IVA {{ settings.business_vat | escape }}</p>
         {%- endif -%}
-        {%- if section.settings.show_copyright -%}
+          {%- if section.settings.show_copyright -%}
         <p class="inline-block">&copy; {{ 'now' | date: "%Y" }}{% unless is_rtl %}, {% endunless %}</p>
           {{ shop.name | link_to: routes.root_url }}.
           {%- if section.settings.add_copyright_text != blank -%}

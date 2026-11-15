@@ -326,6 +326,7 @@
                     }
                   {% endstyle %}
                   <div class="mb-5 w-full{% if show_content_center %} text-center{% endif %}" {{ block.shopify_attributes }}>
+                    {% render 'notturno-product-eyebrow', product: product %}
                     <{{ block.settings.heading_tag }} class="product-title h2 title-size--{{ block.id }} mb-3 leading-tight">
                       {{ product.title | escape }}
                     </{{ block.settings.heading_tag }}>
@@ -414,6 +415,7 @@
                         {{ form | payment_terms }}
                       {%- endform -%}
                     </div>
+                    {% render 'notturno-product-chips', product: product %}
                   </div>
                 {%- when 'description' -%}
                   {%- if product.description != blank -%}
@@ -470,6 +472,7 @@
                       </div>
                     </div>
                   {%- endif -%}
+                  {% render 'notturno-product-facts', product: product %}
                 {%- when 'buy_buttons' -%}
                   {%- unless settings.hide_cart -%}    
                     {% style %}
@@ -686,6 +689,7 @@
                     {% endif %}
                     {% assign show_content_center = false %}
                     <script src="{{ 'product-cart.js' | asset_url }}" defer></script>
+                    {% render 'notturno-product-buy', product: product, part: 'after' %}
                   {%- endunless -%}
                 {%- when 'variant_picker' -%}
                   {%- unless btn_addtocart -%}
@@ -823,6 +827,7 @@
                     });"></div>
                   {%- endunless -%}
                   <script src="{{ 'variant-select.js' | asset_url }}" defer></script>
+                  {% render 'notturno-product-buy', product: product, part: 'size' %}
                 {%- when 'quantity_selector' -%}
                   {%- unless settings.hide_cart -%}
                     <div class="mb-5 product-form__quantity w-full{% if show_content_center %} text-center{% endif %}" {{ block.shopify_attributes }}>

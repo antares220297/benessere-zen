@@ -233,6 +233,7 @@
     </div>
     <div class="{{ iwt_content }} w-full flex justify-center md:justify-start{% if section.settings.content_layout == "overlap" %} self-{{ section.settings.text_position }}{% else %} items-{{ section.settings.text_position }}{% endif %}{% if section.settings.image_alignment == "right" %} md:justify-end{% endif %} iwt-content-{{ section.settings.content_layout }}">
       <div class="iwt-content {% unless section.settings.full_width %} md:flex-1{% endunless %}{% if section.settings.content_layout == "overlap" %} iwt-overlap iwt--{{ section.id }} border-radius-{{ section.id }} w-11/12 md:w-full xl:w-11/12 md:max-w-2xl lg:pl-20 lg:pr-20{% else %} w-full lg:pl-24 lg:pr-24{% endif %}">
+        {% render 'chapter-label', chapter: section.settings.chapter %}
         {%- for block in section.blocks -%}
           {% case block.type %}
             {%- when 'heading' -%}
@@ -551,6 +552,11 @@
       "id": "image",
       "label": "t:sections.image-with-text.settings.image.options__1.label",
       "info": "t:sections.all.image.note_image_size"
+    },
+    {
+      "type": "text",
+      "id": "chapter",
+      "label": "Capitolo"
     },
     {
       "type": "image_picker",

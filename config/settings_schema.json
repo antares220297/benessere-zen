@@ -971,6 +971,13 @@
         "label": "t:settings_schema.products.show_quantity"
       },
       {
+        "type": "checkbox",
+        "id": "show_qty_tiers",
+        "default": false,
+        "label": "Mostra gli scaglioni 2 pezzi e 3 pezzi",
+        "info": "Spento di default. Accendilo solo quando lo sconto automatico esiste in Shopify. Il tema non applica lo sconto."
+      },
+      {
         "type": "number",
         "id": "low_stock_threshold",
         "default": 2,
@@ -1979,6 +1986,13 @@
         "placeholder": "US:USD:100 \nEU:EUR:150"
       },
       {
+        "type": "number",
+        "id": "cart_gift_threshold",
+        "default": 0,
+        "label": "Secondo traguardo del carrello, in euro",
+        "info": "0 lo nasconde. Metti una cifra solo se il regalo esiste davvero."
+      },
+      {
         "type": "paragraph",
         "content": "t:settings_schema.shipping_delivery.free_shipping.order_amount_freeshipping.example_1"
       },
@@ -2923,6 +2937,12 @@
         "id": "business_phone",
         "label": "t:settings_schema.seo.business_phone.label",
         "placeholder": "+1-212-456-7890"
+      },
+      {
+        "type": "text",
+        "id": "whatsapp_number",
+        "label": "Numero WhatsApp",
+        "info": "Con prefisso internazionale, senza spazi. Vuoto: il link non compare."
       },
       {
         "type": "text",

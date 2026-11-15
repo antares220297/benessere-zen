@@ -1,0 +1,22 @@
+{% doc %}
+  Up to four specification chips from product metafields. Hidden when none are set.
+
+  @param {product} product - Current product
+
+  @example
+  {% render 'notturno-product-chips', product: product %}
+{% enddoc %}
+{%- liquid
+  assign misure = product.metafields.custom.misure.value | default: product.metafields.custom.misure
+  assign materiali = product.metafields.custom.materiali.value | default: product.metafields.custom.materiali
+  assign peso = product.metafields.custom.peso_g.value | default: product.metafields.custom.peso_g
+  assign chiusura = product.metafields.custom.chiusura.value | default: product.metafields.custom.chiusura
+-%}
+{%- if misure != blank or materiali != blank or peso != blank or chiusura != blank -%}
+  <ul class="nt-chips">
+    {%- if materiali != blank -%}<li>{{ materiali | escape }}</li>{%- endif -%}
+    {%- if misure != blank -%}<li>{{ misure | escape }}</li>{%- endif -%}
+    {%- if peso != blank -%}<li>{{ peso }} g</li>{%- endif -%}
+    {%- if chiusura != blank -%}<li>{{ chiusura | escape }}</li>{%- endif -%}
+  </ul>
+{%- endif -%}

@@ -6330,47 +6330,6 @@ div[id^="shopify-block-okendo_reviews"] .oke-largeBadge-count{left:0px}
   max-height: 1em; 
 }
 
-/* Style for the Promo link */
-nav a[href*="promo"] {
-  color: #e43a36; /* Red color for Promo */
-  position: relative; /* Needed for absolute positioning of sparkles */
-}
-
-/* Add the top-left large sparkle */
-nav a[href*="promo"]::before {
-  content: "✨"; /* Sparkle icon */
-  position: absolute;
-  top: -10px; /* Adjusts position above the text */
-  left: -15px; /* Adjusts position to the left of the text */
-  font-size: 18px; /* Larger sparkle */
-  animation: sparkle-fade 2s infinite; /* Fading animation */
-  opacity: 0; /* Ensures it starts faded out */
-}
-
-/* Add the bottom-right small sparkle */
-nav a[href*="promo"]::after {
-  content: "✨"; /* Sparkle icon */
-  position: absolute;
-  bottom: -5px; /* Adjusts position below the text */
-  right: -10px; /* Adjusts position to the right of the text */
-  font-size: 12px; /* Smaller sparkle */
-  animation: sparkle-fade 2s infinite 1s; /* Staggered fading animation */
-  opacity: 0; /* Ensures it starts faded out */
-}
-
-/* Sparkle fading animation */
-@keyframes sparkle-fade {
-  0%,
-  100% {
-    opacity: 0; /* Fully transparent at start and end */
-    transform: scale(0.8); /* Slightly smaller */
-  }
-  50% {
-    opacity: 1; /* Fully visible at the midpoint */
-    transform: scale(1.2); /* Slightly larger for a "pop" effect */
-  }
-}
-
 /* Adjust submenu container width */
 /* .header__inline-menu .sub-menu {
   min-width: 280px; /* Increases the submenu container width */

@@ -1,0 +1,90 @@
+{% doc %}
+  Free-shipping progress, read from settings.order_amount_freeshipping.
+  Optional second milestone only when settings.cart_gift_threshold is greater than 0.
+  Quantity-tier line only when settings.show_qty_tiers is on. The theme does not apply a discount.
+
+  @example
+  {% render 'cart-milestones' %}
+{% enddoc %}
+{%- if settings.enable_free_shipping -%}
+  {%- liquid
+    assign cart_total = cart.total_price | divided_by: 100.0
+    assign raw_threshold = settings.order_amount_freeshipping | strip
+    assign thresholds = raw_threshold | newline_to_br | strip_newlines | split: '<br />'
+    if raw_threshold contains ';'
+      assign thresholds = raw_threshold | remove: ' ' | split: ';'
+    endif
+    for threshold in thresholds
+      unless threshold contains ':'
+        if threshold != blank
+          assign check_currency = threshold | remove: '0' | remove: '1' | remove: '2' | remove: '3' | remove: '4' | remove: '5' | remove: '6' | remove: '7' | remove: '8' | remove: '9' | remove: ':' | remove: ' ' | remove: '.'
+          if check_currency == ''
+            assign threshold_all = threshold | strip | plus: 0
+          endif
+        endif
+      else
+        assign check_currency_first = threshold | split: ':' | first
+        assign check_currency_last = threshold | split: ':' | last
+        assign check_currency = threshold | remove_first: check_currency_first | remove: check_currency_last
+        if check_currency == ':'
+          if check_currency_first == cart.currency.iso_code
+            assign threshold_currency = check_currency_last | strip | plus: 0
+          endif
+        else
+          assign check_currency_country = check_currency | remove: ':'
+          if check_currency_first == localization.country.iso_code and check_currency_country == cart.currency.iso_code
+            assign threshold_country = check_currency_last | strip | plus: 0
+          endif
+        endif
+      endunless
+    endfor
+    assign threshold_number = 0
+    if threshold_all
+      assign threshold_number = threshold_all
+    endif
+    if threshold_currency
+      assign threshold_number = threshold_currency
+    endif
+    if threshold_country
+      assign threshold_number = threshold_country
+    endif
+    assign gift_goal = settings.cart_gift_threshold | default: 0 | plus: 0
+    assign goal = threshold_number
+    if gift_goal > goal
+      assign goal = gift_goal
+    endif
+    assign scale = 0
+    if goal > 0
+      assign scale = cart_total | divided_by: goal
+      if scale > 1
+        assign scale = 1
+      endif
+    endif
+    assign missing = threshold_number | minus: cart_total
+  -%}
+  {%- if threshold_number > 0 -%}
+    <div class="nt-milestones" aria-live="polite">
+      {%- if missing > 0 -%}
+        {%- assign missing_money = missing | times: 100 | money -%}
+        <p>{{ 'notturno.shipping_missing' | t: amount: missing_money }}</p>
+      {%- else -%}
+        <p class="nt-star">{{ 'notturno.shipping_unlocked' | t }}</p>
+      {%- endif -%}
+      {%- if gift_goal > 0 -%}
+        {%- assign gift_missing = gift_goal | minus: cart_total -%}
+        {%- if gift_missing > 0 -%}
+          {%- assign gift_money = gift_missing | times: 100 | money -%}
+          <p>{{ 'notturno.gift_missing' | t: amount: gift_money }}</p>
+        {%- else -%}
+          <p>{{ 'notturno.gift_unlocked' | t }}</p>
+        {%- endif -%}
+      {%- endif -%}
+      <div class="nt-track" aria-hidden="true">
+        <span class="nt-fill" style="--nt-scale: {{ scale }};"></span>
+      </div>
+      {%- if settings.show_qty_tiers -%}
+        <p>{{ 'notturno.qty_tiers' | t }}</p>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+{%- endif -%}
