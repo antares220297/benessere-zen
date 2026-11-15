@@ -9,472 +9,220 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "main-product",
+    "bz_product": {
+      "type": "bz-product",
+      "settings": {
+        "store_badge": "Anche in negozio",
+        "photo_note": "Pietra naturale: ogni pezzo è un po' diverso",
+        "shipping_note": "Spedizione gratuita da 50 €",
+        "pickup_label": "Ritira gratis in negozio, di solito in 4 ore",
+        "pickup_link": "/pages/il-negozio",
+        "bento_title": "La nappa",
+        "bento_accent": "chiude il giro",
+        "bento_text": "Annodata a mano, con l'anello che separa il grano guru.",
+        "stat_1": "108",
+        "stat_1_text": "grani, il numero dei mantra nella tradizione",
+        "stat_2": "8 mm",
+        "stat_2_text": "ogni perla, lucida e liscia al tatto",
+        "stat_3": "67 g",
+        "stat_3_text": "leggero da portare tutto il giorno",
+        "wide_title": "Al collo",
+        "wide_accent": "o al polso",
+        "wide_text": "Lungo, cade sotto il petto. Avvolto tre o quattro volte, diventa un bracciale a strati.",
+        "related": "mala-tibetani",
+        "related_heading": "Altri mala,",
+        "related_accent": "stessi 108 grani",
+        "related_link": "Tutti i mala",
+        "pair": "bracciale-tormalina-nera-elastico",
+        "free_shipping": 50,
+        "pickup_hours": "4 ore",
+        "visit_title": "Vuoi vederlo prima?",
+        "visit_text": "È anche in negozio, in via Provenzali 1.",
+        "visit_link": "Orari"
+      },
       "blocks": {
-        "badges": {
-          "type": "badges",
-          "settings": {}
-        },
-        "price": {
-          "type": "price",
+        "fact-1": {
+          "type": "fact",
           "settings": {
-            "show_tax_and_shipping": false
+            "value": "108",
+            "label": "grani"
           }
         },
-        "ffacb41b-c15e-41ee-864a-cfbf155d407d": {
-          "type": "estimate_delivery",
+        "fact-2": {
+          "type": "fact",
           "settings": {
-            "message": "<p>Estimated delivery between <strong>earliest_delivery_date and latest_delivery_date.</strong></p>",
-            "tooltip_text": "",
-            "tooltip_icon": "none",
-            "custom_icon": "",
-            "tooltip_icon_position": "left",
-            "tooltip_message": "",
-            "show_background": true,
-            "box_type": "square",
-            "background_color_light": "#e4edfa",
-            "message_color_light": "#568ddd",
-            "background_color_dark": "rgba(0,0,0,0)",
-            "message_color_dark": "rgba(0,0,0,0)",
-            "bg_tooltip_color_light": "rgba(0,0,0,0)",
-            "tooltip_color_light": "rgba(0,0,0,0)",
-            "bg_tooltip_color_dark": "rgba(0,0,0,0)",
-            "tooltip_color_dark": "rgba(0,0,0,0)"
+            "value": "8 mm",
+            "label": "perla"
           }
         },
-        "variant_picker": {
-          "type": "variant_picker",
+        "fact-3": {
+          "type": "fact",
           "settings": {
-            "picker_type": "button",
-            "show_variant_option": true,
-            "enable_color_swatches": true
+            "value": "67 g",
+            "label": "peso"
           }
         },
-        "quantity_selector": {
-          "type": "quantity_selector",
-          "settings": {}
-        },
-        "gift_wrapping_wnrwiW": {
-          "type": "gift_wrapping",
+        "fact-4": {
+          "type": "fact",
           "settings": {
-            "text_gift": "",
-            "color_icon_light": "rgba(0,0,0,0)",
-            "color_icon_dark": "rgba(0,0,0,0)"
+            "label": "Onice nero",
+            "swatch": "#111111"
           }
         },
-        "buy_buttons": {
-          "type": "buy_buttons",
+        "det-1": {
+          "type": "detail",
           "settings": {
-            "show_dynamic_checkout": true,
-            "show_gift_card_recipient": true,
-            "pickup_availability": true,
-            "preorder_button_label": "Pre-order",
-            "preorder_message": "<p>This product will be available for sale in 2 weeks, but you can pre-order now to receive 10% discount!</p>",
-            "preorder_show_dynamic_button": false,
-            "show_background": false,
-            "box_type": "square",
-            "background_color_light": "rgba(0,0,0,0)",
-            "message_color_light": "rgba(0,0,0,0)",
-            "background_color_dark": "rgba(0,0,0,0)",
-            "message_color_dark": "rgba(0,0,0,0)"
+            "title": "Dettagli",
+            "open": true,
+            "text": "<table><tr><td>Pietra</td><td>Onice nero</td></tr><tr><td>Grani</td><td>108</td></tr><tr><td>Diametro perla</td><td>circa 8 mm</td></tr><tr><td>Peso</td><td>67 g</td></tr><tr><td>Finitura</td><td>Nappa nera</td></tr></table>"
           }
         },
-        "description": {
-          "type": "description",
+        "det-2": {
+          "type": "detail",
           "settings": {
-            "show_in_tab": true,
-            "open_by_default": true
+            "title": "Nella tradizione",
+            "text": "<p>Nella pratica buddista e induista il mala serve a contare mantra o respiri. All'onice la tradizione associa fermezza e protezione. I significati appartengono alla tradizione e alla pratica spirituale; non sostituiscono pareri o terapie mediche.</p>"
           }
         },
-        "complementary_KhmEAF": {
-          "type": "complementary",
+        "det-3": {
+          "type": "detail",
           "settings": {
-            "heading": "Buy It With",
-            "show_tab": false,
-            "show_background": true,
-            "max_product_show": 4,
-            "number_product_per_page": 2,
-            "enable_carousel_desktop": true,
-            "enable_swiper_mobile": true,
-            "image_ratio": "square",
-            "show_vendor": false,
-            "show_product_rating": false
+            "title": "Come averne cura",
+            "text": "<p>Lontano da profumi e creme. Puliscilo con un panno morbido e asciutto e riponilo da solo, così la nappa non si schiaccia.</p>"
           }
         },
-        "collapsible-row-1": {
-          "type": "collapsible_tab",
+        "det-4": {
+          "type": "detail",
           "settings": {
-            "open_by_default": false,
-            "heading": "Benefit",
-            "tab_content": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>"
+            "title": "Spedizione, ritiro e reso",
+            "text": "<p>Gratuita da 50 €. Ritiro gratuito in negozio, di solito in 4 ore. Reso entro 14 giorni.</p>"
           }
         },
-        "collapsible_tab_z6n7NR": {
-          "type": "collapsible_tab",
+        "cap-1": {
+          "type": "caption",
           "settings": {
-            "open_by_default": false,
-            "heading": "Ingredients",
-            "tab_content": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>"
+            "text": "Perle da 8 mm"
           }
         },
-        "collapsible_tab_m3Fgn6": {
-          "type": "collapsible_tab",
+        "cap-2": {
+          "type": "caption",
           "settings": {
-            "open_by_default": false,
-            "heading": "Shipping & Returns",
-            "tab_content": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>"
+            "text": "Nappa annodata"
           }
         },
-        "social-sharing": {
-          "type": "social_sharing",
-          "settings": {}
-        },
-        "sticky-atc": {
-          "type": "sticky_add_to_cart",
+        "spec-0": {
+          "type": "spec",
           "settings": {
-            "desktop_display_type": "full_width",
-            "show_quantity_selector": false
+            "label": "Pietra",
+            "metafield": "pietra",
+            "fallback": "Onice nero"
+          }
+        },
+        "spec-1": {
+          "type": "spec",
+          "settings": {
+            "label": "Grani",
+            "metafield": "grani",
+            "fallback": "108"
+          }
+        },
+        "spec-2": {
+          "type": "spec",
+          "settings": {
+            "label": "Diametro perla",
+            "metafield": "diametro",
+            "fallback": "circa 8 mm"
+          }
+        },
+        "spec-3": {
+          "type": "spec",
+          "settings": {
+            "label": "Peso",
+            "metafield": "peso",
+            "fallback": "67 g"
+          }
+        },
+        "spec-4": {
+          "type": "spec",
+          "settings": {
+            "label": "Finitura",
+            "metafield": "finitura",
+            "fallback": "Nappa nera"
           }
         }
       },
       "block_order": [
-        "badges",
-        "price",
-        "ffacb41b-c15e-41ee-864a-cfbf155d407d",
-        "variant_picker",
-        "quantity_selector",
-        "gift_wrapping_wnrwiW",
-        "buy_buttons",
-        "description",
-        "complementary_KhmEAF",
-        "collapsible-row-1",
-        "collapsible_tab_z6n7NR",
-        "collapsible_tab_m3Fgn6",
-        "social-sharing",
-        "sticky-atc"
-      ],
-      "settings": {
-        "enable_sticky_image": true,
-        "show_product_name": true,
-        "title_size": 100,
-        "show_vendor": false,
-        "desktop_layout": "left",
-        "desktop_media_layout": "stacked",
-        "show_arrow_button": true,
-        "mobile_media_size": "full_width",
-        "show_thumnail_mobile": false,
-        "image_ratio": "natural",
-        "thumbnail_position": "horizontal",
-        "enable_image_zoom": false,
-        "enable_video_autoplay": false,
-        "enable_video_loop": false,
-        "show_first_image_avaiable": true,
-        "show_breadcrumbs": true,
-        "show_breadcrumbs_border": true,
-        "full_width_breadcrumb": false,
-        "desktop_content_alignment": "text-center",
-        "mobile_content_alignment": "text-center",
-        "background_color_light": "rgba(0,0,0,0)",
-        "text_color_light": "rgba(0,0,0,0)",
-        "textlink_color_light": "rgba(0,0,0,0)",
-        "background_color_dark": "rgba(0,0,0,0)",
-        "text_color_dark": "rgba(0,0,0,0)",
-        "textlink_color_dark": "rgba(0,0,0,0)",
-        "full_width": false,
-        "spacing_col": "small",
-        "padding_top": 60,
-        "padding_bottom": 80,
-        "padding_top_mobile": 40,
-        "padding_bottom_mobile": 28
-      }
+        "fact-1",
+        "fact-2",
+        "fact-3",
+        "fact-4",
+        "cap-1",
+        "cap-2",
+        "spec-0",
+        "spec-1",
+        "spec-2",
+        "spec-3",
+        "spec-4",
+        "det-1",
+        "det-2",
+        "det-3",
+        "det-4"
+      ]
     },
-    "product-recommendations": {
-      "type": "product-recommendations",
-      "disabled": true,
-      "settings": {
-        "heading": "You May Also Like...",
-        "heading_size": 100,
-        "heading_alignment": "center",
-        "products_to_show": 5,
-        "background_color_light": "",
-        "background_color_dark": "",
-        "show_vendor": false,
-        "show_rating": true,
-        "show_quickview": true,
-        "enable_carousel_desktop": false,
-        "enable_swiper_mobile": true,
-        "columns_desktop": 5,
-        "full_width": true,
-        "show_section_divider": false,
-        "spacing": 28,
-        "padding_top": 56,
-        "padding_bottom": 88,
-        "columns_mobile": "1",
-        "show_section_divider_mobile": false,
-        "spacing_mobile": 16,
-        "padding_top_mobile": 0,
-        "padding_bottom_mobile": 20
-      }
-    },
-    "scrolling_banner_6KKwkr": {
-      "type": "scrolling-banner",
+    "bz_ritual": {
+      "type": "bz-ritual",
       "blocks": {
-        "text_GdAaGf": {
-          "type": "text",
+        "set-nero": {
+          "type": "set",
           "settings": {
-            "text": "MAKE AN ANNOUNCEMENT",
-            "text_size": 180,
-            "text_color": "primary",
-            "spacing_left": 0,
-            "spacing_right": 0,
-            "spacing_left_mobile": 0,
-            "spacing_right_mobile": 0
+            "label": "Tutto nero",
+            "product_1": "mala-108-perle-onice-nero-qualita-aa",
+            "product_2": "bracciale-tormalina-nera-elastico",
+            "product_3": "ciondolo-larme-obsideinne-noire",
+            "caption_title": "Pietre scure,",
+            "caption_accent": "da portare a strati",
+            "caption": "Onice, tormalina e ossidiana: il mala lungo al collo, il bracciale e il ciondolo vicini."
           }
         },
-        "text_Ne4H7h": {
-          "type": "text",
+        "set-ametista": {
+          "type": "set",
           "settings": {
-            "text": "MAKE AN ANNOUNCEMENT",
-            "text_size": 180,
-            "text_color": "primary",
-            "spacing_left": 0,
-            "spacing_right": 0,
-            "spacing_left_mobile": 0,
-            "spacing_right_mobile": 0
+            "label": "Ametista",
+            "product_1": "mala-ametista-108-perle",
+            "product_2": "bracciale-ametista-naturale",
+            "product_3": "ciondolo-ametista-grezza",
+            "caption_title": "Ametista,",
+            "caption_accent": "da portare a strati",
+            "caption": "Mala, bracciale e ciondolo in ametista, da mettere insieme."
           }
         }
       },
       "block_order": [
-        "text_GdAaGf",
-        "text_Ne4H7h"
+        "set-nero",
+        "set-ametista"
       ],
       "settings": {
-        "show_border": true,
-        "speed": 20,
-        "direction": "right",
-        "pause_hover": true,
-        "bg_light": "rgba(0,0,0,0)",
-        "color_text_light": "rgba(0,0,0,0)",
-        "color_text_light_2": "rgba(0,0,0,0)",
-        "bg_dark": "rgba(0,0,0,0)",
-        "color_text_dark": "rgba(0,0,0,0)",
-        "color_text_dark_2": "rgba(0,0,0,0)",
-        "space_block": 60,
-        "padding_top": 32,
-        "padding_bottom": 32,
-        "space_block_mobile": 50,
-        "padding_top_mobile": 16,
-        "padding_bottom_mobile": 16
+        "heading": "Completa",
+        "heading_accent": "il rituale",
+        "link_label": "Tutti i set",
+        "link": "/collections/gioielli-con-pietre",
+        "intro": "Tre pezzi che stanno bene insieme, al collo e al polso. Togli quello che hai già."
       }
     },
-    "flow_dUp3AJ": {
-      "type": "flow",
-      "blocks": {
-        "product_VcrWHP": {
-          "type": "product",
-          "settings": {
-            "product": "",
-            "heading": "Step 1: Cleanse",
-            "description": "<p>Use this section to show a list of product or collection features, guide your customers through a process or share customers' reviews and case studies.</p>",
-            "button_text": "View more",
-            "button_link": "",
-            "open_new_window_button": false
-          }
-        },
-        "collection_9MnbyC": {
-          "type": "collection",
-          "settings": {
-            "collection": "",
-            "heading": "Step 2: Tone",
-            "description": "<p>Use this section to show a list of product or collection features, guide your customers through a process or share customers' reviews and case studies.</p>",
-            "button_text": "View more",
-            "button_link": "",
-            "open_new_window_button": false
-          }
-        },
-        "media_zjUmjA": {
-          "type": "media",
-          "settings": {
-            "video_url": "",
-            "video_alt_text": "",
-            "enable_video_autoplay": false,
-            "heading": "Step 3: Serum",
-            "description": "<p>Use this section to show a list of product or collection features, guide your customers through a process or share customers' reviews and case studies.</p>",
-            "button_text": "View more",
-            "button_link": "",
-            "open_new_window_button": false
-          }
-        },
-        "media_zGGj6b": {
-          "type": "media",
-          "settings": {
-            "video_url": "",
-            "video_alt_text": "",
-            "enable_video_autoplay": false,
-            "heading": "Step 4: Moisturise",
-            "description": "<p>Use this section to show a list of product or collection features, guide your customers through a process or share customers' reviews and case studies.</p>",
-            "button_text": "View more",
-            "button_link": "",
-            "open_new_window_button": false
-          }
-        },
-        "media_3fD4YJ": {
-          "type": "media",
-          "settings": {
-            "video_url": "",
-            "video_alt_text": "",
-            "enable_video_autoplay": false,
-            "heading": "Step 5: Eye",
-            "description": "<p>Use this section to show a list of product or collection features, guide your customers through a process or share customers' reviews and case studies.</p>",
-            "button_text": "View more",
-            "button_link": "",
-            "open_new_window_button": false
-          }
-        }
-      },
-      "block_order": [
-        "product_VcrWHP",
-        "collection_9MnbyC",
-        "media_zjUmjA",
-        "media_zGGj6b",
-        "media_3fD4YJ"
-      ],
+    "bz_related": {
+      "type": "bz-related",
       "settings": {
-        "heading": "COMPLETE THE ROUTINE",
-        "heading_size": 100,
-        "heading_alignment": "center",
-        "content_position": "middle",
-        "content_alignment": "left",
-        "open_first_tab": true,
-        "image_corner_radius": 0,
-        "heading_color": "rgba(0,0,0,0)",
-        "text_color": "rgba(0,0,0,0)",
-        "background_color": "rgba(0,0,0,0)",
-        "heading_color_dark": "rgba(0,0,0,0)",
-        "text_color_dark": "rgba(0,0,0,0)",
-        "background_color_dark": "rgba(0,0,0,0)",
-        "image_position": "second",
-        "full_width": true,
-        "padding_full_width": true,
-        "show_section_divider": false,
-        "desktop_height": "650px",
-        "padding_top": 92,
-        "padding_bottom": 0,
-        "image_position_mobile": "second",
-        "full_width_mobile": false,
-        "show_section_divider_mobile": false,
-        "mobile_height": "300px",
-        "padding_top_mobile": 60,
-        "padding_bottom_mobile": 28
-      }
-    },
-    "889982f1-ac32-483f-ab1c-597fce6e8ec1": {
-      "type": "featured-collection",
-      "blocks": {
-        "template--21381747048749__889982f1-ac32-483f-ab1c-597fce6e8ec1-collection-1": {
-          "type": "collection",
-          "settings": {
-            "collection": "",
-            "show_description": false,
-            "description": "",
-            "show_vendor": false,
-            "show_rating": true,
-            "show_quickview": true,
-            "show_promotion": false,
-            "promotion_position": "right",
-            "card_link": "",
-            "open_new_window": false,
-            "enable_text_overlay": false,
-            "overlay_opacity": 20,
-            "image_ratio": "150",
-            "heading": "",
-            "heading_size": 100,
-            "content": "",
-            "text_size": 100,
-            "content_alignment": "left",
-            "content_position": "bottom",
-            "button_label": "Button label",
-            "button_link": "",
-            "open_new_window_button": false,
-            "background_color": "rgba(0,0,0,0)",
-            "color_text": "#ffffff",
-            "color_button": "#ffffff",
-            "color_text_button": "#000000",
-            "color_button_hover": "rgba(0,0,0,0)",
-            "color_text_button_hover": "rgba(0,0,0,0)",
-            "color_button_secondary": "rgba(0,0,0,0)",
-            "secondary_button_text": "rgba(0,0,0,0)"
-          }
-        }
-      },
-      "block_order": [
-        "template--21381747048749__889982f1-ac32-483f-ab1c-597fce6e8ec1-collection-1"
-      ],
-      "settings": {
-        "title": "SUBSCRIBE & SAVE 10%",
-        "heading_size": 100,
-        "heading_alignment": "center",
-        "subheading": "EXPLORE OUR BESTSELLERS",
-        "text": "",
-        "show_view_all": false,
-        "view_all_position": "top",
-        "title_size": 120,
-        "title_style": "none",
-        "enable_desktop_slider": true,
-        "swiper_on_mobile": true,
-        "auto_play": false,
-        "change_slides_speed": 5,
-        "columns_desktop": 4,
-        "rows_desktop": 1,
-        "spacing": 30,
-        "full_width": true,
-        "show_section_divider": false,
-        "padding_top": 100,
-        "padding_bottom": 24,
-        "columns_mobile": "1",
-        "spacing_mobile": 16,
-        "full_width_mobile": false,
-        "show_section_divider_mobile": false,
-        "padding_top_mobile": 40,
-        "padding_bottom_mobile": 12
-      }
-    },
-    "recently_viewed_QjhCLG": {
-      "type": "recently-viewed",
-      "settings": {
-        "heading": "RELATED PRODUCTS",
-        "heading_size": 100,
-        "heading_alignment": "center",
-        "enable_clear_history": true,
-        "products_to_show": 4,
-        "background_color_light": "",
-        "background_color_dark": "",
-        "show_vendor": false,
-        "show_rating": false,
-        "show_quickview": true,
-        "enable_carousel_desktop": true,
-        "enable_swiper_mobile": true,
-        "columns_desktop": 4,
-        "full_width": true,
-        "show_section_divider": false,
-        "spacing": 28,
-        "padding_top": 36,
-        "padding_bottom": 92,
-        "columns_mobile": "2",
-        "show_section_divider_mobile": false,
-        "spacing_mobile": 16,
-        "padding_top_mobile": 20,
-        "padding_bottom_mobile": 20
+        "heading": "Altri mala,",
+        "heading_accent": "stessi 108 grani",
+        "link_label": "Tutti i mala",
+        "collection": "mala-tibetani",
+        "limit": 5
       }
     }
   },
   "order": [
-    "main",
-    "product-recommendations",
-    "scrolling_banner_6KKwkr",
-    "flow_dUp3AJ",
-    "889982f1-ac32-483f-ab1c-597fce6e8ec1",
-    "recently_viewed_QjhCLG"
+    "bz_product",
+    "bz_ritual",
+    "bz_related"
   ]
 }

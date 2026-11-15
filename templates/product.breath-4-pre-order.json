@@ -9,251 +9,220 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "main-product",
+    "bz_product": {
+      "type": "bz-product",
+      "settings": {
+        "store_badge": "Anche in negozio",
+        "photo_note": "Pietra naturale: ogni pezzo è un po' diverso",
+        "shipping_note": "Spedizione gratuita da 50 €",
+        "pickup_label": "Ritira gratis in negozio, di solito in 4 ore",
+        "pickup_link": "/pages/il-negozio",
+        "bento_title": "La nappa",
+        "bento_accent": "chiude il giro",
+        "bento_text": "Annodata a mano, con l'anello che separa il grano guru.",
+        "stat_1": "108",
+        "stat_1_text": "grani, il numero dei mantra nella tradizione",
+        "stat_2": "8 mm",
+        "stat_2_text": "ogni perla, lucida e liscia al tatto",
+        "stat_3": "67 g",
+        "stat_3_text": "leggero da portare tutto il giorno",
+        "wide_title": "Al collo",
+        "wide_accent": "o al polso",
+        "wide_text": "Lungo, cade sotto il petto. Avvolto tre o quattro volte, diventa un bracciale a strati.",
+        "related": "mala-tibetani",
+        "related_heading": "Altri mala,",
+        "related_accent": "stessi 108 grani",
+        "related_link": "Tutti i mala",
+        "pair": "bracciale-tormalina-nera-elastico",
+        "free_shipping": 50,
+        "pickup_hours": "4 ore",
+        "visit_title": "Vuoi vederlo prima?",
+        "visit_text": "È anche in negozio, in via Provenzali 1.",
+        "visit_link": "Orari"
+      },
       "blocks": {
-        "badges": {
-          "type": "badges",
-          "settings": {}
-        },
-        "price": {
-          "type": "price",
+        "fact-1": {
+          "type": "fact",
           "settings": {
-            "show_tax_and_shipping": false
+            "value": "108",
+            "label": "grani"
           }
         },
-        "variant_picker": {
-          "type": "variant_picker",
+        "fact-2": {
+          "type": "fact",
           "settings": {
-            "picker_type": "button",
-            "show_variant_option": true,
-            "enable_color_swatches": true
+            "value": "8 mm",
+            "label": "perla"
           }
         },
-        "quantity_selector": {
-          "type": "quantity_selector",
-          "settings": {}
-        },
-        "buy_buttons": {
-          "type": "buy_buttons",
+        "fact-3": {
+          "type": "fact",
           "settings": {
-            "show_dynamic_checkout": true,
-            "show_gift_card_recipient": true,
-            "pickup_availability": true,
-            "preorder_button_label": "Pre-order",
-            "preorder_message": "<p>This product will be available for sale in 2 weeks, but you can pre-order now to receive 10% discount!</p>",
-            "preorder_show_dynamic_button": false,
-            "show_background": true,
-            "box_type": "round",
-            "background_color_light": "#e4edfa",
-            "message_color_light": "#568ddd",
-            "background_color_dark": "#122540",
-            "message_color_dark": "#568ddd"
+            "value": "67 g",
+            "label": "peso"
           }
         },
-        "description": {
-          "type": "description",
+        "fact-4": {
+          "type": "fact",
           "settings": {
-            "show_in_tab": false
+            "label": "Onice nero",
+            "swatch": "#111111"
           }
         },
-        "collapsible-row-0": {
-          "type": "collapsible_tab",
+        "det-1": {
+          "type": "detail",
           "settings": {
-            "heading": "Additional Information",
-            "tab_content": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>"
+            "title": "Dettagli",
+            "open": true,
+            "text": "<table><tr><td>Pietra</td><td>Onice nero</td></tr><tr><td>Grani</td><td>108</td></tr><tr><td>Diametro perla</td><td>circa 8 mm</td></tr><tr><td>Peso</td><td>67 g</td></tr><tr><td>Finitura</td><td>Nappa nera</td></tr></table>"
           }
         },
-        "collapsible-row-1": {
-          "type": "collapsible_tab",
+        "det-2": {
+          "type": "detail",
           "settings": {
-            "heading": "Shipping and Returns",
-            "tab_content": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>"
+            "title": "Nella tradizione",
+            "text": "<p>Nella pratica buddista e induista il mala serve a contare mantra o respiri. All'onice la tradizione associa fermezza e protezione. I significati appartengono alla tradizione e alla pratica spirituale; non sostituiscono pareri o terapie mediche.</p>"
           }
         },
-        "8607df6c-bc3d-4e31-8e1e-4a4847d94b7a": {
-          "type": "social_sharing",
-          "settings": {}
-        },
-        "0a15073f-ff42-43c0-a1d0-015c97a0b110": {
-          "type": "sticky_add_to_cart",
+        "det-3": {
+          "type": "detail",
           "settings": {
-            "desktop_display_type": "full_width",
-            "show_quantity_selector": false
+            "title": "Come averne cura",
+            "text": "<p>Lontano da profumi e creme. Puliscilo con un panno morbido e asciutto e riponilo da solo, così la nappa non si schiaccia.</p>"
+          }
+        },
+        "det-4": {
+          "type": "detail",
+          "settings": {
+            "title": "Spedizione, ritiro e reso",
+            "text": "<p>Gratuita da 50 €. Ritiro gratuito in negozio, di solito in 4 ore. Reso entro 14 giorni.</p>"
+          }
+        },
+        "cap-1": {
+          "type": "caption",
+          "settings": {
+            "text": "Perle da 8 mm"
+          }
+        },
+        "cap-2": {
+          "type": "caption",
+          "settings": {
+            "text": "Nappa annodata"
+          }
+        },
+        "spec-0": {
+          "type": "spec",
+          "settings": {
+            "label": "Pietra",
+            "metafield": "pietra",
+            "fallback": "Onice nero"
+          }
+        },
+        "spec-1": {
+          "type": "spec",
+          "settings": {
+            "label": "Grani",
+            "metafield": "grani",
+            "fallback": "108"
+          }
+        },
+        "spec-2": {
+          "type": "spec",
+          "settings": {
+            "label": "Diametro perla",
+            "metafield": "diametro",
+            "fallback": "circa 8 mm"
+          }
+        },
+        "spec-3": {
+          "type": "spec",
+          "settings": {
+            "label": "Peso",
+            "metafield": "peso",
+            "fallback": "67 g"
+          }
+        },
+        "spec-4": {
+          "type": "spec",
+          "settings": {
+            "label": "Finitura",
+            "metafield": "finitura",
+            "fallback": "Nappa nera"
           }
         }
       },
       "block_order": [
-        "badges",
-        "price",
-        "variant_picker",
-        "quantity_selector",
-        "buy_buttons",
-        "description",
-        "collapsible-row-0",
-        "collapsible-row-1",
-        "8607df6c-bc3d-4e31-8e1e-4a4847d94b7a",
-        "0a15073f-ff42-43c0-a1d0-015c97a0b110"
-      ],
-      "settings": {
-        "enable_sticky_image": true,
-        "show_product_name": true,
-        "show_vendor": false,
-        "desktop_layout": "left",
-        "desktop_media_layout": "thumbnail_slider",
-        "show_arrow_button": true,
-        "mobile_media_size": "full_width",
-        "show_thumnail_mobile": false,
-        "image_ratio": "portrait",
-        "thumbnail_position": "vertical",
-        "enable_image_zoom": false,
-        "enable_video_autoplay": false,
-        "enable_video_loop": false,
-        "show_first_image_avaiable": true,
-        "show_breadcrumbs": true,
-        "show_breadcrumbs_border": true,
-        "full_width_breadcrumb": true,
-        "desktop_content_alignment": "text-center",
-        "mobile_content_alignment": "text-center",
-        "background_color_light": "rgba(0,0,0,0)",
-        "text_color_light": "rgba(0,0,0,0)",
-        "textlink_color_light": "rgba(0,0,0,0)",
-        "background_color_dark": "rgba(0,0,0,0)",
-        "text_color_dark": "rgba(0,0,0,0)",
-        "textlink_color_dark": "rgba(0,0,0,0)",
-        "full_width": true,
-        "spacing_col": "small",
-        "padding_top": 60,
-        "padding_bottom": 60,
-        "padding_top_mobile": 40,
-        "padding_bottom_mobile": 0
-      }
+        "fact-1",
+        "fact-2",
+        "fact-3",
+        "fact-4",
+        "cap-1",
+        "cap-2",
+        "spec-0",
+        "spec-1",
+        "spec-2",
+        "spec-3",
+        "spec-4",
+        "det-1",
+        "det-2",
+        "det-3",
+        "det-4"
+      ]
     },
-    "47ef2f4e-6a8e-4db1-a733-3513b9c0997d": {
-      "type": "multicolumn",
+    "bz_ritual": {
+      "type": "bz-ritual",
       "blocks": {
-        "template--21381747048749__47ef2f4e-6a8e-4db1-a733-3513b9c0997d-column-1": {
-          "type": "column",
+        "set-nero": {
+          "type": "set",
           "settings": {
-            "icon": "plane",
-            "custom_icon": "",
-            "title": "Shipping & Return",
-            "title_link": "",
-            "open_new_window": false,
-            "heading_size": 100,
-            "text": "<p>If your aren't perfect, return them within 30 days for a full refund.</p>"
+            "label": "Tutto nero",
+            "product_1": "mala-108-perle-onice-nero-qualita-aa",
+            "product_2": "bracciale-tormalina-nera-elastico",
+            "product_3": "ciondolo-larme-obsideinne-noire",
+            "caption_title": "Pietre scure,",
+            "caption_accent": "da portare a strati",
+            "caption": "Onice, tormalina e ossidiana: il mala lungo al collo, il bracciale e il ciondolo vicini."
           }
         },
-        "template--21381747048749__47ef2f4e-6a8e-4db1-a733-3513b9c0997d-column-2": {
-          "type": "column",
+        "set-ametista": {
+          "type": "set",
           "settings": {
-            "icon": "box",
-            "custom_icon": "",
-            "title": "Safe Payment",
-            "title_link": "",
-            "open_new_window": false,
-            "heading_size": 100,
-            "text": "<p>Pay with the world's most popular and secure payment methods</p>"
-          }
-        },
-        "template--21381747048749__47ef2f4e-6a8e-4db1-a733-3513b9c0997d-column-3": {
-          "type": "column",
-          "settings": {
-            "icon": "megaphone",
-            "custom_icon": "",
-            "title": "Shop with Confidence",
-            "title_link": "",
-            "open_new_window": false,
-            "heading_size": 100,
-            "text": "<p>Our Buyer Protection covers your purchase from click to delivery.</p>"
-          }
-        },
-        "template--21381747048749__47ef2f4e-6a8e-4db1-a733-3513b9c0997d-column-4": {
-          "type": "column",
-          "settings": {
-            "icon": "clock",
-            "custom_icon": "",
-            "title": "Shipping & Return",
-            "title_link": "",
-            "open_new_window": false,
-            "heading_size": 100,
-            "text": "<p>If your plant aren't perfect, return them within 30 days</p>"
+            "label": "Ametista",
+            "product_1": "mala-ametista-108-perle",
+            "product_2": "bracciale-ametista-naturale",
+            "product_3": "ciondolo-ametista-grezza",
+            "caption_title": "Ametista,",
+            "caption_accent": "da portare a strati",
+            "caption": "Mala, bracciale e ciondolo in ametista, da mettere insieme."
           }
         }
       },
       "block_order": [
-        "template--21381747048749__47ef2f4e-6a8e-4db1-a733-3513b9c0997d-column-1",
-        "template--21381747048749__47ef2f4e-6a8e-4db1-a733-3513b9c0997d-column-2",
-        "template--21381747048749__47ef2f4e-6a8e-4db1-a733-3513b9c0997d-column-3",
-        "template--21381747048749__47ef2f4e-6a8e-4db1-a733-3513b9c0997d-column-4"
+        "set-nero",
+        "set-ametista"
       ],
       "settings": {
-        "title": "",
-        "heading_size": 100,
-        "secondary_background": "none",
-        "border_column": "line_vertical",
-        "column_content_alignment": "center",
-        "icon_position": "above",
-        "icon_size": 33,
-        "enable_desktop_slider": true,
-        "swiper_on_mobile": true,
-        "change_bar_every": 5,
-        "background_color_light": "#ededdd",
-        "heading_light": "rgba(0,0,0,0)",
-        "text_light": "rgba(0,0,0,0)",
-        "line_border_light": "rgba(0,0,0,0)",
-        "color_icon_light": "rgba(0,0,0,0)",
-        "background_color_dark": "#2a2a2a",
-        "heading_dark": "rgba(0,0,0,0)",
-        "text_dark": "rgba(0,0,0,0)",
-        "line_border_dark": "rgba(0,0,0,0)",
-        "color_icon_dark": "rgba(0,0,0,0)",
-        "column_layout_desktop": "lg:w-1/4",
-        "section_height_desktop": "md:py-7",
-        "spacing_desktop": 40,
-        "full_width": false,
-        "show_section_divider": false,
-        "padding_top": 28,
-        "padding_bottom": 20,
-        "column_layout_mobile": "w-full",
-        "section_height_mobile": "py-5",
-        "spacing_mobile": 16,
-        "full_width_mobile": false,
-        "show_section_divider_mobile": false,
-        "padding_top_mobile": 20,
-        "padding_bottom_mobile": 20
+        "heading": "Completa",
+        "heading_accent": "il rituale",
+        "link_label": "Tutti i set",
+        "link": "/collections/gioielli-con-pietre",
+        "intro": "Tre pezzi che stanno bene insieme, al collo e al polso. Togli quello che hai già."
       }
     },
-    "product-recommendations": {
-      "type": "product-recommendations",
+    "bz_related": {
+      "type": "bz-related",
       "settings": {
-        "heading": "You May Also Like...",
-        "heading_size": 100,
-        "products_to_show": 5,
-        "background_color_light": "",
-        "background_color_dark": "",
-        "show_vendor": false,
-        "show_rating": false,
-        "show_quickview": true,
-        "enable_carousel_desktop": false,
-        "enable_swiper_mobile": true,
-        "columns_desktop": 5,
-        "full_width": true,
-        "show_section_divider": false,
-        "spacing": 20,
-        "padding_top": 20,
-        "padding_bottom": 64,
-        "columns_mobile": "2",
-        "show_section_divider_mobile": false,
-        "spacing_mobile": 16,
-        "padding_top_mobile": 16,
-        "padding_bottom_mobile": 40
+        "heading": "Altri mala,",
+        "heading_accent": "stessi 108 grani",
+        "link_label": "Tutti i mala",
+        "collection": "mala-tibetani",
+        "limit": 5
       }
     }
   },
   "order": [
-    "main",
-    "47ef2f4e-6a8e-4db1-a733-3513b9c0997d",
-    "product-recommendations"
+    "bz_product",
+    "bz_ritual",
+    "bz_related"
   ]
 }
