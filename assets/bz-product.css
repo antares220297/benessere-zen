@@ -39,16 +39,32 @@
   text-decoration: none;
 }
 
+.bz-product,
+.bz-pdp,
+.bz-dbento,
+.bz-related {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
 .bz-pdp {
   display: grid;
-  grid-template-columns: 1.12fr 1fr;
+  grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);
   gap: 28px;
   padding: 0 24px 40px;
 }
 
+.bz-gal,
+.bz-buy,
+.bz-stage,
+.bz-mini {
+  min-width: 0;
+}
+
 .bz-gal {
   display: grid;
-  grid-template-columns: 84px 1fr;
+  grid-template-columns: 84px minmax(0, 1fr);
   gap: 12px;
   position: sticky;
   top: 76px;

@@ -954,7 +954,72 @@
     },
     "bz_collection": {
       "type": "bz-collection",
-      "settings": {}
+      "settings": {
+        "heading": "Gioielli",
+        "heading_accent": "con pietre",
+        "intro": "Bracciali elastici, ciondoli grezzi e mala in pietra naturale. Ogni pezzo è anche in negozio: lo ordini qui e lo ritiri gratis.",
+        "per_page": 16
+      },
+      "blocks": {
+        "chip-br": {
+          "type": "chip",
+          "settings": {
+            "label": "Bracciali",
+            "collection": "bracciali"
+          }
+        },
+        "chip-ci": {
+          "type": "chip",
+          "settings": {
+            "label": "Ciondoli",
+            "collection": "ciondoli"
+          }
+        },
+        "chip-ma": {
+          "type": "chip",
+          "settings": {
+            "label": "Mala",
+            "collection": "mala-tibetani"
+          }
+        },
+        "chip-ca": {
+          "type": "chip",
+          "settings": {
+            "label": "Catenine",
+            "collection": "catenine"
+          }
+        },
+        "promo-1": {
+          "type": "promo",
+          "settings": {
+            "position": 5,
+            "style": "ox",
+            "title": "Il ciondolo",
+            "accent": "con la sua catenina",
+            "text": "Ogni ciondolo ha l'anello per la catena. La nostra è in acciaio, lunga.",
+            "button": "Aggiungi"
+          }
+        },
+        "promo-2": {
+          "type": "promo",
+          "settings": {
+            "position": 13,
+            "style": "hours",
+            "figure": "4 ore",
+            "title": "",
+            "text": "Ordini un gioiello e lo ritiri gratis in negozio, di solito in giornata.",
+            "button": "Come funziona il ritiro"
+          }
+        }
+      },
+      "block_order": [
+        "chip-br",
+        "chip-ci",
+        "chip-ma",
+        "chip-ca",
+        "promo-1",
+        "promo-2"
+      ]
     }
   },
   "order": [

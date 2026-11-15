@@ -524,8 +524,9 @@ body:has(.bz-hero) {
 
 .bz-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: var(--g);
+  width: 100%;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
 }
 
 .bz-card {
@@ -644,6 +645,7 @@ body:has(.bz-hero) {
 
 .bz-card__price {
   margin: 8px 6px 0;
+  font-family: Baskervville, Georgia, serif;
   font-size: 22px;
   line-height: 1;
 }

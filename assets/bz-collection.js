@@ -1,38 +1,52 @@
 (function () {
   document.querySelectorAll("[data-bz-coll]").forEach(function (root) {
-    var items = Array.prototype.slice.call(root.querySelectorAll("[data-bz-item]"));
     var grid = root.querySelector("[data-bz-grid]");
-    function apply() {
-      var q = (root.querySelector("[data-bz-q]").value || "").toLowerCase();
+    var search = root.querySelector("[data-bz-q]");
+    function filterCards() {
+      var q = (search && search.value || "").toLowerCase();
       var types = Array.prototype.map.call(root.querySelectorAll("[data-bz-type]:checked"), function (box) { return box.value; });
-      var stock = root.querySelector("[data-bz-stock]").checked;
-      var sort = root.querySelector("[data-bz-sort]").value;
-      var visible = items.filter(function (item) {
+      var min = root.querySelector("[data-bz-price='min']");
+      var max = root.querySelector("[data-bz-price='max']");
+      var shown = 0;
+      root.querySelectorAll("[data-bz-item]").forEach(function (item) {
         var title = item.getAttribute("data-title") || "";
         var type = item.getAttribute("data-type") || "";
+        var price = Number(item.getAttribute("data-price") || 0);
         var ok = !q || title.indexOf(q) !== -1;
         if (types.length) ok = ok && types.indexOf(type) !== -1;
-        if (stock) ok = ok && item.getAttribute("data-available") === "true";
+        if (min) ok = ok && price >= Number(min.value);
+        if (max) ok = ok && price <= Number(max.value);
         item.hidden = !ok;
-        return ok;
+        if (ok) shown += 1;
       });
-      visible.sort(function (a, b) {
-        if (sort === "price-asc" || sort === "price-desc") {
-          var diff = Number(a.getAttribute("data-price")) - Number(b.getAttribute("data-price"));
-          return sort === "price-asc" ? diff : -diff;
-        }
-        if (sort === "title") return (a.getAttribute("data-title") || "").localeCompare(b.getAttribute("data-title") || "");
-        return 0;
-      });
-      visible.forEach(function (item) { grid.appendChild(item); });
       var count = root.querySelector("[data-bz-count]");
-      if (count) count.textContent = visible.length + " pezzi";
+      if (count && q) count.textContent = String(shown);
     }
-    root.addEventListener("input", apply);
-    root.addEventListener("change", apply);
+    if (search) search.addEventListener("input", filterCards);
+    root.querySelectorAll("[data-bz-view]").forEach(function (button) {
+      button.addEventListener("click", function () {
+        root.querySelectorAll("[data-bz-view]").forEach(function (item) { item.classList.toggle("is-on", item === button); });
+        grid.classList.toggle("is-list", button.getAttribute("data-bz-view") === "list");
+      });
+    });
     var opener = root.querySelector("[data-bz-open-filters]");
-    if (opener) opener.addEventListener("click", function () {
-      root.querySelector("[data-bz-side]").classList.toggle("is-open");
+    var side = root.querySelector("[data-bz-side]");
+    if (opener && side) opener.addEventListener("click", function () { side.classList.toggle("is-open"); });
+    var more = root.querySelector("[data-bz-more]");
+    if (more) more.addEventListener("click", function () {
+      fetch(more.getAttribute("data-url")).then(function (response) { return response.text(); }).then(function (html) {
+        var doc = new DOMParser().parseFromString(html, "text/html");
+        doc.querySelectorAll("[data-bz-item], .bz-promo").forEach(function (node) { grid.appendChild(node); });
+        var next = doc.querySelector("[data-bz-more]");
+        if (next) more.setAttribute("data-url", next.getAttribute("data-url"));
+        else more.hidden = true;
+      });
+    });
+    var sort = root.querySelector("[data-bz-sort]");
+    if (sort) sort.addEventListener("change", function () {
+      var url = new URL(window.location.href);
+      url.searchParams.set("sort_by", sort.value);
+      window.location = url.toString();
     });
   });
 })();
