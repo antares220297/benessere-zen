@@ -1,0 +1,2281 @@
+{% comment %} 
+  Enhanced Zen Bubble Collections Section 
+  Luxury Edition - Dark & Gold Theme
+  Primary Colors: #C8B89F (Gold), #202020 (Dark Grey)
+  Cart Button: #22C55E (Vibrant Green)
+  NAVIGATION FIX APPLIED
+{% endcomment %}
+<div class="zen-collections-container">
+  {% if section.settings.section_title %}
+    <div class="zen-section-header">
+      <h2 class="zen-section-title">{{ section.settings.section_title }}</h2>
+      <div class="zen-heading-line"></div>
+    </div>
+  {% endif %}
+  <div class="zen-bubble-wrapper">
+  <!-- Collection Cards -->
+  {% for block in section.blocks %}
+    {% assign collection = collections[block.settings.collection_handle] %}
+    {% if collection %}
+      <div class="zen-bubble-card" data-collection="{{ collection.handle }}">
+        <div class="zen-card-badge">
+          {% if block.settings.badge_text %}
+            <span class="badge badge-{{ block.settings.badge_type }}">{{ block.settings.badge_text }}</span>
+          {% endif %}
+        </div>
+        
+        <div class="zen-card-image-wrapper">
+          <img 
+            src="{{ collection.image | img_url: '1x1' }}" 
+            data-src="{{ collection.image | img_url: 'medium' }}"
+            loading="lazy"
+            alt="{{ collection.title }}"
+            class="zen-lazy-image"
+          >
+          <div class="zen-card-overlay">
+            <button class="zen-quick-shop-btn" aria-label="Esplora {{ collection.title }}">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+              </svg>
+              Esplora
+            </button>
+          </div>
+        </div>
+        
+        <div class="zen-card-content">
+          <h3>{{ collection.title }}</h3>
+          <p class="zen-card-count">{{ collection.products_count }} prodotti</p>
+        </div>
+      </div>
+
+      <!-- Enhanced Modal -->
+      <div id="bubble-{{ collection.handle }}" class="zen-bubble-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-{{ collection.handle }}">
+        <div class="zen-bubble-backdrop"></div>
+        <div class="zen-bubble-inner">
+          <button class="zen-bubble-close" aria-label="Chiudi modal">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+          
+          <h2 id="modal-title-{{ collection.handle }}" class="zen-bubble-title">{{ collection.title }}</h2>
+          
+          <!-- Progress Bar -->
+          <div class="zen-progress-wrapper">
+            <div class="zen-progress-bar">
+              <div class="zen-progress-fill" data-total="{{ collection.products.size }}"></div>
+            </div>
+            <span class="zen-progress-text">1 di {{ collection.products.size }}</span>
+          </div>
+
+          <!-- Enhanced Carousel with Dedicated Navigation Areas -->
+          <div class="zen-carousel-layout">
+            <!-- Left Navigation Area -->
+            <div class="zen-nav-area zen-nav-left">
+              <button class="zen-nav-btn prev" aria-label="Prodotto precedente">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M15 18l-6-6 6-6"/>
+                </svg>
+              </button>
+            </div>
+            
+            <!-- Main Carousel Content -->
+            <div class="zen-carousel-content">
+              <div class="zen-carousel" data-collection="{{ collection.handle }}">
+                <div class="zen-carousel-track">
+                  {% for product in collection.products %}
+                    {% assign current_variant = product.selected_or_first_available_variant %}
+                    <div class="zen-product-slide" data-product-id="{{ product.id }}" data-slide-index="{{ forloop.index0 }}">
+                      <div class="zen-product-columns">
+                        <!-- Enhanced Left Column -->
+                        <div class="zen-product-left">
+                          <div class="zen-image-gallery">
+                            <div class="zen-main-image">
+                              <img 
+                                src="{{ product.featured_image | img_url: '1x1' }}"
+                                data-src="{{ product.featured_image | img_url: '600x600' }}"
+                                alt="{{ product.title }}"
+                                class="zen-lazy-image"
+                              >
+                              {% if product.compare_at_price > product.price %}
+                                <span class="zen-sale-badge">-{{ product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price }}%</span>
+                              {% endif %}
+                            </div>
+                            
+                            <!-- Thumbnail Gallery -->
+                            {% if product.images.size > 1 %}
+                              <div class="zen-thumbnails">
+                                {% for image in product.images limit: 4 %}
+                                  <img 
+                                    src="{{ image | img_url: '100x100' }}"
+                                    alt="{{ product.title }} - Immagine {{ forloop.index }}"
+                                    class="zen-thumbnail {% if forloop.first %}active{% endif %}"
+                                    data-full-src="{{ image | img_url: '600x600' }}"
+                                  >
+                                {% endfor %}
+                              </div>
+                            {% endif %}
+                          </div>
+                          
+                          <!-- Social Proof - MOVED HERE -->
+                          <div class="zen-social-proof">
+                            <div class="zen-buyers">
+                              <div class="zen-buyer-avatars">
+                                {% for i in (1..3) %}
+                                  <div class="zen-avatar" style="background: hsl({{ product.id | modulo: 360 | plus: i | times: 120 }}, 70%, 60%);"></div>
+                                {% endfor %}
+                              </div>
+                              <p><strong>{{ product.id | modulo: 20 | plus: 10 }} persone</strong> hanno acquistato questo prodotto oggi</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Enhanced Right Column -->
+                        <div class="zen-product-right">
+                          <div class="zen-product-header">
+                            <h3 class="zen-product-title">{{ product.title | split: ' - ' | first }}</h3>
+                            
+                            <!-- Reviews -->
+                            <div class="zen-reviews">
+                              <div class="zen-stars">
+                                {% for i in (1..5) %}
+                                  <svg width="14" height="14" fill="#C8B89F"><path d="M7 1l2 4 4.5 0.5-3.25 3.25L11 13.5 7 11.5 3 13.5l0.75-4.75L0.5 5.5 5 5l2-4z"/></svg>
+                                {% endfor %}
+                              </div>
+                              <span class="zen-review-count">({{ product.id | modulo: 50 | plus: 20 }} recensioni)</span>
+                            </div>
+                          </div>
+
+                          <!-- Dynamic Highlights -->
+                          {% assign highlight = product.metafields.custom.highlights %}
+                          {% if highlight != blank %}
+                            <div class="zen-highlight-box zen-animated">
+                              <svg class="zen-highlight-icon" width="18" height="18" fill="#C8B89F">
+                                <path d="M9 1.5C4.86 1.5 1.5 4.86 1.5 9s3.36 7.5 7.5 7.5 7.5-3.36 7.5-7.5-3.36-7.5-7.5-7.5zm3.15 6.15l-4.05 4.05c-.15.15-.375.225-.525.225s-.375-.075-.525-.225l-1.8-1.8c-.3-.3-.3-.75 0-1.05s.75-.3 1.05 0l1.17 1.17 3.42-3.42c.3-.3.75-.3 1.05 0s.3.75 0 1.05z"/>
+                              </svg>
+                              <p class="zen-highlight-text">{{ highlight }}</p>
+                            </div>
+                          {% endif %}
+
+                          <!-- Enhanced Tags - CENTERED -->
+                          <div class="zen-product-tags">
+                            {% assign traits = product.metafields.custom.product_traits %}
+                            {% if traits != blank %}
+                              {% for trait in traits.value %}
+                                <span class="zen-pill zen-pill-animated">
+                                  <span class="zen-pill-dot"></span>
+                                  {{ trait }}
+                                </span>
+                              {% endfor %}
+                            {% endif %}
+                          </div>
+
+                          <!-- Variant Selector -->
+                          {% if product.variants.size > 1 %}
+                            <div class="zen-variants">
+                              <label class="zen-variant-label">Seleziona variante:</label>
+                              <div class="zen-variant-options">
+                                {% for variant in product.variants %}
+                                  <button 
+                                    class="zen-variant-btn {% if forloop.first %}active{% endif %}"
+                                    data-variant-id="{{ variant.id }}"
+                                    data-price="{{ variant.price | money }}"
+                                    data-inventory="{{ variant.inventory_quantity }}"
+                                    {% unless variant.available %}disabled{% endunless %}
+                                  >
+                                    {{ variant.title }}
+                                  </button>
+                                {% endfor %}
+                              </div>
+                            </div>
+                          {% endif %}
+
+                          <!-- Enhanced Checkout Box -->
+                          <div class="zen-checkout-box">
+                            <!-- Price Display -->
+                            <div class="zen-price-section">
+                              <div class="zen-price-wrapper">
+                                {% if product.compare_at_price > product.price %}
+                                  <span class="zen-price-compare">{{ product.compare_at_price | money }}</span>
+                                {% endif %}
+                                <span class="zen-price" data-price="{{ product.price }}">{{ product.price | money }}</span>
+                                <span class="zen-price-tax">IVA inclusa</span>
+                              </div>
+                              
+                              <!-- Urgency Indicator -->
+                              {% if current_variant.inventory_management and current_variant.inventory_quantity > 0 %}
+                              <div class="zen-urgency" style="display: flex;">
+                                <svg width="12" height="12" fill="#D4C4AF">
+                                  <circle cx="6" cy="6" r="5" stroke="#D4C4AF" fill="none"/>
+                                  <path d="M6 3v3l1.5 1.5" stroke="#D4C4AF" stroke-width="1.2"/>
+                                </svg>
+                                <span>Solo <span class="zen-stock-count">{{ current_variant.inventory_quantity }}</span> disponibili!</span>
+                              </div>
+                              {% else %}
+                              <div class="zen-urgency" style="display: none;">
+                                <svg width="12" height="12" fill="#D4C4AF">
+                                  <circle cx="6" cy="6" r="5" stroke="#D4C4AF" fill="none"/>
+                                  <path d="M6 3v3l1.5 1.5" stroke="#D4C4AF" stroke-width="1.2"/>
+                                </svg>
+                                <span>Solo <span class="zen-stock-count">0</span> disponibili!</span>
+                              </div>
+                              {% endif %}
+                            </div>
+
+                            <!-- Add to Cart Form -->
+                            <form method="post" action="/cart/add" class="zen-cart-form-modern">
+                              {% assign current_variant = product.selected_or_first_available_variant %}
+                              <input type="hidden" name="id" value="{{ current_variant.id }}" class="zen-variant-input" />
+                              
+                              <div class="zen-cart-controls">
+                                <div class="zen-quantity-selector">
+                                  <button type="button" class="zen-qty-btn minus" aria-label="Diminuisci quantità">−</button>
+                                  {% if current_variant.inventory_management and current_variant.inventory_quantity > 0 %}
+                                    <input type="number" name="quantity" value="1" min="1" max="{{ current_variant.inventory_quantity }}" class="zen-qty-input" aria-label="Quantità" data-max-stock="{{ current_variant.inventory_quantity }}">
+                                  {% else %}
+                                    <input type="number" name="quantity" value="1" min="1" max="999" class="zen-qty-input" aria-label="Quantità" data-max-stock="999">
+                                  {% endif %}
+                                  <button type="button" class="zen-qty-btn plus" aria-label="Aumenta quantità">+</button>
+                                </div>
+                                
+                                <button type="submit" class="zen-add-to-cart">
+                                  <span class="btn-content">
+                                  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M1 1h3l1.68 10.39a1.5 1.5 0 0 0 1.5 1.21h7.58a1.5 1.5 0 0 0 1.5-1.21L18 5H5"/>
+                                    <circle cx="8" cy="19" r="0.8"/>
+                                    <circle cx="16" cy="19" r="0.8"/>
+                                  </svg>
+                                    <span>Aggiungi al carrello</span>
+                                  </span>
+                                  <span class="btn-loading">
+                                    <svg class="spinner" width="18" height="18" viewBox="0 0 24 24">
+                                      <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" fill="none" opacity="0.25"/>
+                                      <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/>
+                                    </svg>
+                                  </span>
+                                </button>
+                              </div>
+                            </form>
+
+                            <!-- Enhanced Benefits -->
+                            <div class="zen-benefits">
+                              <div class="zen-benefit">
+                                <div class="zen-benefit-icon">
+                                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                    <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10m-8-14v10l8 4" stroke="#C8B89F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                  </svg>
+                                </div>
+                                <span>Spedizione gratuita sopra €50</span>
+                              </div>
+                              <div class="zen-benefit">
+                                <div class="zen-benefit-icon">
+                                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" stroke="#C8B89F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <polyline points="9 22 9 12 15 12 15 22" stroke="#C8B89F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                  </svg>
+                                </div>
+                                <span>Reso facile entro 30 giorni</span>
+                              </div>
+                              <div class="zen-benefit">
+                                <div class="zen-benefit-icon">
+                                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                    <rect x="3" y="7" width="18" height="14" stroke="#C8B89F" stroke-width="1.5" stroke-linejoin="round"/>
+                                    <path d="M8 7V4a4 4 0 018 0v3" stroke="#C8B89F" stroke-width="1.5"/>
+                                    <circle cx="12" cy="14" r="1" fill="#C8B89F"/>
+                                    <path d="M12 15v3" stroke="#C8B89F" stroke-width="1.5"/>
+                                  </svg>
+                                </div>
+                                <span>Pagamento sicuro con:</span>
+                              </div>
+                              <!-- Enhanced Payment Methods -->
+                              <div class="zen-payment-methods">
+                                <div class="payment-icon-wrapper">
+                                  <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal" class="payment-logo">
+                                </div>
+                                <div class="payment-icon-wrapper">
+                                  <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" class="payment-logo">
+                                </div>
+                                <div class="payment-icon-wrapper">
+                                  <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" class="payment-logo">
+                                </div>
+                                <div class="payment-icon-wrapper">
+                                  <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Klarna_Logo_black.svg" alt="Klarna" class="payment-logo">
+                                </div>
+                                <div class="payment-icon-wrapper">
+                                  <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Logo_di_Satispay.svg" alt="Satispay" class="payment-logo">
+                                </div> 
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <!-- Collection Link - Moved outside columns to center it -->
+                      <div style="text-align: center; margin-top: 30px;">
+                        <a href="{{ collection.url }}" class="zen-collection-link">
+                          Esplora tutta la collezione
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14m-7-7l7 7-7 7"/>
+                          </svg>
+                        </a>
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+            
+            <!-- Right Navigation Area -->
+            <div class="zen-nav-area zen-nav-right">
+              <button class="zen-nav-btn next" aria-label="Prodotto successivo">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M9 18l6-6-6-6"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  {% endfor %}
+  </div>
+</div>
+
+<style>
+/* CSS Variables for Luxury Brand */
+:root {
+  --zen-primary: #C8B89F;
+  --zen-primary-dark: #B3A48C;
+  --zen-primary-light: #D4C4AF;
+  --zen-bg-main: #202020;
+  --zen-bg-secondary: #3A3A3A;
+  --zen-bg-card: #292929;
+  --zen-text-primary: #FFFFFF;
+  --zen-text-secondary: #898989;
+  --zen-text-light: #C3C3C3;
+  --zen-success: #22C55E;
+  --zen-warning: #C8B89F;
+  --zen-danger: #D4C4AF;
+  --zen-cart: #22C55E;
+  --zen-cart-hover: #16A34A;
+  --zen-border: #5E5E5E;
+  --zen-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  --zen-shadow-lg: 0 10px 25px rgba(0,0,0,0.4);
+  --zen-radius: 16px;
+  --zen-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Global Styles */
+* {
+  box-sizing: border-box;
+}
+
+/* Container */
+.zen-collections-container {
+  background: var(--zen-bg-main);
+}
+
+/* Enhanced Section Header */
+.zen-section-header {
+  text-align: center;
+  margin-bottom: 60px;
+  padding-top: 60px;
+  position: relative;
+}
+
+.zen-subtitle {
+  display: inline-block;
+  padding: 8px 20px;
+  background: rgba(200, 184, 159, 0.1);
+  border: 1px solid rgba(200, 184, 159, 0.2);
+  border-radius: 30px;
+  color: var(--zen-primary);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  backdrop-filter: blur(10px);
+}
+
+.zen-section-title {
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 300;
+  letter-spacing: -1px;
+  color: var(--zen-primary);
+  margin: 0 0 30px;
+  line-height: 1.2;
+  text-transform: none;
+}
+
+.zen-heading-line {
+  width: 80px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--zen-primary), transparent);
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.zen-heading-line::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, #FFFFFF, transparent);
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  to {
+    left: 100%;
+  }
+}
+
+.zen-bubble-wrapper {
+  font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  padding: 0 20px 60px 20px;
+  background: var(--zen-bg-main);
+  position: relative;
+  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* No extra padding when section title is present */
+.zen-section-header + .zen-bubble-wrapper {
+  padding-top: 0;
+}
+
+/* Collection Cards */
+.zen-bubble-card {
+  background: var(--zen-bg-card);
+  background-image: linear-gradient(135deg, rgba(200, 184, 159, 0.03) 0%, transparent 100%);
+  border-radius: var(--zen-radius);
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  transition: var(--zen-transition);
+  box-shadow: var(--zen-shadow);
+  border: 1px solid var(--zen-border);
+}
+
+.zen-bubble-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--zen-shadow-lg);
+  border-color: var(--zen-primary);
+}
+
+.zen-card-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
+}
+
+.badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-new {
+  background: var(--zen-primary);
+  color: #242424;
+}
+
+.badge-sale {
+  background: var(--zen-danger);
+  color: white;
+}
+
+.badge-limited {
+  background: var(--zen-warning);
+  color: #242424;
+}
+
+.zen-card-image-wrapper {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+
+.zen-card-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.zen-bubble-card:hover .zen-card-image-wrapper img {
+  transform: scale(1.1);
+}
+
+.zen-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(32,32,32,0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.zen-bubble-card:hover .zen-card-overlay {
+  opacity: 1;
+}
+
+.zen-quick-shop-btn {
+  background: var(--zen-primary);
+  color: #242424;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transform: translateY(10px);
+  transition: var(--zen-transition);
+}
+
+.zen-bubble-card:hover .zen-quick-shop-btn {
+  transform: translateY(0);
+}
+
+.zen-quick-shop-btn:hover {
+  background: var(--zen-primary-dark);
+}
+
+.zen-card-content {
+  padding: 20px;
+  text-align: center;
+}
+
+.zen-card-content h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--zen-text-primary);
+}
+
+.zen-card-count {
+  margin: 0;
+  color: var(--zen-text-secondary);
+  font-size: 14px;
+}
+
+/* Modal Styles */
+.zen-bubble-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  overflow-y: auto;
+}
+
+.zen-bubble-modal.active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+}
+
+.zen-bubble-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.9);
+  backdrop-filter: blur(8px);
+}
+
+.zen-bubble-inner {
+  position: relative;
+  background: var(--zen-bg-main);
+  background-image: 
+    radial-gradient(circle at 20% 80%, rgba(200, 184, 159, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(200, 184, 159, 0.05) 0%, transparent 50%);
+  border-radius: 24px;
+  max-width: 1400px;
+  width: 100%;
+  max-height: 92vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 25px 0;
+  animation: modalSlideIn 0.3s ease;
+  border: 1px solid var(--zen-border);
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 0 rgba(200, 184, 159, 0.1);
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.zen-bubble-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: var(--zen-bg-secondary);
+  border: 1px solid var(--zen-border);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--zen-transition);
+  z-index: 100;
+  color: var(--zen-text-primary);
+}
+
+.zen-bubble-close:hover {
+  background: var(--zen-primary);
+  color: #242424;
+  transform: rotate(90deg);
+}
+
+.zen-bubble-title {
+  text-align: center;
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--zen-text-primary);
+  padding: 0 40px;
+}
+
+/* Progress Bar */
+.zen-progress-wrapper {
+  margin-bottom: 20px;
+  text-align: center;
+  padding: 0 40px;
+}
+
+.zen-progress-bar {
+  height: 3px;
+  background: var(--zen-border);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.zen-progress-fill {
+  height: 100%;
+  background: var(--zen-primary);
+  width: 0;
+  transition: width 0.3s ease;
+}
+
+.zen-progress-text {
+  font-size: 12px;
+  color: var(--zen-text-secondary);
+}
+
+/* ======================================= */
+/* CRITICAL FIX: Three-Column Layout with Fixed Navigation Areas */
+/* ======================================= */
+.zen-carousel-layout {
+  display: grid;
+  grid-template-columns: 80px 1fr 80px; /* Fixed width navigation columns */
+  gap: 0;
+  width: 100%;
+  position: relative;
+  align-items: stretch;
+  min-height: 500px;
+}
+
+/* Navigation Areas - Fixed and Stable (INVISIBLE) */
+.zen-nav-area {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Removed all visual styling - areas are now invisible */
+}
+
+.zen-nav-left {
+  /* No visual styling */
+}
+
+.zen-nav-right {
+  /* No visual styling */
+}
+
+/* Carousel Content Area */
+.zen-carousel-content {
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+  background: var(--zen-bg-main);
+}
+
+/* Navigation Buttons - Properly Centered in Their Areas */
+.zen-nav-btn {
+  position: relative; /* NOT absolute - this is key */
+  background: var(--zen-primary);
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(200, 184, 159, 0.4);
+  transition: var(--zen-transition);
+  color: #242424;
+  z-index: 5;
+}
+
+.zen-nav-btn svg {
+  width: 28px;
+  height: 28px;
+  stroke-width: 2.5;
+}
+
+.zen-nav-btn:hover {
+  transform: scale(1.1);
+  background: var(--zen-primary-dark);
+  box-shadow: 0 6px 30px rgba(200, 184, 159, 0.5);
+}
+
+.zen-nav-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Remove old navigation styles */
+.zen-carousel-nav {
+  display: none !important;
+}
+
+/* ======================================= */
+/* End of Navigation Fix */
+/* ======================================= */
+
+/* Carousel */
+.zen-carousel {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+.zen-carousel-track {
+  position: relative;
+  height: auto;
+  display: flex;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.zen-product-slide {
+  width: 100%;
+  flex-shrink: 0;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+.zen-product-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 35px;
+  align-items: start;
+}
+
+/* Image Gallery */
+.zen-image-gallery {
+  position: sticky;
+  top: 5px;
+}
+
+.zen-main-image {
+  position: relative;
+  border-radius: var(--zen-radius);
+  overflow: hidden;
+  margin-bottom: 10px;
+  border: 1px solid var(--zen-border);
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1a1a1a;
+}
+
+.zen-main-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.zen-sale-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: var(--zen-danger);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.zen-thumbnails {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.zen-thumbnail {
+  border-radius: 10px;
+  cursor: pointer;
+  transition: var(--zen-transition);
+  border: 2px solid transparent;
+  opacity: 0.7;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.zen-thumbnail:hover,
+.zen-thumbnail.active {
+  border-color: var(--zen-primary);
+  opacity: 1;
+}
+
+/* Product Details */
+.zen-product-right {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.zen-product-header {
+  border-bottom: 1px solid var(--zen-border);
+  padding-bottom: 10px;
+}
+
+.zen-product-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 8px;
+  color: var(--zen-text-primary);
+  line-height: 1.2;
+}
+
+/* Reviews */
+.zen-reviews {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.zen-stars {
+  display: flex;
+  gap: 2px;
+}
+
+.zen-stars svg {
+  width: 14px;
+  height: 14px;
+  fill: var(--zen-primary);
+}
+
+.zen-review-count {
+  color: var(--zen-text-secondary);
+  font-size: 13px;
+}
+
+/* Highlight Box */
+.zen-highlight-box {
+  background: var(--zen-bg-secondary);
+  border-left: 4px solid var(--zen-primary);
+  padding: 10px;
+  border-radius: 12px;
+  display: flex;
+  align-items: start;
+  gap: 8px;
+}
+
+.zen-highlight-box.zen-animated {
+  animation: slideInRight 0.5s ease;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.zen-highlight-icon {
+  flex-shrink: 0;
+  fill: var(--zen-primary);
+  width: 18px;
+  height: 18px;
+}
+
+.zen-highlight-text {
+  margin: 0;
+  color: var(--zen-text-primary);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+/* Product Tags - CENTERED */
+.zen-product-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.zen-pill {
+  background: var(--zen-bg-secondary);
+  color: var(--zen-text-primary);
+  padding: 5px 14px;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: var(--zen-transition);
+  border: 1px solid var(--zen-border);
+}
+
+.zen-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(200, 184, 159, 0.3);
+  border-color: var(--zen-primary);
+}
+
+.zen-pill-dot {
+  width: 5px;
+  height: 5px;
+  background: var(--zen-primary);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Variant Selector */
+.zen-variants {
+  padding: 10px 0;
+  border-top: 1px solid var(--zen-border);
+}
+
+.zen-variant-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--zen-text-primary);
+  font-size: 13px;
+}
+
+.zen-variant-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.zen-variant-btn {
+  padding: 6px 14px;
+  border: 2px solid var(--zen-border);
+  background: var(--zen-bg-secondary);
+  color: var(--zen-text-primary);
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: var(--zen-transition);
+}
+
+.zen-variant-btn:hover {
+  border-color: var(--zen-primary);
+}
+
+.zen-variant-btn.active {
+  border-color: var(--zen-primary);
+  background: var(--zen-primary);
+  color: #242424;
+}
+
+.zen-variant-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Checkout Box */
+.zen-checkout-box {
+  background: var(--zen-bg-secondary);
+  border-radius: var(--zen-radius);
+  padding: 18px;
+  margin-top: 20px;
+  border: 1px solid var(--zen-border);
+  position: relative;
+}
+
+.zen-price-section {
+  margin-bottom: 12px;
+}
+
+.zen-price-wrapper {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.zen-price-compare {
+  text-decoration: line-through;
+  color: var(--zen-text-secondary);
+  font-size: 15px;
+}
+
+.zen-price {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--zen-text-light);
+}
+
+/* Special styling for sale prices */
+.zen-product-slide:has(.zen-price-compare) .zen-price {
+  color: var(--zen-danger);
+}
+
+.zen-price-tax {
+  font-size: 12px;
+  color: var(--zen-text-secondary);
+}
+
+.zen-urgency {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  color: var(--zen-danger);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.zen-urgency svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Cart Controls */
+.zen-cart-controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+  align-items: stretch;
+}
+
+.zen-quantity-selector {
+  display: flex;
+  align-items: center;
+  background: var(--zen-bg-main);
+  border: 1px solid var(--zen-border);
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.zen-qty-btn {
+  background: none;
+  border: none;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--zen-text-primary);
+  transition: var(--zen-transition);
+}
+
+.zen-qty-btn:hover {
+  background: var(--zen-primary);
+  color: #242424;
+}
+
+.zen-qty-input {
+  border: none;
+  width: 45px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--zen-text-primary);
+  background: transparent;
+  height: 32px;
+}
+
+.zen-qty-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+/* Enhanced Cart Button */
+.zen-add-to-cart {
+  flex: 1;
+  background: var(--zen-cart);
+  color: white;
+  border: none;
+  padding: 9px 18px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: var(--zen-transition);
+  white-space: nowrap;
+  min-width: 0;
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
+}
+
+.zen-add-to-cart:hover {
+  background: var(--zen-cart-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(34, 197, 94, 0.4);
+}
+
+.zen-add-to-cart:active {
+  transform: translateY(0);
+}
+
+.btn-content,
+.btn-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-content span {
+  white-space: nowrap;
+}
+
+.btn-loading {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: var(--zen-cart);
+}
+
+.zen-add-to-cart.loading .btn-content {
+  opacity: 0;
+}
+
+.zen-add-to-cart.loading .btn-loading {
+  opacity: 1;
+}
+
+/* Success State for Add to Cart */
+.zen-add-to-cart.success {
+  background: var(--zen-success) !important;
+  color: white !important;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  color: white;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Enhanced Benefits */
+.zen-benefits {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 14px;
+  padding-bottom: 2px;
+  border-top: 1px solid rgba(200, 184, 159, 0.15);
+  overflow: visible;
+}
+
+.zen-benefit {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--zen-text-light);
+  min-height: 24px;
+}
+
+.zen-benefit-icon {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+.zen-benefit-icon svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--zen-primary);
+  fill: none;
+}
+
+/* Enhanced Payment Methods */
+.zen-payment-methods {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 8px;
+  justify-content: center;
+}
+
+.payment-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 5px 10px;
+  border: 1px solid #242424;
+  border-radius: 6px;
+  background: #FFFFFF;
+  transition: var(--zen-transition);
+}
+
+.payment-icon-wrapper:hover {
+  border-color: #A9A9A9;
+  background: #A9A9A9;
+}
+
+.payment-logo {
+  height: 18px;
+  width: auto;
+  max-width: 50px;
+  object-fit: contain;
+}
+
+.payment-logo.klarna {
+  max-width: 50px;
+  height: 16px;
+}
+
+.payment-logo.satispay {
+  max-width: 55px;
+  height: 16px;
+  fill: var(--zen-primary);
+}
+
+/* Social Proof */
+.zen-social-proof {
+  background: var(--zen-bg-main);
+  border-radius: 12px;
+  padding: 14px;
+  margin-top: 20px;
+  border: 1px solid var(--zen-border);
+}
+
+.zen-buyers {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.zen-buyer-avatars {
+  display: flex;
+  margin-right: 8px;
+}
+
+.zen-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid var(--zen-bg-main);
+  margin-left: -10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.zen-avatar:first-child {
+  margin-left: 0;
+}
+
+.zen-buyers p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--zen-text-secondary);
+}
+
+.zen-buyers p strong {
+  color: var(--zen-primary);
+}
+
+/* Collection Link */
+.zen-collection-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 15px auto 0;
+  padding: 8px 18px;
+  background: var(--zen-primary);
+  color: #242424;
+  text-decoration: none;
+  border-radius: 30px;
+  font-weight: 600;
+  transition: var(--zen-transition);
+  text-align: center;
+  font-size: 13px;
+}
+
+.zen-collection-link:hover {
+  background: var(--zen-primary-dark);
+  transform: translateX(4px);
+}
+
+/* Lazy Loading */
+.zen-lazy-image {
+  filter: blur(5px);
+  transition: filter 0.3s ease;
+}
+
+.zen-lazy-image.loaded {
+  filter: blur(0);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 1024px) {
+  .zen-bubble-modal.active {
+    padding: 20px;
+  }
+  
+  .zen-carousel-layout {
+    grid-template-columns: 60px 1fr 60px; /* Smaller nav columns on tablets */
+  }
+  
+  .zen-nav-btn {
+    width: 44px;
+    height: 44px;
+  }
+  
+  .zen-nav-btn svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .zen-bubble-modal.active {
+    padding: 0;
+    align-items: flex-start;
+  }
+  
+  .zen-bubble-wrapper {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 16px;
+    padding: 0 20px 40px 20px;
+  }
+
+  .zen-bubble-inner {
+    padding: 60px 0 100px 0;
+    max-height: 100vh;
+    height: 100vh;
+    border-radius: 0;
+    margin: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  .zen-bubble-close {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    z-index: 10001;
+    width: 40px;
+    height: 40px;
+  }
+
+  .zen-bubble-title {
+    font-size: 22px;
+    margin-bottom: 10px;
+    padding: 0 20px;
+    text-align: center;
+  }
+  
+  .zen-progress-wrapper {
+    margin-bottom: 15px;
+    padding: 0 20px;
+    text-align: center;
+  }
+
+  /* Single column layout on mobile */
+  .zen-carousel-layout {
+    grid-template-columns: 1fr; /* Single column */
+  }
+  
+  /* Hide navigation areas on mobile */
+  .zen-nav-area {
+    display: none;
+  }
+  
+  .zen-carousel-content {
+    padding: 0 15px;
+  }
+  
+  /* Add swipe indicator */
+  .zen-carousel-content::after {
+    content: '';
+    position: fixed;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 4px;
+    background: rgba(200, 184, 159, 0.4);
+    border-radius: 2px;
+    z-index: 10;
+  }
+
+  .zen-product-columns {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 0;
+  }
+
+  .zen-image-gallery {
+    position: static;
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
+  }
+  
+  .zen-product-right {
+    gap: 10px;
+    padding: 0;
+  }
+
+  .zen-main-image {
+    max-height: 350px;
+    margin-bottom: 10px;
+    width: 100%;
+  }
+  
+  .zen-main-image img {
+    margin: 0 auto;
+    display: block;
+  }
+  
+  .zen-thumbnails {
+    max-width: 350px;
+    margin: 0 auto;
+  }
+
+  .zen-product-header {
+    padding-bottom: 10px;
+    text-align: center;
+  }
+  
+  .zen-product-title {
+    font-size: 20px;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+  
+  .zen-reviews {
+    justify-content: center;
+  }
+  
+  .zen-highlight-box {
+    padding: 10px;
+    font-size: 12px;
+    max-width: 350px;
+    margin: 0 auto;
+  }
+  
+  .zen-product-tags {
+    margin-bottom: 10px;
+    justify-content: center;
+  }
+  
+  .zen-pill {
+    font-size: 11px;
+    padding: 5px 12px;
+  }
+  
+  .zen-variants {
+    padding: 12px 0;
+    text-align: center;
+  }
+  
+  .zen-variant-label {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  .zen-variant-options {
+    justify-content: center;
+  }
+  
+  .zen-checkout-box {
+    padding: 16px;
+    margin-top: 15px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 350px;
+  }
+
+  .zen-price {
+    font-size: 24px;
+  }
+  
+  .zen-price-section {
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  
+  .zen-price-wrapper {
+    justify-content: center;
+  }
+  
+  .zen-urgency {
+    justify-content: center;
+  }
+
+  .zen-cart-controls {
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+  }
+  
+  .zen-quantity-selector {
+    flex-shrink: 0;
+    max-width: 130px;
+  }
+  
+  .zen-qty-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+  
+  .zen-qty-input {
+    width: 50px;
+    font-size: 14px;
+    height: 36px;
+  }
+
+  .zen-add-to-cart {
+    font-size: 14px;
+    padding: 11px 16px;
+    flex: 1;
+    max-width: 200px;
+  }
+  
+  .zen-add-to-cart .btn-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  .zen-add-to-cart span {
+    display: inline-block;
+  }
+  
+  .zen-add-to-cart svg {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .btn-content {
+    justify-content: center;
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .zen-benefits {
+    gap: 10px;
+    font-size: 12px;
+    padding-top: 12px;
+    text-align: left;
+  }
+  
+  .zen-benefit {
+    min-height: 22px;
+  }
+  
+  .zen-benefit-icon {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .zen-benefit-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .zen-payment-methods {
+    gap: 8px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .payment-icon-wrapper {
+    height: 30px;
+    padding: 5px 10px;
+  }
+  
+  .payment-logo {
+    height: 16px;
+    max-width: 45px;
+  }
+  
+  .zen-social-proof {
+    padding: 12px;
+    margin-top: 15px;
+    font-size: 11px;
+    max-width: 350px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .zen-avatar {
+    width: 26px;
+    height: 26px;
+  }
+  
+  .zen-buyers p {
+    font-size: 12px;
+  }
+  
+  .zen-collection-link {
+    font-size: 12px;
+    padding: 10px 20px;
+    margin: 20px auto 10px;
+    display: inline-flex;
+  }
+  
+  /* Ensure carousel content doesn't get cut off */
+  .zen-carousel {
+    margin-bottom: 30px;
+  }
+  
+  .zen-carousel-track {
+    padding-bottom: 30px;
+  }
+  
+  .zen-product-slide {
+    padding: 0;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .zen-bubble-modal {
+    display: none !important;
+  }
+}
+
+/* Custom Scrollbar for Dark Theme */
+.zen-bubble-inner::-webkit-scrollbar {
+  width: 10px;
+}
+
+.zen-bubble-inner::-webkit-scrollbar-track {
+  background: var(--zen-bg-main);
+}
+
+.zen-bubble-inner::-webkit-scrollbar-thumb {
+  background: var(--zen-border);
+  border-radius: 5px;
+}
+
+.zen-bubble-inner::-webkit-scrollbar-thumb:hover {
+  background: var(--zen-primary);
+}
+</style>
+
+<!-- JavaScript remains exactly the same - no changes needed -->
+<script>
+class ZenBubbleCollections {
+  constructor() {
+    this.currentSlide = 0;
+    this.activeModal = null;
+    this.touchStartX = 0;
+    this.touchEndX = 0;
+    this.isTransitioning = false;
+    this.init();
+  }
+
+  init() {
+    this.setupEventListeners();
+    this.setupLazyLoading();
+    this.setupKeyboardNavigation();
+  }
+
+  setupEventListeners() {
+    // Card clicks - Fixed to properly handle collection handle
+    document.querySelectorAll('.zen-bubble-card').forEach(card => {
+      card.addEventListener('click', (e) => {
+        if (!e.target.closest('.zen-quick-shop-btn')) {
+          const collectionHandle = card.dataset.collection;
+          if (collectionHandle) {
+            this.openModal(collectionHandle);
+          }
+        }
+      });
+    });
+
+    // Quick shop button clicks
+    document.querySelectorAll('.zen-quick-shop-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const card = e.target.closest('.zen-bubble-card');
+        const collectionHandle = card.dataset.collection;
+        if (collectionHandle) {
+          this.openModal(collectionHandle);
+        }
+      });
+    });
+
+    // Close buttons
+    document.querySelectorAll('.zen-bubble-close').forEach(el => {
+      el.addEventListener('click', () => this.closeModal());
+    });
+
+    document.querySelectorAll('.zen-bubble-backdrop').forEach(el => {
+      el.addEventListener('click', () => this.closeModal());
+    });
+
+    // Navigation buttons
+    document.querySelectorAll('.zen-nav-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const direction = btn.classList.contains('prev') ? -1 : 1;
+        this.changeSlide(direction);
+      });
+    });
+
+    // Quantity selectors
+    document.querySelectorAll('.zen-qty-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const input = e.target.closest('.zen-quantity-selector').querySelector('.zen-qty-input');
+        const currentVal = parseInt(input.value) || 1;
+        const maxStock = parseInt(input.dataset.maxStock) || 999;
+        
+        if (btn.classList.contains('minus') && currentVal > 1) {
+          input.value = currentVal - 1;
+        } else if (btn.classList.contains('plus') && currentVal < maxStock) {
+          input.value = currentVal + 1;
+        }
+      });
+    });
+
+    // Variant selection
+    document.querySelectorAll('.zen-variant-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (!btn.disabled) {
+          const container = btn.closest('.zen-variants');
+          container.querySelectorAll('.zen-variant-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          
+          // Update hidden input, price, and stock
+          const variantId = btn.dataset.variantId;
+          const price = btn.dataset.price;
+          const inventory = btn.dataset.inventory;
+          const slide = btn.closest('.zen-product-slide');
+          
+          const variantInput = slide.querySelector('.zen-variant-input');
+          const priceElement = slide.querySelector('.zen-price');
+          const stockElement = slide.querySelector('.zen-stock-count');
+          const qtyInput = slide.querySelector('.zen-qty-input');
+          const urgencyElement = slide.querySelector('.zen-urgency');
+          
+          if (variantInput) variantInput.value = variantId;
+          if (priceElement) priceElement.textContent = price;
+          if (stockElement) stockElement.textContent = inventory;
+          
+          // Update max stock for quantity input
+          if (qtyInput) {
+            qtyInput.max = inventory;
+            qtyInput.dataset.maxStock = inventory;
+            
+            // Reset quantity to 1 if current value exceeds new max
+            if (parseInt(qtyInput.value) > parseInt(inventory)) {
+              qtyInput.value = 1;
+            }
+          }
+          
+          // Show/hide urgency based on inventory
+          if (urgencyElement) {
+            if (inventory > 0) {
+              urgencyElement.style.display = 'flex';
+            } else {
+              urgencyElement.style.display = 'none';
+            }
+          }
+        }
+      });
+    });
+
+    // Add to cart - Enhanced with proper Shopify AJAX
+    document.querySelectorAll('.zen-cart-form-modern').forEach(form => {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const button = form.querySelector('.zen-add-to-cart');
+        if (button.classList.contains('loading')) return;
+        
+        button.classList.add('loading');
+        
+        try {
+          const formData = new FormData(form);
+          
+          const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+              'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: formData
+          });
+          
+          if (response.ok) {
+            // Success feedback
+            button.classList.remove('loading');
+            button.classList.add('success');
+            button.innerHTML = '<span class="btn-content">✓ Aggiunto!</span>';
+            
+            // Update cart count if you have a cart counter
+            if (typeof window.updateCartCount === 'function') {
+              window.updateCartCount();
+            }
+            
+            // Dispatch custom event for cart updates
+            document.dispatchEvent(new CustomEvent('cart:item-added', {
+              detail: {
+                variant_id: formData.get('id'),
+                quantity: formData.get('quantity')
+              }
+            }));
+            
+            setTimeout(() => {
+              button.classList.remove('success');
+              button.innerHTML = `
+                <span class="btn-content">
+                  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M1 1h3l1.68 10.39a1.5 1.5 0 0 0 1.5 1.21h7.58a1.5 1.5 0 0 0 1.5-1.21L18 5H5"/>
+                    <circle cx="8" cy="19" r="0.8"/>
+                    <circle cx="16" cy="19" r="0.8"/>
+                  </svg>
+                  <span>Aggiungi al carrello</span>
+                </span>
+                <span class="btn-loading">
+                  <svg class="spinner" width="18" height="18" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" fill="none" opacity="0.25"/>
+                    <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/>
+                  </svg>
+                </span>
+              `;
+            }, 2000);
+          } else {
+            throw new Error('Failed to add to cart');
+          }
+          
+        } catch (error) {
+          button.classList.remove('loading');
+          console.error('Error adding to cart:', error);
+          alert('Errore nell\'aggiungere al carrello. Riprova.');
+        }
+      });
+    });
+
+    // Thumbnail clicks
+    document.querySelectorAll('.zen-thumbnail').forEach(thumb => {
+      thumb.addEventListener('click', (e) => {
+        e.preventDefault();
+        const mainImage = thumb.closest('.zen-image-gallery').querySelector('.zen-main-image img');
+        if (mainImage && thumb.dataset.fullSrc) {
+          mainImage.src = thumb.dataset.fullSrc;
+          
+          // Update active thumbnail
+          thumb.closest('.zen-thumbnails').querySelectorAll('.zen-thumbnail').forEach(t => t.classList.remove('active'));
+          thumb.classList.add('active');
+        }
+      });
+    });
+
+    // Touch events for mobile swipe
+    this.setupTouchEvents();
+  }
+
+  setupTouchEvents() {
+    const modals = document.querySelectorAll('.zen-bubble-modal');
+    modals.forEach(modal => {
+      modal.addEventListener('touchstart', (e) => {
+        this.touchStartX = e.changedTouches[0].screenX;
+      }, { passive: true });
+
+      modal.addEventListener('touchend', (e) => {
+        this.touchEndX = e.changedTouches[0].screenX;
+        this.handleSwipe();
+      }, { passive: true });
+    });
+  }
+
+  handleSwipe() {
+    const swipeThreshold = 50;
+    const diff = this.touchStartX - this.touchEndX;
+
+    if (Math.abs(diff) > swipeThreshold) {
+      if (diff > 0) {
+        this.changeSlide(1); // Swipe left - next
+      } else {
+        this.changeSlide(-1); // Swipe right - prev
+      }
+    }
+  }
+
+  setupLazyLoading() {
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          if (img.dataset.src) {
+            img.src = img.dataset.src;
+            img.classList.add('loaded');
+            observer.unobserve(img);
+          }
+        }
+      });
+    });
+
+    document.querySelectorAll('.zen-lazy-image').forEach(img => {
+      imageObserver.observe(img);
+    });
+  }
+
+  setupKeyboardNavigation() {
+    document.addEventListener('keydown', (e) => {
+      if (!this.activeModal) return;
+
+      switch(e.key) {
+        case 'ArrowLeft':
+          e.preventDefault();
+          this.changeSlide(-1);
+          break;
+        case 'ArrowRight':
+          e.preventDefault();
+          this.changeSlide(1);
+          break;
+        case 'Escape':
+          e.preventDefault();
+          this.closeModal();
+          break;
+      }
+    });
+  }
+
+  openModal(collectionHandle) {
+    const modal = document.getElementById(`bubble-${collectionHandle}`);
+    if (!modal) {
+      console.error('Modal not found for collection:', collectionHandle);
+      return;
+    }
+
+    // Close any existing modal first
+    if (this.activeModal) {
+      this.closeModal();
+    }
+
+    this.activeModal = modal;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    
+    // Reset to first slide
+    this.currentSlide = 0;
+    this.updateSlidePosition();
+    
+    // Focus management for accessibility
+    setTimeout(() => {
+      const closeBtn = modal.querySelector('.zen-bubble-close');
+      if (closeBtn) closeBtn.focus();
+    }, 100);
+  }
+
+  closeModal() {
+    if (!this.activeModal) return;
+
+    this.activeModal.classList.remove('active');
+    document.body.style.overflow = '';
+    this.activeModal = null;
+  }
+
+  changeSlide(direction) {
+    if (!this.activeModal || this.isTransitioning) return;
+
+    const slides = this.activeModal.querySelectorAll('.zen-product-slide');
+    const totalSlides = slides.length;
+
+    if (totalSlides <= 1) return; // No need to change slides if only one product
+
+    this.isTransitioning = true;
+    this.currentSlide += direction;
+
+    if (this.currentSlide >= totalSlides) {
+      this.currentSlide = 0;
+    } else if (this.currentSlide < 0) {
+      this.currentSlide = totalSlides - 1;
+    }
+
+    this.updateSlidePosition();
+    
+    setTimeout(() => {
+      this.isTransitioning = false;
+    }, 500);
+  }
+
+  goToSlide(index) {
+    if (!this.activeModal) return;
+    
+    const slides = this.activeModal.querySelectorAll('.zen-product-slide');
+    if (index >= 0 && index < slides.length) {
+      this.currentSlide = index;
+      this.updateSlidePosition();
+    }
+  }
+
+  updateSlidePosition() {
+    if (!this.activeModal) return;
+
+    const track = this.activeModal.querySelector('.zen-carousel-track');
+    const slides = this.activeModal.querySelectorAll('.zen-product-slide');
+    const progressFill = this.activeModal.querySelector('.zen-progress-fill');
+    const progressText = this.activeModal.querySelector('.zen-progress-text');
+    const prevBtn = this.activeModal.querySelector('.zen-nav-btn.prev');
+    const nextBtn = this.activeModal.querySelector('.zen-nav-btn.next');
+
+    // Update track transform for slide effect
+    if (track) {
+      track.style.transform = `translateX(-${this.currentSlide * 100}%)`;
+    }
+
+    // Update progress
+    if (progressFill && slides.length > 0) {
+      const progress = ((this.currentSlide + 1) / slides.length) * 100;
+      progressFill.style.width = `${progress}%`;
+    }
+
+    if (progressText && slides.length > 0) {
+      progressText.textContent = `${this.currentSlide + 1} di ${slides.length}`;
+    }
+
+    // Update navigation button states
+    if (prevBtn) {
+      prevBtn.disabled = slides.length <= 1;
+    }
+    if (nextBtn) {
+      nextBtn.disabled = slides.length <= 1;
+    }
+  }
+
+  // Utility function to format prices
+  formatPrice(cents) {
+    return new Intl.NumberFormat('it-IT', {
+      style: 'currency',
+      currency: 'EUR'
+    }).format(cents / 100);
+  }
+
+  // Analytics tracking
+  trackEvent(action, label, value) {
+    if (typeof gtag !== 'undefined') {
+      gtag('event', action, {
+        event_category: 'Zen Bubble Collections',
+        event_label: label,
+        value: value
+      });
+    }
+  }
+}
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  window.zenBubbleCollections = new ZenBubbleCollections();
+});
+
+// Handle Shopify theme editor events
+document.addEventListener('shopify:section:load', () => {
+  if (window.zenBubbleCollections) {
+    window.zenBubbleCollections = null;
+  }
+  setTimeout(() => {
+    window.zenBubbleCollections = new ZenBubbleCollections();
+  }, 100);
+});
+
+document.addEventListener('shopify:section:unload', () => {
+  if (window.zenBubbleCollections) {
+    window.zenBubbleCollections = null;
+  }
+});
+</script>
+
+{% schema %}
+{
+  "name": "Zen Bubble Collections",
+  "class": "zen-bubble-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Titolo Sezione",
+      "default": "Scopri la linea perfetta per te"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "grid",
+          "label": "Griglia"
+        },
+        {
+          "value": "carousel",
+          "label": "Carosello"
+        }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "range",
+      "id": "collections_per_row",
+      "label": "Collezioni per riga",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_count",
+      "label": "Mostra conteggio prodotti",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Colore Primario",
+      "default": "#C8B89F"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collezione",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection_handle",
+          "label": "Seleziona Collezione"
+        },
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "Testo Badge (opzionale)"
+        },
+        {
+          "type": "select",
+          "id": "badge_type",
+          "label": "Tipo Badge",
+          "options": [
+            {
+              "value": "new",
+              "label": "Nuovo"
+            },
+            {
+              "value": "sale",
+              "label": "Saldi"
+            },
+            {
+              "value": "limited",
+              "label": "Limitato"
+            }
+          ],
+          "default": "new"
+        },
+        {
+          "type": "checkbox",
+          "id": "featured",
+          "label": "In Evidenza",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "Zen Bubble Collections",
+      "blocks": [
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

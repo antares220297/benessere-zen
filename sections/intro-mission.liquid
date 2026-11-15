@@ -1,0 +1,310 @@
+<section class="intro-gif-hero short">
+  <div class="gif-bg-wrapper"></div>
+  <div class="intro-content">
+    <h1 class="intro-headline fadeInUp">
+      {{ section.settings.headline }}
+    </h1>
+    <p class="intro-subtext fadeInUp">
+      {{ section.settings.subtext }}
+    </p>
+    <a href="{{ section.settings.cta_link }}" class="intro-btn fadeInUp">
+      {{ section.settings.cta_text }}
+    </a>
+  </div>
+</section>
+
+<style>
+.intro-gif-hero.short {
+  position: relative;
+  height: 55vh;
+  min-height: 380px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  color: #f9f7f3;
+}
+
+.gif-bg-wrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-image: url('https://cdn.shopify.com/s/files/1/0917/9719/3042/files/ezgif-60337eff04dad8.gif?v=1752838231');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: brightness(0.6);
+}
+
+.intro-content {
+  position: relative;
+  z-index: 3;
+  max-width: 760px;
+  padding: 0 20px;
+}
+
+.intro-headline {
+  font-size: {{ section.settings.headline_size_desktop }}px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-top: {{ section.settings.headline_spacing_desktop }}px;
+  margin-bottom: 16px;
+}
+
+.intro-subtext {
+  font-size: {{ section.settings.subtext_size_desktop }}px;
+  color: #f0e9dc;
+  margin-top: {{ section.settings.subtext_spacing_desktop }}px;
+  margin-bottom: 24px;
+}
+
+.intro-btn {
+  display: inline-block;
+  background-color: #e0d8c5;
+  color: #1e1e1e;
+  font-size: {{ section.settings.cta_font_size_desktop }}px;
+  padding: {{ section.settings.cta_padding_vertical_desktop }}px {{ section.settings.cta_padding_horizontal_desktop }}px;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  margin-top: {{ section.settings.cta_spacing_desktop }}px;
+}
+
+.intro-btn:hover {
+  background-color: #cdbca5;
+}
+
+@media screen and (max-width: 768px) {
+  .intro-headline {
+    font-size: {{ section.settings.headline_size_mobile }}px;
+    margin-top: {{ section.settings.headline_spacing_mobile }}px;
+  }
+
+  .intro-subtext {
+    font-size: {{ section.settings.subtext_size_mobile }}px;
+    margin-top: {{ section.settings.subtext_spacing_mobile }}px;
+  }
+
+  .intro-btn {
+    font-size: {{ section.settings.cta_font_size_mobile }}px;
+    padding: {{ section.settings.cta_padding_vertical_mobile }}px {{ section.settings.cta_padding_horizontal_mobile }}px;
+    margin-top: {{ section.settings.cta_spacing_mobile }}px;
+  }
+
+  .intro-gif-hero.short {
+    height: auto;
+    padding: 80px 0;
+  }
+}
+
+.fadeInUp {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 1s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Intro Mission – GIF",
+  "settings": [
+    {
+      "type": "text",
+      "id": "headline",
+      "label": "Titolo principale",
+      "default": "Il tuo viaggio verso la bellezza naturale inizia qui"
+    },
+    {
+      "type": "range",
+      "id": "headline_spacing_desktop",
+      "label": "Spazio sopra il titolo – desktop",
+      "min": 0,
+      "max": 800,
+      "step": 8,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "headline_spacing_mobile",
+      "label": "Spazio sopra il titolo – mobile",
+      "min": 0,
+      "max": 800,
+      "step": 8,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "headline_size_desktop",
+      "label": "Font titolo – desktop",
+      "min": 20,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "headline_size_mobile",
+      "label": "Font titolo – mobile",
+      "min": 18,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Testo secondario",
+      "default": "Ingredienti naturali, formule pure, benessere autentico."
+    },
+    {
+      "type": "range",
+      "id": "subtext_spacing_desktop",
+      "label": "Spazio sopra il testo secondario – desktop",
+      "min": 0,
+      "max": 800,
+      "step": 8,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "subtext_spacing_mobile",
+      "label": "Spazio sopra il testo secondario – mobile",
+      "min": 0,
+      "max": 800,
+      "step": 8,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "subtext_size_desktop",
+      "label": "Font testo – desktop",
+      "min": 14,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "subtext_size_mobile",
+      "label": "Font testo – mobile",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Testo del pulsante",
+      "default": "Scopri la collezione"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Link del pulsante",
+      "default": "/collections/all"
+    },
+    {
+      "type": "range",
+      "id": "cta_spacing_desktop",
+      "label": "Spazio sopra il pulsante – desktop",
+      "min": 0,
+      "max": 800,
+      "step": 8,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "cta_spacing_mobile",
+      "label": "Spazio sopra il pulsante – mobile",
+      "min": 0,
+      "max": 800,
+      "step": 8,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "cta_font_size_desktop",
+      "label": "Font pulsante – desktop",
+      "min": 10,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "cta_font_size_mobile",
+      "label": "Font pulsante – mobile",
+      "min": 10,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "cta_padding_vertical_desktop",
+      "label": "Padding verticale pulsante – desktop",
+      "min": 2,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "cta_padding_horizontal_desktop",
+      "label": "Padding orizzontale pulsante – desktop",
+      "min": 4,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "cta_padding_vertical_mobile",
+      "label": "Padding verticale pulsante – mobile",
+      "min": 2,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "cta_padding_horizontal_mobile",
+      "label": "Padding orizzontale pulsante – mobile",
+      "min": 4,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    }
+  ],
+  "presets": [
+    {
+      "name": "Intro Mission with GIF"
+    }
+  ]
+}
+{% endschema %}
