@@ -15,7 +15,9 @@
   if settings.product_reviews_app == 'okendo'
     assign bz_review_count = product.metafields.okendo.summaryData.reviewCount
   endif
-  if bz_review_count == blank or bz_review_count == 0
+  if settings.product_reviews_app == 'yotpo' or settings.product_reviews_app == 'trustoo'
+    assign bz_hide_rating = false
+  elsif bz_review_count == blank or bz_review_count == 0
     assign bz_hide_rating = true
   endif
 %}

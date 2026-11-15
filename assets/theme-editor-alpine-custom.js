@@ -1238,13 +1238,17 @@ document.addEventListener('alpine:init', () => {
         }
       });
       const paymentButtonDestination = document.getElementById('x-payment-button-' + sectionId);
-      const paymentButtonSource = html.getElementById('x-payment-button-' + sectionId);
-      if (paymentButtonSource && paymentButtonDestination) {
-        if (paymentButtonSource.classList.contains('hidden')) {
-          paymentButtonDestination.classList.add('hidden');
-        } else {
-          paymentButtonDestination.classList.remove('hidden');
-        }
+      let paymentButtonSource = html.getElementById('x-payment-button-' + sectionId);
+      if (!paymentButtonSource) {
+        html.querySelectorAll('template').forEach((template) => {
+          if (!paymentButtonSource && template.content) {
+            paymentButtonSource = template.content.querySelector('#x-payment-button-' + sectionId);
+          }
+        });
+      }
+      if (paymentButtonDestination) {
+        const hideForPreorder = !!(this.currentVariant?.available && paymentButtonSource && paymentButtonSource.classList.contains('hidden'));
+        paymentButtonDestination.classList.toggle('hidden', !this.currentVariant?.available || hideForPreorder);
       }
     },
     _setMessagePreOrder(html) {

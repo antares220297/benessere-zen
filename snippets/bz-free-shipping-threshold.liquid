@@ -1,18 +1,51 @@
 {% doc %}
-  Prints the free-shipping threshold from the theme setting, in the shop currency.
-  Accepts a plain number (50) or a currency pair (EUR:50).
+  Prints the free-shipping threshold that applies to the current cart, in the shop currency.
+  Uses the same rule order as the cart progress bar: country and currency, then currency, then a plain amount.
 
   @example
   {% render 'bz-free-shipping-threshold' %}
 {% enddoc %}
 {%- liquid
   assign raw_threshold = settings.order_amount_freeshipping | strip
+  assign thresholds = raw_threshold | newline_to_br | strip_newlines | split: '<br />'
+  if raw_threshold contains ';'
+    assign thresholds = raw_threshold | remove: ' ' | split: ';'
+  endif
+
+  for threshold in thresholds
+    unless threshold contains ':'
+      if threshold != blank
+        assign check_currency = threshold | remove: '0' | remove: '1' | remove: '2' | remove: '3' | remove: '4' | remove: '5' | remove: '6' | remove: '7' | remove: '8' | remove: '9' | remove: ':' | remove: ' ' | remove: '.'
+        if check_currency == ''
+          assign threshold_all = threshold | strip | plus: 0
+        endif
+      endif
+    else
+      assign check_currency_first = threshold | split: ':' | first
+      assign check_currency_last = threshold | split: ':' | last
+      assign check_currency = threshold | remove_first: check_currency_first | remove: check_currency_last
+      if check_currency == ':'
+        if check_currency_first == cart.currency.iso_code
+          assign threshold_currency = check_currency_last | strip | plus: 0
+        endif
+      else
+        assign check_currency_country = check_currency | remove: ':'
+        if check_currency_first == localization.country.iso_code and check_currency_country == cart.currency.iso_code
+          assign threshold_country = check_currency_last | strip | plus: 0
+        endif
+      endif
+    endunless
+  endfor
+
   assign threshold_number = 0
-  if raw_threshold contains ':'
-    assign threshold_parts = raw_threshold | split: ':'
-    assign threshold_number = threshold_parts | last | strip | plus: 0
-  else
-    assign threshold_number = raw_threshold | plus: 0
+  if threshold_all
+    assign threshold_number = threshold_all
+  endif
+  if threshold_currency
+    assign threshold_number = threshold_currency
+  endif
+  if threshold_country
+    assign threshold_number = threshold_country
   endif
 -%}
 {%- if threshold_number > 0 -%}

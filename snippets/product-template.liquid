@@ -627,10 +627,20 @@
                           {%- if block.settings.show_dynamic_checkout and gift_card_recipient_active == false and type_file_upload == false -%}
                             {%- liquid
                               assign bz_payment_variant = product.selected_variant | default: product.selected_or_first_available_variant
+                              if bz_payment_variant.available
+                                assign bz_payment_available = true
+                              else
+                                assign bz_payment_available = false
+                              endif
                             -%}
-                            <div class="relative mt-2 payment-button-container" x-data="{ show: false }" x-intersect.once.margin.200px="show = true">
-                              <template x-if="show">
-                                <div id="x-payment-button-{{ section.id }}" class="payment-button{% if settings.buttons_animation != 'underline' and settings.buttons_animation != 'sliced' %} button-animation{% else %} button-default{% endif %}{% if can_show_preorder == true and block.settings.preorder_show_dynamic_button == false %} hidden{% endif %}{% if bz_payment_variant.available == false %} hidden{% endif %}" x-intersect.once.margin.200px="$store.xShopifyPaymentBtn.load($el)">
+                            <div
+                              class="relative mt-2 payment-button-container"
+                              x-data="{ show: false, available: {% if bz_payment_available %}true{% else %}false{% endif %} }"
+                              x-intersect.once.margin.200px="show = true"
+                              x-init="document.addEventListener('eurus:product-page-variant-select:updated:{{ section.id }}', (event) => { available = !!event.detail.currentVariantStatus })"
+                            >
+                              <template x-if="show && available">
+                                <div id="x-payment-button-{{ section.id }}" class="payment-button{% if settings.buttons_animation != 'underline' and settings.buttons_animation != 'sliced' %} button-animation{% else %} button-default{% endif %}{% if can_show_preorder == true and block.settings.preorder_show_dynamic_button == false %} hidden{% endif %}" x-intersect.once.margin.200px="$store.xShopifyPaymentBtn.load($el)">
                                   {{ form | payment_button }}
                                 </div>
                               </template>
