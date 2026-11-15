@@ -417,19 +417,28 @@ body:has(.bz-hero) {
   flex-wrap: wrap;
 }
 
+.bz-pills,
 .bz-seg {
   position: relative;
   display: inline-flex;
+  align-items: center;
+  gap: 0;
+  box-sizing: border-box;
+  height: 46px;
   padding: 4px;
   border-radius: 999px;
   background: #201e1b;
   border: 1px solid rgba(238, 231, 219, 0.11);
 }
 
+.bz-pills button,
 .bz-seg button {
-  position: relative;
-  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
   height: 38px;
+  margin: 0;
   padding: 0 18px;
   border: 0;
   border-radius: 999px;
@@ -438,21 +447,36 @@ body:has(.bz-hero) {
   font-family: Figtree, var(--sans), system-ui, sans-serif;
   font-size: 14px;
   font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
   cursor: pointer;
 }
 
+.bz-pills button.is-on,
 .bz-seg button.is-on {
+  background: #eee7db;
   color: #17130d;
 }
 
+.bz-pills--filters {
+  height: auto;
+  padding: 0;
+  gap: 8px;
+  flex-wrap: wrap;
+  background: transparent;
+  border: 0;
+}
+
+.bz-pills--filters button {
+  border: 1px solid rgba(238, 231, 219, 0.24);
+}
+
+.bz-pills--filters button.is-on {
+  border-color: #eee7db;
+}
+
 .bz-seg__knob {
-  position: absolute;
-  top: 4px;
-  bottom: 4px;
-  left: 4px;
-  width: 118px;
-  border-radius: 999px;
-  background: #eee7db;
+  display: none;
 }
 
 .bz-picked__all {

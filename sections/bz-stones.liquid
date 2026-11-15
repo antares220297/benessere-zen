@@ -2,9 +2,16 @@
 {{ 'bz-home.css' | asset_url | stylesheet_tag }}
 {{ 'bz-mid.css' | asset_url | stylesheet_tag }}
 
-<section class="bz bz-mid bz-stones">
+<section class="bz bz-mid bz-stones" data-bz-stones>
   <div class="bz-stones__head">
     <h2>{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h2>
+    <div class="bz-pills bz-pills--filters" role="tablist">
+      <button type="button" class="is-on" data-bz-filter="tutte">{{ section.settings.filter_all | escape }}</button>
+      <button type="button" data-bz-filter="protezione">{{ section.settings.filter_protection | escape }}</button>
+      <button type="button" data-bz-filter="amore">{{ section.settings.filter_love | escape }}</button>
+      <button type="button" data-bz-filter="abbondanza">{{ section.settings.filter_abundance | escape }}</button>
+      <button type="button" data-bz-filter="meditazione">{{ section.settings.filter_meditation | escape }}</button>
+    </div>
   </div>
   <div class="bz-stonegrid">
     {%- for block in section.blocks -%}
@@ -28,7 +35,7 @@
         endif
         assign wears = 'bracciale,ciondolo,mala,pietra' | split: ','
       -%}
-      <a class="bz-stone" style="--bz-stone: {{ block.settings.color }}" href="{{ block.settings.link | default: stone_collection.url }}" {{ block.shopify_attributes }}>
+      <a class="bz-stone" style="--bz-stone: {{ block.settings.color }}" data-bz-intent="{{ block.settings.intent }}" href="{{ block.settings.link | default: stone_collection.url }}" {{ block.shopify_attributes }}>
         <span class="bz-stone__band"></span>
         <span class="bz-stone__orb">
           {%- if stone_image != blank -%}
@@ -63,6 +70,7 @@
   {%- endif -%}
 </section>
 {% render 'bz-wave', from: '#141312', to: '#2a141b' %}
+<script src="{{ 'bz-home.js' | asset_url }}" defer></script>
 
 {% schema %}
 {
@@ -71,7 +79,12 @@
   "settings": [
     { "type": "text", "id": "heading", "label": "Titolo", "default": "Scegli dalla" },
     { "type": "text", "id": "heading_accent", "label": "Titolo in corsivo", "default": "pietra" },
-    { "type": "text", "id": "note", "label": "Nota", "default": "I significati appartengono alla tradizione e alla pratica spirituale; non sostituiscono pareri o terapie mediche." }
+    { "type": "text", "id": "note", "label": "Nota", "default": "I significati appartengono alla tradizione e alla pratica spirituale; non sostituiscono pareri o terapie mediche." },
+    { "type": "text", "id": "filter_all", "label": "Filtro tutte", "default": "Tutte" },
+    { "type": "text", "id": "filter_protection", "label": "Filtro protezione", "default": "Protezione" },
+    { "type": "text", "id": "filter_love", "label": "Filtro amore", "default": "Amore" },
+    { "type": "text", "id": "filter_abundance", "label": "Filtro abbondanza", "default": "Abbondanza" },
+    { "type": "text", "id": "filter_meditation", "label": "Filtro meditazione", "default": "Meditazione" }
   ],
   "blocks": [
     {
@@ -84,6 +97,13 @@
         { "type": "collection", "id": "collection", "label": "Collezione" },
         { "type": "image_picker", "id": "image", "label": "Foto" },
         { "type": "url", "id": "link", "label": "Link" },
+        { "type": "select", "id": "intent", "label": "Filtro", "options": [
+          { "value": "", "label": "Solo in Tutte" },
+          { "value": "protezione", "label": "Protezione" },
+          { "value": "amore", "label": "Amore" },
+          { "value": "abbondanza", "label": "Abbondanza" },
+          { "value": "meditazione", "label": "Meditazione" }
+        ], "default": "" },
         { "type": "checkbox", "id": "bracelet", "label": "Bracciale", "default": true },
         { "type": "checkbox", "id": "pendant", "label": "Ciondolo", "default": true },
         { "type": "checkbox", "id": "mala", "label": "Mala", "default": false },

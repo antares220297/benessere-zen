@@ -90,6 +90,23 @@
     }).catch(function () {});
   });
 
+  document.addEventListener("click", function (event) {
+    var chip = event.target.closest("[data-bz-filter]");
+    if (!chip) return;
+    var root = chip.closest("[data-bz-stones]");
+    if (!root) return;
+    var key = chip.getAttribute("data-bz-filter");
+    root.querySelectorAll("[data-bz-filter]").forEach(function (item) {
+      var on = item === chip;
+      item.classList.toggle("is-on", on);
+      item.setAttribute("aria-selected", on ? "true" : "false");
+    });
+    root.querySelectorAll("[data-bz-intent]").forEach(function (card) {
+      var intent = card.getAttribute("data-bz-intent") || "";
+      card.hidden = key !== "tutte" && intent !== key;
+    });
+  });
+
   document.addEventListener("submit", function (event) {
     var form = event.target.closest(".bz-card__form, .bz-hero__form");
     if (!form || !window.fetch) return;

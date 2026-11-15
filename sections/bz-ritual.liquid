@@ -6,7 +6,7 @@
   <div class="bz-ritual__head">
     <h2>{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h2>
     {%- if section.settings.link_label != blank -%}
-      <a class="bz-picked__all" href="{{ section.settings.link }}">{{ section.settings.link_label | escape }}</a>
+      <a class="bz-picked__all" href="{{ section.settings.link }}">{{ section.settings.link_label | escape }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     {%- endif -%}
   </div>
   <div class="bz-set">
@@ -14,8 +14,7 @@
       {%- if section.settings.intro != blank -%}
         <p>{{ section.settings.intro | escape }}</p>
       {%- endif -%}
-      <div class="bz-seg" data-bz-seg role="tablist">
-        <span class="bz-seg__knob" data-bz-knob></span>
+      <div class="bz-pills" data-bz-seg role="tablist">
         {%- for block in section.blocks -%}
           <button type="button" role="tab" class="{% if forloop.first %}is-on{% endif %}" data-bz-pane="ritual-{{ forloop.index }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">{{ block.settings.label | escape }}</button>
         {%- endfor -%}

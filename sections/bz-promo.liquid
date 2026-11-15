@@ -65,31 +65,47 @@
         <div>
           {%- if section.settings.stat_text != blank -%}<p>{{ section.settings.stat_text | escape }}</p>{%- endif -%}
           {%- if section.settings.stat_link_label != blank -%}
-            <a class="bz-picked__all" href="{{ section.settings.stat_link }}">{{ section.settings.stat_link_label | escape }}</a>
+            <a class="bz-picked__all bz-bento__more" href="{{ section.settings.stat_link }}">{{ section.settings.stat_link_label | escape }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
           {%- endif -%}
         </div>
       </div>
     {%- endif -%}
 
     {%- if featured != blank -%}
+      {%- assign feat_variant = featured.selected_or_first_available_variant -%}
       {%- assign feat_cents = featured.price | modulo: 100 -%}
-      <a class="bz-bento__product" href="{{ featured.url }}">
-        {%- if featured.featured_image != blank -%}
-          {{ featured.featured_image | image_url: width: 800 | image_tag: alt: featured.title, widths: '400, 800', sizes: '25vw', loading: 'lazy', width: 480, height: 360 }}
+      <div class="bz-bento__product">
+        <a href="{{ featured.url }}">
+          {%- if featured.featured_image != blank -%}
+            {{ featured.featured_image | image_url: width: 800 | image_tag: alt: featured.title, widths: '400, 800', sizes: '25vw', loading: 'lazy', width: 480, height: 360 }}
+          {%- endif -%}
+          {%- if feat_variant.inventory_management != blank and feat_variant.inventory_quantity == 1 and featured.available -%}
+            <span class="bz-badge"><span class="bz-badge__dot"></span>Ultimo pezzo</span>
+          {%- endif -%}
+          <span class="bz-bento__caption">
+            <b>{{ featured.title | escape }}</b>
+            <span class="bz-price">{{ featured.price | minus: feat_cents | divided_by: 100 }}<sup>,{{ feat_cents | prepend: '00' | slice: -2, 2 }}</sup> €</span>
+          </span>
+        </a>
+        {%- if featured.available -%}
+          <form class="bz-card__form bz-bento__add" action="{{ routes.cart_add_url }}" method="post">
+            <input type="hidden" name="id" value="{{ feat_variant.id }}">
+            <button class="bz-card__add" type="submit" aria-label="Aggiungi {{ featured.title | escape }}">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            </button>
+          </form>
         {%- endif -%}
-        <span>
-          <b>{{ featured.title | escape }}</b>
-          <span class="bz-price">{{ featured.price | minus: feat_cents | divided_by: 100 }}<sup>,{{ feat_cents | prepend: '00' | slice: -2, 2 }}</sup> €</span>
-        </span>
-      </a>
+      </div>
     {%- endif -%}
 
     <a class="bz-bento__link" href="{{ section.settings.side_link | default: side.url }}">
       {%- if side_image != blank -%}
-        {{ side_image | image_url: width: 800 | image_tag: alt: '', class: 'bz-bento__photo', widths: '400, 800', sizes: '25vw', loading: 'lazy', width: 480, height: 320 }}
+        {{ side_image | image_url: width: 900 | image_tag: alt: '', widths: '400, 800', sizes: '25vw', loading: 'lazy', width: 480, height: 360 }}
+      {%- else -%}
+        <img src="{{ 'bz-pendoli.jpg' | asset_url }}" alt="" width="480" height="360">
       {%- endif -%}
       <h3>{{ section.settings.side_title | escape }} <em>{{ section.settings.side_accent | escape }}</em></h3>
-      <span class="bz-picked__all">{{ section.settings.side_label | escape }}</span>
+      <span class="bz-picked__all">{{ section.settings.side_label | escape }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
     </a>
 
     {%- if section.settings.shipping_amount > 0 -%}

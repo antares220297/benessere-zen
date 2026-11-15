@@ -5,8 +5,7 @@
   <div class="bz-picked__head">
     <h2>{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h2>
     <div class="bz-picked__tools">
-      <div class="bz-seg" data-bz-seg role="tablist">
-        <span class="bz-seg__knob" data-bz-knob></span>
+      <div class="bz-pills" data-bz-seg role="tablist">
         {%- for block in section.blocks -%}
           <button type="button" role="tab" class="{% if forloop.first %}is-on{% endif %}" data-bz-pane="{{ forloop.index }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</button>
         {%- endfor -%}

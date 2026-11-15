@@ -161,53 +161,91 @@
   color: #3a2f1f;
 }
 
+.bz-bento__more {
+  margin-top: 10px;
+}
+
 .bz-bento__product {
+  position: relative;
   display: block;
   background: #201e1b;
+  color: inherit;
+  overflow: hidden;
+}
+
+.bz-bento__product > a {
+  display: block;
+  height: 100%;
   color: inherit;
   text-decoration: none;
 }
 
 .bz-bento__product img {
+  display: block;
   width: 100%;
   height: 78%;
   object-fit: cover;
 }
 
-.bz-bento__product > span {
+.bz-bento__caption {
   position: absolute;
-  left: 20px;
-  right: 18px;
-  bottom: 18px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 8px;
+  left: 18px;
+  right: 62px;
+  bottom: 16px;
 }
 
-.bz-bento__product .bz-price {
-  white-space: nowrap;
-}
-
-.bz-bento__product b {
+.bz-bento__caption b {
   display: block;
   font-weight: 500;
   font-size: 14.5px;
 }
 
-.bz-bento__product .bz-price {
+.bz-bento__caption .bz-price {
+  display: block;
+  margin-top: 2px;
   font-family: Baskervville, Georgia, serif;
   font-size: 22px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.bz-bento__product .bz-card__form {
+  top: auto;
+  right: 14px;
+  bottom: 14px;
 }
 
 .bz-bento__link {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   padding: 24px;
+  overflow: hidden;
   text-decoration: none;
   color: inherit;
   background: radial-gradient(130% 100% at 100% 0%, #6a4f86, #2a2036 70%);
+}
+
+.bz-bento__link img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 75%;
+  object-fit: cover;
+  -webkit-mask-image: linear-gradient(0deg, transparent, rgba(0, 0, 0, 0.45) 28%, #000 62%);
+  mask-image: linear-gradient(0deg, transparent, rgba(0, 0, 0, 0.45) 28%, #000 62%);
+}
+
+.bz-bento__link h3,
+.bz-bento__link .bz-picked__all {
+  position: relative;
+  z-index: 1;
+}
+
+.bz-bento__link .bz-picked__all {
+  color: #eee7db;
 }
 
 .bz-bento__link h3 {
@@ -297,7 +335,8 @@
 }
 
 .bz-stone__body {
-  padding: 78px 18px 16px;
+  display: block;
+  padding: 46px 18px 16px;
 }
 
 .bz-stone h3 {
@@ -383,6 +422,10 @@
 .bz-set__card > p {
   margin: 0 0 8px;
   color: #958d7f;
+}
+
+.bz-set__card .bz-pills {
+  margin: 18px 0;
 }
 
 .bz-set__row {
