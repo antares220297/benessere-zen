@@ -7226,6 +7226,9 @@
         "name": "Label"
       }
     },
+    "main-activate-account": {
+      "name": "Activate account"
+    },
     "main-login": {
       "name": "Login"
     },

@@ -296,9 +296,13 @@
                         </div>
                       </template>
                     </div>
-                  {% else %}       
+                  {% else %}
                       <div class="w-full mb-3{% if show_content_center %} text-center{% endif %}" {{ block.shopify_attributes }}>
-                        <{% if block.settings.link != blank %}a href="{{ block.settings.link }}"{% if block.settings.open_new_window %} target="_blank"{% endif %} class="effect-inline {% else %}p class="{% endif %}relative italic p-break-words inline-block">{{ product.vendor | escape }}</{% if block.settings.link %}a{% else %}p{% endif %}>
+                        {%- if block.settings.link != blank -%}
+                          <a href="{{ block.settings.link }}"{% if block.settings.open_new_window %} target="_blank"{% endif %} class="effect-inline relative italic p-break-words inline-block">{{ product.vendor | escape }}</a>
+                        {%- else -%}
+                          <p class="relative italic p-break-words inline-block">{{ product.vendor | escape }}</p>
+                        {%- endif -%}
                       </div>
                   {%- endif -%}
                   {% endif %}

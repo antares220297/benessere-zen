@@ -16,7 +16,19 @@ jobs:
       ) 
       || (github.event.pull_request && !github.event.pull_request.merged)
     steps:
+      - name: CLA token
+        id: cla
+        env:
+          CLA_TOKEN: ${{ secrets.CLA_TOKEN }}
+        run: |
+          if [ -n "$CLA_TOKEN" ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "CLA skipped: CLA_TOKEN is not configured on this repository."
+          fi
       - uses: Shopify/shopify-cla-action@v1
+        if: steps.cla.outputs.present == 'true'
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           cla-token: ${{ secrets.CLA_TOKEN }}
