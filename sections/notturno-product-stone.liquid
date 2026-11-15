@@ -1,0 +1,33 @@
+{%- liquid
+  assign pietra = product.metafields.custom.pietra.value
+-%}
+{%- if pietra != blank -%}
+  <section class="nt-page nt-noise" data-reveal>
+    <p class="nt-kicker">{{ section.settings.kicker | escape }}</p>
+    <h2>{{ pietra.nome | default: section.settings.heading | escape }}</h2>
+    <div class="nt-prose">
+      {%- if pietra.colore != blank -%}<p>{{ 'notturno.color' | t }}: {{ pietra.colore | escape }}</p>{%- endif -%}
+      {%- if pietra.durezza != blank -%}<p>{{ 'notturno.mohs' | t }}: {{ pietra.durezza | escape }}</p>{%- endif -%}
+      {%- if pietra.provenienza != blank -%}<p>{{ 'notturno.origin' | t }}: {{ pietra.provenienza | escape }}</p>{%- endif -%}
+      {%- if pietra.tradizione.value != blank -%}
+        <div class="rte">{{ pietra.tradizione | metafield_tag }}</div>
+      {%- elsif pietra.tradizione != blank -%}
+        <p>{{ pietra.tradizione }}</p>
+      {%- endif -%}
+      <p class="nt-disclaimer">{{ 'notturno.disclaimer' | t }}</p>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "La pietra",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Occhiello", "default": "La pietra" },
+    { "type": "text", "id": "heading", "label": "Titolo di riserva", "default": "La pietra" }
+  ],
+  "presets": [{ "name": "La pietra" }],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}

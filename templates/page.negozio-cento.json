@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "store": {
+      "type": "bz-store",
+      "settings": {
+        "heading": "Il negozio di Cento",
+        "text": "Benessere Zen è una bottega fisica a Cento, in provincia di Ferrara. Puoi vedere i gioielli dal vivo e ritirare l'ordine in negozio, senza spese di spedizione.",
+        "address": "Via M. Provenzali 1\n44042 Cento (FE)",
+        "email": "info@benesserezen.shop",
+        "map_link": "https://maps.google.com/?q=Via+Provenzali+1+Cento+Ferrara",
+        "hours": "<ul><li>Lunedì, martedì, mercoledì, venerdì e sabato: 9:30–12:30 e 16:00–19:30</li><li>Giovedì: 9:00–13:00</li></ul>"
+      }
+    }
+  },
+  "order": ["store"]
+}

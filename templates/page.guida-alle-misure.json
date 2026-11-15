@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "intro": {
+      "type": "notturno-prose",
+      "settings": {
+        "heading": "Guida alle misure",
+        "parchment": true,
+        "text": "<h2>Polso</h2><p>Prendi un filo, avvolgilo dove porterai il bracciale, segna il punto in cui si incontra e misura il filo con un righello. Quella è la circonferenza, in centimetri.</p><h2>Collana</h2><p>Una collana da 40 a 45 cm sta in genere sulla clavicola. Da 50 cm scende verso lo sterno. Se hai già una collana che ti sta bene, misurala dal moschettone all'anello, catenina distesa.</p><h2>Anello</h2><p>Avvolgi una striscia di carta alla base del dito, segna l'incontro e misura. La carta non deve stringere. Se tra due misure sei in dubbio, prendi la più larga.</p><p>Se in scheda manca la misura, scrivi a info@benesserezen.shop prima di ordinare.</p>"
+      }
+    }
+  },
+  "order": ["intro"]
+}

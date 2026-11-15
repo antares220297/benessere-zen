@@ -1,0 +1,19 @@
+{% doc %}
+  Stone card: color swatch, name, one concrete line, one tradition line.
+
+  @param {string} name - Stone name
+  @param {string} url - Collection or search URL
+  @param {string} color - CSS color for the swatch
+  @param {string} look - What the stone looks like
+  @param {string} tradition - Tradition line, already framed as tradition
+
+  @example
+  {% render 'stone-card', name: 'Onice nero', url: '/search?q=onice&type=product', color: '#1a1a1a', look: 'Nero lucido, compatto.', tradition: 'Nella tradizione si associa alla fermezza.' %}
+{% enddoc %}
+<a class="nt-stone" href="{{ url }}">
+  <span class="nt-swatch" style="background: {{ color | escape }}" aria-hidden="true"></span>
+  <span class="nt-stone__body">
+    <span class="nt-stone__name">{{ name | escape }}</span>
+    <span>{{ look | escape }} {{ tradition | escape }}</span>
+  </span>
+</a>

@@ -1,247 +1,142 @@
-{%- comment -%}
-  BenesserEZen — Newsletter signup.
-
-  Native Shopify {% form 'customer' %} — no third-party scripts.
-  Klaviyo (or any other ESP that listens to Shopify customer create
-  webhooks) picks up subscribers automatically.
-{%- endcomment -%}
-
-<section
-  class="bz-newsletter color-{{ section.settings.color_scheme }} gradient isolate"
-  data-section-id="{{ section.id }}"
->
-  <div class="page-width bz-newsletter__inner">
-    <p class="bz-label bz-reveal">{{ section.settings.eyebrow | default: 'Il Giornale Zen' }}</p>
-    <h2 class="bz-title bz-reveal" data-delay="1">{{ section.settings.heading | default: 'Iscriviti per ricevere i nostri rituali' }}</h2>
-    {%- if section.settings.subtext != blank -%}
-      <p class="bz-body bz-newsletter__subtext bz-reveal" data-delay="2">{{ section.settings.subtext }}</p>
+<div class="bz-news">
+  <div class="bz-news__inner">
+    <h2 class="bz-news__title">{{ section.settings.heading | escape }}</h2>
+    {%- if section.settings.text != blank -%}
+      <p class="bz-news__text">{{ section.settings.text | escape }}</p>
     {%- endif -%}
-
-    {%- form 'customer', id: 'bz-newsletter-form-' | append: section.id, class: 'bz-newsletter__form-wrapper' -%}
+    {% form 'customer', class: 'bz-news__form' %}
       <input type="hidden" name="contact[tags]" value="newsletter">
-
       {%- if form.posted_successfully? -%}
-        <p class="bz-newsletter__success bz-reveal">{{ section.settings.success_text | default: 'Grazie. Controlla la tua casella per confermare l’iscrizione.' }}</p>
-      {%- else -%}
-        <div class="bz-newsletter__form bz-reveal" data-delay="3">
-          <label class="visually-hidden" for="bz-newsletter-email-{{ section.id }}">Email</label>
-          <input
-            class="bz-newsletter__input"
-            type="email"
-            id="bz-newsletter-email-{{ section.id }}"
-            name="contact[email]"
-            placeholder="{{ section.settings.placeholder | default: 'la-tua-anima@dominio.it' }}"
-            autocorrect="off"
-            autocapitalize="off"
-            autocomplete="email"
-            required
-          >
-          <button class="bz-newsletter__btn" type="submit" name="commit">
-            {{ section.settings.btn_text | default: 'Iscriviti' }}
-          </button>
-        </div>
-
-        {%- if form.errors -%}
-          <p class="bz-newsletter__error">
-            {{ form.errors | default_errors }}
-          </p>
-        {%- endif -%}
-
-        {%- if section.settings.fine_print != blank -%}
-          <p class="bz-newsletter__fine">{{ section.settings.fine_print }}</p>
-        {%- endif -%}
+        <p class="bz-news__success" role="status">{{ section.settings.success | escape }}</p>
       {%- endif -%}
-    {%- endform -%}
+      {%- if form.errors -%}
+        <p class="bz-news__error" role="alert">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>
+      {%- endif -%}
+      <div class="bz-news__row">
+        <label class="bz-news__label" for="BzNews-{{ section.id }}">{{ section.settings.label | escape }}</label>
+        <input
+          id="BzNews-{{ section.id }}"
+          class="bz-news__input"
+          type="email"
+          name="contact[email]"
+          value="{{ form.email }}"
+          autocomplete="email"
+          inputmode="email"
+          autocapitalize="off"
+          autocorrect="off"
+          required
+        >
+        <button class="bz-news__button" type="submit">{{ section.settings.button_label | escape }}</button>
+      </div>
+    {% endform %}
   </div>
-</section>
+</div>
 
-{% style %}
-  .bz-newsletter {
-    padding-top: {{ section.settings.padding_top }}px;
-    padding-bottom: {{ section.settings.padding_bottom }}px;
+{% stylesheet %}
+  .bz-news {
+    padding: 1rem 1.25rem 3.5rem;
   }
-  .bz-newsletter__inner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 1.6rem;
-    max-width: 56rem;
+  .bz-news__inner {
+    max-width: 40rem;
     margin: 0 auto;
   }
-  .bz-newsletter__inner .bz-label,
-  .bz-newsletter__inner .bz-title { margin: 0; }
-  .bz-newsletter__subtext { margin: 0; max-width: 48rem; }
-
-  .bz-newsletter__form-wrapper {
-    width: 100%;
-    margin-top: 1.6rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
+  .bz-news__title {
+    font-family: var(--font-heading-family);
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    line-height: 1.15;
+    margin: 0 0 0.5rem;
+    color: rgb(var(--colors-heading));
   }
-
-  .bz-newsletter__form {
-    display: flex;
-    width: 100%;
-    max-width: 48rem;
-    border: 1px solid var(--bz-border);
-    transition: border-color var(--bz-duration) var(--bz-ease);
+  .bz-news__text {
+    margin: 0 0 1rem;
+    font-size: 1.0625rem;
+    line-height: 1.5;
   }
-  .bz-newsletter__form:focus-within {
-    border-color: var(--bz-gold);
-  }
-
-  .bz-newsletter__input {
-    flex: 1 1 auto;
-    min-width: 0;
-    padding: 1.4rem 1.8rem;
-    background: transparent;
-    border: none;
-    outline: none;
-    color: var(--bz-text);
-    font-family: var(--bz-font-body);
-    font-size: 1.4rem;
-    letter-spacing: 0.05rem;
-  }
-  .bz-newsletter__input::placeholder {
-    color: var(--bz-muted);
-    font-style: italic;
-  }
-
-  .bz-newsletter__btn {
-    flex-shrink: 0;
-    padding: 0 2.4rem;
-    background: var(--bz-gold);
-    color: var(--bz-bg);
-    border: none;
-    cursor: pointer;
-    font-family: var(--bz-font-ui);
-    font-size: 1.1rem;
-    font-weight: 400;
-    letter-spacing: 0.3rem;
-    text-transform: uppercase;
-    transition: background var(--bz-duration) var(--bz-ease),
-                color var(--bz-duration) var(--bz-ease);
-  }
-  .bz-newsletter__btn:hover {
-    background: var(--bz-gold-light);
-  }
-
-  .bz-newsletter__fine {
-    margin: 0;
-    font-family: var(--bz-font-ui);
+  .bz-news__label {
+    flex: 1 1 100%;
     font-size: 1rem;
-    letter-spacing: 0.2rem;
-    text-transform: uppercase;
-    color: var(--bz-muted);
+    color: rgb(var(--colors-heading));
   }
-  .bz-newsletter__error {
-    margin: 0;
-    color: var(--bz-text);
-    font-family: var(--bz-font-body);
-    font-size: 1.2rem;
-    padding: 0.8rem 1.4rem;
-    border: 1px solid rgba(204, 51, 51, 0.5);
-    background: rgba(204, 51, 51, 0.08);
+  .bz-news__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem 0.75rem;
+    position: relative;
   }
-  .bz-newsletter__success {
-    margin: 0;
-    font-family: var(--bz-font-display);
-    font-style: italic;
-    font-size: 1.6rem;
-    color: var(--bz-gold);
+  .bz-news__input {
+    flex: 1 1 14rem;
+    min-height: 48px;
+    font-size: 1rem;
+    padding: 0.75rem 0.9rem;
+    border: 1px solid rgb(var(--colors-line-and-border));
+    border-radius: var(--border-radius);
+    background: rgb(var(--background-color));
+    color: rgb(var(--colors-text));
   }
-
-  @media (max-width: 749px) {
-    .bz-newsletter__form { flex-direction: column; }
-    .bz-newsletter__input { width: 100%; padding: 1.4rem; }
-    .bz-newsletter__btn  { width: 100%; padding: 1.4rem; }
+  .bz-news__button {
+    min-height: 48px;
+    min-width: 48px;
+    padding: 0.75rem 1.2rem;
+    font-size: 1rem;
+    cursor: pointer;
+    background: transparent;
+    color: rgb(var(--colors-secondary-button));
+    border: 1px solid rgb(var(--colors-secondary-button));
+    border-radius: var(--border-radius);
   }
-{% endstyle %}
+  .bz-news__button:hover,
+  .bz-news__button:focus-visible {
+    background: rgb(var(--colors-background-secondary));
+  }
+  .bz-news__success {
+    color: rgb(var(--color-success));
+  }
+  .bz-news__error {
+    color: rgb(var(--color-error));
+  }
+{% endstylesheet %}
 
 {% schema %}
 {
-  "name": "BZ Newsletter",
+  "name": "Newsletter",
+  "tag": "section",
   "class": "bz-newsletter-section",
   "settings": [
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "default": "scheme-4",
-      "label": "Schema colore"
-    },
-    {
-      "type": "text",
-      "id": "eyebrow",
-      "label": "Etichetta",
-      "default": "Il Giornale Zen"
-    },
     {
       "type": "text",
       "id": "heading",
       "label": "Titolo",
-      "default": "Iscriviti per ricevere i nostri rituali"
+      "default": "Novità dalla bottega"
     },
     {
       "type": "textarea",
-      "id": "subtext",
-      "label": "Sottotesto",
-      "default": "Guide ai cristalli, rituali lunari, meditazioni guidate. Niente spam — solo bellezza."
+      "id": "text",
+      "label": "Testo",
+      "default": "Pietre appena arrivate e appuntamenti in negozio. Niente spam."
     },
     {
       "type": "text",
-      "id": "placeholder",
-      "label": "Placeholder email",
-      "default": "la-tua-anima@dominio.it"
+      "id": "label",
+      "label": "Etichetta email",
+      "default": "Email"
     },
     {
       "type": "text",
-      "id": "btn_text",
-      "label": "Testo bottone",
+      "id": "button_label",
+      "label": "Pulsante",
       "default": "Iscriviti"
     },
     {
       "type": "text",
-      "id": "fine_print",
-      "label": "Testo fine",
-      "default": "Niente spam. Solo bellezza."
-    },
-    {
-      "type": "text",
-      "id": "success_text",
-      "label": "Messaggio dopo iscrizione",
-      "default": "Grazie. Controlla la tua casella per confermare l’iscrizione."
-    },
-    {
-      "type": "header",
-      "content": "Spaziatura"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "label": "Padding alto",
-      "min": 0,
-      "max": 160,
-      "step": 4,
-      "unit": "px",
-      "default": 96
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "label": "Padding basso",
-      "min": 0,
-      "max": 160,
-      "step": 4,
-      "unit": "px",
-      "default": 96
+      "id": "success",
+      "label": "Messaggio di conferma",
+      "default": "Iscrizione ricevuta. A presto."
     }
   ],
   "presets": [
     {
-      "name": "BZ Newsletter"
+      "name": "Newsletter"
     }
   ]
 }

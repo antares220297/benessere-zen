@@ -1,0 +1,43 @@
+{% doc %}
+  Size link for bracelets and rings, quantity-tier line, and the three delivery rows.
+  Shipping amount comes from the free-shipping setting. Empty metafields are skipped.
+
+  @param {product} product - Current product
+  @param {string} part - "size" before the button, "after" for tiers and delivery
+
+  @example
+  {% render 'notturno-product-buy', product: product, part: 'after' %}
+{% enddoc %}
+{%- liquid
+  assign kind = product.type | downcase
+  assign title_down = product.title | downcase
+  assign show_size = false
+  if kind contains 'braccial' or kind contains 'anell' or title_down contains 'braccial' or title_down contains 'anello'
+    assign show_size = true
+  endif
+-%}
+{%- if part == 'size' and show_size -%}
+  <p><a class="nt-text-link" href="{{ pages['guida-alle-misure'].url }}">{{ 'notturno.size_guide' | t }}</a></p>
+{%- endif -%}
+{%- if part == 'after' and settings.show_qty_tiers -%}
+  <p>{{ 'notturno.qty_tiers' | t }}</p>
+{%- endif -%}
+{%- if part == 'after' -%}
+<ul class="nt-delivery">
+  <li>
+    <span aria-hidden="true">→</span>
+    <span>{{ 'notturno.shipping_from' | t }} {% render 'bz-free-shipping-threshold' %}</span>
+  </li>
+  {%- if settings.estimate_delivery_min != blank and settings.estimate_delivery_max != blank -%}
+    <li>
+      <span aria-hidden="true">→</span>
+      <span>{{ 'notturno.delivery_window' | t: min: settings.estimate_delivery_min, max: settings.estimate_delivery_max }}</span>
+    </li>
+  {%- endif -%}
+  <li>
+    <span aria-hidden="true">→</span>
+    <span>{{ 'notturno.pickup_line' | t }}</span>
+  </li>
+</ul>
+<p><a class="nt-text-link" href="{{ pages['il-negozio'].url }}">{{ 'notturno.also_in_store' | t }}</a></p>
+{%- endif -%}

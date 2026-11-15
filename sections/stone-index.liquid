@@ -1,0 +1,82 @@
+<section class="nt-noise" id="nt-stones" data-reveal data-nt-tabs>
+  <div class="nt-page">
+    {% render 'chapter-label', chapter: section.settings.chapter %}
+    {%- if section.settings.heading != blank -%}
+      <h2>{{ section.settings.heading | escape }}</h2>
+    {%- endif -%}
+    {%- if section.settings.text != blank -%}
+      <p class="nt-prose">{{ section.settings.text | escape }}</p>
+    {%- endif -%}
+    <div class="nt-tabs" role="tablist">
+      <button type="button" role="tab" id="nt-tab-stone" aria-controls="nt-panel-stone" aria-selected="true">{{ section.settings.tab_stone | escape }}</button>
+      <button type="button" role="tab" id="nt-tab-intent" aria-controls="nt-panel-intent" aria-selected="false">{{ section.settings.tab_intent | escape }}</button>
+    </div>
+    <div id="nt-panel-stone" role="tabpanel" aria-labelledby="nt-tab-stone" class="nt-stone-grid">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'stone' -%}
+          <div data-reveal-child {{ block.shopify_attributes }}>
+            {% render 'stone-card',
+              name: block.settings.name,
+              url: block.settings.url,
+              color: block.settings.color,
+              look: block.settings.look,
+              tradition: block.settings.tradition
+            %}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    <div id="nt-panel-intent" role="tabpanel" aria-labelledby="nt-tab-intent" class="nt-stone-grid" hidden>
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'intention' -%}
+          <a class="nt-stone" href="{{ block.settings.url }}" {{ block.shopify_attributes }}>
+            <span class="nt-stone__body">
+              <span class="nt-stone__name">{{ block.settings.name | escape }}</span>
+              <span>{{ block.settings.text | escape }}</span>
+            </span>
+          </a>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    <p class="nt-disclaimer">{{ section.settings.note | escape }}</p>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Indice delle pietre",
+  "tag": "section",
+  "class": "nt-stone-index",
+  "settings": [
+    { "type": "text", "id": "chapter", "label": "Capitolo", "default": "III" },
+    { "type": "text", "id": "heading", "label": "Titolo", "default": "Ogni pietra ha un carattere" },
+    { "type": "textarea", "id": "text", "label": "Testo", "default": "Scegli per nome, o per intenzione." },
+    { "type": "text", "id": "tab_stone", "label": "Scheda pietre", "default": "Per pietra" },
+    { "type": "text", "id": "tab_intent", "label": "Scheda intenzioni", "default": "Per intenzione" },
+    { "type": "textarea", "id": "note", "label": "Nota", "default": "I significati appartengono alla tradizione e alla pratica spirituale; non sostituiscono pareri o terapie mediche." }
+  ],
+  "blocks": [
+    {
+      "type": "stone",
+      "name": "Pietra",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Nome" },
+        { "type": "url", "id": "url", "label": "Link" },
+        { "type": "color", "id": "color", "label": "Colore del campione", "default": "#26242A" },
+        { "type": "text", "id": "look", "label": "Come si vede" },
+        { "type": "text", "id": "tradition", "label": "Tradizione, una riga" }
+      ]
+    },
+    {
+      "type": "intention",
+      "name": "Intenzione",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Nome" },
+        { "type": "url", "id": "url", "label": "Link" },
+        { "type": "text", "id": "text", "label": "Riga" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Indice delle pietre" }]
+}
+{% endschema %}

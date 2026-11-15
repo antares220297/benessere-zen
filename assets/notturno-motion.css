@@ -1,0 +1,94 @@
+/* Motion: transform and opacity only. Reduced motion turns it off. */
+
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 200ms;
+  animation-timing-function: var(--ease-out, cubic-bezier(0.2, 0.7, 0.2, 1));
+}
+
+html.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+html.js [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+  transition: opacity 600ms var(--ease-out, ease), transform 600ms var(--ease-out, ease);
+}
+
+html.js [data-reveal-child] {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+html.js [data-reveal].is-in [data-reveal-child] {
+  opacity: 1;
+  transform: none;
+  transition: opacity 600ms var(--ease-out, ease), transform 600ms var(--ease-out, ease);
+}
+
+html.js [data-reveal].is-in [data-reveal-child]:nth-child(2) { transition-delay: 60ms; }
+html.js [data-reveal].is-in [data-reveal-child]:nth-child(3) { transition-delay: 120ms; }
+html.js [data-reveal].is-in [data-reveal-child]:nth-child(4) { transition-delay: 180ms; }
+html.js [data-reveal].is-in [data-reveal-child]:nth-child(5) { transition-delay: 240ms; }
+html.js [data-reveal].is-in [data-reveal-child]:nth-child(6) { transition-delay: 300ms; }
+
+.nt-fill {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 600ms var(--ease-out, ease);
+}
+
+.nt-fill.is-in {
+  transform: scaleX(var(--nt-scale, 1));
+}
+
+#sticky-header-content.nt-header-hide {
+  transform: translateY(-100%);
+}
+
+#cart-icon-bubble.is-bump {
+  transform: scale(1.15);
+  transition: transform 200ms var(--ease-out, ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js [data-reveal],
+  html.js [data-reveal-child],
+  .nt-fill {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .el_animate,
+  .animate-scroll-banner,
+  .button-solid::after {
+    animation: none !important;
+  }
+
+  .section-scroll-banner .flex.flex-nowrap {
+    overflow-x: auto;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+}
+
+@media (hover: hover) {
+  .card-product .preview-img {
+    transition: transform 900ms var(--ease-out, ease), opacity 400ms var(--ease-out, ease);
+  }
+
+  .card-product:hover .preview-img.image-first-hover {
+    transform: scale(1.03);
+  }
+}

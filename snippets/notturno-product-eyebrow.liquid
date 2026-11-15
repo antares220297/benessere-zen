@@ -1,0 +1,19 @@
+{% doc %}
+  Product eyebrow from metafields custom.tipo and custom.pietra. Hidden when both are empty.
+
+  @param {product} product - Current product
+
+  @example
+  {% render 'notturno-product-eyebrow', product: product %}
+{% enddoc %}
+{%- liquid
+  assign tipo = product.metafields.custom.tipo.value | default: product.metafields.custom.tipo
+  assign pietra = product.metafields.custom.pietra.value.nome | default: product.metafields.custom.pietra.value
+-%}
+{%- if tipo != blank or pietra != blank -%}
+  <p class="nt-kicker">
+    {%- if tipo != blank -%}{{ tipo | escape }}{%- endif -%}
+    {%- if tipo != blank and pietra != blank -%} · {%- endif -%}
+    {%- if pietra != blank -%}{{ pietra | escape }}{%- endif -%}
+  </p>
+{%- endif -%}

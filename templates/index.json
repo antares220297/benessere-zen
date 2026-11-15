@@ -1,106 +1,283 @@
 {
   "sections": {
-    "bz_hero_main": {
-      "type": "bz-hero",
+    "hero": {
+      "type": "hero-v2",
       "settings": {
-        "text_1": "Respira.",
-        "text_2": "Lascia andare.",
-        "text_3": "Trova il tuo equilibrio.",
-        "cta_text_1": "Scopri la collezione",
-        "cta_link_1": "shopify://collections/all",
-        "cta_text_2": "Fai il quiz →",
-        "cta_link_2": ""
+        "kicker": "Bijoux, pietre, oggetti di rito",
+        "title": "Pietre, bijoux e un po' di *magia*.",
+        "subtitle": "Onice, ametista, argento, ambra. Pezzi da portare ogni giorno, e da regalare quando conta.",
+        "primary_cta_label": "Vedi i bijoux",
+        "primary_cta_link": "/collections/gioielli-con-pietre",
+        "quiz_cta_label": "Vai alle pietre",
+        "quiz_cta_link": "/collections/pietre-burattate",
+        "enable_finder": false,
+        "overlay_opacity": 0.45
       }
     },
-    "bz_chakra_portal": {
-      "type": "bz-chakra-portal",
-      "settings": {
-        "color_scheme": "scheme-4",
-        "eyebrow": "Sistema dei 7 chakra",
-        "heading": "Quale energia stai cercando?",
-        "subtext": "I sette centri energetici del corpo sono la nostra mappa. Passa il mouse su un chakra per scoprirlo."
-      }
-    },
-    "bz_collections": {
-      "type": "bz-collections",
+    "entries": {
+      "type": "collection-list",
       "blocks": {
-        "col_root": {
+        "c1": { "type": "featured_collection", "settings": { "collection": "collane-e-braccialetti", "label": "Collane e bracciali" } },
+        "c2": { "type": "featured_collection", "settings": { "collection": "mala-tibetani", "label": "Mala" } },
+        "c3": { "type": "featured_collection", "settings": { "collection": "pietre-burattate", "label": "Pietre e cristalli" } },
+        "c4": { "type": "featured_collection", "settings": { "collection": "incensi-e-brucia-incensi-1", "label": "Incensi e rito" } },
+        "c5": { "type": "featured_collection", "settings": { "collection": "ambra-baltica", "label": "Ambra" } },
+        "c6": { "type": "featured_collection", "settings": { "collection": "gioielli-con-pietre", "label": "Bijoux con pietre" } }
+      },
+      "block_order": ["c1", "c2", "c3", "c4", "c5", "c6"],
+      "settings": {
+        "chapter": "I",
+        "heading": "Da dove cominci",
+        "heading_tag": "h2",
+        "heading_alignment": "left",
+        "arch_images": true,
+        "image_ratio": "3/4",
+        "columns_desktop": 6,
+        "columns_mobile": "2",
+        "swiper_on_mobile": true,
+        "enable_desktop_slider": false,
+        "show_item_count": false
+      }
+    },
+    "chosen": {
+      "type": "featured-collection",
+      "blocks": {
+        "col": {
           "type": "collection",
           "settings": {
-            "chakra_id": 1,
-            "title_override": "Cristalli Radice",
-            "subtitle": "Mūlādhāra · Radicamento",
-            "cta_label": "Scopri"
-          }
-        },
-        "col_heart": {
-          "type": "collection",
-          "settings": {
-            "chakra_id": 4,
-            "title_override": "Cristalli Cuore",
-            "subtitle": "Anāhata · Compassione",
-            "cta_label": "Scopri"
-          }
-        },
-        "col_crown": {
-          "type": "collection",
-          "settings": {
-            "chakra_id": 7,
-            "title_override": "Cristalli Corona",
-            "subtitle": "Sahasrāra · Coscienza",
-            "cta_label": "Scopri"
+            "collection": "gioielli-con-pietre",
+            "show_quickview": true,
+            "show_rating": true,
+            "show_vendor": false,
+            "show_description": false
           }
         }
       },
-      "block_order": ["col_root", "col_heart", "col_crown"],
+      "block_order": ["col"],
       "settings": {
-        "color_scheme": "scheme-4",
-        "eyebrow": "Collezioni in evidenza",
-        "heading": "I rituali più amati"
+        "chapter": "II",
+        "title": "I più scelti adesso",
+        "heading_tag": "h2",
+        "heading_alignment": "left",
+        "text": "<p>Bijoux con pietre, in vetrina questa settimana.</p>",
+        "show_view_all": true,
+        "view_all_position": "top",
+        "columns_desktop": 4,
+        "rows_desktop": 2,
+        "columns_mobile": "2",
+        "enable_desktop_slider": false,
+        "swiper_on_mobile": false,
+        "auto_play": false
       }
     },
-    "bz_brand_story": {
-      "type": "bz-brand-story",
+    "marquee": {
+      "type": "scrolling-banner",
+      "blocks": {
+        "s1": { "type": "text", "settings": { "text": "Onice nero", "link": "/search?type=product&q=onice", "text_color": "primary" } },
+        "s2": { "type": "text", "settings": { "text": "Ametista", "link": "/search?type=product&q=ametista", "text_color": "primary" } },
+        "s3": { "type": "text", "settings": { "text": "Quarzo rosa", "link": "/search?type=product&q=quarzo+rosa", "text_color": "primary" } },
+        "s4": { "type": "text", "settings": { "text": "Occhio di tigre", "link": "/search?type=product&q=occhio+di+tigre", "text_color": "primary" } },
+        "s5": { "type": "text", "settings": { "text": "Labradorite", "link": "/search?type=product&q=labradorite", "text_color": "primary" } },
+        "s6": { "type": "text", "settings": { "text": "Ambra baltica", "link": "/collections/ambra-baltica", "text_color": "primary" } },
+        "s7": { "type": "text", "settings": { "text": "Selenite", "link": "/search?type=product&q=selenite", "text_color": "primary" } },
+        "s8": { "type": "text", "settings": { "text": "Ematite", "link": "/search?type=product&q=ematite", "text_color": "primary" } }
+      },
+      "block_order": ["s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"],
       "settings": {
-        "color_scheme": "scheme-4",
-        "eyebrow": "La nostra storia",
-        "quote": "Non vendiamo prodotti.\nCuriamo rituali per chi cerca la propria verità.",
-        "body": "<p>BenesserEZen nasce da una trasformazione personale e dal desiderio di condividere il potere dei rituali quotidiani. Ogni cristallo, incenso e oggetto è scelto a mano, con cura, perché diventi parte del tuo percorso.</p>",
-        "cta_text": "La nostra storia →",
-        "cta_link": "/pages/about",
-        "tag": "Est. 2023 · Cento, Italia"
+        "speed": 40,
+        "pause_hover": true,
+        "direction": "left",
+        "bg_light": "#26242A",
+        "bg_dark": "#26242A",
+        "color_text_light": "#C9A862",
+        "color_text_dark": "#C9A862",
+        "show_border": false
       }
     },
-    "bz_quiz_cta": {
-      "type": "bz-quiz-cta",
+    "stones": {
+      "type": "stone-index",
+      "blocks": {
+        "st1": { "type": "stone", "settings": { "name": "Onice nero", "url": "/search?type=product&q=onice", "color": "#1a1a1a", "look": "Nero lucido, compatto.", "tradition": "Nella tradizione si associa alla fermezza." } },
+        "st2": { "type": "stone", "settings": { "name": "Ametista", "url": "/search?type=product&q=ametista", "color": "#6b4c8a", "look": "Viola, trasparente, a fasce.", "tradition": "Nella tradizione si associa alla chiarezza." } },
+        "st3": { "type": "stone", "settings": { "name": "Quarzo rosa", "url": "/search?type=product&q=quarzo+rosa", "color": "#e7c1c8", "look": "Rosa pallido, liscio.", "tradition": "Nella tradizione si associa all'affetto." } },
+        "st4": { "type": "stone", "settings": { "name": "Occhio di tigre", "url": "/search?type=product&q=occhio+di+tigre", "color": "#b8860b", "look": "Striato, oro e bruno.", "tradition": "Nella tradizione si associa allo sguardo fermo." } },
+        "st5": { "type": "stone", "settings": { "name": "Labradorite", "url": "/search?type=product&q=labradorite", "color": "#6f8f9a", "look": "Grigia, con lampi blu.", "tradition": "Nella tradizione si associa al cambiamento." } },
+        "st6": { "type": "stone", "settings": { "name": "Ambra baltica", "url": "/collections/ambra-baltica", "color": "#c47b2b", "look": "Calda, traslucida.", "tradition": "Nella tradizione si associa al calore." } },
+        "st7": { "type": "stone", "settings": { "name": "Selenite", "url": "/search?type=product&q=selenite", "color": "#f3efe6", "look": "Bianca, traslucida, a fibre.", "tradition": "Nella tradizione si usa per fare spazio." } },
+        "st8": { "type": "stone", "settings": { "name": "Ematite", "url": "/search?type=product&q=ematite", "color": "#4a4e52", "look": "Grigio metallo, pesante in mano.", "tradition": "Nella tradizione si associa al radicamento." } },
+        "in1": { "type": "intention", "settings": { "name": "Protezione", "url": "/search?type=product&q=protezione", "text": "Nella pratica spirituale, pietre tenute come scudo." } },
+        "in2": { "type": "intention", "settings": { "name": "Amore", "url": "/search?type=product&q=amore", "text": "Nella tradizione, pietre legate ai legami." } },
+        "in3": { "type": "intention", "settings": { "name": "Calma", "url": "/search?type=product&q=calma", "text": "Nella tradizione, pietre associate alla quiete." } },
+        "in4": { "type": "intention", "settings": { "name": "Abbondanza", "url": "/search?type=product&q=abbondanza", "text": "Nella tradizione, pietre associate a una prosperità simbolica." } },
+        "in5": { "type": "intention", "settings": { "name": "Radicamento", "url": "/search?type=product&q=radicamento", "text": "Nella tradizione, pietre per stare presenti." } }
+      },
+      "block_order": ["st1", "st2", "st3", "st4", "st5", "st6", "st7", "st8", "in1", "in2", "in3", "in4", "in5"],
       "settings": {
-        "color_scheme": "scheme-4",
-        "badge": "Quiz dell’anima",
-        "heading": "Quale chakra ha bisogno di te oggi?",
-        "subtext": "5 domande. Un rituale su misura. Il tuo bundle personalizzato con il 15% di sconto.",
-        "cta_text": "Inizia il quiz →",
-        "quiz_link": "/pages/quiz"
+        "chapter": "III",
+        "heading": "Ogni pietra ha un carattere",
+        "text": "Scegli per nome, o per intenzione."
       }
     },
-    "bz_newsletter": {
-      "type": "bz-newsletter",
+    "guide": {
+      "type": "stone-guide",
       "settings": {
-        "color_scheme": "scheme-4",
-        "eyebrow": "Il Giornale Zen",
-        "heading": "Iscriviti per ricevere i nostri rituali",
-        "subtext": "Guide ai cristalli, rituali lunari, meditazioni guidate. Niente spam — solo bellezza.",
-        "placeholder": "la-tua-anima@dominio.it",
-        "btn_text": "Iscriviti",
-        "fine_print": "Niente spam. Solo bellezza."
+        "heading": "Tre domande, un minuto.",
+        "destination": "/search?type=product"
+      }
+    },
+    "mala": {
+      "type": "image-with-text",
+      "blocks": {
+        "h": {
+          "type": "heading",
+          "settings": {
+            "heading": "Centootto grani",
+            "heading_tag": "h2",
+            "text": "<p>Il mala serve a contare un mantra: 108 grani, un nodo, una nappa. Si porta lungo al collo o avvolto al polso, anche fuori dalla pratica.</p>"
+          }
+        },
+        "b": {
+          "type": "button",
+          "settings": {
+            "button_label": "Vedi i mala",
+            "button_link": "/collections/mala-tibetani",
+            "show_button_style": "primary"
+          }
+        }
+      },
+      "block_order": ["h", "b"],
+      "settings": {
+        "chapter": "IV",
+        "image_alignment": "left",
+        "desktop_height": "550px",
+        "mobile_height": "400px",
+        "content_layout": "overlap",
+        "background_color_light": "#1C1B1F",
+        "background_color_dark": "#1C1B1F"
+      }
+    },
+    "wrist": {
+      "type": "shop-the-look",
+      "settings": {
+        "chapter": "V",
+        "heading": "Il polso di questa settimana",
+        "text": "Tre bracciali. Metallo caldo con pietra scura.",
+        "heading_tag": "h2",
+        "mobile_height": "320px",
+        "desktop_height": "550px"
+      }
+    },
+    "sets": {
+      "type": "notturno-sets",
+      "blocks": {
+        "a": { "type": "set", "settings": { "title": "Set onice", "contents": "Bracciale, burattata e incenso al sandalo.", "url": "/search?type=product&q=onice" } },
+        "b": { "type": "set", "settings": { "title": "Set ametista", "contents": "Un mala o un bracciale, e una burattata.", "url": "/search?type=product&q=ametista" } },
+        "c": { "type": "set", "settings": { "title": "Set ambra", "contents": "I pezzi in ambra baltica.", "url": "/collections/ambra-baltica" } }
+      },
+      "block_order": ["a", "b", "c"],
+      "settings": { "chapter": "VI" }
+    },
+    "gifts": {
+      "type": "notturno-gifts",
+      "blocks": {
+        "g1": { "type": "band", "settings": { "title": "Sotto 20 €", "note": "Pietre burattate.", "url": "/collections/pietre-burattate" } },
+        "g2": { "type": "band", "settings": { "title": "Da 20 a 39 €", "note": "Bijoux con pietre.", "url": "/collections/gioielli-con-pietre" } },
+        "g3": { "type": "band", "settings": { "title": "Da 40 a 60 €", "note": "Mala.", "url": "/collections/mala-tibetani" } },
+        "g4": { "type": "band", "settings": { "title": "Pezzi speciali", "note": "Incensi.", "url": "/collections/incensi-e-brucia-incensi-1" } }
+      },
+      "block_order": ["g1", "g2", "g3", "g4"],
+      "settings": { "chapter": "VII" }
+    },
+    "news": {
+      "type": "featured-collection",
+      "blocks": {
+        "col": {
+          "type": "collection",
+          "settings": {
+            "collection": "gioielli-con-pietre",
+            "show_quickview": true,
+            "show_rating": true,
+            "show_vendor": false
+          }
+        }
+      },
+      "block_order": ["col"],
+      "settings": {
+        "chapter": "VIII",
+        "title": "Appena arrivati",
+        "heading_tag": "h2",
+        "text": "<p>Gli ultimi pezzi aggiunti al catalogo.</p>",
+        "show_view_all": true,
+        "columns_desktop": 4,
+        "rows_desktop": 2,
+        "columns_mobile": "2",
+        "auto_play": false
+      }
+    },
+    "shop": {
+      "type": "image-with-text",
+      "blocks": {
+        "h": {
+          "type": "heading",
+          "settings": {
+            "heading": "Anche dal vivo",
+            "heading_tag": "h2",
+            "text": "<p>Siamo un negozio a Cento, in provincia di Ferrara. Quello che vedi sul sito è anche in vetrina. Puoi ordinarlo e ritirarlo gratis, di solito pronto in 4 ore, oppure passare a vederlo prima.</p><p>Via M. Provenzali 1, 44042 Cento (FE). Lunedì, martedì, mercoledì, venerdì e sabato: 9:30-12:30 e 16:00-19:30. Giovedì: 9:00-13:00.</p>"
+          }
+        },
+        "b": {
+          "type": "button",
+          "settings": {
+            "button_label": "Come funziona il ritiro",
+            "button_link": "/pages/il-negozio",
+            "show_button_style": "secondary"
+          }
+        }
+      },
+      "block_order": ["h", "b"],
+      "settings": {
+        "chapter": "IX",
+        "image_alignment": "left",
+        "background_color_light": "#141316",
+        "background_color_dark": "#141316",
+        "desktop_height": "550px",
+        "mobile_height": "400px"
+      }
+    },
+    "reviews": {
+      "type": "bz-reviews",
+      "settings": {
+        "chapter": "X",
+        "heading": "Chi lo porta già"
+      }
+    },
+    "journal": {
+      "type": "featured-blog",
+      "settings": {
+        "chapter": "XI",
+        "heading": "Il quaderno",
+        "heading_tag": "h2",
+        "blog": "news",
+        "post_limit": 3,
+        "columns_desktop": 3,
+        "show_view_all": true,
+        "show_author": false,
+        "auto_play": false
+      }
+    },
+    "letter": {
+      "type": "newsletter",
+      "blocks": {
+        "h": { "type": "heading", "settings": { "heading": "Una lettera al mese, sui pezzi e sui rituali.", "heading_tag": "h2" } },
+        "p": { "type": "paragraph", "settings": { "text": "<p>Novità e set, prima che escano sul sito.</p>" } },
+        "f": { "type": "email_form", "settings": { "button_label": "Iscriviti" } }
+      },
+      "block_order": ["h", "p", "f"],
+      "settings": {
+        "background_color_light": "#26242A",
+        "background_color_dark": "#26242A"
       }
     }
   },
-  "order": [
-    "bz_hero_main",
-    "bz_chakra_portal",
-    "bz_collections",
-    "bz_brand_story",
-    "bz_quiz_cta",
-    "bz_newsletter"
-  ]
+  "order": ["hero", "entries", "chosen", "marquee", "stones", "guide", "mala", "wrist", "sets", "gifts", "news", "shop", "reviews", "journal", "letter"]
 }

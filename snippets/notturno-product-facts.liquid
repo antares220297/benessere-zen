@@ -1,0 +1,69 @@
+{% doc %}
+  Accordions that render only when the matching metafield or metaobject has a value,
+  plus the shipping and withdrawal facts.
+
+  @param {product} product - Current product
+
+  @example
+  {% render 'notturno-product-facts', product: product %}
+{% enddoc %}
+{%- liquid
+  assign misure = product.metafields.custom.misure.value | default: product.metafields.custom.misure
+  assign materiali = product.metafields.custom.materiali.value | default: product.metafields.custom.materiali
+  assign peso = product.metafields.custom.peso_g.value | default: product.metafields.custom.peso_g
+  assign chiusura = product.metafields.custom.chiusura.value | default: product.metafields.custom.chiusura
+  assign come = product.metafields.custom.come_si_porta.value | default: product.metafields.custom.come_si_porta
+  assign pietra = product.metafields.custom.pietra.value
+  assign likes = product.metafields.custom.perche_ti_piacera.value
+-%}
+{%- if likes != blank -%}
+  <ul>
+    {%- for line in likes limit: 3 -%}
+      <li>{{ line | escape }}</li>
+    {%- endfor -%}
+  </ul>
+{%- endif -%}
+{%- if misure != blank or materiali != blank or peso != blank or chiusura != blank -%}
+  <details class="nt-acc">
+    <summary>{{ 'notturno.acc_measures' | t }}</summary>
+    <div class="nt-acc__body">
+      <table>
+        <tbody>
+          {%- if materiali != blank -%}<tr><th scope="row">{{ 'notturno.material' | t }}</th><td>{{ materiali | escape }}</td></tr>{%- endif -%}
+          {%- if misure != blank -%}<tr><th scope="row">{{ 'notturno.measures' | t }}</th><td>{{ misure | escape }}</td></tr>{%- endif -%}
+          {%- if peso != blank -%}<tr><th scope="row">{{ 'notturno.weight' | t }}</th><td>{{ peso }} g</td></tr>{%- endif -%}
+          {%- if chiusura != blank -%}<tr><th scope="row">{{ 'notturno.clasp' | t }}</th><td>{{ chiusura | escape }}</td></tr>{%- endif -%}
+        </tbody>
+      </table>
+    </div>
+  </details>
+{%- endif -%}
+{%- if pietra != blank -%}
+  <details class="nt-acc">
+    <summary>{{ 'notturno.acc_tradition' | t }}</summary>
+    <div class="nt-acc__body">
+      {%- if pietra.tradizione.value != blank -%}
+        <div class="rte">{{ pietra.tradizione | metafield_tag }}</div>
+      {%- elsif pietra.tradizione != blank -%}
+        <p>{{ pietra.tradizione }}</p>
+      {%- elsif pietra.nome != blank -%}
+        <p>{{ pietra.nome | escape }}</p>
+      {%- endif -%}
+      <p>{{ 'notturno.stone_natural' | t }}</p>
+      <p class="nt-disclaimer">{{ 'notturno.disclaimer' | t }}</p>
+    </div>
+  </details>
+{%- endif -%}
+{%- if come != blank -%}
+  <details class="nt-acc">
+    <summary>{{ 'notturno.acc_wear' | t }}</summary>
+    <div class="nt-acc__body rte">{{ come | newline_to_br }}</div>
+  </details>
+{%- endif -%}
+<details class="nt-acc">
+  <summary>{{ 'notturno.acc_shipping' | t }}</summary>
+  <div class="nt-acc__body">
+    <p>{{ 'notturno.withdrawal' | t }}</p>
+    <p><a class="nt-text-link" href="{{ pages['resi'].url }}">{{ 'notturno.returns_link' | t }}</a></p>
+  </div>
+</details>

@@ -1,0 +1,82 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.footer.name",
+  "type": "footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "shop": {
+          "type": "text",
+          "settings": {
+            "open_by_default": true,
+            "heading_text": "Negozio",
+            "subtext": "<p><a href=\"/collections/gioielli-con-pietre\">Bijoux</a></p><p><a href=\"/collections/pietre-burattate\">Pietre</a></p><p><a href=\"/collections/mala-tibetani\">Mala</a></p><p><a href=\"/collections/incensi-e-brucia-incensi-1\">Incensi</a></p><p><a href=\"/collections/all?sort_by=created-descending\">Nuovi</a></p>",
+            "show_social_icons": false
+          }
+        },
+        "help": {
+          "type": "text",
+          "settings": {
+            "open_by_default": true,
+            "heading_text": "Aiuto",
+            "subtext": "<p><a href=\"/pages/spedizioni\">Spedizioni</a></p><p><a href=\"/pages/resi\">Resi e recesso</a></p><p><a href=\"/pages/faq\">FAQ</a></p><p><a href=\"/pages/guida-alle-misure\">Guida alle misure</a></p>",
+            "show_social_icons": false
+          }
+        },
+        "bottega": {
+          "type": "text",
+          "settings": {
+            "open_by_default": true,
+            "heading_text": "La bottega",
+            "subtext": "<p><a href=\"/pages/chi-siamo\">Chi siamo</a></p><p><a href=\"/pages/il-negozio\">Il negozio</a></p><p><a href=\"/pages/il-cerchio\">Il Cerchio</a></p>",
+            "show_social_icons": false
+          }
+        },
+        "contact": {
+          "type": "text",
+          "settings": {
+            "open_by_default": true,
+            "heading_text": "Contatti",
+            "subtext": "<p>Via M. Provenzali 1<br>44042 Cento (FE)</p><p><a href=\"mailto:info@benesserezen.shop\">info@benesserezen.shop</a></p>",
+            "show_social_icons": true
+          }
+        }
+      },
+      "block_order": [
+        "shop",
+        "help",
+        "bottega",
+        "contact"
+      ],
+      "settings": {
+        "columns_desktop": 4,
+        "show_language_selector": false,
+        "show_currency_selector": false,
+        "show_social_icons": false,
+        "payment_enable": true,
+        "custom_payment": "",
+        "show_copyright": true,
+        "add_copyright_text": "Benessere Zen, Via M. Provenzali 1, 44042 Cento (FE)",
+        "additional_layout": "vertical",
+        "show_powered": false,
+        "enable_follow_on_shop": false,
+        "top_padding": 0,
+        "bottom_padding": 40,
+        "top_padding_mobile": 0,
+        "bottom_padding_mobile": 28
+      }
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}
