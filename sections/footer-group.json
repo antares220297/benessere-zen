@@ -70,7 +70,8 @@
         "show_section_divider_mobile": false,
         "padding_top_mobile": 40,
         "padding_bottom_mobile": 20
-      }
+      },
+      "disabled": true
     },
     "quick_links": {
       "type": "quick-links",

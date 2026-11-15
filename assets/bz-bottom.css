@@ -13,7 +13,7 @@
 
 .bz-bottom h2,
 .bz-foot h4 {
-  font-family: Baskervville, var(--serif), Georgia, serif;
+  font-family: Baskervville, Georgia, serif;
   font-weight: 400;
 }
 
@@ -233,7 +233,7 @@
 
 .bz-news {
   background: #141312;
-  padding: 8px 24px 48px;
+  padding: 4px 24px 12px;
 }
 
 .bz-news__card {
@@ -302,10 +302,29 @@
   font-size: 12.5px;
 }
 
+html:has(.bz-foot),
+body:has(.bz-foot) {
+  background: #0d0c0b;
+}
+
+.shopify-section:has(.bz-foot) {
+  background: #0d0c0b;
+  margin: 0;
+  padding: 0;
+}
+
 .bz-foot {
   background: #0d0c0b;
   color: #cdc4b4;
-  font-family: Figtree, var(--sans), system-ui, sans-serif;
+  font-family: Figtree, system-ui, sans-serif;
+}
+
+.bz-foot p,
+.bz-foot a,
+.bz-foot li,
+.bz-foot__bar,
+.bz-foot__pay span {
+  font-family: Figtree, system-ui, sans-serif;
 }
 
 .bz-foot__grid {
@@ -346,13 +365,18 @@
   max-width: 32ch;
   margin: 14px 0 0;
   color: #958d7f;
+  font-family: Figtree, system-ui, sans-serif;
   font-size: 14px;
+  line-height: 1.55;
 }
 
 .bz-foot h4 {
   margin: 0 0 14px;
   color: #e3cb95;
+  font-family: Baskervville, Georgia, serif;
+  font-weight: 400;
   font-size: 19px;
+  line-height: 1.2;
 }
 
 .bz-foot ul {
@@ -360,8 +384,11 @@
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 9px;
+  gap: 0;
+  font-family: Figtree, system-ui, sans-serif;
   font-size: 14px;
+  line-height: 22px;
+  color: #cdc4b4;
 }
 
 .bz-foot a {
@@ -391,7 +418,9 @@
   padding: 18px 24px;
   border-top: 1px solid rgba(238, 231, 219, 0.11);
   color: #958d7f;
+  font-family: Figtree, system-ui, sans-serif;
   font-size: 12.5px;
+  line-height: 1.4;
 }
 
 @media (max-width: 860px) {
@@ -453,8 +482,19 @@
   }
 
   .bz-foot__grid > div:first-child,
+  .bz-foot__grid > div:nth-child(4),
   .bz-foot__grid > div:last-child {
     grid-column: span 2;
+  }
+
+  .bz-foot__pay {
+    flex-wrap: nowrap;
+  }
+
+  .bz-foot__bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
   }
 
   .bz-foot__word {

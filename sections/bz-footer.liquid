@@ -2,7 +2,7 @@
 {{ 'bz-bottom.css' | asset_url | stylesheet_tag }}
 
 {% render 'bz-wave', from: '#141312', to: '#0d0c0b' %}
-<footer class="bz-foot">
+<footer class="bz bz-foot">
   <div class="bz-foot__grid">
     <div>
       <a class="bz-foot__brand" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">

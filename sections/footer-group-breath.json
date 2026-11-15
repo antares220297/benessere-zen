@@ -61,7 +61,8 @@
         "padding_bottom": 40,
         "padding_top_mobile": 40,
         "padding_bottom_mobile": 20
-      }
+      },
+      "disabled": true
     },
     "footer": {
       "type": "footer",
