@@ -97,6 +97,11 @@
   top: 18px;
   display: flex;
   gap: 8px;
+  z-index: 2;
+}
+
+.bz-stage__badges .bz-badge {
+  position: static;
 }
 
 .bz-stage__note {
@@ -219,6 +224,13 @@
   color: #e3cb95;
 }
 
+.bz-facts i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
 .bz-shipbox {
   margin-bottom: 16px;
   padding: 14px 16px;
@@ -226,6 +238,19 @@
   background: #201e1b;
   border: 1px solid rgba(238, 231, 219, 0.11);
   font-size: 13.5px;
+}
+
+.bz-shipbox b {
+  color: #e3cb95;
+  font-weight: 600;
+}
+
+.bz-shipbox__labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+  color: #958d7f;
+  font-size: 11.5px;
 }
 
 .bz-variants {
@@ -303,6 +328,18 @@
   text-decoration: none;
 }
 
+.bz-pickup svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.5;
+}
+
+.bz-pickup strong {
+  font-weight: 600;
+}
+
 .bz-pair {
   display: grid;
   grid-template-columns: 52px 1fr auto;
@@ -361,10 +398,13 @@
   border-color: #c9a96e;
 }
 
+.bz-acc .bz-acc__body,
 .bz-acc p,
-.bz-acc td {
+.bz-acc td,
+.bz-acc li {
   color: #cdc4b4;
   font-size: 14.5px;
+  font-family: Figtree, system-ui, sans-serif;
 }
 
 .bz-acc table {
@@ -404,6 +444,23 @@
 
 .bz-dbento .is-tall {
   grid-row: span 2;
+  padding: 0;
+  justify-content: flex-end;
+}
+
+.bz-dbento .is-tall img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 70%;
+  object-fit: cover;
+  -webkit-mask-image: linear-gradient(0deg, transparent, #000 55%);
+  mask-image: linear-gradient(0deg, transparent, #000 55%);
+}
+
+.bz-dbento .is-tall div {
+  position: relative;
+  padding: 22px;
 }
 
 .bz-dbento .is-wide {
@@ -454,6 +511,7 @@
 
 .bz-sticky {
   display: none;
+  font-family: Figtree, system-ui, sans-serif;
 }
 
 @media (max-width: 860px) {
@@ -511,7 +569,7 @@
     display: none;
   }
 
-  .bz-sticky {
+  .bz-sticky.is-on {
     position: fixed;
     left: 10px;
     right: 10px;
@@ -535,7 +593,9 @@
 
   .bz-sticky span {
     flex: 1;
+    font-family: Figtree, system-ui, sans-serif;
     font-size: 13px;
+    color: #eee7db;
   }
 
   .bz-sticky b {

@@ -1,6 +1,7 @@
 {{ 'bz-tokens.css' | asset_url | stylesheet_tag }}
 {{ 'bz-home.css' | asset_url | stylesheet_tag }}
 {{ 'bz-product.css' | asset_url | stylesheet_tag }}
+{{ 'bz-cart.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
   assign current = product.selected_or_first_available_variant
@@ -50,24 +51,29 @@
           <span>1 / {{ product.images.size | at_least: 1 }}</span>
         </div>
       </div>
-      {%- if product.images.size > 1 -%}
-        <div class="bz-minis">
-          {%- for image in product.images offset: 1 limit: 2 -%}
-            <div class="bz-mini">
-              {{ image | image_url: width: 800 | image_tag: alt: image.alt, width: 400, height: 320, loading: 'lazy' }}
-              {%- assign cap_i = 0 -%}
-              {%- for block in section.blocks -%}
-                {%- if block.type == 'caption' -%}
-                  {%- assign cap_i = cap_i | plus: 1 -%}
-                  {%- if cap_i == forloop.parentloop.index -%}
-                    <span>{{ block.settings.text | escape }}</span>
-                  {%- endif -%}
-                {%- endif -%}
-              {%- endfor -%}
-            </div>
+      <div class="bz-minis">
+        {%- for slot in (1..2) -%}
+          {%- assign mini = product.images[slot] | default: product.featured_image -%}
+          {%- assign mini_label = mini.alt -%}
+          {%- assign cap_i = 0 -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'caption' -%}
+              {%- assign cap_i = cap_i | plus: 1 -%}
+              {%- if cap_i == slot and block.settings.text != blank -%}
+                {%- assign mini_label = block.settings.text -%}
+              {%- endif -%}
+            {%- endif -%}
           {%- endfor -%}
-        </div>
-      {%- endif -%}
+          <div class="bz-mini">
+            {%- if mini != blank -%}
+              {{ mini | image_url: width: 800 | image_tag: alt: mini_label, width: 400, height: 320, loading: 'lazy' }}
+            {%- endif -%}
+            {%- if mini_label != blank -%}
+              <span>{{ mini_label | escape }}</span>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
     </div>
 
     <div class="bz-buy">
@@ -90,11 +96,29 @@
         <div class="bz-facts">
           {%- for block in section.blocks -%}
             {%- if block.type == 'fact' -%}
-              <span {{ block.shopify_attributes }}>{%- if block.settings.value != blank -%}<b>{{ block.settings.value | escape }}</b> {% endif -%}{{ block.settings.label | escape }}</span>
+              <span {{ block.shopify_attributes }}>{%- if block.settings.swatch != blank -%}<i style="background: {{ block.settings.swatch }}"></i>{%- endif -%}{%- if block.settings.value != blank -%}<b>{{ block.settings.value | escape }}</b> {% endif -%}{{ block.settings.label | escape }}</span>
             {%- endif -%}
           {%- endfor -%}
         </div>
       {%- endif -%}
+
+      {%- assign threshold = section.settings.free_shipping | times: 100 -%}
+      <div class="bz-shipbox">
+        {%- if current.price >= threshold -%}
+          <p>Con questo pezzo la <b>spedizione è gratuita</b></p>
+          {%- assign ship_width = 100 -%}
+        {%- else -%}
+          {%- assign short = threshold | minus: current.price -%}
+          {%- assign short_cents = short | modulo: 100 -%}
+          <p>Ti mancano <b>{{ short | minus: short_cents | divided_by: 100 }},{{ short_cents | prepend: '00' | slice: -2, 2 }} €</b> per la spedizione gratuita</p>
+          {%- assign ship_width = current.price | times: 100 | divided_by: threshold -%}
+        {%- endif -%}
+        <div class="bz-ship__track" aria-hidden="true">
+          <i style="width: {{ ship_width }}%"></i>
+          <span class="bz-ship__mark"><svg viewBox="0 0 24 24"><path d="M2 7h12v9H2zM14 10h4l3 3v3h-7"/><circle cx="6" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg></span>
+        </div>
+        <div class="bz-shipbox__labels"><span>0 €</span><span>Gratis da {{ section.settings.free_shipping }} €</span></div>
+      </div>
 
       {%- form 'product', product -%}
         {%- if product.has_only_default_variant -%}
@@ -109,7 +133,7 @@
             {%- endfor -%}
           </div>
         {%- endif -%}
-        <div class="bz-atc">
+        <div class="bz-atc" data-bz-atc>
           <div class="bz-qty">
             <button type="button" data-bz-qty="-1" aria-label="Meno">−</button>
             <input type="number" name="quantity" value="1" min="1" aria-label="Quantità" style="width:28px;border:0;background:transparent;color:inherit;text-align:center">
@@ -125,9 +149,10 @@
         </div>
       {%- endform -%}
 
-      {%- if section.settings.pickup_label != blank -%}
-        <a class="bz-pickup" href="{{ section.settings.pickup_link }}">{{ section.settings.pickup_label | escape }}</a>
-      {%- endif -%}
+      <a class="bz-pickup" href="{{ section.settings.pickup_link }}">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10l2-5h12l2 5M5 10h14v9H5zM9 19v-5h6v5"/></svg>
+        Ritira <strong>gratis</strong> in negozio · di solito in <strong>{{ section.settings.pickup_hours | escape }}</strong>
+      </a>
 
       {%- if section.settings.pair != blank -%}
         {%- assign pair = section.settings.pair -%}
@@ -148,7 +173,22 @@
           {%- if block.type == 'detail' -%}
             <details {% if block.settings.open %}open{% endif %} {{ block.shopify_attributes }}>
               <summary>{{ block.settings.title | escape }}<i aria-hidden="true"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></i></summary>
-              <div>{{ block.settings.text }}</div>
+              <div class="bz-acc__body">
+                {%- if block.settings.title == 'Dettagli' -%}
+                  <table>
+                    {%- for spec in section.blocks -%}
+                      {%- if spec.type == 'spec' -%}
+                        {%- assign spec_value = product.metafields.custom[spec.settings.metafield].value | default: spec.settings.fallback -%}
+                        {%- if spec_value != blank -%}
+                          <tr><td>{{ spec.settings.label | escape }}</td><td>{{ spec_value | escape }}</td></tr>
+                        {%- endif -%}
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </table>
+                {%- else -%}
+                  {{ block.settings.text }}
+                {%- endif -%}
+              </div>
             </details>
           {%- endif -%}
         {%- endfor -%}
@@ -158,8 +198,13 @@
 
   <div class="bz-dbento">
     <article class="is-tall">
-      <h3>{{ section.settings.bento_title | escape }} <em>{{ section.settings.bento_accent | escape }}</em></h3>
-      <p>{{ section.settings.bento_text | escape }}</p>
+      {%- if product.featured_image -%}
+        {{ product.featured_image | image_url: width: 900 | image_tag: alt: '', loading: 'lazy', width: 500, height: 400 }}
+      {%- endif -%}
+      <div>
+        <h3>{{ section.settings.bento_title | escape }} <em>{{ section.settings.bento_accent | escape }}</em></h3>
+        <p>{{ section.settings.bento_text | escape }}</p>
+      </div>
     </article>
     <article>
       <p class="bz-figure">{{ section.settings.stat_1 | escape }}</p>
@@ -177,23 +222,13 @@
       <h3>{{ section.settings.wide_title | escape }} <em>{{ section.settings.wide_accent | escape }}</em></h3>
       <p>{{ section.settings.wide_text | escape }}</p>
     </article>
+    <article>
+      <h3>{{ section.settings.visit_title | escape }}</h3>
+      <p>{{ section.settings.visit_text | escape }}</p>
+      <a class="bz-picked__all" href="{{ section.settings.pickup_link }}">{{ section.settings.visit_link | escape }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </article>
   </div>
-
-  {%- if section.settings.related != blank -%}
-    <div class="bz-related">
-      <div class="bz-related__head">
-        <h2>{{ section.settings.related_heading | escape }} <em>{{ section.settings.related_accent | escape }}</em></h2>
-        <a class="bz-picked__all" href="{{ section.settings.related.url }}">{{ section.settings.related_link | escape }}</a>
-      </div>
-      <div class="bz-grid">
-        {%- for item in section.settings.related.products limit: 5 -%}
-          {%- unless item.id == product.id -%}
-            {% render 'bz-card', product: item %}
-          {%- endunless -%}
-        {%- endfor -%}
-      </div>
-    </div>
-  {%- endif -%}
+  {% render 'bz-wave', from: '#141312', to: '#2a141b' %}
 
   <form class="bz-sticky" action="{{ routes.cart_add_url }}" method="post">
     <input type="hidden" name="id" value="{{ current.id }}">
@@ -214,8 +249,9 @@
     { "type": "text", "id": "store_badge", "label": "Etichetta foto", "default": "Anche in negozio" },
     { "type": "text", "id": "photo_note", "label": "Nota foto", "default": "Pietra naturale: ogni pezzo è un po' diverso" },
     { "type": "textarea", "id": "opener", "label": "Testo di apertura" },
-    { "type": "text", "id": "shipping_note", "label": "Nota spedizione", "default": "Spedizione gratuita da 50 €" },
-    { "type": "text", "id": "pickup_label", "label": "Ritiro", "default": "Ritira gratis in negozio, di solito in 4 ore" },
+    { "type": "text", "id": "shipping_note", "label": "Nota spedizione", "default": "Spedizione gratuita" },
+    { "type": "range", "id": "free_shipping", "min": 0, "max": 200, "step": 1, "unit": "€", "label": "Soglia spedizione gratuita", "default": 50 },
+    { "type": "text", "id": "pickup_hours", "label": "Tempo di ritiro", "default": "4 ore" },
     { "type": "url", "id": "pickup_link", "label": "Link ritiro" },
     { "type": "product", "id": "pair", "label": "Si abbina a" },
     { "type": "text", "id": "bento_title", "label": "Titolo grande", "default": "La nappa" },
@@ -233,12 +269,21 @@
     { "type": "collection", "id": "related", "label": "Collezione correlata" },
     { "type": "text", "id": "related_heading", "label": "Titolo correlati", "default": "Altri mala," },
     { "type": "text", "id": "related_accent", "label": "Corsivo correlati", "default": "stessi 108 grani" },
-    { "type": "text", "id": "related_link", "label": "Link correlati", "default": "Tutti i mala" }
+    { "type": "text", "id": "related_link", "label": "Link correlati", "default": "Tutti i mala" },
+    { "type": "text", "id": "visit_title", "label": "Titolo visita", "default": "Vuoi vederlo prima?" },
+    { "type": "text", "id": "visit_text", "label": "Testo visita", "default": "È anche in negozio, in via Provenzali 1." },
+    { "type": "text", "id": "visit_link", "label": "Link visita", "default": "Orari" }
   ],
   "blocks": [
     { "type": "fact", "name": "Dato", "settings": [
       { "type": "text", "id": "value", "label": "Valore" },
-      { "type": "text", "id": "label", "label": "Etichetta" }
+      { "type": "text", "id": "label", "label": "Etichetta" },
+      { "type": "color", "id": "swatch", "label": "Pastiglia colore" }
+    ]},
+    { "type": "spec", "name": "Specifica", "settings": [
+      { "type": "text", "id": "label", "label": "Etichetta" },
+      { "type": "text", "id": "metafield", "label": "Chiave metafield custom" },
+      { "type": "text", "id": "fallback", "label": "Valore se il metafield è vuoto" }
     ]},
     { "type": "detail", "name": "Dettaglio", "settings": [
       { "type": "text", "id": "title", "label": "Titolo" },

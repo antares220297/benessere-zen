@@ -754,7 +754,13 @@
         "related": "mala-tibetani",
         "related_heading": "Altri mala,",
         "related_accent": "stessi 108 grani",
-        "related_link": "Tutti i mala"
+        "related_link": "Tutti i mala",
+        "pair": "bracciale-tormalina-nera-elastico",
+        "free_shipping": 50,
+        "pickup_hours": "4 ore",
+        "visit_title": "Vuoi vederlo prima?",
+        "visit_text": "È anche in negozio, in via Provenzali 1.",
+        "visit_link": "Orari"
       },
       "blocks": {
         "fact-1": {
@@ -781,7 +787,8 @@
         "fact-4": {
           "type": "fact",
           "settings": {
-            "label": "Onice nero"
+            "label": "Onice nero",
+            "swatch": "#111111"
           }
         },
         "det-1": {
@@ -812,6 +819,58 @@
             "title": "Spedizione, ritiro e reso",
             "text": "<p>Gratuita da 50 €. Ritiro gratuito in negozio, di solito in 4 ore. Reso entro 14 giorni.</p>"
           }
+        },
+        "cap-1": {
+          "type": "caption",
+          "settings": {
+            "text": "Perle da 8 mm"
+          }
+        },
+        "cap-2": {
+          "type": "caption",
+          "settings": {
+            "text": "Nappa annodata"
+          }
+        },
+        "spec-0": {
+          "type": "spec",
+          "settings": {
+            "label": "Pietra",
+            "metafield": "pietra",
+            "fallback": "Onice nero"
+          }
+        },
+        "spec-1": {
+          "type": "spec",
+          "settings": {
+            "label": "Grani",
+            "metafield": "grani",
+            "fallback": "108"
+          }
+        },
+        "spec-2": {
+          "type": "spec",
+          "settings": {
+            "label": "Diametro perla",
+            "metafield": "diametro",
+            "fallback": "circa 8 mm"
+          }
+        },
+        "spec-3": {
+          "type": "spec",
+          "settings": {
+            "label": "Peso",
+            "metafield": "peso",
+            "fallback": "67 g"
+          }
+        },
+        "spec-4": {
+          "type": "spec",
+          "settings": {
+            "label": "Finitura",
+            "metafield": "finitura",
+            "fallback": "Nappa nera"
+          }
         }
       },
       "block_order": [
@@ -819,15 +878,74 @@
         "fact-2",
         "fact-3",
         "fact-4",
+        "cap-1",
+        "cap-2",
+        "spec-0",
+        "spec-1",
+        "spec-2",
+        "spec-3",
+        "spec-4",
         "det-1",
         "det-2",
         "det-3",
         "det-4"
       ]
+    },
+    "bz_ritual": {
+      "type": "bz-ritual",
+      "blocks": {
+        "set-nero": {
+          "type": "set",
+          "settings": {
+            "label": "Tutto nero",
+            "product_1": "mala-108-perle-onice-nero-qualita-aa",
+            "product_2": "bracciale-tormalina-nera-elastico",
+            "product_3": "ciondolo-larme-obsideinne-noire",
+            "caption_title": "Pietre scure,",
+            "caption_accent": "da portare a strati",
+            "caption": "Onice, tormalina e ossidiana: il mala lungo al collo, il bracciale e il ciondolo vicini."
+          }
+        },
+        "set-ametista": {
+          "type": "set",
+          "settings": {
+            "label": "Ametista",
+            "product_1": "mala-ametista-108-perle",
+            "product_2": "bracciale-ametista-naturale",
+            "product_3": "ciondolo-ametista-grezza",
+            "caption_title": "Ametista,",
+            "caption_accent": "da portare a strati",
+            "caption": "Mala, bracciale e ciondolo in ametista, da mettere insieme."
+          }
+        }
+      },
+      "block_order": [
+        "set-nero",
+        "set-ametista"
+      ],
+      "settings": {
+        "heading": "Completa",
+        "heading_accent": "il rituale",
+        "link_label": "Tutti i set",
+        "link": "/collections/gioielli-con-pietre",
+        "intro": "Tre pezzi che stanno bene insieme, al collo e al polso. Togli quello che hai già."
+      }
+    },
+    "bz_related": {
+      "type": "bz-related",
+      "settings": {
+        "heading": "Altri mala,",
+        "heading_accent": "stessi 108 grani",
+        "link_label": "Tutti i mala",
+        "collection": "mala-tibetani",
+        "limit": 5
+      }
     }
   },
   "order": [
     "bz_product",
+    "bz_ritual",
+    "bz_related",
     "main",
     "product-recommendations",
     "text_column_with_image_MUhrhK",

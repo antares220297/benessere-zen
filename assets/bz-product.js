@@ -26,6 +26,13 @@
         }).catch(function () { form.submit(); });
       });
     });
+    var bar = root.querySelector("[data-bz-atc]");
+    var sticky = root.querySelector(".bz-sticky");
+    if (bar && sticky && "IntersectionObserver" in window) {
+      new IntersectionObserver(function (entries) {
+        sticky.classList.toggle("is-on", !entries[0].isIntersecting);
+      }, { threshold: 0.2 }).observe(bar);
+    }
     root.querySelectorAll("[data-bz-qty]").forEach(function (button) {
       button.addEventListener("click", function () {
         var input = root.querySelector("input[name='quantity']");
