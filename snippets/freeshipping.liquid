@@ -60,13 +60,21 @@
         width: {{ under_line_width }}%;
       }
     {% endstyle %}
-    <div class="mb-4">
+    <div class="bz-ship mb-4">
       {% if amount_to_freeshipping > 0 %}
+        {% assign still_short = true %}
         {% assign amount_to_freeshipping = amount_to_freeshipping | times: 100 | money %}
-        <p class="pb-1.5 border-b-2 border-[rgba(var(--colors-line-and-border))] relative after:absolute after:left-0 after:-bottom-0.5 after:h-0.5 after:z-20 message-freeshipping">{{- 'general.cart.enable_amount_freeship_html' | t: amount_to_freeshipping: amount_to_freeshipping -}}</p>
+        <p class="bz-ship__text">{{- 'general.cart.enable_amount_freeship_html' | t: amount_to_freeshipping: amount_to_freeshipping -}}</p>
       {% else %}
-        <p class="pb-1.5 border-b-2 border-[rgba(var(--color-success))]">{{ 'general.cart.freeshipping' | t }}</p>
+        {% assign still_short = false %}
+        <p class="bz-ship__text">{{ 'general.cart.freeshipping' | t }}</p>
       {% endif %}
+      <div class="bz-ship__track" aria-hidden="true">
+        <i style="width: {% if still_short %}{{ under_line_width }}{% else %}100{% endif %}%"></i>
+        <span class="bz-ship__mark">
+          <svg viewBox="0 0 24 24"><path d="M2 7h12v9H2zM14 10h4l3 3v3h-7"/><circle cx="6" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg>
+        </span>
+      </div>
     </div>
   {% endif %}
 {%- endif -%}

@@ -529,7 +529,7 @@
                                   {{ item.product.title | escape }}
                                 </a>
                               </div>
-                              <div class="price mt-2 mb-2">
+                              <div class="price mt-2 mb-2 bz-line-price">
                                 {%- assign item_original_price = item.variant.compare_at_price | default: item.original_price -%}
                                 {%- if item_original_price > item.final_price -%}
                                   <s class="cap mr-1 rtl:ml-1 rtl:mr-0 inline-block opacity-70">{%- if settings.currency_code_enable -%}{{ item_original_price | money_with_currency }}{%- else -%}{{ item_original_price | money }}{%- endif -%}
