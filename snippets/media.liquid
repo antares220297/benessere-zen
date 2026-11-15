@@ -17,9 +17,11 @@
   {% render 'media', lazy_load: false %}
 {% endcomment %}
 {%- liquid
-  assign loading = 'loading="lazy"' 
+  assign loading = 'loading="lazy"'
+  assign is_lcp_media = false
   if lazy_load == false and index == 1
     assign loading = 'loading="eager" fetchpriority="high" decoding="sync"'
+    assign is_lcp_media = true
   endif
   assign data_media_type = ""
   if media.preview_image.alt != "" and media.preview_image.alt contains "#"
@@ -55,7 +57,7 @@
         {% else %}
           @click.prevent="zoomOpen('{{ media.position }}', true)"
         {% endif %}
-        aria-label="Image zoom"
+        aria-label="{{ 'accessibility.zoom_image' | t }}"
         class="block w-full relative overflow-hidden{% if section.settings.image_ratio != "natural" %} h-full {{ ratio }}{% endif %}{% if rounded_corner_image %}{% unless mobile_media_full %} rounded-[10px]{% endunless %} md:rounded-[10px]{% endif %}" >
         {% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
         <img
@@ -77,8 +79,8 @@
             x-transition.duration.500ms
           {% endif %}
           height="{{ media.preview_image.height }}"
-          class="{% if zoom_effect != 'magnifier' %}animate_transition_slide__image duration-300{% endif %} w-full h-full{% if section.settings.image_ratio != "natural" %} absolute top-0 left-0{% endif %}{% unless section.settings.image_ratio == "natural" %} object-cover {% endunless %}"
-          x-intersect.once="$el.classList.add('active')"
+          class="{% if zoom_effect != 'magnifier' and is_lcp_media == false %}animate_transition_slide__image duration-300{% endif %} w-full h-full{% if section.settings.image_ratio != "natural" %} absolute top-0 left-0{% endif %}{% unless section.settings.image_ratio == "natural" %} object-cover {% endunless %}"
+          {% unless is_lcp_media %}x-intersect.once="$el.classList.add('active')"{% endunless %}
         >
         {% if zoom_effect == 'magnifier' %}
           <img

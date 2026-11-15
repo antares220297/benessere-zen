@@ -29,7 +29,7 @@
           "type": "text",
           "settings": {
             "text": "<h6>Time & date:</h6><p>Oct 16, 2023  10:00 AM - 12:00 PM</p><h6>Location:</h6><p>San Diego Padres 100 Park, San Diego, CA 92101, USA</p>",
-            "read_more_label": "Read more"
+            "read_more_label": "Leggi di più"
           }
         },
         "quantity_selector": {
@@ -41,10 +41,10 @@
           "settings": {
             "show_dynamic_checkout": true,
             "show_gift_card_recipient": true,
-            "pickup_availability": false,
+            "pickup_availability": true,
             "hide_when_pre_order": false,
-            "preorder_button_label": "Pre-order",
-            "preorder_message": "<p>This product will be available for sale in 2 weeks, but you can pre-order now to receive 10% discount!</p>",
+            "preorder_button_label": "Preordina",
+            "preorder_message": "<p>Questo articolo è in preordine. Lo prepariamo e te lo spediamo appena è pronto.</p>",
             "preorder_show_dynamic_button": false,
             "show_background": false,
             "box_type": "square",
@@ -63,13 +63,14 @@
             "button_hover_dark": "rgba(0,0,0,0)",
             "button_text_hover_dark": "rgba(0,0,0,0)",
             "secondary_button_dark": "rgba(0,0,0,0)",
-            "secondary_button_text_dark": "rgba(0,0,0,0)"
+            "secondary_button_text_dark": "rgba(0,0,0,0)",
+            "show_button_style": "primary"
           }
         },
         "sticky-atc": {
           "type": "sticky_add_to_cart",
           "settings": {
-            "desktop_display_type": "full_width",
+            "desktop_display_type": "popup",
             "show_quantity_selector": true
           }
         },
@@ -133,7 +134,7 @@
         "heading_tag": "h2",
         "heading_alignment": "center",
         "number_of_lines_shown": "medium",
-        "read_more_label": "Read more",
+        "read_more_label": "Leggi di più",
         "text_size": 100,
         "background_color_light": "rgba(0,0,0,0)",
         "heading_light": "rgba(0,0,0,0)",
@@ -156,7 +157,7 @@
       "type": "product-recommendations",
       "disabled": true,
       "settings": {
-        "heading": "You May Also Like...",
+        "heading": "Potrebbero interessarti anche...",
         "heading_size": 100,
         "heading_tag": "h2",
         "heading_alignment": "center",

@@ -2929,6 +2929,12 @@
         "id": "business_email",
         "label": "t:settings_schema.seo.business_email.label",
         "placeholder": "example@domain.com"
+      },
+      {
+        "type": "text",
+        "id": "business_vat",
+        "label": "Partita IVA",
+        "info": "Compare nel footer. Inserisci il numero reale: il tema non lo inventa."
       }
     ]
   },

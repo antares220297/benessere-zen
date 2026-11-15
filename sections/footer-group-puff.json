@@ -17,9 +17,9 @@
         "footer-2": {
           "type": "text",
           "settings": {
-            "open_by_default": false,
+            "open_by_default": true,
             "heading_text": "BENESSERE ZEN",
-            "subtext": "<p><a href=\"/pages/chi-siamo\" target=\"_blank\" title=\"Chi Siamo\">Chi siamo</a></p><p><a href=\"/pages/cose-layurveda\" title=\"Cos'è l'Ayurveda\">Cos'è l'Ayurveda</a></p>",
+            "subtext": "<p>Bottega di gioielli con pietre, mala, cristalli e incensi.</p><p>Via M. Provenzali 1<br>44042 Cento (FE)</p><p><a href=\"mailto:info@benesserezen.shop\">info@benesserezen.shop</a></p><p><a href=\"/pages/chi-siamo\">Chi siamo</a></p>",
             "show_social_icons": false,
             "image_width": 100,
             "link_image_footer": "",
@@ -29,9 +29,9 @@
         "text_eUfLwV": {
           "type": "text",
           "settings": {
-            "open_by_default": false,
+            "open_by_default": true,
             "heading_text": "NEGOZIO",
-            "subtext": "<p><a href=\"/collections/le-nostre-collezioni\" target=\"_blank\" title=\"Le Nostre Collezioni\">Esplora</a></p>",
+            "subtext": "<p><a href=\"/collections/gioielli-con-pietre\">Gioielli con pietre</a></p><p><a href=\"/collections/mala-tibetani\">Mala tibetani</a></p><p><a href=\"/collections/pietre-burattate\">Pietre burattate</a></p><p><a href=\"/collections/incensi-e-brucia-incensi-1\">Incensi</a></p><p><a href=\"/collections/roll-on-ai-fiori-di-bach\">Fiori di Bach</a></p>",
             "show_social_icons": false,
             "image_width": 100,
             "link_image_footer": "shopify://collections",
@@ -41,9 +41,9 @@
         "text_bfn9zt": {
           "type": "text",
           "settings": {
-            "open_by_default": false,
+            "open_by_default": true,
             "heading_text": "ASSISTENZA",
-            "subtext": "<p><a href=\"/pages/contact\" target=\"_blank\" title=\"Contatti\">Contattaci</a></p>",
+            "subtext": "<p><a href=\"/pages/contact\">Contattaci</a></p><p><a href=\"/policies/shipping-policy\">Spedizioni</a></p><p><a href=\"/policies/refund-policy\">Resi e recesso</a></p>",
             "show_social_icons": false,
             "image_width": 50,
             "link_image_footer": "",
@@ -53,9 +53,9 @@
         "text_mtXP7L": {
           "type": "text",
           "settings": {
-            "open_by_default": false,
+            "open_by_default": true,
             "heading_text": "INFORMAZIONI LEGALI",
-            "subtext": "<p><a href=\"/policies/privacy-policy\" title=\"Privacy Policy\">Informativa sulla privacy</a></p><p><a href=\"https://benesserezen.shop//policies/terms-of-service\" title=\"https://benesserezen.shop//policies/terms-of-service\">Termini e condizioni di servizio</a></p><p><a href=\"https://benesserezen.shop/policies/refund-policy\" title=\"https://benesserezen.shop/policies/refund-policy\">Informativa sui resi</a></p>",
+            "subtext": "<p><a href=\"/policies/privacy-policy\">Privacy e cookie</a></p><p><a href=\"/policies/terms-of-service\">Termini di servizio</a></p><p><a href=\"/policies/refund-policy\">Informativa sui resi</a></p>",
             "show_social_icons": false,
             "image_width": 100,
             "link_image_footer": "",
@@ -84,8 +84,8 @@
       ],
       "settings": {
         "columns_desktop": 5,
-        "show_language_selector": true,
-        "show_currency_selector": true,
+        "show_language_selector": false,
+        "show_currency_selector": false,
         "show_social_icons": false,
         "payment_enable": true,
         "custom_payment": "",

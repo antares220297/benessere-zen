@@ -27,7 +27,7 @@
           "type": "price",
           "settings": {
             "show_tax_and_shipping": false,
-            "text_size_price": 70
+            "text_size_price": 100
           }
         },
         "ffacb41b-c15e-41ee-864a-cfbf155d407d": {
@@ -76,13 +76,13 @@
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
-            "show_button_style": "secondary",
+            "show_button_style": "primary",
             "show_dynamic_checkout": true,
             "show_gift_card_recipient": true,
-            "pickup_availability": false,
+            "pickup_availability": true,
             "hide_when_pre_order": false,
-            "preorder_button_label": "Pre-order",
-            "preorder_message": "<p>This product will be available for sale in 2 weeks, but you can pre-order now to receive 10% discount!</p>",
+            "preorder_button_label": "Preordina",
+            "preorder_message": "<p>Questo articolo è in preordine. Lo prepariamo e te lo spediamo appena è pronto.</p>",
             "preorder_show_dynamic_button": false,
             "show_background": false,
             "box_type": "square",
@@ -125,39 +125,39 @@
             "icon_1": "none",
             "another_icon_1": "",
             "custom_icon_1": "",
-            "title_1": "ICON",
-            "text_1": "<ul><li>Anti-Aging</li><li>Firms</li><li>Moisturizes</li></ul>",
+            "title_1": "Pietra e materiale",
+            "text_1": "<p>Nella descrizione trovi la pietra, il metallo e, quando ci sono, le misure in millimetri.</p>",
             "link_1": "",
             "open_new_window_1": false,
             "icon_2": "none",
             "another_icon_2": "",
             "custom_icon_2": "",
-            "title_2": "ICON",
-            "text_2": "<ul><li>Mature</li><li>Dry</li><li>Sensitive</li></ul>",
+            "title_2": "Spedizione e ritiro",
+            "text_2": "<p>Spedizione gratuita oltre la soglia indicata accanto al pulsante. Ritiro gratuito a Cento.</p>",
             "link_2": "",
             "open_new_window_2": false,
             "icon_3": "none",
             "another_icon_3": "",
             "custom_icon_3": "",
-            "title_3": "ICON",
-            "text_3": "<p>Fragrance-free</p>",
+            "title_3": "Recesso",
+            "text_3": "<p>14 giorni dalla consegna. Restituzione a carico di chi acquista, salvo difetto o errore nostro.</p>",
             "link_3": "",
             "open_new_window_3": false,
-            "icon_4": "truck",
+            "icon_4": "none",
             "another_icon_4": "",
             "custom_icon_4": "",
-            "title_4": "",
-            "text_4": "",
+            "title_4": "Cura",
+            "text_4": "<p>Evita urti, profumi e acqua prolungata. Per le pietre basta un panno morbido.</p>",
             "link_4": "",
             "open_new_window_4": false,
-            "icon_5": "truck",
+            "icon_5": "none",
             "another_icon_5": "",
             "custom_icon_5": "",
             "title_5": "",
             "text_5": "",
             "link_5": "",
             "open_new_window_5": false,
-            "icon_6": "truck",
+            "icon_6": "none",
             "another_icon_6": "",
             "custom_icon_6": "",
             "title_6": "",
@@ -184,12 +184,12 @@
         "complementary_XCwmDV": {
           "type": "complementary",
           "settings": {
-            "heading": "Buy It With",
+            "heading": "Abbinalo con",
             "show_tab": false,
             "show_background": true,
             "max_product_show": 4,
             "number_product_per_page": 2,
-            "enable_carousel_desktop": true,
+            "enable_carousel_desktop": false,
             "enable_swiper_mobile": true,
             "image_ratio": "square",
             "show_vendor": false,
@@ -217,8 +217,18 @@
         "sticky-atc": {
           "type": "sticky_add_to_cart",
           "settings": {
-            "desktop_display_type": "full_width",
+            "desktop_display_type": "popup",
             "show_quantity_selector": true
+          }
+        },
+        "bz_back_in_stock": {
+          "type": "back_in_stock_alert",
+          "settings": {
+            "show_when_product_unavailable": true,
+            "heading": "Avvisami quando torna",
+            "text_info": "<p>Lascia la tua email: ti scriviamo solo quando questo articolo è di nuovo disponibile.</p>",
+            "button_label": "Avvisami",
+            "text_success": "Grazie. Ti scriviamo appena torna disponibile."
           }
         }
       },
@@ -231,6 +241,7 @@
         "quantity_selector",
         "gift_wrapping_EK3NQn",
         "buy_buttons",
+        "bz_back_in_stock",
         "feature_icon_99BxnX",
         "description",
         "complementary_XCwmDV",
@@ -250,10 +261,10 @@
         "desktop_media_layout": "thumbnail_slider",
         "show_arrow_button": true,
         "mobile_media_size": "75%",
-        "show_thumnail_mobile": false,
+        "show_thumnail_mobile": true,
         "image_ratio": "square",
         "thumbnail_position": "horizontal",
-        "enable_image_zoom": false,
+        "enable_image_zoom": true,
         "zoom_effect": "enlarge",
         "enable_video_autoplay": false,
         "enable_video_loop": false,
@@ -264,8 +275,8 @@
         "show_breadcrumbs": false,
         "show_breadcrumbs_border": true,
         "full_width_breadcrumb": true,
-        "desktop_content_alignment": "text-center",
-        "mobile_content_alignment": "text-center",
+        "desktop_content_alignment": "text-left",
+        "mobile_content_alignment": "text-left",
         "background_color_light": "rgba(0,0,0,0)",
         "text_color_light": "rgba(0,0,0,0)",
         "textlink_color_light": "rgba(0,0,0,0)",
@@ -292,17 +303,17 @@
         "background_color_light": "",
         "background_color_dark": "",
         "show_vendor": false,
-        "show_rating": true,
+        "show_rating": false,
         "show_quickview": true,
         "enable_carousel_desktop": false,
-        "enable_swiper_mobile": true,
+        "enable_swiper_mobile": false,
         "columns_desktop": 4,
         "full_width": true,
         "show_section_divider": false,
         "spacing": 28,
         "padding_top": 56,
         "padding_bottom": 88,
-        "columns_mobile": "1",
+        "columns_mobile": "2",
         "show_section_divider_mobile": false,
         "spacing_mobile": 16,
         "padding_top_mobile": 0,
@@ -548,13 +559,13 @@
       "type": "products-bundle",
       "disabled": true,
       "settings": {
-        "heading": "Product bundles",
+        "heading": "Componi un set",
         "highlight_type": "underline",
         "heading_size": 100,
         "heading_tag": "h2",
-        "subheading": "Create a bundle and save up to 30%!",
+        "subheading": "Scegli gli articoli da abbinare. Il risparmio, se c'è, è indicato in euro.",
         "heading_alignment": "center",
-        "button_atb_label": "ADD TO BUNDLE",
+        "button_atb_label": "Aggiungi al set",
         "collection": "",
         "product_to_show": 3,
         "products": [],
@@ -564,8 +575,8 @@
         "discount_value": "",
         "apply_discount_once_per_order": false,
         "summary_position": "right",
-        "bundler_heading": "Bundle Contents",
-        "bundler_text": "Add at least 3 items to get 33% Off",
+        "bundler_heading": "Nel set",
+        "bundler_text": "Aggiungi gli articoli che vuoi spedire insieme.",
         "background_color_light": "rgba(0,0,0,0)",
         "title_color": "rgba(0,0,0,0)",
         "text_light": "rgba(0,0,0,0)",
@@ -595,54 +606,8 @@
     },
     "faq_TmyPWR": {
       "type": "faq",
-      "blocks": {
-        "frequently_asked_question_YhHVVF": {
-          "type": "frequently_asked_question",
-          "settings": {
-            "icon": "heart",
-            "another_icon": "",
-            "custom_icon": "",
-            "heading": "Frequently asked question",
-            "row_content": "<p>Use this text to answer questions in as much detail as possible for your customers.</p>"
-          }
-        },
-        "frequently_asked_question_FL9mTm": {
-          "type": "frequently_asked_question",
-          "settings": {
-            "icon": "heart",
-            "another_icon": "",
-            "custom_icon": "",
-            "heading": "Frequently asked question",
-            "row_content": "<p>Use this text to answer questions in as much detail as possible for your customers.</p>"
-          }
-        },
-        "frequently_asked_question_zhqiCT": {
-          "type": "frequently_asked_question",
-          "settings": {
-            "icon": "heart",
-            "another_icon": "",
-            "custom_icon": "",
-            "heading": "Frequently asked question",
-            "row_content": "<p>Use this text to answer questions in as much detail as possible for your customers.</p>"
-          }
-        },
-        "frequently_asked_question_Eqt7wA": {
-          "type": "frequently_asked_question",
-          "settings": {
-            "icon": "heart",
-            "another_icon": "",
-            "custom_icon": "",
-            "heading": "Frequently asked question",
-            "row_content": "<p>Use this text to answer questions in as much detail as possible for your customers.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "frequently_asked_question_YhHVVF",
-        "frequently_asked_question_FL9mTm",
-        "frequently_asked_question_zhqiCT",
-        "frequently_asked_question_Eqt7wA"
-      ],
+      "blocks": {},
+      "block_order": [],
       "disabled": true,
       "settings": {
         "heading": "FAQs",

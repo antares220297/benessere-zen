@@ -619,10 +619,14 @@
                               {% render 'icon-alls', icon: 'icon-loading' %}
                             </div>
                           </button>
+                          {% render 'bz-purchase-note' %}
                           {%- if block.settings.show_dynamic_checkout and gift_card_recipient_active == false and type_file_upload == false -%}
+                            {%- liquid
+                              assign bz_payment_variant = product.selected_variant | default: product.selected_or_first_available_variant
+                            -%}
                             <div class="relative mt-2 payment-button-container" x-data="{ show: false }" x-intersect.once.margin.200px="show = true">
                               <template x-if="show">
-                                <div id="x-payment-button-{{ section.id }}" class="payment-button{% if settings.buttons_animation != 'underline' and settings.buttons_animation != 'sliced' %} button-animation{% else %} button-default{% endif %}{% if can_show_preorder == true and block.settings.preorder_show_dynamic_button == false %} hidden{% endif %}" x-intersect.once.margin.200px="$store.xShopifyPaymentBtn.load($el)">
+                                <div id="x-payment-button-{{ section.id }}" class="payment-button{% if settings.buttons_animation != 'underline' and settings.buttons_animation != 'sliced' %} button-animation{% else %} button-default{% endif %}{% if can_show_preorder == true and block.settings.preorder_show_dynamic_button == false %} hidden{% endif %}{% if bz_payment_variant.available == false %} hidden{% endif %}" x-intersect.once.margin.200px="$store.xShopifyPaymentBtn.load($el)">
                                   {{ form | payment_button }}
                                 </div>
                               </template>

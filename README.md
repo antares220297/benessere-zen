@@ -1,3 +1,7 @@
+# Benessere Zen — tema Eurus
+
+Il branch `cursor/eurus-redesign-fc22` parte dal tema live Eurus 8.1.0 (primo commit: import invariato) e contiene il redesign. `main` resta Dawn, collegato al tema non pubblicato `benessere-zen/main`. Non pubblicare e non fare merge senza l'ok di Michael.
+
 # Dawn
 
 [![Build status](https://github.com/shopify/dawn/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Shopify/dawn/actions/workflows/ci.yml?query=branch%3Amain)

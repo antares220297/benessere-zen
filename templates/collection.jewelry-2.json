@@ -261,7 +261,7 @@
       ],
       "settings": {
         "enable_filtering": true,
-        "sticky_filtering": false,
+        "sticky_filtering": true,
         "filter_type": "drawer",
         "enable_collection_count": true,
         "enable_sorting": true,
@@ -354,40 +354,8 @@
     },
     "9bff3c82-d395-4524-94e1-bf7d4c841076": {
       "type": "faq",
-      "blocks": {
-        "template--21733703418157__9bff3c82-d395-4524-94e1-bf7d4c841076-frequently_asked_question-1": {
-          "type": "frequently_asked_question",
-          "settings": {
-            "icon": "heart",
-            "custom_icon": "",
-            "heading": "Frequently asked question",
-            "row_content": "<p>Use this text to answer questions in as much detail as possible for your customers.</p>"
-          }
-        },
-        "template--21733703418157__9bff3c82-d395-4524-94e1-bf7d4c841076-frequently_asked_question-2": {
-          "type": "frequently_asked_question",
-          "settings": {
-            "icon": "heart",
-            "custom_icon": "",
-            "heading": "Frequently asked question",
-            "row_content": "<p>Use this text to answer questions in as much detail as possible for your customers.</p>"
-          }
-        },
-        "template--21733703418157__9bff3c82-d395-4524-94e1-bf7d4c841076-frequently_asked_question-3": {
-          "type": "frequently_asked_question",
-          "settings": {
-            "icon": "heart",
-            "custom_icon": "",
-            "heading": "Frequently asked question",
-            "row_content": "<p>Use this text to answer questions in as much detail as possible for your customers.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "template--21733703418157__9bff3c82-d395-4524-94e1-bf7d4c841076-frequently_asked_question-1",
-        "template--21733703418157__9bff3c82-d395-4524-94e1-bf7d4c841076-frequently_asked_question-2",
-        "template--21733703418157__9bff3c82-d395-4524-94e1-bf7d4c841076-frequently_asked_question-3"
-      ],
+      "blocks": {},
+      "block_order": [],
       "settings": {
         "heading": "Frequently Asked Questions",
         "heading_size": 110,
@@ -412,7 +380,8 @@
         "show_section_divider_mobile": false,
         "padding_top_mobile": 0,
         "padding_bottom_mobile": 40
-      }
+      },
+      "disabled": true
     },
     "b84ad124-a083-44ac-82f0-33b146a44236": {
       "type": "media-gallery",
@@ -423,7 +392,7 @@
             "image_link": "",
             "open_new_window": false,
             "video_url": "",
-            "enable_video_autoplay": true,
+            "enable_video_autoplay": false,
             "video_alt_text": "",
             "enable_content_overlay": true,
             "content_position": "center",
@@ -460,7 +429,7 @@
             "image_link": "",
             "open_new_window": false,
             "video_url": "",
-            "enable_video_autoplay": true,
+            "enable_video_autoplay": false,
             "video_alt_text": "",
             "enable_content_overlay": true,
             "content_position": "center",
@@ -497,7 +466,7 @@
             "image_link": "",
             "open_new_window": false,
             "video_url": "",
-            "enable_video_autoplay": true,
+            "enable_video_autoplay": false,
             "video_alt_text": "",
             "enable_content_overlay": true,
             "content_position": "center",
@@ -534,7 +503,7 @@
             "image_link": "",
             "open_new_window": false,
             "video_url": "",
-            "enable_video_autoplay": true,
+            "enable_video_autoplay": false,
             "video_alt_text": "",
             "enable_content_overlay": true,
             "content_position": "center",
@@ -571,7 +540,7 @@
             "image_link": "",
             "open_new_window": false,
             "video_url": "",
-            "enable_video_autoplay": true,
+            "enable_video_autoplay": false,
             "video_alt_text": "",
             "enable_content_overlay": true,
             "content_position": "center",

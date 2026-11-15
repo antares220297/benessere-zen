@@ -7,6 +7,19 @@
     Usage:
     {% render 'review-product', product: product %}
 {% endcomment %}
+{% liquid
+  assign bz_review_count = product.metafields.reviews.rating_count
+  if settings.product_reviews_app == 'loox'
+    assign bz_review_count = product.metafields.loox.num_reviews
+  endif
+  if settings.product_reviews_app == 'okendo'
+    assign bz_review_count = product.metafields.okendo.summaryData.reviewCount
+  endif
+  if bz_review_count == blank or bz_review_count == 0
+    assign bz_hide_rating = true
+  endif
+%}
+{% unless bz_hide_rating %}
 {% liquid      
   assign star_haft = 0 
   assign star_fill = 0
@@ -86,8 +99,9 @@
         endif 
       %}
     </div> 
-    <p class="rating-count leading-none caption ml-1 text-[{{ settings.text_base_size | times: 0.007 }}rem]">
-      {%- if rating_count -%}({{ rating_count }}){% else %} (0) {%- endif %}
+    <p class="rating-count leading-none caption ml-1">
+      ({{ rating_count | default: bz_review_count }})
     </p>
   {%- endif  -%}
 </div>
+{% endunless %}

@@ -1,0 +1,20 @@
+{% doc %}
+  Prints the free-shipping threshold from the theme setting, in the shop currency.
+  Accepts a plain number (50) or a currency pair (EUR:50).
+
+  @example
+  {% render 'bz-free-shipping-threshold' %}
+{% enddoc %}
+{%- liquid
+  assign raw_threshold = settings.order_amount_freeshipping | strip
+  assign threshold_number = 0
+  if raw_threshold contains ':'
+    assign threshold_parts = raw_threshold | split: ':'
+    assign threshold_number = threshold_parts | last | strip | plus: 0
+  else
+    assign threshold_number = raw_threshold | plus: 0
+  endif
+-%}
+{%- if threshold_number > 0 -%}
+  {{- threshold_number | times: 100 | money -}}
+{%- endif -%}

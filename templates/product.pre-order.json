@@ -53,16 +53,17 @@
           "settings": {
             "show_dynamic_checkout": false,
             "show_gift_card_recipient": true,
-            "pickup_availability": false,
-            "preorder_button_label": "Pre-order",
-            "preorder_message": "<p>This product will be available for sale in 2 weeks, but you can pre-order now to receive 10% discount!</p>",
+            "pickup_availability": true,
+            "preorder_button_label": "Preordina",
+            "preorder_message": "<p>Questo articolo è in preordine. Lo prepariamo e te lo spediamo appena è pronto.</p>",
             "preorder_show_dynamic_button": false,
             "show_background": false,
             "box_type": "square",
             "background_color_light": "rgba(0,0,0,0)",
             "message_color_light": "rgba(0,0,0,0)",
             "background_color_dark": "rgba(0,0,0,0)",
-            "message_color_dark": "rgba(0,0,0,0)"
+            "message_color_dark": "rgba(0,0,0,0)",
+            "show_button_style": "primary"
           }
         },
         "feature_icon_99BxnX": {
@@ -130,12 +131,12 @@
         "complementary_XCwmDV": {
           "type": "complementary",
           "settings": {
-            "heading": "Buy It With",
+            "heading": "Abbinalo con",
             "show_tab": false,
             "show_background": true,
             "max_product_show": 4,
             "number_product_per_page": 2,
-            "enable_carousel_desktop": true,
+            "enable_carousel_desktop": false,
             "enable_swiper_mobile": true,
             "image_ratio": "square",
             "show_vendor": false,
@@ -165,7 +166,7 @@
         "sticky-atc": {
           "type": "sticky_add_to_cart",
           "settings": {
-            "desktop_display_type": "full_width",
+            "desktop_display_type": "popup",
             "show_quantity_selector": false
           }
         }
@@ -198,15 +199,15 @@
         "show_thumnail_mobile": false,
         "image_ratio": "3/4",
         "thumbnail_position": "vertical",
-        "enable_image_zoom": false,
+        "enable_image_zoom": true,
         "enable_video_autoplay": false,
         "enable_video_loop": false,
         "show_first_image_avaiable": true,
         "show_breadcrumbs": true,
         "show_breadcrumbs_border": true,
         "full_width_breadcrumb": true,
-        "desktop_content_alignment": "text-center",
-        "mobile_content_alignment": "text-center",
+        "desktop_content_alignment": "text-left",
+        "mobile_content_alignment": "text-left",
         "background_color_light": "rgba(0,0,0,0)",
         "text_color_light": "rgba(0,0,0,0)",
         "textlink_color_light": "rgba(0,0,0,0)",
@@ -218,14 +219,15 @@
         "padding_top": 60,
         "padding_bottom": 40,
         "padding_top_mobile": 40,
-        "padding_bottom_mobile": 28
+        "padding_bottom_mobile": 28,
+        "zoom_effect": "enlarge"
       }
     },
     "product-recommendations": {
       "type": "product-recommendations",
       "disabled": true,
       "settings": {
-        "heading": "You May Also Like...",
+        "heading": "Potrebbero interessarti anche...",
         "heading_size": 100,
         "heading_alignment": "center",
         "products_to_show": 5,

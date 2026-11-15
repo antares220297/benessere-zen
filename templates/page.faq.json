@@ -15,10 +15,10 @@
         "text": {
           "type": "image_banner",
           "settings": {
-            "heading": "FAQs",
+            "heading": "Domande frequenti",
             "heading_size": 170,
             "subheading": "",
-            "text": "Answers to Your Questions",
+            "text": "Spedizioni, ritiro a Cento e recesso",
             "text_size": 130,
             "content_box_type": "square",
             "add_frame": false,
@@ -76,8 +76,8 @@
           "settings": {
             "icon": "faq",
             "custom_icon": "",
-            "heading": "Frequently asked question",
-            "row_content": "<p>Use this text to answer questions in as much detail as possible for your customers.<\/p>"
+            "heading": "Quanto costa la spedizione?",
+            "row_content": "<p>La spedizione gratuita parte dalla soglia scritta nella barra in alto e accanto al pulsante di acquisto. Sotto soglia, il costo si vede prima del pagamento. Gli ordini partono in 1–3 giorni lavorativi.</p>"
           }
         },
         "block-2": {
@@ -85,8 +85,8 @@
           "settings": {
             "icon": "faq",
             "custom_icon": "",
-            "heading": "Frequently asked question",
-            "row_content": "<p>Use this text to answer questions in as much detail as possible for your customers.<\/p>"
+            "heading": "Posso ritirare a Cento?",
+            "row_content": "<p>Sì. Il negozio è in Via M. Provenzali 1, 44042 Cento (FE). Il ritiro in sede è gratuito.</p>"
           }
         },
         "block-3": {
@@ -94,8 +94,8 @@
           "settings": {
             "icon": "faq",
             "custom_icon": "",
-            "heading": "Frequently asked question",
-            "row_content": "<p>Use this text to answer questions in as much detail as possible for your customers.<\/p>"
+            "heading": "Come funziona il recesso?",
+            "row_content": "<p>Hai 14 giorni dalla consegna per recedere, senza motivazione. Le spese di restituzione sono a carico di chi acquista, salvo prodotto difettoso o errore nostro. Scrivi a info@benesserezen.shop.</p>"
           }
         },
         "block-4": {
@@ -103,8 +103,8 @@
           "settings": {
             "icon": "faq",
             "custom_icon": "",
-            "heading": "Frequently asked question",
-            "row_content": "<p>Use this text to answer questions in as much detail as possible for your customers.<\/p>"
+            "heading": "Come si tengono gioielli e pietre?",
+            "row_content": "<p>Evita urti, profumi e acqua prolungata. Per le pietre basta un panno morbido.</p>"
           }
         }
       },
@@ -115,9 +115,9 @@
         "block-4"
       ],
       "settings": {
-        "heading": "",
+        "heading": "Domande frequenti",
         "heading_size": 100,
-        "heading_alignment": "center",
+        "heading_alignment": "left",
         "row_background": false,
         "collapsible": true,
         "show_view_all": false,
@@ -139,16 +139,16 @@
           "type": "heading",
           "settings": {
             "subheading": "",
-            "heading": "Frequently asked questions",
+            "heading": "Non trovi la risposta?",
             "heading_base_size": 90,
-            "text": "<p>Can’t find what you are looking for?Our people are here to help you?<\/p>"
+            "text": "<p>Scrivici: rispondiamo dal negozio di Cento.</p>"
           }
         },
         "button": {
           "type": "button",
           "settings": {
-            "button_label": "Contact us",
-            "button_link": "",
+            "button_label": "Scrivici",
+            "button_link": "shopify://pages/contact",
             "open_new_window": false
           }
         }

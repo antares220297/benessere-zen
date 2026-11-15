@@ -76,13 +76,13 @@
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
-            "show_button_style": "secondary",
+            "show_button_style": "primary",
             "show_dynamic_checkout": true,
             "show_gift_card_recipient": true,
-            "pickup_availability": false,
+            "pickup_availability": true,
             "hide_when_pre_order": false,
-            "preorder_button_label": "Pre-order",
-            "preorder_message": "<p>This product will be available for sale in 2 weeks, but you can pre-order now to receive 10% discount!</p>",
+            "preorder_button_label": "Preordina",
+            "preorder_message": "<p>Questo articolo è in preordine. Lo prepariamo e te lo spediamo appena è pronto.</p>",
             "preorder_show_dynamic_button": false,
             "show_background": false,
             "box_type": "square",
@@ -177,8 +177,8 @@
             "custom_icon": "",
             "heading": "Descrizione",
             "number_of_lines_shown": "none",
-            "read_more_label": "Read more",
-            "see_less_label": "See less"
+            "read_more_label": "Leggi di più",
+            "see_less_label": "Leggi di meno"
           }
         },
         "complementary_XCwmDV": {
@@ -190,7 +190,7 @@
             "show_background": true,
             "max_product_show": 4,
             "number_product_per_page": 2,
-            "enable_carousel_desktop": true,
+            "enable_carousel_desktop": false,
             "enable_swiper_mobile": true,
             "image_ratio": "square",
             "show_vendor": false,
@@ -262,7 +262,7 @@
         "show_thumnail_mobile": false,
         "image_ratio": "square",
         "thumbnail_position": "vertical",
-        "enable_image_zoom": false,
+        "enable_image_zoom": true,
         "zoom_effect": "enlarge",
         "enable_video_autoplay": false,
         "enable_video_loop": false,
@@ -273,8 +273,8 @@
         "show_breadcrumbs": true,
         "show_breadcrumbs_border": true,
         "full_width_breadcrumb": true,
-        "desktop_content_alignment": "text-center",
-        "mobile_content_alignment": "text-center",
+        "desktop_content_alignment": "text-left",
+        "mobile_content_alignment": "text-left",
         "background_color_light": "rgba(0,0,0,0)",
         "text_color_light": "rgba(0,0,0,0)",
         "textlink_color_light": "rgba(0,0,0,0)",
@@ -293,7 +293,7 @@
       "type": "product-recommendations",
       "disabled": true,
       "settings": {
-        "heading": "You May Also Like...",
+        "heading": "Potrebbero interessarti anche...",
         "highlight_type": "underline",
         "heading_size": 100,
         "heading_tag": "h2",
@@ -349,7 +349,7 @@
             "title": "Allantoina",
             "highlight_type": "underline",
             "heading_size": 120,
-            "text": "<p>L’allantoina è un ingrediente multifunzionale noto per le sue proprietà lenitive e rigeneranti. Stimola il turnover cellulare, favorisce la cicatrizzazione e riduce rossori e irritazioni. Grazie alla sua azione protettiva e anti-irritante, è perfetta per pelli sensibili o stressate da agenti esterni, contribuendo a mantenerle morbide e idratate.</p>",
+            "text": "<p>Allantoina è tra gli ingredienti della formula. Composizione e modo d'uso stanno sull'etichetta: qui non promettiamo effetti sulla pelle o sulla salute.</p>",
             "button_label": "",
             "button_link": "",
             "open_new_window": false,
@@ -366,7 +366,7 @@
             "title": "Bava di Lumaca",
             "highlight_type": "underline",
             "heading_size": 120,
-            "text": "<p>La bava di lumaca è un ingrediente ricco di sostanze benefiche come allantoina, acido glicolico, elastina e collagene. Grazie a questa combinazione di attivi, ha proprietà rigeneranti, elasticizzanti e idratanti. Stimola il rinnovamento della pelle, attenua cicatrici e segni del tempo, lasciando la pelle più levigata e uniforme.</p>",
+            "text": "<p>Bava di Lumaca è tra gli ingredienti della formula. Composizione e modo d'uso stanno sull'etichetta: qui non promettiamo effetti sulla pelle o sulla salute.</p>",
             "button_label": "",
             "button_link": "",
             "open_new_window": false,
@@ -515,13 +515,13 @@
       "type": "products-bundle",
       "disabled": true,
       "settings": {
-        "heading": "Product bundles",
+        "heading": "Componi un set",
         "highlight_type": "underline",
         "heading_size": 100,
         "heading_tag": "h2",
-        "subheading": "Create a bundle and save up to 30%!",
+        "subheading": "Scegli gli articoli da abbinare. Il risparmio, se c'è, è indicato in euro.",
         "heading_alignment": "center",
-        "button_atb_label": "ADD TO BUNDLE",
+        "button_atb_label": "Aggiungi al set",
         "collection": "",
         "product_to_show": 3,
         "products": [],
@@ -531,8 +531,8 @@
         "discount_value": "",
         "apply_discount_once_per_order": false,
         "summary_position": "right",
-        "bundler_heading": "Bundle Contents",
-        "bundler_text": "Add at least 3 items to get 33% Off",
+        "bundler_heading": "Nel set",
+        "bundler_text": "Aggiungi gli articoli che vuoi spedire insieme.",
         "background_color_light": "rgba(0,0,0,0)",
         "title_color": "rgba(0,0,0,0)",
         "text_light": "rgba(0,0,0,0)",
@@ -680,54 +680,8 @@
     },
     "faq_TmyPWR": {
       "type": "faq",
-      "blocks": {
-        "frequently_asked_question_YhHVVF": {
-          "type": "frequently_asked_question",
-          "settings": {
-            "icon": "heart",
-            "another_icon": "",
-            "custom_icon": "",
-            "heading": "Frequently asked question",
-            "row_content": "<p>Use this text to answer questions in as much detail as possible for your customers.</p>"
-          }
-        },
-        "frequently_asked_question_FL9mTm": {
-          "type": "frequently_asked_question",
-          "settings": {
-            "icon": "heart",
-            "another_icon": "",
-            "custom_icon": "",
-            "heading": "Frequently asked question",
-            "row_content": "<p>Use this text to answer questions in as much detail as possible for your customers.</p>"
-          }
-        },
-        "frequently_asked_question_zhqiCT": {
-          "type": "frequently_asked_question",
-          "settings": {
-            "icon": "heart",
-            "another_icon": "",
-            "custom_icon": "",
-            "heading": "Frequently asked question",
-            "row_content": "<p>Use this text to answer questions in as much detail as possible for your customers.</p>"
-          }
-        },
-        "frequently_asked_question_Eqt7wA": {
-          "type": "frequently_asked_question",
-          "settings": {
-            "icon": "heart",
-            "another_icon": "",
-            "custom_icon": "",
-            "heading": "Frequently asked question",
-            "row_content": "<p>Use this text to answer questions in as much detail as possible for your customers.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "frequently_asked_question_YhHVVF",
-        "frequently_asked_question_FL9mTm",
-        "frequently_asked_question_zhqiCT",
-        "frequently_asked_question_Eqt7wA"
-      ],
+      "blocks": {},
+      "block_order": [],
       "disabled": true,
       "settings": {
         "heading": "FAQs",

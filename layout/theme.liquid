@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="">
     {% if settings.show_canonical_url_collection and template.name == "collection" %}
       <link rel="canonical" href="{{ canonical_url | split: '?' | first }}">
@@ -98,7 +98,7 @@
     }"
   >
     <div class="main-container flex flex-col min-h-screen relative">
-      <a class="skip-to-content absolute -z-10 button button-solid hidden lg:block pt-2.5 pb-2.5 pl-6 pr-6 lg:pt-3 lg:pb-3 mt-0.5 ml-0.5 leading-normal justify-center cursor-pointer focus-visible:z-60" href="#MainContent">
+      <a class="skip-to-content button button-solid" href="#MainContent">
         {{ 'accessibility.skip_to_text' | t }}
       </a>
 

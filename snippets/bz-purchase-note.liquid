@@ -1,0 +1,25 @@
+{% doc %}
+  Shipping, pickup and withdrawal summary shown next to the add-to-cart button and in the cart.
+  The free-shipping amount comes from the theme setting.
+
+  @example
+  {% render 'bz-purchase-note' %}
+{% enddoc %}
+{%- capture bz_amount -%}{%- render 'bz-free-shipping-threshold' -%}{%- endcapture -%}
+{%- assign bz_amount = bz_amount | strip -%}
+<div class="bz-purchase-note">
+  <ul>
+    {%- if bz_amount != blank -%}
+      <li>{{ 'bz.shipping_free_html' | t: amount: bz_amount }} {{ 'bz.shipping_cost_note' | t }}</li>
+    {%- else -%}
+      <li>{{ 'bz.shipping_cost_note' | t }}</li>
+    {%- endif -%}
+    <li>{{ 'bz.pickup' | t }}</li>
+    <li>
+      {{ 'bz.withdrawal' | t }}
+      {%- if shop.refund_policy != blank -%}
+        <a href="{{ shop.refund_policy.url }}">{{ 'bz.returns_link' | t }}</a>
+      {%- endif -%}
+    </li>
+  </ul>
+</div>

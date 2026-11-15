@@ -1,0 +1,143 @@
+<div class="bz-news">
+  <div class="bz-news__inner">
+    <h2 class="bz-news__title">{{ section.settings.heading | escape }}</h2>
+    {%- if section.settings.text != blank -%}
+      <p class="bz-news__text">{{ section.settings.text | escape }}</p>
+    {%- endif -%}
+    {% form 'customer', class: 'bz-news__form' %}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      {%- if form.posted_successfully? -%}
+        <p class="bz-news__success" role="status">{{ section.settings.success | escape }}</p>
+      {%- endif -%}
+      {%- if form.errors -%}
+        <p class="bz-news__error" role="alert">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>
+      {%- endif -%}
+      <div class="bz-news__row">
+        <label class="bz-news__label" for="BzNews-{{ section.id }}">{{ section.settings.label | escape }}</label>
+        <input
+          id="BzNews-{{ section.id }}"
+          class="bz-news__input"
+          type="email"
+          name="contact[email]"
+          value="{{ form.email }}"
+          autocomplete="email"
+          inputmode="email"
+          autocapitalize="off"
+          autocorrect="off"
+          required
+        >
+        <button class="bz-news__button" type="submit">{{ section.settings.button_label | escape }}</button>
+      </div>
+    {% endform %}
+  </div>
+</div>
+
+{% stylesheet %}
+  .bz-news {
+    padding: 1rem 1.25rem 3.5rem;
+  }
+  .bz-news__inner {
+    max-width: 40rem;
+    margin: 0 auto;
+  }
+  .bz-news__title {
+    font-family: var(--font-heading-family);
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    line-height: 1.15;
+    margin: 0 0 0.5rem;
+    color: rgb(var(--colors-heading));
+  }
+  .bz-news__text {
+    margin: 0 0 1rem;
+    font-size: 1.0625rem;
+    line-height: 1.5;
+  }
+  .bz-news__label {
+    flex: 1 1 100%;
+    font-size: 1rem;
+    color: rgb(var(--colors-heading));
+  }
+  .bz-news__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem 0.75rem;
+    position: relative;
+  }
+  .bz-news__input {
+    flex: 1 1 14rem;
+    min-height: 48px;
+    font-size: 1rem;
+    padding: 0.75rem 0.9rem;
+    border: 1px solid rgb(var(--colors-line-and-border));
+    border-radius: var(--border-radius);
+    background: rgb(var(--background-color));
+    color: rgb(var(--colors-text));
+  }
+  .bz-news__button {
+    min-height: 48px;
+    min-width: 48px;
+    padding: 0.75rem 1.2rem;
+    font-size: 1rem;
+    cursor: pointer;
+    background: transparent;
+    color: rgb(var(--colors-secondary-button));
+    border: 1px solid rgb(var(--colors-secondary-button));
+    border-radius: var(--border-radius);
+  }
+  .bz-news__button:hover,
+  .bz-news__button:focus-visible {
+    background: rgb(var(--colors-background-secondary));
+  }
+  .bz-news__success {
+    color: rgb(var(--color-success));
+  }
+  .bz-news__error {
+    color: rgb(var(--color-error));
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "tag": "section",
+  "class": "bz-newsletter-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titolo",
+      "default": "Novità dalla bottega"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Testo",
+      "default": "Pietre appena arrivate e appuntamenti in negozio. Niente spam."
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Etichetta email",
+      "default": "Email"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Pulsante",
+      "default": "Iscriviti"
+    },
+    {
+      "type": "text",
+      "id": "success",
+      "label": "Messaggio di conferma",
+      "default": "Iscrizione ricevuta. A presto."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter"
+    }
+  ]
+}
+{% endschema %}

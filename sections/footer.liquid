@@ -391,6 +391,9 @@
     </div>
     <div class="flex flex-col items-center{% if section.settings.additional_layout == 'horizontal' %} lg:pl-14 lg:max-w-3xl{% endif %}">
       <div class="{% if section.settings.show_copyright %}mt-4 md:mt-4 base-link text-center{% if section.settings.additional_layout == 'vertical' %} lg:mt-4{% else %} lg:mt-0 lg:text-right{% endif %}{% endif %} p-break-words">
+        {%- if settings.business_vat != blank -%}
+          <p class="bz-seller-vat">P. IVA {{ settings.business_vat | escape }}</p>
+        {%- endif -%}
         {%- if section.settings.show_copyright -%}
         <p class="inline-block">&copy; {{ 'now' | date: "%Y" }}{% unless is_rtl %}, {% endunless %}</p>
           {{ shop.name | link_to: routes.root_url }}.

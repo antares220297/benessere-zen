@@ -101,6 +101,7 @@
     "skip_to_text": "Skip to content",
     "skip_to_product_info": "Skip to product information",
     "close": "Close",
+    "zoom_image": "Enlarge the photo",
     "image_link": "Image link",
     "unit_price_separator": "per",
     "vendor": "Vendor:",
@@ -614,5 +615,13 @@
   },
   "multiple_stores": {
     "button_view":"View details"
+  },
+  "bz": {
+    "shipping_free_html": "Free shipping from {{ amount }}.",
+    "shipping_cost_note": "Below that amount, the shipping cost is shown before payment.",
+    "pickup": "Free pickup at the Cento shop.",
+    "withdrawal": "You can withdraw within 14 days of delivery. Return shipping is paid by the buyer, unless the item is faulty or we made a mistake.",
+    "returns_link": "How returns work",
+    "shipping_link": "Shipping"
   }
 }

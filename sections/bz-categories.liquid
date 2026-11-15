@@ -1,0 +1,214 @@
+<div class="bz-cats">
+  <div class="bz-cats__inner">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="bz-cats__title">{{ section.settings.heading | escape }}</h2>
+    {%- endif -%}
+    {%- if section.settings.text != blank -%}
+      <p class="bz-cats__intro">{{ section.settings.text | escape }}</p>
+    {%- endif -%}
+    <ul class="bz-cats__grid">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'category' and block.settings.collection != blank -%}
+          {%- liquid
+            assign cat = block.settings.collection
+            assign cat_image = cat.image
+            if cat_image == blank and cat.products.first != blank
+              assign cat_image = cat.products.first.featured_image
+            endif
+            assign cat_label = block.settings.label | default: cat.title
+            assign cat_action = block.settings.link_label | default: 'Vedi la collezione'
+            assign cat_alt = cat_image.alt | default: cat_label
+          -%}
+          <li {{ block.shopify_attributes }}>
+            <a class="bz-cats__card" href="{{ cat.url }}">
+              <span class="bz-cats__media">
+                {%- if cat_image != blank -%}
+                  {{
+                    cat_image
+                    | image_url: width: 800
+                    | image_tag:
+                      widths: '240, 360, 540, 720',
+                      sizes: '(min-width: 990px) 30vw, 50vw',
+                      loading: 'lazy',
+                      alt: cat_alt,
+                      width: cat_image.width,
+                      height: cat_image.height,
+                      class: 'bz-cats__image'
+                  }}
+                {%- endif -%}
+              </span>
+              <span class="bz-cats__name">{{ cat_label | escape }}</span>
+              <span class="bz-cats__action">{{ cat_action | escape }}</span>
+            </a>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+    {%- if section.blocks.size > 0 -%}
+      <ul class="bz-cats__more">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'link' and block.settings.collection != blank -%}
+            <li {{ block.shopify_attributes }}>
+              <a href="{{ block.settings.collection.url }}">{{ block.settings.label | default: block.settings.collection.title | escape }}</a>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+</div>
+
+{% stylesheet %}
+  .bz-cats {
+    padding: 0.5rem 1.25rem 2.75rem;
+  }
+  .bz-cats__inner {
+    max-width: var(--page-width);
+    margin: 0 auto;
+  }
+  .bz-cats__title {
+    font-family: var(--font-heading-family);
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    line-height: 1.15;
+    margin: 0 0 0.5rem;
+    color: rgb(var(--colors-heading));
+  }
+  .bz-cats__intro {
+    margin: 0 0 1.25rem;
+    max-width: 40rem;
+    font-size: 1.0625rem;
+    line-height: 1.5;
+  }
+  .bz-cats__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.85rem 0.75rem;
+  }
+  .bz-cats__card {
+    display: flex;
+    flex-direction: column;
+    min-height: 48px;
+    color: rgb(var(--colors-text));
+    text-decoration: none;
+  }
+  .bz-cats__media {
+    display: block;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: var(--border-radius);
+    background: rgb(var(--colors-background-secondary));
+  }
+  .bz-cats__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .bz-cats__name {
+    display: block;
+    margin-top: 0.55rem;
+    font-family: var(--font-heading-family);
+    font-size: 1.125rem;
+    line-height: 1.25;
+    color: rgb(var(--colors-heading));
+  }
+  .bz-cats__action {
+    display: block;
+    margin-top: 0.15rem;
+    font-size: 1rem;
+    color: rgb(var(--colors-text-link));
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+  .bz-cats__more {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.25rem;
+    margin: 1.25rem 0 0;
+    padding: 0;
+  }
+  .bz-cats__more a {
+    color: rgb(var(--colors-text-link));
+    font-size: 1rem;
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+  }
+  @media (min-width: 990px) {
+    .bz-cats__grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem 1.25rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Collezioni in vetrina",
+  "tag": "section",
+  "class": "bz-categories-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titolo",
+      "default": "Scegli da dove iniziare"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Testo",
+      "default": "Gioielli, pietre, incensi e qualche rituale di casa. Le collezioni si aggiornano da sole."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Collezione",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collezione"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Nome mostrato"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Testo del link",
+          "default": "Vedi la collezione"
+        }
+      ]
+    },
+    {
+      "type": "link",
+      "name": "Link secondario",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collezione"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Nome mostrato"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collezioni in vetrina"
+    }
+  ]
+}
+{% endschema %}

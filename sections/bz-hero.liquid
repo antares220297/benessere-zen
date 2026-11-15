@@ -1,0 +1,198 @@
+{%- liquid
+  assign hero_collection = section.settings.collection
+  assign hero_image = hero_collection.image
+  if hero_image == blank and hero_collection.products.first != blank
+    assign hero_image = hero_collection.products.first.featured_image
+  endif
+  assign hero_url = section.settings.button_link
+  if hero_url == blank and hero_collection != blank
+    assign hero_url = hero_collection.url
+  endif
+  assign hero_alt = hero_image.alt | default: section.settings.heading
+-%}
+<div class="bz-hero">
+  <div class="bz-hero__inner">
+    <div class="bz-hero__grid">
+      <div class="bz-hero__copy">
+        {%- if section.settings.heading != blank -%}
+          <h1 class="bz-hero__title">{{ section.settings.heading | escape }}</h1>
+        {%- endif -%}
+        {%- if section.settings.text != blank -%}
+          <p class="bz-hero__text">{{ section.settings.text | escape }}</p>
+        {%- endif -%}
+        <div class="bz-hero__actions">
+          {%- if section.settings.button_label != blank and hero_url != blank -%}
+            <a class="button button-solid bz-hero__cta" href="{{ hero_url }}">{{ section.settings.button_label | escape }}</a>
+          {%- endif -%}
+          {%- if section.settings.secondary_label != blank and section.settings.secondary_link != blank -%}
+            <a class="bz-hero__link" href="{{ section.settings.secondary_link }}">{{ section.settings.secondary_label | escape }}</a>
+          {%- endif -%}
+        </div>
+      </div>
+      {%- if hero_image != blank -%}
+        <div class="bz-hero__media">
+          {{
+            hero_image
+            | image_url: width: 1600
+            | image_tag:
+              widths: '375, 550, 750, 1100, 1500',
+              sizes: '(min-width: 990px) 46vw, 100vw',
+              loading: 'eager',
+              fetchpriority: 'high',
+              alt: hero_alt,
+              width: hero_image.width,
+              height: hero_image.height,
+              class: 'bz-hero__image'
+          }}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .bz-hero {
+    padding: 1.25rem 1.25rem 2.5rem;
+  }
+  .bz-hero__inner {
+    max-width: var(--page-width);
+    margin: 0 auto;
+  }
+  .bz-hero__grid {
+    display: grid;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  .bz-hero__copy {
+    order: 1;
+    max-width: 40rem;
+  }
+  .bz-hero__media {
+    order: 2;
+    aspect-ratio: 4 / 3;
+    max-height: 240px;
+    overflow: hidden;
+    border-radius: var(--border-radius);
+    background: rgb(var(--colors-background-secondary));
+  }
+  .bz-hero__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .bz-hero__title {
+    font-family: var(--font-heading-family);
+    font-weight: var(--font-heading-weight);
+    font-style: var(--font-heading-style);
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    line-height: 1.12;
+    margin: 0 0 0.75rem;
+    color: rgb(var(--colors-heading));
+  }
+  .bz-hero__text {
+    font-size: 1.0625rem;
+    line-height: 1.5;
+    max-width: 38rem;
+    margin: 0 0 1.25rem;
+    color: rgb(var(--colors-text));
+  }
+  .bz-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.25rem;
+  }
+  .bz-hero__cta {
+    min-height: 48px;
+    min-width: 48px;
+    padding: 0.85rem 1.4rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+  }
+  .bz-hero__link {
+    color: rgb(var(--colors-text-link));
+    font-size: 1rem;
+    text-underline-offset: 0.2em;
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .bz-hero__link:hover,
+  .bz-hero__link:focus-visible {
+    color: rgb(var(--colors-heading));
+  }
+  @media (min-width: 990px) {
+    .bz-hero {
+      padding: 2.5rem 1.5rem 4rem;
+    }
+    .bz-hero__grid {
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 3rem;
+    }
+    .bz-hero__media {
+      order: 1;
+      max-height: none;
+      aspect-ratio: 5 / 4;
+    }
+    .bz-hero__copy {
+      order: 2;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Hero vetrina",
+  "tag": "section",
+  "class": "bz-hero-section",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collezione della foto"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titolo",
+      "default": "Pietre naturali, scelte a mano a Cento"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Testo",
+      "default": "Gioielli con pietre, mala, cristalli e incensi. Prezzi in euro, IVA inclusa."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Pulsante",
+      "default": "Scopri i gioielli"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Link del pulsante"
+    },
+    {
+      "type": "text",
+      "id": "secondary_label",
+      "label": "Link secondario",
+      "default": "Trova la tua pietra"
+    },
+    {
+      "type": "url",
+      "id": "secondary_link",
+      "label": "Link secondario"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero vetrina"
+    }
+  ]
+}
+{% endschema %}

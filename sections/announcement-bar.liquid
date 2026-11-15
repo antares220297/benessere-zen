@@ -132,6 +132,8 @@
           >
             <div class="splide__track page-width mx-auto pl-0 pr-0">
               <div class="splide__list w-full flex {{ block }}">
+              {%- capture bz_soglia -%}{%- render 'bz-free-shipping-threshold' -%}{%- endcapture -%}
+              {%- assign bz_soglia = bz_soglia | strip -%}
               {%- for block in section.blocks -%}
                 {%- liquid
                   assign base_size = settings.text_base_size | times: 0.00875
@@ -235,6 +237,9 @@
                           {% endunless %}
                         {%- endif -%}
                         {% assign text = block.settings.text | replace: "{count_down}", countdown %}
+                        {%- if bz_soglia != blank -%}
+                          {% assign text = text | replace: "[soglia]", bz_soglia %}
+                        {%- endif -%}
                         {%- if block.settings.link != blank -%}
                           <p>
                             <a href="{{ block.settings.link }}"{% if block.settings.open_new_window %} target="_blank"{% endif %} class="button-link relative hover-text-link x-announcement-bar-block-data leading-[initial]"

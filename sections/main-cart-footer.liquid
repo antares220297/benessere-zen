@@ -316,6 +316,7 @@
                 </div>
               {%- when 'buttons' -%}
                 <div {{ block.shopify_attributes }}>
+                  {% render 'bz-purchase-note' %}
                   <button
                     id="checkout-submit"
                     class="button button-solid w-full justify-center pl-6 pr-6 pt-3.5 pb-3.5 mb-1.5 cursor-pointer leading-normal"

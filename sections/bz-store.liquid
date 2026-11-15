@@ -1,0 +1,125 @@
+<div class="bz-store">
+  <div class="bz-store__inner">
+    <h2 class="bz-store__title">{{ section.settings.heading | escape }}</h2>
+    <div class="bz-store__grid">
+      <div class="bz-store__copy">
+        {%- if section.settings.text != blank -%}
+          <p>{{ section.settings.text | escape | newline_to_br }}</p>
+        {%- endif -%}
+        <p>
+          {{ section.settings.address | escape | newline_to_br }}
+        </p>
+        {%- if section.settings.email != blank -%}
+          <p><a href="mailto:{{ section.settings.email | escape }}">{{ section.settings.email | escape }}</a></p>
+        {%- endif -%}
+        {%- if section.settings.map_link != blank -%}
+          <p><a href="{{ section.settings.map_link }}">Apri la mappa</a></p>
+        {%- endif -%}
+      </div>
+      {%- if section.settings.hours != blank -%}
+        <div class="bz-store__hours">
+          <p class="bz-store__label">Orari</p>
+          {{ section.settings.hours }}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .bz-store {
+    padding: 1rem 1.25rem 3rem;
+  }
+  .bz-store__inner {
+    max-width: var(--page-width);
+    margin: 0 auto;
+  }
+  .bz-store__title {
+    font-family: var(--font-heading-family);
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    line-height: 1.15;
+    margin: 0 0 1rem;
+    color: rgb(var(--colors-heading));
+  }
+  .bz-store__grid {
+    display: grid;
+    gap: 1.5rem;
+  }
+  .bz-store__copy,
+  .bz-store__hours {
+    max-width: 40rem;
+    font-size: 1.0625rem;
+    line-height: 1.5;
+  }
+  .bz-store__copy p,
+  .bz-store__hours p {
+    margin: 0 0 0.75rem;
+  }
+  .bz-store__label {
+    font-weight: 600;
+    color: rgb(var(--colors-heading));
+  }
+  .bz-store a {
+    color: rgb(var(--colors-text-link));
+  }
+  .bz-store__hours ul {
+    margin: 0;
+    padding-left: 1.1rem;
+  }
+  @media (min-width: 800px) {
+    .bz-store__grid {
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 2.5rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Negozio di Cento",
+  "tag": "section",
+  "class": "bz-store-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titolo",
+      "default": "Vieni a trovarci a Cento"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Testo",
+      "default": "Benessere Zen è una bottega fisica a Cento, in provincia di Ferrara. Puoi vedere i gioielli dal vivo e ritirare l'ordine in negozio, senza spese di spedizione."
+    },
+    {
+      "type": "textarea",
+      "id": "address",
+      "label": "Indirizzo",
+      "default": "Via M. Provenzali 1\n44042 Cento (FE)"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email",
+      "default": "info@benesserezen.shop"
+    },
+    {
+      "type": "url",
+      "id": "map_link",
+      "label": "Link mappa"
+    },
+    {
+      "type": "richtext",
+      "id": "hours",
+      "label": "Orari",
+      "default": "<ul><li>Lunedì, martedì, mercoledì, venerdì e sabato: 9:30–12:30 e 16:00–19:30</li><li>Giovedì: 9:00–13:00</li></ul>"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Negozio di Cento"
+    }
+  ]
+}
+{% endschema %}
