@@ -1,0 +1,254 @@
+{{ 'bz-tokens.css' | asset_url | stylesheet_tag }}
+{{ 'bz-home.css' | asset_url | stylesheet_tag }}
+{{ 'bz-product.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign current = product.selected_or_first_available_variant
+  assign cents_num = current.price | modulo: 100
+  assign euros = current.price | minus: cents_num | divided_by: 100
+  assign cents = cents_num | prepend: '00' | slice: -2, 2
+  assign opener = section.settings.opener
+  if opener == blank
+    assign opener = product.description | strip_html | truncate: 220
+  endif
+-%}
+
+<div class="bz bz-product" data-bz-product>
+  <nav class="bz-crumb" aria-label="Percorso">
+    <a href="{{ routes.root_url }}">Home</a>
+    <span aria-hidden="true">›</span>
+    {%- if collection -%}
+      <a href="{{ collection.url }}">{{ collection.title | escape }}</a>
+      <span aria-hidden="true">›</span>
+    {%- endif -%}
+    <span>{{ product.title | escape }}</span>
+  </nav>
+
+  <section class="bz-pdp">
+    <div class="bz-gal">
+      <div class="bz-thumbs">
+        {%- for image in product.images limit: 4 -%}
+          <button type="button" class="{% if forloop.first %}is-on{% endif %}" data-bz-thumb="{{ forloop.index }}" aria-label="Foto {{ forloop.index }}">
+            {{ image | image_url: width: 160 | image_tag: alt: image.alt, width: 84, height: 84, loading: 'lazy' }}
+          </button>
+        {%- endfor -%}
+      </div>
+      <div class="bz-stage">
+        {%- if product.featured_image -%}
+          {{ product.featured_image | image_url: width: 1400 | image_tag: alt: product.featured_image.alt, id: 'BzStage', widths: '600, 1000, 1400', sizes: '(min-width: 860px) 45vw, 100vw', width: 900, height: 900 }}
+        {%- endif -%}
+        <div class="bz-stage__badges">
+          {%- if current.inventory_management != blank and current.inventory_quantity == 1 and current.available -%}
+            <span class="bz-badge"><span class="bz-badge__dot"></span>Ultimo pezzo</span>
+          {%- endif -%}
+          {%- if section.settings.store_badge != blank -%}
+            <span class="bz-pill">{{ section.settings.store_badge | escape }}</span>
+          {%- endif -%}
+        </div>
+        <div class="bz-stage__note">
+          <span>{{ section.settings.photo_note | escape }}</span>
+          <span>1 / {{ product.images.size | at_least: 1 }}</span>
+        </div>
+      </div>
+      {%- if product.images.size > 1 -%}
+        <div class="bz-minis">
+          {%- for image in product.images offset: 1 limit: 2 -%}
+            <div class="bz-mini">
+              {{ image | image_url: width: 800 | image_tag: alt: image.alt, width: 400, height: 320, loading: 'lazy' }}
+              {%- assign cap_i = 0 -%}
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'caption' -%}
+                  {%- assign cap_i = cap_i | plus: 1 -%}
+                  {%- if cap_i == forloop.parentloop.index -%}
+                    <span>{{ block.settings.text | escape }}</span>
+                  {%- endif -%}
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="bz-buy">
+      <h1>{{ product.title | escape }}</h1>
+      {%- if product.type != blank -%}
+        <p class="bz-buy__sub">{{ product.type | escape }}</p>
+      {%- endif -%}
+      <div class="bz-buy__price">
+        <strong data-bz-price>{{ euros }}<sup>,{{ cents }}</sup> €</strong>
+        <small>IVA inclusa</small>
+        {%- if section.settings.shipping_note != blank -%}
+          <span class="bz-pill">{{ section.settings.shipping_note | escape }}</span>
+        {%- endif -%}
+      </div>
+      {%- if opener != blank -%}
+        <p class="bz-buy__open">{{ opener | escape }}</p>
+      {%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <div class="bz-facts">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'fact' -%}
+              <span {{ block.shopify_attributes }}>{%- if block.settings.value != blank -%}<b>{{ block.settings.value | escape }}</b> {% endif -%}{{ block.settings.label | escape }}</span>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- form 'product', product -%}
+        {%- if product.has_only_default_variant -%}
+          <input type="hidden" name="id" value="{{ current.id }}">
+        {%- else -%}
+          <div class="bz-variants">
+            {%- for variant in product.variants -%}
+              <label>
+                <input type="radio" name="id" value="{{ variant.id }}" {% if variant.id == current.id %}checked{% endif %} {% unless variant.available %}disabled{% endunless %} data-bz-variant="{{ variant.price }}">
+                {{ variant.title | escape }}
+              </label>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+        <div class="bz-atc">
+          <div class="bz-qty">
+            <button type="button" data-bz-qty="-1" aria-label="Meno">−</button>
+            <input type="number" name="quantity" value="1" min="1" aria-label="Quantità" style="width:28px;border:0;background:transparent;color:inherit;text-align:center">
+            <button type="button" data-bz-qty="1" aria-label="Più">+</button>
+          </div>
+          <button class="bz-btn bz-btn--gold" type="submit" name="add" {% unless current.available %}disabled{% endunless %}>
+            {%- if current.available -%}Aggiungi al carrello{%- else -%}Esaurito{%- endif -%}
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+          <button class="bz-heart" type="button" aria-label="Preferiti">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg>
+          </button>
+        </div>
+      {%- endform -%}
+
+      {%- if section.settings.pickup_label != blank -%}
+        <a class="bz-pickup" href="{{ section.settings.pickup_link }}">{{ section.settings.pickup_label | escape }}</a>
+      {%- endif -%}
+
+      {%- if section.settings.pair != blank -%}
+        {%- assign pair = section.settings.pair -%}
+        <div class="bz-pair">
+          {%- if pair.featured_image -%}
+            {{ pair.featured_image | image_url: width: 120 | image_tag: alt: pair.title, width: 52, height: 52 }}
+          {%- endif -%}
+          <div>Si abbina a {{ pair.title | escape }}<small>{{ pair.price | money }}</small></div>
+          <form action="{{ routes.cart_add_url }}" method="post">
+            <input type="hidden" name="id" value="{{ pair.selected_or_first_available_variant.id }}">
+            <button class="bz-card__add" type="submit" aria-label="Aggiungi {{ pair.title | escape }}">+</button>
+          </form>
+        </div>
+      {%- endif -%}
+
+      <div class="bz-acc">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'detail' -%}
+            <details {% if block.settings.open %}open{% endif %} {{ block.shopify_attributes }}>
+              <summary>{{ block.settings.title | escape }}<i aria-hidden="true"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></i></summary>
+              <div>{{ block.settings.text }}</div>
+            </details>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+
+  <div class="bz-dbento">
+    <article class="is-tall">
+      <h3>{{ section.settings.bento_title | escape }} <em>{{ section.settings.bento_accent | escape }}</em></h3>
+      <p>{{ section.settings.bento_text | escape }}</p>
+    </article>
+    <article>
+      <p class="bz-figure">{{ section.settings.stat_1 | escape }}</p>
+      <p>{{ section.settings.stat_1_text | escape }}</p>
+    </article>
+    <article class="is-gold">
+      <p class="bz-figure">{{ section.settings.stat_2 | escape }}</p>
+      <p>{{ section.settings.stat_2_text | escape }}</p>
+    </article>
+    <article class="is-ox">
+      <p class="bz-figure">{{ section.settings.stat_3 | escape }}</p>
+      <p>{{ section.settings.stat_3_text | escape }}</p>
+    </article>
+    <article class="is-wide is-am">
+      <h3>{{ section.settings.wide_title | escape }} <em>{{ section.settings.wide_accent | escape }}</em></h3>
+      <p>{{ section.settings.wide_text | escape }}</p>
+    </article>
+  </div>
+
+  {%- if section.settings.related != blank -%}
+    <div class="bz-related">
+      <div class="bz-related__head">
+        <h2>{{ section.settings.related_heading | escape }} <em>{{ section.settings.related_accent | escape }}</em></h2>
+        <a class="bz-picked__all" href="{{ section.settings.related.url }}">{{ section.settings.related_link | escape }}</a>
+      </div>
+      <div class="bz-grid">
+        {%- for item in section.settings.related.products limit: 5 -%}
+          {%- unless item.id == product.id -%}
+            {% render 'bz-card', product: item %}
+          {%- endunless -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  <form class="bz-sticky" action="{{ routes.cart_add_url }}" method="post">
+    <input type="hidden" name="id" value="{{ current.id }}">
+    {%- if product.featured_image -%}
+      {{ product.featured_image | image_url: width: 100 | image_tag: alt: '', width: 44, height: 44 }}
+    {%- endif -%}
+    <span>{{ product.title | escape }}<b>{{ euros }}<sup>,{{ cents }}</sup> €</b></span>
+    <button type="submit">Aggiungi</button>
+  </form>
+</div>
+<script src="{{ 'bz-product.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Scheda prodotto",
+  "class": "bz-home",
+  "settings": [
+    { "type": "text", "id": "store_badge", "label": "Etichetta foto", "default": "Anche in negozio" },
+    { "type": "text", "id": "photo_note", "label": "Nota foto", "default": "Pietra naturale: ogni pezzo è un po' diverso" },
+    { "type": "textarea", "id": "opener", "label": "Testo di apertura" },
+    { "type": "text", "id": "shipping_note", "label": "Nota spedizione", "default": "Spedizione gratuita da 50 €" },
+    { "type": "text", "id": "pickup_label", "label": "Ritiro", "default": "Ritira gratis in negozio, di solito in 4 ore" },
+    { "type": "url", "id": "pickup_link", "label": "Link ritiro" },
+    { "type": "product", "id": "pair", "label": "Si abbina a" },
+    { "type": "text", "id": "bento_title", "label": "Titolo grande", "default": "La nappa" },
+    { "type": "text", "id": "bento_accent", "label": "Corsivo", "default": "chiude il giro" },
+    { "type": "textarea", "id": "bento_text", "label": "Testo", "default": "Annodata a mano, con l'anello che separa il grano guru." },
+    { "type": "text", "id": "stat_1", "label": "Numero 1", "default": "108" },
+    { "type": "text", "id": "stat_1_text", "label": "Testo 1", "default": "grani, il numero dei mantra nella tradizione" },
+    { "type": "text", "id": "stat_2", "label": "Numero 2", "default": "8 mm" },
+    { "type": "text", "id": "stat_2_text", "label": "Testo 2", "default": "ogni perla, lucida e liscia al tatto" },
+    { "type": "text", "id": "stat_3", "label": "Numero 3", "default": "67 g" },
+    { "type": "text", "id": "stat_3_text", "label": "Testo 3", "default": "leggero da portare tutto il giorno" },
+    { "type": "text", "id": "wide_title", "label": "Titolo largo", "default": "Al collo" },
+    { "type": "text", "id": "wide_accent", "label": "Corsivo largo", "default": "o al polso" },
+    { "type": "textarea", "id": "wide_text", "label": "Testo largo", "default": "Lungo, cade sotto il petto. Avvolto tre o quattro volte, diventa un bracciale a strati." },
+    { "type": "collection", "id": "related", "label": "Collezione correlata" },
+    { "type": "text", "id": "related_heading", "label": "Titolo correlati", "default": "Altri mala," },
+    { "type": "text", "id": "related_accent", "label": "Corsivo correlati", "default": "stessi 108 grani" },
+    { "type": "text", "id": "related_link", "label": "Link correlati", "default": "Tutti i mala" }
+  ],
+  "blocks": [
+    { "type": "fact", "name": "Dato", "settings": [
+      { "type": "text", "id": "value", "label": "Valore" },
+      { "type": "text", "id": "label", "label": "Etichetta" }
+    ]},
+    { "type": "detail", "name": "Dettaglio", "settings": [
+      { "type": "text", "id": "title", "label": "Titolo" },
+      { "type": "richtext", "id": "text", "label": "Testo" },
+      { "type": "checkbox", "id": "open", "label": "Aperto", "default": false }
+    ]},
+    { "type": "caption", "name": "Didascalia foto", "settings": [
+      { "type": "text", "id": "text", "label": "Testo" }
+    ]}
+  ],
+  "presets": [{ "name": "Scheda prodotto" }]
+}
+{% endschema %}

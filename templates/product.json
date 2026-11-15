@@ -278,7 +278,8 @@
         "padding_bottom": 40,
         "padding_top_mobile": 40,
         "padding_bottom_mobile": 28
-      }
+      },
+      "disabled": true
     },
     "product-recommendations": {
       "type": "product-recommendations",
@@ -307,7 +308,8 @@
         "spacing_mobile": 16,
         "padding_top_mobile": 0,
         "padding_bottom_mobile": 20
-      }
+      },
+      "disabled": true
     },
     "text_column_with_image_MUhrhK": {
       "type": "text-column-with-image",
@@ -728,9 +730,104 @@
         "padding_top_mobile": 20,
         "padding_bottom_mobile": 20
       }
+    },
+    "bz_product": {
+      "type": "bz-product",
+      "settings": {
+        "store_badge": "Anche in negozio",
+        "photo_note": "Pietra naturale: ogni pezzo è un po' diverso",
+        "shipping_note": "Spedizione gratuita da 50 €",
+        "pickup_label": "Ritira gratis in negozio, di solito in 4 ore",
+        "pickup_link": "/pages/il-negozio",
+        "bento_title": "La nappa",
+        "bento_accent": "chiude il giro",
+        "bento_text": "Annodata a mano, con l'anello che separa il grano guru.",
+        "stat_1": "108",
+        "stat_1_text": "grani, il numero dei mantra nella tradizione",
+        "stat_2": "8 mm",
+        "stat_2_text": "ogni perla, lucida e liscia al tatto",
+        "stat_3": "67 g",
+        "stat_3_text": "leggero da portare tutto il giorno",
+        "wide_title": "Al collo",
+        "wide_accent": "o al polso",
+        "wide_text": "Lungo, cade sotto il petto. Avvolto tre o quattro volte, diventa un bracciale a strati.",
+        "related": "mala-tibetani",
+        "related_heading": "Altri mala,",
+        "related_accent": "stessi 108 grani",
+        "related_link": "Tutti i mala"
+      },
+      "blocks": {
+        "fact-1": {
+          "type": "fact",
+          "settings": {
+            "value": "108",
+            "label": "grani"
+          }
+        },
+        "fact-2": {
+          "type": "fact",
+          "settings": {
+            "value": "8 mm",
+            "label": "perla"
+          }
+        },
+        "fact-3": {
+          "type": "fact",
+          "settings": {
+            "value": "67 g",
+            "label": "peso"
+          }
+        },
+        "fact-4": {
+          "type": "fact",
+          "settings": {
+            "label": "Onice nero"
+          }
+        },
+        "det-1": {
+          "type": "detail",
+          "settings": {
+            "title": "Dettagli",
+            "open": true,
+            "text": "<table><tr><td>Pietra</td><td>Onice nero</td></tr><tr><td>Grani</td><td>108</td></tr><tr><td>Diametro perla</td><td>circa 8 mm</td></tr><tr><td>Peso</td><td>67 g</td></tr><tr><td>Finitura</td><td>Nappa nera</td></tr></table>"
+          }
+        },
+        "det-2": {
+          "type": "detail",
+          "settings": {
+            "title": "Nella tradizione",
+            "text": "<p>Nella pratica buddista e induista il mala serve a contare mantra o respiri. All'onice la tradizione associa fermezza e protezione. I significati appartengono alla tradizione e alla pratica spirituale; non sostituiscono pareri o terapie mediche.</p>"
+          }
+        },
+        "det-3": {
+          "type": "detail",
+          "settings": {
+            "title": "Come averne cura",
+            "text": "<p>Lontano da profumi e creme. Puliscilo con un panno morbido e asciutto e riponilo da solo, così la nappa non si schiaccia.</p>"
+          }
+        },
+        "det-4": {
+          "type": "detail",
+          "settings": {
+            "title": "Spedizione, ritiro e reso",
+            "text": "<p>Gratuita da 50 €. Ritiro gratuito in negozio, di solito in 4 ore. Reso entro 14 giorni.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "fact-1",
+        "fact-2",
+        "fact-3",
+        "fact-4",
+        "det-1",
+        "det-2",
+        "det-3",
+        "det-4"
+      ]
     }
   },
   "order": [
+    "bz_product",
     "main",
     "product-recommendations",
     "text_column_with_image_MUhrhK",
