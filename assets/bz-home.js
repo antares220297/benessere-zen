@@ -5,7 +5,7 @@
   document.querySelectorAll("[data-bz-seg]").forEach(function (seg) {
     var knob = seg.querySelector("[data-bz-knob]");
     var buttons = seg.querySelectorAll("button");
-    var root = seg.closest("[data-bz-picked]");
+    var root = seg.closest("[data-bz-picked], [data-bz-switch]");
 
     function place(button) {
       if (!knob || !button) return;
@@ -21,9 +21,15 @@
       });
       place(button);
       if (!root) return;
-      root.querySelectorAll("[data-bz-pane]").forEach(function (pane) {
-        pane.hidden = pane.getAttribute("data-bz-pane") !== button.getAttribute("data-bz-pane");
+      root.querySelectorAll("[data-bz-pane]:not(button)").forEach(function (pane) {
+        var on = pane.getAttribute("data-bz-pane") === button.getAttribute("data-bz-pane");
+        pane.hidden = !on;
+        pane.classList.toggle("is-on", on);
       });
+      root.querySelectorAll("[data-bz-shot]").forEach(function (shot) {
+        shot.hidden = shot.getAttribute("data-bz-shot") !== button.getAttribute("data-bz-pane");
+      });
+      if (window.bzSumSet) window.bzSumSet(root);
     }
 
     buttons.forEach(function (button) {
@@ -33,6 +39,55 @@
     window.addEventListener("resize", function () {
       place(seg.querySelector(".is-on"));
     });
+  });
+
+  function money(cents) {
+    var whole = Math.floor(cents / 100);
+    var rest = String(cents % 100).padStart(2, "0");
+    return whole + "<sup>," + rest + "</sup> €";
+  }
+
+  window.bzSumSet = function (root) {
+    var pane = root.querySelector("[data-bz-pane].is-on");
+    if (!pane) return;
+    var total = 0;
+    var count = 0;
+    pane.querySelectorAll("input:checked").forEach(function (input) {
+      total += Number(input.getAttribute("data-bz-price")) || 0;
+      count += 1;
+    });
+    var countNode = root.querySelector("[data-bz-count]");
+    var sumNode = root.querySelector("[data-bz-sum]");
+    if (countNode) countNode.textContent = String(count);
+    if (sumNode) sumNode.innerHTML = money(total);
+  };
+
+  document.querySelectorAll("[data-bz-switch]").forEach(function (root) {
+    window.bzSumSet(root);
+    root.addEventListener("change", function () { window.bzSumSet(root); });
+  });
+
+  document.addEventListener("click", function (event) {
+    var button = event.target.closest("[data-bz-add-set]");
+    if (!button || !window.fetch) return;
+    var root = button.closest("[data-bz-switch]");
+    var pane = root && root.querySelector("[data-bz-pane].is-on");
+    if (!pane) return;
+    var items = [];
+    pane.querySelectorAll("input:checked").forEach(function (input) {
+      if (input.value) items.push({ id: Number(input.value), quantity: 1 });
+    });
+    if (!items.length) return;
+    var cartRoot = (window.Shopify && Shopify.routes && Shopify.routes.root) || "/";
+    fetch(cartRoot + "cart/add.js", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({ items: items })
+    }).then(function () {
+      document.dispatchEvent(new CustomEvent("eurus:cart:items-changed"));
+      var nativeCart = document.getElementById("cart-icon");
+      if (nativeCart) nativeCart.click();
+    }).catch(function () {});
   });
 
   document.addEventListener("submit", function (event) {

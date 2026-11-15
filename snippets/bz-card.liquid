@@ -11,6 +11,29 @@
   assign cents = cents_num | prepend: '00' | slice: -2, 2
   assign secondary = product.images[1]
   assign photo_alt = product.featured_image.alt | default: product.title
+  assign stone = product.title | downcase
+  assign dot = '#958d7f'
+  if stone contains 'ametista'
+    assign dot = '#7b4fa0'
+  elsif stone contains 'lapis'
+    assign dot = '#2d4fa3'
+  elsif stone contains 'tormalina' or stone contains 'ossidiana' or stone contains 'onice'
+    assign dot = '#2a2a2e'
+  elsif stone contains 'shungite'
+    assign dot = '#2b2b2e'
+  elsif stone contains 'ematite'
+    assign dot = '#55565c'
+  elsif stone contains 'rosa'
+    assign dot = '#d79aa4'
+  elsif stone contains 'pirite'
+    assign dot = '#b39a5a'
+  elsif stone contains 'tigre'
+    assign dot = '#a8742c'
+  elsif stone contains 'luna'
+    assign dot = '#dfe3ea'
+  elsif stone contains 'rocca' or stone contains 'cristallo'
+    assign dot = '#d7dde2'
+  endif
   assign eager_load = false
   if eager
     assign eager_load = true
@@ -28,7 +51,7 @@
   {%- endif -%}
   <a class="bz-card__photo" href="{{ product.url }}">
     {%- if variant.inventory_management != blank and variant.inventory_quantity == 1 and product.available -%}
-      <span class="bz-badge">Ultimo pezzo</span>
+      <span class="bz-badge"><span class="bz-badge__dot"></span>Ultimo pezzo</span>
     {%- elsif product.available == false -%}
       <span class="bz-badge bz-badge--quiet">Esaurito</span>
     {%- endif -%}
@@ -45,7 +68,7 @@
   </a>
   <a class="bz-card__name" href="{{ product.url }}">{{ product.title | escape }}</a>
   {%- if product.type != blank -%}
-    <p class="bz-card__meta"><span class="bz-card__dot" aria-hidden="true"></span>{{ product.type | escape }}</p>
+    <p class="bz-card__meta"><span class="bz-card__dot" style="background: {{ dot }}" aria-hidden="true"></span>{{ product.type | escape }}</p>
   {%- endif -%}
   <p class="bz-card__price">{{ euros }}<sup>,{{ cents }}</sup> €</p>
 </article>

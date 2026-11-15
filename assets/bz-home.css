@@ -17,21 +17,23 @@ body:has(.bz-hero) {
 }
 
 .bz-home {
-  color: var(--ivory);
-  font-family: var(--sans);
+  color: #eee7db;
+  font-family: Figtree, var(--sans), system-ui, sans-serif;
+  background: #141312;
 }
 
 .bz-home h1,
 .bz-home h2,
 .bz-home h3 {
-  font-family: var(--serif);
+  font-family: Baskervville, var(--serif), Georgia, serif;
   font-weight: 400;
   letter-spacing: -0.005em;
+  color: #eee7db;
 }
 
 .bz-home em {
   font-style: italic;
-  color: var(--gold);
+  color: #c9a96e;
 }
 
 .bz-btn {
@@ -304,7 +306,7 @@ body:has(.bz-hero) {
   display: flex;
   justify-content: space-between;
   gap: 12px;
-  padding: 30px var(--side) 8px;
+  padding: 30px 24px 28px;
   overflow-x: auto;
   scrollbar-width: none;
   background: #141312;
@@ -314,7 +316,8 @@ body:has(.bz-hero) {
   flex: 0 0 auto;
   width: 118px;
   text-align: center;
-  color: inherit;
+  color: #eee7db;
+  font-family: Figtree, var(--sans), system-ui, sans-serif;
   text-decoration: none;
   font-size: 14px;
   font-weight: 500;
@@ -356,7 +359,8 @@ body:has(.bz-hero) {
 
 .bz-sphere small {
   display: block;
-  color: var(--mute);
+  color: #958d7f;
+  font-family: Figtree, var(--sans), system-ui, sans-serif;
   font-weight: 400;
   font-size: 12px;
 }
@@ -368,17 +372,27 @@ body:has(.bz-hero) {
   height: 100%;
 }
 
+.bz-sphere__all {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  background: #201e1b;
+}
+
 .bz-sphere__all svg {
   width: 22px;
   height: 22px;
-  stroke: var(--gold);
+  stroke: #c9a96e;
   fill: none;
   stroke-width: 1.5;
 }
 
 .bz-picked {
-  padding: calc(var(--sp) * 0.55) var(--side);
+  padding: 36px 24px 28px;
   background: #141312;
+  color: #eee7db;
+  font-family: Figtree, var(--sans), system-ui, sans-serif;
 }
 
 .bz-picked__head {
@@ -408,8 +422,8 @@ body:has(.bz-hero) {
   display: inline-flex;
   padding: 4px;
   border-radius: 999px;
-  background: var(--card);
-  border: 1px solid var(--line);
+  background: #201e1b;
+  border: 1px solid rgba(238, 231, 219, 0.11);
 }
 
 .bz-seg button {
@@ -420,8 +434,8 @@ body:has(.bz-hero) {
   border: 0;
   border-radius: 999px;
   background: transparent;
-  color: var(--ivory2);
-  font: inherit;
+  color: #cdc4b4;
+  font-family: Figtree, var(--sans), system-ui, sans-serif;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -436,16 +450,52 @@ body:has(.bz-hero) {
   top: 4px;
   bottom: 4px;
   left: 4px;
-  width: 110px;
+  width: 118px;
   border-radius: 999px;
-  background: var(--ivory);
+  background: #eee7db;
 }
 
 .bz-picked__all {
-  color: var(--goldl);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #e3cb95;
+  font-family: Figtree, var(--sans), system-ui, sans-serif;
   font-size: 14px;
   font-weight: 600;
   text-decoration: none;
+}
+
+.bz-picked__all svg,
+.bz-btn svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.7;
+}
+
+.bz-wave {
+  display: block;
+  width: 100%;
+  height: 84px;
+  margin: -1px 0;
+  overflow: hidden;
+  line-height: 0;
+  position: relative;
+  background: var(--bz-from, #141312);
+}
+
+.bz-wave svg {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
+}
+
+.bz-wave svg.is-back {
+  width: 225%;
 }
 
 .bz-grid {
@@ -456,10 +506,12 @@ body:has(.bz-hero) {
 
 .bz-card {
   position: relative;
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: var(--r);
+  background: #201e1b;
+  border: 1px solid rgba(238, 231, 219, 0.11);
+  border-radius: 18px;
   padding: 8px 8px 14px;
+  color: #eee7db;
+  font-family: Figtree, var(--sans), system-ui, sans-serif;
 }
 
 .bz-card:hover {
@@ -500,13 +552,22 @@ body:has(.bz-hero) {
   z-index: 2;
   display: inline-flex;
   align-items: center;
+  gap: 6px;
   height: 28px;
   padding: 0 12px;
   border-radius: 999px;
-  background: var(--gold);
+  background: #c9a96e;
   color: #17130d;
+  font-family: Figtree, var(--sans), system-ui, sans-serif;
   font-size: 12px;
   font-weight: 600;
+}
+
+.bz-badge__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #17130d;
 }
 
 .bz-badge--quiet {
@@ -517,8 +578,8 @@ body:has(.bz-hero) {
 
 .bz-card__form {
   position: absolute;
-  top: -2px;
-  right: -2px;
+  top: -10px;
+  right: -10px;
   z-index: 3;
   margin: 0;
 }
@@ -546,7 +607,9 @@ body:has(.bz-hero) {
   width: 9px;
   height: 9px;
   border-radius: 50%;
-  background: var(--mute);
+  background: #958d7f;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  flex: none;
 }
 
 .bz-card__price,
@@ -698,7 +761,11 @@ body:has(.bz-hero) {
   }
 
   .bz-picked {
-    padding: 28px 14px 36px;
+    padding: 28px 14px 20px;
+  }
+
+  .bz-wave {
+    height: 46px;
   }
 
   .bz-picked__head {

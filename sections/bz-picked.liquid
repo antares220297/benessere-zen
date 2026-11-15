@@ -12,7 +12,7 @@
         {%- endfor -%}
       </div>
       {%- if section.settings.link_label != blank -%}
-        <a class="bz-picked__all" href="{{ section.settings.link }}">{{ section.settings.link_label | escape }}</a>
+        <a class="bz-picked__all" href="{{ section.settings.link }}">{{ section.settings.link_label | escape }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       {%- endif -%}
     </div>
   </div>
@@ -28,6 +28,7 @@
     </div>
   {%- endfor -%}
 </div>
+{% render 'bz-wave', from: '#141312', to: '#241a2f' %}
 <script src="{{ 'bz-home.js' | asset_url }}" defer></script>
 
 {% schema %}

@@ -30,7 +30,7 @@
       {%- endif -%}
       <div class="bz-hero__actions">
         {%- if section.settings.primary_label != blank -%}
-          <a class="bz-btn bz-btn--gold" href="{{ section.settings.primary_link | default: source.url }}">{{ section.settings.primary_label | escape }}</a>
+          <a class="bz-btn bz-btn--gold" href="{{ section.settings.primary_link | default: source.url }}">{{ section.settings.primary_label | escape }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         {%- endif -%}
         {%- if section.settings.secondary_label != blank -%}
           <a class="bz-btn bz-btn--line" href="{{ section.settings.secondary_link }}">{{ section.settings.secondary_label | escape }}</a>
@@ -91,7 +91,7 @@
             <p>{{ block.settings.text | escape }}</p>
           {%- endif -%}
           {%- if block.settings.button_label != blank -%}
-            <span class="bz-btn bz-btn--ivory bz-btn--sm">{{ block.settings.button_label | escape }}</span>
+            <span class="bz-btn bz-btn--ivory bz-btn--sm">{{ block.settings.button_label | escape }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
           {%- endif -%}
         </span>
       </a>
