@@ -27,7 +27,8 @@
         "full_width_mobile": true,
         "padding_top_mobile": 0,
         "padding_bottom_mobile": 32
-      }
+      },
+      "disabled": true
     },
     "rich_text_8QeJPk": {
       "type": "rich-text",
@@ -63,7 +64,8 @@
         "show_section_divider_mobile": false,
         "padding_top_mobile": 28,
         "padding_bottom_mobile": 28
-      }
+      },
+      "disabled": true
     },
     "9f05d7f2-771d-4719-b577-9d92b6324fe2": {
       "type": "media-gallery",
@@ -275,7 +277,8 @@
         "full_width_mobile": false,
         "padding_top_mobile": 28,
         "padding_bottom_mobile": 28
-      }
+      },
+      "disabled": true
     },
     "product-grid": {
       "type": "main-collection-product-grid",
@@ -948,9 +951,14 @@
         "padding_top_mobile": 28,
         "padding_bottom_mobile": 28
       }
+    },
+    "bz_collection": {
+      "type": "bz-collection",
+      "settings": {}
     }
   },
   "order": [
+    "bz_collection",
     "banner",
     "rich_text_8QeJPk",
     "9f05d7f2-771d-4719-b577-9d92b6324fe2",

@@ -1,0 +1,68 @@
+{{ 'bz-tokens.css' | asset_url | stylesheet_tag }}
+{{ 'bz-home.css' | asset_url | stylesheet_tag }}
+{{ 'bz-collection.css' | asset_url | stylesheet_tag }}
+
+<div class="bz bz-coll" data-bz-coll>
+  <nav class="bz-crumb"><a href="{{ routes.root_url }}">Home</a> <span aria-hidden="true">›</span> <span>{{ collection.title | escape }}</span></nav>
+  <section class="bz-chead">
+    {%- assign banner = section.settings.image | default: collection.image -%}
+    {%- if banner != blank -%}
+      {{ banner | image_url: width: 1400 | image_tag: alt: collection.title, widths: '700, 1400', sizes: '60vw', loading: 'eager' }}
+    {%- endif -%}
+    <div class="bz-chead__copy">
+      <h1>{{ collection.title | escape }}</h1>
+      {%- if collection.description != blank -%}
+        <p>{{ collection.description | strip_html | truncate: 180 }}</p>
+      {%- endif -%}
+    </div>
+  </section>
+  <div class="bz-clay">
+    <aside class="bz-side" data-bz-side>
+      <input type="search" placeholder="Cerca in questa collezione" data-bz-q aria-label="Cerca">
+      <div class="bz-filters">
+        <details open><summary>Tipo</summary>
+          {%- assign types = collection.all_types -%}
+          {%- for type in types -%}
+            <label><input type="checkbox" data-bz-type value="{{ type | escape }}">{{ type | escape }}</label>
+          {%- endfor -%}
+        </details>
+        <details open><summary>Disponibilità</summary>
+          <label><input type="checkbox" data-bz-stock> Solo disponibili ora</label>
+        </details>
+      </div>
+    </aside>
+    <div>
+      <div class="bz-mobile-filters">
+        <button type="button" class="bz-pill" data-bz-open-filters>Filtri</button>
+      </div>
+      <div class="bz-coll__tools">
+        <span data-bz-count>{{ collection.products_count }} pezzi</span>
+        <select data-bz-sort aria-label="Ordina">
+          <option value="manual">Più scelti</option>
+          <option value="price-asc">Prezzo crescente</option>
+          <option value="price-desc">Prezzo decrescente</option>
+          <option value="title">Nome</option>
+        </select>
+      </div>
+      <div class="bz-cgrid" data-bz-grid>
+        {%- for product in collection.products -%}
+          <div data-bz-item data-type="{{ product.type | escape }}" data-title="{{ product.title | downcase | escape }}" data-price="{{ product.price }}" data-available="{{ product.available }}">
+            {% render 'bz-card', product: product %}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+<script src="{{ 'bz-collection.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Collezione",
+  "class": "bz-home",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Foto di testa" }
+  ],
+  "presets": [{ "name": "Collezione" }]
+}
+{% endschema %}
