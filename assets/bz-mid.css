@@ -1,4 +1,4 @@
-/* Home middle: promo bento, stone cards, ritual set. */
+/* Home middle: promo bento, stone cards, intentions, ritual set. */
 
 .bz-mid {
   color: #eee7db;
@@ -417,6 +417,79 @@
   font-size: 12.5px;
 }
 
+.bz-intent {
+  background: #141312;
+  padding: 40px 24px 48px;
+  color: #eee7db;
+}
+
+.bz-intent h2 {
+  margin: 0 0 28px;
+  font-size: clamp(30px, 3vw, 44px);
+  line-height: 1.05;
+}
+
+.bz-intent__list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px 18px;
+}
+
+.bz-intent__item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  max-width: 100%;
+  color: inherit;
+  text-decoration: none;
+  container-type: inline-size;
+}
+
+.bz-intent__word {
+  display: block;
+  max-width: 100%;
+  font-family: Baskervville, Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(20px, 12cqi, 52px);
+  line-height: 1.05;
+  color: #eee7db;
+  text-decoration: none;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.bz-intent__line {
+  margin: 0;
+  font-family: Figtree, var(--sans), system-ui, sans-serif;
+  font-size: 14.5px;
+  line-height: 1.45;
+  color: #cdc4b4;
+}
+
+.bz-intent__word:hover,
+.bz-intent__word:focus-visible {
+  color: #e3cb95;
+}
+
+.bz-intent__word:focus-visible {
+  outline: 2px solid #c9a96e;
+  outline-offset: 4px;
+}
+
+@media (min-width: 860px) {
+  .bz-intent__list {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 32px;
+  }
+
+  .bz-intent__item {
+    flex: 1 1 0;
+  }
+}
+
 .bz-ritual {
   background: #2a141b;
   padding: 36px 24px 56px;
@@ -567,6 +640,7 @@
 @media (max-width: 860px) {
   .bz-promo,
   .bz-stones,
+  .bz-intent,
   .bz-ritual {
     padding-left: 14px;
     padding-right: 14px;

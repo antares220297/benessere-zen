@@ -150,21 +150,24 @@
           "type": "list",
           "settings": {
             "label": "Più scelti",
-            "collection": "gioielli-con-pietre"
+            "collection": "all",
+            "sort_by": "best-selling"
           }
         },
         "tab-novita": {
           "type": "list",
           "settings": {
             "label": "Novità",
-            "collection": "mala-tibetani"
+            "collection": "all",
+            "sort_by": "created-descending"
           }
         },
         "tab-ultimi": {
           "type": "list",
           "settings": {
             "label": "Ultimi pezzi",
-            "collection": "pietre-burattate"
+            "collection": "ultimi-pezzi",
+            "sort_by": "best-selling"
           }
         }
       },
@@ -372,11 +375,50 @@
             "caption_accent": "da portare a strati",
             "caption": "Mala, bracciale e ciondolo in ametista, da mettere insieme."
           }
+        },
+        "set-rosa": {
+          "type": "set",
+          "settings": {
+            "label": "Quarzo rosa",
+            "product_1": "mala-braccialetto-quarzo-rosa-ohm",
+            "product_2": "ciondolo-quarzo-rosa-cuore",
+            "product_3": "pietre-burattate-quarzo-rosa",
+            "caption_title": "Quarzo rosa,",
+            "caption_accent": "da regalare",
+            "caption": "Bracciale, ciondolo e una pietra burattata. Tre modi di portare lo stesso rosa."
+          }
+        },
+        "set-serenita": {
+          "type": "set",
+          "settings": {
+            "label": "Serenità",
+            "product_1": "braccialetto-ametista-avventurina-cristallo-di-rocca-om",
+            "product_2": "braccialetto-ametista-chevron-cristallo-di-rocca-loto",
+            "product_3": "bracciale-cristallo-rocca-ametista-fiore-della-vita",
+            "caption_title": "Per la quiete,",
+            "caption_accent": "senza fretta",
+            "caption": "Tre bracciali in ametista e cristallo, da portare uno o tutti."
+          }
+        },
+        "set-concentrazione": {
+          "type": "set",
+          "settings": {
+            "label": "Concentrazione",
+            "product_1": "braccialetto-lapis-lazuli",
+            "product_2": "ciondolo-in-lapis-lazuli",
+            "product_3": "pietre-burattate-lapislazzuli",
+            "caption_title": "Lapislazzuli,",
+            "caption_accent": "per restare sul pezzo",
+            "caption": "Bracciale, ciondolo e pietra burattata. Lo stesso blu, tre forme."
+          }
         }
       },
       "block_order": [
         "set-nero",
-        "set-ametista"
+        "set-ametista",
+        "set-rosa",
+        "set-serenita",
+        "set-concentrazione"
       ],
       "settings": {
         "heading": "Completa",
@@ -391,12 +433,15 @@
       "settings": {
         "heading": "Anche",
         "heading_accent": "dal vivo",
-        "text": "Ogni pezzo del sito è anche sui nostri scaffali. Le pietre dal vivo hanno un altro colore: passa a vederle, o ordina qui e ritira. Siamo in Via Marcello Provenzali 1, 44042 Cento FE. Tel +39 347 088 3168. info@benesserezen.shop. Orari: lun, mar, mer, ven, sab 9:30-12:30 e 16:00-19:30, gio 9:00-13:00.",
+        "text": "Puoi pagare qui sul sito, o passare in negozio e scegliere di persona.",
         "address": "Via Marcello Provenzali 1, 44042 Cento FE",
         "button_label": "Orari e indicazioni",
         "button_link": "",
         "faq_heading": "Domande",
-        "faq_accent": "frequenti"
+        "faq_accent": "frequenti",
+        "phone": "Tel +39 347 088 3168",
+        "email": "info@benesserezen.shop",
+        "hours": "Orari: lun, mar, mer, ven, sab 9:30-12:30 e 16:00-19:30, gio 9:00-13:00."
       },
       "blocks": {
         "step-1": {
@@ -443,7 +488,7 @@
           "type": "faq",
           "settings": {
             "question": "Come funziona il ritiro in negozio?",
-            "answer": "Scegli il ritiro al pagamento. Di solito l'ordine è pronto in 4 ore e lo ritiri senza spese.",
+            "answer": "Al pagamento puoi scegliere il ritiro in negozio, in Via Marcello Provenzali 1 a Cento. Ti avvisiamo quando il pezzo è pronto.",
             "open": false
           }
         },
@@ -524,6 +569,61 @@
         "button_label": "Iscriviti",
         "note": "Una mail al mese con arrivi e pezzi che tornano disponibili."
       }
+    },
+    "bz_intent": {
+      "type": "bz-intentions",
+      "settings": {
+        "heading": "Scegli per intenzione"
+      },
+      "blocks": {
+        "in-serenita": {
+          "type": "intention",
+          "settings": {
+            "word": "Serenità",
+            "line": "In molte pratiche l'ametista si tiene vicina quando si cerca quiete.",
+            "collection": "intenzione-serenita"
+          }
+        },
+        "in-coraggio": {
+          "type": "intention",
+          "settings": {
+            "word": "Coraggio",
+            "line": "Corniola e diaspro rosso accompagnano chi deve farsi avanti.",
+            "collection": "intenzione-coraggio"
+          }
+        },
+        "in-protezione": {
+          "type": "intention",
+          "settings": {
+            "word": "Protezione",
+            "line": "Tormalina e ossidiana si portano come un confine, una pietra scura addosso.",
+            "collection": "intenzione-protezione"
+          }
+        },
+        "in-affetti": {
+          "type": "intention",
+          "settings": {
+            "word": "Affetti",
+            "line": "Il quarzo rosa, in tante tradizioni, è la pietra che si regala a chi si vuole bene.",
+            "collection": "intenzione-affetti"
+          }
+        },
+        "in-concentrazione": {
+          "type": "intention",
+          "settings": {
+            "word": "Concentrazione",
+            "line": "Il lapislazzuli si usa da secoli quando serve tenere la mente su una cosa sola.",
+            "collection": "intenzione-concentrazione"
+          }
+        }
+      },
+      "block_order": [
+        "in-serenita",
+        "in-coraggio",
+        "in-protezione",
+        "in-affetti",
+        "in-concentrazione"
+      ]
     }
   },
   "order": [
@@ -532,6 +632,7 @@
     "bz_picked",
     "bz_promo",
     "bz_stones",
+    "bz_intent",
     "bz_ritual",
     "bz_store",
     "bz_newsletter"

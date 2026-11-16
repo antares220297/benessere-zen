@@ -6,8 +6,12 @@
     <h2>{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h2>
     <div class="bz-picked__tools">
       <div class="bz-pills" data-bz-seg role="tablist">
+        {%- assign picked_first_tab = true -%}
         {%- for block in section.blocks -%}
-          <button type="button" role="tab" class="{% if forloop.first %}is-on{% endif %}" data-bz-pane="{{ forloop.index }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</button>
+          {%- if block.settings.collection != blank and block.settings.collection.products_count > 0 -%}
+            <button type="button" role="tab" class="{% if picked_first_tab %}is-on{% endif %}" data-bz-pane="{{ forloop.index }}" aria-selected="{% if picked_first_tab %}true{% else %}false{% endif %}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</button>
+            {%- assign picked_first_tab = false -%}
+          {%- endif -%}
         {%- endfor -%}
       </div>
       {%- if section.settings.link_label != blank -%}
@@ -15,19 +19,31 @@
       {%- endif -%}
     </div>
   </div>
+  {%- assign picked_first_pane = true -%}
   {%- for block in section.blocks -%}
-    <div class="bz-grid" data-bz-pane="{{ forloop.index }}"{% unless forloop.first %} hidden{% endunless %}>
-      {%- if block.settings.collection != blank and block.settings.collection.products_count > 0 -%}
-        {%- for product in block.settings.collection.products limit: section.settings.limit -%}
+    {%- if block.settings.collection != blank and block.settings.collection.products_count > 0 -%}
+      {%- liquid
+        assign picked_products = block.settings.collection.products
+        case block.settings.sort_by
+          when 'created-descending'
+            assign picked_products = picked_products | sort: 'created_at' | reverse
+          when 'created-ascending'
+            assign picked_products = picked_products | sort: 'created_at'
+          when 'price-ascending'
+            assign picked_products = picked_products | sort: 'price'
+          when 'price-descending'
+            assign picked_products = picked_products | sort: 'price' | reverse
+        endcase
+      -%}
+      <div class="bz-grid" data-bz-pane="{{ forloop.index }}"{% unless picked_first_pane %} hidden{% endunless %}>
+        {%- for product in picked_products limit: section.settings.limit -%}
           {% render 'bz-card', product: product, eager: forloop.first %}
         {%- endfor -%}
-      {%- else -%}
-        <p class="bz-empty">Nessun pezzo in questa lista.</p>
-      {%- endif -%}
-    </div>
+      </div>
+      {%- assign picked_first_pane = false -%}
+    {%- endif -%}
   {%- endfor -%}
 </div>
-{% render 'bz-wave', from: '#141312', to: '#241a2f' %}
 <script src="{{ 'bz-home.js' | asset_url }}" defer></script>
 
 {% schema %}
@@ -47,7 +63,20 @@
       "name": "Lista",
       "settings": [
         { "type": "text", "id": "label", "label": "Nome", "default": "Più scelti" },
-        { "type": "collection", "id": "collection", "label": "Collezione" }
+        { "type": "collection", "id": "collection", "label": "Collezione" },
+        {
+          "type": "select",
+          "id": "sort_by",
+          "label": "Ordinamento",
+          "default": "best-selling",
+          "options": [
+            { "value": "best-selling", "label": "Più venduti" },
+            { "value": "created-descending", "label": "Più recenti" },
+            { "value": "created-ascending", "label": "Meno recenti" },
+            { "value": "price-ascending", "label": "Prezzo crescente" },
+            { "value": "price-descending", "label": "Prezzo decrescente" }
+          ]
+        }
       ]
     }
   ],

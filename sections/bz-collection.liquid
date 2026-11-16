@@ -4,6 +4,26 @@
 
 {%- paginate collection.products by section.settings.per_page -%}
 <div class="bz bz-coll" data-bz-coll data-section-id="{{ section.id }}">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": {{ request.origin | append: routes.root_url | json }}
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": {{ collection.title | json }},
+          "item": {{ request.origin | append: collection.url | json }}
+        }
+      ]
+    }
+  </script>
   <nav class="bz-crumb"><a href="{{ routes.root_url }}">Home</a> <span aria-hidden="true">›</span> <span>{{ collection.title | escape }}</span></nav>
   <section class="bz-chead">
     {%- assign banner = section.settings.image | default: collection.image -%}
@@ -15,7 +35,28 @@
         {{ banner | image_url: width: 1600 | image_tag: alt: collection.title, widths: '800, 1400', sizes: '(max-width: 860px) 100vw, 60vw', loading: 'eager' }}
       {%- endif -%}
       <div class="bz-chead__copy">
-        <h1>{{ collection.title | escape }}</h1>
+        {%- liquid
+          assign bz_accent = section.settings.accent | strip
+          assign bz_accent_handle = section.settings.accent_handle | strip | downcase
+          assign bz_h1_split = false
+          if bz_accent != blank and bz_accent_handle == collection.handle
+            assign bz_title_down = collection.title | downcase
+            assign bz_accent_down = bz_accent | downcase
+            if bz_title_down contains bz_accent_down
+              assign bz_before_len = bz_title_down | split: bz_accent_down | first | size
+              assign bz_after_start = bz_before_len | plus: bz_accent.size
+              assign bz_h1_before = collection.title | slice: 0, bz_before_len
+              assign bz_h1_accent = collection.title | slice: bz_before_len, bz_accent.size
+              assign bz_h1_after = collection.title | slice: bz_after_start, 400
+              assign bz_h1_split = true
+            endif
+          endif
+        -%}
+        {%- if bz_h1_split -%}
+          <h1>{{ bz_h1_before | escape }}<em>{{ bz_h1_accent | escape }}</em>{{ bz_h1_after | escape }}</h1>
+        {%- else -%}
+          <h1>{{ collection.title | escape }}</h1>
+        {%- endif -%}
         {%- if collection.description != blank -%}
           <p>{{ collection.description | strip_html }}</p>
         {%- endif -%}
@@ -30,8 +71,8 @@
       </a>
       {%- for block in section.blocks -%}
         {%- if block.type == 'chip' and block.settings.collection != blank -%}
-          {%- assign chip_only = block.settings.show_on | strip -%}
-          {%- if chip_only == blank or chip_only == collection.handle -%}
+          {%- assign chip_only = block.settings.show_on | strip | downcase -%}
+          {%- if chip_only != blank and chip_only == collection.handle -%}
           <a class="bz-cbub" href="{{ block.settings.collection.url }}" {{ block.shopify_attributes }}>
             {%- assign chip_image = block.settings.image | default: block.settings.collection.image | default: block.settings.collection.products.first.featured_image -%}
             {%- if chip_image -%}{{ chip_image | image_url: width: 80 | image_tag: alt: '', width: 36, height: 36 }}{%- endif -%}
@@ -46,7 +87,7 @@
 
   <div class="bz-clay">
     <aside class="bz-side" data-bz-side>
-      <button type="button" class="bz-side__close" data-bz-close-filters aria-label="Chiudi filtri">
+      <button type="button" class="bz-side__close" data-bz-close-filters aria-label="Chiudi">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
       </button>
       <form class="bz-side__search" method="get" action="{{ routes.search_url }}" role="search">
@@ -90,35 +131,36 @@
             <details><summary>Intenzione <i aria-hidden="true"></i></summary></details>
           {%- endif -%}
           {%- for filter in collection.filters -%}
-            <details open>
+            {%- liquid
+              assign flabel = filter.label | downcase | strip
+              assign fparam = ''
+              for value in filter.values limit: 1
+                assign fparam = value.param_name
+              endfor
+              assign forder = 5
+              if filter.type == 'price_range'
+                assign forder = 1
+              elsif fparam == 'filter.v.availability' or flabel contains 'disponib'
+                assign forder = 4
+              elsif flabel == 'pietra' or flabel == 'pietre' or fparam contains 'pietra'
+                assign forder = 3
+              elsif flabel == 'tipo' or flabel == 'product type' or flabel == 'tipo di prodotto' or fparam contains 'product_type'
+                assign forder = 2
+              endif
+            -%}
+            <details open style="order: {{ forder }}">
               <summary>{{ filter.label | escape }} <i aria-hidden="true"></i></summary>
               {%- case filter.type -%}
                 {%- when 'price_range' -%}
                   {%- liquid
-                    assign price_min_cents = 0
-                    assign price_max_cents = filter.range_max
-                    if collection.price_min != blank
-                      assign price_min_cents = collection.price_min
+                    assign shown_min_cents = 0
+                    assign shown_max_cents = filter.range_max | default: 0
+                    if filter.min_value.value != nil
+                      assign shown_min_cents = filter.min_value.value
                     endif
-                    if collection.price_max != blank
-                      assign price_max_cents = collection.price_max
+                    if filter.max_value.value != nil
+                      assign shown_max_cents = filter.max_value.value
                     endif
-                    if filter.range_max == blank and collection.price_max == blank
-                      if filter.min_value.value != nil
-                        assign price_min_cents = filter.min_value.value
-                      endif
-                      if filter.max_value.value != nil
-                        assign price_max_cents = filter.max_value.value
-                      endif
-                    endif
-                    if price_min_cents == blank
-                      assign price_min_cents = 0
-                    endif
-                    if price_max_cents == blank
-                      assign price_max_cents = 0
-                    endif
-                  -%}
-                  {%- liquid
                     assign price_range_max = filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.'
                     assign price_range_min_value = '0'
                     assign price_range_max_value = price_range_max
@@ -133,7 +175,7 @@
                     <input type="range" name="{{ filter.min_value.param_name }}" min="0" max="{{ price_range_max }}" value="{{ price_range_min_value }}" step="0.01" data-bz-range="min" aria-label="Prezzo minimo">
                     <input type="range" name="{{ filter.max_value.param_name }}" min="0" max="{{ price_range_max }}" value="{{ price_range_max_value }}" step="0.01" data-bz-range="max" aria-label="Prezzo massimo">
                   </div>
-                  <div class="bz-range__ends"><span>{% render 'bz-money', cents: price_min_cents %}</span><span>{% render 'bz-money', cents: price_max_cents %}</span></div>
+                  <div class="bz-range__ends"><span data-bz-euro="min">{% render 'bz-money', cents: shown_min_cents %}</span><span data-bz-euro="max">{% render 'bz-money', cents: shown_max_cents %}</span></div>
                 {%- else -%}
                   {%- for value in filter.values -%}
                     <label>
@@ -147,33 +189,59 @@
               {%- endcase -%}
             </details>
           {%- endfor -%}
-          <label class="bz-toggle">Solo disponibili ora <i aria-hidden="true"></i>
-            <input type="checkbox" name="filter.v.availability" value="1" {% if request.params['filter.v.availability'] == '1' %}checked{% endif %} hidden>
-          </label>
         </div>
         <input type="hidden" name="sort_by" value="{{ collection.sort_by | default: collection.default_sort_by }}">
+        <div class="bz-side__foot">
+          <button type="submit" class="bz-btn bz-btn--ivory bz-side__apply">Mostra {{ collection.products_count }} risultati</button>
+        </div>
         <noscript><button class="bz-filter-apply" type="submit">Applica filtri</button></noscript>
       </form>
     </aside>
     <div>
+      {%- assign current_sort = collection.sort_by | default: collection.default_sort_by -%}
+      {%- capture bz_filter_qs -%}
+        {%- for filter in collection.filters -%}
+          {%- if filter.type == 'price_range' -%}
+            {%- if filter.min_value.value != nil -%}
+              {%- assign bz_pmin = filter.min_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' -%}&{{ filter.min_value.param_name }}={{ bz_pmin }}
+            {%- endif -%}
+            {%- if filter.max_value.value != nil -%}
+              {%- assign bz_pmax = filter.max_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' -%}&{{ filter.max_value.param_name }}={{ bz_pmax }}
+            {%- endif -%}
+          {%- else -%}
+            {%- for value in filter.active_values -%}
+              &{{ value.param_name }}={{ value.value | url_encode }}
+            {%- endfor -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endcapture -%}
+      {%- assign bz_filter_qs = bz_filter_qs | strip_newlines | strip -%}
       <div class="bz-mfilters">
-        <button type="button" class="is-on" data-bz-open-filters>Filtri</button>
-        <button type="button" data-bz-open-filters>Tipo</button>
-        <button type="button" data-bz-open-filters>Pietra</button>
-        <button type="button" data-bz-open-filters>Prezzo</button>
-        <button type="button" data-bz-open-filters>Ordina</button>
+        <button type="button" data-bz-open-filters>Filtri</button>
+        <button type="button" data-bz-open-sort>Ordina</button>
+      </div>
+      <div class="bz-sortsheet" data-bz-sort-sheet>
+        <button type="button" class="bz-sortsheet__close" data-bz-close-sort aria-label="Chiudi">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+        <div class="bz-sortsheet__list">
+          {%- assign bz_sort_keys = 'price-ascending,price-descending,created-descending,created-ascending,best-selling' | split: ',' -%}
+          {%- for key in bz_sort_keys -%}
+            {%- for option in collection.sort_options -%}
+              {%- if option.value == key -%}
+                <a class="bz-sortsheet__opt" href="{{ collection.url }}?sort_by={{ option.value }}{{ bz_filter_qs }}" data-bz-sort-link data-sort="{{ option.value | escape }}" {% if option.value == current_sort %}aria-current="true"{% endif %}>{{ option.name | escape }}</a>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endfor -%}
+        </div>
       </div>
       <div class="bz-coll__tools">
         <span>
           <span data-bz-count>{{ collection.products_count }}</span> pezzi
-          {%- if request.params['filter.v.availability'] != blank or current_tags.size > 0 -%}
-            <a class="bz-chip-on" href="{{ collection.url }}">Disponibili <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></a>
-          {%- endif -%}
         </span>
         <span class="bz-tools-right">
           <label class="bz-sort">
             <select data-bz-sort aria-label="Ordina">
-              {%- assign current_sort = collection.sort_by | default: collection.default_sort_by -%}
               {%- for option in collection.sort_options -%}
                 <option value="{{ option.value }}" {% if option.value == current_sort %}selected{% endif %}>{{ option.name | escape }}</option>
               {%- endfor -%}
@@ -189,6 +257,43 @@
           </span>
         </span>
       </div>
+      {%- capture bz_active_chips -%}
+        {%- for filter in collection.filters -%}
+          {%- if filter.type == 'price_range' -%}
+            {%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
+              {%- assign price_clear = filter.url_to_remove -%}
+              {%- if price_clear == blank and filter.min_value.url_to_remove != blank -%}
+                {%- assign price_clear = filter.min_value.url_to_remove -%}
+              {%- endif -%}
+              {%- if price_clear == blank and filter.max_value.url_to_remove != blank -%}
+                {%- assign price_clear = filter.max_value.url_to_remove -%}
+              {%- endif -%}
+              {%- if price_clear != blank -%}
+                <a class="bz-chip-on" href="{{ price_clear }}" data-bz-clear>
+                  {%- if filter.min_value.value != nil and filter.max_value.value != nil -%}
+                    {% render 'bz-money', cents: filter.min_value.value %} – {% render 'bz-money', cents: filter.max_value.value %}
+                  {%- elsif filter.min_value.value != nil -%}
+                    Da {% render 'bz-money', cents: filter.min_value.value %}
+                  {%- else -%}
+                    Fino a {% render 'bz-money', cents: filter.max_value.value %}
+                  {%- endif -%}
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+                </a>
+              {%- endif -%}
+            {%- endif -%}
+          {%- else -%}
+            {%- for value in filter.active_values -%}
+              {%- if value.url_to_remove != blank -%}
+                <a class="bz-chip-on" href="{{ value.url_to_remove }}" data-bz-clear>{{ value.label | escape }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></a>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endcapture -%}
+      {%- assign bz_active_chips = bz_active_chips | strip -%}
+      {%- if bz_active_chips != blank -%}
+        <div class="bz-active">{{ bz_active_chips }}</div>
+      {%- endif -%}
       {%- assign chain_collection = collections['catenine'] -%}
       <div class="bz-cgrid" data-bz-grid>
         {%- for product in collection.products -%}
@@ -290,6 +395,8 @@
     { "type": "image_picker", "id": "image", "label": "Foto di testa" },
     { "type": "text", "id": "heading", "label": "Titolo", "default": "Gioielli" },
     { "type": "text", "id": "heading_accent", "label": "Corsivo", "default": "con pietre" },
+    { "type": "text", "id": "accent", "label": "Accento nel titolo" },
+    { "type": "text", "id": "accent_handle", "label": "Collezione dell'accento" },
     { "type": "textarea", "id": "intro", "label": "Testo se la collezione non ha descrizione", "default": "Bracciali elastici, ciondoli grezzi e mala in pietra naturale. Ogni pezzo è anche in negozio: lo ordini qui e lo ritiri gratis." },
     { "type": "range", "id": "per_page", "min": 8, "max": 24, "step": 4, "label": "Prodotti per pagina", "default": 16 }
   ],

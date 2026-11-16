@@ -16,6 +16,43 @@
     }
   }
 
+  function ensurePreview(form) {
+    var preview = "";
+    try {
+      preview = new URL(window.location.href).searchParams.get("preview_theme_id") || "";
+    } catch (error) {
+      preview = "";
+    }
+    if (!preview || !form) return;
+    var existing = form.querySelector('input[name="preview_theme_id"]');
+    if (!existing) {
+      existing = document.createElement("input");
+      existing.type = "hidden";
+      existing.name = "preview_theme_id";
+      form.appendChild(existing);
+    }
+    existing.value = preview;
+  }
+
+  function euroLabel(raw) {
+    var num = Number(raw);
+    if (!isFinite(num)) return "";
+    var sign = num < 0 ? "-" : "";
+    var bits = Math.abs(num).toFixed(2).split(".");
+    var whole = bits[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    return sign + whole + "," + bits[1] + " €";
+  }
+
+  function paintRange(input) {
+    if (!input || input.type !== "range" || !input.getAttribute("data-bz-range")) return;
+    var box = input.closest(".bz-range");
+    if (!box) return;
+    var ends = box.nextElementSibling;
+    if (!ends || !ends.classList.contains("bz-range__ends")) return;
+    var slot = ends.querySelector('[data-bz-euro="' + input.getAttribute("data-bz-range") + '"]');
+    if (slot) slot.textContent = euroLabel(input.value);
+  }
+
   document.querySelectorAll("[data-bz-coll]").forEach(function (root) {
     var grid = root.querySelector("[data-bz-grid]");
     root.querySelectorAll("[data-bz-view]").forEach(function (button) {
@@ -25,40 +62,101 @@
       });
     });
     var side = root.querySelector("[data-bz-side]");
-    if (side) {
-      root.querySelectorAll("[data-bz-open-filters]").forEach(function (opener) {
-        opener.addEventListener("click", function () {
-          side.classList.toggle("is-open");
-        });
-      });
-      side.querySelectorAll("[data-bz-close-filters]").forEach(function (closer) {
-        closer.addEventListener("click", function () {
-          side.classList.remove("is-open");
-        });
-      });
+    var sortSheet = root.querySelector("[data-bz-sort-sheet]");
+    function lockSheet(open) {
+      document.documentElement.classList.toggle("bz-sheet-open", open);
     }
+    function closeSheets() {
+      if (side) side.classList.remove("is-open");
+      if (sortSheet) sortSheet.classList.remove("is-open");
+      lockSheet(false);
+    }
+    root.querySelectorAll("[data-bz-open-filters]").forEach(function (opener) {
+      opener.addEventListener("click", function () {
+        var wasOpen = side && side.classList.contains("is-open");
+        closeSheets();
+        if (wasOpen || !side) return;
+        side.classList.add("is-open");
+        lockSheet(true);
+        var closer = side.querySelector("[data-bz-close-filters]");
+        if (closer) closer.focus();
+      });
+    });
+    root.querySelectorAll("[data-bz-close-filters]").forEach(function (closer) {
+      closer.addEventListener("click", function () {
+        if (side) side.classList.remove("is-open");
+        if (!sortSheet || !sortSheet.classList.contains("is-open")) lockSheet(false);
+      });
+    });
+    root.querySelectorAll("[data-bz-open-sort]").forEach(function (opener) {
+      opener.addEventListener("click", function () {
+        var wasOpen = sortSheet && sortSheet.classList.contains("is-open");
+        closeSheets();
+        if (wasOpen || !sortSheet) return;
+        sortSheet.classList.add("is-open");
+        lockSheet(true);
+        var closer = sortSheet.querySelector("[data-bz-close-sort]");
+        if (closer) closer.focus();
+      });
+    });
+    root.querySelectorAll("[data-bz-close-sort]").forEach(function (closer) {
+      closer.addEventListener("click", function () {
+        if (sortSheet) sortSheet.classList.remove("is-open");
+        lockSheet(false);
+      });
+    });
+    document.addEventListener("keydown", function (event) {
+      if (event.key !== "Escape") return;
+      if ((side && side.classList.contains("is-open")) || (sortSheet && sortSheet.classList.contains("is-open"))) closeSheets();
+    });
+    var mobile = window.matchMedia("(max-width: 860px)");
+    if (mobile.addEventListener) mobile.addEventListener("change", function () {
+      if (!mobile.matches) closeSheets();
+    });
     var filterForm = root.querySelector("[data-bz-filter-form]");
     if (filterForm) {
+      filterForm.querySelectorAll("[data-bz-range]").forEach(paintRange);
+      filterForm.addEventListener("input", function (event) {
+        var field = event.target;
+        if (!field || field.type !== "range") return;
+        paintRange(field);
+      });
       filterForm.addEventListener("change", function (event) {
         var field = event.target;
         if (!field || !field.name) return;
-        if (field.type !== "checkbox" && field.type !== "range") return;
-        var preview = "";
-        try {
-          preview = new URL(window.location.href).searchParams.get("preview_theme_id") || "";
-        } catch (error) {
-          preview = "";
+        if (field.type === "range") {
+          ensurePreview(filterForm);
+          filterForm.submit();
+          return;
         }
-        if (preview && !filterForm.querySelector('input[name="preview_theme_id"]')) {
-          var hidden = document.createElement("input");
-          hidden.type = "hidden";
-          hidden.name = "preview_theme_id";
-          hidden.value = preview;
-          filterForm.appendChild(hidden);
-        }
+        if (field.type !== "checkbox") return;
+        var sheetOpen = side && side.classList.contains("is-open") && mobile.matches;
+        if (sheetOpen) return;
+        ensurePreview(filterForm);
         filterForm.submit();
       });
+      filterForm.addEventListener("submit", function () {
+        ensurePreview(filterForm);
+        closeSheets();
+      });
     }
+    root.querySelectorAll("[data-bz-clear]").forEach(function (link) {
+      var href = link.getAttribute("href");
+      if (href) link.setAttribute("href", withPreview(href));
+    });
+    root.querySelectorAll("[data-bz-sort-link]").forEach(function (link) {
+      var href = link.getAttribute("href");
+      if (href) link.setAttribute("href", withPreview(href));
+      link.addEventListener("click", function (event) {
+        var key = link.getAttribute("data-sort");
+        if (!key) return;
+        event.preventDefault();
+        var url = new URL(window.location.href);
+        url.searchParams.set("sort_by", key);
+        url.searchParams.delete("page");
+        window.location.assign(url.toString());
+      });
+    });
     var more = root.querySelector("[data-bz-more]");
     if (more && grid) {
       var loading = false;

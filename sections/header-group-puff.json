@@ -69,6 +69,7 @@
     },
     "header": {
       "type": "header",
+      "disabled": true,
       "blocks": {
         "simple_menu_6EwCPf": {
           "type": "simple_menu",
@@ -494,6 +495,7 @@
     },
     "mobile-navigation": {
       "type": "mobile-navigation",
+      "disabled": true,
       "blocks": {
         "mobile-navigation-2": {
           "type": "account",

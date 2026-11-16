@@ -134,6 +134,9 @@
       {%- if section.settings.shop_label != blank and section.settings.shop_url != blank -%}
         <a class="bz-tools__shop" href="{{ section.settings.shop_url }}">{{ section.settings.shop_label | escape }}</a>
       {%- endif -%}
+      <button class="bz-search-toggle" type="button" data-bz-search-toggle aria-expanded="false" aria-controls="BzSearch-{{ section.id }}" aria-label="{{ section.settings.search_label | escape }}">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg>
+      </button>
       <a href="{{ routes.account_url }}" aria-label="{{ section.settings.account_label | escape }}">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c1.2-3.6 4.1-5.4 7.5-5.4s6.3 1.8 7.5 5.4"/></svg>
       </a>
@@ -161,6 +164,8 @@
     </nav>
   </div>
 </div>
+
+<div id="ajax-loading-cart">{% render 'cart-drawer' %}</div>
 
 <script src="{{ 'bz-chrome.js' | asset_url }}" defer></script>
 

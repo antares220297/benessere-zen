@@ -206,10 +206,16 @@
   color: #eee7db;
 }
 
+#CartDrawer.bz-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+}
+
 .bz-drawer {
   position: fixed;
   inset: 0;
-  z-index: 80;
+  z-index: 90;
 }
 
 .bz-drawer__scrim {
@@ -279,13 +285,25 @@
   background: linear-gradient(90deg, #c9a96e, #e3cb95);
 }
 
-#update-cart .bz-drawer__ship,
-#update-cart .bz-ship__track {
+#update-cart .bz-drawer__head {
+  flex: none;
+  position: relative;
+  z-index: 1;
+}
+
+#update-cart .bz-drawer__ship {
   position: relative;
   left: auto;
   width: auto;
   max-width: 100%;
-  margin: 4px 20px 16px;
+  margin: 0 20px 12px;
+  overflow: hidden;
+}
+
+#update-cart .bz-ship__track {
+  position: relative;
+  height: 6px;
+  margin: 10px 0 0;
   overflow: hidden;
 }
 
@@ -315,7 +333,7 @@
 }
 
 .bz-drawer__items {
-  flex: 1;
+  flex: none;
   overflow: auto;
   padding: 4px 22px;
 }
@@ -402,7 +420,7 @@ input.bz-drawer__qty-input {
 }
 
 .bz-drawer__upsell {
-  padding-top: 14px;
+  padding-top: 16px;
   padding-bottom: 14px;
   background: #1b1917;
 }
@@ -514,7 +532,7 @@ input.bz-drawer__qty-input {
   display: flex !important;
   flex-direction: column !important;
   overflow: hidden !important;
-  max-height: calc(100vh - 24px) !important;
+  max-height: 100% !important;
 }
 
 .bz-drawer__close {
@@ -577,6 +595,8 @@ input.bz-drawer__qty-input {
 }
 
 .bz-drawer__foot {
+  flex: none;
+  margin-top: auto;
   padding-top: 16px;
   padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
 }

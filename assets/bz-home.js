@@ -99,4 +99,31 @@
     });
   });
 
+  if (window.fetch) {
+    document.querySelectorAll("[data-bz-handle]").forEach(function (node) {
+      var handle = node.getAttribute("data-bz-handle");
+      if (!handle) return;
+      var preview = "";
+      try {
+        preview = new URL(window.location.href).searchParams.get("preview_theme_id") || "";
+      } catch (error) {
+        preview = "";
+      }
+      var url = "/collections/" + encodeURIComponent(handle) + "?view=bz-min&sort_by=price-ascending";
+      if (preview) url += "&preview_theme_id=" + encodeURIComponent(preview);
+      fetch(url)
+        .then(function (response) {
+          if (!response.ok) throw new Error("fetch");
+          return response.text();
+        })
+        .then(function (body) {
+          var match = String(body).match(/id="BzMinPrice">(\d+)/);
+          var cents = match ? parseInt(match[1], 10) : 0;
+          if (!(cents > 0)) return;
+          node.textContent = "da " + money(cents);
+        })
+        .catch(function () {});
+    });
+  }
+
 })();

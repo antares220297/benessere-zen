@@ -53,8 +53,12 @@
       {{ block.settings.label | escape }}
       {%- if block.settings.show_all and collections.all.products_count > 0 -%}
         <small>{{ collections.all.products_count }} prodotti</small>
-      {%- elsif priced -%}
-        <small>da {% render 'bz-money', cents: min_price %}</small>
+      {%- elsif sphere_collection != blank and block.settings.show_all == false -%}
+        <small class="bz-sphere__price" data-bz-handle="{{ sphere_collection.handle }}">
+          {%- if priced -%}
+            da {% render 'bz-money', cents: min_price %}
+          {%- endif -%}
+        </small>
       {%- endif -%}
     </a>
   {%- endfor -%}

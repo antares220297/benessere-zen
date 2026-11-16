@@ -1,7 +1,30 @@
 {{ 'bz-tokens.css' | asset_url | stylesheet_tag }}
 {{ 'bz-bottom.css' | asset_url | stylesheet_tag }}
 
-{% render 'bz-wave', from: '#141312', to: '#0d0c0b' %}
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Benessere Zen",
+    "url": {{ shop.url | json }},
+    "email": "info@benesserezen.shop",
+    "telephone": "+39 347 088 3168",
+    "image": {{ 'shop-logo.png' | asset_url | prepend: 'https:' | json }},
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Via Marcello Provenzali 1",
+      "postalCode": "44042",
+      "addressLocality": "Cento",
+      "addressRegion": "FE",
+      "addressCountry": "IT"
+    },
+    "openingHoursSpecification": [
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Friday", "Saturday"], "opens": "09:30", "closes": "12:30" },
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Friday", "Saturday"], "opens": "16:00", "closes": "19:30" },
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Thursday", "opens": "09:00", "closes": "13:00" }
+    ]
+  }
+</script>
 <footer class="bz bz-foot">
   <div class="bz-foot__grid">
     <div>

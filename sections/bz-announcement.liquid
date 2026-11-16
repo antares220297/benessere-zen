@@ -2,42 +2,18 @@
 {{ 'bz-announcement.css' | asset_url | stylesheet_tag }}
 {{ 'bz-announcement-mobile.css' | asset_url | stylesheet_tag }}
 
-{%- liquid
-  assign threshold = settings.bz_free_shipping_threshold | default: section.settings.free_shipping_threshold | default: 50
-  assign pill = section.settings.pill_text | replace: '[soglia]', threshold
-  assign message_count = 0
-  for block in section.blocks
-    if block.settings.text != blank
-      assign message_count = message_count | plus: 1
-    endif
-  endfor
--%}
+{%- assign threshold = settings.bz_free_shipping_threshold | default: 50 -%}
 
 <div class="bz">
   <div class="ann" role="region" aria-label="{{ section.settings.region_label | escape }}">
-    {%- if threshold > 0 and pill != blank -%}
-      <span class="pill pill-gold">{{ pill | escape }}</span>
-    {%- endif -%}
-    {%- if message_count > 0 -%}
-      <div class="rot{% if message_count == 1 %} is-single{% endif %}" aria-hidden="true">
-        {%- for block in section.blocks -%}
-          {%- if block.settings.text != blank -%}
-            {%- assign mobile_text = block.settings.text_mobile | default: block.settings.text -%}
-            <span {{ block.shopify_attributes }}{% if mobile_text.size > 42 %} class="is-long"{% endif %}>
-              <span class="ann-long">{{ block.settings.text | escape }}</span>
-              <span class="ann-short">{{ mobile_text | escape }}</span>
-            </span>
-          {%- endif -%}
-        {%- endfor -%}
-      </div>
-      <p class="bz-sr">
-        {%- for block in section.blocks -%}
-          {%- if block.settings.text != blank -%}
-            {{ block.settings.text | escape }}.
-          {%- endif -%}
-        {%- endfor -%}
-      </p>
-    {%- endif -%}
+    <p class="bz-ann__half">
+      <span class="bz-ann__long">Spedizione gratuita da {{ threshold }} €</span>
+      <span class="bz-ann__short">Spedizione da {{ threshold }} €</span>
+    </p>
+    <p class="bz-ann__half">
+      <span class="bz-ann__long">Ogni pezzo è anche in negozio</span>
+      <span class="bz-ann__short">Anche in negozio</span>
+    </p>
   </div>
 </div>
 

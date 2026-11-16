@@ -260,6 +260,10 @@
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var timer = 0;
 
+  var headerEl = document.querySelector(".bz-header");
+  var searchToggle = document.querySelector("[data-bz-search-toggle]");
+  var narrowSearch = window.matchMedia("(max-width: 1179px)");
+
   function openSearch() {
     search.classList.add("is-open");
     search.querySelector(".bz-search__panel").hidden = false;
@@ -270,13 +274,66 @@
     search.querySelector(".bz-search__panel").hidden = true;
   }
 
+  function searchIsRevealed() {
+    return !!(headerEl && (narrowSearch.matches || headerEl.classList.contains("is-compact")));
+  }
+
+  function collapseRevealedSearch() {
+    if (!searchIsRevealed() || !headerEl) return;
+    headerEl.classList.remove("is-search-open");
+    if (searchToggle) searchToggle.setAttribute("aria-expanded", "false");
+  }
+
+  function syncCompact() {
+    if (!headerEl) return;
+    var compact = window.scrollY > 8;
+    headerEl.classList.toggle("is-compact", compact);
+    if (!compact && !narrowSearch.matches) {
+      headerEl.classList.remove("is-search-open");
+      if (searchToggle) searchToggle.setAttribute("aria-expanded", "false");
+      return;
+    }
+    if (compact && !narrowSearch.matches && !headerEl.classList.contains("is-search-open")) {
+      closeSearch();
+    }
+  }
+
   input.addEventListener("focus", openSearch);
   document.addEventListener("click", function (event) {
-    if (!search.contains(event.target)) closeSearch();
+    if (searchToggle && searchToggle.contains(event.target)) return;
+    if (!search.contains(event.target)) {
+      closeSearch();
+      collapseRevealedSearch();
+    }
   });
   document.addEventListener("keydown", function (event) {
-    if (event.key === "Escape") closeSearch();
+    if (event.key === "Escape") {
+      closeSearch();
+      collapseRevealedSearch();
+    }
   });
+
+  if (searchToggle && headerEl) {
+    searchToggle.addEventListener("click", function () {
+      var open = !headerEl.classList.contains("is-search-open");
+      headerEl.classList.toggle("is-search-open", open);
+      searchToggle.setAttribute("aria-expanded", open ? "true" : "false");
+      if (!open) {
+        closeSearch();
+        return;
+      }
+      window.requestAnimationFrame(function () {
+        openSearch();
+        input.focus();
+      });
+    });
+  }
+
+  syncCompact();
+  window.addEventListener("scroll", function () {
+    syncCompact();
+  }, { passive: true });
+  window.addEventListener("resize", syncCompact);
 
   if (hintWord && words.length > 1 && !reduceMotion) {
     var index = 0;
@@ -453,7 +510,7 @@
 
     window.addEventListener("resize", function () {
       if (!nav.classList.contains("is-open")) return;
-      if (window.innerWidth > 860) {
+      if (window.innerWidth >= 1180) {
         closeMenu();
         return;
       }

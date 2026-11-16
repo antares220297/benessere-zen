@@ -42,8 +42,30 @@
                 {%- if product.featured_image != blank -%}
                   {{ product.featured_image | image_url: width: 80 | image_tag: alt: '', width: 32, height: 32, loading: 'lazy' }}
                 {%- endif -%}
-                {%- assign chip_name = product.title | split: '|' | first | strip -%}
-                <span>{{ chip_name | truncate: 22 | escape }}</span>
+                {%- liquid
+                  assign chip_name = product.title | split: '|' | first | strip
+                  assign chip_parts = chip_name | split: '/'
+                  if chip_parts.size > 2
+                    assign chip_name = chip_parts | first | strip
+                  endif
+                  if chip_name.size > 32
+                    assign chip_window = chip_name | slice: 0, 32
+                    assign chip_bits = chip_window | split: ' '
+                    if chip_bits.size > 1
+                      assign chip_tail = chip_bits | last
+                      assign chip_keep = chip_window.size | minus: chip_tail.size
+                      if chip_keep > 0
+                        assign chip_name = chip_window | slice: 0, chip_keep | strip
+                      else
+                        assign chip_name = chip_window | strip
+                      endif
+                    else
+                      assign chip_name = chip_window | strip
+                    endif
+                    assign chip_name = chip_name | append: '…'
+                  endif
+                -%}
+                <span>{{ chip_name | escape }}</span>
                 <b>{% render 'bz-money', cents: product.price %}</b>
               </a>
             {%- endfor -%}
@@ -115,7 +137,6 @@
     {%- endif -%}
   </div>
 </div>
-{% render 'bz-wave', from: '#241a2f', to: '#141312' %}
 
 {% schema %}
 {
