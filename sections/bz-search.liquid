@@ -6,12 +6,22 @@
   assign page_size = section.settings.per_page | default: 16
   assign heading = section.settings.heading | default: 'Pezzi per'
   assign empty_text = section.settings.empty_text | default: 'Nessun pezzo con questo nome.'
-  assign idle_text = section.settings.idle_text | default: 'Scrivi un nome nel campo in alto.'
+  assign idle_text = section.settings.idle_text | default: 'Cerca un mala, una pietra, un ciondolo.'
   assign next_label = section.settings.next_label | default: 'Pagina successiva'
+  assign picks = section.settings.collection
+  if picks == blank
+    assign picks = collections['gioielli-con-pietre']
+  endif
 -%}
 
 {%- paginate search.results by page_size -%}
   <section class="bz bz-search" aria-labelledby="BzSearchTitle-{{ section.id }}">
+    <form class="bz-search__form" action="{{ routes.search_url }}" method="get" role="search">
+      <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="Cerca un mala, una pietra, un ciondolo" aria-label="Cerca nel negozio" required>
+      <input type="hidden" name="type" value="product">
+      <input type="hidden" name="options[prefix]" value="last">
+      <button type="submit">Cerca</button>
+    </form>
     {%- if search.performed -%}
       {%- assign product_count = 0 -%}
       {%- for product in search.results -%}
@@ -41,9 +51,31 @@
         {%- endif -%}
       {%- else -%}
         <h1 id="BzSearchTitle-{{ section.id }}" class="bz-search__none">{{ empty_text | escape }}</h1>
+        {%- if picks != blank and picks.products_count > 0 -%}
+          <div class="bz-search__grid">
+            {%- assign shown = 0 -%}
+            {%- for product in picks.products -%}
+              {%- if shown < 3 and product.available -%}
+                {% render 'bz-card', product: product, eager: true %}
+                {%- assign shown = shown | plus: 1 -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
       {%- endif -%}
     {%- else -%}
       <h1 id="BzSearchTitle-{{ section.id }}" class="bz-search__none">{{ idle_text | escape }}</h1>
+      {%- if picks != blank and picks.products_count > 0 -%}
+        <div class="bz-search__grid">
+          {%- assign shown = 0 -%}
+          {%- for product in picks.products -%}
+            {%- if shown < 3 and product.available -%}
+              {% render 'bz-card', product: product, eager: true %}
+              {%- assign shown = shown | plus: 1 -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
     {%- endif -%}
   </section>
 {%- endpaginate -%}
@@ -73,7 +105,13 @@
       "type": "text",
       "id": "idle_text",
       "label": "Prima di una ricerca",
-      "default": "Scrivi un nome nel campo in alto."
+      "default": "Cerca un mala, una pietra, un ciondolo."
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Pezzi sotto la ricerca",
+      "info": "Fino a tre pezzi disponibili, quando non c'è ancora una ricerca o non torna nulla. Se è vuota, usiamo i gioielli con pietre."
     },
     {
       "type": "text",

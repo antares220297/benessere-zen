@@ -38,10 +38,14 @@
           endif
         endif
         assign min_price = blank
-        if stone_collection != blank
-          for product in stone_collection.products limit: 24
-            if min_price == blank or product.price < min_price
-              assign min_price = product.price
+        assign stone_key = block.settings.name | downcase | strip
+        if stone_collection != blank and stone_key != blank
+          for product in stone_collection.products limit: 50
+            assign product_name = product.title | downcase
+            if product_name contains stone_key and product.available
+              if min_price == blank or product.price < min_price
+                assign min_price = product.price
+              endif
             endif
           endfor
         endif

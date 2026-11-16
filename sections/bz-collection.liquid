@@ -58,7 +58,7 @@
           <h1>{{ collection.title | escape }}</h1>
         {%- endif -%}
         {%- if collection.description != blank -%}
-          <p>{{ collection.description | strip_html }}</p>
+          <p>{{ collection.description | replace: '</p>', ' </p>' | replace: '<br>', ' ' | replace: '<br/>', ' ' | replace: '<br />', ' ' | strip_html | strip }}</p>
         {%- endif -%}
       </div>
     </div>
@@ -72,7 +72,7 @@
       {%- for block in section.blocks -%}
         {%- if block.type == 'chip' and block.settings.collection != blank -%}
           {%- assign chip_only = block.settings.show_on | strip | downcase -%}
-          {%- if chip_only != blank and chip_only == collection.handle -%}
+          {%- if block.settings.collection != blank and chip_only == blank or chip_only == collection.handle -%}
           <a class="bz-cbub" href="{{ block.settings.collection.url }}" {{ block.shopify_attributes }}>
             {%- assign chip_image = block.settings.image | default: block.settings.collection.image | default: block.settings.collection.products.first.featured_image -%}
             {%- if chip_image -%}{{ chip_image | image_url: width: 80 | image_tag: alt: '', width: 36, height: 36 }}{%- endif -%}
@@ -90,14 +90,13 @@
       <button type="button" class="bz-side__close" data-bz-close-filters aria-label="Chiudi">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
       </button>
-      <form class="bz-side__search" method="get" action="{{ routes.search_url }}" role="search">
+      <form class="bz-side__search" method="get" action="{{ collection.url }}" role="search" data-bz-coll-search>
         <button type="submit" aria-label="Cerca in questa collezione">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg>
         </button>
-        <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="Cerca in questa collezione" data-bz-q aria-label="Cerca in questa collezione">
-        <input type="hidden" name="type" value="product">
-        <input type="hidden" name="options[prefix]" value="last">
+        <input type="search" name="q" value="" placeholder="Cerca in questa collezione" data-bz-q aria-label="Cerca in questa collezione">
       </form>
+      <p class="bz-side__hint" data-bz-coll-hint hidden>Tra i pezzi di questa pagina. <a data-bz-shop-search href="{{ routes.search_url }}">Cerca in tutto il negozio</a></p>
       <form method="get" action="{{ collection.url }}" data-bz-filter-form>
         <div class="bz-filters">
           {%- if collection.filters.size == 0 -%}
@@ -192,7 +191,11 @@
                       {%- if filter.label == 'Pietra' or filter.label == 'Pietre' -%}
                         <span class="bz-swatch" style="background: {{ value.label | downcase | replace: 'ametista', '#7b4fa0' | replace: 'tormalina', '#2a2a2e' | replace: 'lapis', '#2d4fa3' | replace: 'rosa', '#d79aa4' | replace: 'ossidiana', '#1c1c1f' | replace: 'pirite', '#b39a5a' }}"></span>
                       {%- endif -%}
-                      {{ value.label | escape }} <small>{{ value.count }}</small>
+                      {%- assign opt_label = value.label | append: '' -%}
+                      {%- if opt_label contains 'Metaobject' or opt_label contains 'Drop' -%}
+                        {%- assign opt_label = value.value | split: '/' | last | replace: '-', ' ' -%}
+                      {%- endif -%}
+                      {{ opt_label | escape }} <small>{{ value.count }}</small>
                     </label>
                   {%- endfor -%}
               {%- endcase -%}
@@ -299,7 +302,11 @@
           {%- else -%}
             {%- for value in filter.active_values -%}
               {%- if value.url_to_remove != blank -%}
-                <a class="bz-chip-on" href="{{ value.url_to_remove }}" data-bz-clear>{{ value.label | escape }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></a>
+                {%- assign opt_label = value.label | append: '' -%}
+                {%- if opt_label contains 'Metaobject' or opt_label contains 'Drop' -%}
+                  {%- assign opt_label = value.value | split: '/' | last | replace: '-', ' ' -%}
+                {%- endif -%}
+                <a class="bz-chip-on" href="{{ value.url_to_remove }}" data-bz-clear>{{ opt_label | escape }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></a>
               {%- endif -%}
             {%- endfor -%}
           {%- endif -%}
@@ -310,7 +317,22 @@
         <div class="bz-active">{{ bz_active_chips }}</div>
       {%- endif -%}
       <div class="bz-cgrid" data-bz-grid>
+        {%- for pass in (1..2) -%}
         {%- for product in collection.products -%}
+          {%- liquid
+            assign bz_show = true
+            if section.settings.bury_sold_out
+              if pass == 1 and product.available == false
+                assign bz_show = false
+              endif
+              if pass == 2 and product.available
+                assign bz_show = false
+              endif
+            elsif pass == 2
+              assign bz_show = false
+            endif
+          -%}
+          {%- if bz_show -%}
           {%- if paginate.current_page == 1 -%}
             {%- for block in section.blocks -%}
               {%- if block.type == 'promo' and block.settings.position == forloop.parentloop.index -%}
@@ -367,6 +389,8 @@
           <div data-bz-item data-type="{{ product.type | escape }}" data-title="{{ product.title | downcase | escape }}" data-price="{{ product.price }}" data-available="{{ product.available }}">
             {% render 'bz-card', product: product %}
           </div>
+          {%- endif -%}
+        {%- endfor -%}
         {%- endfor -%}
       </div>
       {%- liquid
@@ -410,7 +434,8 @@
     { "type": "text", "id": "accent", "label": "Accento nel titolo" },
     { "type": "text", "id": "accent_handle", "label": "Collezione dell'accento" },
     { "type": "textarea", "id": "intro", "label": "Testo se la collezione non ha descrizione", "default": "Bracciali elastici, ciondoli grezzi e mala in pietra naturale. Ogni pezzo è anche in negozio: lo ordini qui e lo ritiri gratis." },
-    { "type": "range", "id": "per_page", "min": 8, "max": 24, "step": 4, "label": "Prodotti per pagina", "default": 16 }
+    { "type": "range", "id": "per_page", "min": 8, "max": 24, "step": 4, "label": "Prodotti per pagina", "default": 16 },
+    { "type": "checkbox", "id": "bury_sold_out", "label": "I pezzi esauriti dopo quelli disponibili", "info": "Riordina solo i prodotti di questa pagina. L'ordine della collezione resta quello del negozio.", "default": true }
   ],
   "blocks": [
     { "type": "chip", "name": "Sfera", "settings": [

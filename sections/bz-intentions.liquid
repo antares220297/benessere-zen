@@ -18,14 +18,40 @@
   <div class="bz-intent__list">
     {%- for block in section.blocks -%}
       {%- if block.settings.collection != blank and block.settings.collection.products_count > 0 -%}
-        <div class="bz-intent__item" {{ block.shopify_attributes }}>
-          {%- if block.settings.word != blank and block.settings.collection.url != blank and block.settings.collection.url != '#' -%}
-            <a class="bz-intent__word" href="{{ block.settings.collection.url }}">{{ block.settings.word | escape }}</a>
+        {%- liquid
+          assign intent_collection = block.settings.collection
+          assign intent_image = intent_collection.image | default: intent_collection.products.first.featured_image
+          assign intent_count = intent_collection.products_count
+          assign intent_min = blank
+          if intent_count > 0 and intent_count <= 50
+            for product in intent_collection.products
+              if product.available
+                if intent_min == blank or product.price < intent_min
+                  assign intent_min = product.price
+                endif
+              endif
+            endfor
+          endif
+          assign intent_cta = section.settings.cta_label | default: 'Scopri i pezzi'
+        -%}
+        <a class="bz-intent__card" href="{{ intent_collection.url }}" {{ block.shopify_attributes }}>
+          {%- if intent_image != blank -%}
+            <span class="bz-intent__media">
+              {{ intent_image | image_url: width: 800 | image_tag: alt: block.settings.word, loading: 'lazy', widths: '320, 480, 800', sizes: '(min-width: 1100px) 18vw, 78vw', width: 480, height: 360 }}
+            </span>
           {%- endif -%}
-          {%- if block.settings.line != blank -%}
-            <p class="bz-intent__line">{{ block.settings.line | escape }}</p>
-          {%- endif -%}
-        </div>
+          <span class="bz-intent__body">
+            <strong>{{ block.settings.word | escape }}</strong>
+            {%- if block.settings.line != blank -%}
+              <em>{{ block.settings.line | escape }}</em>
+            {%- endif -%}
+            <small>
+              {%- if intent_count == 1 -%}1 pezzo{%- else -%}{{ intent_count }} pezzi{%- endif -%}
+              {%- if intent_min != blank -%} · da {% render 'bz-money', cents: intent_min %}{%- endif -%}
+            </small>
+            <span class="bz-intent__cta">{{ intent_cta | escape }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </span>
+        </a>
       {%- endif -%}
     {%- endfor -%}
   </div>
@@ -37,7 +63,8 @@
   "name": "Scegli per intenzione",
   "class": "bz-home",
   "settings": [
-    { "type": "text", "id": "heading", "label": "Titolo", "default": "Scegli per intenzione" }
+    { "type": "text", "id": "heading", "label": "Titolo", "default": "Scegli per intenzione" },
+    { "type": "text", "id": "cta_label", "label": "Testo del pulsante", "default": "Scopri i pezzi" }
   ],
   "blocks": [
     {

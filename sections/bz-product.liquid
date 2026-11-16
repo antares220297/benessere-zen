@@ -56,12 +56,19 @@
         </div>
         <div class="bz-stage__note">
           <span>{{ section.settings.photo_note | escape }}</span>
-          <span data-bz-frame>1 / {{ product.images.size | at_least: 1 }}</span>
+          {%- if product.images.size > 1 -%}
+            <span data-bz-frame>1 / {{ product.images.size }}</span>
+          {%- endif -%}
         </div>
       </div>
       <div class="bz-minis">
+        {%- assign mini_seen = '|' -%}
         {%- for slot in (1..2) -%}
-          {%- assign mini = product.images[slot] | default: product.featured_image -%}
+          {%- assign mini = product.images[slot] -%}
+          {%- if mini != blank and mini.src != product.featured_image.src -%}
+          {%- assign mini_key = mini.id | append: '|' -%}
+          {%- unless mini_seen contains mini_key -%}
+          {%- assign mini_seen = mini_seen | append: mini_key -%}
           {%- assign mini_label = mini.alt -%}
           {%- assign cap_i = 0 -%}
           {%- for block in section.blocks -%}
@@ -80,6 +87,8 @@
               <span>{{ mini_label | escape }}</span>
             {%- endif -%}
           </div>
+          {%- endunless -%}
+          {%- endif -%}
         {%- endfor -%}
       </div>
     </div>
@@ -113,6 +122,16 @@
               assign show_fact = false
               if fact_key != blank
                 assign fact_value = product.metafields.custom[fact_key].value
+                if fact_key == 'pietra' and fact_value != blank
+                  assign fact_name = fact_value.nome.value | default: fact_value.nome
+                  if fact_name != blank
+                    assign fact_value = fact_name
+                  endif
+                endif
+                assign fact_text = fact_value | append: ''
+                if fact_text contains 'Metaobject' or fact_text contains 'Drop'
+                  assign fact_value = blank
+                endif
                 if fact_value != blank
                   assign show_fact = true
                 endif
@@ -216,6 +235,16 @@
                   {%- for spec in section.blocks -%}
                     {%- if spec.type == 'spec' -%}
                       {%- assign spec_value = product.metafields.custom[spec.settings.metafield].value -%}
+                      {%- if spec.settings.metafield == 'pietra' and spec_value != blank -%}
+                        {%- assign spec_name = spec_value.nome.value | default: spec_value.nome -%}
+                        {%- if spec_name != blank -%}
+                          {%- assign spec_value = spec_name -%}
+                        {%- endif -%}
+                      {%- endif -%}
+                      {%- assign spec_text = spec_value | append: '' -%}
+                      {%- if spec_text contains 'Metaobject' or spec_text contains 'Drop' -%}
+                        {%- assign spec_value = blank -%}
+                      {%- endif -%}
                       {%- if spec_value != blank -%}
                         <tr><td>{{ spec.settings.label | escape }}</td><td>{{ spec_value | escape }}</td></tr>
                       {%- endif -%}

@@ -207,7 +207,20 @@
         "side_link": "/collections/pendoli",
         "shipping_amount": 50,
         "shipping_text": "Da qui la spedizione è gratuita, in tutta Italia."
-      }
+      },
+      "blocks": {
+        "visit-cento": {
+          "type": "visit",
+          "settings": {
+            "title": "Anche in negozio",
+            "text": "Gli stessi pezzi sono anche a Cento. Puoi vederli e sceglierli di persona.",
+            "label": "Vieni in negozio"
+          }
+        }
+      },
+      "block_order": [
+        "visit-cento"
+      ]
     },
     "bz_stones": {
       "type": "bz-stones",

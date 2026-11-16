@@ -36,8 +36,15 @@
         endcase
       -%}
       <div class="bz-grid" data-bz-pane="{{ forloop.index }}"{% unless picked_first_pane %} hidden{% endunless %}>
-        {%- for product in picked_products limit: section.settings.limit -%}
-          {% render 'bz-card', product: product, eager: forloop.first %}
+        {%- assign picked_shown = 0 -%}
+        {%- assign picked_limit = section.settings.limit | default: 5 -%}
+        {%- for product in picked_products -%}
+          {%- if picked_shown < picked_limit -%}
+            {%- unless section.settings.skip_sold_out and product.available == false -%}
+              {% render 'bz-card', product: product, eager: forloop.first %}
+              {%- assign picked_shown = picked_shown | plus: 1 -%}
+            {%- endunless -%}
+          {%- endif -%}
         {%- endfor -%}
       </div>
       {%- assign picked_first_pane = false -%}
@@ -55,7 +62,8 @@
     { "type": "text", "id": "heading_accent", "label": "Titolo in corsivo", "default": "scelti" },
     { "type": "text", "id": "link_label", "label": "Link", "default": "Vedi tutti" },
     { "type": "url", "id": "link", "label": "Destinazione del link" },
-    { "type": "range", "id": "limit", "min": 2, "max": 8, "step": 1, "label": "Prodotti per lista", "default": 5 }
+    { "type": "range", "id": "limit", "min": 2, "max": 8, "step": 1, "label": "Prodotti per lista", "default": 5 },
+    { "type": "checkbox", "id": "skip_sold_out", "label": "Salta i pezzi esauriti", "default": true }
   ],
   "blocks": [
     {

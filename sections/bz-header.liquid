@@ -137,12 +137,14 @@
       <button class="bz-search-toggle" type="button" data-bz-search-toggle aria-expanded="false" aria-controls="BzSearch-{{ section.id }}" aria-label="{{ section.settings.search_label | escape }}">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg>
       </button>
-      <a href="{{ routes.account_url }}" aria-label="{{ section.settings.account_label | escape }}">
+      <a class="bz-tools__account" href="{{ routes.account_url }}" aria-label="{{ section.settings.account_label | escape }}">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c1.2-3.6 4.1-5.4 7.5-5.4s6.3 1.8 7.5 5.4"/></svg>
       </a>
-      <a class="bz-tools__wish" href="{{ section.settings.wishlist_url | default: routes.account_url }}" aria-label="{{ section.settings.wishlist_label | escape }}">
+      {%- if section.settings.wishlist_url != blank -%}
+      <a class="bz-tools__wish" href="{{ section.settings.wishlist_url }}" aria-label="{{ section.settings.wishlist_label | escape }}">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg>
       </a>
+      {%- endif -%}
       <a class="bz-cart" data-bz-cart href="{{ routes.cart_url }}" aria-label="{{ section.settings.cart_label | escape }}">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 12H6.2z"/><path d="M9 8V6.5a3 3 0 016 0V8"/></svg>
         <span class="bz-cart__count" data-bz-count>{{ cart.item_count }}</span>
@@ -219,7 +221,7 @@
       "type": "url",
       "id": "wishlist_url",
       "label": "Pagina preferiti",
-      "info": "Se è vuota, il cuore porta all'account."
+      "info": "Il cuore compare solo se qui c'è un indirizzo. Senza una lista vera, lascialo vuoto."
     },
     {
       "type": "text",

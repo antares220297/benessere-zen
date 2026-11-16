@@ -1,0 +1,45 @@
+{{ 'bz-tokens.css' | asset_url | stylesheet_tag }}
+{{ 'bz-home.css' | asset_url | stylesheet_tag }}
+
+<article class="bz bz-page">
+  <h1>{{ page.title | escape }}</h1>
+  {%- if page.content != blank -%}
+    <div class="bz-page__body rte">{{ page.content }}</div>
+  {%- endif -%}
+</article>
+
+{% style %}
+.bz-page {
+  background: #141312;
+  color: #eee7db;
+  padding: 36px 20px 72px;
+  max-width: 760px;
+  margin: 0 auto;
+}
+.bz-page h1 {
+  margin: 0 0 20px;
+  font-family: Baskervville, Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(36px, 5vw, 56px);
+  line-height: 1.05;
+  color: #eee7db;
+}
+.bz-page__body {
+  font-family: Figtree, system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+  color: #eee7db;
+}
+.bz-page__body p { margin: 0 0 14px; }
+.bz-page__body a { color: #e3cb95; }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Pagina",
+  "class": "bz-home",
+  "enabled_on": { "templates": ["page"] },
+  "settings": [],
+  "presets": [{ "name": "Pagina" }]
+}
+{% endschema %}

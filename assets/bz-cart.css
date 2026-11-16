@@ -615,6 +615,12 @@ a.bz-drawer__go.bz-drawer__shop {
   box-sizing: border-box;
 }
 
+.bz-cartpage > a.bz-drawer__go.bz-drawer__shop {
+  width: fit-content;
+  max-width: min(100%, 320px);
+  margin: 8px auto 28px;
+}
+
 .bz-drawer__go {
   display: flex;
   align-items: center;

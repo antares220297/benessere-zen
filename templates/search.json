@@ -14,7 +14,7 @@
       "settings": {
         "heading": "Pezzi per",
         "empty_text": "Nessun pezzo con questo nome.",
-        "idle_text": "Scrivi un nome nel campo in alto.",
+        "idle_text": "Cerca un mala, una pietra, un ciondolo.",
         "next_label": "Pagina successiva",
         "per_page": 16
       }

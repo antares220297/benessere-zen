@@ -13,6 +13,26 @@
     endif
   endif
   assign featured = section.settings.featured_product
+  assign ship_euros = settings.bz_free_shipping_threshold | default: section.settings.shipping_amount | default: 50 | plus: 0
+  assign tile_count = 0
+  if section.settings.stat_value != blank
+    assign tile_count = tile_count | plus: 1
+  endif
+  if featured != blank
+    assign tile_count = tile_count | plus: 1
+  endif
+  assign tile_count = tile_count | plus: 1
+  if ship_euros > 0
+    assign tile_count = tile_count | plus: 1
+  endif
+  for block in section.blocks
+    if block.type == 'visit'
+      if block.settings.title != blank or block.settings.text != blank
+        assign tile_count = tile_count | plus: 1
+      endif
+    endif
+  endfor
+  assign tile_odd = tile_count | modulo: 2
   assign side = section.settings.side_collection
   assign side_image = section.settings.side_image
   if side_image == blank and side != blank
@@ -25,7 +45,7 @@
 -%}
 
 <div class="bz bz-mid bz-promo">
-  <div class="bz-bento">
+  <div class="bz-bento{% if tile_count == 4 %} is-four{% endif %}{% if tile_odd == 1 %} is-odd{% endif %}">
     <div class="bz-bento__lead">
       {%- if lead_image != blank -%}
         {{ lead_image | image_url: width: 1400 | image_tag: alt: section.settings.image_alt, class: 'bz-bento__photo', widths: '600, 900, 1400', sizes: '(min-width: 860px) 40vw, 100vw', loading: 'lazy', width: 900, height: 700 }}
@@ -106,13 +126,39 @@
       </div>
     </a>
 
-    {%- assign ship_euros = settings.bz_free_shipping_threshold | default: section.settings.shipping_amount | default: 50 | plus: 0 -%}
     {%- if ship_euros > 0 -%}
       <div class="bz-bento__stat bz-bento__stat--gold">
         <p class="bz-figure">{{ ship_euros }}<small>€</small></p>
         <p>{{ section.settings.shipping_text | escape }}</p>
       </div>
     {%- endif -%}
+
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'visit' -%}
+      {%- if block.settings.title != blank or block.settings.text != blank -%}
+        {%- liquid
+          assign visit_href = block.settings.link
+          if visit_href == blank
+            assign visit_page = pages['il-negozio']
+            if visit_page != blank
+              assign visit_href = visit_page.url
+            else
+              assign visit_href = 'https://maps.google.com/?q=Via+Marcello+Provenzali+1,+44042+Cento+FE'
+            endif
+          endif
+          assign visit_label = block.settings.label | default: 'Vieni in negozio'
+        -%}
+        <a class="bz-bento__visit" href="{{ visit_href }}" {{ block.shopify_attributes }}>
+          {%- if block.settings.image != blank -%}
+            {{ block.settings.image | image_url: width: 900 | image_tag: alt: block.settings.title, loading: 'lazy', widths: '400, 800', sizes: '(min-width: 860px) 25vw, 50vw', width: 480, height: 360 }}
+          {%- endif -%}
+          {%- if block.settings.title != blank -%}<strong>{{ block.settings.title | escape }}</strong>{%- endif -%}
+          {%- if block.settings.text != blank -%}<em>{{ block.settings.text | escape }}</em>{%- endif -%}
+          <span class="bz-intent__cta">{{ visit_label | escape }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+      {%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
   </div>
 </div>
 
@@ -144,6 +190,34 @@
     { "type": "number", "id": "shipping_amount", "label": "Soglia in evidenza", "default": 50 },
     { "type": "text", "id": "shipping_text", "label": "Testo della soglia", "default": "Da qui la spedizione è gratuita, in tutta Italia." }
   ],
-  "presets": [{ "name": "Bento promo" }]
+  "blocks": [
+    {
+      "type": "visit",
+      "name": "In negozio",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Titolo", "default": "Anche in negozio" },
+        { "type": "textarea", "id": "text", "label": "Testo", "default": "Gli stessi pezzi sono anche a Cento. Puoi vederli e sceglierli di persona." },
+        { "type": "text", "id": "label", "label": "Testo del link", "default": "Vieni in negozio" },
+        { "type": "url", "id": "link", "label": "Link", "info": "Se è vuoto, porta alla pagina del negozio." },
+        { "type": "image_picker", "id": "image", "label": "Foto" }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Bento promo",
+      "blocks": [
+        {
+          "type": "visit",
+          "settings": {
+            "title": "Anche in negozio",
+            "text": "Gli stessi pezzi sono anche a Cento. Puoi vederli e sceglierli di persona.",
+            "label": "Vieni in negozio"
+          }
+        }
+      ]
+    }
+  ]
 }
 {% endschema %}

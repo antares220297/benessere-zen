@@ -7,7 +7,9 @@
 <div id="bz-cart" class="bz-cartpage">
   <header class="bz-cartpage__head">
     <h1>Il tuo carrello</h1>
-    <a href="{{ routes.all_products_collection_url }}">Continua lo shopping</a>
+    {%- unless cart == empty -%}
+      <a href="{{ routes.all_products_collection_url }}">Continua lo shopping</a>
+    {%- endunless -%}
   </header>
 
   {%- if cart == empty -%}
@@ -78,7 +80,13 @@
 
       <aside class="bz-cartpage__summary">
         <p><span>Subtotale</span><strong>{% render 'bz-money', cents: cart.total_price %}</strong></p>
-        <small>IVA inclusa. Spedizione al pagamento, oppure ritiro gratuito in negozio.</small>
+        {%- assign ship_euros = settings.bz_free_shipping_threshold | default: 50 | plus: 0 -%}
+        {%- assign ship_cents = ship_euros | times: 100 -%}
+        {%- if ship_euros > 0 and cart.total_price >= ship_cents -%}
+          <small>IVA inclusa. La spedizione è gratuita. Oppure ritiro gratuito in negozio.</small>
+        {%- else -%}
+          <small>IVA inclusa. Spedizione al pagamento, oppure ritiro gratuito in negozio.</small>
+        {%- endif -%}
         <form action="{{ routes.cart_url }}" method="post">
           <button id="checkout-submit" class="bz-drawer__go" type="submit" name="checkout">Vai al pagamento →</button>
         </form>

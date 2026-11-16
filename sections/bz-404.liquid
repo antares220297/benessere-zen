@@ -23,8 +23,12 @@
   <a class="bz-btn bz-btn--gold" href="{{ button_href | escape }}">{{ button_label | escape }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
   {%- if picks != blank and picks.products_count > 0 -%}
     <div class="bz-404__grid">
-      {%- for product in picks.products limit: card_limit -%}
-        {% render 'bz-card', product: product, eager: true %}
+      {%- assign shown = 0 -%}
+      {%- for product in picks.products -%}
+        {%- if shown < card_limit and product.available -%}
+          {% render 'bz-card', product: product, eager: true %}
+          {%- assign shown = shown | plus: 1 -%}
+        {%- endif -%}
       {%- endfor -%}
     </div>
   {%- endif -%}

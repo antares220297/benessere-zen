@@ -651,6 +651,20 @@
   }
 }
 
+@media (max-width: 380px) {
+  .bz-brand {
+    overflow: hidden;
+  }
+
+  .bz-wordmark {
+    font-size: 16px;
+  }
+
+  .bz-tools__account {
+    display: none;
+  }
+}
+
 @media (max-width: 340px) {
   .bz-header {
     padding-left: 6px;

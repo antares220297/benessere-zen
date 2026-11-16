@@ -570,7 +570,8 @@
 }
 
 @media (max-width: 860px) {
-  .bz-product {
+  .bz-product,
+  .bz-related {
     padding-bottom: 96px;
   }
 

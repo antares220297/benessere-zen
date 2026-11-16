@@ -1,6 +1,6 @@
 {%- liquid
   assign show_ritual = true
-  if product != blank and product.metafields.custom.ritual_set.value == blank
+  if product != blank and product.metafields.custom.ritual_set.value == blank and section.blocks.size == 0
     assign show_ritual = false
   endif
 -%}
