@@ -150,7 +150,7 @@
   <div class="bz-navwrap">
     <nav class="bz-nav" id="BzNav" aria-label="{{ section.settings.menu_label | escape }}">
       {%- for block in section.blocks -%}
-        {%- if block.type == 'link' and block.settings.label != blank -%}
+        {%- if block.type == 'link' and block.settings.label != blank and block.settings.link != blank -%}
           <a
             class="bz-nav__link{% if block.settings.style == 'accent' %} bz-nav__link--accent{% elsif block.settings.style == 'pill' %} bz-nav__link--pill{% endif %}"
             href="{{ block.settings.link }}"

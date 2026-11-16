@@ -389,6 +389,33 @@
       document.documentElement.classList.remove("bz-nav-open");
     }
 
+    function navMenuOpen() {
+      return (
+        burger.getAttribute("aria-expanded") === "true" ||
+        nav.classList.contains("is-open") ||
+        document.documentElement.classList.contains("bz-nav-open")
+      );
+    }
+
+    function overlayBlocksNavTrap() {
+      if (search.classList.contains("is-open")) return true;
+      var cart = window.Alpine && Alpine.store && Alpine.store("xMiniCart");
+      return !!(cart && cart.open);
+    }
+
+    function navTrapFocusables() {
+      var selector =
+        'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+      var items = [burger];
+      nav.querySelectorAll(selector).forEach(function (el) {
+        items.push(el);
+      });
+      return items.filter(function (el) {
+        if (el.disabled || el.tabIndex < 0) return false;
+        return el.getClientRects().length > 0;
+      });
+    }
+
     burger.addEventListener("click", function () {
       var open = burger.getAttribute("aria-expanded") === "true";
       burger.setAttribute("aria-expanded", open ? "false" : "true");
@@ -401,9 +428,27 @@
     });
 
     document.addEventListener("keydown", function (event) {
-      if (event.key !== "Escape" || burger.getAttribute("aria-expanded") !== "true") return;
-      closeMenu();
-      burger.focus();
+      if (event.key === "Escape" && burger.getAttribute("aria-expanded") === "true") {
+        closeMenu();
+        burger.focus();
+        return;
+      }
+      if (event.key !== "Tab" || !navMenuOpen() || overlayBlocksNavTrap()) return;
+      var focusables = navTrapFocusables();
+      if (!focusables.length) return;
+      var first = focusables[0];
+      var last = focusables[focusables.length - 1];
+      var active = document.activeElement;
+      var index = focusables.indexOf(active);
+      if (event.shiftKey) {
+        if (active === first || index === -1) {
+          event.preventDefault();
+          last.focus();
+        }
+      } else if (active === last || index === -1) {
+        event.preventDefault();
+        first.focus();
+      }
     });
 
     window.addEventListener("resize", function () {

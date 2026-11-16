@@ -42,7 +42,8 @@
                 {%- if product.featured_image != blank -%}
                   {{ product.featured_image | image_url: width: 80 | image_tag: alt: '', width: 32, height: 32, loading: 'lazy' }}
                 {%- endif -%}
-                <span>{{ product.title | truncate: 32 | escape }}</span>
+                {%- assign chip_name = product.title | split: '|' | first | strip -%}
+                <span>{{ chip_name | truncate: 22 | escape }}</span>
                 <b>{% render 'bz-money', cents: product.price %}</b>
               </a>
             {%- endfor -%}
@@ -59,7 +60,7 @@
         <p class="bz-figure bz-figure--gold">{{ section.settings.stat_value | escape }}{%- if section.settings.stat_unit != blank -%}<small> {{ section.settings.stat_unit | escape }}</small>{%- endif -%}</p>
         <div>
           {%- if section.settings.stat_text != blank -%}<p>{{ section.settings.stat_text | escape }}</p>{%- endif -%}
-          {%- if section.settings.stat_link_label != blank -%}
+          {%- if section.settings.stat_link_label != blank and section.settings.stat_link != blank -%}
             <a class="bz-picked__all bz-bento__more" href="{{ section.settings.stat_link }}">{{ section.settings.stat_link_label | escape }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
           {%- endif -%}
         </div>
@@ -105,9 +106,10 @@
       </div>
     </a>
 
-    {%- if section.settings.shipping_amount > 0 -%}
+    {%- assign ship_euros = settings.bz_free_shipping_threshold | default: section.settings.shipping_amount | default: 50 | plus: 0 -%}
+    {%- if ship_euros > 0 -%}
       <div class="bz-bento__stat bz-bento__stat--gold">
-        <p class="bz-figure">{{ section.settings.shipping_amount }}<small>€</small></p>
+        <p class="bz-figure">{{ ship_euros }}<small>€</small></p>
         <p>{{ section.settings.shipping_text | escape }}</p>
       </div>
     {%- endif -%}

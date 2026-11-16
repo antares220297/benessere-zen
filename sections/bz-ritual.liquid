@@ -44,7 +44,8 @@
                 {%- if item.featured_image != blank -%}
                   {{ item.featured_image | image_url: width: 140 | image_tag: alt: item.title, width: 64, height: 64, loading: 'lazy' }}
                 {%- endif -%}
-                <span>{{ item.title | escape }}{%- if item.type != blank -%}<small>{{ item.type | escape }}</small>{%- endif -%}</span>
+                {%- assign row_name = item.title | split: '|' | first | strip -%}
+                <span>{{ row_name | escape }}{%- if item.type != blank -%}<small>{{ item.type | escape }}</small>{%- endif -%}</span>
                 <span class="bz-price">{% render 'bz-money', cents: item.price %}</span>
               </label>
             {%- endif -%}

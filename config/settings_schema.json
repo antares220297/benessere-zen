@@ -1975,6 +1975,7 @@
         "type": "number",
         "id": "bz_free_shipping_threshold",
         "label": "Soglia spedizione gratuita",
+        "info": "In euro. La barra, l'annuncio e la card usano solo questo numero. La tariffa di spedizione in Shopify deve essere la stessa cifra, altrimenti il checkout non coincide con la barra.",
         "default": 50
       },
       {

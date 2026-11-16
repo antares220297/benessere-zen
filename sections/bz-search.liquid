@@ -20,7 +20,7 @@
         {%- endif -%}
       {%- endfor -%}
       {%- if product_count > 0 -%}
-        <h1 id="BzSearchTitle-{{ section.id }}">{{ heading | escape }}{%- if search.terms != blank -%} <em>{{ search.terms | escape }}</em>{%- endif -%}</h1>
+        <h1 id="BzSearchTitle-{{ section.id }}">{{ heading | escape }}{% if search.terms != blank %} <em>{{ search.terms | escape }}</em>{% endif %}</h1>
         <div class="bz-search__grid">
           {%- assign shown = 0 -%}
           {%- for product in search.results -%}

@@ -31,12 +31,31 @@
           side.classList.toggle("is-open");
         });
       });
+      side.querySelectorAll("[data-bz-close-filters]").forEach(function (closer) {
+        closer.addEventListener("click", function () {
+          side.classList.remove("is-open");
+        });
+      });
     }
     var filterForm = root.querySelector("[data-bz-filter-form]");
     if (filterForm) {
       filterForm.addEventListener("change", function (event) {
         var field = event.target;
-        if (!field || field.type !== "checkbox" || !field.name) return;
+        if (!field || !field.name) return;
+        if (field.type !== "checkbox" && field.type !== "range") return;
+        var preview = "";
+        try {
+          preview = new URL(window.location.href).searchParams.get("preview_theme_id") || "";
+        } catch (error) {
+          preview = "";
+        }
+        if (preview && !filterForm.querySelector('input[name="preview_theme_id"]')) {
+          var hidden = document.createElement("input");
+          hidden.type = "hidden";
+          hidden.name = "preview_theme_id";
+          hidden.value = preview;
+          filterForm.appendChild(hidden);
+        }
         filterForm.submit();
       });
     }

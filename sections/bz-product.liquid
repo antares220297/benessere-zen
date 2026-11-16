@@ -19,7 +19,7 @@
   assign cents = cents_num | prepend: '00' | slice: -2, 2
   assign opener = section.settings.opener
   if opener == blank
-    assign opener = product.description | strip_html | truncate: 220
+    assign opener = product.description | strip_html
   endif
 -%}
 
@@ -100,7 +100,10 @@
         {%- endif -%}
       </div>
       {%- if opener != blank -%}
-        <p class="bz-buy__open">{{ opener | escape }}</p>
+        <div class="bz-buy__open" data-bz-open>
+          <p>{{ opener | escape }}</p>
+          <button type="button" data-bz-more-copy aria-expanded="false">Continua</button>
+        </div>
       {%- endif -%}
 
       {%- capture fact_pills -%}
@@ -174,10 +177,14 @@
         </div>
       {%- endform -%}
 
-      <a class="bz-pickup" href="{{ section.settings.pickup_link }}">
+      {%- if section.settings.pickup_link != blank -%}
+        <a class="bz-pickup" href="{{ section.settings.pickup_link }}">
+      {%- else -%}
+        <p class="bz-pickup">
+      {%- endif -%}
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10l2-5h12l2 5M5 10h14v9H5zM9 19v-5h6v5"/></svg>
         Ritira <strong>gratis</strong> in negozio · di solito in <strong>{{ section.settings.pickup_hours | escape }}</strong>
-      </a>
+      {%- if section.settings.pickup_link != blank -%}</a>{%- else -%}</p>{%- endif -%}
 
       {%- assign pair = product.metafields.custom.pairs_with.value -%}
       {%- if pair != blank and pair.id != blank -%}
@@ -282,7 +289,9 @@
     <article>
       <h3>{{ section.settings.visit_title | escape }}</h3>
       <p>{{ section.settings.visit_text | escape }}</p>
-      <a class="bz-picked__all" href="{{ section.settings.pickup_link }}">{{ section.settings.visit_link | escape }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      {%- if section.settings.pickup_link != blank and section.settings.visit_link != blank -%}
+        <a class="bz-picked__all" href="{{ section.settings.pickup_link }}">{{ section.settings.visit_link | escape }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      {%- endif -%}
     </article>
   </div>
   {%- endif -%}
@@ -293,7 +302,7 @@
     {%- if product.featured_image -%}
       {{ product.featured_image | image_url: width: 100 | image_tag: alt: '', width: 44, height: 44 }}
     {%- endif -%}
-    <span>{{ product.title | escape }}<b>{% render 'bz-money', cents: product.price %}</b></span>
+    <span><em class="bz-sticky__name">{{ product.title | escape }}</em><b>{% render 'bz-money', cents: product.price %}</b></span>
     <button type="submit">Aggiungi</button>
   </form>
 </div>

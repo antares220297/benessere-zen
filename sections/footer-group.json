@@ -237,21 +237,21 @@
             "label_3": "Pietre e cristalli",
             "link_3": "/collections/pietre-burattate",
             "label_4": "Incensi e palo santo",
-            "link_4": "/collections/incensi-e-palo-santo"
+            "link_4": "/collections/smudge-e-paolo-santo"
           }
         },
         "col-help": {
           "type": "links",
           "settings": {
             "heading": "Aiuto",
-            "label_1": "Spedizioni",
-            "link_1": "/pages/spedizioni",
-            "label_2": "Ritiro in negozio",
-            "link_2": "/pages/il-negozio",
+            "label_1": "",
+            "link_1": "",
+            "label_2": "",
+            "link_2": "",
             "label_3": "Resi",
             "link_3": "/policies/refund-policy",
             "label_4": "Contatti",
-            "link_4": "/pages/contatti"
+            "link_4": "/pages/contact"
           }
         },
         "col-social": {
@@ -284,7 +284,7 @@
         "word_first": "Benessere",
         "word_second": "Zen",
         "about": "Gioielli in pietra naturale, mala e oggetti per i tuoi rituali. Via Provenzali 1, Cento (FE).",
-        "vat": "P. IVA da inserire"
+        "vat": "Benessere Zen di Balboni Simona, P. IVA 02091600383 (REA FE-257570). Sede legale Via Olindo Malagodi 2, 44042 Cento FE."
       }
     }
   },

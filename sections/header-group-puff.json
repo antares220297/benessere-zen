@@ -539,7 +539,7 @@
           "type": "message",
           "settings": {
             "text": "Ritiro gratuito in negozio, di solito pronto in 4 ore",
-            "text_mobile": "Ritiro gratuito in negozio, in 4 ore"
+            "text_mobile": "Ritiro in negozio, in 4 ore"
           }
         },
         "msg-reso": {
@@ -570,7 +570,7 @@
         "wordmark_lead": "Benessere",
         "wordmark_accent": "Zen",
         "shop_label": "Il negozio",
-        "shop_url": "/pages/il-negozio",
+        "shop_url": "",
         "account_label": "Account",
         "wishlist_label": "Preferiti",
         "cart_label": "Carrello",

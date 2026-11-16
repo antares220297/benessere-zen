@@ -460,9 +460,10 @@
 
 .bz-set__row {
   display: grid;
-  grid-template-columns: 22px 64px 1fr auto;
+  grid-template-columns: 22px 56px minmax(0, 1fr) auto;
   gap: 14px;
   align-items: center;
+  min-height: 72px;
   padding: 12px 0;
   border-bottom: 1px dashed rgba(238, 231, 219, 0.24);
 }
@@ -474,10 +475,19 @@
 }
 
 .bz-set__row img {
-  width: 64px;
-  height: 64px;
+  width: 56px;
+  height: 56px;
   border-radius: 12px;
   object-fit: cover;
+}
+
+.bz-set__row span:not(.bz-price) {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.6em;
+  min-width: 0;
 }
 
 .bz-set__row small {
@@ -488,7 +498,8 @@
 
 .bz-set__row .bz-price {
   font-family: Baskervville, Georgia, serif;
-  font-size: 20px;
+  font-size: 18px;
+  white-space: nowrap;
 }
 
 .bz-set__total {
@@ -562,12 +573,12 @@
   }
 
   .bz-bento {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     grid-template-rows: auto;
   }
 
   .bz-bento__lead {
-    grid-column: auto;
+    grid-column: 1 / -1;
     grid-row: auto;
     height: auto;
     display: flex;
@@ -595,12 +606,12 @@
   }
 
   .bz-bento__stat {
-    min-height: 0;
+    min-height: 180px;
   }
 
   .bz-bento__product,
   .bz-bento__link {
-    min-height: 0;
+    min-height: 180px;
     height: auto;
   }
 

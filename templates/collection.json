@@ -36,7 +36,8 @@
           "type": "chip",
           "settings": {
             "label": "Mala",
-            "collection": "mala-tibetani"
+            "collection": "mala-tibetani",
+            "show_on": "gioielli-con-pietre"
           }
         },
         "chip-ca": {

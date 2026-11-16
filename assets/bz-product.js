@@ -24,10 +24,27 @@
     var bar = root.querySelector("[data-bz-atc]");
     var sticky = root.querySelector(".bz-sticky");
     if (bar && sticky && "IntersectionObserver" in window) {
+      var scrolled = false;
+      window.addEventListener("scroll", function () {
+        if (window.scrollY > 24) scrolled = true;
+      }, { passive: true });
       new IntersectionObserver(function (entries) {
-        sticky.classList.toggle("is-on", !entries[0].isIntersecting);
+        sticky.classList.toggle("is-on", scrolled && !entries[0].isIntersecting);
       }, { threshold: 0.2 }).observe(bar);
     }
+    root.querySelectorAll("[data-bz-open]").forEach(function (box) {
+      var text = box.querySelector("p");
+      var button = box.querySelector("[data-bz-more-copy]");
+      if (!text || !button) return;
+      if (text.scrollHeight <= text.clientHeight + 2) {
+        button.hidden = true;
+        return;
+      }
+      button.addEventListener("click", function () {
+        box.classList.add("is-open");
+        button.hidden = true;
+      });
+    });
     root.querySelectorAll("[data-bz-qty]").forEach(function (button) {
       button.addEventListener("click", function () {
         var input = root.querySelector("input[name='quantity']");

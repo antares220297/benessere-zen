@@ -195,7 +195,7 @@
         "stat_unit": "ore",
         "stat_text": "Ordini qui e lo ritiri gratis in negozio. Di solito è pronto in 4 ore.",
         "stat_link_label": "Come funziona",
-        "stat_link": "/pages/il-negozio",
+        "stat_link": "",
         "featured_product": "palo-santo-mala-con-grano-guru",
         "side_title": "Pendoli",
         "side_accent": "e divinazione",
@@ -391,10 +391,10 @@
       "settings": {
         "heading": "Anche",
         "heading_accent": "dal vivo",
-        "text": "Ogni pezzo del sito è anche sui nostri scaffali. Le pietre dal vivo hanno un altro colore: passa a vederle, o ordina qui e ritira.",
-        "address": "Via Provenzali 1, Cento (FE)",
+        "text": "Ogni pezzo del sito è anche sui nostri scaffali. Le pietre dal vivo hanno un altro colore: passa a vederle, o ordina qui e ritira. Siamo in Via Marcello Provenzali 1, 44042 Cento FE. Tel +39 347 088 3168. info@benesserezen.shop. Orari: lun, mar, mer, ven, sab 9:30-12:30 e 16:00-19:30, gio 9:00-13:00.",
+        "address": "Via Marcello Provenzali 1, 44042 Cento FE",
         "button_label": "Orari e indicazioni",
-        "button_link": "/pages/il-negozio",
+        "button_link": "",
         "faq_heading": "Domande",
         "faq_accent": "frequenti"
       },
@@ -419,7 +419,7 @@
           "type": "step",
           "settings": {
             "title": "Lo ritiri gratis",
-            "text": "Via Provenzali 1, Cento (FE)",
+            "text": "Via Marcello Provenzali 1, 44042 Cento FE. Tel +39 347 088 3168. info@benesserezen.shop. Orari: lun, mar, mer, ven, sab 9:30-12:30 e 16:00-19:30, gio 9:00-13:00.",
             "icon": "shop"
           }
         },

@@ -115,32 +115,32 @@
             "label_3": "Pietre e cristalli",
             "link_3": "/collections/pietre-burattate",
             "label_4": "Incensi e palo santo",
-            "link_4": "/collections/incensi-e-palo-santo"
+            "link_4": "/collections/smudge-e-paolo-santo"
           }
         },
         "col-help": {
           "type": "links",
           "settings": {
             "heading": "Aiuto",
-            "label_1": "Spedizioni",
-            "link_1": "/pages/spedizioni",
-            "label_2": "Ritiro in negozio",
-            "link_2": "/pages/il-negozio",
-            "label_3": "Resi",
-            "link_3": "/policies/refund-policy",
-            "label_4": "Contatti",
-            "link_4": "/pages/contatti"
+            "label_1": "",
+            "link_1": "",
+            "label_2": "Resi",
+            "link_2": "/policies/refund-policy",
+            "label_3": "Contatti",
+            "link_3": "/pages/contact",
+            "label_4": "",
+            "link_4": ""
           }
         },
         "col-social": {
           "type": "links",
           "settings": {
             "heading": "Seguici",
-            "label_1": "Instagram",
+            "label_1": "",
             "link_1": "",
-            "label_2": "Facebook",
+            "label_2": "",
             "link_2": "",
-            "label_3": "TikTok",
+            "label_3": "",
             "link_3": ""
           }
         },
@@ -148,7 +148,7 @@
           "type": "payments",
           "settings": {
             "heading": "Pagamenti",
-            "methods": "Visa, Mastercard, PayPal, Apple Pay, Google Pay"
+            "methods": "American Express, Apple Pay, Google Pay, Maestro, Mastercard, PayPal, Shop Pay, Visa"
           }
         }
       },
@@ -161,8 +161,10 @@
       "settings": {
         "word_first": "Benessere",
         "word_second": "Zen",
-        "about": "Gioielli in pietra naturale, mala e oggetti per i tuoi rituali. Via Provenzali 1, Cento (FE).",
-        "vat": "P. IVA da inserire"
+        "about": "Via Marcello Provenzali 1, 44042 Cento FE. Tel +39 347 088 3168. info@benesserezen.shop. Orari: lun, mar, mer, ven, sab 9:30-12:30 e 16:00-19:30, gio 9:00-13:00.",
+        "vat": "Benessere Zen di Balboni Simona, P. IVA 02091600383 (REA FE-257570). Sede legale Via Olindo Malagodi 2, 44042 Cento FE.",
+        "privacy_link": "/policies/privacy-policy",
+        "terms_link": "/policies/terms-of-service"
       }
     }
   },

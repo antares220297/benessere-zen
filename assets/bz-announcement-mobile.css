@@ -40,6 +40,31 @@
   }
 }
 
+@media (max-width: 480px) {
+  .bz .ann .rot {
+    text-overflow: clip;
+  }
+
+  .bz .ann .rot > span {
+    white-space: nowrap;
+    text-overflow: clip;
+    overflow: visible;
+    font-size: 12.5px;
+    color: #cdc4b4;
+  }
+
+  .bz .ann .rot .ann-short {
+    font-size: 12.5px;
+    color: #cdc4b4;
+  }
+}
+
+@media (max-width: 420px) {
+  .bz .ann .rot {
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .bz .ann .rot > span {
     animation: none;

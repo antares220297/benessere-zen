@@ -20,17 +20,64 @@
         <h4>{{ block.settings.heading | escape }}</h4>
         {%- if block.type == 'links' -%}
           <ul>
-            {%- if block.settings.menu != blank -%}
+            {%- assign column_heading = block.settings.heading | downcase | strip -%}
+            {%- if column_heading == 'seguici' -%}
+              {%- if settings.social_instagram_link != blank -%}
+                <li><a href="{{ settings.social_instagram_link }}">Instagram</a></li>
+              {%- endif -%}
+              {%- if settings.social_facebook_link != blank -%}
+                <li><a href="{{ settings.social_facebook_link }}">Facebook</a></li>
+              {%- endif -%}
+              {%- if settings.social_tiktok_link != blank -%}
+                <li><a href="{{ settings.social_tiktok_link }}">TikTok</a></li>
+              {%- endif -%}
+              {%- if settings.social_youtube_link != blank -%}
+                <li><a href="{{ settings.social_youtube_link }}">YouTube</a></li>
+              {%- endif -%}
+              {%- if settings.social_pinterest_link != blank -%}
+                <li><a href="{{ settings.social_pinterest_link }}">Pinterest</a></li>
+              {%- endif -%}
+              {%- if settings.social_linkedin_link != blank -%}
+                <li><a href="{{ settings.social_linkedin_link }}">LinkedIn</a></li>
+              {%- endif -%}
+              {%- if settings.social_twitter_link != blank -%}
+                <li><a href="{{ settings.social_twitter_link }}">X</a></li>
+              {%- endif -%}
+              {%- if settings.social_snapchat_link != blank -%}
+                <li><a href="{{ settings.social_snapchat_link }}">Snapchat</a></li>
+              {%- endif -%}
+              {%- if settings.social_tumblr_link != blank -%}
+                <li><a href="{{ settings.social_tumblr_link }}">Tumblr</a></li>
+              {%- endif -%}
+              {%- if settings.social_vimeo_link != blank -%}
+                <li><a href="{{ settings.social_vimeo_link }}">Vimeo</a></li>
+              {%- endif -%}
+            {%- elsif block.settings.menu != blank -%}
               {%- for link in block.settings.menu.links -%}
-                <li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>
+                {%- if link.title != blank -%}
+                  <li>
+                    {%- if link.url != blank -%}
+                      <a href="{{ link.url }}">{{ link.title | escape }}</a>
+                    {%- else -%}
+                      {{ link.title | escape }}
+                    {%- endif -%}
+                  </li>
+                {%- endif -%}
               {%- endfor -%}
             {%- else -%}
               {%- assign keys = 'link_1,link_2,link_3,link_4' | split: ',' -%}
               {%- assign labels = 'label_1,label_2,label_3,label_4' | split: ',' -%}
               {%- for key in keys -%}
                 {%- assign label = block.settings[labels[forloop.index0]] -%}
+                {%- assign href = block.settings[key] -%}
                 {%- if label != blank -%}
-                  <li><a href="{{ block.settings[key] | default: '#' }}">{{ label | escape }}</a></li>
+                  <li>
+                    {%- if href != blank -%}
+                      <a href="{{ href }}">{{ label | escape }}</a>
+                    {%- else -%}
+                      {{ label | escape }}
+                    {%- endif -%}
+                  </li>
                 {%- endif -%}
               {%- endfor -%}
             {%- endif -%}
@@ -64,8 +111,8 @@
     { "type": "image_picker", "id": "logo", "label": "Logo" },
     { "type": "text", "id": "word_first", "label": "Prima parola", "default": "Benessere" },
     { "type": "text", "id": "word_second", "label": "Seconda parola", "default": "Zen" },
-    { "type": "textarea", "id": "about", "label": "Testo", "default": "Gioielli in pietra naturale, mala e oggetti per i tuoi rituali. Via Provenzali 1, Cento (FE)." },
-    { "type": "text", "id": "vat", "label": "Partita IVA", "info": "Lascia il testo del mockup finché non inserisci la partita IVA vera.", "default": "P. IVA da inserire" },
+    { "type": "textarea", "id": "about", "label": "Testo", "default": "Via Marcello Provenzali 1, 44042 Cento FE. Tel +39 347 088 3168. info@benesserezen.shop. Orari: lun, mar, mer, ven, sab 9:30-12:30 e 16:00-19:30, gio 9:00-13:00." },
+    { "type": "text", "id": "vat", "label": "Partita IVA", "info": "Se è vuota, la riga legale non compare.", "default": "Benessere Zen di Balboni Simona, P. IVA 02091600383 (REA FE-257570). Sede legale Via Olindo Malagodi 2, 44042 Cento FE." },
     { "type": "url", "id": "privacy_link", "label": "Privacy" },
     { "type": "url", "id": "terms_link", "label": "Termini" }
   ],
@@ -91,7 +138,7 @@
       "name": "Pagamenti",
       "settings": [
         { "type": "text", "id": "heading", "label": "Titolo", "default": "Pagamenti" },
-        { "type": "text", "id": "methods", "label": "Metodi, separati da virgola", "default": "Visa, Mastercard, PayPal, Apple Pay, Google Pay" }
+        { "type": "text", "id": "methods", "label": "Metodi, separati da virgola", "default": "American Express, Apple Pay, Google Pay, Maestro, Mastercard, PayPal, Shop Pay, Visa" }
       ]
     }
   ],

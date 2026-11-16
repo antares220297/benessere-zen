@@ -36,7 +36,7 @@ section.bz-404 h1 {
 
 section.bz-search h1 {
   margin-bottom: 18px;
-  font-size: clamp(32px, 3.2vw, 48px);
+  font-size: clamp(36px, 3.2vw, 48px);
 }
 
 section.bz-404 h1 {
@@ -125,7 +125,16 @@ section.bz-404 :focus-visible {
     padding: 12px 14px 32px;
   }
 
-  section.bz-search .bz-search__grid,
+  section.bz-search .bz-search__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  section.bz-search .bz-card,
+  section.bz-search .bz-search__grid > * {
+    min-width: 0;
+  }
+
   section.bz-404 .bz-404__grid {
     grid-template-columns: 1fr 1fr;
   }
