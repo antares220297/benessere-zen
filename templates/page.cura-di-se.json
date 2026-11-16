@@ -1,43 +1,88 @@
 {
   "sections": {
-    "guide": {
-      "type": "bz-guide",
+    "hero": {
+      "type": "bz-page-hero",
       "settings": {
         "title": "Cura di sé",
-        "intro": "La parte del negozio che sta sullo scaffale accanto alle pietre: oli, capelli, corpo, Ayurveda, un tè. Gesti di ogni giorno, raccontati come si fanno, con gli ingredienti che sono davvero in scheda.",
-        "button_label": "Pietre e rituali",
-        "button_link": "/pages/pietre-e-rituali",
-        "hero_collection": "ayurveda"
-      },
+        "text": "Lo scaffale accanto alle pietre: oli, capelli, corpo, Ayurveda, un tè. Gesti di ogni giorno, con gli ingredienti che sono in scheda.",
+        "collection": "cosmesi-corpo",
+        "button_label": "Cos’è l’Ayurveda",
+        "button_link": "/pages/cose-layurveda"
+      }
+    },
+    "note": {
+      "type": "bz-story",
       "blocks": {
-        "body": {
-          "type": "prose",
+        "band": {
+          "type": "band",
           "settings": {
-            "heading": "Accanto alle pietre",
-            "text": "<p>Simona arriva da lì: da oltre trent’anni fa l’estetista, e in quel percorso ha lavorato a lungo con il massaggio ayurvedico e il Reiki. In negozio si può chiedere un consiglio su dosha e chakra; non è un trattamento e non è quello che si prenota oggi in bottega. In questa metà del catalogo trovi quello che usi sotto la doccia e quello che metti in tazza.</p>"
-          }
-        },
-        "portals": {
-          "type": "portals",
-          "settings": {
-            "collection_1": "cosmesi-corpo",
-            "collection_2": "prodotti-per-capelli",
-            "collection_3": "ayurveda",
-            "collection_4": "te-tisane",
-            "collection_5": "tazze",
-            "extra_label": "Cos’è l’Ayurveda",
-            "extra_link": "/pages/cose-layurveda"
-          }
-        },
-        "close": {
-          "type": "prose",
-          "settings": {
-            "text": "<p>Le due porte si appartengono: a casa di chi ci sceglie spesso stanno sullo stesso tavolo. Se vuoi passare, l’indirizzo e gli orari sono nella pagina Il negozio.</p>"
+            "title": "Il consiglio in negozio",
+            "text": "Simona fa l’estetista da oltre trent’anni. In quel percorso ha lavorato a lungo con il massaggio ayurvedico e il Reiki. Non è un trattamento, e non è quello che si prenota oggi in bottega.",
+            "text_2": "In negozio si può chiedere un consiglio su dosha e chakra. Qui trovi quello che usi sotto la doccia e quello che metti in tazza.",
+            "collection": "ayurveda",
+            "button_label": "Cos’è l’Ayurveda",
+            "button_link": "/pages/cose-layurveda"
           }
         }
       },
-      "block_order": ["body", "portals", "close"]
+      "block_order": ["band"]
+    },
+    "tiles": {
+      "type": "bz-tiles",
+      "settings": { "heading": "Scegli da dove iniziare" },
+      "blocks": {
+        "viso": { "type": "tile", "settings": { "label": "Viso", "collection": "latte-detergente" } },
+        "corpo": { "type": "tile", "settings": { "label": "Corpo", "collection": "cosmesi-corpo" } },
+        "capelli": { "type": "tile", "settings": { "label": "Capelli", "collection": "prodotti-per-capelli" } },
+        "te": { "type": "tile", "settings": { "label": "Tè e tisane", "collection": "te-tisane" } },
+        "tazze": { "type": "tile", "settings": { "label": "Tazze", "collection": "tazze" } },
+        "oli": { "type": "tile", "settings": { "label": "Oli", "collection": "profumi-in-olio" } }
+      },
+      "block_order": ["viso", "corpo", "capelli", "te", "tazze", "oli"]
+    },
+    "rail": {
+      "type": "bz-picked",
+      "settings": {
+        "heading": "I più",
+        "heading_accent": "scelti",
+        "link_label": "Pietre e rituali",
+        "link": "/pages/pietre-e-rituali",
+        "limit": 5,
+        "skip_sold_out": true
+      },
+      "blocks": {
+        "tab-viso": { "type": "list", "settings": { "label": "Viso", "collection": "latte-detergente", "sort_by": "best-selling" } },
+        "tab-corpo": { "type": "list", "settings": { "label": "Corpo", "collection": "cosmesi-corpo", "sort_by": "best-selling" } },
+        "tab-capelli": { "type": "list", "settings": { "label": "Capelli", "collection": "prodotti-per-capelli", "sort_by": "best-selling" } },
+        "tab-te": { "type": "list", "settings": { "label": "Tè", "collection": "te-tisane", "sort_by": "best-selling" } },
+        "tab-tazze": { "type": "list", "settings": { "label": "Tazze", "collection": "tazze", "sort_by": "best-selling" } },
+        "tab-oli": { "type": "list", "settings": { "label": "Oli", "collection": "profumi-in-olio", "sort_by": "best-selling" } }
+      },
+      "block_order": ["tab-viso", "tab-corpo", "tab-capelli", "tab-te", "tab-tazze", "tab-oli"]
+    },
+    "gestures": {
+      "type": "bz-gestures",
+      "settings": { "heading": "Mattina e sera" },
+      "blocks": {
+        "morning": {
+          "type": "gesture",
+          "settings": {
+            "title": "Al mattino",
+            "text": "Un olio o un lavaggio, il gesto con cui inizia la giornata. Niente promesse che la scheda non fa già.",
+            "collection": "prodotti-per-capelli"
+          }
+        },
+        "evening": {
+          "type": "gesture",
+          "settings": {
+            "title": "Alla sera",
+            "text": "Un tè in tazza, accanto a quello che hai scelto per il corpo. Le due porte del negozio stanno spesso sullo stesso tavolo.",
+            "collection": "te-tisane"
+          }
+        }
+      },
+      "block_order": ["morning", "evening"]
     }
   },
-  "order": ["guide"]
+  "order": ["hero", "note", "tiles", "rail", "gestures"]
 }

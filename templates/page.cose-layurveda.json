@@ -1,65 +1,102 @@
 {
   "sections": {
-    "guide": {
-      "type": "bz-guide",
+    "hero": {
+      "type": "bz-page-hero",
       "settings": {
         "title": "Cos’è l’Ayurveda",
-        "intro": "Una tradizione nata in India, che guarda a corpo, mente e abitudini come a un’unica cosa. Si porta in casa con gesti quotidiani: un olio, un’infusione, un lavaggio dei capelli. Non è una visita medica e non sostituisce un medico.",
+        "text": "Una tradizione nata in India. Si porta in casa con un olio, un’infusione, un lavaggio. Non è una visita medica e non sostituisce un medico.",
+        "collection": "ayurveda",
         "button_label": "Vedi l’Ayurveda",
-        "button_link": "/collections/ayurveda",
-        "hero_collection": "ayurveda"
-      },
+        "button_link": "/collections/ayurveda"
+      }
+    },
+    "origin": {
+      "type": "bz-story",
       "blocks": {
-        "origini": {
-          "type": "prose",
+        "band": {
+          "type": "band",
           "settings": {
-            "heading": "Da dove arriva",
-            "text": "<p>L’Ayurveda arriva dall’India e, come già raccontiamo in questa pagina, ha radici antichissime, nella tradizione indicate in oltre cinquemila anni. Lavora con erbe, oli, alimenti e rituali di ogni giorno. È, prima di tutto, un modo di stare nelle proprie abitudini, non un elenco di rimedi.</p>"
-          }
-        },
-        "dosha": {
-          "type": "trio",
-          "settings": {
-            "title_1": "Vata",
-            "text_1": "Aria e spazio: movimento, leggerezza, un ritmo che fa fatica a fermarsi. Nella pratica si accompagna a routine stabili e a oli più caldi.",
-            "title_2": "Pitta",
-            "text_2": "Fuoco e acqua: trasformazione, determinazione, un fuoco che a volte sale troppo. Nella pratica si cercano pause e cose più fresche.",
-            "title_3": "Kapha",
-            "text_3": "Terra e acqua: stabilità, costanza, un passo che a volte si fa pesante. Nella pratica aiutano il movimento e le spezie più vive."
-          }
-        },
-        "negozio": {
-          "type": "prose",
-          "settings": {
-            "heading": "In questo negozio",
-            "text": "<p>Non teniamo rimedi. Teniamo prodotti di linee ayurvediche e naturali che abbiamo scelto, con gli ingredienti dichiarati in ogni scheda. Non è una diagnosi: se ti riconosci in un passo, può aiutarti a scegliere un olio, un tè o un gesto. Per una lettura personale, in bottega Simona dà consigli su dosha e chakra, a partire da quello che usi già. Non è una visita e non sostituisce un medico.</p>"
-          }
-        },
-        "portals": {
-          "type": "portals",
-          "settings": {
-            "collection_1": "ayurveda",
-            "extra_label": "Cura di sé",
-            "extra_link": "/pages/cura-di-se"
-          }
-        },
-        "faq-1": {
-          "type": "faq",
-          "settings": {
-            "question": "L’Ayurveda sostituisce una cura medica?",
-            "answer": "No. È una tradizione di abitudini e di prodotti di uso quotidiano."
-          }
-        },
-        "faq-2": {
-          "type": "faq",
-          "settings": {
-            "question": "Devo conoscere il mio dosha per acquistare?",
-            "answer": "No. Puoi scegliere a partire da quello che ti serve, capelli, corpo, un tè, e, se vuoi, chiedere in negozio un consiglio su dosha e chakra."
+            "title": "Da dove arriva",
+            "text": "L’Ayurveda ha radici antichissime, nella tradizione indicate in oltre cinquemila anni.",
+            "text_2": "Lavora con erbe, oli e gesti di ogni giorno. È un modo di stare nelle abitudini, non un elenco di rimedi.",
+            "collection": "te-e-tisane-ayurvediche"
           }
         }
       },
-      "block_order": ["origini", "dosha", "negozio", "portals", "faq-1", "faq-2"]
+      "block_order": ["band"]
+    },
+    "dosha": {
+      "type": "bz-dosha",
+      "settings": {
+        "heading": "Tre energie",
+        "text": "Nella tradizione si distinguono tre dosha. Non è una diagnosi: può aiutarti a scegliere un olio, un tè o un gesto."
+      },
+      "blocks": {
+        "vata": {
+          "type": "dosha",
+          "settings": {
+            "title": "Vata",
+            "text": "Aria e spazio. Movimento, leggerezza, un ritmo che fa fatica a fermarsi. Nella pratica: routine stabili e oli più caldi.",
+            "tone": "vata",
+            "collection": "te-e-tisane-ayurvediche"
+          }
+        },
+        "pitta": {
+          "type": "dosha",
+          "settings": {
+            "title": "Pitta",
+            "text": "Fuoco e acqua. Trasformazione, determinazione, un fuoco che a volte sale troppo. Nella pratica: pause e cose più fresche.",
+            "tone": "pitta",
+            "collection": "cosmesi-viso-ayurvedica"
+          }
+        },
+        "kapha": {
+          "type": "dosha",
+          "settings": {
+            "title": "Kapha",
+            "text": "Terra e acqua. Stabilità, costanza, un passo che a volte si fa pesante. Nella pratica: movimento e spezie più vive.",
+            "tone": "kapha",
+            "collection": "cosmesi-corpo-ayurvedica"
+          }
+        }
+      },
+      "block_order": ["vata", "pitta", "kapha"]
+    },
+    "simona": {
+      "type": "bz-story",
+      "blocks": {
+        "band": {
+          "type": "band",
+          "settings": {
+            "title": "Simona consiglia",
+            "text": "In negozio si può chiedere un consiglio su dosha e chakra, a partire da quello che usi già. Non è una visita e non sostituisce un medico.",
+            "text_2": "Il massaggio ayurvedico e il Reiki sono il lavoro di Simona per oltre trent’anni. Non è un servizio che si prenota oggi in bottega.",
+            "collection": "ayurveda",
+            "flip": true,
+            "button_label": "Cura di sé",
+            "button_link": "/pages/cura-di-se"
+          }
+        }
+      },
+      "block_order": ["band"]
+    },
+    "rail": {
+      "type": "bz-picked",
+      "settings": {
+        "heading": "Dal banco",
+        "heading_accent": "ayurvedico",
+        "link_label": "Tutta la collezione",
+        "link": "/collections/ayurveda",
+        "limit": 5,
+        "skip_sold_out": true
+      },
+      "blocks": {
+        "tab-ayu": { "type": "list", "settings": { "label": "Ayurveda", "collection": "ayurveda", "sort_by": "best-selling" } },
+        "tab-oli": { "type": "list", "settings": { "label": "Oli", "collection": "profumi-in-olio", "sort_by": "best-selling" } },
+        "tab-te": { "type": "list", "settings": { "label": "Tisane", "collection": "te-e-tisane-ayurvediche", "sort_by": "best-selling" } }
+      },
+      "block_order": ["tab-ayu", "tab-oli", "tab-te"]
     }
   },
-  "order": ["guide"]
+  "order": ["hero", "origin", "dosha", "simona", "rail"]
 }

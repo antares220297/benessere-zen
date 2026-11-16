@@ -1,44 +1,97 @@
 {
   "sections": {
-    "guide": {
-      "type": "bz-guide",
+    "hero": {
+      "type": "bz-page-hero",
       "settings": {
         "title": "Pietre e rituali",
-        "intro": "Una pietra che tieni in tasca, un mala da 108 grani che fai scorrere, un incenso che prepara la stanza, una candela accesa con un’intenzione. Qui rituale è questo: un gesto, non una teoria.",
+        "text": "Una pietra in tasca, un mala da 108 grani, un incenso, una candela accesa con un’intenzione. Qui rituale è un gesto, non una teoria.",
+        "collection": "mala-tibetani",
         "button_label": "Vieni in negozio",
-        "button_link": "/pages/il-negozio",
-        "hero_collection": "mala-tibetani"
+        "button_link": "/pages/il-negozio"
+      }
+    },
+    "intent": {
+      "type": "bz-intentions",
+      "settings": {
+        "heading": "Parti da un’intenzione",
+        "cta_label": "Scopri i pezzi"
       },
       "blocks": {
-        "body": {
-          "type": "prose",
+        "in-serenita": { "type": "intention", "settings": { "word": "Serenità", "line": "In molte pratiche l'ametista si tiene vicina quando si cerca quiete.", "collection": "intenzione-serenita" } },
+        "in-protezione": { "type": "intention", "settings": { "word": "Protezione", "line": "Tormalina e ossidiana si portano come un confine, una pietra scura addosso.", "collection": "intenzione-protezione" } },
+        "in-affetti": { "type": "intention", "settings": { "word": "Affetti", "line": "Il quarzo rosa, in tante tradizioni, è la pietra che si regala a chi si vuole bene.", "collection": "intenzione-affetti" } },
+        "in-coraggio": { "type": "intention", "settings": { "word": "Coraggio", "line": "Corniola e diaspro rosso accompagnano chi deve farsi avanti.", "collection": "intenzione-coraggio" } },
+        "in-concentrazione": { "type": "intention", "settings": { "word": "Concentrazione", "line": "Il lapislazzuli si usa da secoli quando serve tenere la mente su una cosa sola.", "collection": "intenzione-concentrazione" } }
+      },
+      "block_order": ["in-serenita", "in-protezione", "in-affetti", "in-coraggio", "in-concentrazione"]
+    },
+    "compare": {
+      "type": "bz-compare",
+      "settings": {
+        "heading": "Grezze e burattate",
+        "text": "Due modi di tenere una pietra. La grezza resta com’è uscita. La burattata è levigata, da tasca."
+      },
+      "blocks": {
+        "side-grezze": {
+          "type": "side",
           "settings": {
-            "heading": "Scegli una porta",
-            "text": "<p>In negozio a Cento le pietre si guardano da vicino. Sul sito è lo stesso catalogo: grezze e burattate, gioielli, mala, pendoli, incensi, candele e ciò che serve per tenerle. Se cerchi una pietra per un’intenzione, serenità, protezione, affetti, coraggio o concentrazione, parti da lì e poi scendi nel pezzo.</p>"
+            "title": "Pietre grezze",
+            "text": "Pezzo unico. Quello in foto è quello che parte, o che ritiri a Cento.",
+            "collection": "pietre-grezze",
+            "cta": "Vedi le grezze"
           }
         },
-        "portals": {
-          "type": "portals",
+        "side-burattate": {
+          "type": "side",
           "settings": {
-            "collection_1": "mala-tibetani",
-            "collection_2": "pietre-grezze",
-            "collection_3": "pietre-burattate",
-            "collection_4": "pendoli",
-            "collection_5": "candele-e-brucia-candele",
-            "collection_6": "portacandele",
-            "extra_label": "Gioielli con pietre",
-            "extra_link": "/collections/gioielli-con-pietre"
-          }
-        },
-        "close": {
-          "type": "prose",
-          "settings": {
-            "text": "<p>Se vuoi vederli in mano, siamo in Via Marcello Provenzali 1, a Cento. Il pezzo in foto, sui cristalli e su molti oggetti, è quello che ti arriva o che ritiri.</p>"
+            "title": "Pietre burattate",
+            "text": "Levigate, piccole, da tenere in mano. La misura, quando c’è, è «circa».",
+            "collection": "pietre-burattate",
+            "cta": "Vedi le burattate"
           }
         }
       },
-      "block_order": ["body", "portals", "close"]
+      "block_order": ["side-grezze", "side-burattate"]
+    },
+    "doors": {
+      "type": "bz-tiles",
+      "settings": { "heading": "Intorno al rito" },
+      "blocks": {
+        "candele": { "type": "tile", "settings": { "label": "Candele", "collection": "candele-e-brucia-candele" } },
+        "incensi": { "type": "tile", "settings": { "label": "Incensi", "collection": "incensi-e-brucia-incensi-2" } },
+        "gioielli": { "type": "tile", "settings": { "label": "Gioielli", "collection": "gioielli-con-pietre" } },
+        "porta": { "type": "tile", "settings": { "label": "Porta candele", "collection": "portacandele" } }
+      },
+      "block_order": ["candele", "incensi", "gioielli", "porta"]
+    },
+    "rail": {
+      "type": "bz-picked",
+      "settings": {
+        "heading": "Mala e pendoli",
+        "heading_accent": "",
+        "link_label": "Gioielli con pietre",
+        "link": "/collections/gioielli-con-pietre",
+        "limit": 5,
+        "skip_sold_out": true
+      },
+      "blocks": {
+        "tab-mala": { "type": "list", "settings": { "label": "Mala", "collection": "mala-tibetani", "sort_by": "best-selling" } },
+        "tab-pendoli": { "type": "list", "settings": { "label": "Pendoli", "collection": "pendoli", "sort_by": "best-selling" } }
+      },
+      "block_order": ["tab-mala", "tab-pendoli"]
+    },
+    "shop": {
+      "type": "bz-shopnote",
+      "settings": {
+        "title": "In mano, a Cento",
+        "text": "Sul sito è lo stesso catalogo del banco: grezze, burattate, gioielli, mala, pendoli, incensi e candele. Il pezzo in foto, sui cristalli, è quello che ti arriva o che ritiri.",
+        "address": "Via Marcello Provenzali 1, 44042 Cento (FE). Tel. +39 347 088 3168.",
+        "hours": "Lun, mar, mer, ven e sab 9:30–12:30 e 16:00–19:30. Giovedì 9:00–13:00.",
+        "collection": "pietre-burattate",
+        "button_label": "Vieni in negozio",
+        "button_link": "/pages/il-negozio"
+      }
     }
   },
-  "order": ["guide"]
+  "order": ["hero", "intent", "compare", "doors", "rail", "shop"]
 }

@@ -1,0 +1,44 @@
+{{ 'bz-tokens.css' | asset_url | stylesheet_tag }}
+{{ 'bz-home.css' | asset_url | stylesheet_tag }}
+{{ 'bz-pages.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign shot = section.settings.image
+  if shot == blank and section.settings.product != blank
+    assign shot = section.settings.product.featured_image
+  endif
+  if shot == blank and section.settings.collection != blank
+    assign shot = section.settings.collection.image | default: section.settings.collection.products.first.featured_image
+  endif
+-%}
+<section class="bz bz-pages bz-shopnote{% unless shot %} is-solo{% endunless %}">
+  {%- if shot -%}
+    {{ shot | image_url: width: 1200 | image_tag: alt: section.settings.title, loading: 'lazy', width: 800, height: 560 }}
+  {%- endif -%}
+  <div class="bz-shopnote__copy bz-reveal">
+    <h2>{{ section.settings.title | escape }}</h2>
+    {%- if section.settings.text != blank -%}<p>{{ section.settings.text | escape }}</p>{%- endif -%}
+    {%- if section.settings.address != blank -%}<p>{{ section.settings.address | escape }}</p>{%- endif -%}
+    {%- if section.settings.hours != blank -%}<p>{{ section.settings.hours | escape }}</p>{%- endif -%}
+    {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
+      <a class="bz-btn bz-btn--gold" href="{{ section.settings.button_link }}">{{ section.settings.button_label | escape }}</a>
+    {%- endif -%}
+  </div>
+</section>
+<script src="{{ 'bz-pages.js' | asset_url }}" defer></script>
+{% schema %}
+{
+  "name": "Nota negozio",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Titolo", "default": "A Cento" },
+    { "type": "textarea", "id": "text", "label": "Testo" },
+    { "type": "text", "id": "address", "label": "Indirizzo" },
+    { "type": "textarea", "id": "hours", "label": "Orari" },
+    { "type": "image_picker", "id": "image", "label": "Foto" },
+    { "type": "product", "id": "product", "label": "Prodotto per la foto" },
+    { "type": "collection", "id": "collection", "label": "Collezione per la foto" },
+    { "type": "text", "id": "button_label", "label": "Pulsante" },
+    { "type": "url", "id": "button_link", "label": "Link" }
+  ],
+  "presets": [{ "name": "Nota negozio" }]
+}
+{% endschema %}

@@ -1,0 +1,45 @@
+{{ 'bz-tokens.css' | asset_url | stylesheet_tag }}
+{{ 'bz-home.css' | asset_url | stylesheet_tag }}
+{{ 'bz-pages.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign shot = section.settings.image
+  if shot == blank and section.settings.collection != blank
+    assign shot = section.settings.collection.image | default: section.settings.collection.products.first.featured_image
+  endif
+  if shot == blank and section.settings.product != blank
+    assign shot = section.settings.product.featured_image
+  endif
+  assign href = section.settings.button_link
+  if href == blank and section.settings.collection != blank
+    assign href = section.settings.collection.url
+  endif
+-%}
+<header class="bz bz-pages bz-phero{% unless shot %} is-plain{% endunless %}">
+  {%- if shot -%}
+    {{ shot | image_url: width: 1800 | image_tag: alt: section.settings.title, class: 'bz-phero__photo', widths: '700, 1200, 1800', sizes: '100vw', loading: 'eager' }}
+    <span class="bz-phero__veil" aria-hidden="true"></span>
+  {%- endif -%}
+  <div class="bz-phero__copy bz-reveal">
+    <h1>{{ section.settings.title | escape }}</h1>
+    {%- if section.settings.text != blank -%}<p>{{ section.settings.text | escape }}</p>{%- endif -%}
+    {%- if section.settings.button_label != blank and href != blank -%}
+      <a class="bz-btn bz-btn--gold" href="{{ href }}">{{ section.settings.button_label | escape }}</a>
+    {%- endif -%}
+  </div>
+</header>
+<script src="{{ 'bz-pages.js' | asset_url }}" defer></script>
+{% schema %}
+{
+  "name": "Apertura con foto",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Titolo" },
+    { "type": "textarea", "id": "text", "label": "Testo" },
+    { "type": "image_picker", "id": "image", "label": "Foto" },
+    { "type": "collection", "id": "collection", "label": "Collezione per la foto" },
+    { "type": "product", "id": "product", "label": "Prodotto per la foto" },
+    { "type": "text", "id": "button_label", "label": "Pulsante" },
+    { "type": "url", "id": "button_link", "label": "Link" }
+  ],
+  "presets": [{ "name": "Apertura con foto" }]
+}
+{% endschema %}
