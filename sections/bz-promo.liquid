@@ -48,7 +48,7 @@
                 {%- else -%}
                   {{ product.title | escape }}
                 {%- endif -%}
-                <b>{{ product.price | minus: chip_cents | divided_by: 100 }},{{ chip_cents | prepend: '00' | slice: -2, 2 }} €</b>
+                <b>{% render 'bz-money', cents: product.price %}</b>
               </a>
             {%- endfor -%}
           </div>
@@ -84,7 +84,7 @@
           {%- endif -%}
           <span class="bz-bento__caption">
             <b>{{ featured.title | escape }}</b>
-            <span class="bz-price">{{ featured.price | minus: feat_cents | divided_by: 100 }}<sup>,{{ feat_cents | prepend: '00' | slice: -2, 2 }}</sup> €</span>
+            <span class="bz-price">{% render 'bz-money', cents: featured.price %}</span>
           </span>
         </a>
         {%- if featured.available -%}

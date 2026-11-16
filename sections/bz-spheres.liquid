@@ -15,22 +15,59 @@
       if block.settings.link != blank
         assign sphere_url = block.settings.link
       endif
-      assign sphere_image = block.settings.image
-      if sphere_image == blank and sphere_collection != blank
-        if sphere_collection.image != blank
-          assign sphere_image = sphere_collection.image
-        elsif sphere_collection.products.first.featured_image != blank
-          assign sphere_image = sphere_collection.products.first.featured_image
-        endif
-      endif
+      assign sphere_image = blank
       assign min_price = blank
       assign priced = false
-      if sphere_collection != blank and block.settings.show_all == false
+      if sphere_collection != blank and block.settings.show_all == false and sphere_collection.products_count > 0
+        assign first_product = sphere_collection.products.first
+        if first_product.featured_image != blank
+          assign sphere_image = first_product.featured_image
+        endif
         assign cheapest = sphere_collection.products | sort: 'price'
         if cheapest.first != blank and cheapest.first.price != blank
           assign min_price = cheapest.first.price
           assign priced = true
+        elsif first_product.price != blank
+          assign min_price = first_product.price
+          assign priced = true
         endif
+      endif
+      if sphere_image == blank and block.settings.image != blank
+        assign sphere_image = block.settings.image
+      endif
+      if sphere_image == blank and sphere_collection.image != blank
+        assign sphere_image = sphere_collection.image
+      endif
+      assign sphere_label = block.settings.label | downcase
+      if sphere_image == blank and sphere_label contains 'palo'
+        assign palo = collections['incensi-e-palo-santo']
+        assign palo_product = all_products['palo-santo-mala-con-grano-guru']
+        if palo != blank and palo.products_count > 0 and palo.products.first.featured_image != blank
+          assign sphere_image = palo.products.first.featured_image
+          if priced == false
+            assign min_price = palo.products.first.price
+            assign priced = true
+          endif
+        elsif palo_product != blank and palo_product.featured_image != blank
+          assign sphere_image = palo_product.featured_image
+          if priced == false
+            assign min_price = palo_product.price
+            assign priced = true
+          endif
+        endif
+      endif
+      if sphere_image == blank and sphere_label != blank
+        for product in collections.all.products limit: 50
+          assign product_name = product.title | downcase
+          if product_name contains sphere_label and product.featured_image != blank
+            assign sphere_image = product.featured_image
+            if priced == false and product.price != blank
+              assign min_price = product.price
+              assign priced = true
+            endif
+            break
+          endif
+        endfor
       endif
     -%}
     <a class="bz-sphere{% if forloop.first %} is-on{% endif %}" href="{{ sphere_url }}" {{ block.shopify_attributes }}>
@@ -40,6 +77,8 @@
             <span class="bz-sphere__all"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
           {%- elsif sphere_image != blank -%}
             {{ sphere_image | image_url: width: 240 | image_tag: alt: block.settings.label, widths: '120, 180, 240', sizes: '104px', width: 104, height: 104, loading: 'lazy' }}
+          {%- else -%}
+            <span class="bz-sphere__fallback">{{ block.settings.label | slice: 0 | escape }}</span>
           {%- endif -%}
         </span>
       </span>
@@ -48,7 +87,7 @@
         <small>{{ collections.all.products_count }} prodotti</small>
       {%- elsif priced -%}
         {%- assign min_cents = min_price | modulo: 100 -%}
-        <small>da {{ min_price | minus: min_cents | divided_by: 100 }},{{ min_cents | prepend: '00' | slice: -2, 2 }} €</small>
+        <small>da {% render 'bz-money', cents: min_price %}</small>
       {%- endif -%}
     </a>
   {%- endfor -%}

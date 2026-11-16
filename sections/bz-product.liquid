@@ -82,7 +82,7 @@
         <p class="bz-buy__sub">{{ product.type | escape }}</p>
       {%- endif -%}
       <div class="bz-buy__price">
-        <strong data-bz-price>{{ euros }}<sup>,{{ cents }}</sup> €</strong>
+        <strong data-bz-price>{% render 'bz-money', cents: product.price %}</strong>
         <small>IVA inclusa</small>
         {%- if section.settings.shipping_note != blank -%}
           <span class="bz-pill">{{ section.settings.shipping_note | escape }}</span>
@@ -109,8 +109,7 @@
           {%- assign ship_width = 100 -%}
         {%- else -%}
           {%- assign short = threshold | minus: current.price -%}
-          {%- assign short_cents = short | modulo: 100 -%}
-          <p>Ti mancano <b>{{ short | minus: short_cents | divided_by: 100 }},{{ short_cents | prepend: '00' | slice: -2, 2 }} €</b> per la spedizione gratuita</p>
+          <p>Ti mancano <b>{% render 'bz-money', cents: short %}</b> per la spedizione gratuita</p>
           {%- assign ship_width = current.price | times: 100 | divided_by: threshold -%}
         {%- endif -%}
         <div class="bz-ship__track" aria-hidden="true">
@@ -160,7 +159,7 @@
           {%- if pair.featured_image -%}
             {{ pair.featured_image | image_url: width: 120 | image_tag: alt: pair.title, width: 52, height: 52 }}
           {%- endif -%}
-          <div>Si abbina a {{ pair.title | escape }}<small>{{ pair.price | money }}</small></div>
+          <div>Si abbina a {{ pair.title | escape }}<small>{% render 'bz-money', cents: pair.price %}</small></div>
           <form class="bz-ajax-cart" action="{{ routes.cart_add_url }}" method="post">
             <input type="hidden" name="id" value="{{ pair.selected_or_first_available_variant.id }}">
             <button class="bz-card__add" type="submit" aria-label="Aggiungi {{ pair.title | escape }}">+</button>
@@ -240,7 +239,7 @@
     {%- if product.featured_image -%}
       {{ product.featured_image | image_url: width: 100 | image_tag: alt: '', width: 44, height: 44 }}
     {%- endif -%}
-    <span>{{ product.title | escape }}<b>{{ euros }}<sup>,{{ cents }}</sup> €</b></span>
+    <span>{{ product.title | escape }}<b>{% render 'bz-money', cents: product.price %}</b></span>
     <button type="submit">Aggiungi</button>
   </form>
 </div>

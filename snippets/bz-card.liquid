@@ -70,5 +70,5 @@
   {%- if product.type != blank -%}
     <p class="bz-card__meta"><span class="bz-card__dot" style="background: {{ dot }}" aria-hidden="true"></span>{{ product.type | escape }}</p>
   {%- endif -%}
-  <p class="bz-card__price">{{ euros }}<sup>,{{ cents }}</sup> €</p>
+  <p class="bz-card__price">{% render 'bz-money', cents: product.price %}</p>
 </article>

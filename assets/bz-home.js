@@ -44,7 +44,8 @@
   function money(cents) {
     var whole = Math.floor(cents / 100);
     var rest = String(cents % 100).padStart(2, "0");
-    return whole + "<sup>," + rest + "</sup> €";
+    var grouped = String(whole).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    return grouped + "," + rest + " €";
   }
 
   window.bzSumSet = function (root) {

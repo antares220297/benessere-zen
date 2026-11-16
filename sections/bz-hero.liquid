@@ -46,7 +46,7 @@
         {%- endif -%}
         <span>
           <b>{{ card_product.title | escape }}</b>
-          <span class="bz-price">{{ card_euros }}<sup>,{{ card_cents | prepend: '00' | slice: -2, 2 }}</sup> €</span>
+          <span class="bz-price">{% render 'bz-money', cents: card_product.price %}</span>
         </span>
       </a>
       <form class="bz-hero__form" action="{{ routes.cart_add_url }}" method="post">

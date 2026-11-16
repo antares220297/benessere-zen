@@ -1,0 +1,92 @@
+{{ 'bz-tokens.css' | asset_url | stylesheet_tag }}
+{{ 'bz-cart.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign seed = cart.items.first.product
+  assign cart_ids = cart.items | map: 'product_id' | join: ',' | prepend: ',' | append: ','
+-%}
+<div id="bz-cart" class="bz-cartpage">
+  <header class="bz-cartpage__head">
+    <h1>Il tuo carrello</h1>
+    <a href="{{ routes.all_products_collection_url }}">Continua a fare acquisti</a>
+  </header>
+
+  {%- if cart == empty -%}
+    <p class="bz-drawer__empty">Il carrello è vuoto.</p>
+  {%- else -%}
+    <div class="bz-cartpage__grid">
+      <div>
+        <div class="bz-drawer__items">
+          {%- for item in cart.items -%}
+            <article class="cart-item bz-drawer__item">
+              <a href="{{ item.url }}">
+                {%- if item.image -%}
+                  {{ item.image | image_url: width: 160 | image_tag: alt: item.product.title, width: 76, height: 76, loading: 'lazy' }}
+                {%- endif -%}
+              </a>
+              <div>
+                <a href="{{ item.url }}">{{ item.product.title | escape }}</a>
+                {%- unless item.product.has_only_default_variant -%}
+                  <small>{{ item.variant.title | escape }}</small>
+                {%- elsif item.product.type != blank -%}
+                  <small>{{ item.product.type | escape }}</small>
+                {%- endunless -%}
+                <div class="bz-drawer__qty">
+                  <button type="button" data-bz-qty="-1" data-key="{{ item.key }}" data-line="{{ item.index | plus: 1 }}" aria-label="Meno">−</button>
+                  <input id="cart-qty-{{ item.key }}" type="text" value="{{ item.quantity }}" readonly aria-label="Quantità">
+                  <button type="button" data-bz-qty="1" data-key="{{ item.key }}" data-line="{{ item.index | plus: 1 }}" aria-label="Più">+</button>
+                </div>
+              </div>
+              <span class="bz-line-price">{% render 'bz-money', cents: item.final_price %}</span>
+            </article>
+          {%- endfor -%}
+        </div>
+
+        <div class="bz-drawer__upsell" data-bz-upsell data-product-id="{{ seed.id }}">
+          <h4>Si abbina bene</h4>
+          <div data-bz-upsell-list>
+            {%- assign upsell_count = 0 -%}
+            {%- if upsell_count < 2 and seed != blank -%}
+              {%- for collection in seed.collections limit: 2 -%}
+                {%- for product in collection.products limit: 8 -%}
+                  {%- assign pid = product.id | prepend: ',' | append: ',' -%}
+                  {%- unless cart_ids contains pid -%}
+                    {%- if upsell_count < 2 and product.id != seed.id and product.available -%}
+                      {%- assign upsell_count = upsell_count | plus: 1 -%}
+                      <div class="bz-upsell">
+                        <a href="{{ product.url }}">
+                          {%- if product.featured_image -%}
+                            {{ product.featured_image | image_url: width: 120 | image_tag: alt: product.title, width: 48, height: 48, loading: 'lazy' }}
+                          {%- endif -%}
+                        </a>
+                        <a href="{{ product.url }}">{{ product.title | escape }}</a>
+                        <span>{% render 'bz-money', cents: product.price %}</span>
+                        <button type="button" class="bz-drawer__plus" data-bz-upsell-add="{{ product.selected_or_first_available_variant.id }}" aria-label="Aggiungi {{ product.title | escape }}">+</button>
+                      </div>
+                    {%- endif -%}
+                  {%- endunless -%}
+                {%- endfor -%}
+              {%- endfor -%}
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+
+      <aside class="bz-cartpage__summary">
+        <p><span>Subtotale</span><strong>{% render 'bz-money', cents: cart.total_price %}</strong></p>
+        <small>IVA inclusa. Spedizione al pagamento, oppure ritiro gratuito in negozio.</small>
+        <form action="{{ routes.cart_url }}" method="post">
+          <button id="checkout-submit" class="bz-drawer__go" type="submit" name="checkout">Vai al pagamento →</button>
+        </form>
+      </aside>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Carrello",
+  "class": "bz-cart-section",
+  "settings": [],
+  "presets": [{ "name": "Carrello" }]
+}
+{% endschema %}

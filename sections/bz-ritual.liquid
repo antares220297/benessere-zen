@@ -38,7 +38,7 @@
                   {{ item.featured_image | image_url: width: 140 | image_tag: alt: item.title, width: 64, height: 64, loading: 'lazy' }}
                 {%- endif -%}
                 <span>{{ item.title | escape }}{%- if item.type != blank -%}<small>{{ item.type | escape }}</small>{%- endif -%}</span>
-                <span class="bz-price">{{ item.price | minus: item_cents | divided_by: 100 }},{{ item_cents | prepend: '00' | slice: -2, 2 }} €</span>
+                <span class="bz-price">{% render 'bz-money', cents: item.price %}</span>
               </label>
             {%- endif -%}
           {%- endfor -%}
@@ -48,7 +48,7 @@
       <div class="bz-set__total">
         <div>
           <span class="bz-note"><span data-bz-count>{{ active_count }}</span> pezzi scelti</span>
-          <div class="bz-set__sum" data-bz-sum>{{ active_total | minus: sum_cents | divided_by: 100 }}<sup>,{{ sum_cents | prepend: '00' | slice: -2, 2 }}</sup> €</div>
+          <div class="bz-set__sum" data-bz-sum>{% render 'bz-money', cents: active_total %}</div>
         </div>
         <button class="bz-btn bz-btn--gold" type="button" data-bz-add-set>Aggiungi al carrello <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       </div>

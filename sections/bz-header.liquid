@@ -117,7 +117,7 @@
                       <small>{{ product.type | escape }}</small>
                     {%- endif -%}
                   </span>
-                  <span class="bz-hit__price">{{ product.price | money }}</span>
+                  <span class="bz-hit__price">{% render 'bz-money', cents: product.price %}</span>
                 </a>
               {%- endfor -%}
             {%- endif -%}
