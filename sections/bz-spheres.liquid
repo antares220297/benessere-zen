@@ -35,39 +35,8 @@
       if sphere_image == blank and block.settings.image != blank
         assign sphere_image = block.settings.image
       endif
-      if sphere_image == blank and sphere_collection.image != blank
+      if sphere_image == blank and sphere_collection != blank and sphere_collection.image != blank
         assign sphere_image = sphere_collection.image
-      endif
-      assign sphere_label = block.settings.label | downcase
-      if sphere_image == blank and sphere_label contains 'palo'
-        assign palo = collections['incensi-e-palo-santo']
-        assign palo_product = all_products['palo-santo-mala-con-grano-guru']
-        if palo != blank and palo.products_count > 0 and palo.products.first.featured_image != blank
-          assign sphere_image = palo.products.first.featured_image
-          if priced == false
-            assign min_price = palo.products.first.price
-            assign priced = true
-          endif
-        elsif palo_product != blank and palo_product.featured_image != blank
-          assign sphere_image = palo_product.featured_image
-          if priced == false
-            assign min_price = palo_product.price
-            assign priced = true
-          endif
-        endif
-      endif
-      if sphere_image == blank and sphere_label != blank
-        for product in collections.all.products limit: 50
-          assign product_name = product.title | downcase
-          if product_name contains sphere_label and product.featured_image != blank
-            assign sphere_image = product.featured_image
-            if priced == false and product.price != blank
-              assign min_price = product.price
-              assign priced = true
-            endif
-            break
-          endif
-        endfor
       endif
     -%}
     <a class="bz-sphere{% if forloop.first %} is-on{% endif %}" href="{{ sphere_url }}" {{ block.shopify_attributes }}>

@@ -64,13 +64,14 @@
   border-bottom: 1px solid rgba(238, 231, 219, 0.11);
 }
 
-#update-cart .bz-line-price {
-  position: absolute;
-  top: 14px;
-  right: 8px;
+#update-cart .bz-line-price,
+.bz-line-price {
+  position: static;
+  justify-self: end;
   margin: 0;
   font-family: Baskervville, Georgia, serif;
   font-size: 19px;
+  white-space: nowrap;
 }
 
 #update-cart #checkout-submit,
@@ -308,18 +309,50 @@
 .bz-drawer__qty {
   display: inline-flex;
   align-items: center;
+  justify-content: space-between;
+  width: 96px;
+  max-width: 96px;
   height: 32px;
   margin-top: 8px;
-  border: 1px solid rgba(238, 231, 219, 0.24);
+  padding: 0;
+  border: 1px solid #c9a96e;
   border-radius: 999px;
+  background: #201e1b;
+  overflow: hidden;
 }
 
 .bz-drawer__qty button {
-  width: 30px;
-  height: 100%;
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
   border: 0;
-  background: transparent;
-  color: #eee7db;
+  background: transparent !important;
+  color: #eee7db !important;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.bz-drawer__qty input,
+#update-cart .bz-drawer__qty input,
+.bz-cartpage .bz-drawer__qty input,
+input.bz-drawer__qty-input {
+  flex: 0 0 28px;
+  width: 28px !important;
+  min-width: 0 !important;
+  max-width: 28px !important;
+  height: 32px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #eee7db !important;
+  box-shadow: none !important;
+  text-align: center !important;
+  font-size: 14px !important;
+  line-height: 32px !important;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 .bz-drawer__upsell {

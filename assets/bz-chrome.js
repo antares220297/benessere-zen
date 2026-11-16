@@ -90,12 +90,17 @@
       fetch(root + "recommendations/products.json?product_id=" + productId + "&limit=4&intent=related")
         .then(function (response) { return response.json(); })
         .then(function (data) {
-          var products = (data.products || []).slice(0, 2);
+          var products = (data.products || []).filter(function (product) {
+            var image = product.featured_image || (product.images && product.images[0]);
+            var src = typeof image === "string" ? image : (image && (image.src || image.url)) || "";
+            return src;
+          }).slice(0, 2);
           if (!products.length) return;
           list.innerHTML = products.map(function (product) {
             var variant = (product.variants || [])[0] || {};
-            var image = product.featured_image;
+            var image = product.featured_image || (product.images && product.images[0]);
             var src = typeof image === "string" ? image : (image && (image.src || image.url)) || "";
+            if (src.indexOf("//") === 0) src = "https:" + src;
             var title = String(product.title || "").replace(/[&<>"']/g, function (char) {
               return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char];
             });
@@ -125,21 +130,32 @@
       if (window.Alpine && Alpine.store("xMiniCart")) Alpine.store("xMiniCart").hideCart();
       return;
     }
-    var qty = event.target.closest("[data-bz-qty]");
-    if (qty) {
+    var qty = event.target.closest("[data-bz-line]");
+    if (qty && qty.getAttribute("data-key")) {
       event.preventDefault();
       var row = qty.closest(".cart-item");
       var input = row && row.querySelector("input");
-      var next = Math.max(0, (parseInt(input && input.value, 10) || 1) + Number(qty.getAttribute("data-bz-qty")));
+      var next = Math.max(0, (parseInt(input && input.value, 10) || 1) + Number(qty.getAttribute("data-bz-line")));
       fetch(root + "cart/change.js", {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
-          line: Number(qty.getAttribute("data-line")),
+          id: qty.getAttribute("data-key"),
           quantity: next,
           sections: ["cart-drawer", "bz-cart"]
         })
-      }).then(function () { return refreshCart(); }).catch(function () {});
+      }).then(function (response) { return response.json(); }).then(function (payload) {
+        if (!payload || payload.status) return null;
+        if (payload.sections && payload.sections["cart-drawer"]) {
+          replaceSection("#CartDrawer", payload.sections["cart-drawer"]);
+          replaceSection("#bz-cart", payload.sections["bz-cart"]);
+          if (payload.item_count != null) updateCount(payload.item_count);
+          fillUpsell(document);
+          openDrawer();
+          return payload;
+        }
+        return refreshCart();
+      }).catch(function () {});
       return;
     }
     var add = event.target.closest("[data-bz-upsell-add]");

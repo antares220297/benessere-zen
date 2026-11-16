@@ -152,6 +152,7 @@
     "number_of_product_shown": 6,
     "cart_upsell_section_label": "Amerai Anche Questi Prodotti",
     "enable_free_shipping": true,
+    "bz_free_shipping_threshold": 50,
     "order_amount_freeshipping": "€99",
     "enable_estimate_shipping": true,
     "auto_calculate_shipping": false,

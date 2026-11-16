@@ -3,7 +3,7 @@
 {{ 'bz-announcement-mobile.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
-  assign threshold = section.settings.free_shipping_threshold
+  assign threshold = settings.bz_free_shipping_threshold | default: section.settings.free_shipping_threshold | default: 50
   assign pill = section.settings.pill_text | replace: '[soglia]', threshold
   assign message_count = 0
   for block in section.blocks

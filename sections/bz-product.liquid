@@ -102,7 +102,8 @@
         </div>
       {%- endif -%}
 
-      {%- assign threshold = section.settings.free_shipping | times: 100 -%}
+      {%- assign ship_euros = settings.bz_free_shipping_threshold | default: section.settings.free_shipping | default: 50 -%}
+      {%- assign threshold = ship_euros | times: 100 -%}
       <div class="bz-shipbox">
         {%- if current.price >= threshold -%}
           <p>Con questo pezzo la <b>spedizione è gratuita</b></p>
@@ -116,7 +117,7 @@
           <i style="width: {{ ship_width }}%"></i>
           <span class="bz-ship__mark"><svg viewBox="0 0 24 24"><path d="M2 7h12v9H2zM14 10h4l3 3v3h-7"/><circle cx="6" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg></span>
         </div>
-        <div class="bz-shipbox__labels"><span>0 €</span><span>Gratis da {{ section.settings.free_shipping }} €</span></div>
+        <div class="bz-shipbox__labels"><span>0 €</span><span>Gratis da {{ ship_euros }} €</span></div>
       </div>
 
       {%- form 'product', product, class: 'bz-ajax-cart' -%}

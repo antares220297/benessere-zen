@@ -1972,6 +1972,12 @@
         "label": "t:settings_schema.shipping_delivery.free_shipping.enable.label"
       },
       {
+        "type": "number",
+        "id": "bz_free_shipping_threshold",
+        "label": "Soglia spedizione gratuita",
+        "default": 50
+      },
+      {
         "type": "textarea",
         "id": "order_amount_freeshipping",
         "label": "t:settings_schema.shipping_delivery.free_shipping.order_amount_freeshipping.label",
