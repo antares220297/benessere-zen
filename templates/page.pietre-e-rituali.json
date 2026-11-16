@@ -64,21 +64,17 @@
       },
       "block_order": ["candele", "incensi", "gioielli", "porta"]
     },
-    "rail": {
-      "type": "bz-picked",
+    "gallery": {
+      "type": "bz-v410-palmora-gallery",
       "settings": {
-        "heading": "Mala e pendoli",
-        "heading_accent": "",
-        "link_label": "Gioielli con pietre",
-        "link": "/collections/gioielli-con-pietre",
-        "limit": 5,
-        "skip_sold_out": true
-      },
-      "blocks": {
-        "tab-mala": { "type": "list", "settings": { "label": "Mala", "collection": "mala-tibetani", "sort_by": "best-selling" } },
-        "tab-pendoli": { "type": "list", "settings": { "label": "Pendoli", "collection": "pendoli", "sort_by": "best-selling" } }
-      },
-      "block_order": ["tab-mala", "tab-pendoli"]
+        "heading": "I pezzi",
+        "heading_accent": "come sono",
+        "text": "Foto dei prodotti. Il pezzo unico in foto è quello che parte o che ritiri in negozio.",
+        "button_label": "Vedi le pietre",
+        "button_link": "/collections/pietre-burattate",
+        "collection": "pietre-burattate",
+        "limit": 10
+      }
     },
     "shop": {
       "type": "bz-shopnote",
@@ -93,5 +89,5 @@
       }
     }
   },
-  "order": ["hero", "intent", "compare", "doors", "rail", "shop"]
+  "order": ["hero", "intent", "compare", "gallery", "doors", "shop"]
 }

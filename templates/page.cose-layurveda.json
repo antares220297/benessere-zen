@@ -80,6 +80,75 @@
       },
       "block_order": ["band"]
     },
+    "services": {
+      "type": "bz-v410-glowence-services",
+      "settings": {
+        "heading": "In negozio",
+        "heading_accent": "con Simona",
+        "intro": "Due consigli che si chiedono al banco, a Cento. Niente sedute e niente listino.",
+        "fallback_link": "/pages/il-negozio"
+      },
+      "blocks": {
+        "dosha": {
+          "type": "card",
+          "settings": {
+            "title": "Dosha",
+            "text": "In negozio si può chiedere un consiglio sui tre dosha, per scegliere un olio, un tè, un gesto. Non è una diagnosi e non sostituisce un medico.",
+            "cta_label": "Vieni in negozio"
+          }
+        },
+        "chakra": {
+          "type": "card",
+          "settings": {
+            "title": "Chakra",
+            "text": "Un consiglio sui chakra, a partire da quello che porti già. È la tradizione del banco, non una terapia.",
+            "cta_label": "Vieni in negozio"
+          }
+        },
+        "storia": {
+          "type": "card",
+          "settings": {
+            "title": "Una pratica di tanti anni",
+            "text": "Per oltre trent’anni Simona ha lavorato con il massaggio ayurvedico e con il Reiki. Non è un servizio che si prenota oggi in bottega.",
+            "cta_label": "Scrivici",
+            "cta_link": "/pages/contact"
+          }
+        }
+      },
+      "block_order": ["dosha", "chakra", "storia"]
+    },
+    "process": {
+      "type": "bz-v410-glowence-process",
+      "settings": {
+        "heading": "In bottega",
+        "heading_accent": "come va",
+        "intro": "Tre gesti, senza appuntamento."
+      },
+      "blocks": {
+        "entra": {
+          "type": "step",
+          "settings": {
+            "title": "Entri e guardi",
+            "text": "I pezzi sono in vetrina e sul banco, in Via Marcello Provenzali 1 a Cento. Se è un pezzo unico, quello in foto è quello che porti a casa."
+          }
+        },
+        "banco": {
+          "type": "step",
+          "settings": {
+            "title": "Chiedi al banco",
+            "text": "Si può chiedere un consiglio su dosha e chakra, a partire da quello che usi già. È un consiglio, non una visita medica."
+          }
+        },
+        "via": {
+          "type": "step",
+          "settings": {
+            "title": "Lo porti via",
+            "text": "Lo prendi subito, oppure lo ordini qui e passi a ritirarlo. Orari: lunedì, martedì, mercoledì, venerdì e sabato 9:30–12:30 e 16:00–19:30. Giovedì 9:00–13:00."
+          }
+        }
+      },
+      "block_order": ["entra", "banco", "via"]
+    },
     "rail": {
       "type": "bz-picked",
       "settings": {
@@ -98,5 +167,5 @@
       "block_order": ["tab-ayu", "tab-oli", "tab-te"]
     }
   },
-  "order": ["hero", "origin", "dosha", "simona", "rail"]
+  "order": ["hero", "origin", "dosha", "services", "process", "simona", "rail"]
 }

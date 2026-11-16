@@ -298,10 +298,24 @@
         "collection": "mala-tibetani",
         "limit": 5
       }
+    },
+    "bz_materials": {
+      "type": "bz-v410-evoria-materials",
+      "blocks": {
+        "det-pietra": { "type": "detail", "settings": { "caption": "La pietra" } },
+        "det-filo": { "type": "detail", "settings": { "caption": "Il filo" } },
+        "det-chiusura": { "type": "detail", "settings": { "caption": "La chiusura" } }
+      },
+      "block_order": ["det-pietra", "det-filo", "det-chiusura"],
+      "settings": {
+        "heading": "Da vicino",
+        "heading_accent": "il pezzo"
+      }
     }
   },
   "order": [
     "bz_product",
+    "bz_materials",
     "bz_ritual",
     "bz_related"
   ]

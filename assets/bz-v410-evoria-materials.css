@@ -1,0 +1,146 @@
+/* Close-ups on the product page. Ivory on ink; gold only on the accent. */
+
+.bz-v410-materials {
+  box-sizing: border-box;
+  max-width: 100%;
+  margin: 0;
+  padding: 28px 24px;
+  background: #141312;
+  color: #eee7db;
+  font-family: Figtree, var(--sans), system-ui, sans-serif;
+  overflow-x: clip;
+}
+
+.bz-v410-materials *,
+.bz-v410-materials *::before,
+.bz-v410-materials *::after {
+  box-sizing: border-box;
+}
+
+.bz-v410-materials h2 {
+  margin: 0 0 16px;
+  font-family: Baskervville, var(--serif), Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(30px, 3vw, 44px);
+  line-height: 1.05;
+  letter-spacing: -0.005em;
+  color: #eee7db;
+}
+
+.bz-v410-materials h2 em {
+  font-style: italic;
+  font-weight: 400;
+  color: #c9a96e;
+}
+
+.bz-v410-materials h2:has(+ .bz-v410-materials__note) {
+  margin-bottom: 8px;
+}
+
+.bz-v410-materials__note {
+  margin: 0 0 16px;
+  max-width: 62ch;
+  color: #eee7db;
+  font-family: Figtree, var(--sans), system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.bz-v410-materials__note p {
+  margin: 0;
+}
+
+.bz-v410-materials__note p + p {
+  margin-top: 0.6em;
+}
+
+.bz-v410-materials__row {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 0;
+  scrollbar-width: none;
+}
+
+.bz-v410-materials__row::-webkit-scrollbar {
+  display: none;
+}
+
+.bz-v410-materials__item {
+  flex: 0 0 78vw;
+  width: 78vw;
+  max-width: 78vw;
+  min-width: 0;
+  margin: 0;
+  scroll-snap-align: start;
+}
+
+.bz-v410-materials__item img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 18px;
+  background: #201e1b;
+}
+
+.bz-v410-materials__item figcaption {
+  margin: 0;
+  padding-top: 10px;
+  color: #eee7db;
+  font-family: Figtree, var(--sans), system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.35;
+  animation: bz-v410-caption linear both;
+  animation-timeline: view(inline);
+  animation-range: entry 20% cover 55%;
+}
+
+@keyframes bz-v410-caption {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.bz-v410-materials a:focus-visible {
+  outline: 2px solid #eee7db;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bz-v410-materials__item figcaption {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+@media (min-width: 800px) {
+  .bz-v410-materials__row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    overflow: visible;
+    scroll-snap-type: none;
+  }
+
+  .bz-v410-materials__item {
+    flex: none;
+    width: auto;
+    max-width: none;
+    scroll-snap-align: none;
+  }
+
+  .bz-v410-materials__item figcaption {
+    animation: none;
+    opacity: 1;
+  }
+}

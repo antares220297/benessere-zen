@@ -1,0 +1,179 @@
+{{ 'bz-tokens.css' | asset_url | stylesheet_tag }}
+{{ 'bz-home.css' | asset_url | stylesheet_tag }}
+{{ 'bz-v410-palmora-header.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign bz_image = section.settings.image
+  if bz_image == blank and section.settings.collection != blank and section.settings.collection.image != blank
+    assign bz_image = section.settings.collection.image
+  endif
+  if bz_image == blank and section.settings.collection != blank
+    for bz_candidate in section.settings.collection.products limit: 1
+      if bz_candidate.featured_image != blank
+        assign bz_image = bz_candidate.featured_image
+      endif
+    endfor
+  endif
+
+  assign bz_alt = section.settings.image_alt | strip
+  if bz_alt == blank and bz_image != blank and bz_image.alt != blank
+    assign bz_alt = bz_image.alt
+  endif
+
+  assign bz_primary_label = section.settings.primary_label | strip
+  assign bz_primary_link = section.settings.primary_link
+  if bz_primary_link == blank and section.settings.collection != blank
+    assign bz_primary_link = section.settings.collection.url
+  endif
+
+  assign bz_secondary_label = section.settings.secondary_label | strip
+  assign bz_secondary_link = section.settings.secondary_link
+
+  assign bz_show_actions = false
+  if bz_primary_label != blank and bz_primary_link != blank
+    assign bz_show_actions = true
+  endif
+  if bz_secondary_label != blank and bz_secondary_link != blank
+    assign bz_show_actions = true
+  endif
+-%}
+
+<section class="bz bz-v410-hero{% if bz_image != blank %} bz-v410-hero--photo{% endif %}">
+  <div class="bz-v410-hero__frame">
+    {%- if bz_image != blank -%}
+      {{ bz_image | image_url: width: 2200 | image_tag: alt: bz_alt, class: 'bz-v410-hero__img', widths: '400, 600, 800, 1100, 1400, 1800, 2200', sizes: 'calc(100vw - 28px)', loading: 'eager', fetchpriority: 'high', width: bz_image.width, height: bz_image.height }}
+    {%- endif -%}
+    <div class="bz-v410-hero__copy bz-reveal">
+      {%- if section.settings.heading != blank or section.settings.heading_accent != blank -%}
+        <h1>
+          {%- if section.settings.heading != blank -%}{{ section.settings.heading | escape }}{%- endif -%}
+          {%- if section.settings.heading != blank and section.settings.heading_accent != blank %} {% endif -%}
+          {%- if section.settings.heading_accent != blank -%}<em>{{ section.settings.heading_accent | escape }}</em>{%- endif -%}
+        </h1>
+      {%- endif -%}
+      {%- if section.settings.text != blank -%}
+        <p class="bz-v410-hero__text">{{ section.settings.text | escape | newline_to_br }}</p>
+      {%- endif -%}
+      {%- if bz_show_actions == true -%}
+        <div class="bz-v410-hero__actions">
+          {%- if bz_primary_label != blank and bz_primary_link != blank -%}
+            <a class="bz-btn bz-btn--gold" href="{{ bz_primary_link }}">{{ bz_primary_label | escape }}</a>
+          {%- endif -%}
+          {%- if bz_secondary_label != blank and bz_secondary_link != blank -%}
+            <a class="bz-btn bz-btn--line" href="{{ bz_secondary_link }}">{{ bz_secondary_label | escape }}</a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+      {%- if section.settings.product != blank -%}
+        <a class="bz-v410-hero__chip" href="{{ section.settings.product.url }}">
+          {%- if section.settings.product.featured_image != blank -%}
+            {{ section.settings.product.featured_image | image_url: width: 96 | image_tag: alt: '', class: 'bz-v410-hero__chip-img', width: 36, height: 36, loading: 'lazy' }}
+          {%- endif -%}
+          <span>{{ section.settings.product.title | escape }}</span>
+        </a>
+      {%- endif -%}
+      {%- if section.settings.proof != blank -%}
+        <p class="bz-v410-hero__note">{{ section.settings.proof | escape }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+<script src="{{ 'bz-pages.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Hero a tutta foto",
+  "class": "bz-home",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titolo",
+      "default": "Un rituale"
+    },
+    {
+      "type": "text",
+      "id": "heading_accent",
+      "label": "Titolo in corsivo",
+      "default": "da portare addosso"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Testo",
+      "default": "Mala, bracciali e ciondoli in pietra naturale. Quello che vedi qui lo trovi anche in negozio, a Cento."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Foto",
+      "info": "Se è vuota, usiamo la foto della collezione. Se manca anche quella, la foto del primo prodotto."
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Testo alternativo",
+      "default": "Mala in pietra naturale"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collezione",
+      "info": "Foto di riserva e link del pulsante principale, se il link è vuoto."
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Prodotto",
+      "info": "Opzionale. Se lo scegli, compare una riga piccola con foto e nome. Se è vuoto, quella riga non c’è."
+    },
+    {
+      "type": "text",
+      "id": "primary_label",
+      "label": "Etichetta principale",
+      "default": "Scopri i pezzi"
+    },
+    {
+      "type": "url",
+      "id": "primary_link",
+      "label": "Link principale",
+      "info": "Se è vuoto, porta alla collezione."
+    },
+    {
+      "type": "text",
+      "id": "secondary_label",
+      "label": "Etichetta secondaria",
+      "default": "Vieni a Cento"
+    },
+    {
+      "type": "url",
+      "id": "secondary_link",
+      "label": "Link secondario",
+      "info": "Se è vuoto, il pulsante non si vede."
+    },
+    {
+      "type": "text",
+      "id": "proof",
+      "label": "Nota",
+      "default": "Anche in negozio, in Via Marcello Provenzali 1."
+    }
+  ],
+  "enabled_on": {
+    "templates": ["index"]
+  },
+  "presets": [
+    {
+      "name": "Hero a tutta foto",
+      "settings": {
+        "heading": "Un rituale",
+        "heading_accent": "da portare addosso",
+        "text": "Mala, bracciali e ciondoli in pietra naturale. Quello che vedi qui lo trovi anche in negozio, a Cento.",
+        "image_alt": "Mala in pietra naturale",
+        "primary_label": "Scopri i pezzi",
+        "secondary_label": "Vieni a Cento",
+        "proof": "Anche in negozio, in Via Marcello Provenzali 1."
+      }
+    }
+  ]
+}
+{% endschema %}

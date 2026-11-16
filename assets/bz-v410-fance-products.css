@@ -1,0 +1,271 @@
+/* Photo grid. Name, price, and the buy control sit under the photo.
+   Fine pointers hide that panel until hover or keyboard focus.
+   Touch and no-hover devices always show it. */
+
+.bz-v410-grid {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+  padding: 28px 24px;
+  background: var(--bg, #141312);
+  color: var(--ivory, #eee7db);
+  font-family: var(--sans, Figtree, system-ui, sans-serif);
+}
+
+.bz-v410-grid *,
+.bz-v410-grid *::before,
+.bz-v410-grid *::after {
+  box-sizing: border-box;
+}
+
+.bz-v410-grid h2,
+.bz-v410-grid p,
+.bz-v410-grid form {
+  margin: 0;
+}
+
+.bz-v410-grid a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.bz-v410-grid h2 {
+  font-family: var(--serif, Baskervville, Georgia, serif);
+  font-weight: 400;
+  font-size: clamp(32px, 4vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -0.005em;
+  color: #eee7db;
+}
+
+.bz-v410-grid h2 em {
+  font-style: italic;
+  color: var(--gold, #c9a96e);
+}
+
+.bz-v410-grid__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px 20px;
+  margin-bottom: 18px;
+}
+
+.bz-v410-grid__head h2 {
+  flex: 1 1 12rem;
+  min-width: 0;
+}
+
+.bz-v410-grid__head .bz-btn {
+  max-width: 100%;
+  height: auto;
+  min-height: 48px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  white-space: normal;
+  text-align: center;
+}
+
+.bz-v410-grid__list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  align-items: start;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.bz-v410-grid__card {
+  min-width: 0;
+  max-width: 100%;
+  background: #201e1b;
+  border-radius: 16px;
+}
+
+.bz-v410-grid__photo {
+  position: relative;
+  display: block;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: #201e1b;
+  border-radius: 16px 16px 0 0;
+}
+
+.bz-v410-grid__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: contain;
+  object-position: center;
+  background: #201e1b;
+}
+
+.bz-v410-grid__card.is-sold .bz-v410-grid__img {
+  opacity: 0.45;
+}
+
+.bz-v410-grid__badge {
+  position: absolute;
+  z-index: 1;
+  top: 8px;
+  left: 8px;
+  max-width: calc(100% - 16px);
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #c9a96e;
+  color: #17130d;
+  font-family: Figtree, var(--sans), system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.bz-v410-grid__panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  padding: 12px 12px 14px;
+  border-top: 1px solid rgba(238, 231, 219, 0.11);
+  border-radius: 0 0 16px 16px;
+  background: #201e1b;
+}
+
+.bz-v410-grid__name {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  min-width: 0;
+  font-family: Figtree, var(--sans), system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+  color: #eee7db;
+}
+
+.bz-v410-grid__price {
+  font-family: Baskervville, var(--serif), Georgia, serif;
+  font-size: 20px;
+  line-height: 1.2;
+  color: #eee7db;
+}
+
+.bz-v410-grid__sold {
+  font-family: Figtree, var(--sans), system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #e3cb95;
+}
+
+.bz-v410-grid__form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.bz-v410-grid__select,
+.bz-v410-grid__add {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  min-height: 48px;
+}
+
+.bz-v410-grid__select {
+  padding: 0 12px;
+  border: 1px solid rgba(238, 231, 219, 0.24);
+  border-radius: 12px;
+  background: #141312;
+  color: #eee7db;
+  font-family: Figtree, var(--sans), system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.bz-v410-grid__add {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 999px;
+  background: #c9a96e;
+  color: #17130d;
+  font-family: Figtree, var(--sans), system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.bz-v410-grid__pages {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 22px;
+  font-family: Figtree, var(--sans), system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.bz-v410-grid__pages a,
+.bz-v410-grid__pages span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  min-height: 48px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  color: #eee7db;
+}
+
+.bz-v410-grid__pages [aria-current="page"] {
+  background: #c9a96e;
+  color: #17130d;
+  font-weight: 600;
+}
+
+.bz-v410-grid :focus-visible {
+  outline: 2px solid #e3cb95;
+  outline-offset: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .bz-v410-grid__photo {
+    border-radius: 16px;
+  }
+
+  .bz-v410-grid__panel {
+    display: none;
+  }
+
+  .bz-v410-grid__card:hover .bz-v410-grid__photo,
+  .bz-v410-grid__card:focus-within .bz-v410-grid__photo {
+    border-radius: 16px 16px 0 0;
+  }
+
+  .bz-v410-grid__card:hover .bz-v410-grid__panel,
+  .bz-v410-grid__card:focus-within .bz-v410-grid__panel {
+    display: flex;
+  }
+}
+
+@media (min-width: 900px) {
+  .bz-v410-grid__list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

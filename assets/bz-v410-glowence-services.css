@@ -1,0 +1,143 @@
+.bz-v410-services {
+  background: #141312;
+  color: #eee7db;
+  padding: 28px 24px;
+  font-family: Figtree, var(--sans), system-ui, sans-serif;
+  max-width: 100%;
+}
+
+.bz-v410-services h2 {
+  margin: 0 0 8px;
+  font-family: Baskervville, var(--serif), Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(32px, 4vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -0.005em;
+  color: #eee7db;
+}
+
+.bz-v410-services h2 em {
+  font-style: italic;
+  color: #c9a96e;
+}
+
+.bz-v410-services__intro {
+  margin: 0 0 18px;
+  max-width: 62ch;
+  font-size: 15px;
+  line-height: 1.45;
+  color: #cdc4b4;
+}
+
+.bz-v410-services__row {
+  display: flex;
+  align-items: stretch;
+  gap: 14px;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 4px 2px 8px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 2px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(201, 169, 110, 0.55) transparent;
+}
+
+.bz-v410-services__card {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 min(82vw, 340px);
+  scroll-snap-align: start;
+  min-width: 0;
+  background: #201e1b;
+  border: 1px solid rgba(238, 231, 219, 0.11);
+  border-radius: 18px;
+  padding: 22px;
+  color: #eee7db;
+}
+
+.bz-v410-services__still {
+  margin: 0 0 14px;
+  height: 112px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #2a2036;
+}
+
+.bz-v410-services__still:not(:has(img)) {
+  display: none;
+}
+
+.bz-v410-services__img,
+.bz-v410-services__still img {
+  display: block;
+  width: 100%;
+  height: 112px;
+  object-fit: cover;
+}
+
+.bz-v410-services__card h3 {
+  margin: 0 0 8px;
+  font-family: Baskervville, var(--serif), Georgia, serif;
+  font-weight: 400;
+  font-size: 26px;
+  line-height: 1.15;
+  letter-spacing: -0.005em;
+  color: #eee7db;
+  overflow-wrap: break-word;
+}
+
+.bz-v410-services__card p {
+  margin: 0 0 16px;
+  font-family: Figtree, var(--sans), system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.45;
+  color: #cdc4b4;
+  overflow-wrap: break-word;
+}
+
+.bz-v410-services__card .bz-btn {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 48px;
+  height: 48px;
+  margin-top: auto;
+  padding: 0 16px;
+  font-size: 14.5px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.bz-v410-services__card span.bz-btn {
+  cursor: default;
+}
+
+.bz-v410-services :focus-visible {
+  outline: 2px solid #e3cb95;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .bz-motion .bz-v410-services .bz-reveal {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  .bz-motion .bz-v410-services .bz-reveal.is-in {
+    opacity: 1;
+    transform: none;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bz-v410-services,
+  .bz-v410-services * {
+    transition: none;
+    animation: none;
+  }
+}

@@ -151,7 +151,7 @@
       "disabled": true
     },
     "bz_footer": {
-      "type": "bz-footer",
+      "type": "bz-v410-palmora-footer",
       "blocks": {
         "col-shop": {
           "type": "links",
@@ -208,10 +208,15 @@
         "col-pay"
       ],
       "settings": {
-        "word_first": "Benessere",
-        "word_second": "Zen",
-        "about": "Gioielli in pietra naturale, mala e oggetti per i tuoi rituali. Via Provenzali 1, Cento (FE).",
-        "vat": "Benessere Zen di Balboni Simona, P. IVA 02091600383 (REA FE-257570). Sede legale Via Olindo Malagodi 2, 44042 Cento FE."
+        "wordmark": "Benessere Zen",
+        "address": "Via Marcello Provenzali 1, 44042 Cento (FE)",
+        "phone": "+39 347 088 3168",
+        "email": "info@benesserezen.shop",
+        "hours": "Lunedì, martedì, mercoledì, venerdì e sabato 9:30–12:30 e 16:00–19:30. Giovedì 9:00–13:00.",
+        "note": "Ogni pezzo è anche in negozio.",
+        "vat": "Benessere Zen di Balboni Simona, P. IVA 02091600383 (REA FE-257570). Sede legale Via Olindo Malagodi 2, 44042 Cento FE.",
+        "privacy_link": "/policies/privacy-policy",
+        "terms_link": "/policies/terms-of-service"
       }
     }
   },

@@ -1,0 +1,244 @@
+.shopify-section:has(.bz-v410-footer) {
+  margin: 0;
+  padding: 0;
+  background: #141312;
+}
+
+.bz-v410-footer,
+.bz-v410-footer * {
+  box-sizing: border-box;
+}
+
+.bz-v410-footer {
+  background: #141312;
+  color: #eee7db;
+  padding: 48px 24px 28px;
+  font-family: var(--sans), Figtree, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.bz-v410-footer__word {
+  display: block;
+  max-width: 100%;
+  margin: 0 0 18px;
+  color: #eee7db;
+  font-family: var(--serif), Baskervville, Georgia, serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: clamp(40px, 7vw, 84px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  text-transform: none;
+}
+
+.bz-v410-footer__cols {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 22px;
+  align-items: start;
+}
+
+.bz-v410-footer__contact,
+.bz-v410-footer__menus,
+.bz-v410-footer__social,
+.bz-v410-footer__col {
+  min-width: 0;
+}
+
+.bz-v410-footer__logo {
+  display: block;
+  width: 48px;
+  height: 48px;
+  margin: 0 0 12px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.bz-v410-footer__address,
+.bz-v410-footer__hours,
+.bz-v410-footer__note {
+  margin: 0;
+  color: #eee7db;
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.bz-v410-footer__hours,
+.bz-v410-footer__note {
+  margin-top: 8px;
+}
+
+.bz-v410-footer__menus,
+.bz-v410-footer__social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 32px;
+  align-items: flex-start;
+}
+
+.bz-v410-footer__menus:empty,
+.bz-v410-footer__social:empty,
+.bz-v410-footer__list:empty {
+  display: none;
+}
+
+.bz-home h2.bz-v410-footer__heading,
+.bz-v410-footer__heading {
+  margin: 0;
+  padding: 0 0 2px;
+  color: #eee7db;
+  font-family: var(--sans), Figtree, system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  font-style: normal;
+  line-height: 1.3;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.bz-v410-footer__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.bz-v410-footer__list li {
+  margin: 0;
+  padding: 0;
+}
+
+.bz-v410-footer a {
+  color: #eee7db;
+  text-decoration: none;
+}
+
+.bz-v410-footer__tap {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 0;
+  color: #eee7db;
+  font-size: 15.5px;
+  line-height: 1.3;
+  text-decoration: none;
+}
+
+.bz-v410-footer__payments {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 16px;
+  margin-top: 18px;
+}
+
+.bz-v410-footer__payments .bz-v410-footer__heading {
+  padding: 0;
+}
+
+.bz-v410-footer__methods {
+  margin: 0;
+  color: #eee7db;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.bz-v410-footer__methods span + span::before {
+  content: "·";
+  margin: 0 0.4em;
+}
+
+.bz-v410-footer__bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 24px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(238, 231, 219, 0.11);
+  color: #958d7f;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.bz-v410-footer__bar p {
+  margin: 0;
+  max-width: 100%;
+}
+
+.bz-v410-footer__bar a {
+  color: #958d7f;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.bz-v410-footer a:hover {
+  color: #e3cb95;
+}
+
+.bz-v410-footer a:focus-visible {
+  outline: 2px solid #e3cb95;
+  outline-offset: 2px;
+}
+
+@media (max-width: 899px) {
+  .bz-v410-footer__menus,
+  .bz-v410-footer__social {
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+
+  .bz-v410-footer__col {
+    width: 100%;
+  }
+
+  .bz-v410-footer__bar a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 12px 0;
+  }
+}
+
+@media (min-width: 900px) {
+  .bz-v410-footer__cols {
+    display: grid;
+    grid-template-columns: minmax(240px, 340px) minmax(0, 1fr) auto;
+    column-gap: 48px;
+    row-gap: 0;
+    align-items: start;
+  }
+
+  .bz-v410-footer__contact {
+    max-width: 340px;
+  }
+
+  .bz-v410-footer__menus {
+    justify-self: center;
+    justify-content: flex-start;
+    gap: 4px 40px;
+  }
+
+  .bz-v410-footer__social {
+    justify-self: end;
+    text-align: right;
+  }
+
+  .bz-v410-footer__social .bz-v410-footer__heading,
+  .bz-v410-footer__social .bz-v410-footer__tap {
+    justify-content: flex-end;
+    margin-left: auto;
+  }
+
+  .bz-v410-footer__tap {
+    width: auto;
+    min-height: 48px;
+    padding: 10px 0;
+  }
+
+  .bz-v410-footer__contact .bz-v410-footer__tap {
+    width: fit-content;
+    max-width: 100%;
+  }
+}

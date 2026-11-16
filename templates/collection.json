@@ -9,46 +9,31 @@
  */
 {
   "sections": {
-    "bz_collection": {
-      "type": "bz-collection",
+    "bz_exclusive": {
+      "type": "bz-v410-fance-exclusive",
       "settings": {
-        "heading": "Gioielli",
-        "heading_accent": "con pietre",
-        "accent": "con pietre",
-        "accent_handle": "gioielli-con-pietre",
-        "intro": "Bracciali elastici, ciondoli grezzi e mala in pietra naturale. Ogni pezzo è anche in negozio: lo ordini qui e lo ritiri gratis.",
-        "per_page": 16
-      },
-      "blocks": {
-        "chip-ma": {
-          "type": "chip",
-          "settings": {
-            "label": "Mala",
-            "collection": "mala-tibetani",
-            "show_on": "gioielli-con-pietre"
-          }
-        },
-        "promo-1": {
-          "type": "promo",
-          "settings": {
-            "position": 5,
-            "style": "ox",
-            "title": "Il ciondolo",
-            "accent": "con la sua catenina",
-            "text": "Ogni ciondolo ha l'anello per la catena. La nostra è in acciaio, lunga.",
-            "button": "",
-            "collection_handle": "gioielli-con-pietre",
-            "image_product": "ciondolo-quarzo-rosa-cuore"
-          }
-        }
-      },
-      "block_order": [
-        "chip-ma",
-        "promo-1"
-      ]
+        "show_collection_title": true,
+        "heading": "Il pezzo",
+        "heading_accent": "in evidenza",
+        "text": "Quello in foto è in negozio, da vedere e da ritirare a Cento.",
+        "button_label": "Vedi il pezzo"
+      }
+    },
+    "bz_grid": {
+      "type": "bz-v410-fance-products",
+      "settings": {
+        "show_heading": false,
+        "heading": "",
+        "heading_accent": "",
+        "link_label": "",
+        "limit": 16,
+        "paginate": true,
+        "skip_sold_out": false
+      }
     }
   },
   "order": [
-    "bz_collection"
+    "bz_exclusive",
+    "bz_grid"
   ]
 }

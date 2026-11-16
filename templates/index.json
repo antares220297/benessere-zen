@@ -10,46 +10,18 @@
 {
   "sections": {
     "bz_hero": {
-      "type": "bz-hero",
-      "blocks": {
-        "tile-pietre": {
-          "type": "tile",
-          "settings": {
-            "tone": "am",
-            "badge": "Novità",
-            "title": "Pietre",
-            "title_accent": "da tasca",
-            "text": "Burattate e grezze, da tenere vicino.",
-            "button_label": "Scegli la tua",
-            "collection": "pietre-burattate"
-          }
-        },
-        "tile-regali": {
-          "type": "tile",
-          "settings": {
-            "tone": "ox",
-            "figure": "25",
-            "figure_unit": "€",
-            "text": "Regali piccoli: pietre, ciondoli, scatole in velluto.",
-            "button_label": "Idee regalo",
-            "collection": "scatole-porta-gioielli"
-          }
-        }
-      },
-      "block_order": [
-        "tile-pietre",
-        "tile-regali"
-      ],
+      "type": "bz-v410-palmora-header",
       "settings": {
         "heading": "Un rituale",
         "heading_accent": "da portare addosso",
-        "text": "Mala, bracciali e ciondoli in pietra naturale. Quello che vedi qui lo trovi anche in negozio, da toccare con mano.",
-        "image_alt": "Mala in onice nero con nappa nera su legno scuro",
+        "text": "Mala, bracciali e ciondoli in pietra naturale. Quello che vedi qui lo trovi anche in negozio, a Cento.",
+        "image_alt": "Mala in pietra naturale",
         "collection": "mala-tibetani",
-        "primary_label": "Scopri i mala",
+        "primary_label": "Scopri i pezzi",
         "primary_link": "/collections/mala-tibetani",
-        "secondary_label": "Tutti i gioielli",
-        "secondary_link": "/collections/gioielli-con-pietre"
+        "secondary_label": "Vieni a Cento",
+        "secondary_link": "/pages/il-negozio",
+        "proof": "Anche in negozio, in Via Marcello Provenzali 1."
       }
     },
     "bz_spheres": {
@@ -143,84 +115,30 @@
         "label": "Categorie"
       }
     },
-    "bz_picked": {
-      "type": "bz-picked",
-      "blocks": {
-        "tab-scelti": {
-          "type": "list",
-          "settings": {
-            "label": "Più scelti",
-            "collection": "all",
-            "sort_by": "best-selling"
-          }
-        },
-        "tab-novita": {
-          "type": "list",
-          "settings": {
-            "label": "Novità",
-            "collection": "all",
-            "sort_by": "created-descending"
-          }
-        },
-        "tab-ultimi": {
-          "type": "list",
-          "settings": {
-            "label": "Ultimi pezzi",
-            "collection": "ultimi-pezzi",
-            "sort_by": "best-selling"
-          }
-        }
-      },
-      "block_order": [
-        "tab-scelti",
-        "tab-novita",
-        "tab-ultimi"
-      ],
+    "bz_grid": {
+      "type": "bz-v410-fance-products",
       "settings": {
-        "heading": "I più",
-        "heading_accent": "scelti",
+        "show_heading": true,
+        "heading": "Pezzi",
+        "heading_accent": "da vicino",
         "link_label": "Vedi tutti",
         "link": "/collections/gioielli-con-pietre",
-        "limit": 5
+        "collection": "gioielli-con-pietre",
+        "limit": 8,
+        "paginate": false,
+        "skip_sold_out": true
       }
     },
-    "bz_promo": {
-      "type": "bz-promo",
+    "bz_exclusive": {
+      "type": "bz-v410-fance-exclusive",
       "settings": {
-        "heading": "108 grani,",
-        "heading_accent": "uno alla volta",
-        "text": "Il mala nasce per contare i mantra: 108 grani da far scorrere tra le dita, fino alla nappa. Oggi si porta anche al collo o avvolto al polso.",
-        "image_alt": "Mala in cristallo di rocca",
         "collection": "mala-tibetani",
-        "button_label": "Vedi i mala",
-        "button_link": "/collections/mala-tibetani",
-        "stat_value": "",
-        "stat_unit": "",
-        "stat_text": "",
-        "stat_link_label": "Come funziona",
-        "stat_link": "",
-        "featured_product": "palo-santo-mala-con-grano-guru",
-        "side_title": "Pendoli",
-        "side_accent": "e divinazione",
-        "side_label": "Pendoli e teli",
-        "side_collection": "pendoli",
-        "side_link": "/collections/pendoli",
-        "shipping_amount": 50,
-        "shipping_text": "Da qui la spedizione è gratuita, in tutta Italia."
-      },
-      "blocks": {
-        "visit-cento": {
-          "type": "visit",
-          "settings": {
-            "title": "Anche in negozio, a Cento (FE)",
-            "text": "Gli stessi pezzi, da vedere di persona.",
-            "label": "Il negozio"
-          }
-        }
-      },
-      "block_order": [
-        "visit-cento"
-      ]
+        "show_collection_title": false,
+        "heading": "Il pezzo",
+        "heading_accent": "in evidenza",
+        "text": "Quello in foto è in negozio, da vedere e da ritirare a Cento.",
+        "button_label": "Vedi il pezzo"
+      }
     },
     "bz_stones": {
       "type": "bz-stones",
@@ -672,9 +590,9 @@
   "order": [
     "bz_hero",
     "bz_spheres",
+    "bz_exclusive",
+    "bz_grid",
     "bz_doors",
-    "bz_picked",
-    "bz_promo",
     "bz_stones",
     "bz_intent",
     "bz_ritual",
