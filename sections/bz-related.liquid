@@ -4,64 +4,75 @@
 
 {%- liquid
   assign type_key = product.type | downcase | strip
-  assign show_related = true
-  if product != blank and product.available == false
-    assign show_related = false
-  endif
-  assign related_collection = blank
-  assign related_heading = 'Altri pezzi'
-  assign related_accent = blank
-  assign stone_name = blank
-  if product != blank and product.metafields.custom.pietra.value != blank
-    assign stone_name = product.metafields.custom.pietra.value.nome.value | default: product.metafields.custom.pietra.value.nome
-    assign stone_text = stone_name | append: ''
-    if stone_text contains 'Metaobject' or stone_text contains 'Drop'
-      assign stone_name = blank
-    endif
-  endif
-  if type_key contains 'mala'
-    assign related_collection = collections['mala-tibetani']
-    assign related_heading = 'Altri mala,'
-    assign related_accent = 'stessi 108 grani'
-  elsif product != blank
-    for col in product.collections
-      if related_collection == blank and col.handle != 'all' and col.handle != 'frontpage' and col.products_count > 1
-        assign related_collection = col
+  assign related_limit = section.settings.limit | default: 5
+  assign template_collection = section.settings.collection
+  assign picked = blank
+  assign picked_score = 0
+
+  if template_collection != blank and product != blank
+    assign score = 0
+    for item in template_collection.products limit: 16
+      assign item_type = item.type | downcase | strip
+      if item.available and item.id != product.id and item_type == type_key
+        assign score = score | plus: 1
       endif
     endfor
-    if product.type != blank
-      assign related_heading = 'Altri ' | append: type_key
-      assign stone_fit = false
-      if type_key contains 'braccial' or type_key contains 'ciondol' or type_key contains 'collan'
-        assign stone_fit = true
-      endif
-      if stone_name != blank and stone_fit
-        assign related_heading = related_heading | append: ' in ' | append: stone_name | downcase
-      endif
+    if score > 0
+      assign picked = template_collection
+      assign picked_score = score
     endif
   endif
-  if related_collection == blank
-    assign show_related = false
+
+  if picked == blank and product != blank
+    for col in product.collections
+      if col.handle != 'all' and col.handle != 'frontpage'
+        assign score = 0
+        for item in col.products limit: 16
+          assign item_type = item.type | downcase | strip
+          if item.available and item.id != product.id and item_type == type_key
+            assign score = score | plus: 1
+          endif
+        endfor
+        if score > picked_score
+          assign picked = col
+          assign picked_score = score
+        endif
+      endif
+    endfor
+  endif
+
+  assign related_heading = 'Della stessa famiglia'
+  assign related_accent = blank
+  if picked == template_collection and section.settings.heading != blank and picked_score > 0
+    assign related_heading = section.settings.heading
+    assign related_accent = section.settings.heading_accent
+  elsif type_key != blank
+    assign article = 'Altri'
+    if type_key contains 'pietr' or type_key contains 'candel' or type_key contains 'collan' or type_key contains 'statu'
+      assign article = 'Altre'
+    endif
+    unless type_key contains 'tè' or type_key contains 'te e' or type_key contains 'te,'
+      if type_key contains 'tisane'
+        assign article = 'Altre'
+      endif
+    endunless
+    assign related_heading = article | append: ' ' | append: type_key
   endif
 -%}
-{%- if show_related -%}
+{%- if picked != blank and picked_score > 0 -%}
 <section class="bz bz-product">
   <div class="bz-related">
     <div class="bz-related__head">
       <h2>{{ related_heading | escape }}{% if related_accent != blank %}&nbsp;<em>{{ related_accent | escape }}</em>{% endif %}</h2>
-      {%- if related_collection != blank -%}
-        <a class="bz-picked__all" href="{{ related_collection.url }}">Vedi la collezione <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      {%- endif -%}
+      <a class="bz-picked__all" href="{{ picked.url }}">Vedi la collezione <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     </div>
     <div class="bz-grid">
       {%- assign shown = 0 -%}
-      {%- assign related_limit = section.settings.limit | default: 5 -%}
-      {%- for item in related_collection.products -%}
-        {%- if shown < related_limit and item.available -%}
-          {%- unless product != blank and item.id == product.id -%}
-            {% render 'bz-card', product: item %}
-            {%- assign shown = shown | plus: 1 -%}
-          {%- endunless -%}
+      {%- for item in picked.products -%}
+        {%- assign item_type = item.type | downcase | strip -%}
+        {%- if shown < related_limit and item.available and item.id != product.id and item_type == type_key -%}
+          {% render 'bz-card', product: item %}
+          {%- assign shown = shown | plus: 1 -%}
         {%- endif -%}
       {%- endfor -%}
     </div>
@@ -74,6 +85,10 @@
   "name": "Prodotti correlati",
   "class": "bz-home",
   "settings": [
+    { "type": "text", "id": "heading", "label": "Titolo", "info": "Usato solo se la collezione scelta contiene pezzi dello stesso tipo." },
+    { "type": "text", "id": "heading_accent", "label": "Corsivo" },
+    { "type": "text", "id": "link_label", "label": "Link" },
+    { "type": "collection", "id": "collection", "label": "Collezione" },
     { "type": "range", "id": "limit", "min": 2, "max": 8, "step": 1, "label": "Numero", "default": 5 }
   ],
   "presets": [{ "name": "Prodotti correlati" }]

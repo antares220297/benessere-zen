@@ -882,7 +882,7 @@ body:has(.bz-hero) {
   .bz-hero__copy {
     left: 20px;
     right: 20px;
-    bottom: 24px;
+    bottom: calc(24px + var(--bz-cookie, 0px));
     width: auto;
   }
 

@@ -6,7 +6,8 @@
         "title": "Cura di sé",
         "intro": "La parte del negozio che sta sullo scaffale accanto alle pietre: oli, capelli, corpo, Ayurveda, un tè. Gesti di ogni giorno, raccontati come si fanno, con gli ingredienti che sono davvero in scheda.",
         "button_label": "Pietre e rituali",
-        "button_link": "/pages/pietre-e-rituali"
+        "button_link": "/pages/pietre-e-rituali",
+        "hero_collection": "ayurveda"
       },
       "blocks": {
         "body": {

@@ -6,7 +6,8 @@
         "title": "Pietre e rituali",
         "intro": "Una pietra che tieni in tasca, un mala da 108 grani che fai scorrere, un incenso che prepara la stanza, una candela accesa con un’intenzione. Qui rituale è questo: un gesto, non una teoria.",
         "button_label": "Vieni in negozio",
-        "button_link": "/pages/il-negozio"
+        "button_link": "/pages/il-negozio",
+        "hero_collection": "mala-tibetani"
       },
       "blocks": {
         "body": {

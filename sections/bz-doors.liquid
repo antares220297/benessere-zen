@@ -34,11 +34,26 @@
             {%- if block.settings.text != blank -%}
               <p>{{ block.settings.text | escape }}</p>
             {%- endif -%}
-            <ul class="bz-doors__links">
+            <ul class="bz-doors__mosaic">
+              {%- if door_main != blank and door_main.products_count > 0 -%}
+                {%- assign door_shot = door_main.image | default: door_main.products.first.featured_image -%}
+                <li>
+                  <a href="{{ door_main.url }}">
+                    {%- if door_shot -%}{{ door_shot | image_url: width: 600 | image_tag: alt: door_main.title, loading: 'lazy', width: 300, height: 220 }}{%- endif -%}
+                    <span>{{ door_main.title | escape }}</span>
+                  </a>
+                </li>
+              {%- endif -%}
               {%- for key in door_keys -%}
                 {%- assign door_col = block.settings[key] -%}
                 {%- if door_col != blank and door_col.products_count > 0 -%}
-                  <li><a href="{{ door_col.url }}">{{ door_col.title | escape }}</a></li>
+                  {%- assign door_shot = door_col.image | default: door_col.products.first.featured_image -%}
+                  <li>
+                    <a href="{{ door_col.url }}">
+                      {%- if door_shot -%}{{ door_shot | image_url: width: 600 | image_tag: alt: door_col.title, loading: 'lazy', width: 300, height: 220 }}{%- endif -%}
+                      <span>{{ door_col.title | escape }}</span>
+                    </a>
+                  </li>
                 {%- endif -%}
               {%- endfor -%}
             </ul>

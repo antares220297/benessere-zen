@@ -2,15 +2,34 @@
 {{ 'bz-home.css' | asset_url | stylesheet_tag }}
 {{ 'bz-mid.css' | asset_url | stylesheet_tag }}
 
+{%- liquid
+  assign hero_col = section.settings.hero_collection
+  if hero_col == blank
+    for block in section.blocks
+      if hero_col == blank and block.type == 'portals'
+        assign hero_col = block.settings.collection_1
+      endif
+    endfor
+  endif
+  assign hero_image = section.settings.image
+  if hero_image == blank and hero_col != blank
+    assign hero_image = hero_col.image | default: hero_col.products.first.featured_image
+  endif
+-%}
 <article class="bz bz-guide">
-  <header class="bz-guide__hero">
-    <h1>{{ section.settings.title | escape }}</h1>
-    {%- if section.settings.intro != blank -%}
-      <p>{{ section.settings.intro | escape }}</p>
+  <header class="bz-guide__hero{% if hero_image %} has-photo{% endif %}">
+    {%- if hero_image -%}
+      {{ hero_image | image_url: width: 1600 | image_tag: alt: section.settings.title, class: 'bz-guide__photo', widths: '600, 1000, 1600', sizes: '100vw', loading: 'eager' }}
     {%- endif -%}
-    {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
-      <a class="bz-btn bz-btn--gold" href="{{ section.settings.button_link }}">{{ section.settings.button_label | escape }}</a>
-    {%- endif -%}
+    <div class="bz-guide__hero-copy" data-reveal>
+      <h1>{{ section.settings.title | escape }}</h1>
+      {%- if section.settings.intro != blank -%}
+        <p>{{ section.settings.intro | escape }}</p>
+      {%- endif -%}
+      {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
+        <a class="bz-btn bz-btn--gold" href="{{ section.settings.button_link }}">{{ section.settings.button_label | escape }}</a>
+      {%- endif -%}
+    </div>
   </header>
 
   {%- for block in section.blocks -%}
@@ -34,16 +53,20 @@
           {%- endfor -%}
         </div>
       {%- when 'portals' -%}
-        <div class="bz-guide__portals" {{ block.shopify_attributes }}>
+        <div class="bz-guide__portals" data-reveal {{ block.shopify_attributes }}>
           {%- assign keys = 'collection_1,collection_2,collection_3,collection_4,collection_5,collection_6' | split: ',' -%}
           {%- for key in keys -%}
             {%- assign portal = block.settings[key] -%}
             {%- if portal != blank and portal.url != blank -%}
-              <a href="{{ portal.url }}">{{ portal.title | escape }}</a>
+              {%- assign portal_image = portal.image | default: portal.products.first.featured_image -%}
+              <a href="{{ portal.url }}">
+                {%- if portal_image -%}{{ portal_image | image_url: width: 800 | image_tag: alt: portal.title, loading: 'lazy', width: 400, height: 280 }}{%- endif -%}
+                <span>{{ portal.title | escape }}</span>
+              </a>
             {%- endif -%}
           {%- endfor -%}
           {%- if block.settings.extra_label != blank and block.settings.extra_link != blank -%}
-            <a href="{{ block.settings.extra_link }}">{{ block.settings.extra_label | escape }}</a>
+            <a class="is-text" href="{{ block.settings.extra_link }}"><span>{{ block.settings.extra_label | escape }}</span></a>
           {%- endif -%}
         </div>
       {%- when 'faq' -%}
@@ -55,15 +78,52 @@
         {%- endif -%}
     {%- endcase -%}
   {%- endfor -%}
+  {%- if hero_col != blank and hero_col.products_count > 0 -%}
+    <div class="bz-guide__rail" data-reveal>
+      <h2>{{ hero_col.title | escape }}</h2>
+      <div class="bz-guide__products">
+        {%- assign rail_n = 0 -%}
+        {%- for item in hero_col.products -%}
+          {%- if rail_n < 4 and item.available -%}
+            {% render 'bz-card', product: item %}
+            {%- assign rail_n = rail_n | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
 </article>
 
 {% style %}
 .bz-guide {
   background: #141312;
   color: #eee7db;
-  padding: 28px 20px 72px;
-  max-width: 980px;
-  margin: 0 auto;
+  padding: 0 0 72px;
+}
+.bz-guide__hero {
+  position: relative;
+  min-height: 420px;
+  display: flex;
+  align-items: flex-end;
+  padding: 36px 20px 32px;
+  overflow: hidden;
+  background: radial-gradient(120% 90% at 0 100%, #24201b, #0d0c0b 62%);
+}
+.bz-guide__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.bz-guide__hero.has-photo .bz-guide__hero-copy {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+  padding: 22px;
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(13,12,11,.2), rgba(13,12,11,.78));
 }
 .bz-guide__hero h1 {
   margin: 0 0 14px;
@@ -108,24 +168,74 @@
   background: #2a241c;
   border: 1px solid rgba(201, 169, 110, 0.45);
 }
+.bz-guide__prose,
+.bz-guide__cards,
+.bz-guide__portals,
+.bz-guide__rail,
+.bz-guide__faq {
+  width: min(980px, calc(100% - 32px));
+  margin-left: auto;
+  margin-right: auto;
+}
 .bz-guide__portals {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 22px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 28px;
 }
 .bz-guide__portals a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  padding: 0 16px;
-  border-radius: 999px;
-  background: #c9a96e;
-  color: #17130d;
-  font-family: Figtree, system-ui, sans-serif;
-  font-size: 14.5px;
-  font-weight: 600;
+  position: relative;
+  display: block;
+  min-height: 180px;
+  border-radius: 22px;
+  overflow: hidden;
+  background: #201e1b;
+  color: #eee7db;
   text-decoration: none;
+  border: 1px solid rgba(201, 169, 110, 0.35);
+}
+.bz-guide__portals img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+.bz-guide__portals span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 28px 14px 12px;
+  background: linear-gradient(transparent, rgba(13,12,11,.9));
+  font-family: Baskervville, Georgia, serif;
+  font-size: 22px;
+}
+.bz-guide__portals a.is-text {
+  display: flex;
+  align-items: flex-end;
+  background: #2a241c;
+}
+.bz-guide__portals a:hover span { color: #e3cb95; }
+.bz-guide__rail h2 {
+  margin: 28px 0 14px;
+  font-family: Baskervville, Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(28px, 3vw, 40px);
+}
+.bz-guide__products {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.bz-guide [data-reveal] {
+  animation: bz-guide-rise 0.7s ease both;
+}
+@keyframes bz-guide-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bz-guide [data-reveal] { animation: none; }
 }
 .bz-guide__faq {
   margin-top: 12px;
@@ -143,8 +253,14 @@
 }
 .bz-guide__faq p { margin: 8px 0 4px; }
 @media (max-width: 800px) {
-  .bz-guide__cards { grid-template-columns: 1fr; }
+  .bz-guide__cards,
+  .bz-guide__portals,
+  .bz-guide__products { grid-template-columns: 1fr 1fr; }
+  .bz-guide__hero { min-height: 360px; }
 }
+.bz-guide__cards article:nth-child(1) { background: #241a2f; }
+.bz-guide__cards article:nth-child(2) { background: #2a141b; }
+.bz-guide__cards article:nth-child(3) { background: #24201b; }
 {% endstyle %}
 
 {% schema %}
@@ -154,6 +270,8 @@
   "settings": [
     { "type": "text", "id": "title", "label": "Titolo", "default": "Chi siamo" },
     { "type": "textarea", "id": "intro", "label": "Apertura" },
+    { "type": "image_picker", "id": "image", "label": "Foto di apertura" },
+    { "type": "collection", "id": "hero_collection", "label": "Collezione di apertura", "info": "Se non c’è una foto, usiamo l’immagine di questa collezione e un gruppo di pezzi disponibili." },
     { "type": "text", "id": "button_label", "label": "Pulsante" },
     { "type": "url", "id": "button_link", "label": "Link del pulsante" }
   ],

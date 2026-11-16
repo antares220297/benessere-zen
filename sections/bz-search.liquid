@@ -52,6 +52,7 @@
       {%- else -%}
         <h1 id="BzSearchTitle-{{ section.id }}" class="bz-search__none">{{ empty_text | escape }}</h1>
         {%- if picks != blank and picks.products_count > 0 -%}
+          <p class="bz-search__suggest">Ti proponiamo</p>
           <div class="bz-search__grid">
             {%- assign shown = 0 -%}
             {%- for product in picks.products -%}

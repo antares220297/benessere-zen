@@ -27,6 +27,16 @@
   if show_mala_facts or type_key contains 'pietr' or type_key contains 'braccial' or type_key contains 'ciondol' or type_key contains 'collan' or type_key contains 'pendol'
     assign show_stone_facts = true
   endif
+  assign show_stone_note = false
+  if show_mala_facts or type_key contains 'pietr'
+    assign show_stone_note = true
+  endif
+  if product.metafields.custom.pietra.value != blank
+    assign note_stone = product.metafields.custom.pietra.value.nome.value | default: product.metafields.custom.pietra.value.nome | append: ''
+    unless note_stone == blank or note_stone contains 'Metaobject' or note_stone contains 'Drop'
+      assign show_stone_note = true
+    endunless
+  endif
 -%}
 
 <div class="bz bz-product" data-bz-product>
@@ -64,7 +74,7 @@
           {%- endif -%}
         </div>
         <div class="bz-stage__note">
-          {%- if show_stone_facts and section.settings.photo_note != blank -%}
+          {%- if show_stone_note and section.settings.photo_note != blank -%}
             <span>{{ section.settings.photo_note | escape }}</span>
           {%- endif -%}
           {%- if product.images.size > 1 -%}
@@ -415,7 +425,7 @@
       {{ product.featured_image | image_url: width: 100 | image_tag: alt: '', width: 44, height: 44 }}
     {%- endif -%}
     <span><em class="bz-sticky__name">{{ product.title | escape }}</em><b>{% render 'bz-money', cents: product.price %}</b></span>
-    <button type="submit">Aggiungi</button>
+    <button type="submit"{% unless current.available %} disabled{% endunless %}>{% if current.available %}Aggiungi{% else %}Esaurito{% endif %}</button>
   </form>
 </div>
 <script type="application/ld+json">

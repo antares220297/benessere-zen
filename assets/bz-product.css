@@ -676,7 +676,7 @@
     position: fixed;
     left: 10px;
     right: 10px;
-    bottom: calc(10px + env(safe-area-inset-bottom));
+    bottom: calc(10px + env(safe-area-inset-bottom) + var(--bz-cookie, 0px));
     z-index: 40;
     display: flex;
     align-items: center;
@@ -725,5 +725,10 @@
     background: linear-gradient(180deg, #e3cb95, #c9a96e);
     color: #17130d;
     font-weight: 600;
+  }
+
+  .bz-sticky button:disabled {
+    background: #3a342c;
+    color: #cdc4b4;
   }
 }

@@ -462,7 +462,18 @@
           if (otherButton) otherButton.setAttribute("aria-expanded", "false");
         });
         item.classList.toggle("is-open", open);
+        nav.classList.toggle("is-sub", open);
         button.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+    });
+    nav.querySelectorAll("[data-bz-back]").forEach(function (back) {
+      back.addEventListener("click", function () {
+        nav.classList.remove("is-sub");
+        nav.querySelectorAll(".bz-nav__item.is-open").forEach(function (item) {
+          item.classList.remove("is-open");
+          var toggle = item.querySelector("[data-bz-sub]");
+          if (toggle) toggle.setAttribute("aria-expanded", "false");
+        });
       });
     });
   }

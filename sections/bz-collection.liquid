@@ -73,6 +73,9 @@
       {%- for block in section.blocks -%}
         {%- if block.type == 'chip' and block.settings.collection != blank and block.settings.collection.products_count > 0 -%}
           {%- assign chip_only = block.settings.show_on | strip | downcase -%}
+          {%- if chip_only == blank and block.settings.collection.handle == 'mala-tibetani' -%}
+            {%- assign chip_only = 'gioielli-con-pietre' -%}
+          {%- endif -%}
           {%- if chip_only == blank or chip_only == collection.handle -%}
             {%- assign chip_label = block.settings.label | default: block.settings.collection.title | strip -%}
             {%- assign chip_token = chip_label | downcase | prepend: '|' | append: '|' -%}

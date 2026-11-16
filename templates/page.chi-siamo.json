@@ -6,7 +6,8 @@
         "title": "Benessere Zen, a Cento",
         "intro": "In Via Marcello Provenzali 1, in provincia di Ferrara, c’è un negozio con le pietre in vetrina e gli oli dietro il banco. Quello che vedi sul sito è lo stesso catalogo: puoi pagare online e farti spedire il pezzo, ritirarlo qui, o entrare e sceglierlo con la pietra in mano.",
         "button_label": "Vieni in negozio",
-        "button_link": "/pages/il-negozio"
+        "button_link": "/pages/il-negozio",
+        "hero_collection": "gioielli-con-pietre"
       },
       "blocks": {
         "story": {

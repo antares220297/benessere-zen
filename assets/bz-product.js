@@ -48,7 +48,12 @@
     root.querySelectorAll("[data-bz-variant]").forEach(function (radio) {
       radio.addEventListener("change", function () {
         var stickyId = root.querySelector(".bz-sticky input[name='id']");
+        var stickyButton = root.querySelector(".bz-sticky button");
         if (stickyId) stickyId.value = radio.value;
+        if (stickyButton) {
+          stickyButton.disabled = radio.disabled;
+          stickyButton.textContent = radio.disabled ? "Esaurito" : "Aggiungi";
+        }
         var priceNode = root.querySelector("[data-bz-price]");
         var cents = Number(radio.getAttribute("data-bz-variant"));
         if (priceNode && cents > 0) {

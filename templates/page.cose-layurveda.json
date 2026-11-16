@@ -6,7 +6,8 @@
         "title": "Cos’è l’Ayurveda",
         "intro": "Una tradizione nata in India, che guarda a corpo, mente e abitudini come a un’unica cosa. Si porta in casa con gesti quotidiani: un olio, un’infusione, un lavaggio dei capelli. Non è una visita medica e non sostituisce un medico.",
         "button_label": "Vedi l’Ayurveda",
-        "button_link": "/collections/ayurveda"
+        "button_link": "/collections/ayurveda",
+        "hero_collection": "ayurveda"
       },
       "blocks": {
         "origini": {

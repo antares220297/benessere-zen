@@ -71,6 +71,13 @@ section.bz-search .bz-search__form button {
   cursor: pointer;
 }
 
+section.bz-search .bz-search__suggest {
+  margin: 18px 0 10px;
+  color: #e3cb95;
+  font-size: 14px;
+  font-weight: 600;
+}
+
 section.bz-search h1.bz-search__none + .bz-search__grid {
   margin-top: 22px;
 }
