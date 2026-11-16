@@ -12,6 +12,7 @@
 
   {%- if cart == empty -%}
     <p class="bz-drawer__empty">Il carrello è vuoto.</p>
+    <a class="bz-drawer__go bz-drawer__shop" href="/collections/all">Continua lo shopping</a>
   {%- else -%}
     <div class="bz-cartpage__grid">
       <div>
@@ -29,13 +30,18 @@
                   <small class="bz-drawer__variant">{{ item.variant.title | escape }}</small>
                 {%- endif -%}
                 <div class="bz-drawer__qty">
-                  <button type="button" data-bz-qty="-1" data-key="{{ item.key }}" aria-label="Meno">−</button>
+                  <button type="button" data-bz-qty="-1" aria-label="Meno">−</button>
                   <input class="bz-drawer__qty-input" id="page-qty-{{ item.key }}" type="text" inputmode="numeric" value="{{ item.quantity }}" aria-label="Quantità">
-                  <button type="button" data-bz-qty="1" data-key="{{ item.key }}" aria-label="Più">+</button>
-                  <button type="button" data-bz-remove data-key="{{ item.key }}" hidden>Rimuovi</button>
+                  <button type="button" data-bz-qty="1" aria-label="Più">+</button>
+                  <button type="button" data-bz-remove hidden>Rimuovi</button>
                 </div>
               </div>
-              <span class="bz-line-price">{% render 'bz-money', cents: item.final_price %}</span>
+              <span class="bz-line-price">
+                {% render 'bz-money', cents: item.final_line_price %}
+                {%- if item.quantity > 1 -%}
+                  <small class="bz-line-price__each">{% render 'bz-money', cents: item.final_price %} cad.</small>
+                {%- endif -%}
+              </span>
             </article>
           {%- endfor -%}
         </div>

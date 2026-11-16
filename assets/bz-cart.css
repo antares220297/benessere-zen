@@ -67,11 +67,29 @@
 #update-cart .bz-line-price,
 .bz-line-price {
   position: static;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
   justify-self: end;
   margin: 0;
   font-family: Baskervville, Georgia, serif;
   font-size: 19px;
   white-space: nowrap;
+}
+
+.bz-line-price__each {
+  margin-top: 2px;
+  color: #958d7f;
+  font-family: Figtree, system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.bz-drawer__shop {
+  display: flex;
+  width: calc(100% - 44px);
+  margin: 8px 22px 20px;
+  text-decoration: none;
 }
 
 #update-cart #checkout-submit,

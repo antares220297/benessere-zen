@@ -35,6 +35,7 @@
     var cart = Alpine.store("xMiniCart");
     cart.type = "drawer";
     if (typeof cart.openCart === "function") cart.openCart();
+    fillUpsell(document);
   }
 
   function formatEuro(cents) {
@@ -88,11 +89,17 @@
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({ id: key, quantity: next })
       }).then(function (response) {
+        if (response.status === 429 || !response.ok) {
+          delete cartLineDesired[key];
+          return refreshCart();
+        }
         return response.json();
       }).then(function (payload) {
         if (cartLineDesired[key] !== next) return payload;
         delete cartLineDesired[key];
-        if (!payload || payload.status) return payload;
+        if (!payload || payload.status || payload.description) {
+          return refreshCart();
+        }
         return refreshCart().then(function () {
           openDrawer();
           return payload;
@@ -155,6 +162,7 @@
   }
 
   document.addEventListener("click", function (event) {
+    if (event.target.closest("#cart-icon, [data-bz-cart]")) fillUpsell(document);
     var closer = event.target.closest("[data-bz-close], [data-bz-cart]");
     if (closer && closer.hasAttribute("data-bz-cart")) {
       event.preventDefault();
@@ -169,12 +177,11 @@
     var qty = event.target.closest("#CartDrawer [data-bz-qty], #bz-cart [data-bz-qty], #CartDrawer [data-bz-remove], #bz-cart [data-bz-remove]");
     if (qty) {
       event.preventDefault();
-      var row = qty.closest("[data-key]");
-      var key = (row && row.getAttribute("data-key")) || qty.getAttribute("data-key");
-      if (!key) return;
-      var input = row && row.querySelector("input.bz-drawer__qty-input, input");
-      var current = parseInt(input && input.value, 10);
-      if (!Number.isFinite(current)) current = 1;
+      var row = qty.closest(".cart-item");
+      var key = row && row.getAttribute("data-key");
+      var input = row && row.querySelector("input.bz-drawer__qty-input");
+      var current = input ? parseInt(input.value, 10) : NaN;
+      if (!key || !Number.isFinite(current)) return;
       var next = qty.hasAttribute("data-bz-remove") ? 0 : Math.max(0, current + Number(qty.getAttribute("data-bz-qty")));
       changeCartLine(key, next);
       return;
