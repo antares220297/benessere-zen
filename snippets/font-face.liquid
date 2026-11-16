@@ -1,20 +1,4 @@
-{%- style -%}
-  {%- unless settings.type_header_font.family contains 'Japanese' -%}
-    {{ settings.type_header_font | font_face: font_display: 'swap' }}
-  {%- endunless -%}
-  {%- unless settings.type_body_font.family contains 'Japanese' -%}
-    {{ settings.type_body_font | font_face: font_display: 'swap' }}
-    {{ settings.type_body_font | font_modify: 'weight', 'bold' | font_face: font_display: 'swap' }}
-    {{ settings.type_body_font | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
-    {{ settings.type_body_font | font_modify: 'weight', 'bold' | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
-  {%- endunless -%}
-  {%- unless settings.type_menu_font.family contains 'Japanese' -%}
-    {{ settings.type_menu_font | font_face: font_display: 'swap' }}
-  {%- endunless -%}
-  {%- unless settings.type_button_font.family contains 'Japanese' -%}
-    {{ settings.type_button_font | font_face: font_display: 'swap' }}
-  {%- endunless -%}
-  {%- unless settings.heading_highlight_font.family contains 'Japanese' -%}
-    {{ settings.heading_highlight_font | font_face: font_display: 'swap' }}
-  {%- endunless -%}
-{%- endstyle -%}
+{%- comment -%}
+  Figtree and Baskervville are self-hosted in bz-tokens.css.
+  Do not load Shopify font-picker families alongside the approved storefront fonts.
+{%- endcomment -%}
