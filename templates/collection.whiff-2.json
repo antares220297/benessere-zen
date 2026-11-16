@@ -18,32 +18,11 @@
         "per_page": 16
       },
       "blocks": {
-        "chip-br": {
-          "type": "chip",
-          "settings": {
-            "label": "Bracciali",
-            "collection": "bracciali"
-          }
-        },
-        "chip-ci": {
-          "type": "chip",
-          "settings": {
-            "label": "Ciondoli",
-            "collection": "ciondoli"
-          }
-        },
         "chip-ma": {
           "type": "chip",
           "settings": {
             "label": "Mala",
             "collection": "mala-tibetani"
-          }
-        },
-        "chip-ca": {
-          "type": "chip",
-          "settings": {
-            "label": "Catenine",
-            "collection": "catenine"
           }
         },
         "promo-1": {
@@ -60,10 +39,7 @@
         }
       },
       "block_order": [
-        "chip-br",
-        "chip-ci",
         "chip-ma",
-        "chip-ca",
         "promo-1"
       ]
     }

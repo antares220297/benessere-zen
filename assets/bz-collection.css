@@ -55,6 +55,7 @@
   background: rgba(20,19,18,.72); border: 1px solid rgba(238,231,219,.24);
   color: #eee7db; text-decoration: none; font-size: 14px;
 }
+.bz-cbub--text { padding-left: 16px; }
 .bz-cbub img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
 .bz-cbub small { color: #958d7f; }
 .bz-cbub.is-on { border-color: #c9a96e; background: rgba(201,169,110,.18); }

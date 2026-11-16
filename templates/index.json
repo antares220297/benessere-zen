@@ -212,9 +212,9 @@
         "visit-cento": {
           "type": "visit",
           "settings": {
-            "title": "Anche in negozio",
-            "text": "Gli stessi pezzi sono anche a Cento. Puoi vederli e sceglierli di persona.",
-            "label": "Vieni in negozio"
+            "title": "Anche in negozio, a Cento (FE)",
+            "text": "Gli stessi pezzi, da vedere di persona.",
+            "label": "Il negozio"
           }
         }
       },
@@ -628,11 +628,47 @@
         "in-affetti",
         "in-concentrazione"
       ]
+    },
+    "bz_doors": {
+      "type": "bz-doors",
+      "blocks": {
+        "door-pietre": {
+          "type": "door",
+          "settings": {
+            "title": "Pietre e rituali",
+            "text": "Gioielli, mala, pietre e gli oggetti che stanno intorno al rito.",
+            "cta": "Vedi le pietre",
+            "collection": "gioielli-con-pietre",
+            "collection_2": "mala-tibetani",
+            "collection_3": "pietre-burattate",
+            "collection_4": "pendoli",
+            "collection_5": "candele-e-brucia-candele"
+          }
+        },
+        "door-cura": {
+          "type": "door",
+          "settings": {
+            "title": "Cura di sé",
+            "text": "Viso, corpo, capelli, tisane e oli, per la giornata.",
+            "cta": "Vedi la cura",
+            "collection": "cosmetica",
+            "collection_2": "cosmesi-corpo",
+            "collection_3": "prodotti-per-capelli",
+            "collection_4": "ayurveda",
+            "collection_5": "te-tisane"
+          }
+        }
+      },
+      "block_order": [
+        "door-pietre",
+        "door-cura"
+      ]
     }
   },
   "order": [
     "bz_hero",
     "bz_spheres",
+    "bz_doors",
     "bz_picked",
     "bz_promo",
     "bz_stones",

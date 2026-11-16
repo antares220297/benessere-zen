@@ -84,6 +84,9 @@
         {%- assign ship_cents = ship_euros | times: 100 -%}
         {%- if ship_euros > 0 and cart.total_price >= ship_cents -%}
           <small>IVA inclusa. La spedizione è gratuita. Oppure ritiro gratuito in negozio.</small>
+        {%- elsif ship_euros > 0 -%}
+          {%- assign ship_missing = ship_cents | minus: cart.total_price -%}
+          <small>IVA inclusa. Mancano {% render 'bz-money', cents: ship_missing %} alla spedizione gratuita. Oppure ritiro gratuito in negozio.</small>
         {%- else -%}
           <small>IVA inclusa. Spedizione al pagamento, oppure ritiro gratuito in negozio.</small>
         {%- endif -%}

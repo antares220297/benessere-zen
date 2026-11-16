@@ -585,7 +585,8 @@
         "stones_title": "Per pietra",
         "results_title": "In evidenza",
         "results_link": "Vedi tutti i risultati",
-        "search_collection": "gioielli-con-pietre"
+        "search_collection": "gioielli-con-pietre",
+        "menu": "bz-menu-v2"
       },
       "blocks": {
         "link-gioielli": {

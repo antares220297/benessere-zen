@@ -322,6 +322,8 @@ body:has(.bz-hero) {
   padding: 30px 24px 28px;
   overflow-x: auto;
   overflow-y: hidden;
+  touch-action: pan-x;
+  overscroll-behavior-x: contain;
   position: relative;
   z-index: 0;
   scrollbar-width: none;
@@ -594,6 +596,9 @@ body:has(.bz-hero) {
   grid-template-columns: none;
   gap: 18px;
   overflow-x: auto;
+  overflow-y: hidden;
+  touch-action: pan-x;
+  overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   -ms-overflow-style: none;

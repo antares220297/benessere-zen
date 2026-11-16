@@ -69,17 +69,41 @@
         {%- endif -%}
         Tutti <small>{{ collection.products_count }}</small>
       </a>
+      {%- assign chip_names = '|tutti|' -%}
       {%- for block in section.blocks -%}
-        {%- if block.type == 'chip' and block.settings.collection != blank -%}
+        {%- if block.type == 'chip' and block.settings.collection != blank and block.settings.collection.products_count > 0 -%}
           {%- assign chip_only = block.settings.show_on | strip | downcase -%}
-          {%- if block.settings.collection != blank and chip_only == blank or chip_only == collection.handle -%}
-          <a class="bz-cbub" href="{{ block.settings.collection.url }}" {{ block.shopify_attributes }}>
-            {%- assign chip_image = block.settings.image | default: block.settings.collection.image | default: block.settings.collection.products.first.featured_image -%}
-            {%- if chip_image -%}{{ chip_image | image_url: width: 80 | image_tag: alt: '', width: 36, height: 36 }}{%- endif -%}
-            {{ block.settings.label | default: block.settings.collection.title | escape }}
-            <small>{{ block.settings.collection.products_count }}</small>
-          </a>
+          {%- if chip_only == blank or chip_only == collection.handle -%}
+            {%- assign chip_label = block.settings.label | default: block.settings.collection.title | strip -%}
+            {%- assign chip_token = chip_label | downcase | prepend: '|' | append: '|' -%}
+            {%- unless chip_names contains chip_token -%}
+              {%- assign chip_names = chip_names | append: chip_token -%}
+              <a class="bz-cbub" href="{{ block.settings.collection.url }}" {{ block.shopify_attributes }}>
+                {%- assign chip_image = block.settings.image | default: block.settings.collection.image | default: block.settings.collection.products.first.featured_image -%}
+                {%- if chip_image -%}{{ chip_image | image_url: width: 80 | image_tag: alt: '', width: 36, height: 36 }}{%- endif -%}
+                {{ chip_label | escape }}
+                <small>{{ block.settings.collection.products_count }}</small>
+              </a>
+            {%- endunless -%}
           {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {%- for filter in collection.filters -%}
+        {%- assign filter_param = filter.param_name | downcase -%}
+        {%- if filter_param contains 'product_type' or filter.label == 'Tipo' -%}
+          {%- for value in filter.values -%}
+            {%- if value.count > 0 -%}
+              {%- assign tipo_label = value.label | append: '' | strip -%}
+              {%- if tipo_label contains 'Metaobject' or tipo_label contains 'Drop' -%}
+                {%- assign tipo_label = value.value | split: '/' | last | replace: '-', ' ' -%}
+              {%- endif -%}
+              {%- assign tipo_token = tipo_label | downcase | prepend: '|' | append: '|' -%}
+              {%- unless chip_names contains tipo_token -%}
+                {%- assign chip_names = chip_names | append: tipo_token -%}
+                <a class="bz-cbub bz-cbub--text{% if value.active %} is-on{% endif %}" href="{{ value.url }}">{{ tipo_label | escape }} <small>{{ value.count }}</small></a>
+              {%- endunless -%}
+            {%- endif -%}
+          {%- endfor -%}
         {%- endif -%}
       {%- endfor -%}
     </div>

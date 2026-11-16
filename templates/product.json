@@ -161,41 +161,132 @@
     "bz_ritual": {
       "type": "bz-ritual",
       "blocks": {
-        "set-nero": {
-          "type": "set",
+        "rule-bracciali": {
+          "type": "type_rule",
           "settings": {
-            "label": "Tutto nero",
-            "product_1": "mala-108-perle-onice-nero-qualita-aa",
-            "product_2": "bracciale-tormalina-nera-elastico",
-            "product_3": "ciondolo-larme-obsideinne-noire",
-            "caption_title": "Pietre scure,",
-            "caption_accent": "da portare a strati",
-            "caption": "Onice, tormalina e ossidiana: il mala lungo al collo, il bracciale e il ciondolo vicini."
+            "product_type": "Bracciali",
+            "collection_1": "candele-e-brucia-candele",
+            "collection_2": "incensi-e-brucia-incensi-2"
           }
         },
-        "set-ametista": {
-          "type": "set",
+        "rule-bracciale": {
+          "type": "type_rule",
           "settings": {
-            "label": "Ametista",
-            "product_1": "mala-ametista-108-perle",
-            "product_2": "bracciale-ametista-naturale",
-            "product_3": "ciondolo-ametista-grezza",
-            "caption_title": "Ametista,",
-            "caption_accent": "da portare a strati",
-            "caption": "Mala, bracciale e ciondolo in ametista, da mettere insieme."
+            "product_type": "Bracciale",
+            "collection_1": "candele-e-brucia-candele",
+            "collection_2": "incensi-e-brucia-incensi-2"
+          }
+        },
+        "rule-ciondoli": {
+          "type": "type_rule",
+          "settings": {
+            "product_type": "Ciondoli",
+            "collection_1": "collane-e-braccialetti",
+            "collection_2": "candele-e-brucia-candele"
+          }
+        },
+        "rule-ciondolo": {
+          "type": "type_rule",
+          "settings": {
+            "product_type": "Ciondolo",
+            "collection_1": "collane-e-braccialetti",
+            "collection_2": "candele-e-brucia-candele"
+          }
+        },
+        "rule-collane": {
+          "type": "type_rule",
+          "settings": {
+            "product_type": "Collane",
+            "collection_1": "candele-e-brucia-candele",
+            "collection_2": "pietre-burattate"
+          }
+        },
+        "rule-mala": {
+          "type": "type_rule",
+          "settings": {
+            "product_type": "Mala",
+            "collection_1": "pietre-burattate",
+            "collection_2": "candele-e-brucia-candele"
+          }
+        },
+        "rule-pietre": {
+          "type": "type_rule",
+          "settings": {
+            "product_type": "Pietre",
+            "collection_1": "candele-e-brucia-candele",
+            "collection_2": "incensi-e-brucia-incensi-2"
+          }
+        },
+        "rule-cosmetici": {
+          "type": "type_rule",
+          "settings": {
+            "product_type": "Cosmetici",
+            "collection_1": "latte-detergente",
+            "collection_2": "tonico"
+          }
+        },
+        "rule-oli": {
+          "type": "type_rule",
+          "settings": {
+            "product_type": "Oli e profumi",
+            "collection_1": "profumi-in-olio",
+            "collection_2": "cosmetica"
+          }
+        },
+        "rule-tisane": {
+          "type": "type_rule",
+          "settings": {
+            "product_type": "Tè e tisane",
+            "collection_1": "te-tisane",
+            "collection_2": "te-e-tisane-ayurvediche"
+          }
+        },
+        "rule-incensi": {
+          "type": "type_rule",
+          "settings": {
+            "product_type": "Incensi e smudge",
+            "collection_1": "candele-e-brucia-candele",
+            "collection_2": "pietre-burattate"
+          }
+        },
+        "rule-candele": {
+          "type": "type_rule",
+          "settings": {
+            "product_type": "Candele",
+            "collection_1": "incensi-e-brucia-incensi-2",
+            "collection_2": "pietre-burattate"
+          }
+        },
+        "rule-capelli": {
+          "type": "type_rule",
+          "settings": {
+            "product_type": "Capelli",
+            "collection_1": "prodotti-per-capelli",
+            "collection_2": "cura-della-persona"
           }
         }
       },
       "block_order": [
-        "set-nero",
-        "set-ametista"
+        "rule-bracciali",
+        "rule-bracciale",
+        "rule-ciondoli",
+        "rule-ciondolo",
+        "rule-collane",
+        "rule-mala",
+        "rule-pietre",
+        "rule-cosmetici",
+        "rule-oli",
+        "rule-tisane",
+        "rule-incensi",
+        "rule-candele",
+        "rule-capelli"
       ],
       "settings": {
         "heading": "Completa",
         "heading_accent": "il rituale",
-        "link_label": "Tutti i set",
-        "link": "/collections/gioielli-con-pietre",
-        "intro": "Tre pezzi che stanno bene insieme, al collo e al polso. Togli quello che hai già."
+        "link_label": "",
+        "link": "",
+        "intro": "Due o tre pezzi che stanno bene con questo."
       }
     },
     "bz_related": {

@@ -510,6 +510,9 @@
   grid-auto-columns: 78%;
   gap: 12px;
   overflow-x: auto;
+  overflow-y: hidden;
+  touch-action: pan-x;
+  overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
   padding-bottom: 6px;
 }
@@ -613,6 +616,10 @@
   padding: 36px 24px 56px;
 }
 
+.bz-ritual[hidden] {
+  display: none !important;
+}
+
 .bz-ritual__head {
   display: flex;
   justify-content: space-between;
@@ -630,6 +637,10 @@
   display: grid;
   grid-template-columns: 1fr 1.05fr;
   gap: 14px;
+}
+
+.bz-set--solo {
+  grid-template-columns: minmax(0, 720px);
 }
 
 .bz-set__card {
@@ -872,6 +883,9 @@
     grid-auto-flow: column;
     grid-auto-columns: 72%;
     overflow-x: auto;
+    overflow-y: hidden;
+    touch-action: pan-x;
+    overscroll-behavior-x: contain;
     scrollbar-width: none;
   }
 
@@ -934,9 +948,20 @@
     display: flex;
     width: 100%;
     max-width: 100%;
+    height: 46px;
     overflow-x: auto;
+    overflow-y: hidden;
     flex-wrap: nowrap;
+    align-items: stretch;
+    touch-action: pan-x;
+    overscroll-behavior-x: contain;
     scrollbar-width: none;
+  }
+
+  .bz-set__card .bz-pills button {
+    flex: 0 0 auto;
+    height: 100%;
+    min-height: 0;
   }
 
   .bz-set__visual h3 {
@@ -947,5 +972,114 @@
   .bz-set__card > p,
   .bz-set__visual p {
     max-width: 100%;
+  }
+}
+
+.bz-doors {
+  background: #141312;
+  padding: 28px 24px 48px;
+  color: #eee7db;
+}
+
+.bz-doors__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.bz-doors__card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border-radius: 28px;
+  overflow: hidden;
+  background: #1c1b19;
+}
+
+.bz-doors__media {
+  display: block;
+  aspect-ratio: 16 / 9;
+  background: #262320;
+}
+
+.bz-doors__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bz-doors__body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 22px 22px 24px;
+}
+
+.bz-doors__body h2 {
+  margin: 0;
+  font-size: clamp(32px, 3vw, 44px);
+  line-height: 1.05;
+}
+
+.bz-doors__body p {
+  margin: 0;
+  max-width: 36ch;
+  color: #cdc4b4;
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.bz-doors__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bz-doors__links:not(:has(li)) {
+  display: none;
+}
+
+.bz-doors__links a {
+  color: #eee7db;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.bz-doors__links a:hover,
+.bz-doors__links a:focus-visible {
+  color: #e3cb95;
+}
+
+.bz-doors__go {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  color: #e3cb95;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.bz-doors__go svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+}
+
+@media (max-width: 860px) {
+  .bz-doors {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .bz-doors__grid {
+    grid-template-columns: 1fr;
   }
 }

@@ -432,6 +432,24 @@
 
   var burger = document.querySelector("[data-bz-burger]");
   var nav = document.getElementById("BzNav");
+  if (nav) {
+    nav.querySelectorAll("[data-bz-sub]").forEach(function (button) {
+      button.addEventListener("click", function () {
+        if (window.matchMedia("(min-width: 1180px)").matches) return;
+        var item = button.closest(".bz-nav__item");
+        if (!item) return;
+        var open = !item.classList.contains("is-open");
+        nav.querySelectorAll(".bz-nav__item.is-open").forEach(function (other) {
+          if (other === item) return;
+          other.classList.remove("is-open");
+          var otherButton = other.querySelector("[data-bz-sub]");
+          if (otherButton) otherButton.setAttribute("aria-expanded", "false");
+        });
+        item.classList.toggle("is-open", open);
+        button.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+    });
+  }
   if (burger && nav) {
     function placeOpenMenu() {
       var header = burger.closest(".bz-header");

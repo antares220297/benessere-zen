@@ -99,6 +99,50 @@
     });
   });
 
+  function bindRitual(root) {
+    if (!root || root.getAttribute("data-bz-bound") === "1") return;
+    root.setAttribute("data-bz-bound", "1");
+    if (window.bzSumSet) window.bzSumSet(root);
+    root.addEventListener("change", function () { window.bzSumSet(root); });
+  }
+
+  if (window.fetch) {
+    document.querySelectorAll("[data-bz-complementary]").forEach(function (node) {
+      var raw = node.getAttribute("data-url");
+      if (!raw) return;
+      var url = raw;
+      try {
+        var preview = new URL(window.location.href).searchParams.get("preview_theme_id") || "";
+        if (preview) {
+          var next = new URL(raw, window.location.origin);
+          next.searchParams.set("preview_theme_id", preview);
+          url = next.pathname + next.search;
+        }
+      } catch (error) {
+        url = raw;
+      }
+      fetch(url)
+        .then(function (response) {
+          if (!response.ok) throw new Error("recommendations");
+          return response.text();
+        })
+        .then(function (html) {
+          var doc = new DOMParser().parseFromString(html, "text/html");
+          var nextSet = doc.querySelector("[data-bz-switch]");
+          if (nextSet && nextSet.querySelector("input[data-bz-price]")) {
+            nextSet.removeAttribute("data-bz-complementary");
+            node.replaceWith(nextSet);
+            bindRitual(nextSet);
+          } else if (!node.querySelector("input[data-bz-price]")) {
+            node.remove();
+          }
+        })
+        .catch(function () {
+          if (!node.querySelector("input[data-bz-price]")) node.remove();
+        });
+    });
+  }
+
   if (window.fetch) {
     document.querySelectorAll("[data-bz-handle]").forEach(function (node) {
       var handle = node.getAttribute("data-bz-handle");

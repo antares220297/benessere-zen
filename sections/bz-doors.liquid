@@ -1,0 +1,79 @@
+{{ 'bz-tokens.css' | asset_url | stylesheet_tag }}
+{{ 'bz-home.css' | asset_url | stylesheet_tag }}
+{{ 'bz-mid.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign door_any = false
+  for block in section.blocks
+    if block.type == 'door' and block.settings.title != blank
+      assign door_any = true
+    endif
+  endfor
+-%}
+{%- if door_any -%}
+<section class="bz bz-mid bz-doors" lang="it">
+  <div class="bz-doors__grid">
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'door' and block.settings.title != blank -%}
+        {%- liquid
+          assign door_main = block.settings.collection
+          assign door_keys = 'collection_2,collection_3,collection_4,collection_5' | split: ','
+        -%}
+        <article class="bz-doors__card" {{ block.shopify_attributes }}>
+          {%- if block.settings.image != blank -%}
+            <span class="bz-doors__media">
+              {{ block.settings.image | image_url: width: 1200 | image_tag: alt: block.settings.title, loading: 'lazy', widths: '480, 800, 1200', sizes: '(min-width: 860px) 46vw, 100vw', width: 800, height: 450 }}
+            </span>
+          {%- endif -%}
+          <div class="bz-doors__body">
+            <h2>{{ block.settings.title | escape }}</h2>
+            {%- if block.settings.text != blank -%}
+              <p>{{ block.settings.text | escape }}</p>
+            {%- endif -%}
+            <ul class="bz-doors__links">
+              {%- for key in door_keys -%}
+                {%- assign door_col = block.settings[key] -%}
+                {%- if door_col != blank and door_col.products_count > 0 -%}
+                  <li><a href="{{ door_col.url }}">{{ door_col.title | escape }}</a></li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+            {%- if door_main != blank and door_main.products_count > 0 -%}
+              <a class="bz-doors__go" href="{{ door_main.url }}">{{ block.settings.cta | default: 'Vedi i pezzi' | escape }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            {%- endif -%}
+          </div>
+        </article>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Due ingressi",
+  "class": "bz-home",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "door",
+      "name": "Ingresso",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Titolo", "default": "Pietre e rituali" },
+        { "type": "textarea", "id": "text", "label": "Testo", "default": "Gioielli, mala, pietre e gli oggetti che stanno intorno al rito." },
+        { "type": "image_picker", "id": "image", "label": "Foto" },
+        { "type": "text", "id": "cta", "label": "Testo del link", "default": "Vedi i pezzi" },
+        { "type": "collection", "id": "collection", "label": "Collezione del link" },
+        { "type": "collection", "id": "collection_2", "label": "Collezione" },
+        { "type": "collection", "id": "collection_3", "label": "Collezione" },
+        { "type": "collection", "id": "collection_4", "label": "Collezione" },
+        { "type": "collection", "id": "collection_5", "label": "Collezione" }
+      ]
+    }
+  ],
+  "max_blocks": 2,
+  "presets": [
+    { "name": "Due ingressi" }
+  ]
+}
+{% endschema %}

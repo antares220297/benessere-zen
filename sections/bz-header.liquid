@@ -154,15 +154,63 @@
 
   <div class="bz-navwrap">
     <nav class="bz-nav" id="BzNav" aria-label="{{ section.settings.menu_label | escape }}">
-      {%- for block in section.blocks -%}
-        {%- if block.type == 'link' and block.settings.label != blank and block.settings.link != blank -%}
-          <a
-            class="bz-nav__link{% if block.settings.style == 'accent' %} bz-nav__link--accent{% elsif block.settings.style == 'pill' %} bz-nav__link--pill{% endif %}"
-            href="{{ block.settings.link }}"
-            {{ block.shopify_attributes }}
-          >{{ block.settings.label | escape }}</a>
-        {%- endif -%}
-      {%- endfor -%}
+      {%- liquid
+        assign nav_menu = section.settings.menu
+        if nav_menu == blank or nav_menu.links.size == 0
+          assign nav_menu = linklists['bz-menu-v2']
+        endif
+        if nav_menu == blank or nav_menu.links.size == 0
+          assign nav_menu = linklists['main-menu']
+        endif
+      -%}
+      {%- if nav_menu != blank and nav_menu.links.size > 0 -%}
+        {%- for link in nav_menu.links -%}
+          {%- if link.links.size > 0 -%}
+            <div class="bz-nav__item{% if link.child_active %} is-open{% endif %}">
+              {%- if link.url != blank and link.url != '#' -%}
+                <a class="bz-nav__link" href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a>
+              {%- else -%}
+                <span class="bz-nav__link">{{ link.title | escape }}</span>
+              {%- endif -%}
+              <button class="bz-nav__more" type="button" data-bz-sub aria-expanded="{% if link.child_active %}true{% else %}false{% endif %}" aria-label="Apri {{ link.title | escape }}">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="bz-nav__panel">
+                {%- for child in link.links -%}
+                  <div class="bz-nav__group">
+                    {%- if child.url != blank and child.url != '#' -%}
+                      <a class="bz-nav__child" href="{{ child.url }}"{% if child.current %} aria-current="page"{% endif %}>{{ child.title | escape }}</a>
+                    {%- else -%}
+                      <span class="bz-nav__child">{{ child.title | escape }}</span>
+                    {%- endif -%}
+                    {%- if child.links.size > 0 -%}
+                      <div class="bz-nav__grand">
+                        {%- for grand in child.links -%}
+                          {%- if grand.url != blank and grand.url != '#' -%}
+                            <a href="{{ grand.url }}"{% if grand.current %} aria-current="page"{% endif %}>{{ grand.title | escape }}</a>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </div>
+                    {%- endif -%}
+                  </div>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- elsif link.url != blank and link.url != '#' -%}
+            <a class="bz-nav__link" href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- else -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'link' and block.settings.label != blank and block.settings.link != blank -%}
+            <a
+              class="bz-nav__link{% if block.settings.style == 'accent' %} bz-nav__link--accent{% elsif block.settings.style == 'pill' %} bz-nav__link--pill{% endif %}"
+              href="{{ block.settings.link }}"
+              {{ block.shopify_attributes }}
+            >{{ block.settings.label | escape }}</a>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
     </nav>
   </div>
 </div>
@@ -234,6 +282,12 @@
       "id": "menu_label",
       "label": "Etichetta del menu",
       "default": "Categorie"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "info": "Menu annidato di Shopify. Se è vuoto, usiamo bz-menu-v2 e poi il menu principale."
     },
     {
       "type": "text",
