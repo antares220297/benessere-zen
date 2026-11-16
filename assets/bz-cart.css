@@ -263,10 +263,11 @@
 .bz-ship__mark {
   position: absolute;
   top: 50%;
-  left: 100%;
+  left: auto;
+  right: 0;
   width: 26px;
   height: 26px;
-  transform: translate(-50%, -50%);
+  transform: translate(0, -50%);
   border-radius: 50%;
   background: #201e1b;
   border: 1px solid rgba(238, 231, 219, 0.24);
@@ -299,6 +300,18 @@
   font-size: 14.5px;
 }
 
+.bz-drawer__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.bz-drawer__copy > a {
+  display: block;
+}
+
+.bz-drawer__variant,
 .bz-drawer__item small,
 .bz-drawer__foot small {
   display: block;
@@ -314,6 +327,7 @@
   max-width: 96px;
   height: 32px;
   margin-top: 8px;
+  flex: 0 0 auto;
   padding: 0;
   border: 1px solid #c9a96e;
   border-radius: 999px;

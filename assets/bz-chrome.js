@@ -66,6 +66,42 @@
     });
   }
 
+  var cartLineDesired = {};
+  var cartLineQueue = Promise.resolve();
+
+  function writeQty(key, quantity) {
+    document.querySelectorAll("[data-key]").forEach(function (row) {
+      if (row.getAttribute("data-key") !== key) return;
+      var input = row.querySelector("input.bz-drawer__qty-input");
+      if (input) input.value = String(quantity);
+    });
+  }
+
+  function changeCartLine(key, quantity) {
+    cartLineDesired[key] = quantity;
+    writeQty(key, quantity);
+    cartLineQueue = cartLineQueue.catch(function () {}).then(function () {
+      var next = cartLineDesired[key];
+      if (next == null) return null;
+      return fetch(root + "cart/change.js", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ id: key, quantity: next })
+      }).then(function (response) {
+        return response.json();
+      }).then(function (payload) {
+        if (cartLineDesired[key] !== next) return payload;
+        delete cartLineDesired[key];
+        if (!payload || payload.status) return payload;
+        return refreshCart().then(function () {
+          openDrawer();
+          return payload;
+        });
+      });
+    });
+    return cartLineQueue;
+  }
+
   function refreshCart() {
     return fetch(root + "?sections=cart-drawer,bz-cart", { headers: { Accept: "application/json" } })
       .then(function (response) { return response.json(); })
@@ -130,32 +166,17 @@
       if (window.Alpine && Alpine.store("xMiniCart")) Alpine.store("xMiniCart").hideCart();
       return;
     }
-    var qty = event.target.closest("[data-bz-line]");
-    if (qty && qty.getAttribute("data-key")) {
+    var qty = event.target.closest("#CartDrawer [data-bz-qty], #bz-cart [data-bz-qty], #CartDrawer [data-bz-remove], #bz-cart [data-bz-remove]");
+    if (qty) {
       event.preventDefault();
-      var row = qty.closest(".cart-item");
-      var input = row && row.querySelector("input");
-      var next = Math.max(0, (parseInt(input && input.value, 10) || 1) + Number(qty.getAttribute("data-bz-line")));
-      fetch(root + "cart/change.js", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({
-          id: qty.getAttribute("data-key"),
-          quantity: next,
-          sections: ["cart-drawer", "bz-cart"]
-        })
-      }).then(function (response) { return response.json(); }).then(function (payload) {
-        if (!payload || payload.status) return null;
-        if (payload.sections && payload.sections["cart-drawer"]) {
-          replaceSection("#CartDrawer", payload.sections["cart-drawer"]);
-          replaceSection("#bz-cart", payload.sections["bz-cart"]);
-          if (payload.item_count != null) updateCount(payload.item_count);
-          fillUpsell(document);
-          openDrawer();
-          return payload;
-        }
-        return refreshCart();
-      }).catch(function () {});
+      var row = qty.closest("[data-key]");
+      var key = (row && row.getAttribute("data-key")) || qty.getAttribute("data-key");
+      if (!key) return;
+      var input = row && row.querySelector("input.bz-drawer__qty-input, input");
+      var current = parseInt(input && input.value, 10);
+      if (!Number.isFinite(current)) current = 1;
+      var next = qty.hasAttribute("data-bz-remove") ? 0 : Math.max(0, current + Number(qty.getAttribute("data-bz-qty")));
+      changeCartLine(key, next);
       return;
     }
     var add = event.target.closest("[data-bz-upsell-add]");
@@ -191,6 +212,18 @@
       return payload;
     });
   };
+
+  document.addEventListener("change", function (event) {
+    var input = event.target;
+    if (!input || !input.matches || !input.matches(".bz-drawer__qty-input")) return;
+    if (!input.closest("#CartDrawer, #bz-cart")) return;
+    var row = input.closest("[data-key]");
+    var key = row && row.getAttribute("data-key");
+    if (!key) return;
+    var next = parseInt(input.value, 10);
+    if (!Number.isFinite(next) || next < 0) next = 0;
+    changeCartLine(key, next);
+  });
 
   document.addEventListener("submit", function (event) {
     var form = event.target;
