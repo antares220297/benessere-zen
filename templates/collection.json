@@ -54,7 +54,8 @@
             "title": "Il ciondolo",
             "accent": "con la sua catenina",
             "text": "Ogni ciondolo ha l'anello per la catena. La nostra è in acciaio, lunga.",
-            "button": "Aggiungi"
+            "button": "Vedi le catenine",
+            "collection_handle": "gioielli-con-pietre"
           }
         },
         "promo-2": {
@@ -65,7 +66,8 @@
             "figure": "4 ore",
             "title": "",
             "text": "Ordini un gioiello e lo ritiri gratis in negozio, di solito in giornata.",
-            "button": "Come funziona il ritiro"
+            "button": "Come funziona il ritiro",
+            "collection_handle": "gioielli-con-pietre"
           }
         }
       },

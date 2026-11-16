@@ -19,11 +19,8 @@
         "bento_title": "La nappa",
         "bento_accent": "chiude il giro",
         "bento_text": "Annodata a mano, con l'anello che separa il grano guru.",
-        "stat_1": "108",
         "stat_1_text": "grani, il numero dei mantra nella tradizione",
-        "stat_2": "8 mm",
         "stat_2_text": "ogni perla, lucida e liscia al tatto",
-        "stat_3": "67 g",
         "stat_3_text": "leggero da portare tutto il giorno",
         "wide_title": "Al collo",
         "wide_accent": "o al polso",
@@ -32,7 +29,6 @@
         "related_heading": "Altri mala,",
         "related_accent": "stessi 108 grani",
         "related_link": "Tutti i mala",
-        "pair": "bracciale-tormalina-nera-elastico",
         "free_shipping": 50,
         "pickup_hours": "4 ore",
         "visit_title": "Vuoi vederlo prima?",
@@ -43,29 +39,28 @@
         "fact-1": {
           "type": "fact",
           "settings": {
-            "value": "108",
+            "metafield": "grani",
             "label": "grani"
           }
         },
         "fact-2": {
           "type": "fact",
           "settings": {
-            "value": "8 mm",
+            "metafield": "diametro",
             "label": "perla"
           }
         },
         "fact-3": {
           "type": "fact",
           "settings": {
-            "value": "67 g",
+            "metafield": "peso",
             "label": "peso"
           }
         },
         "fact-4": {
           "type": "fact",
           "settings": {
-            "label": "Onice nero",
-            "swatch": "#111111"
+            "metafield": "pietra"
           }
         },
         "det-1": {
@@ -100,7 +95,7 @@
         "cap-1": {
           "type": "caption",
           "settings": {
-            "text": "Perle da 8 mm"
+            "text": ""
           }
         },
         "cap-2": {
@@ -113,40 +108,35 @@
           "type": "spec",
           "settings": {
             "label": "Pietra",
-            "metafield": "pietra",
-            "fallback": "Onice nero"
+            "metafield": "pietra"
           }
         },
         "spec-1": {
           "type": "spec",
           "settings": {
             "label": "Grani",
-            "metafield": "grani",
-            "fallback": "108"
+            "metafield": "grani"
           }
         },
         "spec-2": {
           "type": "spec",
           "settings": {
             "label": "Diametro perla",
-            "metafield": "diametro",
-            "fallback": "circa 8 mm"
+            "metafield": "diametro"
           }
         },
         "spec-3": {
           "type": "spec",
           "settings": {
             "label": "Peso",
-            "metafield": "peso",
-            "fallback": "67 g"
+            "metafield": "peso"
           }
         },
         "spec-4": {
           "type": "spec",
           "settings": {
             "label": "Finitura",
-            "metafield": "finitura",
-            "fallback": "Nappa nera"
+            "metafield": "finitura"
           }
         }
       },

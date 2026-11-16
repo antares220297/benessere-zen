@@ -1,13 +1,24 @@
 (function () {
   document.querySelectorAll("[data-bz-product]").forEach(function (root) {
     var stage = root.querySelector("#BzStage");
-    root.querySelectorAll("[data-bz-thumb]").forEach(function (button) {
+    var frame = root.querySelector("[data-bz-frame]");
+    var thumbs = root.querySelectorAll("[data-bz-thumb]");
+    thumbs.forEach(function (button) {
       button.addEventListener("click", function () {
-        root.querySelectorAll("[data-bz-thumb]").forEach(function (item) {
+        thumbs.forEach(function (item) {
           item.classList.toggle("is-on", item === button);
         });
-        var image = button.querySelector("img");
-        if (stage && image) stage.src = image.src;
+        var full = button.getAttribute("data-full");
+        if (stage && full) {
+          stage.removeAttribute("srcset");
+          stage.removeAttribute("sizes");
+          stage.src = full;
+        }
+        var thumbImage = button.querySelector("img");
+        if (stage && thumbImage) stage.alt = thumbImage.alt || "";
+        if (frame) {
+          frame.textContent = button.getAttribute("data-bz-thumb") + " / " + String(thumbs.length);
+        }
       });
     });
     var bar = root.querySelector("[data-bz-atc]");

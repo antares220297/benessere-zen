@@ -5,8 +5,30 @@
 {% render 'bz-wave', from: '#2a141b', to: '#141312' %}
 <section class="bz bz-product">
   <div class="bz-related">
+    {%- liquid
+      assign related_collection = section.settings.collection
+      assign related_heading = related_collection.title
+      assign related_accent = ''
+      assign mala_related = false
+      if related_collection != blank and related_collection.handle == 'mala-tibetani'
+        assign mala_related = true
+      endif
+      if product.type contains 'Mala'
+        assign mala_related = true
+      endif
+      if mala_related
+        assign related_heading = section.settings.heading
+        if related_heading == blank
+          assign related_heading = 'Altri mala,'
+        endif
+        assign related_accent = section.settings.heading_accent
+        if related_accent == blank
+          assign related_accent = 'stessi 108 grani'
+        endif
+      endif
+    -%}
     <div class="bz-related__head">
-      <h2>{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h2>
+      <h2>{{ related_heading | escape }}{%- if related_accent != blank -%} <em>{{ related_accent | escape }}</em>{%- endif -%}</h2>
       {%- if section.settings.link_label != blank -%}
         <a class="bz-picked__all" href="{{ section.settings.collection.url }}">{{ section.settings.link_label | escape }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       {%- endif -%}

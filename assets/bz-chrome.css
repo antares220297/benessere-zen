@@ -6,6 +6,13 @@
   background: transparent;
 }
 
+/* Let the header stick for the whole page. The group and section boxes are only as tall as the bar, so sticky would release as soon as that box ends. */
+.shopify-section-group:has(.bz-header),
+[id^="shopify-section-group-header-group"],
+.shopify-section.bz-header-section {
+  display: contents;
+}
+
 /* Keep the Eurus header in the page so its cart drawer can mount, but hide the bar. */
 .shopify-section.section-header {
   min-height: 0 !important;
@@ -31,13 +38,20 @@
 }
 
 .bz-chrome {
+  position: sticky;
+  top: 0;
+  z-index: 70;
   color: var(--ivory);
   font-family: var(--sans);
   -webkit-font-smoothing: antialiased;
 }
 
 .bz-header {
-  background: var(--bg);
+  position: sticky;
+  top: 0;
+  z-index: 70;
+  padding-top: env(safe-area-inset-top);
+  background: #141312;
 }
 
 .bz-header {
@@ -46,8 +60,8 @@
   grid-template-areas: "brand search tools";
   align-items: center;
   column-gap: 24px;
-  height: 84px;
-  padding: 0 var(--side);
+  height: calc(84px + env(safe-area-inset-top));
+  padding: env(safe-area-inset-top) var(--side) 0;
 }
 
 .bz-burger {
@@ -428,19 +442,22 @@
     height: auto;
     column-gap: 10px;
     row-gap: 0;
-    padding: 0 14px 10px;
+    padding: env(safe-area-inset-top) 16px 10px;
   }
 
   .bz-burger {
     grid-area: burger;
     display: grid;
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
     place-items: center;
     border: 0;
     background: transparent;
     color: inherit;
     cursor: pointer;
+    padding: 0;
   }
 
   .bz-header {
@@ -470,8 +487,10 @@
 
   .bz-tools a,
   .bz-tools button {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
   }
 
   .bz-search__field {
@@ -487,27 +506,56 @@
   }
 
   .bz-navwrap {
-    top: 6px;
+    display: none;
+  }
+
+  html.bz-nav-open {
+    overflow: hidden;
+  }
+
+  .bz-navwrap:has(.bz-nav.is-open) {
+    display: flex;
+    position: fixed;
+    z-index: 60;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    pointer-events: auto;
+    background: #141312;
+    overflow: auto;
+  }
+
+  .bz-nav.is-open {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
     justify-content: flex-start;
-    padding: 0 0 10px;
-  }
-
-  .bz-nav {
+    gap: 0;
     width: 100%;
+    max-width: none;
+    height: auto;
+    margin: 0;
+    padding: 0 0 env(safe-area-inset-bottom);
+    border: 0;
     border-radius: 0;
-    border-left: 0;
-    border-right: 0;
-    background: rgba(20, 19, 18, 0.88);
+    background: #141312;
     box-shadow: none;
-    overflow-x: auto;
-    scrollbar-width: none;
-    padding: 6px 10px;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 
-  .bz-nav__link {
-    height: 34px;
-    padding: 0 13px;
-    font-size: 13.5px;
+  .bz-nav.is-open .bz-nav__link {
+    display: flex;
+    align-items: center;
+    flex: none;
+    width: 100%;
+    height: 48px;
+    min-height: 48px;
+    padding: 0 20px;
+    border-radius: 0;
   }
 }
 

@@ -9,28 +9,18 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "main-search",
+    "bz_search": {
+      "type": "bz-search",
       "settings": {
-        "enable_filtering": true,
-        "filter_type": "above",
-        "enable_sorting": true,
-        "show_vendor": false,
-        "show_rating": true,
-        "show_quickview": true,
-        "image_ratio": "100",
-        "show_date": true,
-        "show_author": true,
-        "columns_desktop_grid": 5,
-        "padding_top": 36,
-        "padding_bottom": 36,
-        "columns_mobile_grid": "2",
-        "padding_top_mobile": 28,
-        "padding_bottom_mobile": 28
+        "heading": "Pezzi per",
+        "empty_text": "Nessun pezzo con questo nome.",
+        "idle_text": "Scrivi un nome nel campo in alto.",
+        "next_label": "Pagina successiva",
+        "per_page": 16
       }
     }
   },
   "order": [
-    "main"
+    "bz_search"
   ]
 }

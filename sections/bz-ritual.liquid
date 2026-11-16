@@ -1,3 +1,10 @@
+{%- liquid
+  assign show_ritual = true
+  if product != blank and product.metafields.custom.ritual_set.value == blank
+    assign show_ritual = false
+  endif
+-%}
+{%- if show_ritual -%}
 {{ 'bz-tokens.css' | asset_url | stylesheet_tag }}
 {{ 'bz-home.css' | asset_url | stylesheet_tag }}
 {{ 'bz-mid.css' | asset_url | stylesheet_tag }}
@@ -72,7 +79,7 @@
             {{ shot | image_url: width: 1200 | image_tag: alt: block.settings.caption_title, width: 800, height: 600, loading: 'lazy' }}
           {%- endif -%}
           {%- if block.settings.caption_title != blank -%}
-            <div>
+            <div class="bz-set__caption">
               <h3>{{ block.settings.caption_title | escape }} <em>{{ block.settings.caption_accent | escape }}</em></h3>
               <p>{{ block.settings.caption | escape }}</p>
             </div>
@@ -83,6 +90,7 @@
   </div>
 </div>
 <script src="{{ 'bz-home.js' | asset_url }}" defer></script>
+{%- endif -%}
 
 {% schema %}
 {

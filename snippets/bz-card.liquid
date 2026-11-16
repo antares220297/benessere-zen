@@ -53,7 +53,7 @@
     {%- if variant.inventory_management != blank and variant.inventory_quantity == 1 and product.available -%}
       <span class="bz-badge"><span class="bz-badge__dot"></span>Ultimo pezzo</span>
     {%- elsif product.available == false -%}
-      <span class="bz-badge bz-badge--quiet">Esaurito</span>
+      <span class="bz-badge bz-badge--quiet"><span class="bz-badge__dot"></span>Esaurito</span>
     {%- endif -%}
     {%- if product.featured_image != blank -%}
       {%- if eager_load -%}
@@ -67,8 +67,6 @@
     {%- endif -%}
   </a>
   <a class="bz-card__name" href="{{ product.url }}">{{ product.title | escape }}</a>
-  {%- if product.type != blank -%}
-    <p class="bz-card__meta"><span class="bz-card__dot" style="background: {{ dot }}" aria-hidden="true"></span>{{ product.type | escape }}</p>
-  {%- endif -%}
+  <p class="bz-card__meta">{%- if product.type != blank -%}<span class="bz-card__dot" style="background: {{ dot }}" aria-hidden="true"></span>{{ product.type | escape }}{%- endif -%}</p>
   <p class="bz-card__price">{% render 'bz-money', cents: product.price %}</p>
 </article>

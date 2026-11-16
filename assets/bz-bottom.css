@@ -133,7 +133,7 @@
 
 .bz-journey span {
   display: block;
-  color: #958d7f;
+  color: #5c5346;
   font-size: 13px;
 }
 
@@ -487,8 +487,14 @@ body:has(.bz-foot) {
     grid-column: span 2;
   }
 
+  .bz-foot a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
   .bz-foot__pay {
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
   }
 
   .bz-foot__bar {

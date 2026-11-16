@@ -9,12 +9,19 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "main-404",
-      "settings": {}
+    "bz_404": {
+      "type": "bz-404",
+      "settings": {
+        "title": "Questa pagina non c'è",
+        "text": "Il link non porta a un prodotto o a una collezione.",
+        "button_label": "Vedi i gioielli",
+        "button_link": "/collections/gioielli-con-pietre",
+        "collection": "gioielli-con-pietre",
+        "limit": 3
+      }
     }
   },
   "order": [
-    "main"
+    "bz_404"
   ]
 }

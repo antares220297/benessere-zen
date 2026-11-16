@@ -1,3 +1,12 @@
+{%- comment -%}
+  Product metafields (namespace custom):
+  custom.grani — single line text
+  custom.diametro — single line text
+  custom.peso — single line text
+  custom.pietra — single line text
+  custom.bento_title — single line text
+  custom.pairs_with — product reference
+{%- endcomment -%}
 {{ 'bz-tokens.css' | asset_url | stylesheet_tag }}
 {{ 'bz-home.css' | asset_url | stylesheet_tag }}
 {{ 'bz-product.css' | asset_url | stylesheet_tag }}
@@ -28,11 +37,13 @@
   <section class="bz-pdp">
     <div class="bz-gal">
       <div class="bz-thumbs">
-        {%- for image in product.images limit: 4 -%}
-          <button type="button" class="{% if forloop.first %}is-on{% endif %}" data-bz-thumb="{{ forloop.index }}" aria-label="Foto {{ forloop.index }}">
-            {{ image | image_url: width: 160 | image_tag: alt: image.alt, width: 84, height: 84, loading: 'lazy' }}
-          </button>
-        {%- endfor -%}
+        <div class="bz-thumbs__scroll">
+          {%- for image in product.images -%}
+            <button type="button" class="{% if forloop.first %}is-on{% endif %}" data-bz-thumb="{{ forloop.index }}" data-full="{{ image | image_url: width: 1400 | escape }}" aria-label="Foto {{ forloop.index }}">
+              {{ image | image_url: width: 160 | image_tag: alt: image.alt, width: 84, height: 84, loading: 'lazy' }}
+            </button>
+          {%- endfor -%}
+        </div>
       </div>
       <div class="bz-stage">
         {%- if product.featured_image -%}
@@ -48,7 +59,7 @@
         </div>
         <div class="bz-stage__note">
           <span>{{ section.settings.photo_note | escape }}</span>
-          <span>1 / {{ product.images.size | at_least: 1 }}</span>
+          <span data-bz-frame>1 / {{ product.images.size | at_least: 1 }}</span>
         </div>
       </div>
       <div class="bz-minis">
@@ -92,14 +103,31 @@
         <p class="bz-buy__open">{{ opener | escape }}</p>
       {%- endif -%}
 
-      {%- if section.blocks.size > 0 -%}
-        <div class="bz-facts">
-          {%- for block in section.blocks -%}
-            {%- if block.type == 'fact' -%}
-              <span {{ block.shopify_attributes }}>{%- if block.settings.swatch != blank -%}<i style="background: {{ block.settings.swatch }}"></i>{%- endif -%}{%- if block.settings.value != blank -%}<b>{{ block.settings.value | escape }}</b> {% endif -%}{{ block.settings.label | escape }}</span>
+      {%- capture fact_pills -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'fact' -%}
+            {%- liquid
+              assign fact_key = block.settings.metafield
+              assign fact_value = block.settings.value
+              assign fact_label = block.settings.label
+              assign show_fact = false
+              if fact_key != blank
+                assign fact_value = product.metafields.custom[fact_key].value
+                if fact_value != blank
+                  assign show_fact = true
+                endif
+              elsif fact_value != blank or fact_label != blank
+                assign show_fact = true
+              endif
+            -%}
+            {%- if show_fact -%}
+              <span class="bz-fact" {{ block.shopify_attributes }}>{%- if block.settings.swatch != blank -%}<i style="background: {{ block.settings.swatch }}"></i>{%- endif -%}{%- if fact_value != blank -%}<b>{{ fact_value | escape }}</b>{%- endif -%}{%- if fact_label != blank -%} {{ fact_label | escape }}{%- endif -%}</span>
             {%- endif -%}
-          {%- endfor -%}
-        </div>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endcapture -%}
+      {%- if fact_pills contains 'class="bz-fact"' -%}
+        <div class="bz-facts">{{ fact_pills }}</div>
       {%- endif -%}
 
       {%- assign ship_euros = settings.bz_free_shipping_threshold | default: section.settings.free_shipping | default: 50 -%}
@@ -143,9 +171,6 @@
             {%- if current.available -%}Aggiungi al carrello{%- else -%}Esaurito{%- endif -%}
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </button>
-          <button class="bz-heart" type="button" aria-label="Preferiti">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg>
-          </button>
         </div>
       {%- endform -%}
 
@@ -154,8 +179,8 @@
         Ritira <strong>gratis</strong> in negozio · di solito in <strong>{{ section.settings.pickup_hours | escape }}</strong>
       </a>
 
-      {%- if section.settings.pair != blank -%}
-        {%- assign pair = section.settings.pair -%}
+      {%- assign pair = product.metafields.custom.pairs_with.value -%}
+      {%- if pair != blank and pair.id != blank -%}
         <div class="bz-pair">
           {%- if pair.featured_image -%}
             {{ pair.featured_image | image_url: width: 120 | image_tag: alt: pair.title, width: 52, height: 52 }}
@@ -201,28 +226,55 @@
     </div>
   </section>
 
+  {%- liquid
+    assign stat_grani = product.metafields.custom.grani.value
+    assign stat_diametro = product.metafields.custom.diametro.value
+    assign stat_peso = product.metafields.custom.peso.value
+    assign bento_title = product.metafields.custom.bento_title.value
+    assign show_bento = false
+    if stat_grani != blank or stat_diametro != blank or stat_peso != blank
+      assign show_bento = true
+    endif
+  -%}
+  {%- if show_bento -%}
   <div class="bz-dbento">
     <article class="is-tall">
       {%- if product.featured_image -%}
         {{ product.featured_image | image_url: width: 900 | image_tag: alt: '', loading: 'lazy', width: 500, height: 400 }}
       {%- endif -%}
       <div>
-        <h3>{{ section.settings.bento_title | escape }} <em>{{ section.settings.bento_accent | escape }}</em></h3>
-        <p>{{ section.settings.bento_text | escape }}</p>
+        {%- if bento_title != blank -%}
+          <h3>{{ bento_title | escape }}</h3>
+        {%- endif -%}
+        {%- if section.settings.bento_text != blank -%}
+          <p>{{ section.settings.bento_text | escape }}</p>
+        {%- endif -%}
       </div>
     </article>
-    <article>
-      <p class="bz-figure">{{ section.settings.stat_1 | escape }}</p>
-      <p>{{ section.settings.stat_1_text | escape }}</p>
-    </article>
-    <article class="is-gold">
-      <p class="bz-figure">{{ section.settings.stat_2 | escape }}</p>
-      <p>{{ section.settings.stat_2_text | escape }}</p>
-    </article>
-    <article class="is-ox">
-      <p class="bz-figure">{{ section.settings.stat_3 | escape }}</p>
-      <p>{{ section.settings.stat_3_text | escape }}</p>
-    </article>
+    {%- if stat_grani != blank -%}
+      <article>
+        <p class="bz-figure">{{ stat_grani | escape }}</p>
+        {%- if section.settings.stat_1_text != blank -%}
+          <p>{{ section.settings.stat_1_text | escape }}</p>
+        {%- endif -%}
+      </article>
+    {%- endif -%}
+    {%- if stat_diametro != blank -%}
+      <article class="is-gold">
+        <p class="bz-figure">{{ stat_diametro | escape }}</p>
+        {%- if section.settings.stat_2_text != blank -%}
+          <p>{{ section.settings.stat_2_text | escape }}</p>
+        {%- endif -%}
+      </article>
+    {%- endif -%}
+    {%- if stat_peso != blank -%}
+      <article class="is-ox">
+        <p class="bz-figure">{{ stat_peso | escape }}</p>
+        {%- if section.settings.stat_3_text != blank -%}
+          <p>{{ section.settings.stat_3_text | escape }}</p>
+        {%- endif -%}
+      </article>
+    {%- endif -%}
     <article class="is-wide is-am">
       <h3>{{ section.settings.wide_title | escape }} <em>{{ section.settings.wide_accent | escape }}</em></h3>
       <p>{{ section.settings.wide_text | escape }}</p>
@@ -233,6 +285,7 @@
       <a class="bz-picked__all" href="{{ section.settings.pickup_link }}">{{ section.settings.visit_link | escape }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     </article>
   </div>
+  {%- endif -%}
   {% render 'bz-wave', from: '#141312', to: '#2a141b' %}
 
   <form class="bz-sticky bz-ajax-cart" action="{{ routes.cart_add_url }}" method="post">
@@ -258,16 +311,12 @@
     { "type": "number", "id": "free_shipping", "label": "Soglia spedizione gratuita", "default": 50 },
     { "type": "text", "id": "pickup_hours", "label": "Tempo di ritiro", "default": "4 ore" },
     { "type": "url", "id": "pickup_link", "label": "Link ritiro" },
-    { "type": "product", "id": "pair", "label": "Si abbina a" },
-    { "type": "text", "id": "bento_title", "label": "Titolo grande", "default": "La nappa" },
-    { "type": "text", "id": "bento_accent", "label": "Corsivo", "default": "chiude il giro" },
+    { "type": "text", "id": "bento_title", "label": "Titolo grande", "info": "Non stampato. Il titolo in pagina è il metafield custom.bento_title.", "default": "La nappa" },
+    { "type": "text", "id": "bento_accent", "label": "Corsivo", "info": "Non stampato. Il titolo in pagina è il metafield custom.bento_title.", "default": "chiude il giro" },
     { "type": "textarea", "id": "bento_text", "label": "Testo", "default": "Annodata a mano, con l'anello che separa il grano guru." },
-    { "type": "text", "id": "stat_1", "label": "Numero 1", "default": "108" },
-    { "type": "text", "id": "stat_1_text", "label": "Testo 1", "default": "grani, il numero dei mantra nella tradizione" },
-    { "type": "text", "id": "stat_2", "label": "Numero 2", "default": "8 mm" },
-    { "type": "text", "id": "stat_2_text", "label": "Testo 2", "default": "ogni perla, lucida e liscia al tatto" },
-    { "type": "text", "id": "stat_3", "label": "Numero 3", "default": "67 g" },
-    { "type": "text", "id": "stat_3_text", "label": "Testo 3", "default": "leggero da portare tutto il giorno" },
+    { "type": "text", "id": "stat_1_text", "label": "Testo grani", "info": "Il numero è custom.grani. Il riquadro compare solo se quel metafield ha un valore.", "default": "grani, il numero dei mantra nella tradizione" },
+    { "type": "text", "id": "stat_2_text", "label": "Testo diametro", "info": "Il numero è custom.diametro. Il riquadro compare solo se quel metafield ha un valore.", "default": "ogni perla, lucida e liscia al tatto" },
+    { "type": "text", "id": "stat_3_text", "label": "Testo peso", "info": "Il numero è custom.peso. Il riquadro compare solo se quel metafield ha un valore.", "default": "leggero da portare tutto il giorno" },
     { "type": "text", "id": "wide_title", "label": "Titolo largo", "default": "Al collo" },
     { "type": "text", "id": "wide_accent", "label": "Corsivo largo", "default": "o al polso" },
     { "type": "textarea", "id": "wide_text", "label": "Testo largo", "default": "Lungo, cade sotto il petto. Avvolto tre o quattro volte, diventa un bracciale a strati." },
@@ -281,7 +330,8 @@
   ],
   "blocks": [
     { "type": "fact", "name": "Dato", "settings": [
-      { "type": "text", "id": "value", "label": "Valore" },
+      { "type": "text", "id": "metafield", "label": "Chiave metafield custom", "info": "pietra, grani, diametro o peso. Se compilata, la pillola compare solo quando il metafield ha un valore." },
+      { "type": "text", "id": "value", "label": "Valore", "info": "Usato solo se la chiave metafield è vuota." },
       { "type": "text", "id": "label", "label": "Etichetta" },
       { "type": "color", "id": "swatch", "label": "Pastiglia colore" }
     ]},

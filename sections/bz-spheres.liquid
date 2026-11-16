@@ -23,13 +23,12 @@
         if first_product.featured_image != blank
           assign sphere_image = first_product.featured_image
         endif
-        assign cheapest = sphere_collection.products | sort: 'price'
-        if cheapest.first != blank and cheapest.first.price != blank
-          assign min_price = cheapest.first.price
-          assign priced = true
-        elsif first_product.price != blank
-          assign min_price = first_product.price
-          assign priced = true
+        if sphere_collection.products_count <= 50 and sphere_collection.products.size == sphere_collection.products_count
+          assign cheapest = sphere_collection.products | sort: 'price'
+          if cheapest.first != blank and cheapest.first.price != blank
+            assign min_price = cheapest.first.price
+            assign priced = true
+          endif
         endif
       endif
       if sphere_image == blank and block.settings.image != blank
@@ -39,7 +38,7 @@
         assign sphere_image = sphere_collection.image
       endif
     -%}
-    <a class="bz-sphere{% if forloop.first %} is-on{% endif %}" href="{{ sphere_url }}" {{ block.shopify_attributes }}>
+    <a class="bz-sphere{% if sphere_url != blank and request.path == sphere_url %} is-on{% endif %}" href="{{ sphere_url }}" {{ block.shopify_attributes }}>
       <span class="bz-sphere__ring">
         <span>
           {%- if block.settings.show_all -%}
@@ -55,7 +54,6 @@
       {%- if block.settings.show_all and collections.all.products_count > 0 -%}
         <small>{{ collections.all.products_count }} prodotti</small>
       {%- elsif priced -%}
-        {%- assign min_cents = min_price | modulo: 100 -%}
         <small>da {% render 'bz-money', cents: min_price %}</small>
       {%- endif -%}
     </a>

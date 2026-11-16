@@ -60,7 +60,15 @@
   text-align: left;
   white-space: nowrap;
   animation: bz-rot 12s infinite;
+}
+
+.bz .ann .rot > span:not(:first-child) {
   opacity: 0;
+}
+
+.bz .ann .rot > span:first-child {
+  opacity: 1;
+  transform: none;
 }
 
 .bz .ann .rot > span:nth-child(2) {
@@ -78,15 +86,11 @@
 }
 
 @keyframes bz-rot {
-  0% {
-    opacity: 0;
-    transform: translateY(100%);
-  }
-  4%, 30% {
+  0%, 34% {
     opacity: 1;
     transform: none;
   }
-  34%, 100% {
+  38%, 100% {
     opacity: 0;
     transform: translateY(-100%);
   }
