@@ -10,11 +10,16 @@
       assign bz_piece = bz_candidate
     endfor
   endif
+  assign bz_show_title = false
+  if section.settings.show_collection_title and collection != blank
+    assign bz_show_title = true
+  endif
 -%}
-{%- if bz_piece != blank -%}
+{%- if bz_piece != blank or bz_show_title -%}
 {{ 'bz-tokens.css' | asset_url | stylesheet_tag }}
 {{ 'bz-home.css' | asset_url | stylesheet_tag }}
 {{ 'bz-v410-fance-exclusive.css' | asset_url | stylesheet_tag }}
+{%- if bz_piece != blank -%}
 {%- liquid
   assign bz_shot = section.settings.image
   if bz_shot == blank
@@ -38,10 +43,12 @@
   endif
   assign bz_variant = bz_piece.selected_or_first_available_variant
 -%}
+{%- endif -%}
 <section class="bz bz-v410-exclusive">
-  {%- if section.settings.show_collection_title and collection != blank -%}
+  {%- if bz_show_title -%}
     <h1 class="bz-v410-exclusive__collection">{{ collection.title | escape }}</h1>
   {%- endif -%}
+  {%- if bz_piece != blank -%}
   <div class="bz-v410-exclusive__inner">
     {%- if bz_shot != blank -%}
       <div class="bz-v410-exclusive__frame">
@@ -81,6 +88,9 @@
       {%- endif -%}
     </div>
   </div>
+  {%- elsif bz_show_title -%}
+    <p class="bz-v410-exclusive__empty">In questa collezione non ci sono pezzi, per ora.</p>
+  {%- endif -%}
 </section>
 <script src="{{ 'bz-pages.js' | asset_url }}" defer></script>
 {%- endif -%}

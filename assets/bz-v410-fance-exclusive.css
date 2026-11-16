@@ -82,7 +82,8 @@
   color: var(--gold, #c9a96e);
 }
 
-.bz-v410-exclusive__text {
+.bz-v410-exclusive__text,
+.bz-v410-exclusive__empty {
   margin: 0;
   max-width: 46ch;
   font-family: var(--sans, Figtree, system-ui, sans-serif);

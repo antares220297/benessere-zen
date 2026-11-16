@@ -209,6 +209,14 @@
   cursor: pointer;
 }
 
+.bz-v410-grid__empty {
+  margin: 0;
+  font-family: Figtree, var(--sans), system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.45;
+  color: #cdc4b4;
+}
+
 .bz-v410-grid__pages {
   display: flex;
   flex-wrap: wrap;

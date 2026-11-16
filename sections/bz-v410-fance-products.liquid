@@ -192,7 +192,13 @@
         {%- endif -%}
       {%- endif -%}
     {%- endfor -%}
-    {%- if shown > 0 -%}
+    {%- liquid
+      assign grid_page_empty = false
+      if shown == 0 and grid_collection.products_count > 0
+        assign grid_page_empty = true
+      endif
+    -%}
+    {%- if shown > 0 or grid_page_empty -%}
       {{ 'bz-tokens.css' | asset_url | stylesheet_tag }}
       {{ 'bz-home.css' | asset_url | stylesheet_tag }}
       {{ 'bz-v410-fance-products.css' | asset_url | stylesheet_tag }}
@@ -209,7 +215,11 @@
             <a class="bz-btn bz-btn--line" href="{{ section.settings.link }}">{{ section.settings.link_label | escape }}</a>
           </div>
         {%- endif -%}
-        <div class="bz-v410-grid__list">{{ grid_cards }}</div>
+        {%- if shown > 0 -%}
+          <div class="bz-v410-grid__list">{{ grid_cards }}</div>
+        {%- else -%}
+          <p class="bz-v410-grid__empty">Nessun pezzo in questa pagina.</p>
+        {%- endif -%}
         {%- if paginate.pages > 1 -%}
           <nav class="bz-v410-grid__pages" aria-label="Paginazione">
             {%- if paginate.previous -%}
