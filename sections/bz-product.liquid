@@ -18,9 +18,6 @@
   assign euros = current.price | minus: cents_num | divided_by: 100
   assign cents = cents_num | prepend: '00' | slice: -2, 2
   assign opener = section.settings.opener
-  if opener == blank
-    assign opener = product.description | strip_html
-  endif
 -%}
 
 <div class="bz bz-product" data-bz-product>
@@ -183,7 +180,7 @@
         <p class="bz-pickup">
       {%- endif -%}
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10l2-5h12l2 5M5 10h14v9H5zM9 19v-5h6v5"/></svg>
-        Ritira <strong>gratis</strong> in negozio · di solito in <strong>{{ section.settings.pickup_hours | escape }}</strong>
+        Ritira <strong>gratis</strong> in negozio, Via Marcello Provenzali 1, Cento
       {%- if section.settings.pickup_link != blank -%}</a>{%- else -%}</p>{%- endif -%}
 
       {%- assign pair = product.metafields.custom.pairs_with.value -%}
@@ -200,33 +197,57 @@
         </div>
       {%- endif -%}
 
+      {%- liquid
+        assign pietra = product.metafields.custom.pietra.value
+        assign pietra_tradizione = blank
+        assign pietra_cura = blank
+        if pietra != blank
+          assign pietra_tradizione = pietra.tradizione.value | default: pietra.tradizione
+          assign pietra_cura = pietra.cura.value | default: pietra.cura
+        endif
+        assign ship_free = settings.bz_free_shipping_threshold | default: 50
+      -%}
       <div class="bz-acc">
         {%- for block in section.blocks -%}
           {%- if block.type == 'detail' -%}
-            <details {% if block.settings.open %}open{% endif %} {{ block.shopify_attributes }}>
-              <summary>{{ block.settings.title | escape }}<i aria-hidden="true"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></i></summary>
-              <div class="bz-acc__body">
-                {%- if block.settings.title == 'Dettagli' -%}
-                  {%- capture spec_table -%}
-                    {%- for spec in section.blocks -%}
-                      {%- if spec.type == 'spec' -%}
-                        {%- assign spec_value = product.metafields.custom[spec.settings.metafield].value | default: spec.settings.fallback -%}
-                        {%- if spec_value != blank -%}
-                          <tr><td>{{ spec.settings.label | escape }}</td><td>{{ spec_value | escape }}</td></tr>
-                        {%- endif -%}
+            {%- capture acc_body -%}
+              {%- if block.settings.title == 'Dettagli' -%}
+                {%- capture spec_table -%}
+                  {%- for spec in section.blocks -%}
+                    {%- if spec.type == 'spec' -%}
+                      {%- assign spec_value = product.metafields.custom[spec.settings.metafield].value -%}
+                      {%- if spec_value != blank -%}
+                        <tr><td>{{ spec.settings.label | escape }}</td><td>{{ spec_value | escape }}</td></tr>
                       {%- endif -%}
-                    {%- endfor -%}
-                  {%- endcapture -%}
-                  {%- if spec_table contains '<tr>' -%}
-                    <table>{{ spec_table }}</table>
-                  {%- elsif block.settings.text != blank -%}
-                    {{ block.settings.text }}
-                  {%- endif -%}
-                {%- else -%}
-                  {{ block.settings.text }}
+                    {%- endif -%}
+                  {%- endfor -%}
+                {%- endcapture -%}
+                {%- if spec_table contains '<tr>' -%}
+                  <table>{{ spec_table }}</table>
                 {%- endif -%}
-              </div>
-            </details>
+              {%- elsif block.settings.title == 'Nella tradizione' -%}
+                {%- if pietra_tradizione != blank -%}
+                  <p>{{ pietra_tradizione | escape }}</p>
+                {%- endif -%}
+              {%- elsif block.settings.title == 'Come averne cura' -%}
+                {%- if pietra_cura != blank -%}
+                  <p>{{ pietra_cura | escape }}</p>
+                {%- endif -%}
+              {%- elsif block.settings.title contains 'Spedizione' -%}
+                <p>In Italia la spedizione è gratuita da {{ ship_free }} €. Sotto quella cifra è Express, 5,90 €.</p>
+                <p>Il ritiro in negozio è in Via Marcello Provenzali 1, a Cento.</p>
+                <p>Hai 14 giorni dalla consegna per chiedere un reso. Il pezzo torna non indossato, con i cartellini e la confezione. Il pacco va a Via Olindo Malagodi 2, Cento. Se il reso è accettato, il rimborso arriva entro 10 giorni lavorativi. <a href="{{ shop.refund_policy.url | default: '/policies/refund-policy' }}">Informativa sui rimborsi</a></p>
+              {%- elsif block.settings.text != blank -%}
+                {{ block.settings.text }}
+              {%- endif -%}
+            {%- endcapture -%}
+            {%- assign acc_body = acc_body | strip -%}
+            {%- if acc_body != blank -%}
+              <details {% if block.settings.open %}open{% endif %} {{ block.shopify_attributes }}>
+                <summary>{{ block.settings.title | escape }}<i aria-hidden="true"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></i></summary>
+                <div class="bz-acc__body">{{ acc_body }}</div>
+              </details>
+            {%- endif -%}
           {%- endif -%}
         {%- endfor -%}
       </div>
@@ -355,7 +376,7 @@
     { "type": "textarea", "id": "opener", "label": "Testo di apertura" },
     { "type": "text", "id": "shipping_note", "label": "Nota spedizione", "default": "Spedizione gratuita" },
     { "type": "number", "id": "free_shipping", "label": "Soglia spedizione gratuita", "default": 50 },
-    { "type": "text", "id": "pickup_hours", "label": "Tempo di ritiro", "default": "4 ore" },
+    { "type": "text", "id": "pickup_hours", "label": "Tempo di ritiro", "info": "Lascia vuoto. Non promettere un orario se non è una regola del negozio." },
     { "type": "url", "id": "pickup_link", "label": "Link ritiro" },
     { "type": "text", "id": "bento_title", "label": "Titolo grande", "info": "Non stampato. Il titolo in pagina è il metafield custom.bento_title.", "default": "La nappa" },
     { "type": "text", "id": "bento_accent", "label": "Corsivo", "info": "Non stampato. Il titolo in pagina è il metafield custom.bento_title.", "default": "chiude il giro" },

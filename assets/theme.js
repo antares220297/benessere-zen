@@ -1203,21 +1203,22 @@ requestAnimationFrame(() => {
           });
 
           requestAnimationFrame(() => {
-            document.getElementById('sticky-header').classList.remove('on-scroll-up-animation');
+            const stickyHeader = document.getElementById('sticky-header');
+            if (stickyHeader) stickyHeader.classList.remove('on-scroll-up-animation');
 
             if (window.innerWidth < 768 || this.type == "drawer") {
               Alpine.store('xPopup').open = true;
             }
 
             requestAnimationFrame(() => {
-              document.getElementById('sticky-header').classList.remove('header-up');
+              if (stickyHeader) stickyHeader.classList.remove('header-up');
               this.open = true;
             });
             
             if (Alpine.store('xHeaderMenu').stickyType == 'on-scroll-up') {
               setTimeout(() => {
                 requestAnimationFrame(() => {
-                  document.getElementById('sticky-header').classList.add('on-scroll-up-animation');
+                  if (stickyHeader) stickyHeader.classList.add('on-scroll-up-animation');
                 });
               }, 200);
             }

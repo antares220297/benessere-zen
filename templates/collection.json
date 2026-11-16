@@ -57,20 +57,9 @@
             "title": "Il ciondolo",
             "accent": "con la sua catenina",
             "text": "Ogni ciondolo ha l'anello per la catena. La nostra è in acciaio, lunga.",
-            "button": "Vedi le catenine",
-            "collection_handle": "gioielli-con-pietre"
-          }
-        },
-        "promo-2": {
-          "type": "promo",
-          "settings": {
-            "position": 11,
-            "style": "hours",
-            "figure": "4 ore",
-            "title": "",
-            "text": "Ordini un gioiello e lo ritiri gratis in negozio, di solito in giornata.",
-            "button": "Come funziona il ritiro",
-            "collection_handle": "gioielli-con-pietre"
+            "button": "",
+            "collection_handle": "gioielli-con-pietre",
+            "image_product": "ciondolo-quarzo-rosa-cuore"
           }
         }
       },
@@ -79,8 +68,7 @@
         "chip-ci",
         "chip-ma",
         "chip-ca",
-        "promo-1",
-        "promo-2"
+        "promo-1"
       ]
     }
   },

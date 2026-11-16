@@ -105,9 +105,33 @@
         lockSheet(false);
       });
     });
+    function sheetFocusables(box) {
+      if (!box) return [];
+      return Array.prototype.filter.call(
+        box.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled])'),
+        function (el) { return el.getClientRects().length > 0; }
+      );
+    }
     document.addEventListener("keydown", function (event) {
-      if (event.key !== "Escape") return;
-      if ((side && side.classList.contains("is-open")) || (sortSheet && sortSheet.classList.contains("is-open"))) closeSheets();
+      var openBox = null;
+      if (side && side.classList.contains("is-open")) openBox = side;
+      else if (sortSheet && sortSheet.classList.contains("is-open")) openBox = sortSheet;
+      if (event.key === "Escape") {
+        if (openBox) closeSheets();
+        return;
+      }
+      if (event.key !== "Tab" || !openBox) return;
+      var items = sheetFocusables(openBox);
+      if (!items.length) return;
+      var first = items[0];
+      var last = items[items.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
     });
     var mobile = window.matchMedia("(max-width: 860px)");
     if (mobile.addEventListener) mobile.addEventListener("change", function () {
@@ -125,6 +149,8 @@
         var field = event.target;
         if (!field || !field.name) return;
         if (field.type === "range") {
+          var rangeSheet = side && side.classList.contains("is-open") && mobile.matches;
+          if (rangeSheet) return;
           ensurePreview(filterForm);
           filterForm.submit();
           return;

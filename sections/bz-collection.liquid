@@ -161,14 +161,23 @@
                     if filter.max_value.value != nil
                       assign shown_max_cents = filter.max_value.value
                     endif
-                    assign price_range_max = filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.'
-                    assign price_range_min_value = '0'
+                    assign range_cents = filter.range_max | plus: 0
+                    assign range_whole = range_cents | divided_by: 100
+                    assign range_frac = range_cents | modulo: 100 | prepend: '00' | slice: -2, 2
+                    assign price_range_max = range_whole | append: '.' | append: range_frac
+                    assign price_range_min_value = '0.00'
                     assign price_range_max_value = price_range_max
                     if filter.min_value.value != nil
-                      assign price_range_min_value = filter.min_value.value | money_without_currency | replace: '.', '' | replace: ',', '.'
+                      assign min_cents = filter.min_value.value | plus: 0
+                      assign min_whole = min_cents | divided_by: 100
+                      assign min_frac = min_cents | modulo: 100 | prepend: '00' | slice: -2, 2
+                      assign price_range_min_value = min_whole | append: '.' | append: min_frac
                     endif
                     if filter.max_value.value != nil
-                      assign price_range_max_value = filter.max_value.value | money_without_currency | replace: '.', '' | replace: ',', '.'
+                      assign max_cents = filter.max_value.value | plus: 0
+                      assign max_whole = max_cents | divided_by: 100
+                      assign max_frac = max_cents | modulo: 100 | prepend: '00' | slice: -2, 2
+                      assign price_range_max_value = max_whole | append: '.' | append: max_frac
                     endif
                   -%}
                   <div class="bz-range">
@@ -203,10 +212,16 @@
         {%- for filter in collection.filters -%}
           {%- if filter.type == 'price_range' -%}
             {%- if filter.min_value.value != nil -%}
-              {%- assign bz_pmin = filter.min_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' -%}&{{ filter.min_value.param_name }}={{ bz_pmin }}
+              {%- assign bz_pmin_cents = filter.min_value.value | plus: 0 -%}
+              {%- assign bz_pmin_whole = bz_pmin_cents | divided_by: 100 -%}
+              {%- assign bz_pmin_frac = bz_pmin_cents | modulo: 100 | prepend: '00' | slice: -2, 2 -%}
+              {%- assign bz_pmin = bz_pmin_whole | append: '.' | append: bz_pmin_frac -%}&{{ filter.min_value.param_name }}={{ bz_pmin }}
             {%- endif -%}
             {%- if filter.max_value.value != nil -%}
-              {%- assign bz_pmax = filter.max_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' -%}&{{ filter.max_value.param_name }}={{ bz_pmax }}
+              {%- assign bz_pmax_cents = filter.max_value.value | plus: 0 -%}
+              {%- assign bz_pmax_whole = bz_pmax_cents | divided_by: 100 -%}
+              {%- assign bz_pmax_frac = bz_pmax_cents | modulo: 100 | prepend: '00' | slice: -2, 2 -%}
+              {%- assign bz_pmax = bz_pmax_whole | append: '.' | append: bz_pmax_frac -%}&{{ filter.max_value.param_name }}={{ bz_pmax }}
             {%- endif -%}
           {%- else -%}
             {%- for value in filter.active_values -%}
@@ -229,7 +244,7 @@
           {%- for key in bz_sort_keys -%}
             {%- for option in collection.sort_options -%}
               {%- if option.value == key -%}
-                <a class="bz-sortsheet__opt" href="{{ collection.url }}?sort_by={{ option.value }}{{ bz_filter_qs }}" data-bz-sort-link data-sort="{{ option.value | escape }}" {% if option.value == current_sort %}aria-current="true"{% endif %}>{{ option.name | escape }}</a>
+                <a class="bz-sortsheet__opt" href="{{ collection.url }}?sort_by={{ option.value }}{{ bz_filter_qs }}" data-bz-sort-link data-sort="{{ option.value | escape }}" {% if option.value == current_sort %}aria-current="true"{% endif %}>{% if option.value == 'best-selling' %}Più venduti{% else %}{{ option.name | escape }}{% endif %}</a>
               {%- endif -%}
             {%- endfor -%}
           {%- endfor -%}
@@ -243,7 +258,7 @@
           <label class="bz-sort">
             <select data-bz-sort aria-label="Ordina">
               {%- for option in collection.sort_options -%}
-                <option value="{{ option.value }}" {% if option.value == current_sort %}selected{% endif %}>{{ option.name | escape }}</option>
+                <option value="{{ option.value }}" {% if option.value == current_sort %}selected{% endif %}>{% if option.value == 'best-selling' %}Più venduti{% else %}{{ option.name | escape }}{% endif %}</option>
               {%- endfor -%}
             </select>
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
@@ -294,7 +309,6 @@
       {%- if bz_active_chips != blank -%}
         <div class="bz-active">{{ bz_active_chips }}</div>
       {%- endif -%}
-      {%- assign chain_collection = collections['catenine'] -%}
       <div class="bz-cgrid" data-bz-grid>
         {%- for product in collection.products -%}
           {%- if paginate.current_page == 1 -%}
@@ -305,34 +319,31 @@
                   {%- liquid
                     assign promo_image = block.settings.image
                     assign promo_link = block.settings.link
-                    assign promo_alt = ''
-                    assign promo_name = block.settings.title | append: ' ' | append: block.settings.accent | downcase
-                    assign is_chain = false
-                    if promo_name contains 'ciondolo' or promo_name contains 'caten'
-                      assign is_chain = true
+                    assign promo_alt = block.settings.title
+                    assign promo_skip = false
+                    if block.settings.style == 'hours' or block.settings.figure contains '4 ore' or block.settings.text contains '4 ore'
+                      assign promo_skip = true
                     endif
-                    if promo_image == blank and is_chain and chain_collection.id != blank
-                      assign promo_link = chain_collection.url
-                      if chain_collection.products.first.featured_image != blank
-                        assign promo_image = chain_collection.products.first.featured_image
-                        assign promo_alt = chain_collection.products.first.title
-                      endif
+                    if promo_image == blank and block.settings.image_product.featured_image != blank
+                      assign promo_image = block.settings.image_product.featured_image
+                      assign promo_alt = block.settings.image_product.title
+                    endif
+                    if promo_image == blank
+                      assign promo_skip = true
                     endif
                     assign promo_label = block.settings.button | strip
-                    if promo_label == 'Aggiungi'
-                      assign promo_label = 'Vedi le catenine'
-                    endif
                     assign promo_dead = false
                     if promo_link == blank or promo_link == '#'
                       assign promo_dead = true
                     endif
                   -%}
+                  {%- unless promo_skip -%}
                   {%- if promo_dead -%}
-                  <div class="bz-promo{% if block.settings.style == 'hours' %} is-hours{% endif %}{% if promo_image != blank %} has-media{% else %} is-solid{% endif %}" {{ block.shopify_attributes }}>
+                  <div class="bz-promo{% if promo_image != blank %} has-media{% else %} is-solid{% endif %}" {{ block.shopify_attributes }}>
                   {%- else -%}
-                  <a class="bz-promo{% if block.settings.style == 'hours' %} is-hours{% endif %}{% if promo_image != blank %} has-media{% else %} is-solid{% endif %}" href="{{ promo_link }}" {{ block.shopify_attributes }}>
+                  <a class="bz-promo{% if promo_image != blank %} has-media{% else %} is-solid{% endif %}" href="{{ promo_link }}" {{ block.shopify_attributes }}>
                   {%- endif -%}
-                    {%- if promo_image != blank -%}{{ promo_image | image_url: width: 800 | image_tag: alt: promo_alt, loading: 'lazy' }}{%- endif -%}
+                    {{ promo_image | image_url: width: 800 | image_tag: alt: promo_alt, loading: 'lazy' }}
                     <div>
                       {%- if block.settings.figure != blank -%}
                         {%- assign figure_num = block.settings.figure | split: ' ' | first -%}
@@ -348,6 +359,7 @@
                   {%- else -%}
                   </a>
                   {%- endif -%}
+                  {%- endunless -%}
                 {%- endif -%}
               {%- endif -%}
             {%- endfor -%}
@@ -420,6 +432,7 @@
       { "type": "text", "id": "figure", "label": "Numero grande" },
       { "type": "text", "id": "button", "label": "Pulsante" },
       { "type": "image_picker", "id": "image", "label": "Foto" },
+      { "type": "product", "id": "image_product", "label": "Foto da un prodotto", "info": "Si usa se la foto sopra è vuota. Senza foto il riquadro non esce." },
       { "type": "url", "id": "link", "label": "Link" }
     ]}
   ],

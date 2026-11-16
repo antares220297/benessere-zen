@@ -519,4 +519,31 @@
   }
 
   if (panelHits) search.setAttribute("data-initial-hits", panelHits.innerHTML);
+
+  document.addEventListener("keydown", function (event) {
+    var cart = window.Alpine && Alpine.store && Alpine.store("xMiniCart");
+    var panel = document.querySelector("#CartDrawer .bz-drawer__panel");
+    if (!cart || !cart.open || !panel) return;
+    if (event.key === "Escape") {
+      if (typeof cart.hideCart === "function") cart.hideCart();
+      var opener = document.querySelector("[data-bz-cart]");
+      if (opener) opener.focus();
+      return;
+    }
+    if (event.key !== "Tab") return;
+    var items = Array.prototype.filter.call(
+      panel.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled])'),
+      function (el) { return el.getClientRects().length > 0; }
+    );
+    if (!items.length) return;
+    var first = items[0];
+    var last = items[items.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && (document.activeElement === last || items.indexOf(document.activeElement) === -1)) {
+      event.preventDefault();
+      first.focus();
+    }
+  });
 })();

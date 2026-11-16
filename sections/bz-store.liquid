@@ -31,9 +31,14 @@
             <p>{{ section.settings.hours | escape }}</p>
           {%- endif -%}
         </div>
-        {%- assign negozio_page = pages['il-negozio'] -%}
-        {%- if negozio_page != blank and negozio_page.url != blank and negozio_page.url != '#' and section.settings.button_label != blank -%}
-          <a class="bz-btn bz-btn--ivory" href="{{ negozio_page.url }}">{{ section.settings.button_label | escape }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        {%- if section.settings.button_label != blank -%}
+          {%- assign negozio_page = pages['il-negozio'] -%}
+          {%- if negozio_page != blank and negozio_page.url != blank -%}
+            {%- assign negozio_href = negozio_page.url -%}
+          {%- else -%}
+            {%- assign negozio_href = 'https://maps.google.com/?q=Via+Marcello+Provenzali+1,+44042+Cento+FE' -%}
+          {%- endif -%}
+          <a class="bz-btn bz-btn--ivory" href="{{ negozio_href }}">{{ section.settings.button_label | escape }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         {%- endif -%}
       </div>
     </div>

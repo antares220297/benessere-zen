@@ -45,6 +45,20 @@
         button.hidden = true;
       });
     });
+    root.querySelectorAll("[data-bz-variant]").forEach(function (radio) {
+      radio.addEventListener("change", function () {
+        var stickyId = root.querySelector(".bz-sticky input[name='id']");
+        if (stickyId) stickyId.value = radio.value;
+        var priceNode = root.querySelector("[data-bz-price]");
+        var cents = Number(radio.getAttribute("data-bz-variant"));
+        if (priceNode && cents > 0) {
+          var euros = Math.floor(cents / 100);
+          var rest = String(cents % 100).padStart(2, "0");
+          var grouped = String(euros).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+          priceNode.textContent = grouped + "," + rest + " €";
+        }
+      });
+    });
     root.querySelectorAll("[data-bz-qty]").forEach(function (button) {
       button.addEventListener("click", function () {
         var input = root.querySelector("input[name='quantity']");

@@ -150,8 +150,8 @@
         "msg-ritiro": {
           "type": "message",
           "settings": {
-            "text": "Ritiro gratuito in negozio, di solito pronto in 4 ore",
-            "text_mobile": "Ritiro gratuito in negozio, in 4 ore"
+            "text": "",
+            "text_mobile": ""
           }
         },
         "msg-reso": {
@@ -241,7 +241,7 @@
           "type": "link",
           "settings": {
             "label": "Ultimi pezzi",
-            "link": "/collections/all?sort_by=created-descending",
+            "link": "/collections/ultimi-pezzi",
             "style": "accent"
           }
         },
