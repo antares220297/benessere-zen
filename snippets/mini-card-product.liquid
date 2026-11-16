@@ -60,7 +60,11 @@
             {{ card_product.title | escape }}
           </a>
         </div>
-        {% render 'price', product: card_product %}
+        {% if bz_plain_money %}
+          <span class="price">{{ card_product.price | money }}</span>
+        {% else %}
+          {% render 'price', product: card_product %}
+        {% endif %}
       </div>
       <div class="w-1/5 text-right pl-2 rtl:pl-0 rtl:pr-2">
         <template x-if="$store.xQuickView && $store.xQuickView.enabled">

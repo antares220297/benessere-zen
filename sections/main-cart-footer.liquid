@@ -13,7 +13,7 @@
     {%- if cart != empty -%}
       <div class="w-full lg:col-span-2{% if settings.show_cart_note or settings.show_cart_custom_field or settings.enable_estimate_shipping %} pb-4 md:pb-0{% endif %}">
         {% if settings.show_cart_note or settings.show_cart_custom_field or settings.enable_estimate_shipping %}
-          {% if settings.enable_estimate_shipping %}
+          {% if false %}
             <div class="hidden md:block">
               {% render 'estimate-shipping-rate', cartPage: true %}
             </div>
@@ -224,7 +224,7 @@
                   >
                     <div class="flex">
                       <p>{{ 'sections.cart.subtotal' | t }}</p>
-                      <p class="ml-auto mb-2">{{ cart.items_subtotal_price | money_with_currency }}</p>
+                      <p class="ml-auto mb-2">{{ cart.items_subtotal_price | money }}</p>
                     </div>
                     {%- if cart.cart_level_discount_applications.size > 0 -%}
                       {%- liquid
@@ -236,7 +236,7 @@
                       <div class="border-t border-b pt-3 pb-3 mb-3" role="status" x-data="{ open: false }">
                         <div class="flex justify-between items-end cursor-pointer relative" @click="open = !open" >
                           <p>{{ 'customer.order.discount' | t }}</p>
-                          <p class="price-sale{% if is_rtl %} mr-8 ml-6{% else %} ml-8 mr-6{% endif %}" id="total-price">- {{ total_discount | money_with_currency }}</p>
+                          <p class="price-sale{% if is_rtl %} mr-8 ml-6{% else %} ml-8 mr-6{% endif %}" id="total-price">- {{ total_discount | money }}</p>
                           <span class="w-3 opacity-70 inline-block absolute right-0 rtl:left-0 rtl:right-auto top-1/2 -translate-y-1/2 duration-500" :class="open ? 'rotate-0' : 'rotate-180'">
                             {% render 'icon-alls', icon: 'icon-caret' %}
                           </span>
@@ -246,7 +246,7 @@
                             <li class="list-item">
                               <p class="flex pb-1 relative justify-between items-center">
                                 <span class="block discount-title">{{ discount.title }}</span>
-                                <span  class="block{% if is_rtl %} mr-8{% else %} ml-8{% endif %}" id="total-price">- {{ discount.total_allocated_amount | money_with_currency }}</span>
+                                <span  class="block{% if is_rtl %} mr-8{% else %} ml-8{% endif %}" id="total-price">- {{ discount.total_allocated_amount | money }}</span>
                               </p>
                             </li>
                           {%- endfor -%}
@@ -255,13 +255,13 @@
                     {%- endif -%}
                     <div class="flex">
                       <p class="h4">{{ 'sections.cart.total' | t }}</p>
-                      <p class="h4 ml-auto mb-2">{{ cart.total_price | money_with_currency }}</p>
+                      <p class="h4 ml-auto mb-2">{{ cart.total_price | money }}</p>
                     </div>
                     {%- if settings.cart_enable_savings_amount and cart.cart_level_discount_applications.size > 0 -%}
-                      {% assign total_discount = cart.total_discount | money_with_currency %}
+                      {% assign total_discount = cart.total_discount | money %}
                       <div class="flex justify-between items-end" role="status">
                         <p>{{ 'sections.cart.total_savings' | t: total_discount: total_discount }}</p>
-                        <s class="{% if is_rtl %} mr-8{% else %} ml-8{% endif %}" id="total-price">{{ cart.items_subtotal_price | money_with_currency }}</s>
+                        <s class="{% if is_rtl %} mr-8{% else %} ml-8{% endif %}" id="total-price">{{ cart.items_subtotal_price | money }}</s>
                       </div> 
                     {%- endif -%}
                     {% if settings.auto_calculate_shipping %}
@@ -327,7 +327,7 @@
                       disabled
                     {% endif %}
                   >
-                    {% assign button_label = 'sections.cart.checkout' | t %}
+                    {% assign button_label = 'Vai al pagamento' %}
                     <span class="flex items-center justify-center">
                       {% render 'button-label', button_label: button_label, show_button_style: 'primary' %}
                     </span>

@@ -133,7 +133,7 @@
                 {%- if settings.cart_type == 'popup' %} md:max-h-[13.5rem]{% else %} md:max-h-screen xl:pt-10 xl:pb-8{% endif -%}" 
                 :class="{ 'pointer-events-none' : loading , 'lg:w-7/12{% if is_rtl %} lg:pl-14{% else %} lg:pr-14{% endif %} max-h-72' : show, 'lg:pr-5 max-h-96 h-full': !show }"
             >
-              {% if settings.show_estimate_cart %}
+              {% if false %}
                 {% liquid
                   assign hidden_etc = false
                   for item in cart.items
@@ -532,18 +532,18 @@
                               <div class="price mt-2 mb-2 bz-line-price">
                                 {%- assign item_original_price = item.variant.compare_at_price | default: item.original_price -%}
                                 {%- if item_original_price > item.final_price -%}
-                                  <s class="cap mr-1 rtl:ml-1 rtl:mr-0 inline-block opacity-70">{%- if settings.currency_code_enable -%}{{ item_original_price | money_with_currency }}{%- else -%}{{ item_original_price | money }}{%- endif -%}
+                                  <s class="cap mr-1 rtl:ml-1 rtl:mr-0 inline-block opacity-70">{%- if settings.currency_code_enable -%}{{ item_original_price | money }}{%- else -%}{{ item_original_price | money }}{%- endif -%}
                                   </s> 
                                   <span class="selection:bg-text-[rgb(var(--colors-price-sale),0.2)] price-sale">
                                     {% if settings.currency_code_enable %}
-                                      {{ item.final_price | money_with_currency }}
+                                      {{ item.final_price | money }}
                                     {% else %}
                                       {{ item.final_price | money }}
                                     {% endif %}
                                   </span>
                                 {%- else -%}
                                   {% if settings.currency_code_enable %}
-                                    {{ item.final_price | money_with_currency }}
+                                    {{ item.final_price | money }}
                                   {% else %}
                                     {{ item.final_price | money }}
                                   {% endif %}
@@ -551,7 +551,7 @@
                                 {%- if item.variant.available and item.unit_price_measurement -%}
                                   <small class="flex opacity-70 gap-1">
                                     {% if settings.currency_code_enable %}
-                                      {{ item.variant.unit_price | money_with_currency }}
+                                      {{ item.variant.unit_price | money }}
                                     {% else %}
                                       {{ item.variant.unit_price | money }}
                                     {% endif %}
@@ -579,7 +579,7 @@
                                   {%- endif -%}
                                   {%- for property in item.properties -%}
                                     {%- assign property_first_char = property.first | slice: 0 -%}
-                                    {%- if property.last != blank and property_first_char != '_' -%}
+                                    {%- if property.last != blank and property_first_char != '_' and property.first != name_edt -%}
                                       <div class="product-option mt-1 text-normal opacity-70 p-break-words">
                                         <dt class="p-break-words inline">{{ property.first }}:
                                         </dt>
@@ -680,7 +680,7 @@
                 x-show="show"
                 x-cloak
               >
-                <div class="pt-4 pb-3{% if settings.cart_type == 'drawer' %} xl:pt-8 xl:pb-5{% endif %}{% if is_rtl %} lg:pr-14{% else %} lg:pl-14{% endif %} text-medium">{{ settings.cart_upsell_section_label }}</div>
+                <div class="pt-4 pb-3{% if settings.cart_type == 'drawer' %} xl:pt-8 xl:pb-5{% endif %}{% if is_rtl %} lg:pr-14{% else %} lg:pl-14{% endif %} text-medium">Si abbina bene</div>
                 <div class="scrollbar-body scrollbar-visible lg:h-full lg:overflow-auto py-2{% if is_rtl %} lg:pr-14 ltr{% else %} rtl lg:pl-14{% endif %}{% if settings.cart_type == 'drawer' %} lg:h-full lg:pb-8{% endif %}">
                   <div id="x-upsell-{{ section.id }}" class="splide{% if is_rtl %} rtl{% else %} ltr{% endif %}">
                     <div>
@@ -700,7 +700,7 @@
                                   unless productIds contains productId
                                     assign productIds = productIds | append: productId
                                     assign productCount = productCount | plus: 1
-                                    render 'mini-card-product', card_product: prod, media_aspect_ratio: settings.product_image_ratio, ratio: ratio, class_splide: " splide__slide x-splide-slide w-3/4 lg:w-full"
+                                    render 'mini-card-product', card_product: prod, media_aspect_ratio: settings.product_image_ratio, ratio: ratio, class_splide: " splide__slide x-splide-slide w-3/4 lg:w-full", bz_plain_money: true
                                   endunless
                                 endif
                                 if productCount >= maxItems
@@ -716,7 +716,7 @@
                                 unless productIds contains productId
                                   assign productIds = productIds | append : productId
                                   assign productCount = productCount | plus : 1
-                                  render 'mini-card-product', card_product: prod, media_aspect_ratio: settings.product_image_ratio, ratio: ratio, class_splide: " splide__slide x-splide-slide w-3/4 lg:w-full"
+                                  render 'mini-card-product', card_product: prod, media_aspect_ratio: settings.product_image_ratio, ratio: ratio, class_splide: " splide__slide x-splide-slide w-3/4 lg:w-full", bz_plain_money: true
                                 endunless
                               endif
                               if productCount >= maxItems
@@ -738,7 +738,8 @@
                                   card_product: recommendation, 
                                   media_aspect_ratio: settings.product_image_ratio, 
                                   ratio: ratio, 
-                                  class_splide: " splide__slide x-splide-slide w-3/4 lg:w-full"
+                                  class_splide: " splide__slide x-splide-slide w-3/4 lg:w-full",
+                                  bz_plain_money: true
                                 %}
                               </template>
                               {% liquid 
@@ -919,7 +920,7 @@
                     <textarea x-ref="cart_field_note_data" hidden>{{- cart.note -}}</textarea>
                   {%- endif -%}
                   {% comment %} estimate shipping {% endcomment %}
-                  {% if settings.enable_estimate_shipping %}
+                  {% if false %}
                     <button class="pt-3 pb-3 cursor-pointer underline w-1/3 flex-1{% if settings.show_cart_note and settings.enable_save_share_cart == false %} justify-end{% endif %}{% unless settings.show_cart_note %} {% if is_rtl %} md:text-right{% else %} md:text-left{% endif %}{% endunless %}">
                       <p @click="$store.xPopupShipping.open = true;">{{ 'customer.order.shipping' | t }}</p>
                     </button>
@@ -940,7 +941,7 @@
               >
                 <div class="pb-3 flex justify-between items-end" role="status">
                   <p>{{ 'sections.cart.subtotal' | t }}</p>
-                  <p class="{% if is_rtl %} mr-8{% else %} ml-8{% endif %}" id="total-price">{{ cart.items_subtotal_price | money_with_currency }}</p>
+                  <p class="{% if is_rtl %} mr-8{% else %} ml-8{% endif %}" id="total-price">{{ cart.items_subtotal_price | money }}</p>
                 </div> 
                 {%- if cart.cart_level_discount_applications.size > 0 -%}
                   {%- liquid
@@ -952,7 +953,7 @@
                   <div class="mb-3 group-discount relative pt-3 pb-3 bg-[rgba(var(--colors-price-sale),5%)]" role="status" x-data="{ open: false }">
                     <div class="flex justify-between items-end cursor-pointer relative" @click="open = !open" >
                       <p>{{ 'customer.order.discount' | t }}</p>
-                      <p class="price-sale{% if is_rtl %} mr-8 ml-6{% else %} ml-8 mr-6{% endif %}" id="total-price">- {{ total_discount | money_with_currency }}</p>
+                      <p class="price-sale{% if is_rtl %} mr-8 ml-6{% else %} ml-8 mr-6{% endif %}" id="total-price">- {{ total_discount | money }}</p>
                       <span class="w-3 opacity-70 inline-block absolute right-0 rtl:left-0 rtl:right-auto top-1/2 -translate-y-1/2 duration-500" :class="open ? 'rotate-180' : ''">
                         {% render 'icon-alls', icon: 'icon-caret' %}
                       </span>
@@ -962,7 +963,7 @@
                         <li class="list-item">
                           <p class="flex pb-1 relative justify-between items-center">
                             <span class="block discount-title">{{ discount.title }}</span>
-                            <span  class="block{% if is_rtl %} mr-8{% else %} ml-8{% endif %}" id="total-price">- {{ discount.total_allocated_amount | money_with_currency }}</span>
+                            <span  class="block{% if is_rtl %} mr-8{% else %} ml-8{% endif %}" id="total-price">- {{ discount.total_allocated_amount | money }}</span>
                           </p>
                         </li>
                       {%- endfor -%}
@@ -971,13 +972,13 @@
                 {%- endif -%} 
                 <div class="flex justify-between items-end text-medium" role="status">
                   <p class="h4">{{ 'sections.cart.total' | t }}</p>
-                  <p class="h4{% if is_rtl %} mr-8{% else %} ml-8{% endif %}" id="total-price">{{ cart.total_price | money_with_currency }}</p>
+                  <p class="h4{% if is_rtl %} mr-8{% else %} ml-8{% endif %}" id="total-price">{{ cart.total_price | money }}</p>
                 </div> 
                 {%- if settings.cart_enable_savings_amount and cart.cart_level_discount_applications.size > 0 -%}
-                  {% assign total_discount = cart.total_discount | money_with_currency %}
+                  {% assign total_discount = cart.total_discount | money %}
                   <div class="flex justify-between items-end pt-3" role="status">
                     <p>{{ 'sections.cart.total_savings' | t: total_discount: total_discount }}</p>
-                    <s class="{% if is_rtl %} mr-8{% else %} ml-8{% endif %}" id="total-price">{{ cart.items_subtotal_price | money_with_currency }}</s>
+                    <s class="{% if is_rtl %} mr-8{% else %} ml-8{% endif %}" id="total-price">{{ cart.items_subtotal_price | money }}</s>
                   </div> 
                 {%- endif -%}
                 {% if settings.auto_calculate_shipping %}
@@ -1037,7 +1038,7 @@
                   @click="$store.xCartHelper.goToCheckout($event)"
                   {% if cart == empty %}disabled{% endif %}
                 >
-                  {% assign button_label = 'sections.cart.checkout' | t %}
+                  {% assign button_label = 'Vai al pagamento' %}
                   <span class="flex items-center justify-center">
                     {% render 'button-label', button_label: button_label, show_button_style: 'primary' %}
                   </span>
@@ -1155,7 +1156,7 @@
         </div>
       {%- endif -%}
       {% comment %} estimate shipping {% endcomment %}
-      {% if settings.enable_estimate_shipping %}
+      {% if false %}
         <div class="">
           <div x-show="$store.xPopupShipping.open" x-cloak class="absolute z-20 top-0 left-0 w-full h-full bg-black bg-opacity-20"></div>
           <div class="scrollbar-body scrollbar-visible overflow-y-auto max-h-full absolute bottom-0 left-0 rtl:left-auto rtl:right-0 w-full z-20 pt-10 pb-14 pr-5 pl-5 lg:pl-14 lg:pr-14 bg-[rgba(var(--colors-background),1)]{% if settings.edges_type == 'rounded_corners' %} rounded-t-[10px] md:rounded-[10px]{% endif %}" 

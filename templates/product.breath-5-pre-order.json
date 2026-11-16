@@ -15,7 +15,6 @@
         "store_badge": "Anche in negozio",
         "photo_note": "Pietra naturale: ogni pezzo è un po' diverso",
         "shipping_note": "Spedizione gratuita da 50 €",
-        "pickup_label": "Ritira gratis in negozio, di solito in 4 ore",
         "pickup_link": "/pages/il-negozio",
         "bento_title": "La nappa",
         "bento_accent": "chiude il giro",
@@ -74,7 +73,7 @@
           "settings": {
             "title": "Dettagli",
             "open": true,
-            "text": "<table><tr><td>Pietra</td><td>Onice nero</td></tr><tr><td>Grani</td><td>108</td></tr><tr><td>Diametro perla</td><td>circa 8 mm</td></tr><tr><td>Peso</td><td>67 g</td></tr><tr><td>Finitura</td><td>Nappa nera</td></tr></table>"
+            "text": "<p></p>"
           }
         },
         "det-2": {

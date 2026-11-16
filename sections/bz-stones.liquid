@@ -17,12 +17,24 @@
     {%- for block in section.blocks -%}
       {%- liquid
         assign stone_collection = block.settings.collection
+        if stone_collection != blank and collections[stone_collection.handle] != blank
+          assign stone_collection = collections[stone_collection.handle]
+        endif
         assign stone_image = block.settings.image
+        assign stone_name = block.settings.name | downcase
         if stone_image == blank and stone_collection != blank
-          if stone_collection.image != blank
-            assign stone_image = stone_collection.image
-          elsif stone_collection.products.first.featured_image != blank
+          for product in stone_collection.products limit: 50
+            assign product_name = product.title | downcase
+            if product_name contains stone_name and product.featured_image != blank
+              assign stone_image = product.featured_image
+              break
+            endif
+          endfor
+          if stone_image == blank and stone_collection.products.first.featured_image != blank
             assign stone_image = stone_collection.products.first.featured_image
+          endif
+          if stone_image == blank and stone_collection.image != blank
+            assign stone_image = stone_collection.image
           endif
         endif
         assign min_price = blank

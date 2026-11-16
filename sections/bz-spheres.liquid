@@ -5,6 +5,9 @@
   {%- for block in section.blocks -%}
     {%- liquid
       assign sphere_collection = block.settings.collection
+      if sphere_collection != blank and collections[sphere_collection.handle] != blank
+        assign sphere_collection = collections[sphere_collection.handle]
+      endif
       assign sphere_url = sphere_collection.url
       if block.settings.show_all
         assign sphere_url = routes.all_products_collection_url
@@ -21,12 +24,13 @@
         endif
       endif
       assign min_price = blank
+      assign priced = false
       if sphere_collection != blank and block.settings.show_all == false
-        for product in sphere_collection.products limit: 24
-          if min_price == blank or product.price < min_price
-            assign min_price = product.price
-          endif
-        endfor
+        assign cheapest = sphere_collection.products | sort: 'price'
+        if cheapest.first != blank and cheapest.first.price != blank
+          assign min_price = cheapest.first.price
+          assign priced = true
+        endif
       endif
     -%}
     <a class="bz-sphere{% if forloop.first %} is-on{% endif %}" href="{{ sphere_url }}" {{ block.shopify_attributes }}>
@@ -40,14 +44,12 @@
         </span>
       </span>
       {{ block.settings.label | escape }}
-      <small>
-        {%- if block.settings.show_all -%}
-          {%- if collections.all.products_count > 0 -%}{{ collections.all.products_count }} prodotti{%- endif -%}
-        {%- elsif min_price != blank -%}
-          {%- assign min_cents = min_price | modulo: 100 -%}
-          da {{ min_price | minus: min_cents | divided_by: 100 }},{{ min_cents | prepend: '00' | slice: -2, 2 }} €
-        {%- endif -%}
-      </small>
+      {%- if block.settings.show_all and collections.all.products_count > 0 -%}
+        <small>{{ collections.all.products_count }} prodotti</small>
+      {%- elsif priced -%}
+        {%- assign min_cents = min_price | modulo: 100 -%}
+        <small>da {{ min_price | minus: min_cents | divided_by: 100 }},{{ min_cents | prepend: '00' | slice: -2, 2 }} €</small>
+      {%- endif -%}
     </a>
   {%- endfor -%}
 </nav>

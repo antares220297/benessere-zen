@@ -19,12 +19,18 @@
           <button type="button" role="tab" class="{% if forloop.first %}is-on{% endif %}" data-bz-pane="ritual-{{ forloop.index }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">{{ block.settings.label | escape }}</button>
         {%- endfor -%}
       </div>
+      {%- assign active_count = 0 -%}
+      {%- assign active_total = 0 -%}
       {%- for block in section.blocks -%}
         <div class="bz-pane{% if forloop.first %} is-on{% endif %}" data-bz-pane="ritual-{{ forloop.index }}" {{ block.shopify_attributes }}>
           {%- assign picks = 'product_1,product_2,product_3' | split: ',' -%}
           {%- for key in picks -%}
             {%- assign item = block.settings[key] -%}
             {%- if item != blank -%}
+              {%- if forloop.parentloop.first -%}
+                {%- assign active_count = active_count | plus: 1 -%}
+                {%- assign active_total = active_total | plus: item.price -%}
+              {%- endif -%}
               {%- assign item_cents = item.price | modulo: 100 -%}
               <label class="bz-set__row">
                 <input type="checkbox" checked data-bz-price="{{ item.price }}" value="{{ item.selected_or_first_available_variant.id }}">
@@ -38,29 +44,41 @@
           {%- endfor -%}
         </div>
       {%- endfor -%}
+      {%- assign sum_cents = active_total | modulo: 100 -%}
       <div class="bz-set__total">
         <div>
-          <span class="bz-note"><span data-bz-count>0</span> pezzi scelti</span>
-          <div class="bz-set__sum" data-bz-sum></div>
+          <span class="bz-note"><span data-bz-count>{{ active_count }}</span> pezzi scelti</span>
+          <div class="bz-set__sum" data-bz-sum>{{ active_total | minus: sum_cents | divided_by: 100 }}<sup>,{{ sum_cents | prepend: '00' | slice: -2, 2 }}</sup> €</div>
         </div>
         <button class="bz-btn bz-btn--gold" type="button" data-bz-add-set>Aggiungi al carrello <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       </div>
     </div>
     <div class="bz-set__visual">
       {%- for block in section.blocks -%}
-        {%- if block.settings.image != blank -%}
-          <span data-bz-shot="ritual-{{ forloop.index }}"{% unless forloop.first %} hidden{% endunless %}>
-            {{ block.settings.image | image_url: width: 1200 | image_tag: alt: block.settings.caption_title, width: 800, height: 600, loading: 'lazy' }}
-          </span>
-        {%- endif -%}
+        {%- liquid
+          assign shot = block.settings.image
+          if shot == blank
+            assign shot_keys = 'product_1,product_2,product_3' | split: ','
+            for shot_key in shot_keys
+              assign shot_product = block.settings[shot_key]
+              if shot == blank and shot_product != blank and shot_product.featured_image != blank
+                assign shot = shot_product.featured_image
+              endif
+            endfor
+          endif
+        -%}
+        <span data-bz-shot="ritual-{{ forloop.index }}"{% unless forloop.first %} hidden{% endunless %}>
+          {%- if shot != blank -%}
+            {{ shot | image_url: width: 1200 | image_tag: alt: block.settings.caption_title, width: 800, height: 600, loading: 'lazy' }}
+          {%- endif -%}
+          {%- if block.settings.caption_title != blank -%}
+            <div>
+              <h3>{{ block.settings.caption_title | escape }} <em>{{ block.settings.caption_accent | escape }}</em></h3>
+              <p>{{ block.settings.caption | escape }}</p>
+            </div>
+          {%- endif -%}
+        </span>
       {%- endfor -%}
-      {%- assign first = section.blocks.first -%}
-      {%- if first.settings.caption_title != blank -%}
-        <div>
-          <h3>{{ first.settings.caption_title | escape }} <em>{{ first.settings.caption_accent | escape }}</em></h3>
-          <p>{{ first.settings.caption | escape }}</p>
-        </div>
-      {%- endif -%}
     </div>
   </div>
 </div>

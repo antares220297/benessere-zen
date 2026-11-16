@@ -120,7 +120,7 @@
         <div class="bz-shipbox__labels"><span>0 €</span><span>Gratis da {{ section.settings.free_shipping }} €</span></div>
       </div>
 
-      {%- form 'product', product -%}
+      {%- form 'product', product, class: 'bz-ajax-cart' -%}
         {%- if product.has_only_default_variant -%}
           <input type="hidden" name="id" value="{{ current.id }}">
         {%- else -%}
@@ -161,7 +161,7 @@
             {{ pair.featured_image | image_url: width: 120 | image_tag: alt: pair.title, width: 52, height: 52 }}
           {%- endif -%}
           <div>Si abbina a {{ pair.title | escape }}<small>{{ pair.price | money }}</small></div>
-          <form action="{{ routes.cart_add_url }}" method="post">
+          <form class="bz-ajax-cart" action="{{ routes.cart_add_url }}" method="post">
             <input type="hidden" name="id" value="{{ pair.selected_or_first_available_variant.id }}">
             <button class="bz-card__add" type="submit" aria-label="Aggiungi {{ pair.title | escape }}">+</button>
           </form>
@@ -175,7 +175,7 @@
               <summary>{{ block.settings.title | escape }}<i aria-hidden="true"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></i></summary>
               <div class="bz-acc__body">
                 {%- if block.settings.title == 'Dettagli' -%}
-                  <table>
+                  {%- capture spec_table -%}
                     {%- for spec in section.blocks -%}
                       {%- if spec.type == 'spec' -%}
                         {%- assign spec_value = product.metafields.custom[spec.settings.metafield].value | default: spec.settings.fallback -%}
@@ -184,7 +184,12 @@
                         {%- endif -%}
                       {%- endif -%}
                     {%- endfor -%}
-                  </table>
+                  {%- endcapture -%}
+                  {%- if spec_table contains '<tr>' -%}
+                    <table>{{ spec_table }}</table>
+                  {%- elsif block.settings.text != blank -%}
+                    {{ block.settings.text }}
+                  {%- endif -%}
                 {%- else -%}
                   {{ block.settings.text }}
                 {%- endif -%}
@@ -230,7 +235,7 @@
   </div>
   {% render 'bz-wave', from: '#141312', to: '#2a141b' %}
 
-  <form class="bz-sticky" action="{{ routes.cart_add_url }}" method="post">
+  <form class="bz-sticky bz-ajax-cart" action="{{ routes.cart_add_url }}" method="post">
     <input type="hidden" name="id" value="{{ current.id }}">
     {%- if product.featured_image -%}
       {{ product.featured_image | image_url: width: 100 | image_tag: alt: '', width: 44, height: 44 }}

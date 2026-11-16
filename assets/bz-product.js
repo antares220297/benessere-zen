@@ -10,22 +10,6 @@
         if (stage && image) stage.src = image.src;
       });
     });
-    root.querySelectorAll("form[action*='cart']").forEach(function (form) {
-      form.addEventListener("submit", function (event) {
-        if (!window.fetch) return;
-        event.preventDefault();
-        var rootPath = (window.Shopify && Shopify.routes && Shopify.routes.root) || "/";
-        fetch(rootPath + "cart/add.js", {
-          method: "POST",
-          headers: { Accept: "application/json" },
-          body: new FormData(form)
-        }).then(function () {
-          document.dispatchEvent(new CustomEvent("eurus:cart:items-changed"));
-          var icon = document.getElementById("cart-icon");
-          if (icon) icon.click();
-        }).catch(function () { form.submit(); });
-      });
-    });
     var bar = root.querySelector("[data-bz-atc]");
     var sticky = root.querySelector(".bz-sticky");
     if (bar && sticky && "IntersectionObserver" in window) {

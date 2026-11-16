@@ -1,5 +1,77 @@
 (function () {
   var root = (window.Shopify && Shopify.routes && Shopify.routes.root) || "/";
+
+  function cartSections() {
+    var list = [
+      { id: "cart-drawer", selector: "#CartDrawer" },
+      { id: "cart-icon-bubble", selector: "#cart-icon-bubble" },
+      { id: "mobile-cart-icon-bubble", selector: "#mobile-cart-icon-bubble" }
+    ];
+    ["#main-cart-items", "#main-cart-footer"].forEach(function (selector) {
+      var node = document.querySelector(selector);
+      var section = node && node.closest(".shopify-section");
+      if (section && section.id) {
+        list.push({ id: section.id.replace("shopify-section-", ""), selector: selector });
+      }
+    });
+    return list;
+  }
+
+  function applySections(payload, sections) {
+    if (!payload || !payload.sections) return;
+    sections.forEach(function (section) {
+      var html = payload.sections[section.id];
+      var target = document.querySelector(section.selector);
+      if (!html || !target) return;
+      var parsed = new DOMParser().parseFromString(html, "text/html");
+      var inner = parsed.querySelector(section.selector);
+      if (inner) target.innerHTML = inner.innerHTML;
+    });
+  }
+
+  function openDrawer() {
+    if (!(window.Alpine && Alpine.store && Alpine.store("xMiniCart"))) return;
+    var cart = Alpine.store("xMiniCart");
+    cart.type = "drawer";
+    if (typeof cart.openCart === "function") cart.openCart();
+  }
+
+  window.bzAddItems = function (items) {
+    var sections = cartSections();
+    return fetch(root + "cart/add.js", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({
+        items: items,
+        sections: sections.map(function (section) { return section.id; })
+      })
+    }).then(function (response) {
+      return response.json();
+    }).then(function (payload) {
+      if (!payload || payload.status) return payload;
+      applySections(payload, sections);
+      if (!payload.sections && window.Alpine && Alpine.store("xMiniCart") && Alpine.store("xMiniCart").reLoad) {
+        Alpine.store("xMiniCart").reLoad();
+      }
+      document.dispatchEvent(new CustomEvent("eurus:cart:items-changed"));
+      openDrawer();
+      return payload;
+    });
+  };
+
+  document.addEventListener("submit", function (event) {
+    var form = event.target;
+    if (!form || !form.classList) return;
+    var cardAdd = form.querySelector && form.querySelector(".bz-card__add");
+    if (!form.classList.contains("bz-card__form") && !form.classList.contains("bz-hero__form") && !form.classList.contains("bz-ajax-cart") && !cardAdd) return;
+    if (!window.bzAddItems) return;
+    event.preventDefault();
+    var data = new FormData(form);
+    var id = data.get("id");
+    if (!id) return;
+    window.bzAddItems([{ id: Number(id), quantity: Number(data.get("quantity") || 1) }]);
+  });
+
   var search = document.querySelector("[data-bz-search]");
   if (!search) return;
 

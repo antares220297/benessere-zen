@@ -48,7 +48,7 @@
   }
 
   window.bzSumSet = function (root) {
-    var pane = root.querySelector("[data-bz-pane].is-on");
+    var pane = root.querySelector(".bz-pane.is-on");
     if (!pane) return;
     var total = 0;
     var count = 0;
@@ -71,23 +71,14 @@
     var button = event.target.closest("[data-bz-add-set]");
     if (!button || !window.fetch) return;
     var root = button.closest("[data-bz-switch]");
-    var pane = root && root.querySelector("[data-bz-pane].is-on");
+    var pane = root && root.querySelector(".bz-pane.is-on");
     if (!pane) return;
     var items = [];
     pane.querySelectorAll("input:checked").forEach(function (input) {
       if (input.value) items.push({ id: Number(input.value), quantity: 1 });
     });
     if (!items.length) return;
-    var cartRoot = (window.Shopify && Shopify.routes && Shopify.routes.root) || "/";
-    fetch(cartRoot + "cart/add.js", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({ items: items })
-    }).then(function () {
-      document.dispatchEvent(new CustomEvent("eurus:cart:items-changed"));
-      var nativeCart = document.getElementById("cart-icon");
-      if (nativeCart) nativeCart.click();
-    }).catch(function () {});
+    if (window.bzAddItems) window.bzAddItems(items);
   });
 
   document.addEventListener("click", function (event) {
@@ -107,21 +98,4 @@
     });
   });
 
-  document.addEventListener("submit", function (event) {
-    var form = event.target.closest(".bz-card__form, .bz-hero__form");
-    if (!form || !window.fetch) return;
-    event.preventDefault();
-    var data = new FormData(form);
-    fetch((window.Shopify && Shopify.routes && Shopify.routes.root || "/") + "cart/add.js", {
-      method: "POST",
-      headers: { Accept: "application/json" },
-      body: data
-    }).then(function () {
-      document.dispatchEvent(new CustomEvent("eurus:cart:items-changed"));
-      var nativeCart = document.getElementById("cart-icon");
-      if (nativeCart) nativeCart.click();
-    }).catch(function () {
-      form.submit();
-    });
-  });
 })();
