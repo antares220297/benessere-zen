@@ -1,0 +1,42 @@
+{
+  "sections": {
+    "guide": {
+      "type": "bz-guide",
+      "settings": {
+        "title": "Cura di sé",
+        "intro": "La parte del negozio che sta sullo scaffale accanto alle pietre: oli, capelli, corpo, Ayurveda, un tè. Gesti di ogni giorno, raccontati come si fanno, con gli ingredienti che sono davvero in scheda.",
+        "button_label": "Pietre e rituali",
+        "button_link": "/pages/pietre-e-rituali"
+      },
+      "blocks": {
+        "body": {
+          "type": "prose",
+          "settings": {
+            "heading": "Accanto alle pietre",
+            "text": "<p>Simona arriva da lì: da oltre trent’anni fa l’estetista, e in quel percorso ha lavorato a lungo con il massaggio ayurvedico e il Reiki. In negozio si può chiedere un consiglio su dosha e chakra; non è un trattamento e non è quello che si prenota oggi in bottega. In questa metà del catalogo trovi quello che usi sotto la doccia e quello che metti in tazza.</p>"
+          }
+        },
+        "portals": {
+          "type": "portals",
+          "settings": {
+            "collection_1": "cosmesi-corpo",
+            "collection_2": "prodotti-per-capelli",
+            "collection_3": "ayurveda",
+            "collection_4": "te-tisane",
+            "collection_5": "tazze",
+            "extra_label": "Cos’è l’Ayurveda",
+            "extra_link": "/pages/cose-layurveda"
+          }
+        },
+        "close": {
+          "type": "prose",
+          "settings": {
+            "text": "<p>Le due porte si appartengono: a casa di chi ci sceglie spesso stanno sullo stesso tavolo. Se vuoi passare, l’indirizzo e gli orari sono nella pagina Il negozio.</p>"
+          }
+        }
+      },
+      "block_order": ["body", "portals", "close"]
+    }
+  },
+  "order": ["guide"]
+}

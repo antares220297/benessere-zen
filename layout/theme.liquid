@@ -20,10 +20,14 @@
     {%- endunless -%}
 
     <title>
-      {{ page_title }}
-      {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
-      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
-      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+      {%- if template.name == '404' -%}
+        Questa pagina non c'è &ndash; {{ shop.name }}
+      {%- else -%}
+        {{ page_title }}
+        {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+        {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+        {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+      {%- endif -%}
     </title>
     {%- if settings.enable_organization_schema and template.name == 'index' -%}
       {% liquid 
@@ -63,11 +67,23 @@
       </script>
     {%- endif -%}
     
-    {% if page_description %}
-      <meta name="description" content="{{ page_description | escape }}">
-    {% endif %}
+    {%- liquid
+      assign bz_meta = page_description
+      if bz_meta == blank and template.name == 'cart'
+        assign bz_meta = 'Il carrello di Benessere Zen. Spedizione gratuita in Italia da 50 €, oppure ritiro in negozio a Cento (FE).'
+      elsif bz_meta == blank and template.name == '404'
+        assign bz_meta = 'Questa pagina non c’è. Torna ai gioielli, alle pietre e alla cura di sé di Benessere Zen, negozio a Cento (FE).'
+      elsif bz_meta == blank and template.name == 'collection' and collection.handle == 'all'
+        assign bz_meta = 'Tutti i pezzi di Benessere Zen: pietre, mala, cura del corpo, incensi e candele. Negozio a Cento (FE).'
+      endif
+    -%}
+    {%- if bz_meta != blank -%}
+      <meta name="description" content="{{ bz_meta | escape }}">
+    {%- endif -%}
     <link rel="preload" href="{{ 'theme.css' | asset_url }}" as="style" crossorigin="anonymous" />
-    <link rel="preload" href="{{ settings.type_body_font | font_url }}" as="font" type="font/woff2" crossorigin="anonymous" />
+    {%- unless settings.type_body_font.family contains 'Japanese' or settings.type_header_font.family contains 'Japanese' -%}
+      <link rel="preload" href="{{ settings.type_body_font | font_url }}" as="font" type="font/woff2" crossorigin="anonymous" />
+    {%- endunless -%}
     
     {% liquid 
       render 'meta-tags'

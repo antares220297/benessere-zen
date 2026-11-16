@@ -430,6 +430,22 @@
       .catch(function () {});
   });
 
+  function placeCookieGap() {
+    var banner = document.querySelector("#shopify-pc__banner, .shopify-pc__banner__dialog, #shopify-privacy-banner");
+    var height = 0;
+    if (banner) {
+      var box = banner.getBoundingClientRect();
+      if (box.height > 24 && box.bottom > window.innerHeight - 8) height = Math.round(box.height);
+    }
+    if (height) document.documentElement.style.setProperty("--bz-cookie", height + "px");
+    else document.documentElement.style.removeProperty("--bz-cookie");
+  }
+  placeCookieGap();
+  window.addEventListener("resize", placeCookieGap);
+  if (window.MutationObserver) {
+    new MutationObserver(placeCookieGap).observe(document.body, { childList: true, subtree: true });
+  }
+
   var burger = document.querySelector("[data-bz-burger]");
   var nav = document.getElementById("BzNav");
   if (nav) {

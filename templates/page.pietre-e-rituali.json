@@ -1,0 +1,43 @@
+{
+  "sections": {
+    "guide": {
+      "type": "bz-guide",
+      "settings": {
+        "title": "Pietre e rituali",
+        "intro": "Una pietra che tieni in tasca, un mala da 108 grani che fai scorrere, un incenso che prepara la stanza, una candela accesa con un’intenzione. Qui rituale è questo: un gesto, non una teoria.",
+        "button_label": "Vieni in negozio",
+        "button_link": "/pages/il-negozio"
+      },
+      "blocks": {
+        "body": {
+          "type": "prose",
+          "settings": {
+            "heading": "Scegli una porta",
+            "text": "<p>In negozio a Cento le pietre si guardano da vicino. Sul sito è lo stesso catalogo: grezze e burattate, gioielli, mala, pendoli, incensi, candele e ciò che serve per tenerle. Se cerchi una pietra per un’intenzione, serenità, protezione, affetti, coraggio o concentrazione, parti da lì e poi scendi nel pezzo.</p>"
+          }
+        },
+        "portals": {
+          "type": "portals",
+          "settings": {
+            "collection_1": "mala-tibetani",
+            "collection_2": "pietre-grezze",
+            "collection_3": "pietre-burattate",
+            "collection_4": "pendoli",
+            "collection_5": "candele-e-brucia-candele",
+            "collection_6": "portacandele",
+            "extra_label": "Gioielli con pietre",
+            "extra_link": "/collections/gioielli-con-pietre"
+          }
+        },
+        "close": {
+          "type": "prose",
+          "settings": {
+            "text": "<p>Se vuoi vederli in mano, siamo in Via Marcello Provenzali 1, a Cento. Il pezzo in foto, sui cristalli e su molti oggetti, è quello che ti arriva o che ritiri.</p>"
+          }
+        }
+      },
+      "block_order": ["body", "portals", "close"]
+    }
+  },
+  "order": ["guide"]
+}

@@ -100,7 +100,7 @@
               {%- assign tipo_token = tipo_label | downcase | prepend: '|' | append: '|' -%}
               {%- unless chip_names contains tipo_token -%}
                 {%- assign chip_names = chip_names | append: tipo_token -%}
-                <a class="bz-cbub bz-cbub--text{% if value.active %} is-on{% endif %}" href="{{ value.url }}">{{ tipo_label | escape }} <small>{{ value.count }}</small></a>
+                <a class="bz-cbub bz-cbub--text{% if value.active %} is-on{% endif %}" href="{{ collection.url }}?{{ value.param_name }}={{ value.value | url_encode }}">{{ tipo_label | escape }} <small>{{ value.count }}</small></a>
               {%- endunless -%}
             {%- endif -%}
           {%- endfor -%}

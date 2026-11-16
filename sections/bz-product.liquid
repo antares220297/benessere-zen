@@ -18,6 +18,15 @@
   assign euros = current.price | minus: cents_num | divided_by: 100
   assign cents = cents_num | prepend: '00' | slice: -2, 2
   assign opener = section.settings.opener
+  assign type_key = product.type | downcase | strip
+  assign show_mala_facts = false
+  if type_key contains 'mala'
+    assign show_mala_facts = true
+  endif
+  assign show_stone_facts = false
+  if show_mala_facts or type_key contains 'pietr' or type_key contains 'braccial' or type_key contains 'ciondol' or type_key contains 'collan' or type_key contains 'pendol'
+    assign show_stone_facts = true
+  endif
 -%}
 
 <div class="bz bz-product" data-bz-product>
@@ -55,7 +64,9 @@
           {%- endif -%}
         </div>
         <div class="bz-stage__note">
-          <span>{{ section.settings.photo_note | escape }}</span>
+          {%- if show_stone_facts and section.settings.photo_note != blank -%}
+            <span>{{ section.settings.photo_note | escape }}</span>
+          {%- endif -%}
           {%- if product.images.size > 1 -%}
             <span data-bz-frame>1 / {{ product.images.size }}</span>
           {%- endif -%}
@@ -105,11 +116,21 @@
           <span class="bz-pill">{{ section.settings.shipping_note | escape }}</span>
         {%- endif -%}
       </div>
-      {%- if opener != blank -%}
+      {%- liquid
+        assign foto_mode = product.metafields.custom.foto_pezzo.value | default: product.metafields.custom.foto_pezzo | append: ''
+      -%}
+      {%- if product.metafields.custom.apertura != blank -%}
+        <div class="bz-buy__open rte">{{ product.metafields.custom.apertura | metafield_tag }}</div>
+      {%- elsif opener != blank -%}
         <div class="bz-buy__open" data-bz-open>
           <p>{{ opener | escape }}</p>
           <button type="button" data-bz-more-copy aria-expanded="false">Continua</button>
         </div>
+      {%- endif -%}
+      {%- if foto_mode contains 'modello' -%}
+        <p class="bz-buy__use">Colore e venature possono variare da un pezzo all'altro.</p>
+      {%- elsif foto_mode contains 'pezzo' or foto_mode == 'true' -%}
+        <p class="bz-buy__use">Il pezzo in foto è quello che parte, o che ritiri in negozio a Cento.</p>
       {%- endif -%}
 
       {%- capture fact_pills -%}
@@ -132,7 +153,18 @@
                 if fact_text contains 'Metaobject' or fact_text contains 'Drop'
                   assign fact_value = blank
                 endif
-                if fact_value != blank
+                assign fact_allowed = true
+                if fact_key == 'grani' or fact_key == 'diametro'
+                  unless show_mala_facts
+                    assign fact_allowed = false
+                  endunless
+                endif
+                if fact_key == 'peso' or fact_key == 'pietra'
+                  unless show_stone_facts
+                    assign fact_allowed = false
+                  endunless
+                endif
+                if fact_allowed and fact_value != blank
                   assign show_fact = true
                 endif
               elsif fact_value != blank or fact_label != blank
@@ -220,9 +252,17 @@
         assign pietra = product.metafields.custom.pietra.value
         assign pietra_tradizione = blank
         assign pietra_cura = blank
-        if pietra != blank
+        if show_stone_facts and pietra != blank
           assign pietra_tradizione = pietra.tradizione.value | default: pietra.tradizione
           assign pietra_cura = pietra.cura.value | default: pietra.cura
+        endif
+        assign meta_trad = product.metafields.custom.tradizione.value | default: product.metafields.custom.tradizione
+        assign meta_cura = product.metafields.custom.cura.value | default: product.metafields.custom.cura
+        if meta_trad != blank
+          assign pietra_tradizione = meta_trad
+        endif
+        if meta_cura != blank
+          assign pietra_cura = meta_cura
         endif
         assign ship_free = settings.bz_free_shipping_threshold | default: 50
       -%}
@@ -279,6 +319,27 @@
             {%- endif -%}
           {%- endif -%}
         {%- endfor -%}
+        {%- assign uso_meta = product.metafields.custom.come_si_usa.value | default: product.metafields.custom.come_si_usa -%}
+        {%- if uso_meta != blank -%}
+          <details>
+            <summary>Come si usa<i aria-hidden="true"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></i></summary>
+            <div class="bz-acc__body"><p>{{ uso_meta | escape }}</p></div>
+          </details>
+        {%- endif -%}
+        {%- for faq_i in (1..3) -%}
+          {%- liquid
+            assign faq_q_key = 'faq_' | append: faq_i | append: '_domanda'
+            assign faq_a_key = 'faq_' | append: faq_i | append: '_risposta'
+            assign faq_q = product.metafields.custom[faq_q_key].value | default: product.metafields.custom[faq_q_key]
+            assign faq_a = product.metafields.custom[faq_a_key].value | default: product.metafields.custom[faq_a_key]
+          -%}
+          {%- if faq_q != blank and faq_a != blank -%}
+            <details>
+              <summary>{{ faq_q | escape }}<i aria-hidden="true"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></i></summary>
+              <div class="bz-acc__body"><p>{{ faq_a | escape }}</p></div>
+            </details>
+          {%- endif -%}
+        {%- endfor -%}
       </div>
     </div>
   </section>
@@ -289,8 +350,10 @@
     assign stat_peso = product.metafields.custom.peso.value
     assign bento_title = product.metafields.custom.bento_title.value
     assign show_bento = false
-    if stat_grani != blank or stat_diametro != blank or stat_peso != blank
-      assign show_bento = true
+    if show_mala_facts
+      if stat_grani != blank or stat_diametro != blank or stat_peso != blank
+        assign show_bento = true
+      endif
     endif
   -%}
   {%- if show_bento -%}

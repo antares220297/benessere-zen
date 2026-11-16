@@ -27,16 +27,16 @@
   z-index: 80;
   height: calc(var(--bz-ann-bar) + env(safe-area-inset-top, 0px));
   padding: env(safe-area-inset-top, 0px) 16px 0;
-  background: #0d0c0b;
+  background: #c9a96e;
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
   column-gap: 12px;
   font-size: 13px;
-  font-weight: 400;
+  font-weight: 600;
   line-height: 1.2;
-  color: var(--ivory2);
-  border-bottom: 1px solid var(--line);
+  color: #17130d;
+  border-bottom: 0;
   font-family: var(--sans);
 }
 

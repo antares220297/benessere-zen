@@ -17,7 +17,11 @@
       {%- if block.type == 'door' and block.settings.title != blank -%}
         {%- liquid
           assign door_main = block.settings.collection
-          assign door_keys = 'collection_2,collection_3,collection_4,collection_5' | split: ','
+          assign door_href = block.settings.page_link
+          if door_href == blank and door_main != blank and door_main.products_count > 0
+            assign door_href = door_main.url
+          endif
+          assign door_keys = 'collection_2,collection_3,collection_4,collection_5,collection_6,collection_7' | split: ','
         -%}
         <article class="bz-doors__card" {{ block.shopify_attributes }}>
           {%- if block.settings.image != blank -%}
@@ -38,8 +42,8 @@
                 {%- endif -%}
               {%- endfor -%}
             </ul>
-            {%- if door_main != blank and door_main.products_count > 0 -%}
-              <a class="bz-doors__go" href="{{ door_main.url }}">{{ block.settings.cta | default: 'Vedi i pezzi' | escape }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            {%- if door_href != blank -%}
+              <a class="bz-doors__go" href="{{ door_href }}">{{ block.settings.cta | default: 'Vedi i pezzi' | escape }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
             {%- endif -%}
           </div>
         </article>
@@ -63,11 +67,14 @@
         { "type": "textarea", "id": "text", "label": "Testo", "default": "Gioielli, mala, pietre e gli oggetti che stanno intorno al rito." },
         { "type": "image_picker", "id": "image", "label": "Foto" },
         { "type": "text", "id": "cta", "label": "Testo del link", "default": "Vedi i pezzi" },
-        { "type": "collection", "id": "collection", "label": "Collezione del link" },
+        { "type": "url", "id": "page_link", "label": "Pagina della porta" },
+        { "type": "collection", "id": "collection", "label": "Collezione del link", "info": "Si usa se la pagina è vuota." },
         { "type": "collection", "id": "collection_2", "label": "Collezione" },
         { "type": "collection", "id": "collection_3", "label": "Collezione" },
         { "type": "collection", "id": "collection_4", "label": "Collezione" },
-        { "type": "collection", "id": "collection_5", "label": "Collezione" }
+        { "type": "collection", "id": "collection_5", "label": "Collezione" },
+        { "type": "collection", "id": "collection_6", "label": "Collezione" },
+        { "type": "collection", "id": "collection_7", "label": "Collezione" }
       ]
     }
   ],

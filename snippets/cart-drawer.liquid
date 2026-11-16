@@ -51,6 +51,7 @@
         </div>
       </div>
 
+      <div class="bz-drawer__scroll">
       <div class="bz-drawer__items">
         {%- for item in cart.items -%}
           <article class="cart-item bz-drawer__item" data-key="{{ item.key }}">
@@ -150,10 +151,15 @@
           {%- endif -%}
         </div>
       </div>
+      </div>
 
       <footer class="bz-drawer__foot">
         <p><span>Subtotale</span><strong>{% render 'bz-money', cents: cart.total_price %}</strong></p>
-        <small>IVA inclusa. Spedizione al pagamento, oppure ritiro gratuito in negozio.</small>
+        {%- if remaining > 0 -%}
+          <small>IVA inclusa. Mancano {% render 'bz-money', cents: remaining %} alla spedizione gratuita. Oppure ritiro gratuito in negozio.</small>
+        {%- else -%}
+          <small>IVA inclusa. La spedizione è gratuita. Oppure ritiro gratuito in negozio.</small>
+        {%- endif -%}
         <form action="{{ routes.cart_url }}" method="post">
           <button id="checkout-submit" class="bz-drawer__go" type="submit" name="checkout">Vai al pagamento →</button>
         </form>

@@ -55,7 +55,8 @@
   width: 76px;
   height: 76px;
   border-radius: 12px;
-  object-fit: cover;
+  object-fit: contain;
+  background: #141312;
 }
 
 #update-cart .cart-item {
@@ -334,8 +335,15 @@
 
 .bz-drawer__items {
   flex: none;
-  overflow: auto;
+  overflow: visible;
   padding: 4px 22px;
+}
+
+.bz-drawer__copy > a {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .bz-drawer__item {
@@ -461,7 +469,8 @@ input.bz-drawer__qty-input {
   width: 48px;
   height: 48px;
   border-radius: 10px;
-  object-fit: cover;
+  object-fit: contain;
+  background: #141312;
 }
 
 .bz-cartpage {
@@ -532,7 +541,20 @@ input.bz-drawer__qty-input {
   display: flex !important;
   flex-direction: column !important;
   overflow: hidden !important;
-  max-height: 100% !important;
+  height: calc(100dvh - 24px) !important;
+  max-height: calc(100dvh - 24px) !important;
+}
+
+.bz-drawer__scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.bz-drawer__head,
+.bz-drawer__ship,
+.bz-drawer__foot {
+  flex: 0 0 auto;
 }
 
 .bz-drawer__close {
@@ -544,6 +566,10 @@ input.bz-drawer__qty-input {
   color: #eee7db;
   font-size: 22px;
   line-height: 1;
+}
+
+.bz-drawer__foot small {
+  margin: 8px 0 16px;
 }
 
 .bz-drawer__foot strong {

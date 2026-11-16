@@ -36,10 +36,11 @@
 .bz-chead__banner > img {
   position: absolute;
   right: 0; top: 0; width: 50%; height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 28%);
-  mask-image: linear-gradient(90deg, transparent, #000 28%);
+  background: #0d0c0b;
+  -webkit-mask-image: none;
+  mask-image: none;
 }
 .bz-chead__copy { position: relative; z-index: 1; padding: 36px 40px; display: flex; flex-direction: column; justify-content: flex-end; }
 .bz-chead h1 { margin: 0; font-size: clamp(42px, 4.4vw, 66px); line-height: 1; }
@@ -148,16 +149,18 @@
 .bz-sortsheet { display: none; }
 html.bz-sheet-open { overflow: hidden; }
 
-.bz-cgrid { display: grid; width: 100%; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 14px; }
+.bz-cgrid { display: grid; width: 100%; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 14px; grid-auto-flow: dense; }
 .bz-cgrid.is-list { grid-template-columns: minmax(0,1fr); }
 .bz-cgrid.is-list .bz-card { display: grid; grid-template-columns: 140px minmax(0,1fr) auto; align-items: center; }
+.bz-cgrid > [data-bz-item] { align-self: start; height: auto; }
+.bz-cgrid > .bz-card { align-self: start; height: auto; }
 .bz-promo {
-  grid-column: span 2; position: relative; min-height: 0; aspect-ratio: 4 / 5; min-width: 0; border-radius: 18px; overflow: hidden;
+  grid-column: span 2; grid-row: span 2; position: relative; min-height: 0; aspect-ratio: 1; height: auto; min-width: 0; border-radius: 18px; overflow: hidden;
   display: grid; grid-template-columns: minmax(0,1fr); align-items: end; padding: 22px; text-decoration: none; color: #eee7db;
   background: radial-gradient(130% 100% at 100% 0%, #8a2c3b, #3b151b 70%);
 }
 .bz-promo.has-media { grid-template-columns: minmax(0,1fr); }
-.bz-promo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.bz-promo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center; background: #0d0c0b; }
 .bz-promo div { background: linear-gradient(transparent, rgba(13,12,11,.82)); margin: -22px; padding: 64px 22px 22px; }
 .bz-promo div { position: relative; max-width: none; min-width: 0; }
 .bz-promo.is-solid { background: #201e1b; grid-template-columns: minmax(0,1fr); }
@@ -184,13 +187,22 @@ html.bz-sheet-open { overflow: hidden; }
     width: 100%;
     height: auto;
     aspect-ratio: 4 / 3;
-    object-fit: cover;
+    object-fit: contain;
     object-position: center;
+    background: #0d0c0b;
     -webkit-mask-image: none;
     mask-image: none;
   }
   .bz-chead__copy { padding: 16px; background: #0d0c0b; }
-  .bz-chips-row { justify-content: flex-start; overflow: auto; flex-wrap: nowrap; padding: 0 0 4px; }
+  .bz-chips-row {
+    justify-content: flex-start;
+    overflow-x: auto;
+    overflow-y: hidden;
+    flex-wrap: nowrap;
+    touch-action: pan-x;
+    overscroll-behavior-x: contain;
+    padding: 0 0 4px;
+  }
   .bz-clay { grid-template-columns: minmax(0,1fr); padding: 16px 14px 40px; }
   .bz-side { display: none; }
   .bz-side.is-open {
@@ -305,5 +317,5 @@ html.bz-sheet-open { overflow: hidden; }
   .bz-view { display: none; }
   .bz-coll__tools .bz-sort { display: none; }
   .bz-cgrid { grid-template-columns: repeat(2, minmax(0,1fr)); }
-  .bz-promo { grid-column: span 2; }
+  .bz-promo { grid-column: 1 / -1; grid-row: auto; aspect-ratio: 4 / 3; }
 }

@@ -637,12 +637,15 @@
           "settings": {
             "title": "Pietre e rituali",
             "text": "Gioielli, mala, pietre e gli oggetti che stanno intorno al rito.",
-            "cta": "Vedi le pietre",
-            "collection": "gioielli-con-pietre",
-            "collection_2": "mala-tibetani",
-            "collection_3": "pietre-burattate",
-            "collection_4": "pendoli",
-            "collection_5": "candele-e-brucia-candele"
+                "cta": "Entra",
+                "page_link": "/pages/pietre-e-rituali",
+                "collection": "gioielli-con-pietre",
+                "collection_2": "mala-tibetani",
+                "collection_3": "pietre-grezze",
+                "collection_4": "pietre-burattate",
+                "collection_5": "pendoli",
+                "collection_6": "candele-e-brucia-candele",
+                "collection_7": "portacandele"
           }
         },
         "door-cura": {
@@ -650,12 +653,13 @@
           "settings": {
             "title": "Cura di sé",
             "text": "Viso, corpo, capelli, tisane e oli, per la giornata.",
-            "cta": "Vedi la cura",
-            "collection": "cosmetica",
-            "collection_2": "cosmesi-corpo",
-            "collection_3": "prodotti-per-capelli",
-            "collection_4": "ayurveda",
-            "collection_5": "te-tisane"
+                "cta": "Entra",
+                "page_link": "/pages/cura-di-se",
+                "collection": "cosmesi-corpo",
+                "collection_2": "prodotti-per-capelli",
+                "collection_3": "ayurveda",
+                "collection_4": "te-tisane",
+                "collection_5": "tazze"
           }
         }
       },

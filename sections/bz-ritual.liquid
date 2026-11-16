@@ -65,7 +65,7 @@
   {%- endfor -%}
 {%- endif -%}
 
-{%- if product != blank -%}
+{%- if product != blank and product.available -%}
   {%- unless recommendations.performed -%}
     {{ 'bz-tokens.css' | asset_url | stylesheet_tag }}
     {{ 'bz-home.css' | asset_url | stylesheet_tag }}
