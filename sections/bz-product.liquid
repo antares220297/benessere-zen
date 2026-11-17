@@ -253,7 +253,7 @@
           <div>Si abbina a {{ pair.title | escape }}<small>{% render 'bz-money', cents: pair.price %}</small></div>
           <form class="bz-ajax-cart" action="{{ routes.cart_add_url }}" method="post">
             <input type="hidden" name="id" value="{{ pair.selected_or_first_available_variant.id }}">
-            <button class="bz-card__add" type="submit" aria-label="Aggiungi {{ pair.title | escape }}">+</button>
+            <button class="add bz-card__add" type="submit" aria-label="Aggiungi al carrello: {{ pair.title | escape }}">+</button>
           </form>
         </div>
       {%- endif -%}

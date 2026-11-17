@@ -1,107 +1,63 @@
-{{ 'bz-tokens.css' | asset_url | stylesheet_tag }}
-{{ 'bz-cart.css' | asset_url | stylesheet_tag }}
-{%- liquid
-  assign seed = cart.items.first.product
-  assign cart_ids = cart.items | map: 'product_id' | join: ',' | prepend: ',' | append: ','
--%}
-<div id="bz-cart" class="bz-cartpage">
-  <header class="bz-cartpage__head">
-    <h1>Il tuo carrello</h1>
-    {%- unless cart == empty -%}
-      <a href="{{ routes.all_products_collection_url }}">Continua lo shopping</a>
-    {%- endunless -%}
-  </header>
-
-  {%- if cart == empty -%}
-    <p class="bz-drawer__empty">Il carrello è vuoto.</p>
-    <a class="bz-drawer__go bz-drawer__shop" href="/collections/all">Continua lo shopping</a>
-  {%- else -%}
-    <div class="bz-cartpage__grid">
-      <div>
-        <div class="bz-drawer__items">
-          {%- for item in cart.items -%}
-            <article class="cart-item bz-drawer__item" data-key="{{ item.key }}">
-              <a href="{{ item.url }}">
-                {%- if item.image -%}
-                  <img src="{{ item.image | image_url: width: 200 }}" alt="{{ item.product.title | escape }}" width="76" height="76">
-                {%- endif -%}
-              </a>
-              <div class="bz-drawer__copy">
-                <a href="{{ item.url }}">{{ item.product.title | escape }}</a>
-                {%- if item.variant.title != blank and item.variant.title != 'Default Title' -%}
-                  <small class="bz-drawer__variant">{{ item.variant.title | escape }}</small>
-                {%- endif -%}
-                <div class="bz-drawer__qty">
-                  <button type="button" data-bz-qty="-1" aria-label="Meno">−</button>
-                  <input class="bz-drawer__qty-input" id="page-qty-{{ item.key }}" type="text" inputmode="numeric" value="{{ item.quantity }}" aria-label="Quantità">
-                  <button type="button" data-bz-qty="1" aria-label="Più">+</button>
-                  <button type="button" data-bz-remove hidden>Rimuovi</button>
-                </div>
+{%- assign goal = settings.bz_free_shipping | default: 50 | times: 100 -%}
+{%- assign missing = goal | minus: cart.total_price -%}
+<section class="cart-page" aria-labelledby="cart-title">
+  <h1 id="cart-title">Il tuo <em>carrello</em></h1>
+  <div class="cart-layout">
+    <div class="cart-products">
+      <ul class="cart-items">
+        {%- for item in cart.items -%}
+          <li class="cart-item" data-key="{{ item.key }}" data-quantity="{{ item.quantity }}" data-price="{{ item.final_price }}">
+            <a class="item-photo" href="{{ item.url }}">
+              {%- if item.image -%}
+                {{ item.image | image_url: width: 240 | image_tag: alt: item.product.title, width: 120, height: 120, loading: 'lazy' }}
+              {%- endif -%}
+            </a>
+            <div class="item-description">
+              <h2><a href="{{ item.url }}">{{ item.product.title | escape }}</a></h2>
+              <p>{% render 'bz-money', cents: item.final_price %}</p>
+              <button type="button" class="remove-item" aria-label="Rimuovi {{ item.product.title | escape }}">Rimuovi</button>
+            </div>
+            <div class="item-controls">
+              <div class="quantity" role="group" aria-label="Quantità: {{ item.product.title | escape }}">
+                <button type="button" data-delta="-1" aria-label="Diminuisci quantità: {{ item.product.title | escape }}" {% if item.quantity <= 1 %}disabled{% endif %}>−</button>
+                <output aria-label="Quantità: {{ item.product.title | escape }}">{{ item.quantity }}</output>
+                <button type="button" data-delta="1" aria-label="Aumenta quantità: {{ item.product.title | escape }}">+</button>
               </div>
-              <span class="bz-line-price">
-                {% render 'bz-money', cents: item.final_line_price %}
-                {%- if item.quantity > 1 -%}
-                  <small class="bz-line-price__each">{% render 'bz-money', cents: item.final_price %} cad.</small>
-                {%- endif -%}
-              </span>
-            </article>
-          {%- endfor -%}
-        </div>
-
-        <div class="bz-drawer__upsell" data-bz-upsell data-product-id="{{ seed.id }}">
-          <h4>Si abbina bene</h4>
-          <div data-bz-upsell-list>
-            {%- assign upsell_count = 0 -%}
-            {%- if upsell_count < 2 and seed != blank -%}
-              {%- for collection in seed.collections limit: 2 -%}
-                {%- for product in collection.products limit: 8 -%}
-                  {%- assign pid = product.id | prepend: ',' | append: ',' -%}
-                  {%- unless cart_ids contains pid -%}
-                    {%- if upsell_count < 2 and product.id != seed.id and product.available -%}
-                      {%- assign upsell_count = upsell_count | plus: 1 -%}
-                      <div class="bz-upsell">
-                        <a href="{{ product.url }}">
-                          {%- if product.featured_image -%}
-                            <img src="{{ product.featured_image | image_url: width: 120 }}" alt="{{ product.title | escape }}" width="48" height="48">
-                          {%- endif -%}
-                        </a>
-                        <a href="{{ product.url }}">{{ product.title | escape }}</a>
-                        <span>{% render 'bz-money', cents: product.price %}</span>
-                        <button type="button" class="bz-drawer__plus" data-bz-upsell-add="{{ product.selected_or_first_available_variant.id }}" aria-label="Aggiungi {{ product.title | escape }}">+</button>
-                      </div>
-                    {%- endif -%}
-                  {%- endunless -%}
-                {%- endfor -%}
-              {%- endfor -%}
-            {%- endif -%}
+              <strong class="item-total">{% render 'bz-money', cents: item.final_line_price %}</strong>
+            </div>
+          </li>
+        {%- endfor -%}
+      </ul>
+      <p class="cart-empty" {% if cart.item_count > 0 %}hidden{% endif %}>Il tuo carrello è vuoto.</p>
+      <a class="continue-shopping" href="{{ routes.all_products_collection_url }}">Continua gli acquisti →</a>
+    </div>
+    <aside class="cart-summary" aria-labelledby="summary-title">
+      <h2 id="summary-title">Riepilogo</h2>
+      <div class="shipping" data-shipping>
+        <p id="shipping-status" role="status">
+          {%- if cart.total_price >= goal -%}Spedizione gratuita{%- else -%}Ti mancano <strong>{% render 'bz-money', cents: missing %}</strong> per la spedizione gratuita{%- endif -%}
+        </p>
+        <div class="shipping-line">
+          <div class="track" role="progressbar" aria-label="Avanzamento verso la spedizione gratuita" aria-valuemin="0" aria-valuemax="{{ goal }}" aria-valuenow="{{ cart.total_price }}">
+            <span style="transform:scaleX({{ cart.total_price | times: 1.0 | divided_by: goal | at_most: 1 }})"></span>
           </div>
+          <span>{{ settings.bz_free_shipping | default: 50 }} €</span>
         </div>
       </div>
-
-      <aside class="bz-cartpage__summary">
-        <p><span>Subtotale</span><strong>{% render 'bz-money', cents: cart.total_price %}</strong></p>
-        {%- assign ship_euros = settings.bz_free_shipping_threshold | default: 50 | plus: 0 -%}
-        {%- assign ship_cents = ship_euros | times: 100 -%}
-        {%- if ship_euros > 0 and cart.total_price >= ship_cents -%}
-          <small>IVA inclusa. La spedizione è gratuita. Oppure ritiro gratuito in negozio.</small>
-        {%- elsif ship_euros > 0 -%}
-          {%- assign ship_missing = ship_cents | minus: cart.total_price -%}
-          <small>IVA inclusa. Mancano {% render 'bz-money', cents: ship_missing %} alla spedizione gratuita. Oppure ritiro gratuito in negozio.</small>
-        {%- else -%}
-          <small>IVA inclusa. Spedizione al pagamento, oppure ritiro gratuito in negozio.</small>
-        {%- endif -%}
-        <form action="{{ routes.cart_url }}" method="post">
-          <button id="checkout-submit" class="bz-drawer__go" type="submit" name="checkout">Vai al pagamento →</button>
-        </form>
-      </aside>
-    </div>
-  {%- endif -%}
-</div>
-
+      <div class="cart-total"><span>Totale</span><strong id="cart-total">{% render 'bz-money', cents: cart.total_price %}</strong></div>
+      <a class="btn gold checkout" href="{{ routes.cart_url }}/checkout">Vai al pagamento →</a>
+      <p>Spediamo solo in Italia. Il corriere Express è {{ settings.bz_express_rate | default: '5,90' }} €, gratuito da {{ settings.bz_free_shipping | default: 50 }} €.</p>
+      <div class="pickup-note">
+        {% render 'bz-icon', name: 'storefront' %}
+        <p><strong>Ritiri un ordine?</strong> Al pagamento scegli <em>Ritiro in negozio</em>: è gratuito e di solito è pronto in 4 ore.</p>
+      </div>
+      <p>{% render 'bz-hours', part: 'summary' %}</p>
+    </aside>
+  </div>
+</section>
 {% schema %}
 {
   "name": "Carrello",
-  "class": "bz-cart-section",
   "settings": [],
   "presets": [{ "name": "Carrello" }]
 }

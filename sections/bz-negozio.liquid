@@ -1,0 +1,40 @@
+<div class="bz-stack">
+  <section class="split hero">
+    <div class="split-copy">
+      <h1>Il <em>negozio</em></h1>
+      <p>{{ section.settings.intro | escape }}</p>
+      {% render 'bz-open-badge', variant: 'full', linked: false %}
+    </div>
+    <div class="split-photo"><img src="{{ 'bz-negozio-negozio-copertina.jpg' | asset_url }}" alt="Il negozio a Cento" width="1400" height="900"></div>
+  </section>
+  <section class="info-card">
+    <h2>Entra, dai un’<em>occhiata</em></h2>
+    <p>{{ settings.bz_address }}. Tel. {{ settings.bz_phone }}. {{ settings.bz_email }}.</p>
+    <p>{% render 'bz-hours', part: 'summary' %}</p>
+    <p>Benessere Zen di Balboni Simona, P. IVA 02091600383. Sede legale: Via Olindo Malagodi 2, 44042 Cento FE. Il negozio è in Via Marcello Provenzali 1.</p>
+    <p><a href="{{ pages['contact'].url | default: '/pages/contact' }}">Contatti</a> · <a href="/pages/spedizioni">Spedizioni</a></p>
+  </section>
+  <section class="shop-tour" aria-labelledby="tour-title">
+    <div>
+      <h2 id="tour-title">Il banco</h2>
+      <p>Sei scatti dal negozio, gli stessi del sito.</p>
+    </div>
+    <div class="tour-stage">
+      {%- assign shots = 'bz-negozio-ventaglio-1-mala-e-portaincensi.jpg|bz-negozio-ventaglio-2-bracciali.jpg|bz-negozio-ventaglio-3-selenite.jpg|bz-negozio-ventaglio-4-candele.jpg|bz-negozio-ventaglio-5-tisane-e-tazze.jpg|bz-negozio-ventaglio-6-ciondoli.jpg' | split: '|' -%}
+      {%- for shot in shots -%}
+        <a class="tour-card" href="{{ shot | asset_url }}" style="--x:{{ forloop.index0 | times: 12 }}%;--tilt:{{ forloop.index0 | minus: 2 | times: 2 }}deg;--layer:{{ forloop.index }}">
+          <img src="{{ shot | asset_url }}" alt="Il negozio, scatto {{ forloop.index }}" width="800" height="1000" loading="lazy">
+        </a>
+      {%- endfor -%}
+    </div>
+  </section>
+</div>
+{% schema %}
+{
+  "name": "Il negozio",
+  "settings": [
+    { "type": "textarea", "id": "intro", "label": "Intro", "default": "Siamo in Via Marcello Provenzali 1, a Cento. Molti pezzi del sito sono anche in vetrina: puoi pagare online o venire a sceglierli di persona." }
+  ],
+  "presets": [{ "name": "Il negozio" }]
+}
+{% endschema %}

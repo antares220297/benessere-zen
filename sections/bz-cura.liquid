@@ -1,0 +1,104 @@
+<div class="bz-stack">
+  <section class="cura-hero" aria-labelledby="cura-title">
+    <img src="{{ 'bz-cover-cura-di-se-v3b.jpg' | asset_url }}" alt="" width="1600" height="1000">
+    <div class="cura-hero-copy">
+      <h1 id="cura-title">Cura di <em>sé</em></h1>
+      <p>{{ section.settings.intro | escape }}</p>
+      <div class="cura-actions">
+        <a class="btn gold" href="{{ section.settings.ayurveda_link }}">Cos’è l’Ayurveda</a>
+        <a class="btn outline" href="#iniziare">Scegli da dove iniziare</a>
+      </div>
+    </div>
+  </section>
+  <section class="cura-consiglio" aria-labelledby="consiglio-title">
+    <article class="cura-quote">
+      <div class="cura-quote-text">
+        <h2 id="consiglio-title">Il consiglio in <em>negozio</em></h2>
+        <p>{{ section.settings.advice | escape }}</p>
+      </div>
+      <div class="cura-quote-photo"><img src="{{ 'bz-negozio-cura-consiglio-in-negozio.jpg' | asset_url }}" alt="Consiglio in negozio" width="1200" height="900" loading="lazy"></div>
+    </article>
+    <aside class="cura-hours">
+      <p>{{ settings.bz_address }}</p>
+      {% render 'bz-open-badge', variant: 'full', linked: true %}
+      <p>{% render 'bz-hours', part: 'summary' %}</p>
+    </aside>
+  </section>
+  <section class="categories" id="iniziare">
+    <h2>Scegli da dove iniziare</h2>
+    <div class="spheres">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'sphere' -%}
+          {%- assign coll = block.settings.collection -%}
+          <a href="{{ coll.url | default: routes.all_products_collection_url }}">
+            {%- if coll.products.first.featured_image -%}{{ coll.products.first.featured_image | image_url: width: 240 | image_tag: alt: block.settings.label, width: 106, height: 106, loading: 'lazy' }}{%- endif -%}
+            <span>{{ block.settings.label | escape }}</span>
+          </a>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </section>
+  <section class="cura-routine" id="routine" aria-labelledby="routine-title">
+    <div class="cura-routine-bg cura-day" aria-hidden="true"></div>
+    <div class="cura-routine-bg cura-night" aria-hidden="true"></div>
+    <div class="cura-routine-content">
+      <div class="bz-sh">
+        <h2 id="routine-title">Mattina e <em>sera</em></h2>
+        <div class="bz-pills cura-switch" role="group" aria-label="Momento della giornata">
+          <span class="cura-switch-thumb" aria-hidden="true"></span>
+          <button type="button" data-mode="0" aria-pressed="true">Mattina</button>
+          <button type="button" data-mode="1" aria-pressed="false">Sera</button>
+        </div>
+      </div>
+      <div class="cura-routine-layout">
+        <ol class="cura-stations" aria-label="Passi della routine">
+          {%- assign steps = 'Detergi|Tonifica|Proteggi' | split: '|' -%}
+          {%- for step in steps -%}
+            <li><button type="button" data-step="{{ forloop.index0 }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="routine-products"><span class="cura-stop">{{ forloop.index }}</span><span class="cura-stop-label">{{ step }}</span></button></li>
+          {%- endfor -%}
+        </ol>
+        <div id="routine-products" aria-live="polite" aria-atomic="true">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'step' and block.settings.product != blank -%}
+              {%- assign product = block.settings.product -%}
+              <article class="cura-routine-product" data-routine-product="{{ block.settings.mode }}-{{ block.settings.step }}" {% unless block.settings.mode == '0' and block.settings.step == '0' %}hidden{% endunless %}>
+                <a class="cura-product-image" href="{{ product.url }}">
+                  {%- if product.featured_image -%}{{ product.featured_image | image_url: width: 800 | image_tag: alt: product.title, loading: 'lazy', widths: '300, 600, 800', sizes: '40vw' }}{%- endif -%}
+                </a>
+                <div class="cura-product-copy">
+                  <span class="cura-product-step">{% if block.settings.mode == '1' %}Sera{% else %}Mattina{% endif %} · 0{{ block.settings.step | plus: 1 }} / 03</span>
+                  <h3><a href="{{ product.url }}">{{ product.title | escape }}</a></h3>
+                  <span class="price">{% render 'bz-money', cents: product.price %}</span>
+                  <a class="btn gold" href="{{ product.url }}">Vedi il prodotto →</a>
+                </div>
+              </article>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% schema %}
+{
+  "name": "Cura di sé",
+  "settings": [
+    { "type": "textarea", "id": "intro", "label": "Intro", "default": "Viso, corpo e piccoli gesti da scegliere per ogni giorno." },
+    { "type": "textarea", "id": "advice", "label": "Consiglio", "default": "Oggi in negozio Simona consiglia su dosha e chakra, partendo da quello che usi già. Per oltre trent’anni ha fatto massaggi e Reiki: non è quello che si fa oggi in bottega." },
+    { "type": "url", "id": "ayurveda_link", "label": "Link Ayurveda" }
+  ],
+  "blocks": [
+    { "type": "sphere", "name": "Sfera", "settings": [
+      { "type": "text", "id": "label", "label": "Nome" },
+      { "type": "collection", "id": "collection", "label": "Collezione" }
+    ] },
+    { "type": "step", "name": "Passo", "settings": [
+      { "type": "select", "id": "mode", "label": "Momento", "default": "0", "options": [ { "value": "0", "label": "Mattina" }, { "value": "1", "label": "Sera" } ] },
+      { "type": "select", "id": "step", "label": "Passo", "default": "0", "options": [ { "value": "0", "label": "1" }, { "value": "1", "label": "2" }, { "value": "2", "label": "3" } ] },
+      { "type": "product", "id": "product", "label": "Prodotto" }
+    ] }
+  ],
+  "max_blocks": 20,
+  "presets": [{ "name": "Cura di sé" }]
+}
+{% endschema %}

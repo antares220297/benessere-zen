@@ -1,82 +1,11 @@
 {
   "sections": {
-    "hero": {
-      "type": "bz-page-hero",
-      "settings": {
-        "title": "Benessere Zen, a Cento",
-        "text": "In Via Marcello Provenzali 1 le pietre sono in vetrina e gli oli dietro il banco. Il sito è lo stesso catalogo: spedizione, ritiro, o la pietra in mano.",
-        "collection": "gioielli-con-pietre",
-        "button_label": "Vieni in negozio",
-        "button_link": "/pages/il-negozio"
-      }
-    },
-    "story": {
-      "type": "bz-story",
-      "blocks": {
-        "storia": {
-          "type": "band",
-          "settings": {
-            "title": "La storia",
-            "text": "Mi chiamo Simona. Faccio l’estetista da oltre trent’anni: in quel percorso ho lavorato a lungo con il massaggio ayurvedico e con il Reiki. Non è quello che offro oggi in negozio.",
-            "text_2": "Con mio figlio Michael e il mio compagno Roberto ho aperto questa bottega, per il benessere ayurvedico e per le pietre, i mala e gli incensi che vedi in vetrina.",
-            "collection": "ayurveda"
-          }
-        },
-        "pietre": {
-          "type": "band",
-          "settings": {
-            "title": "Le pietre e il resto",
-            "text": "C’è chi entra per un bracciale in ametista, chi per un incenso, chi per uno shampoo. Rituale, qui, è un gesto: un’intenzione, un mala da 108 grani, una pietra sul piatto. Non una lezione e non una cura.",
-            "text_2": "In negozio si può chiedere un consiglio su dosha e chakra. Niente diagnosi e niente promesse di cura.",
-            "collection": "mala-tibetani",
-            "flip": true
-          }
-        },
-        "piante": {
-          "type": "band",
-          "settings": {
-            "title": "Piante e materie",
-            "text": "Crediamo nel lavoro delle piante, negli oli essenziali e nei gesti di ogni giorno.",
-            "text_2": "Scegliamo marche attente alla pelle, a chi le produce e all’ambiente e, dove ci sta, al commercio equo e solidale. Il benessere, per noi, non finisce all’estetica.",
-            "collection": "profumi-in-olio"
-          }
-        }
-      },
-      "block_order": ["storia", "pietre", "piante"]
-    },
-    "values": {
-      "type": "bz-values",
-      "settings": { "heading": "In concreto" },
-      "blocks": {
-        "banco": { "type": "card", "settings": { "title": "Il banco a Cento", "text": "Via Marcello Provenzali 1, 44042 Cento (FE)." } },
-        "foto": { "type": "card", "settings": { "title": "Il pezzo in foto", "text": "Sui cristalli e su molti oggetti, quello che vedi è quello che parte o che ritiri. Sui pezzi in serie, te lo diciamo in scheda." } },
-        "ritiro": { "type": "card", "settings": { "title": "Si può ritirare", "text": "Paghi online e passi in negozio, o scegli tutto qui." } }
-      },
-      "block_order": ["banco", "foto", "ritiro"]
-    },
-    "shop": {
-      "type": "bz-shopnote",
-      "settings": {
-        "title": "Passa quando vuoi",
-        "text": "Siamo all’inizio di questo percorso, e lo facciamo con il piacere di chi sta in negozio.",
-        "address": "Via Marcello Provenzali 1, 44042 Cento (FE). +39 347 088 3168. info@benesserezen.shop.",
-        "hours": "Lunedì, martedì, mercoledì, venerdì e sabato 9:30–12:30 e 16:00–19:30. Giovedì 9:00–13:00.",
-        "collection": "pietre-burattate",
-        "button_label": "Vedi i gioielli",
-        "button_link": "/collections/gioielli-con-pietre"
-      }
-    },
-    "doors": {
-      "type": "bz-tiles",
-      "settings": { "heading": "Dal catalogo" },
-      "blocks": {
-        "gioielli": { "type": "tile", "settings": { "label": "Gioielli", "collection": "gioielli-con-pietre" } },
-        "mala": { "type": "tile", "settings": { "label": "Mala", "collection": "mala-tibetani" } },
-        "ayurveda": { "type": "tile", "settings": { "label": "Ayurveda", "collection": "ayurveda" } },
-        "incensi": { "type": "tile", "settings": { "label": "Incensi", "collection": "incensi-e-brucia-incensi-2" } }
-      },
-      "block_order": ["gioielli", "mala", "ayurveda", "incensi"]
+    "page": {
+      "type": "bz-chi-siamo",
+      "settings": {}
     }
   },
-  "order": ["hero", "story", "values", "shop", "doors"]
+  "order": [
+    "page"
+  ]
 }

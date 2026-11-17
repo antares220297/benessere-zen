@@ -1,0 +1,104 @@
+<div class="bz-stack ayurveda">
+  <section class="split hero">
+    <div class="split-copy">
+      <h1>Cos’è l’<em>Ayurveda</em></h1>
+      <p>{{ section.settings.intro | escape }}</p>
+      <a class="btn gold" href="{{ section.settings.collection_link }}">Vedi l’Ayurveda</a>
+    </div>
+    <div class="split-photo"><img src="{{ 'bz-cover-ayurveda-v3.jpg' | asset_url }}" alt="Cos’è l’Ayurveda" width="1400" height="900"></div>
+  </section>
+  <section class="split story flip">
+    <div class="split-photo"><img src="{{ 'bz-cover-ayurveda-v3.jpg' | asset_url }}" alt="" width="1200" height="800" loading="lazy"></div>
+    <div class="split-copy">
+      <h2>Da dove <em>arriva</em></h2>
+      <p>Nella tradizione, le radici arrivano molto indietro nel tempo. Si usano erbe, oli e gesti di ogni giorno.</p>
+    </div>
+  </section>
+  <section class="categories" id="iniziare">
+    <h2>Scegli da dove iniziare</h2>
+    <div class="spheres">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'sphere' -%}
+          {%- assign coll = block.settings.collection -%}
+          <a href="{{ coll.url }}"><span>{{ block.settings.label | escape }}</span></a>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </section>
+  <section class="dosha-section" id="tre-energie">
+    <h2>Tre <em>energie</em></h2>
+    <p class="dosha-intro">Nella tradizione si distinguono tre dosha. Non è una diagnosi. Puoi partire da qui per scegliere un olio o un gesto di ogni giorno.</p>
+    <article class="dosha-idea" id="dosha-cerchi">
+      <div class="dosha-layout">
+        <div class="venn-stage" role="group" aria-label="Scegli un dosha">
+          <button class="dosha-circle vata" type="button" data-dosha="0" aria-label="Vata, aria e spazio" aria-pressed="true" aria-controls="circle-panel"></button>
+          <button class="dosha-circle pitta" type="button" data-dosha="1" aria-label="Pitta, fuoco e acqua" aria-pressed="false" aria-controls="circle-panel"></button>
+          <button class="dosha-circle kapha" type="button" data-dosha="2" aria-label="Kapha, terra e acqua" aria-pressed="false" aria-controls="circle-panel"></button>
+          <svg class="venn-orbit" aria-hidden="true" focusable="false"></svg>
+        </div>
+        <div class="dosha-panel" id="circle-panel" aria-live="polite" aria-atomic="true"></div>
+      </div>
+      <p>I significati appartengono alla tradizione e non sostituiscono il parere di un medico.</p>
+    </article>
+    {%- assign doshas = 'Vata|Pitta|Kapha' | split: '|' -%}
+    {%- assign lines = section.settings.vata_text | append: '||' | append: section.settings.pitta_text | append: '||' | append: section.settings.kapha_text | split: '||' -%}
+    {%- for name in doshas -%}
+      <template id="dosha-content-{{ forloop.index0 }}">
+        <div class="dosha-copy">
+          <span class="dosha-eyebrow">Nella tradizione ayurvedica</span>
+          <h3><em>{{ name }}</em></h3>
+          <p>{{ lines[forloop.index0] }}</p>
+        </div>
+        <div class="dosha-products">
+          {%- for block in section.blocks -%}
+            {%- assign dosha_index = forloop.parentloop.index0 | append: '' -%}
+            {%- if block.type == 'dosha_product' and block.settings.dosha == dosha_index -%}
+              {%- assign product = block.settings.product -%}
+              {%- if product.title != blank -%}
+                <a class="ay-product" href="{{ product.url }}">
+                  <div class="ay-product-photo">{%- if product.featured_image -%}{{ product.featured_image | image_url: width: 600 | image_tag: alt: product.title, loading: 'lazy' }}{%- endif -%}</div>
+                  <span>{{ product.title | escape }}</span>
+                  <b>{% render 'bz-money', cents: product.price %}</b>
+                </a>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </template>
+    {%- endfor -%}
+  </section>
+  <section class="split story counsel">
+    <div class="split-copy">
+      <h2>Simona <em>consiglia</em></h2>
+      <p>Per oltre trent’anni Simona ha fatto massaggi ayurvedici e Reiki. Oggi in negozio consiglia su dosha e chakra.</p>
+      <p>Puoi partire da quello che usi già. Passa in Via Marcello Provenzali 1, a Cento.</p>
+      <a class="btn outline" href="{{ pages['il-negozio'].url | default: '/pages/il-negozio' }}">Il negozio →</a>
+    </div>
+  </section>
+</div>
+{% schema %}
+{
+  "name": "Ayurveda",
+  "settings": [
+    { "type": "textarea", "id": "intro", "label": "Intro", "default": "Una tradizione nata in India. Si porta in casa con un olio, un’infusione, un lavaggio." },
+    { "type": "url", "id": "collection_link", "label": "Link collezione" },
+    { "type": "textarea", "id": "vata_text", "label": "Vata", "default": "Aria e spazio. Movimento e leggerezza, un ritmo che fa fatica a fermarsi. Nella pratica, routine stabili e oli più caldi." },
+    { "type": "textarea", "id": "pitta_text", "label": "Pitta", "default": "Fuoco e acqua. Trasformazione e determinazione, un fuoco che a volte sale troppo. Nella pratica, pause e cose più fresche." },
+    { "type": "textarea", "id": "kapha_text", "label": "Kapha", "default": "Terra e acqua. Stabilità e costanza, un passo che a volte si fa pesante. Nella pratica, movimento e spezie più vive." }
+  ],
+  "blocks": [
+    { "type": "sphere", "name": "Sfera", "settings": [
+      { "type": "text", "id": "label", "label": "Nome" },
+      { "type": "collection", "id": "collection", "label": "Collezione" }
+    ] },
+    { "type": "dosha_product", "name": "Prodotto dosha", "settings": [
+      { "type": "select", "id": "dosha", "label": "Dosha", "default": "0", "options": [
+        { "value": "0", "label": "Vata" }, { "value": "1", "label": "Pitta" }, { "value": "2", "label": "Kapha" }
+      ] },
+      { "type": "product", "id": "product", "label": "Prodotto" }
+    ] }
+  ],
+  "max_blocks": 20,
+  "presets": [{ "name": "Ayurveda" }]
+}
+{% endschema %}

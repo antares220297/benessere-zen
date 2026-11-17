@@ -1,30 +1,11 @@
 {
   "sections": {
-    "hero": {
-      "type": "bz-page-hero",
-      "settings": {
-        "title": "Contattaci"
-      }
-    },
-    "form": {
-      "type": "bz-contact",
-      "settings": {
-        "heading": "Domande? Inviaci una mail!",
-        "success_message": "Grazie per averci contattato. Ti risponderemo il prima possibile."
-      }
-    },
-    "note": {
-      "type": "bz-shopnote",
-      "settings": {
-        "title": "Il negozio",
-        "address": "Via Marcello Provenzali 1, 44042 Cento FE. Tel +39 347 088 3168. info@benesserezen.shop.",
-        "hours": "Orari: lunedì, martedì, mercoledì, venerdì e sabato 9:30–12:30 e 16:00–19:30; giovedì 9:00–13:00."
-      }
+    "page": {
+      "type": "bz-contatti",
+      "settings": {}
     }
   },
   "order": [
-    "hero",
-    "form",
-    "note"
+    "page"
   ]
 }

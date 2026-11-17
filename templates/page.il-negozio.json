@@ -1,34 +1,11 @@
 {
   "sections": {
-    "hero": {
-      "type": "bz-page-hero",
-      "settings": {
-        "title": "Il negozio",
-        "title_accent": "negozio",
-        "text": "Benessere Zen è un negozio fisico a Cento (Ferrara). Molti dei pezzi che vedi sul sito li trovi anche in vetrina: puoi pagare online oppure venire a sceglierli di persona, con la pietra tra le mani."
-      }
-    },
-    "note": {
-      "type": "bz-shopnote",
-      "settings": {
-        "title": "Orari",
-        "address": "Siamo in Via Marcello Provenzali 1, 44042 Cento FE. Telefono +39 347 088 3168, email info@benesserezen.shop.",
-        "hours": "Lunedì, martedì, mercoledì, venerdì e sabato: 9:30–12:30 e 16:00–19:30\nGiovedì: 9:00–13:00"
-      }
-    },
-    "details": {
-      "type": "bz-shop-details",
-      "settings": {
-        "pickup": "Se hai ordinato online e preferisci ritirare in negozio, scrivici o telefonaci dopo l’ordine e ci mettiamo d’accordo.",
-        "heading": "Dati dell’attività",
-        "business": "Benessere Zen di Balboni Simona, P. IVA 02091600383. Sede legale: Via Olindo Malagodi 2, 44042 Cento FE. Il negozio è in Via Marcello Provenzali 1.",
-        "links": "<p>Per una domanda c’è anche la pagina <a href=\"/pages/contact\">Contatti</a>. Per costi di spedizione e resi, vai a <a href=\"/pages/spedizioni\">Spedizioni</a>. Per farti un’idea prima di passare, parti dai <a href=\"/collections/gioielli-con-pietre\">gioielli con pietre</a> o dalle <a href=\"/collections/pietre-grezze\">pietre grezze</a> e <a href=\"/collections/pietre-burattate\">burattate</a>.</p>"
-      }
+    "page": {
+      "type": "bz-negozio",
+      "settings": {}
     }
   },
   "order": [
-    "hero",
-    "note",
-    "details"
+    "page"
   ]
 }
