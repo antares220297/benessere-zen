@@ -181,6 +181,11 @@
                   Indietro
                 </button>
                 <p class="bz-nav__panel-title">{{ link.title | escape }}</p>
+                {%- if link.url != blank and link.url != '#' -%}
+                  <div class="bz-nav__group">
+                    <a class="bz-nav__child" href="{{ link.url }}">Vedi tutto</a>
+                  </div>
+                {%- endif -%}
                 {%- for child in link.links -%}
                   <div class="bz-nav__group">
                     {%- if child.url != blank and child.url != '#' -%}

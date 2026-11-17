@@ -750,8 +750,15 @@
   }
 
   .bz-nav.is-open .bz-nav__item {
+    position: static;
     flex-wrap: wrap;
     align-items: stretch;
+  }
+
+  .bz-nav.is-open.is-sub > .bz-nav__link,
+  .bz-nav.is-open.is-sub > .bz-nav__item > .bz-nav__link,
+  .bz-nav.is-open.is-sub > .bz-nav__item > .bz-nav__more {
+    visibility: hidden;
   }
 
   .bz-nav.is-open .bz-nav__item > .bz-nav__link {
@@ -806,11 +813,13 @@
     border-radius: 0;
     background: #141312;
     box-shadow: none;
+    visibility: hidden;
     transform: translateX(100%);
-    transition: transform 0.28s ease;
+    transition: transform 0.28s ease, visibility 0.28s;
   }
 
   .bz-nav.is-open .bz-nav__item.is-open > .bz-nav__panel {
+    visibility: visible;
     transform: translateX(0);
   }
 
