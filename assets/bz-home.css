@@ -442,9 +442,29 @@ body:has(.bz-hero) {
 
 .bz-picked__tools {
   display: flex;
+  min-width: 0;
+  max-width: 100%;
   gap: 18px;
   align-items: center;
   flex-wrap: wrap;
+}
+
+.bz-picked__tools > * {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.bz-picked__tools > .bz-pills {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.bz-picked__tools > .bz-pills::-webkit-scrollbar {
+  display: none;
+}
+
+.bz-picked__tools > .bz-pills button {
+  flex-shrink: 0;
 }
 
 .bz-pills,
