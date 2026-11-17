@@ -1,0 +1,42 @@
+{% comment %}
+  Product card. card: product. style: home (default) or plp.
+{% endcomment %}
+{%- liquid
+  assign card = card
+  assign variant = card.selected_or_first_available_variant
+  assign card_style = style | default: 'home'
+-%}
+<article class="product{% if card_style == 'plp' %} pcard{% endif %}">
+  <a href="{{ card.url }}">
+    {%- if card_style == 'plp' -%}
+      <div class="pc-well">
+        {%- unless card.available -%}<span class="pc-badge">Esaurito</span>{%- endunless -%}
+        {%- if card.featured_image != blank -%}
+          {{ card.featured_image | image_url: width: 800 | image_tag: alt: card.title, loading: 'lazy', widths: '240, 400, 640, 800', sizes: '(min-width: 1024px) 22vw, 45vw', width: card.featured_image.width, height: card.featured_image.height }}
+        {%- endif -%}
+      </div>
+      <h3 class="pc-name">{{ card.title | escape }}</h3>
+    {%- else -%}
+      {%- if card.featured_image != blank -%}
+        {{ card.featured_image | image_url: width: 800 | image_tag: alt: card.title, loading: 'lazy', widths: '240, 400, 640, 800', sizes: '(min-width: 1024px) 18vw, 45vw', width: card.featured_image.width, height: card.featured_image.height }}
+      {%- endif -%}
+      <h3>{{ card.title | escape }}</h3>
+    {%- endif -%}
+  </a>
+  <div class="product-bottom">
+    {%- if card_style == 'plp' -%}
+      <div class="price{% unless card.available %} out{% endunless %}">{% render 'bz-money', cents: card.price %}</div>
+    {%- else -%}
+      <div>
+        {%- if card.type != blank -%}<small>{{ card.type | escape }}</small>{%- endif -%}
+        <div class="price">{% render 'bz-money', cents: card.price %}</div>
+      </div>
+    {%- endif -%}
+    <button
+      class="add"
+      type="button"
+      {% if card.available and variant %}data-bz-add="{{ variant.id }}"{% else %}disabled{% endif %}
+      aria-label="{% if card.available %}Aggiungi al carrello: {{ card.title | escape }}{% else %}{{ card.title | escape }}: esaurito{% endif %}"
+    >+</button>
+  </div>
+</article>

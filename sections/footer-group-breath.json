@@ -216,8 +216,6 @@
     }
   },
   "order": [
-    "bz_footer",
-    "newsletter",
-    "footer"
+    "bz_footer"
   ]
 }

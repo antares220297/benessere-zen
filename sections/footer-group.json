@@ -289,9 +289,6 @@
     }
   },
   "order": [
-    "bz_footer",
-    "newsletter_PGyBAW",
-    "quick_links",
-    "footer"
+    "bz_footer"
   ]
 }

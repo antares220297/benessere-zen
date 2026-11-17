@@ -1,94 +1,28 @@
-{{ 'bz-tokens.css' | asset_url | stylesheet_tag }}
-{{ 'bz-announcement.css' | asset_url | stylesheet_tag }}
-{{ 'bz-announcement-mobile.css' | asset_url | stylesheet_tag }}
-
-{%- assign threshold = settings.bz_free_shipping_threshold | default: 50 -%}
-
-<div class="bz">
-  <div class="ann" role="region" aria-label="{{ section.settings.region_label | escape }}">
-    <p class="bz-ann__half">
-      <span class="bz-ann__long">Spedizione gratuita da {{ threshold }} €</span>
-      <span class="bz-ann__short">Gratis da {{ threshold }} €</span>
-    </p>
-    <p class="bz-ann__half">
-      <span class="bz-ann__long">Ogni pezzo è anche in negozio</span>
-      <span class="bz-ann__short">Anche in negozio</span>
-    </p>
-  </div>
+{%- liquid
+  assign threshold = section.settings.free_shipping_threshold | default: settings.bz_free_shipping | default: 50
+  assign shop_page = pages['il-negozio']
+  assign shop_url = shop_page.url | default: '/pages/il-negozio'
+-%}
+<div class="announcement" role="region" aria-label="{{ section.settings.region_label | escape }}">
+  <span>Spedizione gratuita da <b>{{ threshold }} €</b></span>
+  <span><a href="{{ shop_url }}">Ogni pezzo è anche <b>in negozio</b></a></span>
 </div>
-
 {% schema %}
 {
   "name": "Barra annuncio",
   "class": "bz-announcement",
   "max_blocks": 3,
   "settings": [
-    {
-      "type": "text",
-      "id": "region_label",
-      "label": "Etichetta per lettori di schermo",
-      "default": "Annunci"
-    },
-    {
-      "type": "number",
-      "id": "free_shipping_threshold",
-      "label": "Soglia spedizione gratuita",
-      "info": "Soglia attuale del negozio: 50 €. 0 nasconde la pillola.",
-      "default": 50
-    },
-    {
-      "type": "text",
-      "id": "pill_text",
-      "label": "Testo della pillola",
-      "info": "Scrivi [soglia] dove deve comparire l'importo.",
-      "default": "Spedizione gratuita da [soglia] €"
-    }
+    { "type": "text", "id": "region_label", "label": "Etichetta per lettori di schermo", "default": "Annunci" },
+    { "type": "number", "id": "free_shipping_threshold", "label": "Soglia spedizione gratuita", "default": 50 },
+    { "type": "text", "id": "pill_text", "label": "Testo della pillola", "default": "Spedizione gratuita da [soglia] €" }
   ],
   "blocks": [
-    {
-      "type": "message",
-      "name": "Messaggio",
-      "settings": [
-        {
-          "type": "text",
-          "id": "text",
-          "label": "Testo",
-          "info": "Lascia vuoto per nascondere. Conferma tempi di ritiro e giorni di reso prima di pubblicare: non sono dati di checkout."
-        },
-        {
-          "type": "text",
-          "id": "text_mobile",
-          "label": "Testo breve su telefono",
-          "info": "Se è vuoto si usa il testo intero. Su schermi stretti una frase lunga scorre, non viene tagliata a metà."
-        }
-      ]
-    }
+    { "type": "message", "name": "Messaggio", "settings": [
+      { "type": "text", "id": "text", "label": "Testo" },
+      { "type": "text", "id": "text_mobile", "label": "Testo breve su telefono" }
+    ] }
   ],
-  "presets": [
-    {
-      "name": "Barra annuncio",
-      "blocks": [
-        {
-          "type": "message",
-          "settings": {
-            "text": "",
-            "text_mobile": ""
-          }
-        },
-        {
-          "type": "message",
-          "settings": {
-            "text": "Reso entro 14 giorni"
-          }
-        },
-        {
-          "type": "message",
-          "settings": {
-            "text": "Ogni pezzo del sito è anche in negozio"
-          }
-        }
-      ]
-    }
-  ]
+  "presets": [{ "name": "Barra annuncio" }]
 }
 {% endschema %}

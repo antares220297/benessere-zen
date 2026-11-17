@@ -169,7 +169,6 @@
     }
   },
   "order": [
-    "bz_footer",
-    "footer"
+    "bz_footer"
   ]
 }

@@ -1,399 +1,250 @@
-{{ 'bz-tokens.css' | asset_url | stylesheet_tag }}
-{{ 'bz-chrome.css' | asset_url | stylesheet_tag }}
-
 {%- liquid
-  assign word_lead = section.settings.wordmark_lead | default: shop.name
-  assign word_zen = section.settings.wordmark_accent
-  assign words = section.settings.placeholder_words | newline_to_br | strip_newlines | split: '<br />'
-  assign first_word = words | first | strip
-  assign word_list = words | join: '|'
-  assign search_collection = section.settings.search_collection
+  assign nav = section.settings.menu
+  if nav == blank or nav.links.size == 0
+    assign nav = linklists['main-menu']
+  endif
+  if nav == blank or nav.links.size == 0
+    assign nav = linklists['bz-menu-v2']
+  endif
 -%}
-
-<div class="bz bz-chrome">
-  <header class="bz-header">
-    <button class="bz-burger" type="button" data-bz-burger aria-expanded="false" aria-controls="BzNav" aria-label="{{ section.settings.menu_label | escape }}">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18M3 12h18M3 17h12"/></svg>
-    </button>
-
-    <a class="bz-brand" href="{{ routes.root_url }}">
-      {%- if section.settings.logo != blank -%}
-        {{ section.settings.logo | image_url: width: 160 | image_tag: alt: shop.name, class: 'bz-brand__logo', widths: '80, 120, 160', sizes: '50px', width: 50, height: 50 }}
-      {%- else -%}
-        <img class="bz-brand__logo" src="{{ 'shop-logo.png' | asset_url }}" alt="{{ shop.name | escape }}" width="50" height="50">
-      {%- endif -%}
-      <span class="bz-wordmark">
-        {{ word_lead | escape }}
-        {%- if word_zen != blank -%}
-          <span class="bz-wordmark__zen">{{ word_zen | escape }}</span>
+<header>
+  <a class="brand" href="{{ routes.root_url }}">
+    {%- if section.settings.logo != blank -%}
+      {{ section.settings.logo | image_url: width: 160 | image_tag: alt: shop.name, loading: 'eager', widths: '80, 120, 160', width: 43, height: 43 }}
+    {%- else -%}
+      <img src="{{ 'shop-logo.png' | asset_url }}" alt="{{ shop.name | escape }}" width="43" height="43">
+    {%- endif -%}
+    <span>{{ section.settings.wordmark_lead | default: 'Benessere' | escape }} <em>{{ section.settings.wordmark_accent | default: 'Zen' | escape }}</em></span>
+  </a>
+  <nav class="main-nav" aria-label="{{ section.settings.menu_label | default: 'Menu principale' | escape }}">
+    {%- for link in nav.links -%}
+      <div class="nav-item">
+        {%- if link.links.size > 0 -%}
+          <a href="{{ link.url }}" data-vetrina="{{ forloop.index0 }}" aria-expanded="false" aria-controls="vetrina">{{ link.title | escape }}</a>
+        {%- else -%}
+          <a href="{{ link.url }}" {% if link.current %}aria-current="page"{% endif %}>{{ link.title | escape }}</a>
         {%- endif -%}
-      </span>
-    </a>
-
-    <form
-      class="bz-search"
-      action="{{ routes.search_url }}"
-      method="get"
-      role="search"
-      data-bz-search
-      data-words="{{ word_list | escape }}"
-      data-default-title="{{ section.settings.results_title | escape }}"
-    >
-      <div class="bz-search__field">
-        <label class="bz-sr" for="BzSearch-{{ section.id }}">{{ section.settings.search_label | escape }}</label>
-        <input id="BzSearch-{{ section.id }}" type="search" name="q" autocomplete="off" placeholder=" " value="{{ search.terms | escape }}">
-        <span class="bz-search__hint" aria-hidden="true">
-          {{ section.settings.placeholder_before | escape }}
-          <b data-bz-word>{{ first_word | escape }}</b>{{ section.settings.placeholder_after | escape }}
-        </span>
-        <button class="bz-search__go" type="submit" aria-label="{{ section.settings.search_label | escape }}">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg>
-        </button>
       </div>
+    {%- endfor -%}
+  </nav>
+  <div class="header-actions">
+    <a href="{{ routes.search_url }}" aria-label="{{ section.settings.search_label | default: 'Cerca' | escape }}">{% render 'bz-icon', name: 'hdr-search' %}</a>
+    <a href="{{ routes.account_url }}" aria-label="{{ section.settings.account_label | default: 'Account' | escape }}">{% render 'bz-icon', name: 'hdr-account' %}</a>
+    <button type="button" data-cart-open aria-label="{{ section.settings.cart_label | default: 'Carrello' | escape }}">
+      {% render 'bz-icon', name: 'hdr-bag' %}
+      <span class="sr-only" data-cart-count>{{ cart.item_count }}</span>
+    </button>
+    <button class="menu-toggle" type="button" aria-label="Apri menu" aria-expanded="false" aria-controls="bz-mobile">{% render 'bz-icon', name: 'menu' %}</button>
+  </div>
 
-      <div class="bz-search__panel" hidden>
-        <div class="bz-search__suggest">
-          {%- if section.settings.queries_title != blank -%}
-            <h2>{{ section.settings.queries_title | escape }}</h2>
-          {%- endif -%}
-          <div class="bz-chips">
-            {%- for block in section.blocks -%}
-              {%- if block.type == 'query' and block.settings.label != blank -%}
-                {%- if block.settings.link != blank -%}
-                  {%- assign query_url = block.settings.link -%}
-                {%- else -%}
-                  {%- assign query_term = block.settings.label | url_encode -%}
-                  {%- assign query_url = routes.search_url | append: '?q=' | append: query_term -%}
+  <section class="vetrina" id="vetrina" aria-label="Categorie del catalogo" hidden>
+    <div class="vetrina-top">
+      <a class="text-link" data-world-link href="{{ routes.root_url }}">Vedi tutto →</a>
+      <button class="vetrina-close" type="button" aria-label="Chiudi menu">{% render 'bz-icon', name: 'close' %}</button>
+    </div>
+    {%- for link in nav.links -%}
+      {%- if link.links.size > 0 -%}
+        <div class="b-panel" data-world="{{ forloop.index0 }}" {% unless forloop.first %}hidden{% endunless %}>
+          <nav class="b-mothers" aria-label="{{ link.title | escape }}">
+            {%- for child in link.links -%}
+              <div class="mother-row{% if forloop.first %} is-active{% endif %}">
+                <a href="{% render 'bz-link', link: child %}">{{ child.title | escape }}</a>
+                <button type="button" data-mother="{{ forloop.index0 }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}" aria-label="{{ child.title | escape }}">{% render 'bz-icon', name: 'chevron_right' %}</button>
+              </div>
+            {%- endfor -%}
+          </nav>
+          <div class="b-children">
+            {%- for child in link.links -%}
+              <div data-children="{{ forloop.index0 }}" {% unless forloop.first %}hidden{% endunless %}>
+                {%- for grand in child.links -%}
+                  <a class="m-child" href="{% render 'bz-link', link: grand %}">{{ grand.title | escape }}</a>
+                {%- endfor -%}
+                {%- if child.links.size == 0 -%}
+                  <a class="m-child" href="{% render 'bz-link', link: child %}">Vedi tutto</a>
                 {%- endif -%}
-                <a class="bz-chip" {{ block.shopify_attributes }} href="{{ query_url }}">{{ block.settings.label | escape }}</a>
-              {%- endif -%}
+              </div>
             {%- endfor -%}
           </div>
-          {%- assign has_stone = false -%}
-          {%- for block in section.blocks -%}
-            {%- if block.type == 'stone' and block.settings.label != blank -%}
-              {%- assign has_stone = true -%}
+          <div class="b-photo">
+            {%- for child in link.links -%}
+              {%- liquid
+                assign photo_collection = child.object
+                if photo_collection == blank or photo_collection.products_count == nil
+                  assign photo_collection = blank
+                endif
+                assign photo = photo_collection.image | default: photo_collection.featured_image
+                if photo == blank and photo_collection.products.first
+                  assign photo = photo_collection.products.first.featured_image
+                endif
+              -%}
+              <a class="photo-face" data-photo="{{ forloop.index0 }}" href="{% render 'bz-link', link: child %}" {% unless forloop.first %}hidden{% endunless %}>
+                {%- if photo != blank -%}
+                  {{ photo | image_url: width: 900 | image_tag: alt: child.title, loading: 'lazy', widths: '400, 700, 900', sizes: '380px' }}
+                {%- endif -%}
+                <div>
+                  <h3>{{ child.title | escape }}</h3>
+                  {%- if photo_collection.title != blank -%}
+                    {%- capture min_cents -%}{% render 'bz-min-price', handle: photo_collection.handle %}{%- endcapture -%}
+                    {%- assign min_cents = min_cents | strip -%}
+                    <p>{%- if min_cents != blank -%}da {% render 'bz-money', cents: min_cents %}{% endif %}</p>
+                  {%- endif -%}
+                  <span class="btn outline">Vedi tutto →</span>
+                </div>
+              </a>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </section>
+</header>
+
+<nav class="mobile-nav menu-shade" id="bz-mobile" hidden aria-label="Menu mobile">
+  <button class="menu-backdrop" type="button" aria-label="Chiudi menu"></button>
+  <aside class="menu-dialog" role="dialog" aria-modal="true" aria-labelledby="mobile-title" tabindex="-1">
+    <div class="menu-heading">
+      <span id="mobile-title">Benessere <em>Zen</em></span>
+      <button class="phone-close" type="button" aria-label="Chiudi menu">{% render 'bz-icon', name: 'close' %}</button>
+    </div>
+    <div class="mobile-content">
+      <div class="phone-start">
+        <form class="phone-search" action="{{ routes.search_url }}" method="get" role="search">
+          <label class="sr-only" for="menu-search">Cerca</label>
+          <div>
+            <input id="menu-search" type="search" name="q" placeholder="Cerca">
+            <button type="submit" aria-label="Cerca">{% render 'bz-icon', name: 'search' %}</button>
+          </div>
+        </form>
+        <div class="phone-doors">
+          {%- for link in nav.links -%}
+            {%- if link.links.size > 0 -%}
+              <button class="phone-door" type="button" data-door="{{ forloop.index0 }}">
+                <span>{{ link.title | escape }}</span>
+                {% render 'bz-icon', name: 'north_east' %}
+              </button>
             {%- endif -%}
           {%- endfor -%}
-          {%- if has_stone -%}
-            <div class="bz-search__stones">
-              {%- if section.settings.stones_title != blank -%}
-                <h2>{{ section.settings.stones_title | escape }}</h2>
-              {%- endif -%}
-              <div class="bz-chips">
-                {%- for block in section.blocks -%}
-                  {%- if block.type == 'stone' and block.settings.label != blank -%}
-                    {%- if block.settings.link != blank -%}
-                      {%- assign stone_url = block.settings.link -%}
-                    {%- else -%}
-                      {%- assign stone_term = block.settings.label | url_encode -%}
-                      {%- assign stone_url = routes.search_url | append: '?q=' | append: stone_term -%}
-                    {%- endif -%}
-                    <a class="bz-chip" {{ block.shopify_attributes }} href="{{ stone_url }}">
-                      {%- if block.settings.image != blank -%}
-                        {{ block.settings.image | image_url: width: 80 | image_tag: alt: '', widths: '48, 80', sizes: '24px', width: 24, height: 24 }}
-                      {%- endif -%}
-                      {{ block.settings.label | escape }}
-                    </a>
-                  {%- endif -%}
-                {%- endfor -%}
-              </div>
-            </div>
-          {%- endif -%}
         </div>
-        <div class="bz-search__results">
-          <h2 data-bz-results-title>{{ section.settings.results_title | escape }}</h2>
-          <div data-bz-hits>
-            {%- if search_collection != blank -%}
-              {%- for product in search_collection.products limit: 4 -%}
-                <a class="bz-hit" href="{{ product.url }}">
-                  {%- if product.featured_image != blank -%}
-                    {%- assign hit_alt = product.featured_image.alt | default: product.title -%}
-                    {{ product.featured_image | image_url: width: 160 | image_tag: alt: hit_alt, widths: '80, 160', sizes: '56px', width: 56, height: 56, loading: 'lazy' }}
-                  {%- endif -%}
-                  <span>
-                    {{ product.title | escape }}
-                    {%- if product.type != blank -%}
-                      <small>{{ product.type | escape }}</small>
-                    {%- endif -%}
-                  </span>
-                  <span class="bz-hit__price">{% render 'bz-money', cents: product.price %}</span>
-                </a>
-              {%- endfor -%}
+        <nav class="phone-links">
+          {%- for link in nav.links -%}
+            {%- if link.links.size == 0 -%}
+              <a href="{{ link.url }}">{% render 'bz-icon', name: 'storefront' %}{{ link.title | escape }}</a>
             {%- endif -%}
-          </div>
-          <a class="bz-more" href="{{ routes.search_url }}">
-            {{ section.settings.results_link | escape }}
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </a>
-        </div>
+          {%- endfor -%}
+        </nav>
       </div>
-    </form>
-
-    <div class="bz-tools">
-      {%- if section.settings.shop_label != blank and section.settings.shop_url != blank -%}
-        <a class="bz-tools__shop" href="{{ section.settings.shop_url }}">{{ section.settings.shop_label | escape }}</a>
-      {%- endif -%}
-      <button class="bz-search-toggle" type="button" data-bz-search-toggle aria-expanded="false" aria-controls="BzSearch-{{ section.id }}" aria-label="{{ section.settings.search_label | escape }}">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg>
-      </button>
-      <a class="bz-tools__account" href="{{ routes.account_url }}" aria-label="{{ section.settings.account_label | escape }}">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c1.2-3.6 4.1-5.4 7.5-5.4s6.3 1.8 7.5 5.4"/></svg>
-      </a>
-      {%- if section.settings.wishlist_url != blank -%}
-      <a class="bz-tools__wish" href="{{ section.settings.wishlist_url }}" aria-label="{{ section.settings.wishlist_label | escape }}">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg>
-      </a>
-      {%- endif -%}
-      <a class="bz-cart" data-bz-cart href="{{ routes.cart_url }}" aria-label="{{ section.settings.cart_label | escape }}">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 12H6.2z"/><path d="M9 8V6.5a3 3 0 016 0V8"/></svg>
-        <span class="bz-cart__count" data-bz-count>{{ cart.item_count }}</span>
-      </a>
-    </div>
-  </header>
-
-  <div class="bz-navwrap">
-    <nav class="bz-nav" id="BzNav" aria-label="{{ section.settings.menu_label | escape }}">
-      {%- liquid
-        assign nav_menu = section.settings.menu
-        if nav_menu == blank or nav_menu.links.size == 0
-          assign nav_menu = linklists['bz-menu-v2']
-        endif
-        if nav_menu == blank or nav_menu.links.size == 0
-          assign nav_menu = linklists['main-menu']
-        endif
-      -%}
-      {%- if nav_menu != blank and nav_menu.links.size > 0 -%}
-        {%- for link in nav_menu.links -%}
-          {%- if link.links.size > 0 -%}
-            <div class="bz-nav__item{% if link.child_active %} is-open{% endif %}">
-              {%- if link.url != blank and link.url != '#' -%}
-                <a class="bz-nav__link" href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a>
-              {%- else -%}
-                <span class="bz-nav__link">{{ link.title | escape }}</span>
-              {%- endif -%}
-              <button class="bz-nav__more" type="button" data-bz-sub aria-expanded="{% if link.child_active %}true{% else %}false{% endif %}" aria-label="Apri {{ link.title | escape }}">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-              </button>
-              <div class="bz-nav__panel">
-                <button class="bz-nav__back" type="button" data-bz-back>
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
-                  Indietro
-                </button>
-                <p class="bz-nav__panel-title">{{ link.title | escape }}</p>
-                {%- if link.url != blank and link.url != '#' -%}
-                  <div class="bz-nav__group">
-                    <a class="bz-nav__child" href="{{ link.url }}">Vedi tutto</a>
-                  </div>
-                {%- endif -%}
-                {%- for child in link.links -%}
-                  <div class="bz-nav__group">
-                    {%- if child.url != blank and child.url != '#' -%}
-                      <a class="bz-nav__child" href="{{ child.url }}"{% if child.current %} aria-current="page"{% endif %}>{{ child.title | escape }}</a>
-                    {%- else -%}
-                      <span class="bz-nav__child">{{ child.title | escape }}</span>
-                    {%- endif -%}
-                    {%- if child.links.size > 0 -%}
-                      <div class="bz-nav__grand">
-                        {%- for grand in child.links -%}
-                          {%- if grand.url != blank and grand.url != '#' -%}
-                            <a href="{{ grand.url }}"{% if grand.current %} aria-current="page"{% endif %}>{{ grand.title | escape }}</a>
-                          {%- endif -%}
-                        {%- endfor -%}
-                      </div>
-                    {%- endif -%}
-                  </div>
-                {%- endfor -%}
-              </div>
+      {%- for link in nav.links -%}
+        {%- if link.links.size > 0 -%}
+          <div class="phone-panel" data-panel="{{ forloop.index0 }}" hidden>
+            <button class="phone-back" type="button">{% render 'bz-icon', name: 'arrow_back' %} {{ link.title | escape }}</button>
+            <div class="phone-groups">
+              {%- for child in link.links -%}
+                <div class="phone-group">
+                  {%- if child.links.size > 0 -%}
+                    <button class="phone-row mother-row" type="button" aria-expanded="false">{{ child.title | escape }} {% render 'bz-icon', name: 'expand_more' %}</button>
+                    <div class="phone-group-children" hidden>
+                      {%- for grand in child.links -%}
+                        <a href="{% render 'bz-link', link: grand %}">{{ grand.title | escape }}</a>
+                      {%- endfor -%}
+                    </div>
+                  {%- else -%}
+                    <a class="phone-row" href="{% render 'bz-link', link: child %}">{{ child.title | escape }} {% render 'bz-icon', name: 'north_east' %}</a>
+                  {%- endif -%}
+                </div>
+              {%- endfor -%}
             </div>
-          {%- elsif link.url != blank and link.url != '#' -%}
-            <a class="bz-nav__link" href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+      <div class="phone-bottom">
+        {% render 'bz-open-badge', variant: 'compact', linked: true %}
+        <p>{{ settings.bz_address | default: 'Via Marcello Provenzali 1, 44042 Cento FE' }}</p>
+      </div>
+    </div>
+  </aside>
+</nav>
+
+<div class="cart-overlay" hidden>
+  <button class="backdrop" type="button" data-cart-close aria-label="Chiudi carrello"></button>
+  <aside class="drawer" role="dialog" aria-modal="true" aria-label="Il tuo carrello" tabindex="-1">
+    <button class="close" type="button" data-cart-close aria-label="Chiudi carrello">×</button>
+    <h2>Il tuo <em>carrello</em></h2>
+    <div class="shipping" data-shipping>
+      <p data-shipping-text>
+        {%- assign goal = settings.bz_free_shipping | default: 50 | times: 100 -%}
+        {%- assign missing = goal | minus: cart.total_price -%}
+        {%- if cart.total_price >= goal -%}Spedizione gratuita{%- else -%}Ti mancano <strong>{% render 'bz-money', cents: missing %}</strong> per la spedizione gratuita{%- endif -%}
+      </p>
+      <div class="shipping-line">
+        <div class="track" role="progressbar" aria-valuemin="0" aria-valuemax="{{ goal }}" aria-valuenow="{{ cart.total_price }}">
+          <span style="transform:scaleX({{ cart.total_price | times: 1.0 | divided_by: goal | at_most: 1 }})"></span>
+        </div>
+        <span>{{ settings.bz_free_shipping | default: 50 }} €</span>
+      </div>
+    </div>
+    <div data-cart-rows>
+      {%- for item in cart.items -%}
+        <div class="cart-row">
+          {%- if item.image -%}
+            {{ item.image | image_url: width: 200 | image_tag: alt: item.product.title, loading: 'lazy', width: 90, height: 90 }}
           {%- endif -%}
-        {%- endfor -%}
+          <div>
+            <a href="{{ item.url }}">{{ item.product.title | escape }}</a>
+            <p>{{ item.quantity }} × {% render 'bz-money', cents: item.final_price %}</p>
+          </div>
+        </div>
       {%- else -%}
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'link' and block.settings.label != blank and block.settings.link != blank -%}
-            <a
-              class="bz-nav__link{% if block.settings.style == 'accent' %} bz-nav__link--accent{% elsif block.settings.style == 'pill' %} bz-nav__link--pill{% endif %}"
-              href="{{ block.settings.link }}"
-              {{ block.shopify_attributes }}
-            >{{ block.settings.label | escape }}</a>
-          {%- endif -%}
-        {%- endfor -%}
-      {%- endif -%}
-    </nav>
-  </div>
+        <p>Il carrello è vuoto.</p>
+      {%- endfor -%}
+    </div>
+    <div class="cart-total"><span>Totale</span><strong data-cart-total>{% render 'bz-money', cents: cart.total_price %}</strong></div>
+    <a class="btn gold" href="{{ routes.cart_url }}/checkout">Vai al pagamento →</a>
+  </aside>
 </div>
 
-<div id="ajax-loading-cart">{% render 'cart-drawer' %}</div>
-
-<script src="{{ 'bz-chrome.js' | asset_url }}" defer></script>
+{% render 'bz-hours', part: 'boot' %}
+<script>
+  window.BZ = {
+    add: {{ routes.cart_add_url | append: '.js' | json }},
+    cart: {{ routes.cart_url | append: '.js' | json }},
+    change: {{ routes.cart_change_url | append: '.js' | json }}
+  };
+</script>
 
 {% schema %}
 {
   "name": "Intestazione",
   "class": "bz-header-section",
   "settings": [
-    {
-      "type": "image_picker",
-      "id": "logo",
-      "label": "Logo",
-      "info": "Usa il logo già caricato nel negozio. Se è vuoto, resta il logo del tema."
-    },
-    {
-      "type": "text",
-      "id": "wordmark_lead",
-      "label": "Prima parola del nome",
-      "default": "Benessere"
-    },
-    {
-      "type": "text",
-      "id": "wordmark_accent",
-      "label": "Seconda parola, in oro",
-      "default": "Zen"
-    },
-    {
-      "type": "text",
-      "id": "shop_label",
-      "label": "Testo del link negozio",
-      "default": "Il negozio"
-    },
-    {
-      "type": "url",
-      "id": "shop_url",
-      "label": "Pagina del negozio"
-    },
-    {
-      "type": "text",
-      "id": "account_label",
-      "label": "Etichetta account",
-      "default": "Account"
-    },
-    {
-      "type": "text",
-      "id": "wishlist_label",
-      "label": "Etichetta preferiti",
-      "default": "Preferiti"
-    },
-    {
-      "type": "url",
-      "id": "wishlist_url",
-      "label": "Pagina preferiti",
-      "info": "Il cuore compare solo se qui c'è un indirizzo. Senza una lista vera, lascialo vuoto."
-    },
-    {
-      "type": "text",
-      "id": "cart_label",
-      "label": "Etichetta carrello",
-      "default": "Carrello"
-    },
-    {
-      "type": "text",
-      "id": "menu_label",
-      "label": "Etichetta del menu",
-      "default": "Categorie"
-    },
-    {
-      "type": "link_list",
-      "id": "menu",
-      "label": "Menu",
-      "info": "Menu annidato di Shopify. Se è vuoto, usiamo bz-menu-v2 e poi il menu principale."
-    },
-    {
-      "type": "text",
-      "id": "search_label",
-      "label": "Etichetta della ricerca",
-      "default": "Cerca"
-    },
-    {
-      "type": "textarea",
-      "id": "placeholder_words",
-      "label": "Parole che ruotano nella ricerca",
-      "info": "Una parola per riga.",
-      "default": "ametista\nmala\npalo santo\ntormalina nera\nquarzo rosa"
-    },
-    {
-      "type": "text",
-      "id": "placeholder_before",
-      "label": "Testo prima della parola",
-      "default": "Cerca "
-    },
-    {
-      "type": "text",
-      "id": "placeholder_after",
-      "label": "Testo dopo la parola",
-      "default": ", un regalo, una pietra…"
-    },
-    {
-      "type": "text",
-      "id": "queries_title",
-      "label": "Titolo ricerche frequenti",
-      "default": "Le più cercate"
-    },
-    {
-      "type": "text",
-      "id": "stones_title",
-      "label": "Titolo pietre",
-      "default": "Per pietra"
-    },
-    {
-      "type": "text",
-      "id": "results_title",
-      "label": "Titolo risultati a riposo",
-      "default": "In evidenza"
-    },
-    {
-      "type": "text",
-      "id": "results_link",
-      "label": "Link a tutti i risultati",
-      "default": "Vedi tutti i risultati"
-    },
-    {
-      "type": "collection",
-      "id": "search_collection",
-      "label": "Prodotti mostrati nella ricerca"
-    }
+    { "type": "image_picker", "id": "logo", "label": "Logo" },
+    { "type": "text", "id": "wordmark_lead", "label": "Prima parola", "default": "Benessere" },
+    { "type": "text", "id": "wordmark_accent", "label": "Seconda parola", "default": "Zen" },
+    { "type": "text", "id": "shop_label", "label": "Testo del link negozio", "default": "Il negozio" },
+    { "type": "url", "id": "shop_url", "label": "Pagina del negozio" },
+    { "type": "text", "id": "account_label", "label": "Etichetta account", "default": "Account" },
+    { "type": "text", "id": "wishlist_label", "label": "Etichetta preferiti", "default": "Preferiti" },
+    { "type": "url", "id": "wishlist_url", "label": "Pagina preferiti" },
+    { "type": "text", "id": "cart_label", "label": "Etichetta carrello", "default": "Carrello" },
+    { "type": "text", "id": "menu_label", "label": "Etichetta del menu", "default": "Menu principale" },
+    { "type": "link_list", "id": "menu", "label": "Menu" },
+    { "type": "text", "id": "search_label", "label": "Etichetta della ricerca", "default": "Cerca" },
+    { "type": "textarea", "id": "placeholder_words", "label": "Parole" },
+    { "type": "text", "id": "placeholder_before", "label": "Prima del segnaposto" },
+    { "type": "text", "id": "placeholder_after", "label": "Dopo il segnaposto" },
+    { "type": "text", "id": "queries_title", "label": "Titolo ricerche" },
+    { "type": "text", "id": "stones_title", "label": "Titolo pietre" },
+    { "type": "text", "id": "results_title", "label": "Titolo risultati" },
+    { "type": "text", "id": "results_link", "label": "Link risultati" },
+    { "type": "collection", "id": "search_collection", "label": "Collezione di ricerca" }
   ],
   "blocks": [
-    {
-      "type": "link",
-      "name": "Voce di menu",
-      "settings": [
-        { "type": "text", "id": "label", "label": "Testo", "default": "Collezione" },
-        { "type": "url", "id": "link", "label": "Link" },
-        {
-          "type": "select",
-          "id": "style",
-          "label": "Stile",
-          "default": "default",
-          "options": [
-            { "value": "default", "label": "Normale" },
-            { "value": "accent", "label": "Testo oro" },
-            { "value": "pill", "label": "Pillola oro" }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "query",
-      "name": "Ricerca frequente",
-      "settings": [
-        { "type": "text", "id": "label", "label": "Testo", "default": "Mala" },
-        { "type": "url", "id": "link", "label": "Link", "info": "Vuoto: cerca questo testo." }
-      ]
-    },
-    {
-      "type": "stone",
-      "name": "Pietra",
-      "settings": [
-        { "type": "text", "id": "label", "label": "Nome", "default": "Ametista" },
-        { "type": "image_picker", "id": "image", "label": "Foto" },
-        { "type": "url", "id": "link", "label": "Link", "info": "Vuoto: cerca questo nome." }
-      ]
-    }
-  ],
-  "presets": [
-    { "name": "Intestazione" }
+    { "type": "link", "name": "Link", "settings": [
+      { "type": "text", "id": "label", "label": "Etichetta" },
+      { "type": "url", "id": "link", "label": "Link" },
+      { "type": "text", "id": "style", "label": "Stile" }
+    ] },
+    { "type": "query", "name": "Ricerca", "settings": [ { "type": "text", "id": "label", "label": "Etichetta" } ] },
+    { "type": "stone", "name": "Pietra", "settings": [ { "type": "text", "id": "label", "label": "Etichetta" } ] }
   ]
 }
 {% endschema %}

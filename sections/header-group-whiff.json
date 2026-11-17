@@ -337,9 +337,6 @@
   },
   "order": [
     "bz-announcement",
-    "bz-header",
-    "announcement-bar",
-    "header",
-    "mobile-navigation"
+    "bz-header"
   ]
 }
