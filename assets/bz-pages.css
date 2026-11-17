@@ -317,14 +317,14 @@
   .bz-phero h1 { font-size: 40px; }
 }
 
-/* Cura di sé v2. All rules stay inside this page template. */
+/* V2: only hero/story extend to Ayurveda; other Cura rules stay scoped. */
 .theme-template-suffix-cura-di-se {
   background: #141312;
   color: var(--ivory, #eee7db);
 }
 
-.theme-template-suffix-cura-di-se .bz-phero,
-.theme-template-suffix-cura-di-se .bz-story,
+:is(.theme-template-suffix-cura-di-se, .theme-template-suffix-cose-layurveda, .theme-template-suffix-cos-e-ayurveda, .theme-template-suffix-contact, .theme-template-suffix-il-negozio) .bz-phero,
+:is(.theme-template-suffix-cura-di-se, .theme-template-suffix-cose-layurveda, .theme-template-suffix-cos-e-ayurveda) .bz-story,
 .theme-template-suffix-cura-di-se .bz-tiles,
 .theme-template-suffix-cura-di-se .bz-gestures,
 .theme-template-suffix-cura-di-se .bz-picked {
@@ -333,7 +333,7 @@
   padding-left: 24px;
 }
 
-.theme-template-suffix-cura-di-se .bz-phero {
+:is(.theme-template-suffix-cura-di-se, .theme-template-suffix-cose-layurveda, .theme-template-suffix-cos-e-ayurveda, .theme-template-suffix-contact, .theme-template-suffix-il-negozio) .bz-phero {
   min-height: 560px;
   margin: 0 24px;
   padding: 0;
@@ -341,7 +341,7 @@
   background: radial-gradient(120% 90% at 0 100%, #24201b, var(--deep) 65%);
 }
 
-.theme-template-suffix-cura-di-se .bz-phero__photo {
+:is(.theme-template-suffix-cura-di-se, .theme-template-suffix-cose-layurveda, .theme-template-suffix-cos-e-ayurveda, .theme-template-suffix-contact, .theme-template-suffix-il-negozio) .bz-phero__photo {
   right: 0;
   left: auto;
   width: 66%;
@@ -350,37 +350,37 @@
   mask-image: linear-gradient(90deg, transparent 0, rgba(0,0,0,.35) 22%, #000 58%);
 }
 
-.theme-template-suffix-cura-di-se .bz-phero__veil {
+:is(.theme-template-suffix-cura-di-se, .theme-template-suffix-cose-layurveda, .theme-template-suffix-cos-e-ayurveda, .theme-template-suffix-contact, .theme-template-suffix-il-negozio) .bz-phero__veil {
   background: linear-gradient(90deg, rgba(13,12,11,.8), rgba(13,12,11,.5) 38%, transparent 72%), linear-gradient(0deg, rgba(13,12,11,.45), transparent 45%);
 }
 
-.theme-template-suffix-cura-di-se .bz-phero__copy {
+:is(.theme-template-suffix-cura-di-se, .theme-template-suffix-cose-layurveda, .theme-template-suffix-cos-e-ayurveda, .theme-template-suffix-contact, .theme-template-suffix-il-negozio) .bz-phero__copy {
   margin: 0 0 clamp(28px,4vw,60px) clamp(26px,4vw,60px);
   width: min(600px,58%);
 }
 
-.theme-template-suffix-cura-di-se .bz-phero h1 {
+:is(.theme-template-suffix-cura-di-se, .theme-template-suffix-cose-layurveda, .theme-template-suffix-cos-e-ayurveda, .theme-template-suffix-contact, .theme-template-suffix-il-negozio) .bz-phero h1 {
   margin-bottom: 18px;
   font-size: clamp(60px,6vw,92px);
 }
 
-.theme-template-suffix-cura-di-se .bz-phero h1 em {
+:is(.theme-template-suffix-cura-di-se, .theme-template-suffix-cose-layurveda, .theme-template-suffix-cos-e-ayurveda, .theme-template-suffix-contact, .theme-template-suffix-il-negozio) .bz-phero h1 em {
   color: var(--gold);
   font-style: italic;
 }
 
-.theme-template-suffix-cura-di-se .bz-phero p {
+:is(.theme-template-suffix-cura-di-se, .theme-template-suffix-cose-layurveda, .theme-template-suffix-cos-e-ayurveda, .theme-template-suffix-contact, .theme-template-suffix-il-negozio) .bz-phero p {
   margin-bottom: 26px;
   color: var(--ivory);
   font-size: 17px;
 }
 
-.theme-template-suffix-cura-di-se .bz-story {
+:is(.theme-template-suffix-cura-di-se, .theme-template-suffix-cose-layurveda, .theme-template-suffix-cos-e-ayurveda) .bz-story {
   padding-top: 28px;
   padding-bottom: 0;
 }
 
-.theme-template-suffix-cura-di-se .bz-story__band {
+:is(.theme-template-suffix-cura-di-se, .theme-template-suffix-cose-layurveda, .theme-template-suffix-cos-e-ayurveda) .bz-story__band {
   position: relative;
   display: block;
   min-height: 390px;
@@ -389,7 +389,7 @@
   overflow: hidden;
 }
 
-.theme-template-suffix-cura-di-se .bz-story__band > img {
+:is(.theme-template-suffix-cura-di-se, .theme-template-suffix-cose-layurveda, .theme-template-suffix-cos-e-ayurveda) .bz-story__band > img {
   position: absolute;
   top: 0;
   right: 0;
@@ -401,7 +401,7 @@
   mask-image: linear-gradient(90deg, transparent, #000 35%);
 }
 
-.theme-template-suffix-cura-di-se .bz-story__copy {
+:is(.theme-template-suffix-cura-di-se, .theme-template-suffix-cose-layurveda, .theme-template-suffix-cos-e-ayurveda) .bz-story__copy {
   position: relative;
   z-index: 1;
   width: 62%;
@@ -409,21 +409,21 @@
   padding: 42px clamp(26px,4vw,60px);
 }
 
-.theme-template-suffix-cura-di-se .bz-story h2,
+:is(.theme-template-suffix-cura-di-se, .theme-template-suffix-cose-layurveda, .theme-template-suffix-cos-e-ayurveda) .bz-story h2,
 .theme-template-suffix-cura-di-se .bz-tiles > h2,
 .theme-template-suffix-cura-di-se .bz-gestures > h2 {
   margin-bottom: 18px;
   font-size: clamp(34px,3.4vw,48px);
 }
 
-.theme-template-suffix-cura-di-se .bz-story p {
+:is(.theme-template-suffix-cura-di-se, .theme-template-suffix-cose-layurveda, .theme-template-suffix-cos-e-ayurveda) .bz-story p {
   max-width: 62ch;
   font-size: 15.5px;
   line-height: 1.6;
 }
 
-.theme-template-suffix-cura-di-se .bz-story p + p { margin-top: 2px; }
-.theme-template-suffix-cura-di-se .bz-story .bz-btn { align-self: flex-start; margin-top: 12px; }
+:is(.theme-template-suffix-cura-di-se, .theme-template-suffix-cose-layurveda, .theme-template-suffix-cos-e-ayurveda) .bz-story p + p { margin-top: 2px; }
+:is(.theme-template-suffix-cura-di-se, .theme-template-suffix-cose-layurveda, .theme-template-suffix-cos-e-ayurveda) .bz-story .bz-btn { align-self: flex-start; margin-top: 12px; }
 
 .theme-template-suffix-cura-di-se .bz-tiles { padding-top: 60px; padding-bottom: 0; }
 .theme-template-suffix-cura-di-se .bz-tiles__grid {
@@ -511,19 +511,19 @@
 .theme-template-suffix-cura-di-se .bz-gesture .bz-picked__all { margin: 12px 0 0; line-height: 1.4; }
 
 @media (max-width: 860px) {
-  .theme-template-suffix-cura-di-se .bz-phero,
-  .theme-template-suffix-cura-di-se .bz-story,
+  :is(.theme-template-suffix-cura-di-se, .theme-template-suffix-cose-layurveda, .theme-template-suffix-cos-e-ayurveda, .theme-template-suffix-contact, .theme-template-suffix-il-negozio) .bz-phero,
+  :is(.theme-template-suffix-cura-di-se, .theme-template-suffix-cose-layurveda, .theme-template-suffix-cos-e-ayurveda) .bz-story,
   .theme-template-suffix-cura-di-se .bz-tiles,
   .theme-template-suffix-cura-di-se .bz-gestures,
   .theme-template-suffix-cura-di-se .bz-picked { padding-right: 14px; padding-left: 14px; }
 
-  .theme-template-suffix-cura-di-se .bz-phero {
+  :is(.theme-template-suffix-cura-di-se, .theme-template-suffix-cose-layurveda, .theme-template-suffix-cos-e-ayurveda, .theme-template-suffix-contact, .theme-template-suffix-il-negozio) .bz-phero {
     min-height: 580px;
     margin: 0 14px;
     padding: 0;
   }
 
-  .theme-template-suffix-cura-di-se .bz-phero__photo {
+  :is(.theme-template-suffix-cura-di-se, .theme-template-suffix-cose-layurveda, .theme-template-suffix-cos-e-ayurveda, .theme-template-suffix-contact, .theme-template-suffix-il-negozio) .bz-phero__photo {
     width: 100%;
     height: 73%;
     object-position: center 45%;
@@ -531,32 +531,32 @@
     mask-image: linear-gradient(0deg, transparent 0, #000 43%);
   }
 
-  .theme-template-suffix-cura-di-se .bz-phero__veil {
+  :is(.theme-template-suffix-cura-di-se, .theme-template-suffix-cose-layurveda, .theme-template-suffix-cos-e-ayurveda, .theme-template-suffix-contact, .theme-template-suffix-il-negozio) .bz-phero__veil {
     background: linear-gradient(0deg, rgba(13,12,11,.98) 0%, rgba(13,12,11,.82) 30%, rgba(13,12,11,.06) 78%);
   }
 
-  .theme-template-suffix-cura-di-se .bz-phero__copy { width: auto; margin: 0 24px 30px; }
-  .theme-template-suffix-cura-di-se .bz-phero h1 { font-size: clamp(50px,7vw,72px); }
-  .theme-template-suffix-cura-di-se .bz-phero p { font-size: 16px; }
+  :is(.theme-template-suffix-cura-di-se, .theme-template-suffix-cose-layurveda, .theme-template-suffix-cos-e-ayurveda, .theme-template-suffix-contact, .theme-template-suffix-il-negozio) .bz-phero__copy { width: auto; margin: 0 24px 30px; }
+  :is(.theme-template-suffix-cura-di-se, .theme-template-suffix-cose-layurveda, .theme-template-suffix-cos-e-ayurveda, .theme-template-suffix-contact, .theme-template-suffix-il-negozio) .bz-phero h1 { font-size: clamp(50px,7vw,72px); }
+  :is(.theme-template-suffix-cura-di-se, .theme-template-suffix-cose-layurveda, .theme-template-suffix-cos-e-ayurveda, .theme-template-suffix-contact, .theme-template-suffix-il-negozio) .bz-phero p { font-size: 16px; }
 
-  .theme-template-suffix-cura-di-se .bz-story { padding-top: 16px; }
-  .theme-template-suffix-cura-di-se .bz-story__band { min-height: 620px; }
-  .theme-template-suffix-cura-di-se .bz-story__band > img {
+  :is(.theme-template-suffix-cura-di-se, .theme-template-suffix-cose-layurveda, .theme-template-suffix-cos-e-ayurveda) .bz-story { padding-top: 16px; }
+  :is(.theme-template-suffix-cura-di-se, .theme-template-suffix-cose-layurveda, .theme-template-suffix-cos-e-ayurveda) .bz-story__band { min-height: 620px; }
+  :is(.theme-template-suffix-cura-di-se, .theme-template-suffix-cose-layurveda, .theme-template-suffix-cos-e-ayurveda) .bz-story__band > img {
     width: 100%;
     height: 58%;
     object-position: center;
     -webkit-mask-image: linear-gradient(0deg, transparent, #000 55%);
     mask-image: linear-gradient(0deg, transparent, #000 55%);
   }
-  .theme-template-suffix-cura-di-se .bz-story__copy {
+  :is(.theme-template-suffix-cura-di-se, .theme-template-suffix-cose-layurveda, .theme-template-suffix-cos-e-ayurveda) .bz-story__copy {
     justify-content: flex-end;
     width: 100%;
     min-height: 620px;
     padding: 28px 22px 26px;
     background: linear-gradient(0deg, var(--amd) 0%, rgba(42,32,54,.95) 38%, transparent 72%);
   }
-  .theme-template-suffix-cura-di-se .bz-story h2 { font-size: clamp(32px,8vw,40px); }
-  .theme-template-suffix-cura-di-se .bz-story p { font-size: 14px; }
+  :is(.theme-template-suffix-cura-di-se, .theme-template-suffix-cose-layurveda, .theme-template-suffix-cos-e-ayurveda) .bz-story h2 { font-size: clamp(32px,8vw,40px); }
+  :is(.theme-template-suffix-cura-di-se, .theme-template-suffix-cose-layurveda, .theme-template-suffix-cos-e-ayurveda) .bz-story p { font-size: 14px; }
 
   .theme-template-suffix-cura-di-se .bz-tiles { padding-top: 50px; }
   .theme-template-suffix-cura-di-se .bz-tiles__grid,
@@ -599,8 +599,57 @@
 }
 
 @media (max-width: 380px) {
-  .theme-template-suffix-cura-di-se .bz-phero__copy { margin-right: 20px; margin-left: 20px; }
+  :is(.theme-template-suffix-cura-di-se, .theme-template-suffix-cose-layurveda, .theme-template-suffix-cos-e-ayurveda, .theme-template-suffix-contact, .theme-template-suffix-il-negozio) .bz-phero__copy { margin-right: 20px; margin-left: 20px; }
   .theme-template-suffix-cura-di-se .bz-tiles .bz-sphere__ring { width: 78px; height: 78px; }
   .theme-template-suffix-cura-di-se .bz-tiles .bz-sphere__ring > span { width: 72px; height: 72px; }
   .theme-template-suffix-cura-di-se .bz-tiles .bz-sphere img { width: 66px; height: 66px; }
+}
+
+/* New service sections: no changes to bz-page, store or shared shop notes. */
+.bz-contact,
+.bz-shop-details {
+  margin: 28px 24px 40px;
+  padding: clamp(24px, 4vw, 48px);
+  border: 1px solid var(--line);
+  border-radius: var(--rl);
+  background: var(--card);
+  color: var(--ivory);
+}
+.bz-contact h2,
+.bz-shop-details h2 {
+  margin: 0 0 24px;
+  font: 400 clamp(28px, 3.4vw, 42px)/1.15 Baskervville, Georgia, serif;
+  color: var(--ivory);
+}
+.bz-contact__form { max-width: 820px; }
+.bz-contact__fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; margin-bottom: 26px; }
+.bz-contact__wide { grid-column: 1 / -1; }
+.bz-contact label { display: block; margin-bottom: 8px; }
+.bz-contact input,
+.bz-contact textarea {
+  display: block;
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 16px;
+  border: 1px solid #8e8475;
+  border-radius: 14px;
+  background: var(--deep);
+  color: var(--ivory);
+  font: inherit;
+  caret-color: var(--goldl);
+}
+.bz-contact textarea { resize: vertical; }
+.bz-contact input[aria-invalid="true"] { border-color: var(--goldl); }
+.bz-contact p,
+.bz-shop-details p { max-width: 70ch; margin: 0 0 20px; line-height: 1.6; color: var(--ivory); }
+.bz-shop-details h2 { margin-top: 32px; }
+.bz-shop-details a,
+.bz-contact [role="alert"] a { color: var(--goldl); text-decoration: underline; text-underline-offset: 3px; }
+.bz-contact .bz-btn { cursor: pointer; }
+.theme-template-suffix-il-negozio .bz-shopnote__copy > p:last-child { white-space: pre-line; }
+@media (max-width: 860px) {
+  .bz-contact,
+  .bz-shop-details { margin: 18px 14px 28px; padding: 26px 22px; }
+  .bz-contact__fields { grid-template-columns: minmax(0, 1fr); }
+  .bz-contact .bz-btn { width: 100%; }
 }

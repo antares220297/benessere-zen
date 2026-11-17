@@ -2,6 +2,14 @@
 {{ 'bz-home.css' | asset_url | stylesheet_tag }}
 {{ 'bz-pages.css' | asset_url | stylesheet_tag }}
 {%- liquid
+  assign pages_v2 = false
+  if template.suffix == 'cura-di-se' or template.suffix == 'cose-layurveda' or template.suffix == 'cos-e-ayurveda' or template.suffix == 'contact' or template.suffix == 'il-negozio'
+    assign pages_v2 = true
+  endif
+  assign store_photo = false
+  if template.suffix == 'contact' or template.suffix == 'il-negozio'
+    assign store_photo = true
+  endif
   assign shot = section.settings.image
   if shot == blank and section.settings.collection != blank
     assign shot = section.settings.collection.image | default: section.settings.collection.products.first.featured_image
@@ -14,13 +22,16 @@
     assign href = section.settings.collection.url
   endif
 -%}
-<header class="bz bz-pages bz-phero{% unless shot %} is-plain{% endunless %}">
-  {%- if shot -%}
+<header class="bz bz-pages bz-phero{% unless shot or store_photo %} is-plain{% endunless %}">
+  {%- if store_photo and shot == blank -%}
+    <img src="{{ 'bz-store.jpg' | asset_url }}" alt="Scatole in velluto nel negozio" class="bz-phero__photo" width="900" height="700" loading="eager">
+    <span class="bz-phero__veil" aria-hidden="true"></span>
+  {%- elsif shot -%}
     {{ shot | image_url: width: 1800 | image_tag: alt: section.settings.title, class: 'bz-phero__photo', widths: '700, 1200, 1800', sizes: '100vw', loading: 'eager' }}
     <span class="bz-phero__veil" aria-hidden="true"></span>
   {%- endif -%}
   <div class="bz-phero__copy bz-reveal">
-    <h1>{%- if template.suffix == 'cura-di-se' and section.settings.title_accent != blank and section.settings.title contains section.settings.title_accent -%}
+    <h1>{%- if pages_v2 and section.settings.title_accent != blank and section.settings.title contains section.settings.title_accent -%}
       {%- assign title_parts = section.settings.title | split: section.settings.title_accent -%}
       {%- assign title_prefix = title_parts.first -%}
       {%- assign title_suffix = section.settings.title | remove_first: title_prefix | remove_first: section.settings.title_accent -%}
@@ -28,7 +39,7 @@
     {%- else -%}{{ section.settings.title | escape }}{%- endif -%}</h1>
     {%- if section.settings.text != blank -%}<p>{{ section.settings.text | escape }}</p>{%- endif -%}
     {%- if section.settings.button_label != blank and href != blank -%}
-      <a class="bz-btn bz-btn--gold" href="{{ href }}">{{ section.settings.button_label | escape }}{% if template.suffix == 'cura-di-se' %} <span aria-hidden="true">→</span>{% endif %}</a>
+      <a class="bz-btn bz-btn--gold" href="{{ href }}">{{ section.settings.button_label | escape }}{% if pages_v2 %} <span aria-hidden="true">→</span>{% endif %}</a>
     {%- endif -%}
   </div>
 </header>
