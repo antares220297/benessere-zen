@@ -1,0 +1,5 @@
+# Fix ayurveda.html (UN solo giro, solo questi punti, modifichi SOLO `ayurveda.html`)
+Leggi `briefs/COMMON.md` per i divieti. Non cambiare nient'altro.
+1. **Contrasto etichette sfere (bloccante)**: quando Vata è selezionata (default e a 390), «Vata» e «aria · spazio» sono illeggibili (bianco su nucleo lavanda chiaro). Sistema per TUTTE le sfere e tutti gli stati: sposta l'etichetta di ogni sfera fuori dal nucleo chiaro (per Vata nella parte alta della sfera, verso il bordo superiore, NON al centro del riflesso), e dai al nome e agli elementi `text-shadow: 0 1px 2px rgba(8,8,20,.7), 0 0 16px rgba(8,8,20,.55)`; elementi Vata in `#eef0ff`. Obiettivo: contrasto ≥4,5:1 dell'etichetta sul colore sotto, a 390 e 1440, sfera selezionata e non.
+2. **Sovrapposizione (bloccante)**: nel blocco triangolo il titolo «Oggi mi sento più…» tocca/sovrappone la pill «Vata». Aggiungi spazio sufficiente (almeno 16 px) tra titolo e pill a tutte le larghezze, senza spostare il triangolo fuori dal palco.
+Fermati e scrivi 3 righe di riepilogo.

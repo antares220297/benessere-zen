@@ -1,0 +1,18 @@
+# Natural sizes of img/cutout/*.webp (width x height)
+- ayurveda.webp: 879x606
+- burattate.webp: 621x611
+- candele.webp: 874x875
+- capelli.webp: 278x900
+- corpo.webp: 303x900
+- gioielli.webp: 789x578
+- grezze.webp: 721x612
+- mala.webp: 893x479
+- oli.webp: 587x854
+- pendoli.webp: 162x900
+- st-ametista.webp: 658x674
+- st-corniola.webp: 603x579
+- st-lapislazzuli.webp: 488x503
+- st-quarzo-rosa.webp: 570x579
+- st-tormalina.webp: 567x586
+- tazze.webp: 573x523
+- te.webp: 527x821

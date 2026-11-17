@@ -1,0 +1,6 @@
+# Fix round 1 for D/concept-porte-mazzo.html (edit only this file)
+Screens: shots/concept/mazzo-1440.png, mazzo-hover-1440.png, mazzo-390.png (Read them).
+1. The fan is broken: at rest the 6 cards are almost fully stacked, only the last card is visible. Make a REAL hand-of-cards fan: cards ~180×315px at 1440; each card rotated around a common pivot far below the cards (e.g. transform-origin: 50% 180%), angles from -25° to +25° (step 10°), so that at rest EVERY card shows at least ~45% of its face: its Roman numeral, most of its cutout and its title. Rightmost card on top (z-index increasing left→right), the lifted card always on top. Each fan ~620-660px wide, centred in its half, the arc fully visible (no clipping), container height fitted to the arc (no big empty band below).
+2. Hover on the fan spreads to ±31°; hovered/focused card translates up 18px along its own axis and shows «da X €». `?state=hover` = left fan spread + card III lifted.
+3. Mobile 390: the first «Cura di sé» card (Cosmesi corpo) shows no product image: make sure every card's cutout is visible (no loading=lazy on cutouts, correct src, object-fit contain inside the card's media box).
+4. Tablet 768-1023: one fan per row, centred, fully visible, no overflow.
