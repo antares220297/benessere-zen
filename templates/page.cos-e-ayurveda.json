@@ -4,6 +4,7 @@
       "type": "bz-page-hero",
       "settings": {
         "title": "Cos’è l’Ayurveda",
+        "title_accent": "Ayurveda",
         "text": "Una tradizione nata in India. Si porta in casa con un olio, un’infusione, un lavaggio. Non è una visita medica e non sostituisce un medico.",
         "collection": "ayurveda",
         "button_label": "Vedi l’Ayurveda",

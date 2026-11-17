@@ -1,0 +1,46 @@
+{{ 'bz-tokens.css' | asset_url | stylesheet_tag }}
+{{ 'bz-home.css' | asset_url | stylesheet_tag }}
+{{ 'bz-pages.css' | asset_url | stylesheet_tag }}
+<section class="bz bz-pages bz-contact" aria-labelledby="ContactHeading-{{ section.id }}">
+  <h2 id="ContactHeading-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+  {%- assign form_id = 'BzContact-' | append: section.id -%}
+  {%- form 'contact', id: form_id, class: 'bz-contact__form' -%}
+    {%- if form.posted_successfully? -%}
+      <p role="status" tabindex="-1">{{ section.settings.success_message | escape }}</p>
+    {%- elsif form.errors -%}
+      <div role="alert" id="ContactErrors-{{ section.id }}">{{ form.errors | default_errors }}</div>
+    {%- endif -%}
+    <div class="bz-contact__fields">
+      <div>
+        <label for="ContactName-{{ section.id }}">Nome *</label>
+        <input id="ContactName-{{ section.id }}" type="text" name="contact[name]" autocomplete="name" value="{{ form.name | default: customer.name | escape }}" required>
+      </div>
+      <div>
+        <label for="ContactEmail-{{ section.id }}">Email *</label>
+        <input id="ContactEmail-{{ section.id }}" type="email" name="contact[email]" autocomplete="email" autocorrect="off" autocapitalize="off" value="{{ form.email | default: customer.email | escape }}" required{% if form.errors contains 'email' %} aria-invalid="true" aria-describedby="ContactEmailError-{{ section.id }}"{% endif %}>
+        {%- if form.errors contains 'email' -%}
+          <p id="ContactEmailError-{{ section.id }}">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>
+        {%- endif -%}
+      </div>
+      <div class="bz-contact__wide">
+        <label for="ContactPhone-{{ section.id }}">Numero di telefono</label>
+        <input id="ContactPhone-{{ section.id }}" type="tel" name="contact[phone]" autocomplete="tel" value="{{ form.phone | default: customer.phone | escape }}">
+      </div>
+      <div class="bz-contact__wide">
+        <label for="ContactMessage-{{ section.id }}">Messaggio *</label>
+        <textarea id="ContactMessage-{{ section.id }}" name="contact[body]" rows="6" required>{{ form.body | escape }}</textarea>
+      </div>
+    </div>
+    <button type="submit" class="bz-btn bz-btn--gold">Invia</button>
+  {%- endform -%}
+</section>
+{% schema %}
+{
+  "name": "Contatti BZ",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Titolo", "default": "Domande? Inviaci una mail!" },
+    { "type": "textarea", "id": "success_message", "label": "Conferma invio", "default": "Grazie per averci contattato. Ti risponderemo il prima possibile." }
+  ],
+  "presets": [{ "name": "Contatti BZ" }]
+}
+{% endschema %}

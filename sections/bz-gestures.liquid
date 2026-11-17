@@ -27,12 +27,12 @@
         {%- endfor -%}
       {%- endif -%}
       {%- if item != blank -%}
-        <a class="bz-gesture bz-reveal" href="{{ item.url }}" {{ block.shopify_attributes }}>
+        <a class="bz-gesture bz-reveal{% if template.suffix == 'cura-di-se' %} bz-tile {% if forloop.first %}bz-tile--am{% else %}bz-tile--ox{% endif %}{% endif %}" href="{{ item.url }}" {{ block.shopify_attributes }}>
           {%- if item.featured_image -%}{{ item.featured_image | image_url: width: 900 | image_tag: alt: item.title, loading: 'lazy', width: 640, height: 420 }}{%- endif -%}
           <div class="bz-gesture__copy">
             <h3>{{ block.settings.title | escape }}</h3>
             {%- if block.settings.text != blank -%}<p>{{ block.settings.text | escape }}</p>{%- endif -%}
-            <span class="bz-picked__all">{{ item.title | split: '|' | first | strip | escape }}</span>
+            <span class="bz-picked__all">{{ item.title | split: '|' | first | strip | escape }}{% if template.suffix == 'cura-di-se' %} <span aria-hidden="true">→</span>{% endif %}</span>
           </div>
         </a>
       {%- endif -%}

@@ -16,10 +16,19 @@
     {%- for block in section.blocks -%}
       {%- if block.settings.collection != blank and block.settings.collection.products_count > 0 -%}
         {%- assign shot = block.settings.image | default: block.settings.collection.image | default: block.settings.collection.products.first.featured_image -%}
-        <a class="bz-ptile bz-reveal" href="{{ block.settings.collection.url }}" {{ block.shopify_attributes }}>
-          {%- if shot -%}{{ shot | image_url: width: 800 | image_tag: alt: block.settings.label, loading: 'lazy', widths: '320, 480, 800', sizes: '(min-width: 860px) 30vw, 46vw' }}{%- endif -%}
-          <span>{{ block.settings.label | default: block.settings.collection.title | escape }}</span>
-        </a>
+        {%- if template.suffix == 'cura-di-se' -%}
+          <a class="bz-sphere bz-reveal" href="{{ block.settings.collection.url }}" {{ block.shopify_attributes }}>
+            <span class="bz-sphere__ring"><span>
+              {%- if shot -%}{{ shot | image_url: width: 320 | image_tag: alt: '', loading: 'lazy', widths: '160, 240, 320', sizes: '100px' }}{%- endif -%}
+            </span></span>
+            {{ block.settings.label | default: block.settings.collection.title | escape }}
+          </a>
+        {%- else -%}
+          <a class="bz-ptile bz-reveal" href="{{ block.settings.collection.url }}" {{ block.shopify_attributes }}>
+            {%- if shot -%}{{ shot | image_url: width: 800 | image_tag: alt: block.settings.label, loading: 'lazy', widths: '320, 480, 800', sizes: '(min-width: 860px) 30vw, 46vw' }}{%- endif -%}
+            <span>{{ block.settings.label | default: block.settings.collection.title | escape }}</span>
+          </a>
+        {%- endif -%}
       {%- endif -%}
     {%- endfor -%}
   </div>

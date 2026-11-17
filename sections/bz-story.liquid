@@ -1,6 +1,12 @@
 {{ 'bz-tokens.css' | asset_url | stylesheet_tag }}
 {{ 'bz-home.css' | asset_url | stylesheet_tag }}
 {{ 'bz-pages.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign pages_v2 = false
+  if template.suffix == 'cura-di-se' or template.suffix == 'cose-layurveda' or template.suffix == 'cos-e-ayurveda'
+    assign pages_v2 = true
+  endif
+-%}
 <section class="bz bz-pages bz-story">
   {%- for block in section.blocks -%}
     {%- liquid
@@ -12,7 +18,7 @@
         assign shot = block.settings.collection.image | default: block.settings.collection.products.first.featured_image
       endif
     -%}
-    <article class="bz bz-pages bz-story__band bz-reveal{% if block.settings.flip %} is-flip{% endif %}{% unless shot %} is-solo{% endunless %}" {{ block.shopify_attributes }}>
+    <article class="bz bz-pages bz-story__band bz-reveal{% if pages_v2 %} bz-tile bz-tile--am{% endif %}{% if block.settings.flip %} is-flip{% endif %}{% unless shot %} is-solo{% endunless %}" {{ block.shopify_attributes }}>
       {%- if shot -%}
         {{ shot | image_url: width: 1200 | image_tag: alt: block.settings.title, loading: 'lazy', width: 800, height: 560 }}
       {%- endif -%}
@@ -21,7 +27,7 @@
         {%- if block.settings.text != blank -%}<p>{{ block.settings.text | escape }}</p>{%- endif -%}
         {%- if block.settings.text_2 != blank -%}<p>{{ block.settings.text_2 | escape }}</p>{%- endif -%}
         {%- if block.settings.button_label != blank and block.settings.button_link != blank -%}
-          <a class="bz-btn bz-btn--gold" href="{{ block.settings.button_link }}">{{ block.settings.button_label | escape }}</a>
+          <a class="bz-btn {% if pages_v2 %}bz-btn--line{% else %}bz-btn--gold{% endif %}" href="{{ block.settings.button_link }}">{{ block.settings.button_label | escape }}{% if pages_v2 %} <span aria-hidden="true">→</span>{% endif %}</a>
         {%- endif -%}
       </div>
     </article>
