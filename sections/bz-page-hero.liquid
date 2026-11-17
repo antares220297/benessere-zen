@@ -20,10 +20,15 @@
     <span class="bz-phero__veil" aria-hidden="true"></span>
   {%- endif -%}
   <div class="bz-phero__copy bz-reveal">
-    <h1>{{ section.settings.title | escape }}</h1>
+    <h1>{%- if template.suffix == 'cura-di-se' and section.settings.title_accent != blank and section.settings.title contains section.settings.title_accent -%}
+      {%- assign title_parts = section.settings.title | split: section.settings.title_accent -%}
+      {%- assign title_prefix = title_parts.first -%}
+      {%- assign title_suffix = section.settings.title | remove_first: title_prefix | remove_first: section.settings.title_accent -%}
+      {{- title_prefix | escape -}}<em>{{ section.settings.title_accent | escape }}</em>{{- title_suffix | escape -}}
+    {%- else -%}{{ section.settings.title | escape }}{%- endif -%}</h1>
     {%- if section.settings.text != blank -%}<p>{{ section.settings.text | escape }}</p>{%- endif -%}
     {%- if section.settings.button_label != blank and href != blank -%}
-      <a class="bz-btn bz-btn--gold" href="{{ href }}">{{ section.settings.button_label | escape }}</a>
+      <a class="bz-btn bz-btn--gold" href="{{ href }}">{{ section.settings.button_label | escape }}{% if template.suffix == 'cura-di-se' %} <span aria-hidden="true">→</span>{% endif %}</a>
     {%- endif -%}
   </div>
 </header>
@@ -33,6 +38,7 @@
   "name": "Apertura con foto",
   "settings": [
     { "type": "text", "id": "title", "label": "Titolo" },
+    { "type": "text", "id": "title_accent", "label": "Parola in corsivo oro" },
     { "type": "textarea", "id": "text", "label": "Testo" },
     { "type": "image_picker", "id": "image", "label": "Foto" },
     { "type": "collection", "id": "collection", "label": "Collezione per la foto" },
