@@ -63,13 +63,14 @@
           stickyButton.disabled = radio.disabled;
           stickyButton.textContent = radio.disabled ? "Esaurito" : "Aggiungi";
         }
-        var priceNode = root.querySelector("[data-bz-price]");
         var cents = Number(radio.getAttribute("data-bz-variant"));
-        if (priceNode && cents > 0) {
+        if (Number.isFinite(cents) && cents >= 0) {
           var euros = Math.floor(cents / 100);
           var rest = String(cents % 100).padStart(2, "0");
           var grouped = String(euros).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-          priceNode.textContent = grouped + "," + rest + "\u00a0€";
+          root.querySelectorAll("[data-bz-price]").forEach(function (priceNode) {
+            priceNode.textContent = grouped + "," + rest + "\u00a0€";
+          });
         }
       });
     });

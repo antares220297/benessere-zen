@@ -120,7 +120,7 @@
         <p class="bz-buy__sub">{{ product.type | escape }}</p>
       {%- endif -%}
       <div class="bz-buy__price">
-        <strong data-bz-price>{% render 'bz-money', cents: product.price %}</strong>
+        <strong data-bz-price>{% render 'bz-money', cents: current.price %}</strong>
         <small>IVA inclusa</small>
         {%- if section.settings.shipping_note != blank -%}
           <span class="bz-pill">{{ section.settings.shipping_note | escape }}</span>
@@ -136,6 +136,8 @@
           <p>{{ opener | escape }}</p>
           <button type="button" data-bz-more-copy aria-expanded="false">Continua</button>
         </div>
+      {%- elsif product.description != blank -%}
+        <div class="bz-buy__open rte">{{ product.description }}</div>
       {%- endif -%}
       {%- if foto_mode contains 'modello' -%}
         <p class="bz-buy__use">Colore e venature possono variare da un pezzo all'altro.</p>
@@ -424,7 +426,7 @@
     {%- if product.featured_image -%}
       {{ product.featured_image | image_url: width: 100 | image_tag: alt: '', loading: 'lazy', width: 44, height: 44 }}
     {%- endif -%}
-    <span><em class="bz-sticky__name">{{ product.title | escape }}</em><b>{% render 'bz-money', cents: product.price %}</b></span>
+    <span><em class="bz-sticky__name">{{ product.title | escape }}</em><b data-bz-price>{% render 'bz-money', cents: current.price %}</b></span>
     <button type="submit"{% unless current.available %} disabled{% endunless %}>{% if current.available %}Aggiungi{% else %}Esaurito{% endif %}</button>
   </form>
 </div>

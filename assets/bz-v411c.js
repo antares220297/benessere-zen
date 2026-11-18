@@ -697,24 +697,27 @@
   }
 
   qa('[data-load]').forEach(link => link.addEventListener('click', async event => {
-    if (!link.href) return;
+    if (!link.href || link.getAttribute('aria-busy') === 'true') return;
     event.preventDefault();
     link.setAttribute('aria-busy', 'true');
-    const html = await fetch(link.href).then(r => r.text());
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    const grid = q('[data-grid]');
-    doc.querySelectorAll('[data-grid] .product').forEach(card => grid?.append(card));
-    const next = doc.querySelector('[data-load]');
-    const shown = q('[data-shown]');
-    const of = q('[data-of]');
-    const nextShown = doc.querySelector('[data-shown]');
-    const nextOf = doc.querySelector('[data-of]');
-    if (shown && nextShown) shown.textContent = nextShown.textContent;
-    if (of && nextOf) of.textContent = nextOf.textContent;
-    const bar = q('[data-bar]');
-    if (bar && shown && of) bar.style.transform = 'scaleX(' + (Number(shown.textContent) / Number(of.textContent) || 0) + ')';
-    if (next) link.href = next.href; else link.hidden = true;
-    link.removeAttribute('aria-busy');
+    try {
+      const html = await fetch(link.href).then(r => r.text());
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      const grid = q('[data-grid]');
+      doc.querySelectorAll('[data-grid] .product').forEach(card => grid?.append(card));
+      const next = doc.querySelector('[data-load]');
+      const shown = q('[data-shown]');
+      const of = q('[data-of]');
+      const nextShown = doc.querySelector('[data-shown]');
+      const nextOf = doc.querySelector('[data-of]');
+      if (shown && nextShown) shown.textContent = nextShown.textContent;
+      if (of && nextOf) of.textContent = nextOf.textContent;
+      const bar = q('[data-bar]');
+      if (bar && shown && of) bar.style.transform = 'scaleX(' + (Number(shown.textContent) / Number(of.textContent) || 0) + ')';
+      if (next) link.href = next.href; else link.hidden = true;
+    } finally {
+      link.removeAttribute('aria-busy');
+    }
   }));
 
   qa('[data-sort]').forEach(select => select.addEventListener('change', () => select.form?.requestSubmit()));
