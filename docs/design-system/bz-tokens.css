@@ -1,0 +1,117 @@
+/* Benessere Zen: token del design system (DESIGN-SYSTEM.md, v1, 18/11/2026).
+   Breakpoint: mobile < 768px, tablet 768-1023px, desktop >= 1024px. Contenitore massimo 1440px. */
+:root{
+  /* Colore: superfici */
+  --bz-bg:#141312;              /* antracite, fondo pagina */
+  --bz-bg-2:#1b1917;            /* fascia alternata, footer */
+  --bz-surface:#201e1b;         /* card, pannelli scuri */
+  --bz-surface-2:#29261f;       /* stato selezionato del menu, card in rilievo */
+  --bz-surface-light:#ece4d6;   /* pannello chiaro (FAQ mobile, Mattina e sera): max 1 per pagina */
+  /* Colore: accento */
+  --bz-gold:#c9a96e;            /* CTA primaria, «+», corsivo nei titoli, icone decorative */
+  --bz-gold-hover:#e3cb95;      /* hover della CTA primaria e del «+» */
+  --bz-gold-on-light:#7a5726;   /* oro su --bz-surface-light (5,17:1) */
+  /* Testo su scuro */
+  --bz-text:#eee7db;            /* avorio caldo: titoli, testo, prezzi */
+  --bz-text-2:#cdc4b4;          /* testo secondario, kicker */
+  --bz-text-3:#958d7f;          /* muted: categoria, note legali; min 12px */
+  /* Testo su chiaro */
+  --bz-ink:#24201b;
+  --bz-ink-2:#4d463c;
+  --bz-ink-3:#6b6255;
+  /* Testo su oro */
+  --bz-on-gold:#17140f;
+  /* Stato e errori */
+  --bz-status-open:#7bae7c;
+  --bz-error:#e8a593;
+  --bz-error-on-light:#9e3b28;
+  /* Linee */
+  --bz-line:rgba(238,231,219,.11);        /* divisori, bordo card (decorativo) */
+  --bz-line-2:rgba(238,231,219,.24);      /* chip, CTA secondaria */
+  --bz-line-field:rgba(238,231,219,.40);  /* campi di input: 3,34:1 */
+  --bz-line-light:rgba(36,32,27,.14);
+  --bz-line-light-2:rgba(36,32,27,.28);
+  --bz-line-light-field:rgba(36,32,27,.55);
+  /* Veli */
+  --bz-veil-bottom:linear-gradient(180deg,rgba(20,19,18,0) 0%,rgba(20,19,18,.65) 45%,rgba(20,19,18,.88) 100%);
+  --bz-veil-side:linear-gradient(90deg,rgba(20,19,18,.88) 0%,rgba(20,19,18,.65) 40%,rgba(20,19,18,0) 75%);
+  --bz-veil-badge:rgba(20,19,18,.80);
+  /* Focus */
+  --bz-focus-color:var(--bz-gold);
+  --bz-focus-width:2px;
+  --bz-focus-offset:3px;
+
+  /* Font */
+  --bz-font-serif:Baskervville,Georgia,serif;
+  --bz-font-sans:Figtree,Arial,sans-serif;
+
+  /* Scala dei tipi (390 -> 1440) */
+  --bz-fs-h1:clamp(40px,31.09px + 2.286vw,64px);
+  --bz-fs-h1-compact:clamp(28px,23.54px + 1.143vw,40px);
+  --bz-fs-h2:clamp(30px,23.31px + 1.714vw,48px);
+  --bz-fs-h3:clamp(24px,21.03px + .762vw,32px);
+  --bz-fs-h4:clamp(18px,17.26px + .19vw,20px);
+  --bz-fs-lead:clamp(16px,15.26px + .19vw,18px);
+  --bz-fs-body:16px;
+  --bz-fs-sm:14px;
+  --bz-fs-xs:12px;
+  --bz-fs-product:14px;
+  --bz-fs-price:20px;
+  --bz-fs-price-lg:clamp(28px,25.03px + .762vw,36px);
+  --bz-fs-btn:14px;
+  --bz-lh-h1:1.05; --bz-lh-h2:1.1; --bz-lh-h3:1.15; --bz-lh-h4:1.25;
+  --bz-lh-body:1.6; --bz-lh-sm:1.5; --bz-lh-xs:1.4; --bz-lh-product:1.4; --bz-lh-price:1.2;
+  --bz-ls-h1:-.01em; --bz-ls-h2:-.005em; --bz-ls-kicker:.12em; --bz-ls-badge:.02em;
+
+  /* Spaziatura: scala base 4 */
+  --bz-sp-4:4px; --bz-sp-8:8px; --bz-sp-12:12px; --bz-sp-16:16px; --bz-sp-20:20px; --bz-sp-24:24px;
+  --bz-sp-28:28px; --bz-sp-32:32px; --bz-sp-40:40px; --bz-sp-48:48px; --bz-sp-56:56px; --bz-sp-64:64px;
+  --bz-sp-72:72px; --bz-sp-88:88px;
+
+  /* Spaziatura semantica: mobile */
+  --bz-margin:20px;
+  --bz-section-gap:56px;
+  --bz-panel-pad:20px;
+  --bz-grid-gap:12px;
+  --bz-gap-title-lead:8px;
+  --bz-gap-head-chips:16px;
+  --bz-gap-head-content:24px;
+  --bz-gap-content-cta:32px;
+  --bz-card-pad:8px;
+  --bz-control-h:44px;
+
+  /* Contenitore */
+  --bz-container-max:1440px;
+  --bz-measure:62ch;
+
+  /* Raggi */
+  --bz-r-img:10px;
+  --bz-r-card:18px;
+  --bz-r-panel:28px;
+  --bz-r-pill:999px;
+  --bz-r-round:50%;
+
+  /* Icone */
+  --bz-icon-sm:18px; --bz-icon-md:20px; --bz-icon-lg:24px; --bz-icon-xl:40px;
+
+  /* Movimento */
+  --bz-dur-press:100ms;
+  --bz-dur-hover:150ms;
+  --bz-dur-ui:250ms;
+  --bz-dur-large:400ms;
+  --bz-dur-ambient:1200ms;
+  --bz-ease-standard:cubic-bezier(.2,0,0,1);
+  --bz-ease-enter:cubic-bezier(.2,.7,.1,1);
+  --bz-ease-exit:cubic-bezier(.3,0,.8,.15);
+}
+@media (min-width:768px){
+  :root{--bz-section-gap:72px;--bz-panel-pad:32px;--bz-grid-gap:16px}
+}
+@media (min-width:1024px){
+  :root{--bz-margin:28px;--bz-section-gap:88px;--bz-panel-pad:48px;--bz-grid-gap:20px;
+        --bz-gap-title-lead:12px;--bz-gap-head-content:32px;--bz-gap-content-cta:40px;
+        --bz-fs-product:15px}
+}
+@media (prefers-reduced-motion:reduce){
+  :root{--bz-dur-press:0ms;--bz-dur-ui:150ms;--bz-dur-large:150ms;--bz-dur-ambient:0ms}
+}
