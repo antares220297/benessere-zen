@@ -14,13 +14,13 @@
       </div>
     </article>
     {%- assign doshas = 'Vata|Pitta|Kapha' | split: '|' -%}
-    {%- assign lines = section.settings.vata_text | append: '||' | append: section.settings.pitta_text | append: '||' | append: section.settings.kapha_text | split: '||' -%}
     {%- for name in doshas -%}
+      {%- assign text_key = name | downcase | append: '_text' -%}
       <template id="dosha-content-{{ forloop.index0 }}">
         <div class="dosha-copy">
           <span class="dosha-eyebrow">Nella tradizione ayurvedica</span>
           <h3><em>{{ name }}</em></h3>
-          <p>{{ lines[forloop.index0] | escape }}</p>
+          {%- if section.settings[text_key] != blank -%}<p>{{ section.settings[text_key] | escape }}</p>{%- endif -%}
         </div>
         <div class="dosha-products">
           {%- for block in section.blocks -%}

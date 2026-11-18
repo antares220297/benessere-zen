@@ -8,20 +8,13 @@
   assign variant = product.selected_or_first_available_variant
   assign secondary = product.images[1]
   assign photo_alt = product.featured_image.alt | default: product.title
-  assign category = product.type
-  assign stock_class = ''
-  if product.available == false
-    assign category = 'Esaurito'
-    assign stock_class = ' bz-stock--soldout'
-  elsif variant.inventory_management != blank and variant.inventory_quantity == 1 and product.available
-    assign stock_class = ' bz-stock--low'
-  endif
+  assign category = product.type | strip
   assign loading = 'lazy'
   if eager
     assign loading = 'eager'
   endif
 -%}
-<article class="bz-card bz-product-tile{{ stock_class }}{% unless product.available %} is-sold{% endunless %}">
+<article class="bz-card bz-product-tile{% unless product.available %} is-sold{% endunless %}">
   <a class="bz-card__photo bz-product-tile__media" href="{{ product.url }}">
     {%- if product.featured_image != blank -%}
       {{ product.featured_image | image_url: width: 800 | image_tag: alt: photo_alt, class: 'bz-card__img', widths: '240, 400, 600, 800', sizes: '(min-width: 860px) 18vw, 46vw', loading: loading, width: 400, height: 400 }}
@@ -31,12 +24,10 @@
     {%- if secondary != blank -%}
       {{ secondary | image_url: width: 800 | image_tag: alt: '', class: 'bz-card__img bz-card__img--alt', widths: '240, 400, 800', sizes: '(min-width: 860px) 18vw, 46vw', loading: 'lazy', width: 400, height: 400 }}
     {%- endif -%}
-    {%- if stock_class == ' bz-stock--low' -%}
-      <span class="bz-badge bz-stock--low">Ultimo pezzo</span>
-    {%- endif -%}
+    {%- render 'bz-card-stock', available: product.available, variant: variant -%}
   </a>
   <h3 class="bz-product-tile__title"><a class="bz-card__name" href="{{ product.url }}">{{ product.title | escape }}</a></h3>
-  <small class="bz-product-tile__meta bz-stock-label">{{ category | escape }}</small>
+  <small class="bz-product-tile__meta bz-category-label" style="--bz-category-dot:{% render 'bz-category-dot', type: category %}">{{ category | escape }}</small>
   <div class="bz-card__bottom bz-product-tile__bottom">
     <p class="bz-card__price bz-price">{% render 'bz-money', cents: product.price %}</p>
     <form class="bz-card__form" action="{{ routes.cart_add_url }}" method="post">

@@ -471,12 +471,10 @@
     }));
     let openCard = null;
     const setOpen = (card, open) => {
-      const turn = q('.gem-turn', card);
       const button = q('.stone__toggle', card);
       const front = q('.gem-front', card);
       const back = q('.gem-back', card);
-      if (turn) turn.style.transform = open && !reduced.matches ? 'rotateY(180deg)' : '';
-      if (reduced.matches) { if (front) front.hidden = open; if (back) back.hidden = !open; }
+      card.classList.toggle('flipped', open);
       button?.setAttribute('aria-expanded', String(open));
       const label = q('span', button);
       if (label) label.textContent = open ? 'Torna alla foto' : 'Scopri il significato';

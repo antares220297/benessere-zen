@@ -7,33 +7,26 @@
   assign card_title = card.title
   assign variant = card.selected_or_first_available_variant
   assign card_style = style | default: 'home'
-  assign category = cat | default: card.type
-  assign stock_class = ''
-  if card.available == false
-    assign category = 'Esaurito'
-    assign stock_class = ' bz-stock--soldout'
-  elsif variant.inventory_management != blank and variant.inventory_quantity == 1 and card.available
-    assign stock_class = ' bz-stock--low'
-  endif
+  assign product_type = card.type | strip
+  assign category = cat | default: product_type
+  assign dot_type = product_type | default: category
   assign image_sizes = '(min-width: 1024px) 18vw, 45vw'
   if card_style == 'plp'
     assign image_sizes = '(min-width: 1024px) 22vw, 45vw'
   endif
 -%}
-<article class="product bz-product-tile{{ stock_class }}{% if card_style == 'plp' %} pcard{% elsif card_style == 'gift' %} gift-card{% endif %}"{% if sortable %} data-price="{{ card.price }}" data-published="{{ card.published_at | date: '%s' }}"{% endif %}>
+<article class="product bz-product-tile{% if card_style == 'plp' %} pcard{% elsif card_style == 'gift' %} gift-card{% endif %}"{% if sortable %} data-price="{{ card.price }}" data-published="{{ card.published_at | date: '%s' }}"{% endif %}>
   <a class="bz-product-tile__link" href="{{ card.url }}">
     <div class="bz-product-tile__media{% if card_style == 'plp' %} pc-well{% endif %}">
       {%- if card.featured_image != blank -%}
         {{ card.featured_image | image_url: width: 800 | image_tag: decoding: 'async', alt: card_title, loading: 'lazy', widths: '240, 400, 640, 800', sizes: image_sizes, width: card.featured_image.width, height: card.featured_image.height }}
       {%- endif -%}
-      {%- if stock_class == ' bz-stock--low' -%}
-        <span class="bz-badge bz-stock--low">Ultimo pezzo</span>
-      {%- endif -%}
+      {%- render 'bz-card-stock', available: card.available, variant: variant -%}
     </div>
     <h3 class="bz-product-tile__title{% if card_style == 'plp' %} pc-name{% endif %}">{{ card_title | escape }}</h3>
     {%- if card_style == 'gift' -%}<span class="gift-cta">{% render 'bz-nav-label', label: 'Vedi' %}</span>{%- endif -%}
   </a>
-  <small class="bz-product-tile__meta bz-stock-label">{{ category | escape }}</small>
+  <small class="bz-product-tile__meta bz-category-label" style="--bz-category-dot:{% render 'bz-category-dot', type: dot_type %}">{{ category | escape }}</small>
   <div class="product-bottom bz-product-tile__bottom">
     <div class="price{% if card_style == 'plp' and card.available == false %} out{% endif %}">{% render 'bz-money', cents: card.price %}</div>
     <button

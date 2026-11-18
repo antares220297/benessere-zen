@@ -73,9 +73,9 @@
       "settings": {
         "products_intro": "In negozio abbiamo una scelta di prodotti che vengono dalla tradizione ayurvedica, per la cura di ogni giorno. Sono cosmetici, tè e accessori, non rimedi: li trovi divisi per gesto.",
         "disclaimer": "Le informazioni di questa pagina descrivono la tradizione ayurvedica e, come i prodotti, non sostituiscono il parere del medico.",
-        "vata_text": "",
-        "pitta_text": "",
-        "kapha_text": ""
+        "vata_text": "Nella tradizione ayurvedica vata unisce aria e spazio: è movimento e leggerezza, un ritmo che fa fatica a fermarsi. Si coltiva con gesti regolari e con oli più caldi.",
+        "pitta_text": "Pitta, nella stessa tradizione, unisce fuoco e acqua: è trasformazione e determinazione, un fuoco che a volte sale troppo. Si tiene in equilibrio con pause e con ciò che è più fresco.",
+        "kapha_text": "Kapha unisce terra e acqua. Nella tradizione è stabilità e costanza, un passo che a volte si fa pesante, e si rimette in moto con il corpo e con spezie più vive."
       },
       "blocks": {
         "d0": {

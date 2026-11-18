@@ -105,6 +105,23 @@
   --bz-status-low:#5b7bc9;
   --bz-error:#e8a593;
   --bz-error-on-light:#9e3b28;
+  /* Colore: pallini delle categorie prodotto */
+  --bz-cat-mala:#C9A96E;
+  --bz-cat-pendoli:#8FA4C8;
+  --bz-cat-candele:#D4896A;
+  --bz-cat-incensi:#8AA37A;
+  --bz-cat-burattate:#C4B49A;
+  --bz-cat-grezze:#A3A494;
+  --bz-cat-ciondoli:#C9929A;
+  --bz-cat-bracciali:#7EA8A0;
+  --bz-cat-porta-candele:#B8876A;
+  --bz-cat-ayurveda:#C9B056;
+  --bz-cat-collane:#A48BB8;
+  --bz-cat-cosmetici:#C9A8A0;
+  --bz-cat-oli:#A3946E;
+  --bz-cat-oggettistica:#A89B8C;
+  --bz-cat-tisane:#9B8A5C;
+  --bz-cat-default:var(--bz-gold);
   /* Linee */
   --bz-line:rgba(238,231,219,.11);        /* divisori, bordo card (decorativo) */
   --bz-line-2:rgba(238,231,219,.24);      /* chip, CTA secondaria */

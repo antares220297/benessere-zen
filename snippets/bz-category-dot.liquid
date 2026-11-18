@@ -1,0 +1,35 @@
+{%- assign type_key = type | downcase | strip | replace: 'è', 'e' | replace: 'é', 'e' | handleize -%}
+{%- case type_key -%}
+  {%- when 'mala', 'mala-tibetani', 'mala-tibetano' -%}
+    var(--bz-cat-mala)
+  {%- when 'pendoli', 'pendolo' -%}
+    var(--bz-cat-pendoli)
+  {%- when 'candele', 'candela' -%}
+    var(--bz-cat-candele)
+  {%- when 'incensi-e-smudge', 'incensi-smudge', 'incensi', 'incenso', 'smudge' -%}
+    var(--bz-cat-incensi)
+  {%- when 'pietre-burattate', 'pietra-burattata', 'burattate', 'burattata' -%}
+    var(--bz-cat-burattate)
+  {%- when 'pietre-grezze', 'pietra-grezza', 'grezze', 'grezza' -%}
+    var(--bz-cat-grezze)
+  {%- when 'ciondoli', 'ciondolo', 'pendenti', 'pendente' -%}
+    var(--bz-cat-ciondoli)
+  {%- when 'bracciali', 'bracciale', 'braccialetti', 'braccialetto' -%}
+    var(--bz-cat-bracciali)
+  {%- when 'porta-candele', 'porta-candela', 'portacandele', 'portacandela' -%}
+    var(--bz-cat-porta-candele)
+  {%- when 'ayurveda', 'ayurvedico', 'ayurvedici', 'ayurvedica', 'ayurvediche' -%}
+    var(--bz-cat-ayurveda)
+  {%- when 'collane', 'collana' -%}
+    var(--bz-cat-collane)
+  {%- when 'cosmetici', 'cosmetico', 'cosmesi' -%}
+    var(--bz-cat-cosmetici)
+  {%- when 'oli-e-profumi', 'oli-profumi', 'oli', 'olio', 'profumi', 'profumo' -%}
+    var(--bz-cat-oli)
+  {%- when 'oggettistica', 'oggettistica-e-idee-regalo' -%}
+    var(--bz-cat-oggettistica)
+  {%- when 'te-e-tisane', 'te-tisane', 'te', 'tisane', 'tisana' -%}
+    var(--bz-cat-tisane)
+  {%- else -%}
+    var(--bz-cat-default)
+{%- endcase -%}

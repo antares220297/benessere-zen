@@ -22,23 +22,23 @@
     <div class="contact-details">
       <div class="contact-tiles">
         <article class="contact-tile">
-          <h2>{% render 'bz-icon', name: 'directions' %}Indirizzo</h2>
+          <h2>{% render 'bz-icon', name: 'location_on' %}Indirizzo</h2>
           <p class="tile-value">{{ settings.bz_address | default: 'Via Marcello Provenzali 1, 44042 Cento (FE)' }}</p>
         </article>
         <article class="contact-tile">
-          <h2>Telefono</h2>
+          <h2>{% render 'bz-icon', name: 'call' %}Telefono</h2>
           <p class="tile-value"><a href="tel:{{ settings.bz_phone | default: '+39 347 088 3168' | replace: ' ', '' }}">{{ settings.bz_phone | default: '+39 347 088 3168' }}</a></p>
         </article>
         <article class="contact-tile">
-          <h2>{% render 'bz-icon', name: 'north_east' %}Email</h2>
-          <p class="tile-value tile-value-email"><a href="mailto:{{ settings.bz_email | default: 'info@benesserezen.shop' }}">{{ settings.bz_email | default: 'info@benesserezen.shop' }}</a></p>
+          <h2>{% render 'bz-icon', name: 'mail' %}Email</h2>
+          <p class="tile-value"><a href="mailto:{{ settings.bz_email | default: 'info@benesserezen.shop' }}">{{ settings.bz_email | default: 'info@benesserezen.shop' }}</a></p>
         </article>
         <article class="contact-tile">
-          <h2>Seguici</h2>
-          <p class="social-links">
-            {%- if settings.social_instagram_link != blank -%}<a href="{{ settings.social_instagram_link }}">Instagram ↗</a>{%- endif -%}
-            {%- if settings.social_facebook_link != blank -%}<a href="{{ settings.social_facebook_link }}">Facebook ↗</a>{%- endif -%}
-          </p>
+          <h2>{% render 'bz-icon', name: 'groups' %}Seguici</h2>
+          <ul class="social-links" role="list">
+            {%- if settings.social_instagram_link != blank -%}<li><a href="{{ settings.social_instagram_link }}">{% render 'bz-nav-label', label: 'Instagram' %}</a></li>{%- endif -%}
+            {%- if settings.social_facebook_link != blank -%}<li><a href="{{ settings.social_facebook_link }}">{% render 'bz-nav-label', label: 'Facebook' %}</a></li>{%- endif -%}
+          </ul>
         </article>
       </div>
       <section class="hours-card" id="orari" aria-labelledby="hours-title">

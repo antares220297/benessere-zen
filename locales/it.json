@@ -8,6 +8,12 @@
  * ------------------------------------------------------------
  */
 {
+  "bz": {
+    "stock": {
+      "sold_out": "Esaurito",
+      "last_one": "Ultimo pezzo"
+    }
+  },
   "general": {
     "global": {
       "cancel": "Annulla",
