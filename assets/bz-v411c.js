@@ -185,15 +185,15 @@
         if (on) { photo.classList.remove('entering'); void photo.offsetWidth; photo.classList.add('entering'); }
       });
     }));
-    qa('.mother-row > button', panel).forEach(button => button.addEventListener('click', () => {
-      const row = button.closest('.phone-group') || button.closest('.mother-row');
-      const list = row && q('.phone-group-children, .b-children-list', row.parentElement);
-      if (!list) return;
-      const open = list.hidden;
-      list.hidden = !open;
-      button.setAttribute('aria-expanded', String(open));
-    }));
-  });
+    });
+  qa('.phone-group > button.mother-row').forEach(button => button.addEventListener('click', () => {
+    const group = button.closest('.phone-group');
+    const list = group && q('.phone-group-children', group);
+    if (!list) return;
+    const open = list.hidden;
+    list.hidden = !open;
+    button.setAttribute('aria-expanded', String(open));
+  }));
   const openMobile = () => { if (!mobile) return; mobile.hidden = false; document.body.classList.add('menu-locked'); toggle?.setAttribute('aria-expanded', 'true'); };
   const closeMobile = () => { if (!mobile) return; mobile.hidden = true; document.body.classList.remove('menu-locked'); toggle?.setAttribute('aria-expanded', 'false'); qa('.phone-panel', mobile).forEach(p => p.hidden = true); q('.phone-start', mobile)?.removeAttribute('hidden'); };
   toggle?.addEventListener('click', () => mobile?.hidden ? openMobile() : closeMobile());
