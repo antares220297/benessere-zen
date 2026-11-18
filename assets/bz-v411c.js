@@ -569,6 +569,7 @@
   const stage = q('.venn-stage');
   if (stage) {
     const circles = qa('[data-dosha]', stage);
+    const products = q('#circle-products');
     const names = ['Vata', 'Pitta', 'Kapha'];
     const centers = [[.5, .33], [.33, .62], [.67, .62]];
     const selectCircle = index => {
@@ -576,7 +577,10 @@
       const panel = q('#circle-panel');
       const source = q('#dosha-content-' + index);
       if (panel && source) {
-        panel.replaceChildren(source.content.cloneNode(true));
+        const content = source.content.cloneNode(true);
+        const selection = q('.dosha-selection', content);
+        if (products && selection) products.replaceChildren(selection);
+        panel.replaceChildren(content);
         if (!reduced.matches) panel.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 250, easing: 'cubic-bezier(.2,.7,.1,1)' });
       }
     };

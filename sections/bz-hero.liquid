@@ -9,18 +9,14 @@
           <a class="btn gold" href="{{ section.settings.primary_link }}">{% render 'bz-nav-label', label: section.settings.primary_label %}</a>
           <a class="btn outline" href="{{ section.settings.secondary_link }}">{% render 'bz-nav-label', label: section.settings.secondary_label %}</a>
         </div>
+        {% render 'bz-trust' %}
       </div>
-      <ul class="hero-trust" role="list">
-        <li>{% render 'bz-icon', name: 'local_shipping' %}<span>{{ section.settings.shipping_label | escape }} {{ settings.bz_free_shipping | default: 50 }}&nbsp;€</span></li>
-        <li>{% render 'bz-icon', name: 'currency_exchange' %}<span>{{ section.settings.returns_label | escape }}</span></li>
-        <li><a href="/pages/il-negozio">{% render 'bz-icon', name: 'storefront' %}<span>{{ section.settings.store_label | escape }}</span></a></li>
-      </ul>
     </div>
     <div class="hero-slide new-slide" aria-hidden="true" inert aria-label="2 di 3">
       <div class="hero-copy">
         <h2>{{ section.settings.slide_2_heading | escape }} <em>{{ section.settings.slide_2_accent | escape }}</em></h2>
         <p>{{ section.settings.slide_2_text | escape }}</p>
-        <div class="new-products">
+        <div class="new-products bz-product-group">
           {%- for product in section.settings.slide_2_products -%}
             {% render 'bz-product-card', card: product, style: 'home' %}
           {%- endfor -%}
@@ -73,9 +69,6 @@
     { "type": "url", "id": "primary_link", "label": "Link principale" },
     { "type": "text", "id": "secondary_label", "label": "Pulsante secondario", "default": "Tutti i gioielli" },
     { "type": "url", "id": "secondary_link", "label": "Link secondario" },
-    { "type": "text", "id": "shipping_label", "label": "Etichetta spedizione", "default": "Spedizione gratis da" },
-    { "type": "text", "id": "returns_label", "label": "Etichetta reso", "default": "Reso entro 14 giorni" },
-    { "type": "text", "id": "store_label", "label": "Etichetta negozio", "default": "Il negozio è a Cento" },
     { "type": "product", "id": "featured_product", "label": "Mini scheda" },
     { "type": "collection", "id": "rotation_collection", "label": "Collezione per la rotazione" },
     { "type": "text", "id": "slide_2_heading", "label": "Slide 2 titolo", "default": "Nuovi arrivi" },

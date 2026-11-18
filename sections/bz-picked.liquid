@@ -8,7 +8,7 @@
     </div>
   </div>
   {%- for block in section.blocks -%}
-    <div class="products five" role="tabpanel" id="picked-panel-{{ section.id }}-{{ forloop.index }}" aria-labelledby="picked-tab-{{ section.id }}-{{ forloop.index }}" {% unless forloop.first %}hidden{% endunless %} data-picked-panel="{{ forloop.index0 }}">
+    <div class="products bz-product-group" role="tabpanel" id="picked-panel-{{ section.id }}-{{ forloop.index }}" aria-labelledby="picked-tab-{{ section.id }}-{{ forloop.index }}" {% unless forloop.first %}hidden{% endunless %} data-picked-panel="{{ forloop.index0 }}">
       {%- if block.settings.products != blank and block.settings.products.size > 0 -%}
         {%- for product in block.settings.products limit: section.settings.limit -%}
           {% render 'bz-product-card', card: product %}

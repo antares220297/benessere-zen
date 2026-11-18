@@ -1,21 +1,27 @@
 {%- liquid
   assign variant = rec.selected_or_first_available_variant
   assign category = rec.type | strip
+  assign display_name = rec.metafields.custom.nome_vetrina.value | strip
+  assign name_class = 'has-nome-vetrina'
+  if display_name == blank
+    assign display_name = rec.title
+    assign name_class = 'is-title-fallback'
+  endif
 -%}
-<label class="ritual-row{% unless variant.available %} is-unavailable{% endunless %}">
+<label class="ritual-row {{ name_class }}{% unless variant.available %} is-unavailable{% endunless %}">
   <input class="bz-vh" type="checkbox" {% if variant.available %}checked data-variant="{{ variant.id }}" data-price="{{ variant.price }}"{% else %}disabled{% endif %} aria-label="Includi nel set: {{ rec.title | escape }}">
   <span class="set-check">{% render 'bz-icon', name: 'check' %}</span>
   <span class="ritual-row-media">
     <span class="ritual-thumb">
       {%- if rec.featured_image -%}
-        {{ rec.featured_image | image_url: width: 160 | image_tag: alt: '', loading: 'lazy', decoding: 'async', width: 48, height: 48 }}
+        {{ rec.featured_image | image_url: width: 160 | image_tag: alt: rec.title, loading: 'lazy', decoding: 'async', width: 56, height: 56 }}
       {%- endif -%}
     </span>
     {%- render 'bz-card-stock', available: variant.available, variant: variant -%}
   </span>
   <span class="ritual-item">
-    <span class="ritual-product">{{ rec.title | escape }}</span>
+    <span class="ritual-product">{{ display_name | escape }}</span>
     <small class="ritual-category bz-category-label" style="--bz-category-dot:{% render 'bz-category-dot', type: category %}">{{ category | escape }}</small>
-    <span class="row-price">{% render 'bz-money', cents: variant.price %}</span>
   </span>
+  <span class="row-price">{% render 'bz-money', cents: variant.price %}</span>
 </label>

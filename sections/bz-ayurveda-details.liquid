@@ -5,33 +5,41 @@
     <article class="dosha-idea" id="dosha-cerchi">
       <div class="dosha-layout">
         <div class="venn-stage" role="group" aria-label="Scegli un dosha">
-          <button class="dosha-circle vata" type="button" data-dosha="0" aria-label="Vata, aria e spazio" aria-pressed="true" aria-controls="circle-panel"></button>
-          <button class="dosha-circle pitta" type="button" data-dosha="1" aria-label="Pitta, fuoco e acqua" aria-pressed="false" aria-controls="circle-panel"></button>
-          <button class="dosha-circle kapha" type="button" data-dosha="2" aria-label="Kapha, terra e acqua" aria-pressed="false" aria-controls="circle-panel"></button>
+          <button class="dosha-circle vata" type="button" data-dosha="0" aria-label="Vata, aria e spazio" aria-pressed="true" aria-controls="circle-panel circle-products"></button>
+          <button class="dosha-circle pitta" type="button" data-dosha="1" aria-label="Pitta, fuoco e acqua" aria-pressed="false" aria-controls="circle-panel circle-products"></button>
+          <button class="dosha-circle kapha" type="button" data-dosha="2" aria-label="Kapha, terra e acqua" aria-pressed="false" aria-controls="circle-panel circle-products"></button>
           <svg class="venn-orbit" aria-hidden="true" focusable="false"></svg>
         </div>
         <div class="dosha-panel" id="circle-panel" aria-live="polite" aria-atomic="true"></div>
       </div>
+      <div id="circle-products"></div>
     </article>
     {%- assign doshas = 'Vata|Pitta|Kapha' | split: '|' -%}
     {%- for name in doshas -%}
       {%- assign text_key = name | downcase | append: '_text' -%}
+      {%- assign dosha_index = forloop.index0 | append: '' -%}
       <template id="dosha-content-{{ forloop.index0 }}">
         <div class="dosha-copy">
           <span class="dosha-eyebrow">Nella tradizione ayurvedica</span>
           <h3><em>{{ name }}</em></h3>
           {%- if section.settings[text_key] != blank -%}<p>{{ section.settings[text_key] | escape }}</p>{%- endif -%}
         </div>
-        <div class="dosha-products">
-          {%- for block in section.blocks -%}
-            {%- assign dosha_index = forloop.parentloop.index0 | append: '' -%}
-            {%- if block.type == 'dosha_product' and block.settings.dosha == dosha_index -%}
-              {%- assign product = block.settings.product -%}
-              {%- if product.title != blank -%}
-                {% render 'bz-product-card', card: product %}
+        <div class="dosha-selection" data-dosha-tone="{{ name | downcase }}">
+          <div class="dosha-products bz-product-group">
+            {%- assign product_count = 0 -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'dosha_product' and block.settings.dosha == dosha_index -%}
+                {%- assign product = block.settings.product -%}
+                {%- if product.title != blank -%}
+                  {% render 'bz-product-card', card: product %}
+                  {%- assign product_count = product_count | plus: 1 -%}
+                {%- endif -%}
               {%- endif -%}
-            {%- endif -%}
-          {%- endfor -%}
+            {%- endfor -%}
+          </div>
+          {%- if product_count > 4 -%}
+            <a class="bz-row-link" href="#prodotti">{% render 'bz-nav-label', label: 'Vedi tutto' %}</a>
+          {%- endif -%}
         </div>
       </template>
     {%- endfor -%}
@@ -49,13 +57,13 @@
             <h3>{{ block.settings.title }}</h3>
           </div>
           <div class="ay-copy">{{ block.settings.body }}</div>
-          <div class="ay-cat-grid">
+          <div class="ay-cat-grid bz-product-group">
             {%- for product in block.settings.products -%}
               {% render 'bz-product-card', card: product %}
             {%- endfor -%}
           </div>
           {%- if block.settings.link != blank -%}
-            <a class="bz-row-link" href="{{ block.settings.link }}">{% render 'bz-nav-label', label: 'Vedi tutti' %}</a>
+            <a class="bz-row-link" href="{{ block.settings.link }}">{% render 'bz-nav-label', label: 'Vedi tutto' %}</a>
           {%- endif -%}
         </article>
       {%- endfor -%}

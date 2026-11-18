@@ -44,6 +44,9 @@
   --bz-cat-oggettistica:#A89B8C;
   --bz-cat-tisane:#9B8A5C;
   --bz-cat-default:var(--bz-gold);
+  --bz-dosha-vata:#aab4f6;
+  --bz-dosha-pitta:#f4a46a;
+  --bz-dosha-kapha:#6dd2b6;
   /* Linee */
   --bz-line:rgba(238,231,219,.11);        /* divisori, bordo card (decorativo) */
   --bz-line-2:rgba(238,231,219,.24);      /* chip, CTA secondaria */
@@ -55,6 +58,7 @@
   --bz-veil-bottom:linear-gradient(180deg,rgba(20,19,18,0) 0%,rgba(20,19,18,.65) 45%,rgba(20,19,18,.88) 100%);
   --bz-veil-side:linear-gradient(90deg,rgba(20,19,18,.88) 0%,rgba(20,19,18,.65) 40%,rgba(20,19,18,0) 75%);
   --bz-veil-badge:rgba(20,19,18,.80);
+  --bz-veil-trust:rgba(14,13,12,.72);
   /* Focus */
   --bz-focus-color:var(--bz-gold);
   --bz-focus-width:2px;

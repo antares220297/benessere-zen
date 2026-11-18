@@ -240,6 +240,7 @@
           </button>
         </div>
       {%- endform -%}
+      {% render 'bz-trust' %}
 
       {%- if section.settings.pickup_link != blank -%}
         <a class="bz-pickup" href="{{ section.settings.pickup_link }}">
@@ -252,14 +253,15 @@
 
       {%- assign pair = product.metafields.custom.pairs_with.value -%}
       {%- if pair != blank and pair.id != blank -%}
-        <div class="bz-pair">
+        {%- assign pair_name = pair.metafields.custom.nome_vetrina.value | strip -%}
+        <div class="bz-pair{% if pair_name != blank %} has-nome-vetrina{% else %} is-title-fallback{% endif %}">
           {%- if pair.featured_image -%}
             {{ pair.featured_image | image_url: width: 120 | image_tag: alt: pair.title, loading: 'lazy', width: 52, height: 52 }}
           {%- endif -%}
-          <div>Si abbina a {{ pair.title | escape }}<small>{% render 'bz-money', cents: pair.price %}</small></div>
+          <div>Si abbina a <span class="bz-pair__name">{{ pair_name | default: pair.title | escape }}</span><small>{% render 'bz-money', cents: pair.price %}</small></div>
           <form class="bz-ajax-cart" action="{{ routes.cart_add_url }}" method="post">
             <input type="hidden" name="id" value="{{ pair.selected_or_first_available_variant.id }}">
-            <button class="add bz-card__add" type="submit" aria-label="Aggiungi al carrello: {{ pair.title | escape }}">+</button>
+            <button class="add bz-card__add" type="submit" aria-label="Aggiungi al carrello: {{ pair_name | default: pair.title | escape }}">{% render 'bz-icon', name: 'add' %}</button>
           </form>
         </div>
       {%- endif -%}

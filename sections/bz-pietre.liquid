@@ -38,7 +38,7 @@
           </div>
           <div class="month-products-area">
             {%- if block.settings.products.size > 0 -%}
-              <div class="products month-cards bz-fixed-3">
+              <div class="products month-cards bz-product-group">
                 {%- for product in block.settings.products -%}
                   {% render 'bz-product-card', card: product %}
                 {%- endfor -%}
@@ -104,7 +104,7 @@
     {%- for block in section.blocks -%}
       {%- if block.type == 'compare' -%}
         <div class="compare-group" data-compare-group="{{ block.settings.name | handleize }}" {% unless compare_index == 0 %}hidden{% endunless %}>
-        <div class="products bz-fixed-3">
+        <div class="products bz-product-group">
           {%- assign forms = 'Grezza|Burattata|' | append: block.settings.wear_label | split: '|' -%}
           {%- for form in forms -%}
             {%- liquid
@@ -156,12 +156,13 @@
         <button type="button" data-picked="1" aria-selected="false">Pendoli</button>
       </div>
     </div>
-    <div class="products five" data-picked-panel="0">
+    <div class="products bz-product-group" data-picked-panel="0">
       {%- for product in section.settings.mala_products -%}{% render 'bz-product-card', card: product %}{%- endfor -%}
     </div>
-    <div class="products five" data-picked-panel="1" hidden>
+    <div class="products bz-product-group" data-picked-panel="1" hidden>
       {%- for product in section.settings.pendoli_products -%}{% render 'bz-product-card', card: product %}{%- endfor -%}
     </div>
+    <a class="bz-row-link" href="{{ routes.all_products_collection_url }}">{% render 'bz-nav-label', label: 'Vedi tutto' %}</a>
   </section>
   <section class="split story flip">
     <div class="split-copy">
