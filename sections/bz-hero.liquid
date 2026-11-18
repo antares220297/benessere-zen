@@ -10,28 +10,6 @@
           <a class="btn outline" href="{{ section.settings.secondary_link }}">{% render 'bz-nav-label', label: section.settings.secondary_label %}</a>
         </div>
       </div>
-      {%- liquid
-        assign mini = section.settings.featured_product | default: all_products['mala-diaspro-rosso-108-perle']
-        assign shown = 0
-      -%}
-      {%- capture hero_products -%}
-        {%- if mini.available -%}
-          {% render 'bz-hero-product', item: mini, first: true %}
-          {%- assign shown = 1 -%}
-        {%- endif -%}
-        {%- for item in section.settings.rotation_collection.products -%}
-          {%- if shown == 12 -%}{%- break -%}{%- endif -%}
-          {%- if item.available and item.id != mini.id -%}
-            {%- assign first = false -%}
-            {%- if shown == 0 -%}{%- assign first = true -%}{%- endif -%}
-            {% render 'bz-hero-product', item: item, first: first %}
-            {%- assign shown = shown | plus: 1 -%}
-          {%- endif -%}
-        {%- endfor -%}
-      {%- endcapture -%}
-      {%- if shown > 0 -%}
-        <div class="hero-mini" data-hero-products aria-live="off">{{ hero_products }}</div>
-      {%- endif -%}
     </div>
     <div class="hero-slide new-slide" aria-hidden="true" inert aria-label="2 di 3">
       <div class="hero-copy">

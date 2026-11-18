@@ -67,7 +67,7 @@
         {%- endif -%}
         <div class="bz-stage__badges">
           {%- if current.inventory_management != blank and current.inventory_quantity == 1 and current.available -%}
-            <span class="bz-badge">Ultimo pezzo</span>
+            <span class="bz-badge bz-stock--low">Ultimo pezzo</span>
           {%- endif -%}
           {%- if section.settings.store_badge != blank -%}
             <span class="bz-pill">{{ section.settings.store_badge | escape }}</span>
@@ -230,9 +230,13 @@
             <input type="number" name="quantity" value="1" min="1" aria-label="Quantità" style="width:28px;border:0;background:transparent;color:inherit;text-align:center">
             <button type="button" data-bz-qty="1" aria-label="Più">+</button>
           </div>
-          <button class="bz-btn bz-btn--gold" type="submit" name="add" {% unless current.available %}disabled{% endunless %}>
-            {%- if current.available -%}Aggiungi al carrello{%- else -%}Esaurito{%- endif -%}
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          <button class="bz-btn bz-btn--gold{% unless current.available %} bz-stock--soldout{% endunless %}" type="submit" name="add" {% unless current.available %}disabled{% endunless %}>
+            {%- if current.available -%}
+              Aggiungi al carrello
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            {%- else -%}
+              Esaurito
+            {%- endif -%}
           </button>
         </div>
       {%- endform -%}

@@ -1,12 +1,26 @@
-{%- assign variant = rec.selected_or_first_available_variant -%}
-<label class="ritual-row{% unless variant.available %} is-unavailable{% endunless %}">
+{%- liquid
+  assign variant = rec.selected_or_first_available_variant
+  assign category = rec.type
+  assign stock_class = ''
+  if variant.available == false
+    assign category = 'Esaurito'
+    assign stock_class = ' is-unavailable bz-stock--soldout'
+  elsif variant.inventory_management != blank and variant.inventory_quantity == 1 and variant.available
+    assign category = 'Ultimo pezzo'
+    assign stock_class = ' bz-stock--low'
+  endif
+-%}
+<label class="ritual-row{{ stock_class }}">
   <input class="bz-vh" type="checkbox" {% if variant.available %}checked data-variant="{{ variant.id }}" data-price="{{ variant.price }}"{% else %}disabled{% endif %} aria-label="Includi nel set: {{ rec.title | escape }}">
   <span class="set-check">{% render 'bz-icon', name: 'check' %}</span>
-  {%- if rec.featured_image -%}
-    {{ rec.featured_image | image_url: width: 160 | image_tag: alt: '', loading: 'lazy', decoding: 'async', width: 56, height: 56 }}
-  {%- endif -%}
+  <span class="ritual-thumb">
+    {%- if rec.featured_image -%}
+      {{ rec.featured_image | image_url: width: 160 | image_tag: alt: '', loading: 'lazy', decoding: 'async', width: 48, height: 48 }}
+    {%- endif -%}
+  </span>
   <span class="ritual-item">
     <span class="ritual-product">{{ rec.title | escape }}</span>
+    <small class="ritual-category bz-stock-label">{{ category | escape }}</small>
     <span class="row-price">{% render 'bz-money', cents: variant.price %}</span>
   </span>
 </label>

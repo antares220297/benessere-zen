@@ -23,6 +23,8 @@
   --bz-on-gold:#17140f;
   /* Stato e errori */
   --bz-status-open:#7bae7c;
+  --bz-status-soldout:#b77579;
+  --bz-status-low:#5b7bc9;
   --bz-error:#e8a593;
   --bz-error-on-light:#9e3b28;
   /* Linee */

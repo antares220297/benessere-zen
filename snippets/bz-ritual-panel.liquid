@@ -14,7 +14,7 @@
 -%}
 <div class="ritual-grid{% if shot == blank and asset == blank %} ritual-grid--solo{% endif %}" id="{{ panel_id }}" data-ritual-set="{{ panel_id }}"{% unless first %} hidden{% endunless %}{% if use_bundle %} data-bundle-variant="{{ bundle_variant.id }}" data-bundle-price="{{ bundle_variant.price }}"{% endif %} {{ block.shopify_attributes }}>
   <div class="ritual-list">
-    {{ rows }}
+    <div class="ritual-rows">{{ rows }}</div>
     <div class="ritual-total">
       <div>
         <small class="ritual-count">{{ count }} {% if count == 1 %}pezzo scelto{% else %}pezzi scelti{% endif %}</small>

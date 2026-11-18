@@ -377,50 +377,8 @@
       new IntersectionObserver(entries => { seen = entries.some(entry => entry.intersectionRatio >= 0.3); arm(); }, { threshold: [0, 0.3, 1] }).observe(hero);
     }
     mobile.addEventListener?.('change', arm);
+    reduced.addEventListener?.('change', arm);
   }
-
-  qa('[data-hero-products]').forEach(card => {
-    const featured = q('.is-active', card);
-    const rotation = qa('[data-hero-product]', card).filter(item => item !== featured);
-    if (!featured || !rotation.length) return;
-    for (let i = rotation.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [rotation[i], rotation[j]] = [rotation[j], rotation[i]];
-    }
-    rotation.unshift(featured);
-
-    const slide = card.closest('.hero-slide');
-    let timer;
-    let index = 0;
-    let near = true;
-    const arm = () => {
-      clearTimeout(timer);
-      if (reduced.matches || params.get('static') === '1' || document.hidden || !near ||
-          !slide.classList.contains('active') || card.matches(':hover, :focus-within')) return;
-      timer = setTimeout(() => {
-        const current = rotation[index];
-        index = (index + 1) % rotation.length;
-        const next = rotation[index];
-        current.classList.remove('is-active');
-        current.inert = true;
-        current.setAttribute('aria-hidden', 'true');
-        next.classList.add('is-active');
-        next.inert = false;
-        next.removeAttribute('aria-hidden');
-        arm();
-      }, 3000);
-    };
-    ['pointerenter', 'pointerleave', 'focusin', 'focusout'].forEach(type => {
-      card.addEventListener(type, () => requestAnimationFrame(arm));
-    });
-    new MutationObserver(arm).observe(slide, { attributes: true, attributeFilter: ['class'] });
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(([entry]) => { near = entry.isIntersecting; arm(); }).observe(card);
-    }
-    document.addEventListener('visibilitychange', arm);
-    reduced.addEventListener('change', arm);
-    arm();
-  });
 
   function warmHiddenImages(section) {
     qa('[hidden] img[loading="lazy"]', section).forEach(image => {
@@ -697,8 +655,8 @@
   }
 
   qa('[data-load]').forEach(link => link.addEventListener('click', async event => {
-    if (!link.href || link.getAttribute('aria-busy') === 'true') return;
     event.preventDefault();
+    if (!link.href || link.getAttribute('aria-busy') === 'true') return;
     link.setAttribute('aria-busy', 'true');
     try {
       const html = await fetch(link.href).then(r => r.text());

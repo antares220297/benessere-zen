@@ -7,44 +7,35 @@
   assign card_title = card.title
   assign variant = card.selected_or_first_available_variant
   assign card_style = style | default: 'home'
-  if cat != blank
-    assign category = cat
-  elsif card.available == false
+  assign category = cat | default: card.type
+  assign stock_class = ''
+  if card.available == false
     assign category = 'Esaurito'
-  else
-    assign category = card.type
+    assign stock_class = ' bz-stock--soldout'
+  elsif variant.inventory_management != blank and variant.inventory_quantity == 1 and card.available
+    assign stock_class = ' bz-stock--low'
   endif
-  assign last_one = false
-  if variant.inventory_management != blank and variant.inventory_quantity == 1 and card.available
-    assign last_one = true
+  assign image_sizes = '(min-width: 1024px) 18vw, 45vw'
+  if card_style == 'plp'
+    assign image_sizes = '(min-width: 1024px) 22vw, 45vw'
   endif
 -%}
-<article class="product{% if card_style == 'plp' %} pcard{% endif %}{% if card_style == 'gift' %} gift-card{% endif %}"{% if sortable %} data-price="{{ card.price }}" data-published="{{ card.published_at | date: '%s' }}"{% endif %}>
-  <a href="{{ card.url }}">
-    {%- if last_one and card_style != 'gift' -%}
-      <span class="bz-badge">Ultimo pezzo</span>
-    {%- endif -%}
-    {%- if card_style == 'plp' -%}
-      <div class="pc-well">
-        {%- if card.featured_image != blank -%}
-          {{ card.featured_image | image_url: width: 800 | image_tag: decoding: 'async', alt: card_title, loading: 'lazy', widths: '240, 400, 640, 800', sizes: '(min-width: 1024px) 22vw, 45vw', width: card.featured_image.width, height: card.featured_image.height }}
-        {%- endif -%}
-      </div>
-    {%- else -%}
-      {%- if card_style == 'gift' -%}<div class="gift-photo">{%- endif -%}
+<article class="product bz-product-tile{{ stock_class }}{% if card_style == 'plp' %} pcard{% elsif card_style == 'gift' %} gift-card{% endif %}"{% if sortable %} data-price="{{ card.price }}" data-published="{{ card.published_at | date: '%s' }}"{% endif %}>
+  <a class="bz-product-tile__link" href="{{ card.url }}">
+    <div class="bz-product-tile__media{% if card_style == 'plp' %} pc-well{% endif %}">
       {%- if card.featured_image != blank -%}
-        {{ card.featured_image | image_url: width: 800 | image_tag: decoding: 'async', alt: card_title, loading: 'lazy', widths: '240, 400, 640, 800', sizes: '(min-width: 1024px) 18vw, 45vw', width: card.featured_image.width, height: card.featured_image.height }}
+        {{ card.featured_image | image_url: width: 800 | image_tag: decoding: 'async', alt: card_title, loading: 'lazy', widths: '240, 400, 640, 800', sizes: image_sizes, width: card.featured_image.width, height: card.featured_image.height }}
       {%- endif -%}
-      {%- if card_style == 'gift' -%}</div>{%- endif -%}
-    {%- endif -%}
-    <h3{% if card_style == 'plp' %} class="pc-name"{% endif %}>{{ card_title | escape }}</h3>
-    {%- if card_style == 'gift' -%}<span class="gift-cta">Vedi <span aria-hidden="true">→</span></span>{%- endif -%}
-  </a>
-  <div class="product-bottom">
-    <div>
-      {%- if category != blank -%}<small>{{ category | escape }}</small>{%- endif -%}
-      <div class="price{% if card_style == 'plp' and card.available == false %} out{% endif %}">{% render 'bz-money', cents: card.price %}</div>
+      {%- if stock_class == ' bz-stock--low' -%}
+        <span class="bz-badge bz-stock--low">Ultimo pezzo</span>
+      {%- endif -%}
     </div>
+    <h3 class="bz-product-tile__title{% if card_style == 'plp' %} pc-name{% endif %}">{{ card_title | escape }}</h3>
+    {%- if card_style == 'gift' -%}<span class="gift-cta">{% render 'bz-nav-label', label: 'Vedi' %}</span>{%- endif -%}
+  </a>
+  <small class="bz-product-tile__meta bz-stock-label">{{ category | escape }}</small>
+  <div class="product-bottom bz-product-tile__bottom">
+    <div class="price{% if card_style == 'plp' and card.available == false %} out{% endif %}">{% render 'bz-money', cents: card.price %}</div>
     <button
       class="add"
       type="button"

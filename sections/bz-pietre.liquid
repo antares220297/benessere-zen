@@ -39,7 +39,7 @@
           </div>
           <div class="month-products-area">
             {%- if block.settings.products.size > 0 -%}
-              <div class="products month-cards">
+              <div class="products month-cards bz-fixed-3">
                 {%- for product in block.settings.products -%}
                   {% render 'bz-product-card', card: product %}
                 {%- endfor -%}
@@ -65,14 +65,16 @@
         {%- if block.type == 'intention' -%}
           {%- assign coll = block.settings.collection -%}
           <article class="intention" {{ block.shopify_attributes }}>
-            {%- if block.settings.image_asset != blank -%}
-              <img src="{{ block.settings.image_asset | asset_url }}" alt="{{ block.settings.word | escape }}" width="900" height="900" loading="lazy">
-            {%- elsif coll.image -%}
-              {{ coll.image | image_url: width: 800 | image_tag: alt: block.settings.word, loading: 'lazy', widths: '300, 500, 800', sizes: '(min-width: 1024px) 18vw, 80vw' }}
-            {%- elsif coll.products.first.featured_image -%}
-              {{ coll.products.first.featured_image | image_url: width: 800 | image_tag: alt: block.settings.word, loading: 'lazy', widths: '300, 500, 800', sizes: '(min-width: 1024px) 18vw, 80vw' }}
-            {%- endif -%}
-            <div>
+            <div class="intention-media">
+              {%- if block.settings.image_asset != blank -%}
+                <img src="{{ block.settings.image_asset | asset_url }}" alt="{{ block.settings.word | escape }}" width="900" height="900" loading="lazy">
+              {%- elsif coll.image -%}
+                {{ coll.image | image_url: width: 800 | image_tag: alt: block.settings.word, loading: 'lazy', widths: '300, 500, 800', sizes: '(min-width: 1024px) 18vw, 80vw' }}
+              {%- elsif coll.products.first.featured_image -%}
+                {{ coll.products.first.featured_image | image_url: width: 800 | image_tag: alt: block.settings.word, loading: 'lazy', widths: '300, 500, 800', sizes: '(min-width: 1024px) 18vw, 80vw' }}
+              {%- endif -%}
+            </div>
+            <div class="intention-copy">
               <h3>{{ block.settings.word | escape }}</h3>
               <p>{{ block.settings.line | escape }}</p>
               <a class="text-link" href="{{ coll.url }}">{% render 'bz-nav-label', label: 'Scopri i pezzi' %}</a>
