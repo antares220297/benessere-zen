@@ -168,9 +168,9 @@
 .plp .crumbs a{display:inline-flex;align-items:center;min-height:32px;color:var(--ivory2)}
 .plp .crumbs a:hover{color:var(--ivory);text-decoration:underline;text-underline-offset:3px}
 .plp .crumbs [aria-current]{color:var(--ivory)}
-.plp .plp-head-row{display:flex;align-items:flex-end;justify-content:space-between;gap:16px 48px;margin-top:clamp(10px,1.2vw,16px)}
+.plp .plp-head-row{display:flex;flex-direction:column;align-items:flex-start;gap:16px 48px;margin-top:clamp(10px,1.2vw,16px)}
 .plp .plp-head h1{font-size:clamp(38px,4.4vw,66px);line-height:1.02}
-.plp .plp-intro{max-width:44ch;text-align:right;padding-bottom:6px;text-wrap:balance}
+.plp .plp-intro{max-width:60ch;text-align:left;text-wrap:pretty}
 .plp .plp-intro p{margin:0;font-size:15px}
 .plp .plp-count{margin-top:6px!important;font-size:13px!important;color:var(--goldl)!important;letter-spacing:.04em}
 
@@ -355,14 +355,14 @@ html{scroll-behavior:smooth}.bz-page-home main{padding-top:0}.bz-page-home main>
 .bz-page-home .faq-card mark.tbc{color:#684714;border-color:#826027}
 .bz-page-home .hero-slide{transition:opacity var(--t-fade) var(--ease-io)}.bz-page-home .hero-photo{animation:none!important;transform:none!important}.bz-page-home .hero-copy{bottom:150px}.bz-page-home .hero-mini{bottom:24px}.bz-page-home .hero-side .small h2{font-size:clamp(30px,3vw,43px)}
 .bz-page-home .mala-copy{padding-bottom:28px}
-.bz-page-home .gift-card{display:grid;grid-template-rows:minmax(0,1fr) auto;padding:0;overflow:hidden;border-radius:var(--r)}
-.bz-page-home .gift-card>a{position:relative;display:grid;grid-template-rows:minmax(0,1fr) auto;min-width:0}
-.bz-page-home .gift-card>a>img{position:absolute;grid-area:1/1/2/2;inset:0;width:100%;height:100%;aspect-ratio:auto;border-radius:0;object-fit:cover}
-.bz-page-home .gift-card h3{grid-row:2;min-height:2.8em;margin:8px 10px 4px;overflow-wrap:anywhere}
+.bz-page-home .gift-card{display:grid;grid-template-rows:1fr auto;padding:0;overflow:hidden;border-radius:var(--r)}
+.bz-page-home .gift-card>a{min-width:0}
+.bz-page-home .gift-card .gift-photo{position:relative;aspect-ratio:4/3}
+.bz-page-home .gift-card .gift-photo>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.bz-page-home .gift-card h3{min-height:2.8em;margin:8px 10px 4px;overflow-wrap:anywhere}
 .bz-page-home .gift-card .product-bottom{margin:0 10px 6px}
 .bz-page-home .gift-card>a:focus-visible{outline-offset:-4px}
 @media(min-width:901px){.bz-page-home .mala-band .mala-lead{min-height:clamp(540px,42vw,620px)}}
-@media(max-width:900px){.bz-page-home .gift-card>a{grid-template-rows:minmax(150px,1fr) auto}}
 @media(max-width:767px){
   .bz-page-home .mala-lead{display:flex;flex-direction:column}
   .bz-page-home .mala-photo{height:245px;flex:none}
@@ -864,8 +864,12 @@ html[data-static] #intenzioni .names-ring,html[data-static] #intenzioni .dial-ta
 
 /* page pietre-e-rituali */
 
-.bz-page-pietre-e-rituali main{--section-inset:clamp(20px,2.3vw,34px)}
-.bz-page-pietre-e-rituali .birthstones{padding:var(--section-inset);border:1px solid #61523b;border-radius:var(--rl);background:radial-gradient(ellipse at top left,#3c3020,transparent 65%),var(--card)}
+.bz-page-pietre-e-rituali .intention{background:var(--card);display:block}
+.bz-page-pietre-e-rituali .intention>img,.bz-page-pietre-e-rituali .intention:last-child:nth-child(odd)>img{display:block;height:auto;aspect-ratio:1}
+.bz-page-pietre-e-rituali .intention:last-child:nth-child(odd){display:block}
+.bz-page-pietre-e-rituali .intention>div{min-height:0;padding:18px;background:none;border:0;border-radius:0}
+@media(max-width:600px){.bz-page-pietre-e-rituali .intention>div{padding:15px}}
+.bz-page-pietre-e-rituali .birthstones{padding:clamp(20px,2.3vw,34px);border:1px solid #61523b;border-radius:var(--rl);background:radial-gradient(ellipse at top left,#3c3020,transparent 65%),var(--card)}
 .bz-page-pietre-e-rituali .birthstones .bz-sh>h2{font-size:clamp(28px,2.6vw,39px);margin-top:12px}
 .bz-page-pietre-e-rituali .month-panel{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.8fr);align-items:center;gap:24px}.bz-page-pietre-e-rituali .month-identity{display:flex;align-items:center;gap:14px;min-width:0}.bz-page-pietre-e-rituali .month-stone{width:clamp(80px,9vw,125px);height:auto;flex-shrink:0;filter:drop-shadow(0 12px 12px #0004)}.bz-page-pietre-e-rituali .month-name{color:var(--goldl);font-size:12px}.bz-page-pietre-e-rituali .month-identity h3{font-size:clamp(26px,2.4vw,34px);margin-top:5px}.bz-page-pietre-e-rituali .month-identity p{font-size:13px;margin-top:10px}.bz-page-pietre-e-rituali .month-products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;min-width:0}.bz-page-pietre-e-rituali .month-product{min-width:0;display:flex;align-items:flex-end;gap:10px;border:1px solid var(--line);border-radius:16px;padding:10px;background:#14131255}.bz-page-pietre-e-rituali .month-product:hover{border-color:var(--gold)}.bz-page-pietre-e-rituali .month-product-link{display:flex;flex:1;align-items:center;gap:10px;min-width:0}.bz-page-pietre-e-rituali .month-add-all{grid-column:1/-1;justify-self:start}.bz-page-pietre-e-rituali .month-product img{width:clamp(50px,5vw,74px);height:auto;aspect-ratio:1;object-fit:contain;border-radius:10px;background:#eee7db;flex-shrink:0}.bz-page-pietre-e-rituali .month-product span{font-size:clamp(12px,.95vw,14px);line-height:1.4;overflow-wrap:anywhere}.bz-page-pietre-e-rituali .month-product strong{display:flex;align-items:center;min-height:44px;color:var(--goldl);font-weight:500;margin-top:8px;white-space:nowrap}.bz-page-pietre-e-rituali .month-unavailable{grid-column:1/-1}.bz-page-pietre-e-rituali .month-unavailable p{margin:0 0 12px;font-size:14px}.bz-page-pietre-e-rituali .stone-note{font-size:12px;margin-top:18px;max-width:none;color:var(--ivory2)}
 @media(max-width:1100px){.bz-page-pietre-e-rituali .month-product-link{flex-direction:column;align-items:flex-start}.bz-page-pietre-e-rituali .month-product img{width:60px}.bz-page-pietre-e-rituali .month-panel{grid-template-columns:minmax(0,1fr) minmax(0,1.6fr)}}
@@ -893,7 +897,8 @@ html[data-static] #intenzioni .names-ring,html[data-static] #intenzioni .dial-ta
 @media(prefers-reduced-motion:reduce){.bz-page-cura-di-se .cura-signature{clip-path:inset(0 0 0 0);transition:none}.bz-page-cura-di-se .cura-switch-thumb{transition:none}.bz-page-cura-di-se .cura-routine-product{animation:none}.bz-page-cura-di-se .cura-routine-bg{transition:opacity .15s}.bz-page-cura-di-se .cura-hours .open-badge i{animation:none}.bz-page-cura-di-se .cura-actions .btn:hover{transform:none}}
 
 .bz-page-cura-di-se .tbc{font:400 12px var(--sans);color:var(--goldl);border:1px dashed var(--gold);border-radius:6px;padding:1px 6px;background:transparent}
-.bz-page-cura-di-se .cura-hours .open-badge{min-height:44px;max-width:100%}
+.bz-page-cura-di-se .cura-hours .open-badge{flex-wrap:wrap;gap:4px 8px;min-width:0;min-height:44px;height:auto;padding-block:8px;white-space:normal}
+.bz-page-cura-di-se .cura-hours .ob-hours{min-width:0;overflow-wrap:anywhere}
 .bz-page-cura-di-se .cura-hours .open-badge i{animation:none}
 .bz-page-cura-di-se .cura-hours .btn{margin-top:22px}
 .bz-page-cura-di-se .cura-hero>img{object-fit:cover}
@@ -1046,7 +1051,7 @@ body.tour-locked{overflow:hidden}
 
 .bz-page-contact .contatti{--rs:12px;padding-bottom:28px}.bz-page-contact .contatti .contact-hero{padding:14px 6px 22px;border-top:1px solid var(--line)}.bz-page-contact .contact-hero h1{font-size:clamp(44px,4.1vw,58px)}.bz-page-contact .contact-hero p{margin-top:8px;font-size:16px}
 .bz-page-contact .contatti .contact-layout{margin-top:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--g);align-items:stretch}.bz-page-contact .contact-layout>*{min-width:0}.bz-page-contact .contatti .contact-form{display:flex;flex-direction:column;padding:clamp(20px,2vw,28px);border:1px solid var(--line);border-radius:var(--rl);background:radial-gradient(ellipse at 0 0,rgba(201,169,110,.07),transparent 65%),var(--card)}.bz-page-contact .contatti .contact-form h2{font-size:clamp(28px,2.5vw,36px);margin-bottom:22px}.bz-page-contact .contatti .fields{flex:1;gap:16px;grid-template-rows:auto auto minmax(160px,1fr)}.bz-page-contact .contatti .fields label{font-size:14px;color:var(--ivory2);min-width:0}.bz-page-contact .contatti .fields .wide{display:flex;flex-direction:column}.bz-page-contact .contatti input,.bz-page-contact .contatti textarea{margin-top:6px;padding:11px 13px;min-height:46px;border-radius:var(--rs);border:1px solid rgba(238,231,219,.48);background:var(--bg);color:var(--ivory)}.bz-page-contact .contatti textarea{flex:1;min-height:160px;resize:vertical;display:block}.bz-page-contact .contatti input:focus,.bz-page-contact .contatti textarea:focus{outline:2px solid var(--gold);outline-offset:3px}.bz-page-contact .contatti [aria-invalid=true]{border-color:var(--goldl)}.bz-page-contact .field-error{display:block;color:var(--goldl);font-size:13px;line-height:1.4;margin-top:6px}.bz-page-contact .contatti .contact-form .btn{margin-top:22px;align-self:flex-start;min-height:48px;transition:transform 160ms var(--ease,cubic-bezier(.2,.7,.1,1))}.bz-page-contact .contatti .form-status{margin-top:12px;font-size:14px;color:var(--ivory)}
-.bz-page-contact .contact-details{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;grid-template-rows:auto 1fr auto}.bz-page-contact .contact-details>*{min-width:0}.bz-page-contact .contact-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.bz-page-contact .contact-tile{min-width:0;padding:15px 18px;min-height:104px;border:1px solid var(--line);border-radius:var(--r);background:var(--bg2);display:flex;flex-direction:column;justify-content:center;gap:5px}.bz-page-contact .contact-tile h2{display:flex;align-items:center;gap:8px;font:500 13px/1.4 var(--sans);color:var(--ivory2);margin:0 0 3px}.bz-page-contact .contact-tile svg{flex-shrink:0;color:var(--gold)}.bz-page-contact .contact-tile p{font-size:16px;line-height:1.4;margin:0;color:var(--ivory)}.bz-page-contact .tile-value{font-size:clamp(15px,1.2vw,17px);color:var(--ivory)}.bz-page-contact .contact-tile .tile-value-email{font-size:clamp(14px,1.25vw,17px);overflow-wrap:normal;word-break:normal;hyphens:none}.bz-page-contact .contact-tile .text-link{font-size:13px}.bz-page-contact .contatti a.contact-tile{transition:transform 160ms var(--ease,cubic-bezier(.2,.7,.1,1))}.bz-page-contact .social-links{display:flex;flex-wrap:wrap;gap:0 12px}.bz-page-contact .social-links a{display:inline-flex;align-items:center;min-height:44px;font-size:14px}.bz-page-contact .contact-tile a:hover{text-decoration:underline;text-underline-offset:4px}.bz-page-contact .pickup-note{font-size:14px;margin:0 4px;line-height:1.5}.bz-page-contact .pickup-note strong{font-weight:500;color:var(--ivory)}
+.bz-page-contact .contact-details{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;grid-template-rows:auto 1fr auto}.bz-page-contact .contact-details>*{min-width:0}.bz-page-contact .contact-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.bz-page-contact .contact-tile{min-width:0;padding:15px 18px;min-height:104px;border:1px solid var(--line);border-radius:var(--r);background:var(--bg2);display:flex;flex-direction:column;justify-content:center;gap:5px}.bz-page-contact .contact-tile h2{display:flex;align-items:center;gap:8px;font:500 13px/1.4 var(--sans);color:var(--ivory2);margin:0 0 3px}.bz-page-contact .contact-tile svg{width:20px;height:20px;flex-shrink:0;color:var(--gold)}.bz-page-contact .contact-tile p{font-size:16px;line-height:1.4;margin:0;color:var(--ivory)}.bz-page-contact .tile-value{font-size:clamp(15px,1.2vw,17px);color:var(--ivory)}.bz-page-contact .contact-tile .tile-value-email{font-size:clamp(14px,1.25vw,17px);overflow-wrap:normal;word-break:normal;hyphens:none}.bz-page-contact .contact-tile .text-link{font-size:13px}.bz-page-contact .contatti a.contact-tile{transition:transform 160ms var(--ease,cubic-bezier(.2,.7,.1,1))}.bz-page-contact .social-links{display:flex;flex-wrap:wrap;gap:0 12px}.bz-page-contact .social-links a{display:inline-flex;align-items:center;min-height:44px;font-size:14px}.bz-page-contact .contact-tile a:hover{text-decoration:underline;text-underline-offset:4px}.bz-page-contact .pickup-note{font-size:14px;margin:0 4px;line-height:1.5}.bz-page-contact .pickup-note strong{font-weight:500;color:var(--ivory)}
 .bz-page-contact .contatti .hours-card{padding:18px 20px;border:1px solid var(--line);border-radius:var(--rl);background:linear-gradient(135deg,#1b1917,#201e1b);scroll-margin-top:20px}.bz-page-contact .hours-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}.bz-page-contact .hours-top h2{flex-shrink:0;font-size:clamp(25px,2.1vw,30px)}.bz-page-contact .hours-top .open-badge{min-width:0;max-width:100%;font-variant-numeric:tabular-nums}.bz-page-contact .hours-top .open-badge i{flex-shrink:0;animation:none;box-shadow:none}.bz-page-contact .contatti .bz-week{width:100%;min-height:240px}.bz-page-contact .contatti .bz-week:empty{display:none}.bz-page-contact .hours-summary{font-size:13px;line-height:1.7;margin-top:8px}.bz-page-contact .hours-card:has(.bz-week:not(:empty)) .hours-summary{display:none}.bz-page-contact .contatti .tbc{font:400 12px/1.5 var(--sans);color:var(--goldl);border:1px dashed var(--gold);border-radius:6px;padding:1px 6px;background:transparent;box-decoration-break:clone;-webkit-box-decoration-break:clone}
 .bz-page-contact .contatti mark.tbc{white-space:nowrap;display:inline-block}
 @media(max-width:1099px){.bz-page-contact .contatti .contact-layout{grid-template-columns:minmax(0,1fr);gap:20px}.bz-page-contact .contact-details{order:-1}}
@@ -1194,7 +1199,6 @@ main.bz-page-home>.shopify-section .category-row{padding-top:39px}
 .bz-page-cura-di-se .cura-routine.is-night .cura-product-copy h3{color:#eee7db}
 .bz-page-cura-di-se .cura-hours{min-width:0;overflow:hidden}
 .bz-page-cura-di-se .cura-hours p{overflow-wrap:anywhere;max-width:100%}
-.plp .plp-head-row{flex-direction:column;align-items:flex-start}
 .bz-page-chi-siamo .btn svg,.bz-page-about-us .btn svg{width:18px;height:18px;vertical-align:-3px}
 .bz-page-contact .contact-details{display:flex;flex-direction:column;gap:14px;min-width:0}
 @media(max-width:1023px){

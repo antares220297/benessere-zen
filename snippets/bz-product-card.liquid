@@ -17,9 +17,11 @@
       </div>
       <h3 class="pc-name">{{ card.title | escape }}</h3>
     {%- else -%}
+      {%- if card_style == 'gift' -%}<div class="gift-photo">{%- endif -%}
       {%- if card.featured_image != blank -%}
         {{ card.featured_image | image_url: width: 800 | image_tag: alt: card.title, loading: 'lazy', widths: '240, 400, 640, 800', sizes: '(min-width: 1024px) 18vw, 45vw', width: card.featured_image.width, height: card.featured_image.height }}
       {%- endif -%}
+      {%- if card_style == 'gift' -%}</div>{%- endif -%}
       <h3>{{ card.title | escape }}</h3>
     {%- endif -%}
   </a>

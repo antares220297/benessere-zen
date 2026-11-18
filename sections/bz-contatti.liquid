@@ -22,7 +22,7 @@
     <div class="contact-details">
       <div class="contact-tiles">
         <article class="contact-tile">
-          <h2>Indirizzo</h2>
+          <h2>{% render 'bz-icon', name: 'directions' %}Indirizzo</h2>
           <p class="tile-value">{{ settings.bz_address | default: 'Via Marcello Provenzali 1, 44042 Cento (FE)' }}</p>
         </article>
         <article class="contact-tile">
@@ -30,7 +30,7 @@
           <p class="tile-value"><a href="tel:{{ settings.bz_phone | default: '+39 347 088 3168' | replace: ' ', '' }}">{{ settings.bz_phone | default: '+39 347 088 3168' }}</a></p>
         </article>
         <article class="contact-tile">
-          <h2>Email</h2>
+          <h2>{% render 'bz-icon', name: 'north_east' %}Email</h2>
           <p class="tile-value tile-value-email"><a href="mailto:{{ settings.bz_email | default: 'info@benesserezen.shop' }}">{{ settings.bz_email | default: 'info@benesserezen.shop' }}</a></p>
         </article>
         <article class="contact-tile">
