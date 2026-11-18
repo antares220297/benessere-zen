@@ -1,0 +1,66 @@
+<div class="bz-stack">
+  <section class="split hero">
+    <div class="split-copy">
+      <h1>Il <em>negozio</em></h1>
+      <div class="shop-status">{% render 'bz-open-badge', variant: 'full', linked: true %}</div>
+      <p>{{ section.settings.intro | escape }}</p>
+    </div>
+    <div class="split-photo">
+      <img src="{{ 'bz-negozio-negozio-copertina.jpg' | asset_url }}" alt="Il negozio a Cento" width="1400" height="900" fetchpriority="high">
+    </div>
+  </section>
+  <section>
+    <div class="cards">
+      <article class="info-card shop-hours">
+        <h3>Orari</h3>
+        {% render 'bz-open-badge', variant: 'compact', linked: true %}
+        <p>{{ settings.bz_address | default: 'Via Marcello Provenzali 1, 44042 Cento (FE)' }}. Tel. {{ settings.bz_phone | default: '+39 347 088 3168' }}. {{ settings.bz_email | default: 'info@benesserezen.shop' }}.</p>
+        <p>{% render 'bz-hours', part: 'summary' %}</p>
+      </article>
+      <article class="info-card">
+        <h3>Dati <em>dell’attività</em></h3>
+        <p>Benessere Zen di Balboni Simona, P. IVA 02091600383. Sede legale: Via Olindo Malagodi 2, 44042 Cento FE. Il negozio è in Via Marcello Provenzali 1.</p>
+      </article>
+      <article class="info-card">
+        <h3>Ritiro in <em>negozio</em></h3>
+        <p>Al pagamento scegli <em>Ritiro in negozio</em>: è gratuito e di solito è pronto in 4 ore.</p>
+        <a class="btn outline" href="{{ pages['contact'].url | default: '/pages/contact' }}">Contatti →</a>
+      </article>
+    </div>
+  </section>
+  <section class="shop-tour" aria-labelledby="tour-title">
+    <div class="tour-copy">
+      <h2 id="tour-title">Entra, <em>dai un’occhiata</em></h2>
+      <button class="btn gold" type="button" data-tour-open aria-haspopup="dialog" aria-controls="shop-lightbox" aria-expanded="false">Fai un giro del negozio →</button>
+    </div>
+    <div class="tour-fan" aria-label="Gli angoli del negozio">
+      <button class="tour-card" type="button" aria-label="Apri foto: Mala e portaincensi" style="--x:0%;--mobile-x:0%;--tilt:-8deg;--layer:1"><img src="{{ 'bz-negozio-ventaglio-1-mala-e-portaincensi.jpg' | asset_url }}" alt="Mala e portaincensi" width="640" height="800" loading="lazy"></button>
+      <button class="tour-card" type="button" aria-label="Apri foto: I bracciali" style="--x:13.8%;--mobile-x:12.5%;--tilt:-4.8deg;--layer:2"><img src="{{ 'bz-negozio-ventaglio-2-bracciali.jpg' | asset_url }}" alt="I bracciali" width="640" height="800" loading="lazy"></button>
+      <button class="tour-card" type="button" aria-label="Apri foto: Selenite e lampada" style="--x:27.6%;--mobile-x:25%;--tilt:-1.6deg;--layer:3"><img src="{{ 'bz-negozio-ventaglio-3-selenite.jpg' | asset_url }}" alt="Selenite e lampada" width="640" height="800" loading="lazy"></button>
+      <button class="tour-card" type="button" aria-label="Apri foto: Le candele" style="--x:41.4%;--mobile-x:37.5%;--tilt:1.6deg;--layer:4"><img src="{{ 'bz-negozio-ventaglio-4-candele.jpg' | asset_url }}" alt="Le candele" width="640" height="800" loading="lazy"></button>
+      <button class="tour-card" type="button" aria-label="Apri foto: Tisane e tazze" style="--x:55.2%;--mobile-x:50%;--tilt:4.8deg;--layer:5"><img src="{{ 'bz-negozio-ventaglio-5-tisane-e-tazze.jpg' | asset_url }}" alt="Tisane e tazze" width="640" height="800" loading="lazy"></button>
+      <button class="tour-card" type="button" aria-label="Apri foto: Ciondoli e pietre" style="--x:69%;--mobile-x:62.5%;--tilt:8deg;--layer:6"><img src="{{ 'bz-negozio-ventaglio-6-ciondoli.jpg' | asset_url }}" alt="Ciondoli e pietre" width="640" height="800" loading="lazy"></button>
+    </div>
+  </section>
+  <div class="info-card shop-links">
+    <p>Per una domanda c’è la pagina <a href="{{ pages['contact'].url | default: '/pages/contact' }}">Contatti</a>. Per costi di spedizione e resi, vai a <a href="/pages/spedizioni">Spedizioni</a>. In negozio trovi <a href="/collections/gioielli-con-pietre">gioielli con pietre</a>, <a href="/collections/pietre-grezze">pietre grezze</a> e <a href="/collections/pietre-burattate">burattate</a>.</p>
+  </div>
+</div>
+<dialog class="tour-dialog" id="shop-lightbox">
+  <button class="tour-arrow tour-prev" type="button" aria-label="Foto precedente">{% render 'bz-icon', name: 'chevron_right' %}</button>
+  <figure class="tour-figure">
+    <img class="tour-large" alt="" width="1200" height="1500">
+    <figcaption class="tour-caption"><h3></h3><p></p></figcaption>
+  </figure>
+  <button class="tour-close" type="button" aria-label="Chiudi">×</button>
+  <button class="tour-arrow tour-next" type="button" aria-label="Foto successiva">{% render 'bz-icon', name: 'chevron_right' %}</button>
+</dialog>
+{% schema %}
+{
+  "name": "Il negozio",
+  "settings": [
+    { "type": "textarea", "id": "intro", "label": "Intro", "default": "Siamo in Via Marcello Provenzali 1, a Cento. Molti pezzi del sito sono anche in vetrina: puoi pagare online o venire a sceglierli di persona." }
+  ],
+  "presets": [{ "name": "Il negozio" }]
+}
+{% endschema %}

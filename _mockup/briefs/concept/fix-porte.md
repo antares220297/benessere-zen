@@ -1,0 +1,7 @@
+# Fix round 1 for D/concept-porte.html (edit only this file; keep everything else that works)
+Screens reviewed: shots/concept/porte-1440.png, porte-hover-1440.png, porte-390.png (you can Read them).
+1. Composition at ≥1024: today the objects are scattered at the edges with an empty hole in the middle of each half. Make each half a tight, intentional still life: objects clustered around the stage centre with 2-3 slight overlaps in depth (back objects higher and smaller, front objects lower and bigger), a gentle diagonal rhythm, no object glued to the stage edges (min 6% inset), stage height ~520px at 1440.
+2. Coherent quasi-real relative scale (display heights/widths at 1440): pendolo ~240px tall; bottle (corpo) ~240px tall; shampoo ~210 tall; candle holder ~190 wide; mug ~180 wide; burner (oli) ~170 tall; mala ~230 wide; bracelet (gioielli) ~170 wide; rose quartz cluster (grezze) ~190 wide (today too big); tiger-eye cluster (burattate) ~150 wide (today far too small); tea pouch ~165 tall; soap ~190 wide. Scale proportionally at 1024-1439.
+3. Hover/focus label must NEVER cover another object: give each object a hand-picked label side (data-label-side left/right/top/bottom) pointing into free space, and keep the label inside the stage.
+4. Keep cutout `<img>` without loading="lazy" in this section (they are the hero of the section).
+5. Check again 390/768/1024/1440: no overflow, the mobile rows unchanged.

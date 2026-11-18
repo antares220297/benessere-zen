@@ -3,7 +3,7 @@
   {%- if rec.featured_image != blank -%}
     {{ rec.featured_image | image_url: width: 140 | image_tag: alt: rec.title, width: 64, height: 64, loading: 'lazy' }}
   {%- endif -%}
-  {%- assign row_name = rec.title | split: '|' | first | strip -%}
+  {%- assign row_name = rec.title -%}
   <span>{{ row_name | escape }}{%- if rec.type != blank -%}<small>{{ rec.type | escape }}</small>{%- endif -%}</span>
   <span class="bz-price">{% render 'bz-money', cents: rec.price %}</span>
 </label>

@@ -1,126 +1,81 @@
-{{ 'bz-tokens.css' | asset_url | stylesheet_tag }}
-{{ 'bz-home.css' | asset_url | stylesheet_tag }}
-{{ 'bz-bottom.css' | asset_url | stylesheet_tag }}
-
-<section class="bz bz-bottom bz-store">
-  <div class="bz-store__grid">
-    <div class="bz-visit">
-      <div class="bz-visit__photo">
-        {%- if section.settings.image != blank -%}
-          {{ section.settings.image | image_url: width: 1400 | image_tag: alt: section.settings.image_alt, widths: '700, 1400', sizes: '(min-width: 860px) 40vw, 100vw', loading: 'lazy', width: 900, height: 700 }}
-        {%- else -%}
-          <img src="{{ 'bz-store.jpg' | asset_url }}" alt="{{ section.settings.image_alt | escape }}" width="900" height="700">
-        {%- endif -%}
-      </div>
-      <div class="bz-visit__copy">
-        <h2>{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h2>
-        {%- if section.settings.text != blank -%}
-          <p class="bz-visit__lead">{{ section.settings.text | escape }}</p>
-        {%- endif -%}
-        <div class="bz-visit__facts">
-          {%- if section.settings.address != blank -%}
-            <p>{{ section.settings.address | escape }}</p>
-          {%- endif -%}
-          {%- if section.settings.phone != blank -%}
-            <p>{{ section.settings.phone | escape }}</p>
-          {%- endif -%}
-          {%- if section.settings.email != blank -%}
-            <p>{{ section.settings.email | escape }}</p>
-          {%- endif -%}
-          {%- if section.settings.hours != blank -%}
-            <p>{{ section.settings.hours | escape }}</p>
-          {%- endif -%}
-        </div>
-        {%- if section.settings.button_label != blank -%}
-          {%- assign negozio_page = pages['il-negozio'] -%}
-          {%- if negozio_page != blank and negozio_page.url != blank -%}
-            {%- assign negozio_href = negozio_page.url -%}
-          {%- else -%}
-            {%- assign negozio_href = 'https://maps.google.com/?q=Via+Marcello+Provenzali+1,+44042+Cento+FE' -%}
-          {%- endif -%}
-          <a class="bz-btn bz-btn--ivory" href="{{ negozio_href }}">{{ section.settings.button_label | escape }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        {%- endif -%}
+<section class="store-faq">
+  <article class="store-card">
+    <img src="{{ 'bz-negozio-home-hero-negozio.jpg' | asset_url }}" alt="" width="1200" height="800" loading="lazy">
+    <div>
+      <h2>{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h2>
+      {% render 'bz-open-badge', variant: 'compact', linked: true %}
+      <p>{{ section.settings.text | escape }}</p>
+      <p>{{ settings.bz_address | default: 'Via Marcello Provenzali 1, 44042 Cento (FE)' }}<br>
+        <a href="tel:{{ settings.bz_phone | default: '+39 347 088 3168' | replace: ' ', '' }}">{{ settings.bz_phone | default: '+39 347 088 3168' }}</a><br>
+        <a href="mailto:{{ settings.bz_email | default: 'info@benesserezen.shop' }}">{{ settings.bz_email | default: 'info@benesserezen.shop' }}</a>
+      </p>
+      <p class="store-hours">{% render 'bz-hours', part: 'summary' %}</p>
+      <p>{{ section.settings.pickup | escape }}</p>
+      <a class="btn outline" href="{{ section.settings.button_link }}">{{ section.settings.button_label | escape }}</a>
+    </div>
+  </article>
+  <article class="faq-card" data-faq>
+    <div class="bz-sh">
+      <h2>Domande <em>frequenti</em></h2>
+      <div class="bz-pills" role="tablist" aria-label="Argomento delle domande">
+        {%- assign tabs = 'Spedizione e resi|Ordini e regali|Le pietre' | split: '|' -%}
+        {%- for tab in tabs -%}
+          <button type="button" role="tab" data-faq-tab="{{ forloop.index0 }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">{{ tab }}</button>
+        {%- endfor -%}
       </div>
     </div>
-    <div class="bz-faq">
-      <h2>{{ section.settings.faq_heading | escape }} <em>{{ section.settings.faq_accent | escape }}</em></h2>
-      {%- for block in section.blocks -%}
-        {%- if block.type == 'faq' -%}
-          <details {% if block.settings.open %}open{% endif %} {{ block.shopify_attributes }}>
-            <summary>{{ block.settings.question | escape }}<i aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></i></summary>
-            <p>{{ block.settings.answer | escape }}</p>
-          </details>
-        {%- endif -%}
-      {%- endfor -%}
-    </div>
-  </div>
-  <div class="bz-trust">
-    {%- for block in section.blocks -%}
-      {%- if block.type == 'trust' -%}
-        <span {{ block.shopify_attributes }}>
-          {%- case block.settings.icon -%}
-            {%- when 'truck' -%}
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v8H3zM14 10h4l3 3v2h-7zM7 18a2 2 0 100-4 2 2 0 000 4zM17 18a2 2 0 100-4 2 2 0 000 4z"/></svg>
-            {%- when 'shop' -%}
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10l2-5h12l2 5M5 10h14v9H5zM9 19v-5h6v5"/></svg>
-            {%- when 'return' -%}
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 101.5-4.6M4 5v5h5"/></svg>
-            {%- when 'lock' -%}
-              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>
-            {%- else -%}
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l4-6h10l4 6-9 13z"/><path d="M3 9h18M8 3l-2 6M16 3l2 6M12 3v19"/></svg>
-          {%- endcase -%}
-          {{ block.settings.label | escape }}
-        </span>
-      {%- endif -%}
+    {%- for tab in tabs -%}
+      <div id="{% if forloop.first %}faq-content{% endif %}" data-faq-panel="{{ forloop.index0 }}" {% unless forloop.first %}hidden{% endunless %}>
+        {%- for block in section.blocks -%}
+          {%- assign tab_index = forloop.parentloop.index0 | append: '' -%}
+          {%- if block.type == 'faq' and block.settings.tab == tab_index -%}
+            <details {% if forloop.parentloop.first and forloop.first %}open{% endif %} {{ block.shopify_attributes }}>
+              <summary>{{ block.settings.question | escape }}</summary>
+              <div class="faq-answer">{{ block.settings.answer }}</div>
+            </details>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
     {%- endfor -%}
-  </div>
+  </article>
 </section>
-
+<div class="trust-strip">
+  <span>{% render 'bz-icon', name: 'diamond_shine' %} Pietre naturali</span>
+  <span>{% render 'bz-icon', name: 'storefront' %} Gratis da {{ settings.bz_free_shipping | default: 50 }} €</span>
+  {%- liquid
+    assign show_returns = true
+    if shop.refund_policy.body != blank
+      unless shop.refund_policy.body contains '14'
+        assign show_returns = false
+      endunless
+    endif
+  -%}
+  {%- if show_returns -%}<span>{% render 'bz-icon', name: 'check' %} Reso entro 14 giorni</span>{%- endif -%}
+  <span>{% render 'bz-icon', name: 'check' %} Pagamenti sicuri</span>
+</div>
 {% schema %}
 {
-  "name": "Negozio e domande",
-  "class": "bz-home",
+  "name": "Anche a Cento",
   "settings": [
     { "type": "text", "id": "heading", "label": "Titolo", "default": "Anche" },
-    { "type": "text", "id": "heading_accent", "label": "Titolo in corsivo", "default": "dal vivo" },
-    { "type": "textarea", "id": "text", "label": "Testo", "default": "Puoi pagare qui sul sito, o passare in negozio e scegliere di persona." },
-    { "type": "image_picker", "id": "image", "label": "Foto" },
-    { "type": "text", "id": "image_alt", "label": "Testo alternativo", "default": "Scatole in velluto nel negozio" },
-    { "type": "text", "id": "address", "label": "Indirizzo", "default": "Via Marcello Provenzali 1, 44042 Cento FE" },
-    { "type": "text", "id": "phone", "label": "Telefono", "default": "Tel +39 347 088 3168" },
-    { "type": "text", "id": "email", "label": "Email", "default": "info@benesserezen.shop" },
-    { "type": "text", "id": "hours", "label": "Orari", "default": "Orari: lun, mar, mer, ven, sab 9:30-12:30 e 16:00-19:30, gio 9:00-13:00." },
-    { "type": "text", "id": "button_label", "label": "Pulsante", "default": "Orari e indicazioni" },
-    { "type": "text", "id": "faq_heading", "label": "Titolo domande", "default": "Domande" },
-    { "type": "text", "id": "faq_accent", "label": "Corsivo domande", "default": "frequenti" }
+    { "type": "text", "id": "heading_accent", "label": "Corsivo", "default": "a Cento" },
+    { "type": "textarea", "id": "text", "label": "Testo", "default": "Puoi pagare sul sito, o passare in negozio e scegliere di persona." },
+    { "type": "textarea", "id": "pickup", "label": "Ritiro", "default": "Al pagamento scegli Ritiro in negozio: è gratuito e di solito è pronto in 4 ore." },
+    { "type": "text", "id": "button_label", "label": "Pulsante", "default": "Orari e indicazioni →" },
+    { "type": "url", "id": "button_link", "label": "Link" }
   ],
   "blocks": [
-    { "type": "step", "name": "Passo", "settings": [
-      { "type": "text", "id": "title", "label": "Titolo" },
-      { "type": "text", "id": "text", "label": "Testo" },
-      { "type": "select", "id": "icon", "label": "Icona", "options": [
-        { "value": "cart", "label": "Borsa" },
-        { "value": "clock", "label": "Orologio" },
-        { "value": "shop", "label": "Negozio" }
-      ], "default": "cart" }
-    ]},
     { "type": "faq", "name": "Domanda", "settings": [
+      { "type": "select", "id": "tab", "label": "Scheda", "default": "0", "options": [
+        { "value": "0", "label": "Spedizione e resi" },
+        { "value": "1", "label": "Ordini e regali" },
+        { "value": "2", "label": "Le pietre" }
+      ] },
       { "type": "text", "id": "question", "label": "Domanda" },
-      { "type": "textarea", "id": "answer", "label": "Risposta" },
-      { "type": "checkbox", "id": "open", "label": "Aperta", "default": false }
-    ]},
-    { "type": "trust", "name": "Garanzia", "settings": [
-      { "type": "text", "id": "label", "label": "Testo" },
-      { "type": "select", "id": "icon", "label": "Icona", "options": [
-        { "value": "gem", "label": "Pietra" },
-        { "value": "truck", "label": "Spedizione" },
-        { "value": "shop", "label": "Negozio" },
-        { "value": "return", "label": "Reso" },
-        { "value": "lock", "label": "Lucchetto" }
-      ], "default": "gem" }
-    ]}
+      { "type": "richtext", "id": "answer", "label": "Risposta" }
+    ] }
   ],
-  "presets": [{ "name": "Negozio e domande" }]
+  "max_blocks": 16,
+  "presets": [{ "name": "Anche a Cento" }]
 }
 {% endschema %}

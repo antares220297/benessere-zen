@@ -1,97 +1,367 @@
 {
   "sections": {
-    "hero": {
-      "type": "bz-page-hero",
+    "page": {
+      "type": "bz-pietre",
       "settings": {
-        "title": "Pietre e rituali",
-        "text": "Una pietra in tasca, un mala da 108 grani, un incenso, una candela accesa con un’intenzione. Qui rituale è un gesto, non una teoria.",
-        "collection": "mala-tibetani",
-        "button_label": "Vieni in negozio",
-        "button_link": "/pages/il-negozio"
-      }
-    },
-    "intent": {
-      "type": "bz-intentions",
-      "settings": {
-        "heading": "Parti da un’intenzione",
-        "cta_label": "Scopri i pezzi"
+        "hero_link": "/pages/il-negozio",
+        "visit_link": "/pages/contact",
+        "mala_products": [
+          "palo-santo-mala-con-grano-guru",
+          "mala-diaspro-giallo-occhio-di-tigre-e-quarzo-fume",
+          "mala-108-cristallo-di-rocca-aa-nappa-bianca-borsa",
+          "mala-diaspro-rosso-108-perle"
+        ],
+        "pendoli_products": [
+          "pendolo-in-ottone-dorato",
+          "pendolo-in-ottone-placcato-oro",
+          "pendolo-in-ottone-color-titanio",
+          "pendolo-quarzo-rosa-e-catenina-dei-chakra"
+        ]
       },
       "blocks": {
-        "in-serenita": { "type": "intention", "settings": { "word": "Serenità", "line": "In molte pratiche l'ametista si tiene vicina quando si cerca quiete.", "collection": "intenzione-serenita" } },
-        "in-protezione": { "type": "intention", "settings": { "word": "Protezione", "line": "Tormalina e ossidiana si portano come un confine, una pietra scura addosso.", "collection": "intenzione-protezione" } },
-        "in-affetti": { "type": "intention", "settings": { "word": "Affetti", "line": "Il quarzo rosa, in tante tradizioni, è la pietra che si regala a chi si vuole bene.", "collection": "intenzione-affetti" } },
-        "in-coraggio": { "type": "intention", "settings": { "word": "Coraggio", "line": "Corniola e diaspro rosso accompagnano chi deve farsi avanti.", "collection": "intenzione-coraggio" } },
-        "in-concentrazione": { "type": "intention", "settings": { "word": "Concentrazione", "line": "Il lapislazzuli si usa da secoli quando serve tenere la mente su una cosa sola.", "collection": "intenzione-concentrazione" } }
-      },
-      "block_order": ["in-serenita", "in-protezione", "in-affetti", "in-coraggio", "in-concentrazione"]
-    },
-    "compare": {
-      "type": "bz-compare",
-      "settings": {
-        "heading": "Grezze e burattate",
-        "text": "Due modi di tenere una pietra. La grezza resta com’è uscita. La burattata è levigata, da tasca."
-      },
-      "blocks": {
-        "side-grezze": {
-          "type": "side",
+        "m0": {
+          "type": "month",
           "settings": {
-            "title": "Pietre grezze",
-            "text": "Pezzo unico. Quello in foto è quello che parte, o che ritiri a Cento.",
-            "collection": "pietre-grezze",
-            "cta": "Vedi le grezze"
+            "index": "0",
+            "short": "Gen",
+            "name": "Gennaio",
+            "stone": "Granato",
+            "text": "Nella tradizione, legato alla forza d’animo.",
+            "products": [
+              "bracciale-granato-quarzo-rosa-cuore"
+            ]
           }
         },
-        "side-burattate": {
-          "type": "side",
+        "m1": {
+          "type": "month",
           "settings": {
-            "title": "Pietre burattate",
-            "text": "Levigate, piccole, da tenere in mano. La misura, quando c’è, è «circa».",
-            "collection": "pietre-burattate",
-            "cta": "Vedi le burattate"
+            "index": "1",
+            "short": "Feb",
+            "name": "Febbraio",
+            "stone": "Ametista",
+            "text": "Nella tradizione, da sempre legata alla meditazione.",
+            "products": [
+              "ametista",
+              "pietre-burattate-ametista-1",
+              "pendolo-in-ametista-sferico-e-metallo"
+            ]
+          }
+        },
+        "m2": {
+          "type": "month",
+          "settings": {
+            "index": "2",
+            "short": "Mar",
+            "name": "Marzo",
+            "stone": "Acquamarina",
+            "text": "Nella tradizione, associata alla serenità.",
+            "products": [
+              "acquamarina",
+              "ciondolo-in-acquamarina-grezza"
+            ]
+          }
+        },
+        "m3": {
+          "type": "month",
+          "settings": {
+            "index": "3",
+            "short": "Apr",
+            "name": "Aprile",
+            "stone": "Cristallo di rocca",
+            "text": "Nella tradizione, accompagna l’intenzione.",
+            "products": [
+              "cristallo-di-rocca",
+              "pietre-burattate-cristallo-di-rocca",
+              "braccialetto-ametista-chevron-cristallo-di-rocca-loto"
+            ]
+          }
+        },
+        "m4": {
+          "type": "month",
+          "settings": {
+            "index": "4",
+            "short": "Mag",
+            "name": "Maggio",
+            "stone": "Smeraldo",
+            "text": "Nella tradizione, legato al rinnovamento.",
+            "products": [
+              "ciondolo-di-smeraldo-forato"
+            ]
+          }
+        },
+        "m5": {
+          "type": "month",
+          "settings": {
+            "index": "5",
+            "short": "Giu",
+            "name": "Giugno",
+            "stone": "Pietra di luna",
+            "text": "Nella tradizione, legata ai cicli della luna.",
+            "products": [
+              "pietra-di-luna-arcobaleno-4-varianti-1",
+              "braccialetto-pierre-de-lune-blanche",
+              "ciondolo-in-pietra-di-luna-bianca-grezza"
+            ]
+          }
+        },
+        "m6": {
+          "type": "month",
+          "settings": {
+            "index": "6",
+            "short": "Lug",
+            "name": "Luglio",
+            "stone": "Rubino zoisite",
+            "text": "Nella tradizione luglio è il mese del rubino. Qui trovi cristalli di rubino nella zoisite verde, in un ciondolo grezzo: non è un rubino da gioielleria.",
+            "products": [
+              "ciondolo-in-rubino-zoisite-anyolite-grezzo",
+              "braccialetto-con-perle-di-rubino-zoisite"
+            ]
+          }
+        },
+        "m7": {
+          "type": "month",
+          "settings": {
+            "index": "7",
+            "short": "Ago",
+            "name": "Agosto",
+            "stone": "Peridoto",
+            "text": "Nella tradizione, pietra di agosto.",
+            "products": []
+          }
+        },
+        "m8": {
+          "type": "month",
+          "settings": {
+            "index": "8",
+            "short": "Set",
+            "name": "Settembre",
+            "stone": "Lapislazzuli",
+            "text": "Nella tradizione è legato alla verità ed è pietra di settembre, accanto allo zaffiro. Qui lo trovi burattato, 2/3 cm.",
+            "products": [
+              "pietre-burattate-lapislazzuli",
+              "lapislazzuli",
+              "ciondolo-a-cuore-in-lapislazzuli"
+            ]
+          }
+        },
+        "m9": {
+          "type": "month",
+          "settings": {
+            "index": "9",
+            "short": "Ott",
+            "name": "Ottobre",
+            "stone": "Opale",
+            "text": "Nella tradizione, legato alla creatività.",
+            "products": [
+              "opale-blu",
+              "ciondolo-in-opale-rosa-con-montatura-in-metallo",
+              "braccialetto-oplae-jaune"
+            ]
+          }
+        },
+        "m10": {
+          "type": "month",
+          "settings": {
+            "index": "10",
+            "short": "Nov",
+            "name": "Novembre",
+            "stone": "Citrino",
+            "text": "Nella tradizione, legato alla creatività.",
+            "products": [
+              "pietre-burattate-quarzo-citrino",
+              "orgone-pendolo-citrino-sfaccettato-appuntito",
+              "braccialetto-citrine-naturelle"
+            ]
+          }
+        },
+        "m11": {
+          "type": "month",
+          "settings": {
+            "index": "11",
+            "short": "Dic",
+            "name": "Dicembre",
+            "stone": "Turchese",
+            "text": "Nella tradizione, pietra di protezione spirituale.",
+            "products": []
+          }
+        },
+        "in-0": {
+          "type": "intention",
+          "settings": {
+            "word": "Serenità",
+            "line": "In molte pratiche l’ametista si tiene vicina quando si cerca quiete.",
+            "collection": "intenzione-serenita",
+            "image_asset": "bz-intenzione-serenita.jpg"
+          }
+        },
+        "in-1": {
+          "type": "intention",
+          "settings": {
+            "word": "Protezione",
+            "line": "Tormalina e ossidiana, nella tradizione, sono pietre di protezione.",
+            "collection": "intenzione-protezione",
+            "image_asset": "bz-intenzione-protezione.jpg"
+          }
+        },
+        "in-2": {
+          "type": "intention",
+          "settings": {
+            "word": "Affetti",
+            "line": "Il quarzo rosa, in tante tradizioni, è la pietra che si regala a chi si vuole bene.",
+            "collection": "intenzione-affetti",
+            "image_asset": "bz-intenzione-affetti.jpg"
+          }
+        },
+        "in-3": {
+          "type": "intention",
+          "settings": {
+            "word": "Coraggio",
+            "line": "Corniola e diaspro rosso, nella tradizione, accompagnano il coraggio.",
+            "collection": "intenzione-coraggio",
+            "image_asset": "bz-intenzione-coraggio.jpg"
+          }
+        },
+        "in-4": {
+          "type": "intention",
+          "settings": {
+            "word": "Concentrazione",
+            "line": "Il lapislazzuli, nella tradizione, accompagna chiarezza e concentrazione.",
+            "collection": "intenzione-concentrazione",
+            "image_asset": "bz-intenzione-concentrazione.jpg"
+          }
+        },
+        "c-0": {
+          "type": "compare",
+          "settings": {
+            "name": "Ametista",
+            "wear_label": "Bracciale",
+            "rough": "ametista",
+            "tumbled": "pietre-burattate-ametista-1",
+            "worn": "bracciale-ametista-naturale"
+          }
+        },
+        "c-1": {
+          "type": "compare",
+          "settings": {
+            "name": "Quarzo rosa",
+            "wear_label": "Bracciale",
+            "rough": "quarzo-rosa",
+            "tumbled": "pietre-burattate-quarzo-rosa",
+            "worn": "power-bracelet-quarzo-rosa"
+          }
+        },
+        "c-2": {
+          "type": "compare",
+          "settings": {
+            "name": "Lapislazzuli",
+            "wear_label": "Bracciale",
+            "rough": "lapislazzuli",
+            "tumbled": "pietre-burattate-lapislazzuli",
+            "worn": "braccialetto-lapis-lazuli"
+          }
+        },
+        "c-3": {
+          "type": "compare",
+          "settings": {
+            "name": "Cristallo di rocca",
+            "wear_label": "Punta",
+            "rough": "cristallo-di-rocca",
+            "tumbled": "pietre-burattate-cristallo-di-rocca",
+            "worn": "ciondolo-cristallo-di-rocca-grezzo"
+          }
+        },
+        "c-4": {
+          "type": "compare",
+          "settings": {
+            "name": "Ossidiana",
+            "wear_label": "Bracciale",
+            "rough": "ossidiana-nera",
+            "tumbled": "pietre-burattate-ossidiana-nera",
+            "worn": "bracciale-ossidiana-nera-dorata-perle-8mm"
+          }
+        },
+        "c-5": {
+          "type": "compare",
+          "settings": {
+            "name": "Pirite",
+            "wear_label": "Bracciale",
+            "rough": "pirite",
+            "tumbled": "pietre-burattate-pirite",
+            "worn": "braccialetto-pyrite-perles"
+          }
+        },
+        "c-6": {
+          "type": "compare",
+          "settings": {
+            "name": "Occhio di tigre",
+            "wear_label": "Bracciale",
+            "rough": "occhio-di-tigre",
+            "tumbled": "pietre-burattate-occhio-di-tigre",
+            "worn": "mala-braccialetto-elastico-con-pietra-occhio-di-tigre-coraggio-iniziativa"
+          }
+        },
+        "sp-0": {
+          "type": "sphere",
+          "settings": {
+            "label": "Candele",
+            "collection": "candele-e-brucia-candele"
+          }
+        },
+        "sp-1": {
+          "type": "sphere",
+          "settings": {
+            "label": "Incensi",
+            "collection": "incensi-e-brucia-incensi"
+          }
+        },
+        "sp-2": {
+          "type": "sphere",
+          "settings": {
+            "label": "Gioielli",
+            "collection": "gioielli-con-pietre"
+          }
+        },
+        "sp-3": {
+          "type": "sphere",
+          "settings": {
+            "label": "Porta candele",
+            "collection": "portacandele"
           }
         }
       },
-      "block_order": ["side-grezze", "side-burattate"]
-    },
-    "doors": {
-      "type": "bz-tiles",
-      "settings": { "heading": "Intorno al rito" },
-      "blocks": {
-        "candele": { "type": "tile", "settings": { "label": "Candele", "collection": "candele-e-brucia-candele" } },
-        "incensi": { "type": "tile", "settings": { "label": "Incensi", "collection": "incensi-e-brucia-incensi-2" } },
-        "gioielli": { "type": "tile", "settings": { "label": "Gioielli", "collection": "gioielli-con-pietre" } },
-        "porta": { "type": "tile", "settings": { "label": "Porta candele", "collection": "portacandele" } }
-      },
-      "block_order": ["candele", "incensi", "gioielli", "porta"]
-    },
-    "rail": {
-      "type": "bz-picked",
-      "settings": {
-        "heading": "Mala e pendoli",
-        "heading_accent": "",
-        "link_label": "Gioielli con pietre",
-        "link": "/collections/gioielli-con-pietre",
-        "limit": 5,
-        "skip_sold_out": true
-      },
-      "blocks": {
-        "tab-mala": { "type": "list", "settings": { "label": "Mala", "collection": "mala-tibetani", "sort_by": "best-selling" } },
-        "tab-pendoli": { "type": "list", "settings": { "label": "Pendoli", "collection": "pendoli", "sort_by": "best-selling" } }
-      },
-      "block_order": ["tab-mala", "tab-pendoli"]
-    },
-    "shop": {
-      "type": "bz-shopnote",
-      "settings": {
-        "title": "In mano, a Cento",
-        "text": "Sul sito è lo stesso catalogo del banco: grezze, burattate, gioielli, mala, pendoli, incensi e candele. Il pezzo in foto, sui cristalli, è quello che ti arriva o che ritiri.",
-        "address": "Via Marcello Provenzali 1, 44042 Cento (FE). Tel. +39 347 088 3168.",
-        "hours": "Lun, mar, mer, ven e sab 9:30–12:30 e 16:00–19:30. Giovedì 9:00–13:00.",
-        "collection": "pietre-burattate",
-        "button_label": "Vieni in negozio",
-        "button_link": "/pages/il-negozio"
-      }
+      "block_order": [
+        "m0",
+        "m1",
+        "m2",
+        "m3",
+        "m4",
+        "m5",
+        "m6",
+        "m7",
+        "m8",
+        "m9",
+        "m10",
+        "m11",
+        "in-0",
+        "in-1",
+        "in-2",
+        "in-3",
+        "in-4",
+        "c-0",
+        "c-1",
+        "c-2",
+        "c-3",
+        "c-4",
+        "c-5",
+        "c-6",
+        "sp-0",
+        "sp-1",
+        "sp-2",
+        "sp-3"
+      ]
     }
   },
-  "order": ["hero", "intent", "compare", "doors", "rail", "shop"]
+  "order": [
+    "page"
+  ]
 }

@@ -1,0 +1,19 @@
+{% comment %}
+  Minimum price in cents for a collection. Falls back to pietre-burattate.
+  Limited to the products Liquid exposes for that collection (up to 50).
+{% endcomment %}
+{%- liquid
+  assign source = collections[handle]
+  if source == blank or source.title == blank
+    assign source = collections['pietre-burattate']
+  endif
+  assign lowest = blank
+  if source != blank
+    for product in source.products
+      if lowest == blank or product.price_min < lowest
+        assign lowest = product.price_min
+      endif
+    endfor
+  endif
+-%}
+{{- lowest -}}

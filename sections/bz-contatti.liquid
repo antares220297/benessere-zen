@@ -1,0 +1,62 @@
+<div class="bz-stack contatti">
+  <section class="contact-hero" aria-labelledby="contact-title">
+    <h1 id="contact-title">Contatta<em>ci</em></h1>
+    <p>Scrivici per un ordine o un consiglio. Ti rispondiamo dal negozio di Cento.</p>
+  </section>
+  <section class="contact-layout" aria-label="Recapiti e messaggi">
+    {%- form 'contact', class: 'contact-form' -%}
+        <h2 id="form-title">Scrivici un <em>messaggio</em></h2>
+        {%- if form.posted_successfully? -%}
+          <p role="status">Grazie. Ti rispondiamo dal negozio.</p>
+        {%- else -%}
+          <div class="fields">
+            <label>Nome * <input type="text" name="contact[name]" required autocomplete="name"></label>
+            <label>Email * <input type="email" name="contact[email]" required autocomplete="email"></label>
+            <label>Telefono (facoltativo) <input type="tel" name="contact[phone]" autocomplete="tel"></label>
+            <label class="wide">Messaggio * <textarea name="contact[body]" rows="6" required></textarea></label>
+          </div>
+          <button class="btn gold" type="submit">Invia il messaggio →</button>
+          {%- if form.errors -%}<p role="alert">Controlla i campi e riprova.</p>{%- endif -%}
+        {%- endif -%}
+      {%- endform -%}
+    <div class="contact-details">
+      <div class="contact-tiles">
+        <article class="contact-tile">
+          <h2>{% render 'bz-icon', name: 'directions' %}Indirizzo</h2>
+          <p class="tile-value">{{ settings.bz_address | default: 'Via Marcello Provenzali 1, 44042 Cento (FE)' }}</p>
+        </article>
+        <article class="contact-tile">
+          <h2>Telefono</h2>
+          <p class="tile-value"><a href="tel:{{ settings.bz_phone | default: '+39 347 088 3168' | replace: ' ', '' }}">{{ settings.bz_phone | default: '+39 347 088 3168' }}</a></p>
+        </article>
+        <article class="contact-tile">
+          <h2>{% render 'bz-icon', name: 'north_east' %}Email</h2>
+          <p class="tile-value tile-value-email"><a href="mailto:{{ settings.bz_email | default: 'info@benesserezen.shop' }}">{{ settings.bz_email | default: 'info@benesserezen.shop' }}</a></p>
+        </article>
+        <article class="contact-tile">
+          <h2>Seguici</h2>
+          <p class="social-links">
+            {%- if settings.social_instagram_link != blank -%}<a href="{{ settings.social_instagram_link }}">Instagram ↗</a>{%- endif -%}
+            {%- if settings.social_facebook_link != blank -%}<a href="{{ settings.social_facebook_link }}">Facebook ↗</a>{%- endif -%}
+          </p>
+        </article>
+      </div>
+      <section class="hours-card" id="orari" aria-labelledby="hours-title">
+    <div class="hours-top">
+      <h2 id="hours-title">I nostri <em>orari</em></h2>
+      {% render 'bz-open-badge', variant: 'full', linked: false %}
+    </div>
+    <div class="bz-week" data-week-chart></div>
+    <p class="hours-summary" data-hours-summary>{% render 'bz-hours', part: 'summary' %}</p>
+      </section>
+    </div>
+  </section>
+  <p class="pickup-note"><strong>Ritiri un ordine?</strong> Al pagamento scegli <em>Ritiro in negozio</em>: è gratuito e di solito è pronto in 4 ore.</p>
+</div>
+{% schema %}
+{
+  "name": "Contatti",
+  "settings": [],
+  "presets": [{ "name": "Contatti" }]
+}
+{% endschema %}

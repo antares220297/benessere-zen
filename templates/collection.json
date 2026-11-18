@@ -17,7 +17,9 @@
         "accent": "con pietre",
         "accent_handle": "gioielli-con-pietre",
         "intro": "Bracciali elastici, ciondoli grezzi e mala in pietra naturale. Ogni pezzo è anche in negozio: lo ordini qui e lo ritiri gratis.",
-        "per_page": 16
+        "per_page": 16,
+        "parent_label": "Pietre e rituali",
+        "parent_url": "/pages/pietre-e-rituali"
       },
       "blocks": {
         "chip-ma": {

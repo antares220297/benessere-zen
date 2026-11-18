@@ -62,7 +62,7 @@
                 {%- if product.featured_image != blank -%}
                   {{ product.featured_image | image_url: width: 80 | image_tag: alt: '', width: 32, height: 32, loading: 'lazy' }}
                 {%- endif -%}
-                {%- assign chip_name = product.title | split: '|' | first | strip -%}
+                {%- assign chip_name = product.title -%}
                 <span>{{ chip_name | escape }}</span>
                 <b>{% render 'bz-money', cents: product.price %}</b>
               </a>
@@ -118,7 +118,7 @@
       {%- if side_image != blank -%}
         {{ side_image | image_url: width: 900 | image_tag: alt: '', widths: '400, 800', sizes: '25vw', loading: 'lazy', width: 480, height: 360 }}
       {%- else -%}
-        <img src="{{ 'bz-pendoli.jpg' | asset_url }}" alt="" width="480" height="360">
+        <img src="{{ 'bz-pendoli.jpg' | asset_url }}" alt="" width="480" height="360" loading="lazy">
       {%- endif -%}
       <div class="bz-bento__caption">
         <h3>{{ section.settings.side_title | escape }} <em>{{ section.settings.side_accent | escape }}</em></h3>

@@ -1,0 +1,81 @@
+{% comment %}
+  Single hours source. part: boot | summary | footer
+{% endcomment %}
+{%- liquid
+  assign mon = settings.bz_hours_mon
+  assign tue = settings.bz_hours_tue
+  assign wed = settings.bz_hours_wed
+  assign thu = settings.bz_hours_thu
+  assign fri = settings.bz_hours_fri
+  assign sat = settings.bz_hours_sat
+  assign sun = settings.bz_hours_sun
+  assign note = settings.bz_sunday_note | default: 'Domenica: dal 1° dicembre aperto, orari in arrivo'
+
+  assign pretty_mon = mon | replace: ',', ' e ' | replace: '-', '–' | replace: '09:', '9:' | replace: '08:', '8:'
+  assign pretty_thu = thu | replace: ',', ' e ' | replace: '-', '–' | replace: '09:', '9:' | replace: '08:', '8:'
+
+  if mon == tue and tue == wed and wed == fri and fri == sat and mon != blank and thu != blank and thu != mon
+    assign summary = 'Lun, mar, mer, ven, sab: ' | append: pretty_mon | append: '. Giovedì: ' | append: pretty_thu | append: '.'
+    assign footer_line = 'lun, mar, mer, ven, sab ' | append: pretty_mon | append: ', gio ' | append: pretty_thu
+  else
+    assign summary = ''
+    assign footer_line = ''
+    assign labels = 'lun|mar|mer|gio|ven|sab' | split: '|'
+    assign vals = mon | append: '|' | append: tue | append: '|' | append: wed | append: '|' | append: thu | append: '|' | append: fri | append: '|' | append: sat | split: '|'
+    assign prev = ''
+    assign names = ''
+    for val in vals
+      assign label = labels[forloop.index0]
+      if val != blank and val == prev
+        assign names = names | append: ', ' | append: label
+      else
+        if prev != blank
+          assign prev_pretty = prev | replace: ',', ' e ' | replace: '-', '–' | replace: '09:', '9:' | replace: '08:', '8:'
+          assign summary = summary | append: names | append: ': ' | append: prev_pretty | append: '. '
+          assign footer_line = footer_line | append: names | append: ' ' | append: prev_pretty | append: ', '
+        endif
+        assign prev = val
+        assign names = label
+      endif
+    endfor
+    if prev != blank
+      assign prev_pretty = prev | replace: ',', ' e ' | replace: '-', '–' | replace: '09:', '9:' | replace: '08:', '8:'
+      assign summary = summary | append: names | append: ': ' | append: prev_pretty | append: '.'
+      assign footer_line = footer_line | append: names | append: ' ' | append: prev_pretty
+    endif
+  endif
+  if sun == blank
+    assign summary = summary | append: ' ' | append: note | append: '.'
+    unless note contains '.'
+      assign summary = summary
+    endunless
+    assign footer_line = footer_line | append: '. ' | append: note
+  else
+    assign pretty_sun = sun | replace: ',', ' e ' | replace: '-', '–' | replace: '09:', '9:'
+    assign summary = summary | append: ' Domenica: ' | append: pretty_sun | append: '.'
+    assign footer_line = footer_line | append: ', dom ' | append: pretty_sun
+  endif
+-%}
+{%- if part == 'boot' -%}
+  <script type="application/json" id="bz-hours">
+    {
+      "note": {{ note | json }},
+      "free": {{ settings.bz_free_shipping | default: 50 }},
+      "express": {{ settings.bz_express_rate | default: '5,90' | json }},
+      "days": [
+        {{ sun | json }},
+        {{ mon | json }},
+        {{ tue | json }},
+        {{ wed | json }},
+        {{ thu | json }},
+        {{ fri | json }},
+        {{ sat | json }}
+      ],
+      "exceptions": {{ settings.bz_hours_exceptions | json }}
+    }
+  </script>
+{%- elsif part == 'footer' -%}
+  Orari: {{ footer_line | strip }}
+{%- else -%}
+  {{ summary | strip }}
+{%- endif -%}

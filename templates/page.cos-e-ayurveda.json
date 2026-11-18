@@ -1,103 +1,145 @@
 {
   "sections": {
-    "hero": {
-      "type": "bz-page-hero",
+    "page": {
+      "type": "bz-ayurveda",
       "settings": {
-        "title": "Cos’è l’Ayurveda",
-        "title_accent": "Ayurveda",
-        "text": "Una tradizione nata in India. Si porta in casa con un olio, un’infusione, un lavaggio. Non è una visita medica e non sostituisce un medico.",
-        "collection": "ayurveda",
-        "button_label": "Vedi l’Ayurveda",
-        "button_link": "/collections/ayurveda"
-      }
-    },
-    "origin": {
-      "type": "bz-story",
-      "blocks": {
-        "band": {
-          "type": "band",
-          "settings": {
-            "title": "Da dove arriva",
-            "text": "L’Ayurveda ha radici antichissime, nella tradizione indicate in oltre cinquemila anni.",
-            "text_2": "Lavora con erbe, oli e gesti di ogni giorno. È un modo di stare nelle abitudini, non un elenco di rimedi.",
-            "collection": "te-e-tisane-ayurvediche"
-          }
-        }
-      },
-      "block_order": ["band"]
-    },
-    "dosha": {
-      "type": "bz-dosha",
-      "settings": {
-        "heading": "Tre energie",
-        "text": "Nella tradizione si distinguono tre dosha. Non è una diagnosi: può aiutarti a scegliere un olio, un tè o un gesto."
+        "collection_link": "/collections/ayurveda",
+        "origin_products": [
+          "sapone-curcuma-holy-lama",
+          "olio-profumato-naturale-sandalwood-10-ml"
+        ],
+        "picked_products": [
+          "protein-shampoo-volumizzante-laghu-200ml",
+          "sapone-yogi-di-holy-lama-alla-lavanda",
+          "sapone-yogi-di-holy-lama-alla-rosa",
+          "olio-profumato-naturale-sandalwood-10-ml"
+        ],
+        "oli_products": [
+          "profumo-vapo-per-ambienti",
+          "olio-profumato-naturale-opium-10-ml",
+          "olio-profumato-naturale-oudh-10-ml",
+          "oli-profumati-corpo-ancient-witch-perduto-nel-peccato"
+        ],
+        "tisane_products": [
+          "spray-per-ambienti-eye-of-providence-salvia-e-te-bianco",
+          "incensi-sagrada-madre-botanico-te-verde-e-champa",
+          "mug-infusore-per-te-buddha-paradiso",
+          "mug-infusore-per-te-albero-della-vita"
+        ],
+        "counsel_product": "olio-ayurvedico-viola-armonia"
       },
       "blocks": {
-        "vata": {
-          "type": "dosha",
+        "s0": {
+          "type": "sphere",
           "settings": {
-            "title": "Vata",
-            "text": "Aria e spazio. Movimento, leggerezza, un ritmo che fa fatica a fermarsi. Nella pratica: routine stabili e oli più caldi.",
-            "tone": "vata",
-            "collection": "te-e-tisane-ayurvediche"
-          }
-        },
-        "pitta": {
-          "type": "dosha",
-          "settings": {
-            "title": "Pitta",
-            "text": "Fuoco e acqua. Trasformazione, determinazione, un fuoco che a volte sale troppo. Nella pratica: pause e cose più fresche.",
-            "tone": "pitta",
+            "label": "Viso",
             "collection": "cosmesi-viso-ayurvedica"
           }
         },
-        "kapha": {
-          "type": "dosha",
+        "s1": {
+          "type": "sphere",
           "settings": {
-            "title": "Kapha",
-            "text": "Terra e acqua. Stabilità, costanza, un passo che a volte si fa pesante. Nella pratica: movimento e spezie più vive.",
-            "tone": "kapha",
+            "label": "Corpo",
             "collection": "cosmesi-corpo-ayurvedica"
           }
-        }
-      },
-      "block_order": ["vata", "pitta", "kapha"]
-    },
-    "simona": {
-      "type": "bz-story",
-      "blocks": {
-        "band": {
-          "type": "band",
+        },
+        "s2": {
+          "type": "sphere",
           "settings": {
-            "title": "Simona consiglia",
-            "text": "In negozio si può chiedere un consiglio su dosha e chakra, a partire da quello che usi già. Non è una visita e non sostituisce un medico.",
-            "text_2": "Il massaggio ayurvedico e il Reiki sono il lavoro di Simona per oltre trent’anni. Non è un servizio che si prenota oggi in bottega.",
-            "collection": "ayurveda",
-            "flip": true,
-            "button_label": "Cura di sé",
-            "button_link": "/pages/cura-di-se"
+            "label": "Tè",
+            "collection": "te-e-tisane-ayurvediche"
+          }
+        },
+        "d0": {
+          "type": "dosha_product",
+          "settings": {
+            "dosha": "0",
+            "product": "olio-ayurvedico-corpo-viso-sandalo-himalayas-dreams"
+          }
+        },
+        "d1": {
+          "type": "dosha_product",
+          "settings": {
+            "dosha": "0",
+            "product": "olio-profumato-ayurveda-vaniglia"
+          }
+        },
+        "d2": {
+          "type": "dosha_product",
+          "settings": {
+            "dosha": "0",
+            "product": "sapone-yogi-di-holy-lama-alla-lavanda"
+          }
+        },
+        "d3": {
+          "type": "dosha_product",
+          "settings": {
+            "dosha": "1",
+            "product": "olio-ayurvedico-loto-rosa-felicita"
+          }
+        },
+        "d4": {
+          "type": "dosha_product",
+          "settings": {
+            "dosha": "1",
+            "product": "sapone-yogi-di-holy-lama-alla-rosa"
+          }
+        },
+        "d5": {
+          "type": "dosha_product",
+          "settings": {
+            "dosha": "1",
+            "product": "olio-profumato-naturale-sandalwood-10-ml"
+          }
+        },
+        "d6": {
+          "type": "dosha_product",
+          "settings": {
+            "dosha": "2",
+            "product": "olio-ayurvedico-santulan-himalayas-dreams"
+          }
+        },
+        "d7": {
+          "type": "dosha_product",
+          "settings": {
+            "dosha": "2",
+            "product": "sapone-curcuma-holy-lama"
+          }
+        },
+        "d8": {
+          "type": "dosha_product",
+          "settings": {
+            "dosha": "2",
+            "product": "te-yogi-speziato"
+          }
+        },
+        "s3": {
+          "type": "sphere",
+          "settings": {
+            "label": "Capelli",
+            "collection": "prodotti-per-capelli-ayurvedici",
+            "image_asset": "bz-sfera-ay-capelli.jpg"
           }
         }
       },
-      "block_order": ["band"]
-    },
-    "rail": {
-      "type": "bz-picked",
-      "settings": {
-        "heading": "Dal banco",
-        "heading_accent": "ayurvedico",
-        "link_label": "Tutta la collezione",
-        "link": "/collections/ayurveda",
-        "limit": 5,
-        "skip_sold_out": true
-      },
-      "blocks": {
-        "tab-ayu": { "type": "list", "settings": { "label": "Ayurveda", "collection": "ayurveda", "sort_by": "best-selling" } },
-        "tab-oli": { "type": "list", "settings": { "label": "Oli", "collection": "profumi-in-olio", "sort_by": "best-selling" } },
-        "tab-te": { "type": "list", "settings": { "label": "Tisane", "collection": "te-e-tisane-ayurvediche", "sort_by": "best-selling" } }
-      },
-      "block_order": ["tab-ayu", "tab-oli", "tab-te"]
+      "block_order": [
+        "s0",
+        "s1",
+        "s2",
+        "s3",
+        "d0",
+        "d1",
+        "d2",
+        "d3",
+        "d4",
+        "d5",
+        "d6",
+        "d7",
+        "d8"
+      ]
     }
   },
-  "order": ["hero", "origin", "dosha", "simona", "rail"]
+  "order": [
+    "page"
+  ]
 }

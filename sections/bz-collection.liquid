@@ -1,492 +1,223 @@
-{{ 'bz-tokens.css' | asset_url | stylesheet_tag }}
-{{ 'bz-home.css' | asset_url | stylesheet_tag }}
-{{ 'bz-collection.css' | asset_url | stylesheet_tag }}
-
-{%- paginate collection.products by section.settings.per_page -%}
-<div class="bz bz-coll" data-bz-coll data-section-id="{{ section.id }}">
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Home",
-          "item": {{ request.origin | append: routes.root_url | json }}
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": {{ collection.title | json }},
-          "item": {{ request.origin | append: collection.url | json }}
-        }
-      ]
-    }
-  </script>
-  <nav class="bz-crumb"><a href="{{ routes.root_url }}">Home</a> <span aria-hidden="true">›</span> <span>{{ collection.title | escape }}</span></nav>
-  <section class="bz-chead">
-    {%- assign banner = section.settings.image | default: collection.image -%}
-    {%- if banner == blank and collection.products.first.featured_image -%}
-      {%- assign banner = collection.products.first.featured_image -%}
-    {%- endif -%}
-    <div class="bz-chead__banner">
-      {%- if banner != blank -%}
-        {{ banner | image_url: width: 1600 | image_tag: alt: collection.title, widths: '800, 1400', sizes: '(max-width: 860px) 100vw, 60vw', loading: 'eager' }}
+{%- liquid
+  assign per_page = section.settings.per_page | default: 24
+  assign accent = section.settings.heading_accent
+  assign title = collection.title
+-%}
+<section class="plp-head" aria-labelledby="plp-title">
+  <nav class="crumbs" aria-label="Percorso">
+    <ol>
+      <li><a href="{{ routes.root_url }}">Home</a></li>
+      {%- if section.settings.parent_label != blank and section.settings.parent_url != blank -%}
+        <li><a href="{{ section.settings.parent_url }}">{{ section.settings.parent_label | escape }}</a></li>
       {%- endif -%}
-      <div class="bz-chead__copy">
-        {%- liquid
-          assign bz_accent = section.settings.accent | strip
-          assign bz_accent_handle = section.settings.accent_handle | strip | downcase
-          assign bz_h1_split = false
-          if bz_accent != blank and bz_accent_handle == collection.handle
-            assign bz_title_down = collection.title | downcase
-            assign bz_accent_down = bz_accent | downcase
-            if bz_title_down contains bz_accent_down
-              assign bz_before_len = bz_title_down | split: bz_accent_down | first | size
-              assign bz_after_start = bz_before_len | plus: bz_accent.size
-              assign bz_h1_before = collection.title | slice: 0, bz_before_len
-              assign bz_h1_accent = collection.title | slice: bz_before_len, bz_accent.size
-              assign bz_h1_after = collection.title | slice: bz_after_start, 400
-              assign bz_h1_split = true
-            endif
-          endif
-        -%}
-        {%- if bz_h1_split -%}
-          <h1>{{ bz_h1_before | escape }}<em>{{ bz_h1_accent | escape }}</em>{{ bz_h1_after | escape }}</h1>
-        {%- else -%}
-          <h1>{{ collection.title | escape }}</h1>
-        {%- endif -%}
-        {%- if collection.description != blank -%}
-          <p>{{ collection.description | replace: '</p>', ' </p>' | replace: '<br>', ' ' | replace: '<br/>', ' ' | replace: '<br />', ' ' | strip_html | strip }}</p>
-        {%- endif -%}
-      </div>
-    </div>
-    <div class="bz-chips-row">
-      <a class="bz-cbub is-on" href="{{ collection.url }}">
-        {%- if collection.products.first.featured_image -%}
-          {{ collection.products.first.featured_image | image_url: width: 80 | image_tag: alt: '', width: 36, height: 36 }}
-        {%- endif -%}
-        Tutti <small>{{ collection.products_count }}</small>
-      </a>
-      {%- assign chip_names = '|tutti|' -%}
-      {%- for block in section.blocks -%}
-        {%- if block.type == 'chip' and block.settings.collection != blank and block.settings.collection.products_count > 0 -%}
-          {%- assign chip_only = block.settings.show_on | strip | downcase -%}
-          {%- if chip_only == blank and block.settings.collection.handle == 'mala-tibetani' -%}
-            {%- assign chip_only = 'gioielli-con-pietre' -%}
-          {%- endif -%}
-          {%- if chip_only == blank or chip_only == collection.handle -%}
-            {%- assign chip_label = block.settings.label | default: block.settings.collection.title | strip -%}
-            {%- assign chip_token = chip_label | downcase | prepend: '|' | append: '|' -%}
-            {%- unless chip_names contains chip_token -%}
-              {%- assign chip_names = chip_names | append: chip_token -%}
-              <a class="bz-cbub" href="{{ block.settings.collection.url }}" {{ block.shopify_attributes }}>
-                {%- assign chip_image = block.settings.image | default: block.settings.collection.image | default: block.settings.collection.products.first.featured_image -%}
-                {%- if chip_image -%}{{ chip_image | image_url: width: 80 | image_tag: alt: '', width: 36, height: 36 }}{%- endif -%}
-                {{ chip_label | escape }}
-                <small>{{ block.settings.collection.products_count }}</small>
-              </a>
-            {%- endunless -%}
-          {%- endif -%}
-        {%- endif -%}
-      {%- endfor -%}
-      {%- for filter in collection.filters -%}
-        {%- assign filter_param = filter.param_name | downcase -%}
-        {%- if filter_param contains 'product_type' or filter.label == 'Tipo' -%}
-          {%- for value in filter.values -%}
-            {%- if value.count > 0 -%}
-              {%- assign tipo_label = value.label | append: '' | strip -%}
-              {%- if tipo_label contains 'Metaobject' or tipo_label contains 'Drop' -%}
-                {%- assign tipo_label = value.value | split: '/' | last | replace: '-', ' ' -%}
-              {%- endif -%}
-              {%- assign tipo_token = tipo_label | downcase | prepend: '|' | append: '|' -%}
-              {%- unless chip_names contains tipo_token -%}
-                {%- assign chip_names = chip_names | append: tipo_token -%}
-                <a class="bz-cbub bz-cbub--text{% if value.active %} is-on{% endif %}" href="{{ collection.url }}?{{ value.param_name }}={{ value.value | url_encode }}">{{ tipo_label | escape }} <small>{{ value.count }}</small></a>
-              {%- endunless -%}
-            {%- endif -%}
-          {%- endfor -%}
-        {%- endif -%}
-      {%- endfor -%}
-    </div>
-  </section>
-
-  <div class="bz-clay">
-    <aside class="bz-side" data-bz-side>
-      <button type="button" class="bz-side__close" data-bz-close-filters aria-label="Chiudi">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
-      </button>
-      <form class="bz-side__search" method="get" action="{{ collection.url }}" role="search" data-bz-coll-search>
-        <button type="submit" aria-label="Cerca in questa collezione">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg>
-        </button>
-        <input type="search" name="q" value="" placeholder="Cerca in questa collezione" data-bz-q aria-label="Cerca in questa collezione">
-      </form>
-      <p class="bz-side__hint" data-bz-coll-hint hidden>Tra i pezzi di questa pagina. <a data-bz-shop-search href="{{ routes.search_url }}">Cerca in tutto il negozio</a></p>
-      <form method="get" action="{{ collection.url }}" data-bz-filter-form>
-        <div class="bz-filters">
-          {%- if collection.filters.size == 0 -%}
-            {%- liquid
-              assign range_min = blank
-              assign range_max_price = blank
-              for product in collection.products
-                if range_min == blank or product.price < range_min
-                  assign range_min = product.price
-                endif
-                if range_max_price == blank or product.price > range_max_price
-                  assign range_max_price = product.price
-                endif
-              endfor
-              if range_min == blank
-                assign range_min = 0
-              endif
-              if range_max_price == blank
-                assign range_max_price = 0
-              endif
-            -%}
-            <details open><summary>Tipo <i aria-hidden="true"></i></summary>
-              {%- for type in collection.all_types -%}
-                <label><input type="checkbox" data-bz-type value="{{ type | escape }}">{{ type | escape }}</label>
-              {%- endfor -%}
-            </details>
-            <details open><summary>Prezzo <i aria-hidden="true"></i></summary>
-              <div class="bz-range"><input type="range" min="0" max="{{ range_max_price }}" value="0" data-bz-price="min" aria-label="Prezzo minimo"><input type="range" min="0" max="{{ range_max_price }}" value="{{ range_max_price }}" data-bz-price="max" aria-label="Prezzo massimo"></div>
-              <div class="bz-range__ends"><span>{% render 'bz-money', cents: range_min %}</span><span>{% render 'bz-money', cents: range_max_price %}</span></div>
-            </details>
-            <details><summary>Intenzione <i aria-hidden="true"></i></summary></details>
-          {%- endif -%}
-          {%- for filter in collection.filters -%}
-            {%- liquid
-              assign flabel = filter.label | downcase | strip
-              assign fparam = ''
-              for value in filter.values limit: 1
-                assign fparam = value.param_name
-              endfor
-              assign forder = 5
-              if filter.type == 'price_range'
-                assign forder = 1
-              elsif fparam == 'filter.v.availability' or flabel contains 'disponib'
-                assign forder = 4
-              elsif flabel == 'pietra' or flabel == 'pietre' or fparam contains 'pietra'
-                assign forder = 3
-              elsif flabel == 'tipo' or flabel == 'product type' or flabel == 'tipo di prodotto' or fparam contains 'product_type'
-                assign forder = 2
-              endif
-            -%}
-            <details open style="order: {{ forder }}">
-              <summary>{{ filter.label | escape }} <i aria-hidden="true"></i></summary>
-              {%- case filter.type -%}
-                {%- when 'price_range' -%}
-                  {%- liquid
-                    assign shown_min_cents = 0
-                    assign shown_max_cents = filter.range_max | default: 0
-                    if filter.min_value.value != nil
-                      assign shown_min_cents = filter.min_value.value
-                    endif
-                    if filter.max_value.value != nil
-                      assign shown_max_cents = filter.max_value.value
-                    endif
-                    assign range_cents = filter.range_max | plus: 0
-                    assign range_whole = range_cents | divided_by: 100
-                    assign range_frac = range_cents | modulo: 100 | prepend: '00' | slice: -2, 2
-                    assign price_range_max = range_whole | append: '.' | append: range_frac
-                    assign price_range_min_value = '0.00'
-                    assign price_range_max_value = price_range_max
-                    if filter.min_value.value != nil
-                      assign min_cents = filter.min_value.value | plus: 0
-                      assign min_whole = min_cents | divided_by: 100
-                      assign min_frac = min_cents | modulo: 100 | prepend: '00' | slice: -2, 2
-                      assign price_range_min_value = min_whole | append: '.' | append: min_frac
-                    endif
-                    if filter.max_value.value != nil
-                      assign max_cents = filter.max_value.value | plus: 0
-                      assign max_whole = max_cents | divided_by: 100
-                      assign max_frac = max_cents | modulo: 100 | prepend: '00' | slice: -2, 2
-                      assign price_range_max_value = max_whole | append: '.' | append: max_frac
-                    endif
-                  -%}
-                  <div class="bz-range">
-                    <input type="range" name="{{ filter.min_value.param_name }}" min="0" max="{{ price_range_max }}" value="{{ price_range_min_value }}" step="0.01" data-bz-range="min" aria-label="Prezzo minimo">
-                    <input type="range" name="{{ filter.max_value.param_name }}" min="0" max="{{ price_range_max }}" value="{{ price_range_max_value }}" step="0.01" data-bz-range="max" aria-label="Prezzo massimo">
-                  </div>
-                  <div class="bz-range__ends"><span data-bz-euro="min">{% render 'bz-money', cents: shown_min_cents %}</span><span data-bz-euro="max">{% render 'bz-money', cents: shown_max_cents %}</span></div>
-                {%- else -%}
-                  {%- for value in filter.values -%}
-                    <label>
-                      <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" {% if value.active %}checked{% endif %}>
-                      {%- if filter.label == 'Pietra' or filter.label == 'Pietre' -%}
-                        <span class="bz-swatch" style="background: {{ value.label | downcase | replace: 'ametista', '#7b4fa0' | replace: 'tormalina', '#2a2a2e' | replace: 'lapis', '#2d4fa3' | replace: 'rosa', '#d79aa4' | replace: 'ossidiana', '#1c1c1f' | replace: 'pirite', '#b39a5a' }}"></span>
-                      {%- endif -%}
-                      {%- assign opt_label = value.label | append: '' -%}
-                      {%- if opt_label contains 'Metaobject' or opt_label contains 'Drop' -%}
-                        {%- assign opt_label = value.value | split: '/' | last | replace: '-', ' ' -%}
-                      {%- endif -%}
-                      {{ opt_label | escape }} <small>{{ value.count }}</small>
-                    </label>
-                  {%- endfor -%}
-              {%- endcase -%}
-            </details>
-          {%- endfor -%}
-        </div>
-        <input type="hidden" name="sort_by" value="{{ collection.sort_by | default: collection.default_sort_by }}">
-        <div class="bz-side__foot">
-          <button type="submit" class="bz-btn bz-btn--ivory bz-side__apply">Mostra {{ collection.products_count }} risultati</button>
-        </div>
-        <noscript><button class="bz-filter-apply" type="submit">Applica filtri</button></noscript>
-      </form>
-    </aside>
-    <div>
-      {%- assign current_sort = collection.sort_by | default: collection.default_sort_by -%}
-      {%- capture bz_filter_qs -%}
-        {%- for filter in collection.filters -%}
-          {%- if filter.type == 'price_range' -%}
-            {%- if filter.min_value.value != nil -%}
-              {%- assign bz_pmin_cents = filter.min_value.value | plus: 0 -%}
-              {%- assign bz_pmin_whole = bz_pmin_cents | divided_by: 100 -%}
-              {%- assign bz_pmin_frac = bz_pmin_cents | modulo: 100 | prepend: '00' | slice: -2, 2 -%}
-              {%- assign bz_pmin = bz_pmin_whole | append: '.' | append: bz_pmin_frac -%}&{{ filter.min_value.param_name }}={{ bz_pmin }}
-            {%- endif -%}
-            {%- if filter.max_value.value != nil -%}
-              {%- assign bz_pmax_cents = filter.max_value.value | plus: 0 -%}
-              {%- assign bz_pmax_whole = bz_pmax_cents | divided_by: 100 -%}
-              {%- assign bz_pmax_frac = bz_pmax_cents | modulo: 100 | prepend: '00' | slice: -2, 2 -%}
-              {%- assign bz_pmax = bz_pmax_whole | append: '.' | append: bz_pmax_frac -%}&{{ filter.max_value.param_name }}={{ bz_pmax }}
-            {%- endif -%}
-          {%- else -%}
-            {%- for value in filter.active_values -%}
-              &{{ value.param_name }}={{ value.value | url_encode }}
-            {%- endfor -%}
-          {%- endif -%}
-        {%- endfor -%}
-      {%- endcapture -%}
-      {%- assign bz_filter_qs = bz_filter_qs | strip_newlines | strip -%}
-      <div class="bz-mfilters">
-        <button type="button" data-bz-open-filters>Filtri</button>
-        <button type="button" data-bz-open-sort>Ordina</button>
-      </div>
-      <div class="bz-sortsheet" data-bz-sort-sheet>
-        <button type="button" class="bz-sortsheet__close" data-bz-close-sort aria-label="Chiudi">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
-        </button>
-        <div class="bz-sortsheet__list">
-          {%- assign bz_sort_keys = 'price-ascending,price-descending,created-descending,created-ascending,best-selling' | split: ',' -%}
-          {%- for key in bz_sort_keys -%}
-            {%- for option in collection.sort_options -%}
-              {%- if option.value == key -%}
-                <a class="bz-sortsheet__opt" href="{{ collection.url }}?sort_by={{ option.value }}{{ bz_filter_qs }}" data-bz-sort-link data-sort="{{ option.value | escape }}" {% if option.value == current_sort %}aria-current="true"{% endif %}>{% if option.value == 'best-selling' %}Più venduti{% else %}{{ option.name | escape }}{% endif %}</a>
-              {%- endif -%}
-            {%- endfor -%}
-          {%- endfor -%}
-        </div>
-      </div>
-      <div class="bz-coll__tools">
-        <span>
-          <span data-bz-count>{{ collection.products_count }}</span> pezzi
-        </span>
-        <span class="bz-tools-right">
-          <label class="bz-sort">
-            <select data-bz-sort aria-label="Ordina">
-              {%- for option in collection.sort_options -%}
-                <option value="{{ option.value }}" {% if option.value == current_sort %}selected{% endif %}>{% if option.value == 'best-selling' %}Più venduti{% else %}{{ option.name | escape }}{% endif %}</option>
-              {%- endfor -%}
-            </select>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-          </label>
-          <form id="BzSort" method="get" action="{{ collection.url }}" hidden>
-            <input type="hidden" name="sort_by" value="{{ current_sort }}">
-          </form>
-          <span class="bz-view">
-            <button type="button" class="is-on" data-bz-view="grid" aria-label="Griglia"><svg viewBox="0 0 16 16"><rect x="1" y="1" width="6" height="6" rx="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/></svg></button>
-            <button type="button" data-bz-view="list" aria-label="Elenco"><svg viewBox="0 0 16 16"><rect x="1" y="2" width="14" height="3" rx="1.5"/><rect x="1" y="7" width="14" height="3" rx="1.5"/><rect x="1" y="12" width="14" height="3" rx="1.5"/></svg></button>
-          </span>
-        </span>
-      </div>
-      {%- capture bz_active_chips -%}
-        {%- for filter in collection.filters -%}
-          {%- if filter.type == 'price_range' -%}
-            {%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
-              {%- assign price_clear = filter.url_to_remove -%}
-              {%- if price_clear == blank and filter.min_value.url_to_remove != blank -%}
-                {%- assign price_clear = filter.min_value.url_to_remove -%}
-              {%- endif -%}
-              {%- if price_clear == blank and filter.max_value.url_to_remove != blank -%}
-                {%- assign price_clear = filter.max_value.url_to_remove -%}
-              {%- endif -%}
-              {%- if price_clear != blank -%}
-                <a class="bz-chip-on" href="{{ price_clear }}" data-bz-clear>
-                  {%- if filter.min_value.value != nil and filter.max_value.value != nil -%}
-                    {% render 'bz-money', cents: filter.min_value.value %} – {% render 'bz-money', cents: filter.max_value.value %}
-                  {%- elsif filter.min_value.value != nil -%}
-                    Da {% render 'bz-money', cents: filter.min_value.value %}
-                  {%- else -%}
-                    Fino a {% render 'bz-money', cents: filter.max_value.value %}
-                  {%- endif -%}
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
-                </a>
-              {%- endif -%}
-            {%- endif -%}
-          {%- else -%}
-            {%- for value in filter.active_values -%}
-              {%- if value.url_to_remove != blank -%}
-                {%- assign opt_label = value.label | append: '' -%}
-                {%- if opt_label contains 'Metaobject' or opt_label contains 'Drop' -%}
-                  {%- assign opt_label = value.value | split: '/' | last | replace: '-', ' ' -%}
-                {%- endif -%}
-                <a class="bz-chip-on" href="{{ value.url_to_remove }}" data-bz-clear>{{ opt_label | escape }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></a>
-              {%- endif -%}
-            {%- endfor -%}
-          {%- endif -%}
-        {%- endfor -%}
-      {%- endcapture -%}
-      {%- assign bz_active_chips = bz_active_chips | strip -%}
-      {%- if bz_active_chips != blank -%}
-        <div class="bz-active">{{ bz_active_chips }}</div>
+      <li><span aria-current="page">{{ collection.title | escape }}</span></li>
+    </ol>
+  </nav>
+  <div class="plp-head-row">
+    <h1 id="plp-title">
+      {%- if accent != blank and title contains accent -%}
+        {%- assign before = title | split: accent | first -%}
+        {%- assign after = title | remove_first: before | remove_first: accent -%}
+        {{ before | escape }}<em>{{ accent | escape }}</em>{{ after | escape }}
+      {%- else -%}
+        {{ title | escape }}
       {%- endif -%}
-      <div class="bz-cgrid" data-bz-grid>
-        {%- for pass in (1..2) -%}
-        {%- for product in collection.products -%}
-          {%- liquid
-            assign bz_show = true
-            if section.settings.bury_sold_out
-              if pass == 1 and product.available == false
-                assign bz_show = false
-              endif
-              if pass == 2 and product.available
-                assign bz_show = false
-              endif
-            elsif pass == 2
-              assign bz_show = false
-            endif
-          -%}
-          {%- if bz_show -%}
-          {%- if paginate.current_page == 1 -%}
-            {%- for block in section.blocks -%}
-              {%- if block.type == 'promo' and block.settings.position == forloop.parentloop.index -%}
-                {%- assign promo_only = block.settings.collection_handle | strip -%}
-                {%- if promo_only == blank or promo_only == collection.handle -%}
-                  {%- liquid
-                    assign promo_image = block.settings.image
-                    assign promo_link = block.settings.link
-                    assign promo_alt = block.settings.title
-                    assign promo_skip = false
-                    if block.settings.style == 'hours' or block.settings.figure contains '4 ore' or block.settings.text contains '4 ore'
-                      assign promo_skip = true
-                    endif
-                    if promo_image == blank and block.settings.image_product.featured_image != blank
-                      assign promo_image = block.settings.image_product.featured_image
-                      assign promo_alt = block.settings.image_product.title
-                    endif
-                    if promo_image == blank
-                      assign promo_skip = true
-                    endif
-                    assign promo_label = block.settings.button | strip
-                    assign promo_dead = false
-                    if promo_link == blank or promo_link == '#'
-                      assign promo_dead = true
-                    endif
-                  -%}
-                  {%- unless promo_skip -%}
-                  {%- if promo_dead -%}
-                  <div class="bz-promo{% if promo_image != blank %} has-media{% else %} is-solid{% endif %}" {{ block.shopify_attributes }}>
-                  {%- else -%}
-                  <a class="bz-promo{% if promo_image != blank %} has-media{% else %} is-solid{% endif %}" href="{{ promo_link }}" {{ block.shopify_attributes }}>
-                  {%- endif -%}
-                    {{ promo_image | image_url: width: 800 | image_tag: alt: promo_alt, loading: 'lazy' }}
-                    <div>
-                      {%- if block.settings.figure != blank -%}
-                        {%- assign figure_num = block.settings.figure | split: ' ' | first -%}
-                        {%- assign figure_rest = block.settings.figure | remove_first: figure_num | strip -%}
-                        <p class="bz-figure">{{ figure_num | escape }}{%- if figure_rest != blank -%}<small>{{ figure_rest | escape }}</small>{%- endif -%}</p>
-                      {%- endif -%}
-                      <h3>{{ block.settings.title | escape }} {% if block.settings.accent != blank %}<em>{{ block.settings.accent | escape }}</em>{% endif %}</h3>
-                      <p>{{ block.settings.text | escape }}</p>
-                      {%- if promo_dead == false and promo_label != blank -%}<span class="bz-btn bz-btn--ivory bz-btn--sm">{{ promo_label | escape }}</span>{%- endif -%}
-                    </div>
-                  {%- if promo_dead -%}
-                  </div>
-                  {%- else -%}
-                  </a>
-                  {%- endif -%}
-                  {%- endunless -%}
-                {%- endif -%}
-              {%- endif -%}
-            {%- endfor -%}
-          {%- endif -%}
-          <div data-bz-item data-type="{{ product.type | escape }}" data-title="{{ product.title | downcase | escape }}" data-price="{{ product.price }}" data-available="{{ product.available }}">
-            {% render 'bz-card', product: product %}
-          </div>
-          {%- endif -%}
-        {%- endfor -%}
-        {%- endfor -%}
-      </div>
-      {%- liquid
-        assign seen_count = paginate.current_offset | plus: collection.products.size
-        assign total_count = paginate.items | default: 0
-        assign seen_pct = 0
-        if total_count > 0
-          assign seen_pct = seen_count | times: 100 | divided_by: total_count
-        endif
-      -%}
-      <div class="bz-more">
-        <p>Stai vedendo <span data-bz-seen>{{ seen_count }}</span> di <span data-bz-total>{{ total_count }}</span></p>
-        <div class="bz-more__bar" aria-hidden="true"><i data-bz-bar data-width="{{ seen_pct }}" style="width: {{ seen_pct }}%"></i></div>
-        {%- if paginate.next -%}
-          {%- liquid
-            assign more_url = paginate.next.url
-            if more_url contains '?'
-              assign more_url = more_url | append: '&section_id=' | append: section.id
-            else
-              assign more_url = more_url | append: '?section_id=' | append: section.id
-            endif
-          -%}
-          <button type="button" data-bz-more data-url="{{ more_url | escape }}">Carica altri</button>
-          <noscript><a href="{{ paginate.next.url }}">Pagina successiva</a></noscript>
-        {%- endif -%}
-      </div>
+    </h1>
+    <div class="plp-intro">
+      {%- if collection.description != blank -%}
+        <p>{{ collection.description | strip_html }}</p>
+      {%- elsif section.settings.intro != blank -%}
+        <p>{{ section.settings.intro | escape }}</p>
+      {%- endif -%}
+      <p class="plp-count"><span data-total>{{ collection.products_count }}</span> pezzi</p>
     </div>
   </div>
-</div>
-{%- endpaginate -%}
-<script src="{{ 'bz-collection.js' | asset_url }}" defer></script>
+</section>
 
+{%- paginate collection.products by per_page -%}
+  <form method="get" action="{{ collection.url }}">
+    <section class="plp-controls" aria-label="Filtra e ordina">
+      <div class="chips-scroll">
+        <div class="chips" role="group" aria-label="Tipo">
+          {%- liquid
+            assign type_filter = blank
+            for filter in collection.filters
+              if filter.param_name == 'filter.p.product_type'
+                assign type_filter = filter
+              endif
+            endfor
+            assign type_active = false
+            if type_filter
+              for value in type_filter.active_values
+                assign type_active = true
+              endfor
+            endif
+          -%}
+          <a class="chip{% unless type_active %} is-on{% endunless %}" href="{{ collection.url }}">Tutti</a>
+          {%- if type_filter -%}
+            {%- for value in type_filter.values -%}
+              <a class="chip{% if value.active %} is-on{% endif %}" href="{% if value.active %}{{ value.url_to_remove }}{% else %}{{ value.url_to_add }}{% endif %}">{{ value.label | escape }} <span class="chip-count">{{ value.count }}</span></a>
+            {%- endfor -%}
+          {%- else -%}
+            {%- for type in collection.all_types -%}
+              <a class="chip" href="{{ collection.url }}?filter.p.product_type={{ type | url_encode }}">{{ type | escape }}</a>
+            {%- endfor -%}
+          {%- endif -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'chip' -%}
+              {%- assign show = block.settings.show_on -%}
+              {%- if show == blank or show == collection.handle -%}
+                {%- assign chip_collection = collections[block.settings.collection] -%}
+                {%- if chip_collection.title != blank -%}
+                  <a class="chip" href="{{ chip_collection.url }}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+      <div class="toolbar">
+        <button class="tool-btn" type="button" data-filters-open aria-haspopup="dialog" aria-controls="filters-{{ section.id }}" aria-expanded="false">Filtri</button>
+        <label class="sort"><span>Ordina</span>
+          <select name="sort_by" data-sort>
+            {%- for option in collection.sort_options -%}
+              <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected{% endif %}>{{ option.name | escape }}</option>
+            {%- endfor -%}
+          </select>
+        </label>
+      </div>
+    </section>
+    <div class="active-filters" {% if collection.filters == blank %}hidden{% endif %}>
+      {%- for filter in collection.filters -%}
+        {%- for value in filter.active_values -%}
+          <a class="afchip" href="{{ value.url_to_remove }}">{{ value.label | escape }} <span aria-hidden="true">×</span></a>
+        {%- endfor -%}
+        {%- if filter.type == 'price_range' -%}
+          {%- if filter.min_value.value or filter.max_value.value -%}
+            <a class="afchip" href="{{ filter.url_to_remove }}">Prezzo <span aria-hidden="true">×</span></a>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    <div class="filters-overlay" id="filters-{{ section.id }}" hidden>
+      <button class="filters-backdrop" type="button" data-filters-close aria-label="Chiudi filtri"></button>
+      <div class="filters" role="dialog" aria-modal="true" aria-labelledby="filters-title-{{ section.id }}">
+      <div class="filters-top"><h2 id="filters-title-{{ section.id }}">Filtri</h2><button class="icon-btn" type="button" data-filters-close aria-label="Chiudi">×</button></div>
+      <div class="filters-body">
+      {%- for filter in collection.filters -%}
+        <fieldset class="fgroup">
+          <legend>{{ filter.label | escape }}</legend>
+          {%- case filter.type -%}
+            {%- when 'price_range' -%}
+              {%- liquid
+                assign currencies_using_comma_decimals = 'ANG,ARS,BRL,BYN,BYR,CLF,CLP,COP,CRC,CZK,DKK,EUR,HRK,HUF,IDR,ISK,MZN,NOK,PLN,RON,RUB,SEK,TRY,UYU,VES,VND' | split: ','
+                assign uses_comma_decimals = false
+                if currencies_using_comma_decimals contains cart.currency.iso_code
+                  assign uses_comma_decimals = true
+                endif
+                if filter.min_value.value
+                  if uses_comma_decimals
+                    assign price_min = filter.min_value.value | money_without_currency | replace: '.', '' | replace: ',', '.'
+                  else
+                    assign price_min = filter.min_value.value | money_without_currency | replace: ',', ''
+                  endif
+                endif
+                if filter.max_value.value
+                  if uses_comma_decimals
+                    assign price_max = filter.max_value.value | money_without_currency | replace: '.', '' | replace: ',', '.'
+                  else
+                    assign price_max = filter.max_value.value | money_without_currency | replace: ',', ''
+                  endif
+                endif
+              -%}
+              <label>Da <input type="number" name="{{ filter.min_value.param_name }}" min="0" step="0.01" {% if filter.min_value.value %}value="{{ price_min }}"{% endif %}></label>
+              <label>A <input type="number" name="{{ filter.max_value.param_name }}" min="0" step="0.01" {% if filter.max_value.value %}value="{{ price_max }}"{% endif %}></label>
+            {%- else -%}
+              {%- for value in filter.values -%}
+                <label>
+                  <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" {% if value.active %}checked{% endif %} {% if value.count == 0 and value.active == false %}disabled{% endif %}>
+                  {{ value.label | escape }} <small>{{ value.count }}</small>
+                </label>
+              {%- endfor -%}
+          {%- endcase -%}
+        </fieldset>
+      {%- endfor -%}
+      <button class="btn gold" type="submit">Mostra i pezzi</button>
+      </div>
+      </div>
+    </div>
+  </form>
+
+  <section class="plp-results" aria-label="Prodotti">
+    <div class="pgrid" data-grid>
+      {%- for product in collection.products -%}
+        {% render 'bz-product-card', card: product, style: 'plp' %}
+      {%- endfor -%}
+    </div>
+    <div class="empty" {% if collection.products.size > 0 %}hidden{% endif %}>
+      <h2>Nessun pezzo con questi <em>filtri</em></h2>
+      <p>Prova a togliere una pietra o ad allargare il prezzo.</p>
+      <a class="btn outline" href="{{ collection.url }}">Azzera i filtri</a>
+    </div>
+    {%- assign shown = paginate.current_offset | plus: collection.products.size -%}
+    {%- assign ratio = 0 -%}
+    {%- if paginate.items > 0 -%}{%- assign ratio = shown | times: 1.0 | divided_by: paginate.items | at_most: 1 -%}{%- endif -%}
+    <div class="more">
+      <p class="more-line"><span data-shown>{{ shown }}</span> di <span data-of>{{ paginate.items }}</span></p>
+      <div class="more-track" aria-hidden="true"><span data-bar style="transform:scaleX({{ ratio }})"></span></div>
+      {%- if paginate.next -%}
+        <a class="btn outline" data-load href="{{ paginate.next.url }}">Carica altri</a>
+      {%- endif -%}
+    </div>
+  </section>
+{%- endpaginate -%}
+<script>
+  (function () {
+    var root = document.getElementById('shopify-section-{{ section.id }}');
+    if (!root) return;
+    var overlay = root.querySelector('.filters-overlay');
+    var open = root.querySelector('[data-filters-open]');
+    function setOpen(on) {
+      if (!overlay) return;
+      overlay.hidden = !on;
+      overlay.classList.toggle('open', on);
+      if (open) open.setAttribute('aria-expanded', String(on));
+      document.body.classList.toggle('locked', on);
+    }
+    open && open.addEventListener('click', function () { setOpen(true); });
+    root.querySelectorAll('[data-filters-close]').forEach(function (button) { button.addEventListener('click', function () { setOpen(false); }); });
+  })();
+</script>
 {% schema %}
 {
   "name": "Collezione",
   "class": "bz-home",
   "settings": [
-    { "type": "image_picker", "id": "image", "label": "Foto di testa" },
-    { "type": "text", "id": "heading", "label": "Titolo", "default": "Gioielli" },
-    { "type": "text", "id": "heading_accent", "label": "Corsivo", "default": "con pietre" },
-    { "type": "text", "id": "accent", "label": "Accento nel titolo" },
-    { "type": "text", "id": "accent_handle", "label": "Collezione dell'accento" },
-    { "type": "textarea", "id": "intro", "label": "Testo se la collezione non ha descrizione", "default": "Bracciali elastici, ciondoli grezzi e mala in pietra naturale. Ogni pezzo è anche in negozio: lo ordini qui e lo ritiri gratis." },
-    { "type": "range", "id": "per_page", "min": 8, "max": 24, "step": 4, "label": "Prodotti per pagina", "default": 16 },
-    { "type": "checkbox", "id": "bury_sold_out", "label": "I pezzi esauriti dopo quelli disponibili", "info": "Riordina solo i prodotti di questa pagina. L'ordine della collezione resta quello del negozio.", "default": true }
+    { "type": "text", "id": "heading", "label": "Titolo (non usato: vale il titolo della collezione)" },
+    { "type": "text", "id": "heading_accent", "label": "Parola in corsivo", "default": "pietre" },
+    { "type": "text", "id": "accent", "label": "Accento" },
+    { "type": "text", "id": "accent_handle", "label": "Handle accento" },
+    { "type": "textarea", "id": "intro", "label": "Intro, se la collezione non ha una descrizione" },
+    { "type": "text", "id": "parent_label", "label": "Breadcrumb", "default": "Pietre e rituali" },
+    { "type": "url", "id": "parent_url", "label": "Link breadcrumb" },
+    { "type": "range", "id": "per_page", "label": "Pezzi per pagina", "min": 12, "max": 48, "step": 4, "default": 24 }
   ],
   "blocks": [
-    { "type": "chip", "name": "Sfera", "settings": [
-      { "type": "text", "id": "label", "label": "Nome" },
-      { "type": "collection", "id": "collection", "label": "Collezione" },
-      { "type": "text", "id": "show_on", "label": "Solo su questa collezione" },
-      { "type": "image_picker", "id": "image", "label": "Foto" }
-    ]},
-    { "type": "promo", "name": "Riquadro", "settings": [
-      { "type": "range", "id": "position", "min": 1, "max": 24, "step": 1, "label": "Dopo il prodotto numero", "default": 4 },
-      { "type": "text", "id": "collection_handle", "label": "Handle collezione", "info": "Vuoto: il riquadro esce in ogni collezione. Se compilato, solo quando coincide con la collezione aperta.", "default": "gioielli-con-pietre" },
-      { "type": "select", "id": "style", "label": "Stile", "options": [
-        { "value": "ox", "label": "Bordeaux" },
-        { "value": "hours", "label": "Ore" }
-      ], "default": "ox" },
+    { "type": "chip", "name": "Chip", "settings": [
+      { "type": "text", "id": "label", "label": "Etichetta" },
+      { "type": "text", "id": "collection", "label": "Handle collezione" },
+      { "type": "text", "id": "show_on", "label": "Mostra solo su questo handle" }
+    ] },
+    { "type": "promo", "name": "Promo", "settings": [
+      { "type": "number", "id": "position", "label": "Posizione" },
+      { "type": "text", "id": "style", "label": "Stile" },
       { "type": "text", "id": "title", "label": "Titolo" },
       { "type": "text", "id": "accent", "label": "Corsivo" },
       { "type": "textarea", "id": "text", "label": "Testo" },
-      { "type": "text", "id": "figure", "label": "Numero grande" },
       { "type": "text", "id": "button", "label": "Pulsante" },
-      { "type": "image_picker", "id": "image", "label": "Foto" },
-      { "type": "product", "id": "image_product", "label": "Foto da un prodotto", "info": "Si usa se la foto sopra è vuota. Senza foto il riquadro non esce." },
-      { "type": "url", "id": "link", "label": "Link" }
-    ]}
+      { "type": "text", "id": "collection_handle", "label": "Collezione" },
+      { "type": "text", "id": "image_product", "label": "Prodotto foto" }
+    ] }
   ],
   "presets": [{ "name": "Collezione" }]
 }

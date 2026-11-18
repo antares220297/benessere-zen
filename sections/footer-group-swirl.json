@@ -11,74 +11,6 @@
   "name": "t:sections.footer.name",
   "type": "footer",
   "sections": {
-    "footer": {
-      "type": "footer",
-      "blocks": {
-        "footer-2": {
-          "type": "text",
-          "settings": {
-            "heading_text": "ABOUT",
-            "subtext": "<p>Share store details, promotions, or brand content with your customers.</p>",
-            "show_social_icons": false
-          }
-        },
-        "e6c40a2a-58fc-4cf8-9184-a6607c25166c": {
-          "type": "link_list",
-          "settings": {
-            "heading_menu": "MOST SEARCHED",
-            "menu": "footer",
-            "show_social_icons": false
-          }
-        },
-        "footer-0": {
-          "type": "link_list",
-          "settings": {
-            "heading_menu": "OUR CONCEPT",
-            "menu": "footer",
-            "show_social_icons": false
-          }
-        },
-        "footer-1": {
-          "type": "link_list",
-          "settings": {
-            "heading_menu": "EXPLORE",
-            "menu": "footer",
-            "show_social_icons": false
-          }
-        },
-        "footer-3": {
-          "type": "email_footer",
-          "settings": {
-            "heading_email": "SUBSCRIBE TO OUR EMAILS",
-            "subtext_email": "<p>Apply for our free membership to receive exclusive deals, news and events.</p>",
-            "show_social_icons": true
-          }
-        }
-      },
-      "block_order": [
-        "footer-2",
-        "e6c40a2a-58fc-4cf8-9184-a6607c25166c",
-        "footer-0",
-        "footer-1",
-        "footer-3"
-      ],
-      "settings": {
-        "columns_desktop": 5,
-        "show_language_selector": true,
-        "show_currency_selector": true,
-        "payment_enable": true,
-        "show_copyright": true,
-        "add_copyright_text": "",
-        "additional_layout": "horizontal",
-        "show_powered": true,
-        "enable_follow_on_shop": false,
-        "top_padding": 24,
-        "bottom_padding": 24,
-        "top_padding_mobile": 20,
-        "bottom_padding_mobile": 20
-      },
-      "disabled": true
-    },
     "bz_footer": {
       "type": "bz-footer",
       "blocks": {
@@ -91,23 +23,23 @@
             "label_2": "Mala tibetani",
             "link_2": "/collections/mala-tibetani",
             "label_3": "Pietre e cristalli",
-            "link_3": "/collections/pietre-burattate",
+            "link_3": "/collections/pietre-grezze",
             "label_4": "Incensi e palo santo",
-            "link_4": "/collections/smudge-e-paolo-santo"
+            "link_4": "/collections/incensi-e-brucia-incensi"
           }
         },
         "col-help": {
           "type": "links",
           "settings": {
             "heading": "Aiuto",
-            "label_1": "",
-            "link_1": "",
-            "label_2": "",
-            "link_2": "",
-            "label_3": "Resi",
-            "link_3": "/policies/refund-policy",
-            "label_4": "Contatti",
-            "link_4": "/pages/contact"
+            "label_1": "Resi",
+            "link_1": "/policies/refund-policy",
+            "label_2": "Contatti",
+            "link_2": "/pages/contact",
+            "label_3": "",
+            "link_3": "",
+            "label_4": "",
+            "link_4": ""
           }
         },
         "col-social": {
@@ -115,18 +47,20 @@
           "settings": {
             "heading": "Seguici",
             "label_1": "Instagram",
-            "link_1": "",
+            "link_1": "https://www.instagram.com/benesserezen.shop/",
             "label_2": "Facebook",
-            "link_2": "",
-            "label_3": "TikTok",
-            "link_3": ""
+            "link_2": "https://www.facebook.com/profile.php?id=61567917098683",
+            "label_3": "",
+            "link_3": "",
+            "label_4": "",
+            "link_4": ""
           }
         },
         "col-pay": {
           "type": "payments",
           "settings": {
             "heading": "Pagamenti",
-            "methods": "Visa, Mastercard, PayPal, Apple Pay, Google Pay"
+            "methods": "American Express, Apple Pay, Google Pay, Maestro, Mastercard, PayPal, Shop Pay, Visa"
           }
         }
       },
@@ -145,7 +79,6 @@
     }
   },
   "order": [
-    "bz_footer",
-    "footer"
+    "bz_footer"
   ]
 }

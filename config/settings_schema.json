@@ -872,7 +872,7 @@
             "label": "t:settings_schema.products.product_image_ratio.option__5.label"
           },
           {
-            "value": "3\/4",
+            "value": "3/4",
             "label": "t:settings_schema.products.product_image_ratio.option__6.label"
           }
         ],
@@ -1822,7 +1822,7 @@
         "type": "url",
         "id": "continue_shopping",
         "label": "t:settings_schema.cart.settings.continue_shopping.label",
-        "default": "\/collections\/all"
+        "default": "/collections/all"
       },
       {
         "type": "checkbox",
@@ -2948,6 +2948,101 @@
         "label": "t:settings_schema.combined_listing.enable_combined",
         "info": "t:settings_schema.combined_listing.info",
         "default": false
+      }
+    ]
+  },
+  {
+    "name": "Benessere Zen",
+    "settings": [
+      {
+        "type": "text",
+        "id": "bz_address",
+        "label": "Indirizzo",
+        "default": "Via Marcello Provenzali 1, 44042 Cento (FE)"
+      },
+      {
+        "type": "text",
+        "id": "bz_phone",
+        "label": "Telefono",
+        "default": "+39 347 088 3168"
+      },
+      {
+        "type": "text",
+        "id": "bz_email",
+        "label": "Email",
+        "default": "info@benesserezen.shop"
+      },
+      {
+        "type": "text",
+        "id": "bz_maps",
+        "label": "Link indicazioni",
+        "default": "https://maps.google.com/?q=Via+Marcello+Provenzali+1+44042+Cento"
+      },
+      {
+        "type": "number",
+        "id": "bz_free_shipping",
+        "label": "Spedizione gratuita da (€)",
+        "default": 50
+      },
+      {
+        "type": "text",
+        "id": "bz_express_rate",
+        "label": "Costo Express",
+        "default": "5,90"
+      },
+      {
+        "type": "text",
+        "id": "bz_hours_mon",
+        "label": "Lunedì",
+        "default": "09:30-12:30,16:00-19:30"
+      },
+      {
+        "type": "text",
+        "id": "bz_hours_tue",
+        "label": "Martedì",
+        "default": "09:30-12:30,16:00-19:30"
+      },
+      {
+        "type": "text",
+        "id": "bz_hours_wed",
+        "label": "Mercoledì",
+        "default": "09:30-12:30,16:00-19:30"
+      },
+      {
+        "type": "text",
+        "id": "bz_hours_thu",
+        "label": "Giovedì",
+        "default": "09:00-13:00"
+      },
+      {
+        "type": "text",
+        "id": "bz_hours_fri",
+        "label": "Venerdì",
+        "default": "09:30-12:30,16:00-19:30"
+      },
+      {
+        "type": "text",
+        "id": "bz_hours_sat",
+        "label": "Sabato",
+        "default": "09:30-12:30,16:00-19:30"
+      },
+      {
+        "type": "text",
+        "id": "bz_hours_sun",
+        "label": "Domenica",
+        "info": "Vuoto finché non arrivano gli orari. Non scrivere «chiuso»."
+      },
+      {
+        "type": "text",
+        "id": "bz_sunday_note",
+        "label": "Testo domenica senza orari",
+        "default": "Domenica: dal 1° dicembre aperto, orari in arrivo"
+      },
+      {
+        "type": "textarea",
+        "id": "bz_hours_exceptions",
+        "label": "Eccezioni",
+        "info": "Una per riga: 2026-12-25 closed oppure 2026-12-24 09:00-13:00"
       }
     ]
   }
