@@ -44,18 +44,13 @@
   {%- endfor -%}
 {%- endcapture -%}
 <section class="ritual-section{% if home %} ritual-section--home{% endif %}" id="{% if home %}ritual{% else %}ritual-{{ section.id }}{% endif %}" data-bz-ritual data-bz-warm-images>
-  {%- if home -%}
-    {%- for block in blocks -%}
-      <div class="ritual-bg{% if forloop.first %} on{% endif %}" data-tone="{{ forloop.index0 }}" aria-hidden="true"></div>
-    {%- endfor -%}
-  {%- endif -%}
   <div class="bz-sh">
     <h2>{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h2>
     {%- if section.settings.intro != blank -%}<p class="bz-sh-sub">{{ section.settings.intro | escape }}</p>{%- endif -%}
     <div class="bz-pills" role="group" aria-label="Scegli un set">
       {%- for block in blocks -%}
         {%- assign panel_id = section.id | append: '-ritual-' | append: forloop.index -%}
-        <button type="button" data-set="{{ panel_id }}" data-tone-index="{{ forloop.index0 }}" aria-controls="{{ panel_id }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}">{{ block.settings.label | escape }}</button>
+        <button type="button" data-set="{{ panel_id }}" aria-controls="{{ panel_id }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}">{{ block.settings.label | escape }}</button>
       {%- endfor -%}
     </div>
   </div>

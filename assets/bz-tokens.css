@@ -83,6 +83,7 @@
   --bz-bg:#141312;              /* antracite, fondo pagina */
   --bz-bg-2:#1b1917;            /* fascia alternata, footer */
   --bz-surface:#201e1b;         /* card, pannelli scuri */
+  --bz-ritual-surface:#1a1618;  /* pannello del rituale su mobile e tablet */
   --bz-surface-2:#29261f;       /* stato selezionato del menu, card in rilievo */
   --bz-surface-light:#ece4d6;   /* pannello chiaro (FAQ mobile, Mattina e sera): max 1 per pagina */
   /* Colore: accento */
@@ -127,6 +128,7 @@
   --bz-dosha-kapha:#6dd2b6;
   /* Linee */
   --bz-line:rgba(238,231,219,.11);        /* divisori, bordo card (decorativo) */
+  --bz-line-divider:rgba(238,231,219,.12); /* divisori della fascia hero e delle righe approvate */
   --bz-line-2:rgba(238,231,219,.24);      /* chip, CTA secondaria */
   --bz-line-field:rgba(238,231,219,.40);  /* campi di input: 3,34:1 */
   --bz-line-light:rgba(36,32,27,.14);

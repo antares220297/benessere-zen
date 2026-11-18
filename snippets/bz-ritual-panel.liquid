@@ -23,19 +23,19 @@
         {%- if savings > 0 -%}<span class="ritual-saving">Risparmi {% render 'bz-money', cents: savings %}</span>{%- endif -%}
       </div>
       <button class="btn gold" type="button" data-bz-add-set{% if count == 0 %} disabled{% endif %}>Aggiungi al carrello</button>
-    </div>
-    <p class="ritual-status" role="status" data-ritual-status></p>
-    <div class="ritual-shipping" data-shipping>
-      <p data-shipping-text>{% if missing == 0 %}Spedizione gratuita{% else %}Ti mancano <strong>{% render 'bz-money', cents: missing %}</strong> per la spedizione gratuita{% endif %}</p>
-      <div class="track" role="progressbar" aria-label="Verso la spedizione gratuita" aria-valuemin="0" aria-valuemax="{{ goal }}" aria-valuenow="{{ progress }}">
-        <span style="transform:scaleX({{ progress | times: 1.0 | divided_by: goal }})"></span>
+      <p class="ritual-status" role="status" data-ritual-status></p>
+      <div class="ritual-shipping" data-shipping>
+        <p data-shipping-text>{% if missing == 0 %}Spedizione gratuita{% else %}Ti mancano <strong>{% render 'bz-money', cents: missing %}</strong> per la spedizione gratuita{% endif %}</p>
+        <div class="track" role="progressbar" aria-label="Verso la spedizione gratuita" aria-valuemin="0" aria-valuemax="{{ goal }}" aria-valuenow="{{ progress }}">
+          <span style="transform:scaleX({{ progress | times: 1.0 | divided_by: goal }})"></span>
+        </div>
       </div>
     </div>
   </div>
-  {%- if shot or asset != blank -%}
+  {%- if shot != blank or asset != blank -%}
     <div class="ritual-visual">
-      {%- if shot -%}
-        {{ shot | image_url: width: 1600 | image_tag: alt: shot_alt, class: 'ritual-shot', loading: 'lazy', decoding: 'async', widths: '400, 600, 1000, 1600', sizes: '(min-width: 1024px) 50vw, 100vw', width: shot.width, height: shot.height }}
+      {%- if shot != blank -%}
+        {{ shot | image_url: width: 1600 | image_tag: alt: shot_alt, class: 'ritual-shot', loading: 'lazy', decoding: 'async', widths: '400, 600, 1000, 1600', sizes: '(min-width: 1024px) min(calc(100vw - 56px), 1384px), (min-width: 768px) 560px, calc(100vw - 120px)', width: shot.width, height: shot.height }}
       {%- else -%}
         <img class="ritual-shot" src="{{ asset | asset_url }}" alt="{{ shot_alt | escape }}" width="1600" height="1200" loading="lazy" decoding="async">
       {%- endif -%}

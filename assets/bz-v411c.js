@@ -432,7 +432,6 @@
     if (target.hasAttribute('data-set')) {
       qa('[data-ritual-set]', ritual).forEach(panel => { panel.hidden = panel.id !== target.dataset.set; });
       qa('[data-set]', ritual).forEach(pill => pill.setAttribute('aria-pressed', String(pill === target)));
-      qa('.ritual-bg', ritual).forEach(layer => layer.classList.toggle('on', layer.dataset.tone === target.dataset.toneIndex));
       return;
     }
 

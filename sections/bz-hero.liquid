@@ -9,7 +9,6 @@
           <a class="btn gold" href="{{ section.settings.primary_link }}">{% render 'bz-nav-label', label: section.settings.primary_label %}</a>
           <a class="btn outline" href="{{ section.settings.secondary_link }}">{% render 'bz-nav-label', label: section.settings.secondary_label %}</a>
         </div>
-        {% render 'bz-trust' %}
       </div>
     </div>
     <div class="hero-slide new-slide" aria-hidden="true" inert aria-label="2 di 3">
@@ -33,27 +32,27 @@
       </div>
     </div>
   </div>
-  <div class="hero-side">
-    {%- for block in section.blocks -%}
-      {%- if block.type == 'tile' -%}
-        <a class="photo-card small tone-{{ forloop.index0 }}" href="{{ block.settings.link }}" {{ block.shopify_attributes }}>
-          {%- if block.settings.image != blank -%}
-            {{ block.settings.image | image_url: width: 900 | image_tag: alt: '', loading: 'lazy', widths: '400, 700, 900', sizes: '30vw' }}
-          {%- elsif block.settings.image_asset != blank -%}
-            <img src="{{ block.settings.image_asset | asset_url }}" alt="" width="900" height="900" loading="lazy">
-          {%- elsif block.settings.collection != blank and block.settings.collection.image -%}
-            {{ block.settings.collection.image | image_url: width: 900 | image_tag: alt: '', loading: 'lazy', widths: '400, 700, 900', sizes: '30vw' }}
-          {%- endif -%}
-          <div>
-            {%- if block.settings.badge != blank -%}<span class="badge">{{ block.settings.badge | escape }}</span>{%- endif -%}
-            <h2>{{ block.settings.title | escape }} <em>{{ block.settings.accent | escape }}</em></h2>
-            <p>{{ block.settings.text | escape }}</p>
-            <span class="btn">{% render 'bz-nav-label', label: block.settings.button_label %}</span>
-          </div>
-        </a>
-      {%- endif -%}
-    {%- endfor -%}
-  </div>
+  {%- assign tile_sizes = '(min-width: 1024px) 41vw, (min-width: 768px) 50vw, 100vw' -%}
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'tile' -%}
+      <a class="photo-card small" href="{{ block.settings.link }}" {{ block.shopify_attributes }}>
+        {%- if block.settings.image != blank -%}
+          {{ block.settings.image | image_url: width: 900 | image_tag: alt: '', loading: 'lazy', widths: '400, 700, 900', sizes: tile_sizes }}
+        {%- elsif block.settings.image_asset != blank -%}
+          <img src="{{ block.settings.image_asset | asset_url }}" alt="" width="900" height="900" loading="lazy">
+        {%- elsif block.settings.collection != blank and block.settings.collection.image -%}
+          {{ block.settings.collection.image | image_url: width: 900 | image_tag: alt: '', loading: 'lazy', widths: '400, 700, 900', sizes: tile_sizes }}
+        {%- endif -%}
+        {%- if block.settings.badge != blank -%}<span class="badge">{{ block.settings.badge | escape }}</span>{%- endif -%}
+        <div>
+          <h2>{{ block.settings.title | escape }} <em>{{ block.settings.accent | escape }}</em></h2>
+          <p>{{ block.settings.text | escape }}</p>
+          <span class="btn outline">{% render 'bz-nav-label', label: block.settings.button_label %}</span>
+        </div>
+      </a>
+    {%- endif -%}
+  {%- endfor -%}
+  {% render 'bz-trust' %}
 </section>
 {% schema %}
 {
