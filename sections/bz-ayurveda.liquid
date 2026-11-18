@@ -30,7 +30,9 @@
         {%- if block.type == 'sphere' -%}
           {%- assign coll = block.settings.collection -%}
           <a href="{{ coll.url }}">
-            {%- if coll.image -%}
+            {%- if block.settings.image_asset != blank -%}
+              <img src="{{ block.settings.image_asset | asset_url }}" alt="{{ block.settings.label | escape }}" width="106" height="106" loading="lazy">
+            {%- elsif coll.image -%}
               {{ coll.image | image_url: width: 240 | image_tag: alt: block.settings.label, width: 106, height: 106, loading: 'lazy' }}
             {%- elsif coll.products.first.featured_image -%}
               {{ coll.products.first.featured_image | image_url: width: 240 | image_tag: alt: block.settings.label, width: 106, height: 106, loading: 'lazy' }}
@@ -40,6 +42,28 @@
         {%- endif -%}
       {%- endfor -%}
     </div>
+  </section>
+  <section class="picked" id="piu-scelti">
+    <div class="bz-sh">
+      <h2>I più <em>scelti</em></h2>
+      <a class="bz-sh-more" href="{{ section.settings.collection_link | default: '/collections/ayurveda' }}">Vedi tutto <span aria-hidden="true">→</span></a>
+      <div class="bz-pills" role="tablist" aria-label="Gruppi prodotti">
+        <button type="button" role="tab" data-picked="0" aria-selected="true">Ayurveda</button>
+        <button type="button" role="tab" data-picked="1" aria-selected="false">Oli</button>
+        <button type="button" role="tab" data-picked="2" aria-selected="false">Tisane</button>
+      </div>
+    </div>
+    {%- assign lists = 'ayurveda,oli,tisane' | split: ',' -%}
+    {%- for key in lists -%}
+      <div class="products" data-picked-panel="{{ forloop.index0 }}" {% unless forloop.first %}hidden{% endunless %}>
+        {%- case key -%}
+          {%- when 'ayurveda' -%}{%- assign picks = section.settings.picked_products -%}
+          {%- when 'oli' -%}{%- assign picks = section.settings.oli_products -%}
+          {%- else -%}{%- assign picks = section.settings.tisane_products -%}
+        {%- endcase -%}
+        {%- for product in picks limit: 4 -%}{% render 'bz-product-card', card: product %}{%- endfor -%}
+      </div>
+    {%- endfor -%}
   </section>
   <section class="dosha-section" id="tre-energie">
     <h2>Tre <em>energie</em></h2>
@@ -53,6 +77,30 @@
           <svg class="venn-orbit" aria-hidden="true" focusable="false"></svg>
         </div>
         <div class="dosha-panel" id="circle-panel" aria-live="polite" aria-atomic="true"></div>
+      </div>
+      <p>I significati appartengono alla tradizione e non sostituiscono il parere di un medico.</p>
+    </article>
+    <article class="dosha-idea" id="dosha-triangolo">
+      <div class="dosha-layout">
+        <div class="triangle-side">
+          <h3 class="triangle-prompt" id="triangle-label">Oggi mi sento più…</h3>
+          <div class="triangle-stage">
+            <div class="triangle-border" aria-hidden="true"></div>
+            <div class="triangle-field" aria-hidden="true"></div>
+            <span class="tri-equilibrium" aria-hidden="true"></span>
+            <button class="tri-vertex tri-vata" type="button" data-vertex="0" aria-pressed="false" aria-controls="tri-panel">Vata<small>aria · spazio</small></button>
+            <button class="tri-vertex tri-pitta" type="button" data-vertex="1" aria-pressed="false" aria-controls="tri-panel">Pitta<small>fuoco · acqua</small></button>
+            <button class="tri-vertex tri-kapha" type="button" data-vertex="2" aria-pressed="false" aria-controls="tri-panel">Kapha<small>terra · acqua</small></button>
+            <button class="tri-point" type="button" role="slider" aria-label="Oggi mi sento più…" aria-describedby="tri-status" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="100" aria-valuenow="33" aria-valuetext="Vata 33%, Pitta 33%, Kapha 34%" aria-controls="tri-panel"></button>
+          </div>
+          <p class="sr-only" id="tri-status" aria-live="polite" aria-atomic="true"></p>
+          <div class="dosha-bars" aria-label="Proporzioni dei dosha">
+            <div class="dosha-bar" data-weight="0"><span>Vata</span><output>33%</output><div><i></i></div></div>
+            <div class="dosha-bar" data-weight="1"><span>Pitta</span><output>33%</output><div><i></i></div></div>
+            <div class="dosha-bar" data-weight="2"><span>Kapha</span><output>33%</output><div><i></i></div></div>
+          </div>
+        </div>
+        <div class="dosha-panel" id="tri-panel" aria-live="polite" aria-atomic="true"></div>
       </div>
       <p>I significati appartengono alla tradizione e non sostituiscono il parere di un medico.</p>
     </article>
@@ -83,23 +131,23 @@
       </template>
     {%- endfor -%}
   </section>
-  <section class="picked" id="piu-scelti">
-    <div class="bz-sh">
-      <h2>I più <em>scelti</em></h2>
-      <a class="bz-sh-more" href="{{ section.settings.collection_link | default: '/collections/ayurveda' }}">Vedi tutto <span aria-hidden="true">→</span></a>
-    </div>
-    <div class="products">
-      {%- for product in section.settings.picked_products limit: 4 -%}
-        {% render 'bz-product-card', card: product %}
-      {%- endfor -%}
-    </div>
-  </section>
   <section class="split story counsel">
     <div class="split-copy">
       <h2>Simona <em>consiglia</em></h2>
       <p>Per oltre trent’anni Simona ha fatto massaggi ayurvedici e Reiki. Oggi in negozio consiglia su dosha e chakra.</p>
       <p>Puoi partire da quello che usi già. Passa in Via Marcello Provenzali 1, a Cento.</p>
-      <a class="btn outline" href="{{ pages['il-negozio'].url | default: '/pages/il-negozio' }}">Il negozio →</a>
+      <a class="btn gold" href="{{ pages['cura-di-se'].url | default: '/pages/cura-di-se' }}">Vai a Cura di sé →</a>
+    </div>
+    <div class="ay-product-pair counsel-product">
+      {%- if section.settings.counsel_product.title != blank -%}
+        {%- assign product = section.settings.counsel_product -%}
+        <a class="ay-product" href="{{ product.url }}">
+          <div class="ay-product-photo">{%- if product.featured_image -%}{{ product.featured_image | image_url: width: 700 | image_tag: alt: product.title, loading: 'lazy' }}{%- endif -%}</div>
+          <h4>{{ product.title | escape }}</h4>
+          <span class="ay-price">{% render 'bz-money', cents: product.price %}</span>
+          <span class="ay-view">Vedi prodotto →</span>
+        </a>
+      {%- endif -%}
     </div>
   </section>
 </div>
@@ -110,7 +158,10 @@
     { "type": "textarea", "id": "intro", "label": "Intro", "default": "Una tradizione nata in India. Si porta in casa con un olio, un’infusione, un lavaggio." },
     { "type": "url", "id": "collection_link", "label": "Link collezione" },
     { "type": "product_list", "id": "origin_products", "label": "Da dove arriva", "limit": 2 },
-    { "type": "product_list", "id": "picked_products", "label": "I più scelti", "limit": 4 },
+    { "type": "product_list", "id": "picked_products", "label": "I più scelti, Ayurveda", "limit": 4 },
+    { "type": "product_list", "id": "oli_products", "label": "I più scelti, oli", "limit": 4 },
+    { "type": "product_list", "id": "tisane_products", "label": "I più scelti, tisane", "limit": 4 },
+    { "type": "product", "id": "counsel_product", "label": "Prodotto di Simona" },
     { "type": "textarea", "id": "vata_text", "label": "Vata", "default": "Aria e spazio. Movimento e leggerezza, un ritmo che fa fatica a fermarsi. Nella pratica, routine stabili e oli più caldi." },
     { "type": "textarea", "id": "pitta_text", "label": "Pitta", "default": "Fuoco e acqua. Trasformazione e determinazione, un fuoco che a volte sale troppo. Nella pratica, pause e cose più fresche." },
     { "type": "textarea", "id": "kapha_text", "label": "Kapha", "default": "Terra e acqua. Stabilità e costanza, un passo che a volte si fa pesante. Nella pratica, movimento e spezie più vive." }
@@ -118,7 +169,8 @@
   "blocks": [
     { "type": "sphere", "name": "Sfera", "settings": [
       { "type": "text", "id": "label", "label": "Nome" },
-      { "type": "collection", "id": "collection", "label": "Collezione" }
+      { "type": "collection", "id": "collection", "label": "Collezione" },
+      { "type": "text", "id": "image_asset", "label": "Foto in assets" }
     ] },
     { "type": "dosha_product", "name": "Prodotto dosha", "settings": [
       { "type": "select", "id": "dosha", "label": "Dosha", "default": "0", "options": [

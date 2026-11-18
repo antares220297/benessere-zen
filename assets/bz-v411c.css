@@ -1156,13 +1156,7 @@ main.bz-page-home>.shopify-section .category-row{padding-top:39px}
 .bz-page-home .stone__toggle svg,
 .bz-page-home #stones .stone__toggle svg{width:18px;height:18px;flex:none}
 
-@media(min-width:901px){
-  .bz-page-home .bento{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr);grid-template-rows:minmax(220px,1fr) minmax(220px,1fr);gap:14px}
-  .bz-page-home .bento>.mala-lead{grid-column:1;grid-row:1 / span 2;display:flex;align-items:center;min-height:0}
-  .bz-page-home .bento>.gift-card{min-width:0;min-height:0}
-}
-.bz-page-home .mala-photo{display:none}
-.bz-page-home .mala-copy{padding:28px}
+.bz-page-home .bento>.gift-card,.bz-page-home .bento>.mala-lead,.bz-page-home .mala-photo{min-width:0;min-height:0}
 
 .bz-page-home .bz-news__card{background:#201e1b;color:#eee7db;border:1px solid rgba(238,231,219,.16)}
 .bz-page-home .bz-news h2,.bz-page-home .bz-news .news-label{color:#eee7db}
@@ -1173,7 +1167,12 @@ main.bz-page-home>.shopify-section .category-row{padding-top:39px}
 .bz-page-home .bz-news input::placeholder{color:#958d7f}
 .bz-page-home .bz-news button{background:#c9a96e;color:#17140f;border-color:#c9a96e}
 
-.bz-page-home .store-card>img{min-height:0;height:100%;width:100%;object-fit:cover;align-self:stretch}
+.bz-page-home .store-card>img{min-width:0;min-height:0;height:100%;width:100%;object-fit:cover;align-self:stretch}
+.bz-page-home .store-card>div{min-width:0}
+@media(max-width:900px){
+  .bz-page-home .store-card{grid-template-columns:minmax(0,1fr) minmax(0,1.2fr)}
+  .bz-page-home .store-card>img{height:100%}
+}
 
 .bz-page-cura-di-se .cura-quote blockquote{margin:0 0 12px;font:italic clamp(26px,2.4vw,36px)/1.2 var(--serif);color:#eee7db}
 .bz-page-cura-di-se .cura-sign{margin:16px 0 0;font:italic 32px/1 var(--serif);color:#c9a96e}
@@ -1191,3 +1190,16 @@ main.bz-page-home>.shopify-section .category-row{padding-top:39px}
 .bz-page-contact .contatti .fields .wide{grid-column:1 / -1}
 .bz-page-contact .optional{font-size:12px;color:var(--mute)}
 .bz-page-il-negozio .tour-arrow svg{width:22px;height:22px}
+.bz-page-cura-di-se .cura-product-copy h3{color:#24201b;font-size:clamp(18px,1.5vw,22px);line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.bz-page-cura-di-se .cura-routine.is-night .cura-product-copy h3{color:#eee7db}
+.bz-page-cura-di-se .cura-hours{min-width:0;overflow:hidden}
+.bz-page-cura-di-se .cura-hours p{overflow-wrap:anywhere;max-width:100%}
+.plp .plp-head-row{flex-direction:column;align-items:flex-start}
+.bz-page-chi-siamo .btn svg,.bz-page-about-us .btn svg{width:18px;height:18px;vertical-align:-3px}
+.bz-page-contact .contact-details{display:flex;flex-direction:column;gap:14px;min-width:0}
+@media(max-width:1023px){
+  .bz-page-contact .contact-details{display:contents}
+  .bz-page-contact .contact-tiles{order:-1}
+  .bz-page-contact .contact-form{order:1}
+  .bz-page-contact .hours-card{order:2}
+}

@@ -13,22 +13,7 @@
       <p>Tel {{ settings.bz_phone | default: '+39 347 088 3168' }}<br>{{ settings.bz_email | default: 'info@benesserezen.shop' }}</p>
       <p>{% render 'bz-hours', part: 'footer' %}</p>
     </div>
-    {%- assign foot = linklists['footer'] -%}
-    {%- if foot.links.size > 0 -%}
-      {%- for link in foot.links -%}
-        <details open>
-          <summary>{{ link.title | escape }}</summary>
-          {%- if link.links.size > 0 -%}
-            {%- for child in link.links -%}
-              <a href="{{ child.url }}">{{ child.title | escape }}</a>
-            {%- endfor -%}
-          {%- else -%}
-            <a href="{{ link.url }}">{{ link.title | escape }}</a>
-          {%- endif -%}
-        </details>
-      {%- endfor -%}
-    {%- else -%}
-      {%- for block in section.blocks -%}
+    {%- for block in section.blocks -%}
         <details open {{ block.shopify_attributes }}>
           <summary>{{ block.settings.heading | escape }}</summary>
           {%- if block.type == 'payments' -%}
@@ -52,8 +37,7 @@
             {%- endfor -%}
           {%- endif -%}
         </details>
-      {%- endfor -%}
-    {%- endif -%}
+    {%- endfor -%}
   </div>
   <div class="footer-bottom">
     <span>© {{ 'now' | date: '%Y' }} {{ shop.name | escape }}{% if section.settings.vat != blank %} · {{ section.settings.vat | escape }}{% endif %}</span>

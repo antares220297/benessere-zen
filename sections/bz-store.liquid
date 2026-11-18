@@ -29,7 +29,7 @@
         {%- for block in section.blocks -%}
           {%- assign tab_index = forloop.parentloop.index0 | append: '' -%}
           {%- if block.type == 'faq' and block.settings.tab == tab_index -%}
-            <details {{ block.shopify_attributes }}>
+            <details {% if forloop.parentloop.first and forloop.first %}open{% endif %} {{ block.shopify_attributes }}>
               <summary>{{ block.settings.question | escape }}</summary>
               <div class="faq-answer">{{ block.settings.answer }}</div>
             </details>

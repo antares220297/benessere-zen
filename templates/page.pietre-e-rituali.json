@@ -190,7 +190,8 @@
           "settings": {
             "word": "Serenità",
             "line": "In molte pratiche l’ametista si tiene vicina quando si cerca quiete.",
-            "collection": "intenzione-serenita"
+            "collection": "intenzione-serenita",
+            "image_asset": "bz-intenzione-serenita.jpg"
           }
         },
         "in-1": {
@@ -198,7 +199,8 @@
           "settings": {
             "word": "Protezione",
             "line": "Tormalina e ossidiana, nella tradizione, sono pietre di protezione.",
-            "collection": "intenzione-protezione"
+            "collection": "intenzione-protezione",
+            "image_asset": "bz-intenzione-protezione.jpg"
           }
         },
         "in-2": {
@@ -206,7 +208,8 @@
           "settings": {
             "word": "Affetti",
             "line": "Il quarzo rosa, in tante tradizioni, è la pietra che si regala a chi si vuole bene.",
-            "collection": "intenzione-affetti"
+            "collection": "intenzione-affetti",
+            "image_asset": "bz-intenzione-affetti.jpg"
           }
         },
         "in-3": {
@@ -214,7 +217,8 @@
           "settings": {
             "word": "Coraggio",
             "line": "Corniola e diaspro rosso, nella tradizione, accompagnano il coraggio.",
-            "collection": "intenzione-coraggio"
+            "collection": "intenzione-coraggio",
+            "image_asset": "bz-intenzione-coraggio.jpg"
           }
         },
         "in-4": {
@@ -222,7 +226,8 @@
           "settings": {
             "word": "Concentrazione",
             "line": "Il lapislazzuli, nella tradizione, accompagna chiarezza e concentrazione.",
-            "collection": "intenzione-concentrazione"
+            "collection": "intenzione-concentrazione",
+            "image_asset": "bz-intenzione-concentrazione.jpg"
           }
         },
         "c-0": {

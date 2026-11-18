@@ -32,10 +32,11 @@
   <section>
     <h2>In concreto</h2>
     <div class="cards">
-      <article class="info-card"><h3>Il pezzo in <em>foto</em></h3><p>Stessa pietra e stessa misura della foto. Forma e venature le decide la natura, e cambiano a ogni pezzo.</p></article>
-      <article class="info-card"><h3>Il ritiro</h3><p>Al pagamento scegli Ritiro in negozio: è gratuito e di solito è pronto in 4 ore. Altrimenti spediamo in Italia.</p></article>
-      <article class="info-card"><h3>La tradizione</h3><p>I significati appartengono alla tradizione e non sostituiscono il parere di un medico.</p></article>
+      <article class="info-card"><h3>Il banco a <em>Cento</em></h3><p>Via Marcello Provenzali 1, 44042 Cento (FE).</p></article>
+      <article class="info-card"><h3>Nessun <em>gemello</em></h3><p>Stessa pietra e stessa misura della foto. Forma e venature le decide la natura, e cambiano a ogni pezzo.</p></article>
+      <article class="info-card"><h3>Si può <em>ritirare</em></h3><p>Al pagamento scegli Ritiro in negozio: è gratuito e di solito è pronto in 4 ore. Altrimenti spediamo in Italia.</p></article>
     </div>
+    <p class="tradition-note">I significati appartengono alla tradizione e non sostituiscono il parere di un medico.</p>
   </section>
   <section class="visit info-card" aria-labelledby="visit-title">
     <div class="visit-copy">
@@ -43,12 +44,21 @@
       <p>{{ settings.bz_address }}</p>
       <div class="visit-actions">
         {% render 'bz-open-badge', variant: 'full', linked: true %}
-        <a class="btn gold" href="{{ settings.bz_maps | default: 'https://maps.google.com/?q=Via+Marcello+Provenzali+1+44042+Cento' }}">Indicazioni</a>
+        <a class="btn gold" href="{{ settings.bz_maps | default: 'https://www.google.com/maps/search/?api=1&query=Via+Marcello+Provenzali+1+Cento' }}">{% render 'bz-icon', name: 'directions' %} Come arrivare →</a>
       </div>
     </div>
     <div>
       <div class="bz-week" data-week-chart></div>
       <p class="hours-summary" data-hours-summary>{% render 'bz-hours', part: 'summary' %}</p>
+    </div>
+  </section>
+  <section class="categories">
+    <h2>Dal catalogo</h2>
+    <div class="spheres">
+      <a href="/collections/gioielli-con-pietre"><img src="{{ 'bz-catalogo-gioielli.jpg' | asset_url }}" alt="Gioielli" width="106" height="106" loading="lazy"><span>Gioielli</span></a>
+      <a href="/collections/mala-tibetani"><img src="{{ 'bz-catalogo-mala.jpg' | asset_url }}" alt="Mala" width="106" height="106" loading="lazy"><span>Mala</span></a>
+      <a href="/collections/ayurveda"><img src="{{ 'bz-catalogo-ayurveda.jpg' | asset_url }}" alt="Ayurveda" width="106" height="106" loading="lazy"><span>Ayurveda</span></a>
+      <a href="/collections/incensi-e-brucia-incensi-2"><img src="{{ 'bz-catalogo-incensi.jpg' | asset_url }}" alt="Incensi" width="106" height="106" loading="lazy"><span>Incensi</span></a>
     </div>
   </section>
 </div>

@@ -23,21 +23,21 @@
             "label_2": "Mala tibetani",
             "link_2": "/collections/mala-tibetani",
             "label_3": "Pietre e cristalli",
-            "link_3": "/collections/pietre-burattate",
+            "link_3": "/collections/pietre-grezze",
             "label_4": "Incensi e palo santo",
-            "link_4": "/collections/smudge-e-paolo-santo"
+            "link_4": "/collections/incensi-e-brucia-incensi"
           }
         },
         "col-help": {
           "type": "links",
           "settings": {
             "heading": "Aiuto",
-            "label_1": "",
-            "link_1": "",
-            "label_2": "Resi",
-            "link_2": "/policies/refund-policy",
-            "label_3": "Contatti",
-            "link_3": "/pages/contact",
+            "label_1": "Resi",
+            "link_1": "/policies/refund-policy",
+            "label_2": "Contatti",
+            "link_2": "/pages/contact",
+            "label_3": "",
+            "link_3": "",
             "label_4": "",
             "link_4": ""
           }
@@ -46,12 +46,14 @@
           "type": "links",
           "settings": {
             "heading": "Seguici",
-            "label_1": "",
-            "link_1": "",
-            "label_2": "",
-            "link_2": "",
+            "label_1": "Instagram",
+            "link_1": "https://www.instagram.com/benesserezen.shop/",
+            "label_2": "Facebook",
+            "link_2": "https://www.facebook.com/profile.php?id=61567917098683",
             "label_3": "",
-            "link_3": ""
+            "link_3": "",
+            "label_4": "",
+            "link_4": ""
           }
         },
         "col-pay": {

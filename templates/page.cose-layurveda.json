@@ -13,7 +13,20 @@
           "sapone-yogi-di-holy-lama-alla-lavanda",
           "sapone-yogi-di-holy-lama-alla-rosa",
           "olio-profumato-naturale-sandalwood-10-ml"
-        ]
+        ],
+        "oli_products": [
+          "profumo-vapo-per-ambienti",
+          "olio-profumato-naturale-opium-10-ml",
+          "olio-profumato-naturale-oudh-10-ml",
+          "oli-profumati-corpo-ancient-witch-perduto-nel-peccato"
+        ],
+        "tisane_products": [
+          "spray-per-ambienti-eye-of-providence-salvia-e-te-bianco",
+          "incensi-sagrada-madre-botanico-te-verde-e-champa",
+          "mug-infusore-per-te-buddha-paradiso",
+          "mug-infusore-per-te-albero-della-vita"
+        ],
+        "counsel_product": "olio-ayurvedico-viola-armonia"
       },
       "blocks": {
         "s0": {
@@ -99,12 +112,21 @@
             "dosha": "2",
             "product": "te-yogi-speziato"
           }
+        },
+        "s3": {
+          "type": "sphere",
+          "settings": {
+            "label": "Capelli",
+            "collection": "prodotti-per-capelli-ayurvedici",
+            "image_asset": "bz-sfera-ay-capelli.jpg"
+          }
         }
       },
       "block_order": [
         "s0",
         "s1",
         "s2",
+        "s3",
         "d0",
         "d1",
         "d2",

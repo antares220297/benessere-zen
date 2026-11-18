@@ -116,13 +116,7 @@
     }).join('');
     el.innerHTML = '<p class="bw-heading">Questa settimana</p><div class="bw-plot" role="img" aria-label="Orari settimanali. ' + (q('[data-hours-summary]')?.textContent || hours.note) + '"><div class="bw-guides" aria-hidden="true">' + [540, 780, 1020, 1200].map(m => '<span style="--bw-guide:' + ((m - 540) / 660 * 100) + '%"><i>' + fmt(m) + '</i></span>').join('') + '</div><div class="bw-days">' + columns + '</div></div>';
     chartDays.set(el, now.day);
-    if (first && !reduced.matches && params.get('static') !== '1' && 'IntersectionObserver' in window) {
-      el.classList.add('bw-pending');
-      const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => { if (!entry.isIntersecting) return; entry.target.classList.add('bw-ready'); entry.target.classList.remove('bw-pending'); observer.unobserve(entry.target); });
-      }, { threshold: 0.15 });
-      observer.observe(el);
-    }
+    el.classList.add('bw-ready');
   }
   function paintCharts(now) {
     qa('[data-week-chart]').forEach(el => {
@@ -255,10 +249,23 @@
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify({ items })
     });
-    if (!response.ok) return;
+    if (!response.ok) return false;
     await refreshCart();
     openCart();
+    return true;
   }
+  document.addEventListener('submit', async event => {
+    const form = event.target;
+    if (!(form instanceof HTMLFormElement) || !form.classList.contains('bz-ajax-cart')) return;
+    event.preventDefault();
+    const data = new FormData(form);
+    const id = Number(data.get('id'));
+    const quantity = Math.max(1, Number(data.get('quantity') || 1));
+    if (!id) { form.submit(); return; }
+    let added = false;
+    try { added = await addItems([{ id, quantity }]); } catch (error) { added = false; }
+    if (!added) form.submit();
+  });
   document.addEventListener('click', event => {
     const button = event.target.closest('[data-bz-add]');
     if (!button || button.disabled) return;
@@ -600,11 +607,112 @@
       document.body.classList.add('tour-locked');
     };
     tourCards.forEach((card, index) => card.addEventListener('click', () => showTour(index)));
+    q('[data-tour-open]')?.addEventListener('click', () => showTour(0));
     q('.tour-prev', tour)?.addEventListener('click', () => showTour(tourIndex - 1));
     q('.tour-next', tour)?.addEventListener('click', () => showTour(tourIndex + 1));
     q('.tour-close', tour)?.addEventListener('click', () => tour.close());
     tour.addEventListener('close', () => document.body.classList.remove('tour-locked'));
     tour.addEventListener('click', event => { if (event.target === tour) tour.close(); });
+  }
+
+  const triStage = q('.triangle-stage');
+  const triPoint = q('.tri-point');
+  if (triStage && triPoint) {
+    const vertices = [{ x: 50, y: 6 }, { x: 6, y: 88 }, { x: 94, y: 88 }];
+    const center = { x: 50, y: 182 / 3 };
+    const names = ['Vata', 'Pitta', 'Kapha'];
+    const vertexButtons = qa('[data-vertex]', triStage);
+    const status = q('#tri-status');
+    const panel = q('#tri-panel');
+    let position = { ...center };
+    let weights = [1 / 3, 1 / 3, 1 / 3];
+    let dragging = null;
+    let current = 0;
+    const barycentric = p => {
+      const v = (88 - p.y) / 82;
+      const k = ((p.x - 50) + 44 * (1 - v)) / 88;
+      return [v, 1 - v - k, k];
+    };
+    const project = p => {
+      if (barycentric(p).every(w => w >= 0)) return p;
+      let best = p;
+      let dist = Infinity;
+      vertices.forEach((a, i) => {
+        const b = vertices[(i + 1) % 3];
+        const dx = b.x - a.x;
+        const dy = b.y - a.y;
+        const t = Math.max(0, Math.min(1, ((p.x - a.x) * dx + (p.y - a.y) * dy) / (dx * dx + dy * dy)));
+        const qpos = { x: a.x + t * dx, y: a.y + t * dy };
+        const d = (qpos.x - p.x) ** 2 + (qpos.y - p.y) ** 2;
+        if (d < dist) { best = qpos; dist = d; }
+      });
+      return best;
+    };
+    const positionPoint = () => {
+      const r = triStage.getBoundingClientRect();
+      triPoint.style.transform = 'translate(' + ((position.x / 100 * r.width) - 22) + 'px,' + ((position.y / 100 * r.height) - 22) + 'px)';
+    };
+    const paintTri = index => {
+      const source = q('#dosha-content-' + index);
+      if (!panel || !source) return;
+      panel.replaceChildren(source.content.cloneNode(true));
+      const title = q('h3', panel);
+      if (title) title.innerHTML = 'Oggi prevale <em>' + names[index] + '</em>';
+    };
+    const move = p => {
+      position = project(p);
+      weights = barycentric(position).map(v => Math.max(0, Math.min(1, v)));
+      const sum = weights.reduce((a, b) => a + b, 0) || 1;
+      weights = weights.map(v => v / sum);
+      let dominant = weights.indexOf(Math.max(...weights));
+      if (weights[current] >= weights[dominant] - 1e-9) dominant = current;
+      current = dominant;
+      const percentages = weights.map(v => Math.floor(v * 100));
+      const order = [0, 1, 2].sort((a, b) => (weights[b] * 100 - percentages[b]) - (weights[a] * 100 - percentages[a]));
+      let remainder = 100 - percentages.reduce((a, b) => a + b, 0);
+      for (let i = 0; i < remainder; i += 1) percentages[order[i]] += 1;
+      positionPoint();
+      triPoint.setAttribute('aria-valuenow', String(percentages[0]));
+      triPoint.setAttribute('aria-valuetext', names.map((n, i) => n + ' ' + percentages[i] + '%').join(', '));
+      qa('[data-weight]').forEach((bar, i) => {
+        const output = q('output', bar);
+        const fill = q('i', bar);
+        if (output) output.textContent = percentages[i] + '%';
+        if (fill) fill.style.transform = 'scaleX(' + weights[i] + ')';
+      });
+      vertexButtons.forEach((button, i) => button.setAttribute('aria-pressed', String(i === dominant)));
+      paintTri(dominant);
+      if (status) status.textContent = triPoint.getAttribute('aria-valuetext');
+    };
+    const pointerPosition = event => {
+      const r = triStage.getBoundingClientRect();
+      return { x: (event.clientX - r.left) / r.width * 100, y: (event.clientY - r.top) / r.height * 100 };
+    };
+    if ('ResizeObserver' in window) new ResizeObserver(positionPoint).observe(triStage);
+    triStage.addEventListener('pointerdown', event => {
+      if (event.target.closest('[data-vertex]') || (event.pointerType === 'mouse' && event.button !== 0) || dragging !== null) return;
+      const p = pointerPosition(event);
+      if (!event.target.closest('.tri-point') && !barycentric(p).every(w => w >= 0)) return;
+      dragging = event.pointerId;
+      triStage.setPointerCapture(event.pointerId);
+      triStage.classList.add('dragging');
+      move(p);
+      event.preventDefault();
+    });
+    triStage.addEventListener('pointermove', event => { if (event.pointerId === dragging) move(pointerPosition(event)); });
+    const stop = event => {
+      if (event.pointerId !== dragging) return;
+      dragging = null;
+      triStage.classList.remove('dragging');
+      const i = weights.indexOf(Math.max(...weights));
+      if (weights[i] > 0.9) move(vertices[i]);
+      else if (weights.every(w => Math.abs(w - 1 / 3) <= 0.05)) move(center);
+      if (triStage.hasPointerCapture(event.pointerId)) triStage.releasePointerCapture(event.pointerId);
+    };
+    triStage.addEventListener('pointerup', stop);
+    triStage.addEventListener('pointercancel', stop);
+    vertexButtons.forEach((button, i) => button.addEventListener('click', () => move(vertices[i])));
+    move(center);
   }
 
   qa('.card-name').forEach(name => {

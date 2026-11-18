@@ -27,6 +27,18 @@
           "profumo-in-olio-ancient-witch-maledetto",
           "olio-profumato-ayurveda-ambra",
           "olio-profumato-ayurveda-vaniglia"
+        ],
+        "te_products": [
+          "te-yogi-speziato",
+          "te-verde-marrakech-e-petali-50gr",
+          "te-bianco-eterna-giovinezza-50gr",
+          "te-total-relax-50gr"
+        ],
+        "tazze_products": [
+          "tazza-con-infusore-lovebirds",
+          "tazza-con-infusore-mandala-bianco",
+          "mug-infusore-per-te-mandala-turchese",
+          "mug-infusore-per-te-mandala-viola"
         ]
       },
       "blocks": {
@@ -62,7 +74,8 @@
           "type": "sphere",
           "settings": {
             "label": "Tazze",
-            "collection": "tazze"
+            "collection": "tazze",
+            "image_asset": "bz-sfera-tazze.jpg"
           }
         },
         "s5": {

@@ -52,6 +52,8 @@
         <a class="photo-card small tone-{{ forloop.index0 }}" href="{{ block.settings.link }}" {{ block.shopify_attributes }}>
           {%- if block.settings.image != blank -%}
             {{ block.settings.image | image_url: width: 900 | image_tag: alt: '', loading: 'lazy', widths: '400, 700, 900', sizes: '30vw' }}
+          {%- elsif block.settings.image_asset != blank -%}
+            <img src="{{ block.settings.image_asset | asset_url }}" alt="" width="900" height="900" loading="lazy">
           {%- elsif block.settings.collection != blank and block.settings.collection.image -%}
             {{ block.settings.collection.image | image_url: width: 900 | image_tag: alt: '', loading: 'lazy', widths: '400, 700, 900', sizes: '30vw' }}
           {%- endif -%}
@@ -102,7 +104,8 @@
       { "type": "text", "id": "button_label", "label": "Pulsante", "default": "Scegli la tua →" },
       { "type": "text", "id": "link", "label": "Link" },
       { "type": "collection", "id": "collection", "label": "Collezione" },
-      { "type": "image_picker", "id": "image", "label": "Foto" }
+      { "type": "image_picker", "id": "image", "label": "Foto" },
+      { "type": "text", "id": "image_asset", "label": "Foto in assets" }
     ] }
   ],
   "max_blocks": 2,

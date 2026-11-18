@@ -24,9 +24,7 @@
       {%- if block.type == 'month' -%}
         <div class="month-panel" data-month-panel="{{ block.settings.index }}" {% unless block.settings.index == current %}hidden{% endunless %} {{ block.shopify_attributes }}>
           <div class="month-identity">
-            {%- if block.settings.products.first.featured_image -%}
-              {{ block.settings.products.first.featured_image | image_url: width: 160 | image_tag: alt: block.settings.name, class: 'month-stone', width: 72, height: 72, loading: 'lazy' }}
-            {%- endif -%}
+            {% render 'bz-month-stone', index: block.settings.index %}
             <div>
               <span class="month-name">{{ block.settings.name | escape }}</span>
               <h3>{{ block.settings.stone | escape }}</h3>
@@ -56,7 +54,9 @@
         {%- if block.type == 'intention' -%}
           {%- assign coll = block.settings.collection -%}
           <article class="intention" {{ block.shopify_attributes }}>
-            {%- if coll.image -%}
+            {%- if block.settings.image_asset != blank -%}
+              <img src="{{ block.settings.image_asset | asset_url }}" alt="{{ block.settings.word | escape }}" width="900" height="900" loading="lazy">
+            {%- elsif coll.image -%}
               {{ coll.image | image_url: width: 800 | image_tag: alt: block.settings.word, loading: 'lazy', widths: '300, 500, 800', sizes: '(min-width: 1024px) 18vw, 80vw' }}
             {%- elsif coll.products.first.featured_image -%}
               {{ coll.products.first.featured_image | image_url: width: 800 | image_tag: alt: block.settings.word, loading: 'lazy', widths: '300, 500, 800', sizes: '(min-width: 1024px) 18vw, 80vw' }}
@@ -167,9 +167,11 @@
       <h2>In mano, a <em>Cento</em></h2>
       <p>Le trovi in Via Marcello Provenzali 1: le stesse del sito, da guardare da vicino.</p>
       <p>Al pagamento puoi scegliere il ritiro in negozio: è gratuito e di solito è pronto in 4 ore.</p>
-      {% render 'bz-open-badge', variant: 'compact', linked: true %}
       <p>{% render 'bz-hours', part: 'summary' %}</p>
-      <a class="btn outline" href="{{ section.settings.visit_link }}">Orari e indicazioni →</a>
+      <div class="visit-actions">
+        <a class="btn gold" href="{{ section.settings.visit_link }}">Orari e indicazioni →</a>
+        {% render 'bz-open-badge', variant: 'compact', linked: true %}
+      </div>
     </div>
     <div class="split-photo"><img src="{{ 'bz-negozio-pietre-in-mano-a-cento.jpg' | asset_url }}" alt="Pietre in mano a Cento" width="1400" height="1000" loading="lazy"></div>
   </section>
@@ -198,7 +200,8 @@
     { "type": "intention", "name": "Intenzione", "settings": [
       { "type": "text", "id": "word", "label": "Nome" },
       { "type": "textarea", "id": "line", "label": "Frase" },
-      { "type": "collection", "id": "collection", "label": "Collezione" }
+      { "type": "collection", "id": "collection", "label": "Collezione" },
+      { "type": "text", "id": "image_asset", "label": "Foto in assets" }
     ] },
     { "type": "compare", "name": "Confronto", "settings": [
       { "type": "text", "id": "name", "label": "Pietra" },
