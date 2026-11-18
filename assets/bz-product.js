@@ -21,16 +21,25 @@
         }
       });
     });
-    var bar = root.querySelector("[data-bz-atc]");
+    var mainAdd = root.querySelector("[data-bz-atc] button[type='submit']");
     var sticky = root.querySelector(".bz-sticky");
-    if (bar && sticky && "IntersectionObserver" in window) {
-      var scrolled = false;
+    if (mainAdd && sticky && "IntersectionObserver" in window) {
+      var mobile = window.matchMedia("(max-width: 860px)");
+      function updateSticky() {
+        var show = mobile.matches && mainAdd.getBoundingClientRect().bottom <= 0;
+        sticky.classList.toggle("is-on", show);
+        sticky.toggleAttribute("inert", !show);
+      }
+
+      new IntersectionObserver(updateSticky).observe(mainAdd);
+      var stickyFrame;
       window.addEventListener("scroll", function () {
-        if (window.scrollY > 24) scrolled = true;
+        if (!mobile.matches) return;
+        cancelAnimationFrame(stickyFrame);
+        stickyFrame = requestAnimationFrame(updateSticky);
       }, { passive: true });
-      new IntersectionObserver(function (entries) {
-        sticky.classList.toggle("is-on", scrolled && !entries[0].isIntersecting);
-      }, { threshold: 0.2 }).observe(bar);
+      mobile.addEventListener("change", updateSticky);
+      updateSticky();
     }
     root.querySelectorAll("[data-bz-open]").forEach(function (box) {
       var text = box.querySelector("p");

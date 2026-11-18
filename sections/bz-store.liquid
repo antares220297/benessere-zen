@@ -11,7 +11,7 @@
       </p>
       <p class="store-hours">{% render 'bz-hours', part: 'summary' %}</p>
       <p>{{ section.settings.pickup | escape }}</p>
-      <a class="btn outline" href="{{ section.settings.button_link }}">{{ section.settings.button_label | escape }}</a>
+      <a class="btn outline store-directions" href="{{ section.settings.button_link }}">{{ section.settings.button_label | escape }}</a>
     </div>
   </div>
 </section>
@@ -42,13 +42,13 @@
       </div>
     {%- endfor -%}
   </article>
+  <div class="trust-strip">
+    <span>{% render 'bz-icon', name: 'diamond' %} Pietre naturali</span>
+    <span>{% render 'bz-icon', name: 'local_shipping' %} <span>Spedizione gratis da {{ settings.bz_free_shipping | default: 50 }}&nbsp;€</span></span>
+    <span>{% render 'bz-icon', name: 'currency_exchange' %} Reso entro 14 giorni</span>
+    <span>{% render 'bz-icon', name: 'verified_user' %} Pagamenti sicuri</span>
+  </div>
 </section>
-<div class="trust-strip">
-  <span>{% render 'bz-icon', name: 'diamond_shine' %} Pietre naturali</span>
-  <span>{% render 'bz-icon', name: 'storefront' %} Gratis da {{ settings.bz_free_shipping | default: 50 }}&nbsp;€</span>
-  <span>{% render 'bz-icon', name: 'check' %} Reso entro 14 giorni</span>
-  <span>{% render 'bz-icon', name: 'check' %} Pagamenti sicuri</span>
-</div>
 {% schema %}
 {
   "name": "Anche a Cento",

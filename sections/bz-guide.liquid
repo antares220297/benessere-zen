@@ -19,7 +19,7 @@
 <article class="bz bz-guide">
   <header class="bz-guide__hero{% if hero_image %} has-photo{% endif %}">
     {%- if hero_image -%}
-      {{ hero_image | image_url: width: 1600 | image_tag: alt: section.settings.title, class: 'bz-guide__photo', widths: '600, 1000, 1600', sizes: '100vw', loading: 'eager' }}
+      {{ hero_image | image_url: width: 1600 | image_tag: alt: section.settings.title, class: 'bz-guide__photo', widths: '600, 1000, 1600', sizes: '100vw', loading: 'eager', fetchpriority: 'high', preload: true }}
     {%- endif -%}
     <div class="bz-guide__hero-copy" data-reveal>
       <h1>{{ section.settings.title | escape }}</h1>

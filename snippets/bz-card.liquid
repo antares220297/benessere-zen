@@ -41,14 +41,6 @@
 -%}
 
 <article class="bz-card{% unless product.available %} is-sold{% endunless %}">
-  {%- if product.available -%}
-    <form class="bz-card__form" action="{{ routes.cart_add_url }}" method="post">
-      <input type="hidden" name="id" value="{{ variant.id }}">
-      <button class="bz-card__add" type="submit" aria-label="Aggiungi {{ product.title | escape }}">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-      </button>
-    </form>
-  {%- endif -%}
   <a class="bz-card__photo" href="{{ product.url }}">
     {%- if variant.inventory_management != blank and variant.inventory_quantity == 1 and product.available -%}
       <span class="bz-badge"><span class="bz-badge__dot"></span>Ultimo pezzo</span>
@@ -68,5 +60,15 @@
   </a>
   <a class="bz-card__name" href="{{ product.url }}">{{ product.title | escape }}</a>
   <p class="bz-card__meta">{%- if product.type != blank -%}<span class="bz-card__dot" style="background: {{ dot }}" aria-hidden="true"></span>{{ product.type | escape }}{%- endif -%}</p>
-  <p class="bz-card__price">{% render 'bz-money', cents: product.price %}</p>
+  <div class="bz-card__bottom">
+    <p class="bz-card__price">{% render 'bz-money', cents: product.price %}</p>
+    {%- if product.available -%}
+      <form class="bz-card__form" action="{{ routes.cart_add_url }}" method="post">
+        <input type="hidden" name="id" value="{{ variant.id }}">
+        <button class="bz-card__add" type="submit" aria-label="Aggiungi {{ product.title | escape }}">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+      </form>
+    {%- endif -%}
+  </div>
 </article>

@@ -5,7 +5,7 @@
 -%}
 <div class="bz-stack">
   <section class="shop-hero" aria-labelledby="shop-title">
-    <img src="{{ 'bz-negozio-negozio-copertina.jpg' | asset_url }}" alt="La sala del negozio: il banco col logo, l'isola centrale e gli scaffali" width="1600" height="900" fetchpriority="high">
+    <img src="{{ 'bz-negozio-negozio-copertina.jpg' | asset_url }}" alt="La sala del negozio: il banco col logo, l'isola centrale e gli scaffali" width="1600" height="900" loading="eager" fetchpriority="high">
     <div class="shop-hero-copy">
       <h1 id="shop-title">Il <em>negozio</em></h1>
       <p>{{ section.settings.intro | escape }}</p>
@@ -25,7 +25,10 @@
         <li>{% render 'bz-icon', name: 'mail' %}<a href="mailto:{{ store_email | escape }}">{{ store_email | escape }}</a></li>
         <li>{% render 'bz-icon', name: 'storefront' %}<span>Ritiro in negozio gratuito, di solito pronto in 4 ore.</span></li>
       </ul>
-      <a class="btn gold" href="https://www.google.com/maps/search/?api=1&amp;query=Benessere+Zen+Via+Marcello+Provenzali+1+Cento" rel="noopener" target="_blank">{% render 'bz-icon', name: 'directions' %} Indicazioni</a>
+      <div class="bz-visit-actions">
+        {% render 'bz-open-badge', variant: 'status' %}
+        <a class="btn gold" href="https://www.google.com/maps/search/?api=1&amp;query=Benessere+Zen+Via+Marcello+Provenzali+1+Cento" rel="noopener" target="_blank">Come arrivare <span aria-hidden="true">→</span></a>
+      </div>
     </div>
   </section>
   <section class="shop-gallery" aria-labelledby="tour-title">

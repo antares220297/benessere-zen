@@ -64,7 +64,6 @@
   <div class="bz-related">
     <div class="bz-related__head">
       <h2>{{ related_heading | escape }}{% if related_accent != blank %}&nbsp;<em>{{ related_accent | escape }}</em>{% endif %}</h2>
-      <a class="bz-picked__all" href="{{ picked.url }}">Vedi la collezione <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     </div>
     <div class="bz-grid">
       {%- assign shown = 0 -%}
@@ -76,6 +75,7 @@
         {%- endif -%}
       {%- endfor -%}
     </div>
+    <a class="bz-row-link" href="{{ picked.url }}">Vedi la collezione <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
   </div>
 </section>
 {%- endif -%}

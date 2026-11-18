@@ -5,6 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0">
     <meta name="theme-color" content="">
+    <script type="speculationrules">
+      {"prefetch":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":["/cart*","/checkout*","/account*","/*?*add*"]}}]},"eagerness":"moderate"}]}
+    </script>
     {% if settings.show_canonical_url_collection and template.name == "collection" %}
       <link rel="canonical" href="{{ canonical_url | split: '?' | first }}">
     {% else %}
@@ -22,6 +25,8 @@
     <title>
       {%- if template.name == '404' -%}
         Questa pagina non c'è &ndash; {{ shop.name }}
+      {%- elsif template.suffix == 'crediti-immagini' -%}
+        Crediti immagini &ndash; {{ shop.name }}
       {%- else -%}
         {{ page_title }}
         {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
@@ -79,6 +84,28 @@
     -%}
     {%- if bz_meta != blank -%}
       <meta name="description" content="{{ bz_meta | escape }}">
+    {%- endif -%}
+    {%- liquid
+      assign bz_hero_asset = blank
+      if template.name == 'index'
+        assign bz_hero_asset = 'bz-negozio-home-hero-negozio.jpg'
+      elsif template.name == 'page'
+        case template.suffix
+          when 'cura-di-se'
+            assign bz_hero_asset = 'bz-cover-cura-di-se-v3b.jpg'
+          when 'pietre-e-rituali'
+            assign bz_hero_asset = 'bz-negozio-pietre-e-rituali-copertina.jpg'
+          when 'chi-siamo', 'about-us.whiff'
+            assign bz_hero_asset = 'bz-negozio-chi-siamo-apertura.jpg'
+          when 'il-negozio'
+            assign bz_hero_asset = 'bz-negozio-negozio-copertina.jpg'
+          when 'cose-layurveda', 'cos-e-ayurveda'
+            assign bz_hero_asset = 'bz-ayurveda-hero-scaffali.jpg'
+        endcase
+      endif
+    -%}
+    {%- if bz_hero_asset != blank -%}
+      <link rel="preload" as="image" href="{{ bz_hero_asset | asset_url }}" fetchpriority="high">
     {%- endif -%}
     <link rel="preload" href="{{ 'theme.css' | asset_url }}" as="style" crossorigin="anonymous" />
     {%- unless settings.type_body_font.family contains 'Japanese' or settings.type_header_font.family contains 'Japanese' -%}
@@ -217,11 +244,6 @@
     <script src="{{ 'bz-v411c.js' | asset_url }}" defer></script>
     <script src="{{ 'vendors.js' | asset_url }}" defer></script>
 
-    <script>
-      window.addEventListener("load", (event) => {
-        deferScriptLoad('instant.page', '{{ 'instant.page.v5.1.1.js' | asset_url }}', () => {}, true);
-      });
-    </script>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     let buttons = document.querySelectorAll(".ingredient-button");

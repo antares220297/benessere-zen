@@ -11,6 +11,7 @@
         "secondary_label": "Tutti i gioielli",
         "secondary_link": "/collections/gioielli-con-pietre",
         "featured_product": "mala-diaspro-rosso-108-perle",
+        "rotation_collection": "gioielli-con-pietre",
         "slide_2_products": [
           "epidoto-4-varianti",
           "pietra-di-luna-arcobaleno-4-varianti-1",
@@ -321,6 +322,7 @@
             "label": "Serenità",
             "caption": "Ametista da tenere vicino o portare addosso.",
             "image_asset": "bz-rituale-serenita.jpg",
+            "bundle_product": "set-rituale-serenita",
             "product_1": "ametista",
             "product_2": "braccialetto-ametista-avventurina-cristallo-di-rocca-om",
             "product_3": "ciondolo-ametista-cuore"
@@ -332,6 +334,7 @@
             "label": "Coraggio",
             "caption": "Le venature calde dell’occhio di tigre.",
             "image_asset": "bz-rituale-coraggio.jpg",
+            "bundle_product": "set-rituale-coraggio",
             "product_1": "pietre-burattate-corniola",
             "product_2": "occhio-di-tigre",
             "product_3": "mala-braccialetto-elastico-con-pietra-occhio-di-tigre-coraggio-iniziativa"
@@ -343,6 +346,7 @@
             "label": "Protezione",
             "caption": "Pietre scure, da mettere insieme.",
             "image_asset": "bz-rituale-protezione.jpg",
+            "bundle_product": "set-rituale-protezione",
             "product_1": "tormalina-nera-grezza",
             "product_2": "bracciale-tormalina-nera-elastico",
             "product_3": "ciondolo-larme-obsideinne-noire"
@@ -354,6 +358,7 @@
             "label": "Affetti",
             "caption": "Il quarzo rosa, in tre forme.",
             "image_asset": "bz-rituale-affetti.jpg",
+            "bundle_product": "set-rituale-affetti",
             "product_1": "quarzo-rosa",
             "product_2": "braccialetto-gold-quarzo-rosa-e-rodonite",
             "product_3": "ciondolo-in-quarzo-rosa-con-gancio"
@@ -365,6 +370,7 @@
             "label": "Concentrazione",
             "caption": "Il blu del lapislazzuli, al collo e al polso.",
             "image_asset": "bz-rituale-concentrazione.jpg",
+            "bundle_product": "set-rituale-concentrazione",
             "product_1": "lapislazzuli",
             "product_2": "braccialetto-lapis-lazuli",
             "product_3": "ciondolo-a-cuore-in-lapislazzuli"
@@ -376,6 +382,7 @@
             "label": "Sera",
             "caption": "Ametista e una candela alla lavanda.",
             "image_asset": "bz-rituale-sera.jpg",
+            "bundle_product": "set-rituale-sera",
             "product_1": "pietre-burattate-ametista-1",
             "product_2": "bracciale-ametista-naturale",
             "product_3": "candela-profumata-in-cera-di-soia-chakra-ajna-lavanda-tierra"
@@ -651,8 +658,8 @@
     "bz_newsletter": {
       "type": "bz-newsletter",
       "settings": {
-        "heading": "I nuovi arrivi,",
-        "heading_accent": "nella tua email",
+        "heading": "Novità,",
+        "heading_accent": "via email",
         "note": "Ti scriviamo quando arrivano pietre nuove o tornano quelle finite."
       }
     }

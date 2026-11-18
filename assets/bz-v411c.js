@@ -6,6 +6,39 @@
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const euro = cents => (cents / 100).toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '\u00a0€';
 
+  if (!HTMLScriptElement.supports?.('speculationrules')) {
+    const prefetched = new Set();
+    let hoverTimer;
+
+    const prefetch = link => {
+      if (!link || navigator.connection?.saveData || link.hasAttribute('download')) return;
+      let url;
+      try { url = new URL(link.href); } catch { return; }
+      const path = url.pathname.replace(/^\/[a-z]{2}(?:-[a-z]{2})?(?=\/)/i, '');
+      if (url.origin !== location.origin || !['https:', 'http:'].includes(url.protocol) ||
+          /^\/(cart|checkout|account)/i.test(path) || /add/i.test(url.search)) return;
+      url.hash = '';
+      if (url.href === location.origin + location.pathname + location.search || prefetched.has(url.href)) return;
+      prefetched.add(url.href);
+      const hint = document.createElement('link');
+      hint.rel = 'prefetch';
+      hint.href = url.href;
+      document.head.append(hint);
+    };
+
+    document.addEventListener('pointerenter', event => {
+      if (!event.target.matches?.('a[href]') || event.pointerType === 'touch') return;
+      clearTimeout(hoverTimer);
+      hoverTimer = setTimeout(() => prefetch(event.target), 65);
+    }, true);
+    document.addEventListener('pointerleave', event => {
+      if (event.target.matches?.('a[href]')) clearTimeout(hoverTimer);
+    }, true);
+    document.addEventListener('touchstart', event => {
+      prefetch(event.target.closest?.('a[href]'));
+    }, { passive: true });
+  }
+
   const hoursNode = q('#bz-hours');
   const hours = hoursNode ? JSON.parse(hoursNode.textContent) : { note: '', free: 50, days: ['', '', '', '', '', '', ''], exceptions: '' };
   const parseRanges = value => String(value || '').split(',').map(part => part.trim()).filter(Boolean).map(part => {
@@ -83,12 +116,13 @@
     const s = status(now);
     qa('[data-open-badge]').forEach(el => {
       const full = el.dataset.openBadge === 'full';
+      const showDetails = el.dataset.openBadge !== 'status';
       const hoursLabel = s.ranges.length ? s.ranges.map(([start, end]) => {
         const text = fmt(start) + '–' + fmt(end);
         return s.min >= start && s.min < end ? '<b>' + text + '</b>' : text;
       }).join(' · ') : (s.sundayPending ? hours.note : '');
       const html = '<span class="ob-dot" aria-hidden="true"></span><span class="ob-state">' + s.state + '</span>' +
-        (s.more ? '<span class="ob-more' + (s.open ? '' : ' ob-next') + '">' + s.more.replace(/^ /, '\u00a0') + '</span>' : '') +
+        (showDetails && s.more ? '<span class="ob-more' + (s.open ? '' : ' ob-next') + '">' + s.more.replace(/^ /, '\u00a0') + '</span>' : '') +
         (full && hoursLabel && !s.sundayPending ? '<span class="ob-sep" aria-hidden="true"></span><span class="ob-hours">Oggi ' + hoursLabel + '</span>' : '');
       const previous = badgeStates.get(el);
       if (!previous || previous.html !== html) el.innerHTML = html;
@@ -152,8 +186,10 @@
   const desktopMenu = q('.bz-header-section .main-nav');
   const mobile = q('#bz-mobile');
   const toggle = q('[data-bz-burger]');
-  const mobileClose = mobile && q('.phone-close', mobile);
+  const menuSection = toggle?.closest('.bz-header-section');
+  const menuHeader = toggle?.closest('header');
   const desktop = matchMedia('(min-width:1024px)');
+  const isMenuOpen = () => Boolean(menuSection?.classList.contains('is-menu-open'));
 
   function closeGroups(menu, except) {
     if (!menu) return;
@@ -170,36 +206,63 @@
     if (!desktopMenu?.contains(event.target)) closeGroups(desktopMenu);
   });
 
+  function positionMobileMenu() {
+    if (!isMenuOpen()) return;
+    mobile.style.setProperty('--bz-menu-top', Math.max(0, menuHeader.getBoundingClientRect().bottom) + 'px');
+  }
+
   function setMobileMenu(open, restoreFocus = true) {
-    if (!mobile || mobile.hidden === !open) return;
-    mobile.hidden = !open;
+    if (!mobile || !menuSection || isMenuOpen() === open) return;
+    menuSection.classList.toggle('is-menu-open', open);
     document.body.classList.toggle('menu-locked', open);
-    toggle?.setAttribute('aria-expanded', String(open));
-    if (open) mobileClose?.focus();
-    else {
+    mobile.toggleAttribute('inert', !open);
+    mobile.setAttribute('aria-hidden', String(!open));
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Chiudi menu' : 'Apri menu');
+    if (open) {
+      menuSection.setAttribute('role', 'dialog');
+      menuSection.setAttribute('aria-modal', 'true');
+      menuSection.setAttribute('aria-label', 'Menu mobile');
+      positionMobileMenu();
+    } else {
+      menuSection.removeAttribute('role');
+      menuSection.removeAttribute('aria-modal');
+      menuSection.removeAttribute('aria-label');
       closeGroups(mobile);
-      if (restoreFocus) toggle?.focus();
+      if (restoreFocus) toggle.focus({ preventScroll: true });
     }
   }
-  toggle?.addEventListener('click', () => setMobileMenu(mobile.hidden));
-  mobileClose?.addEventListener('click', () => setMobileMenu(false));
+  toggle?.addEventListener('click', () => setMobileMenu(!isMenuOpen()));
+  mobile?.addEventListener('click', event => {
+    if (event.target.closest('a[href]')) setMobileMenu(false);
+  });
+  addEventListener('resize', positionMobileMenu);
+  if (menuHeader && 'ResizeObserver' in window) new ResizeObserver(positionMobileMenu).observe(menuHeader);
   desktop.addEventListener('change', () => {
     closeGroups(desktopMenu);
+    const wasOpen = isMenuOpen();
     setMobileMenu(false, !desktop.matches);
+    if (wasOpen && desktop.matches) q('.brand', menuHeader)?.focus({ preventScroll: true });
   });
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape') {
-      if (mobile && !mobile.hidden) setMobileMenu(false);
+      if (isMenuOpen()) {
+        event.preventDefault();
+        setMobileMenu(false);
+      }
       const openGroup = desktopMenu && q('.bz-menu-group[open]', desktopMenu);
       if (openGroup) {
         closeGroups(desktopMenu);
         q('summary', openGroup)?.focus();
       }
     }
-    if (event.key !== 'Tab' || !mobile || mobile.hidden) return;
-    const items = qa('a[href], button, summary', mobile).filter(item => item.getClientRects().length);
+    if (event.key !== 'Tab' || !isMenuOpen()) return;
+    const items = qa('a[href], button:not(:disabled), summary', menuSection)
+      .filter(item => !item.closest('.cart-overlay') && item.getClientRects().length &&
+        getComputedStyle(item).visibility === 'visible' && (item.matches('summary') || !item.closest('details:not([open])')));
     const first = items[0], last = items[items.length - 1];
-    if ((event.shiftKey && document.activeElement === first) || (!event.shiftKey && document.activeElement === last)) {
+    const active = document.activeElement;
+    if (!items.includes(active) || (event.shiftKey ? active === first : active === last)) {
       event.preventDefault();
       (event.shiftKey ? last : first)?.focus();
     }
@@ -224,7 +287,7 @@
       count.textContent = String(cart.item_count);
       count.hidden = cart.item_count < 1;
     }
-    const label = q('[data-cart-open]');
+    const label = q('[data-bz-header-cart]');
     if (label) label.setAttribute('aria-label', 'Carrello, ' + cart.item_count + (cart.item_count === 1 ? ' pezzo' : ' pezzi'));
     return cart;
   }
@@ -239,7 +302,14 @@
     const track = q('.track', box);
     if (track) track.setAttribute('aria-valuenow', String(Math.min(cents, goal)));
   }
-  function openCart() { if (!overlay) return; returnFocus = document.activeElement; overlay.hidden = false; document.body.classList.add('locked'); drawer?.focus(); }
+  function openCart() {
+    if (!overlay) return;
+    if (isMenuOpen()) setMobileMenu(false);
+    returnFocus = document.activeElement;
+    overlay.hidden = false;
+    document.body.classList.add('locked');
+    drawer?.focus();
+  }
   function closeCart() { if (!overlay) return; overlay.hidden = true; document.body.classList.remove('locked'); returnFocus?.focus(); }
   qa('[data-cart-open]').forEach(button => button.addEventListener('click', openCart));
   qa('[data-cart-close]').forEach(button => button.addEventListener('click', closeCart));
@@ -253,7 +323,7 @@
       body: JSON.stringify({ items })
     });
     if (!response.ok) return false;
-    await refreshCart();
+    await refreshCart().catch(() => {});
     openCart();
     return true;
   }
@@ -309,62 +379,130 @@
     mobile.addEventListener?.('change', arm);
   }
 
-  const ritual = q('#ritual');
-  if (ritual) {
-    const sets = qa('[data-ritual-set]', ritual);
-    const pills = qa('[data-set]', ritual);
-    const showSet = index => {
-      sets.forEach(set => { const on = set.dataset.ritualSet === String(index); set.hidden = !on; });
-      pills.forEach(pill => pill.setAttribute('aria-pressed', String(pill.dataset.set === String(index))));
-      qa('.ritual-bg', ritual).forEach(layer => layer.classList.toggle('on', layer.dataset.tone === String(index)));
-      updateRitual();
+  qa('[data-hero-products]').forEach(card => {
+    const featured = q('.is-active', card);
+    const rotation = qa('[data-hero-product]', card).filter(item => item !== featured);
+    if (!featured || !rotation.length) return;
+    for (let i = rotation.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [rotation[i], rotation[j]] = [rotation[j], rotation[i]];
+    }
+    rotation.unshift(featured);
+
+    const slide = card.closest('.hero-slide');
+    let timer;
+    let index = 0;
+    let near = true;
+    const arm = () => {
+      clearTimeout(timer);
+      if (reduced.matches || params.get('static') === '1' || document.hidden || !near ||
+          !slide.classList.contains('active') || card.matches(':hover, :focus-within')) return;
+      timer = setTimeout(() => {
+        const current = rotation[index];
+        index = (index + 1) % rotation.length;
+        const next = rotation[index];
+        current.classList.remove('is-active');
+        current.inert = true;
+        current.setAttribute('aria-hidden', 'true');
+        next.classList.add('is-active');
+        next.inert = false;
+        next.removeAttribute('aria-hidden');
+        arm();
+      }, 3000);
     };
-    const updateRitual = () => {
-      const active = sets.find(set => !set.hidden) || sets[0];
-      if (!active) return;
-      const rows = qa('.ritual-row', active);
-      let count = 0, sum = 0, enabled = 0, checked = 0;
-      rows.forEach(row => {
-        const input = q('input', row);
-        if (!input || input.disabled) return;
-        enabled += 1;
-        if (input.checked) { checked += 1; count += 1; sum += Number(input.dataset.price || 0); }
-      });
-      const countEl = q('.ritual-count', active);
-      const totalEl = q('.ritual-sum', active);
-      if (countEl) countEl.textContent = count + (count === 1 ? ' pezzo scelto' : ' pezzi scelti');
-      if (totalEl) totalEl.textContent = euro(sum);
-      const saving = q('.ritual-saving', active);
-      const bundle = ritual.dataset.bundle === 'true';
-      if (saving) {
-        if (bundle && enabled > 0 && checked === enabled) {
-          const discounted = Math.round(sum * 0.9);
-          saving.hidden = false;
-          saving.textContent = 'Il set costa ' + euro(discounted) + ' invece di ' + euro(sum) + ': 10% in meno';
-        } else saving.hidden = true;
-      }
-      const button = q('[data-add-ritual]', active);
-      if (button) {
-        button.disabled = count === 0;
-        button.setAttribute('aria-disabled', String(count === 0));
-        button.style.opacity = count === 0 ? '.45' : '';
-      }
-      const goal = (hours.free || 50) * 100;
-      const text = q('.ritual-shipping-text', active);
-      if (text) text.innerHTML = sum >= goal ? 'Spedizione gratuita' : 'Ti mancano <strong>' + euro(goal - sum) + '</strong> per la spedizione gratuita';
-      const bar = q('.ritual-progress', active);
-      if (bar) bar.style.transform = 'scaleX(' + Math.min(sum / goal, 1) + ')';
-    };
-    pills.forEach(pill => pill.addEventListener('click', () => showSet(pill.dataset.set)));
-    ritual.addEventListener('change', event => { if (event.target.matches('input[type="checkbox"]')) updateRitual(); });
-    ritual.addEventListener('click', event => {
-      if (!event.target.closest('[data-add-ritual]')) return;
-      const active = sets.find(set => !set.hidden) || sets[0];
-      const items = qa('input:checked:not(:disabled)', active).map(input => ({ id: Number(input.dataset.variant), quantity: 1 }));
-      if (items.length) addItems(items);
+    ['pointerenter', 'pointerleave', 'focusin', 'focusout'].forEach(type => {
+      card.addEventListener(type, () => requestAnimationFrame(arm));
     });
-    showSet(pills.find(pill => pill.getAttribute('aria-pressed') === 'true')?.dataset.set || '0');
+    new MutationObserver(arm).observe(slide, { attributes: true, attributeFilter: ['class'] });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(([entry]) => { near = entry.isIntersecting; arm(); }).observe(card);
+    }
+    document.addEventListener('visibilitychange', arm);
+    reduced.addEventListener('change', arm);
+    arm();
+  });
+
+  function warmHiddenImages(section) {
+    qa('[hidden] img[loading="lazy"]', section).forEach(image => {
+      // Hidden lazy images have no layout box to trigger the request.
+      image.loading = 'eager';
+      image.decode?.().catch(() => {});
+    });
   }
+
+  qa('[data-bz-warm-images]').forEach(section => {
+    if (!('IntersectionObserver' in window)) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      warmHiddenImages(section);
+      observer.disconnect();
+    }, { rootMargin: '600px' });
+    observer.observe(section);
+  });
+
+  function ritualSelection(panel) {
+    const inputs = qa('input[data-variant]', panel);
+    const checked = inputs.filter(input => input.checked);
+    const bundle = panel.dataset.bundleVariant && checked.length > 0 && checked.length === inputs.length;
+    const sum = bundle ? Number(panel.dataset.bundlePrice) : checked.reduce((total, input) => total + Number(input.dataset.price), 0);
+    return { checked, bundle, sum };
+  }
+
+  function paintRitual(panel) {
+    const { checked, bundle, sum } = ritualSelection(panel);
+    const count = checked.length;
+    q('.ritual-count', panel).textContent = count + (count === 1 ? ' pezzo scelto' : ' pezzi scelti');
+    q('.ritual-sum', panel).textContent = euro(sum);
+    qa('.ritual-compare, .ritual-saving', panel).forEach(node => { node.hidden = !bundle; });
+    q('[data-bz-add-set]', panel).disabled = count === 0 || panel.hasAttribute('aria-busy');
+    const selectAll = q('[data-select-all]', panel.closest('[data-bz-ritual]'));
+    selectAll?.setAttribute('aria-pressed', String(count === qa('input[data-variant]', panel).length));
+    paintShipping(q('[data-shipping]', panel), sum);
+  }
+
+  document.addEventListener('change', event => {
+    if (!event.target.matches('.ritual-row input[data-variant]')) return;
+    const panel = event.target.closest('[data-ritual-set]');
+    panel.closest('[data-bz-ritual]').setAttribute('data-ritual-interacted', '');
+    paintRitual(panel);
+  });
+
+  document.addEventListener('click', async event => {
+    const target = event.target.closest('[data-set], [data-select-all], [data-bz-add-set]');
+    const ritual = target?.closest('[data-bz-ritual]');
+    if (!ritual) return;
+    if (target.hasAttribute('data-set')) {
+      qa('[data-ritual-set]', ritual).forEach(panel => { panel.hidden = panel.id !== target.dataset.set; });
+      qa('[data-set]', ritual).forEach(pill => pill.setAttribute('aria-pressed', String(pill === target)));
+      qa('.ritual-bg', ritual).forEach(layer => layer.classList.toggle('on', layer.dataset.tone === target.dataset.toneIndex));
+      return;
+    }
+
+    const panel = q('[data-ritual-set]:not([hidden])', ritual);
+    ritual.setAttribute('data-ritual-interacted', '');
+    if (target.hasAttribute('data-select-all')) {
+      const select = target.getAttribute('aria-pressed') !== 'true';
+      qa('input[data-variant]', panel).forEach(input => { input.checked = select; });
+      paintRitual(panel);
+      return;
+    }
+
+    const { checked, bundle } = ritualSelection(panel);
+    if (!checked.length || panel.hasAttribute('aria-busy')) return;
+    const items = bundle ? [{ id: Number(panel.dataset.bundleVariant), quantity: 1 }] :
+      checked.map(input => ({ id: Number(input.dataset.variant), quantity: 1 }));
+    panel.setAttribute('aria-busy', 'true');
+    const status = q('[data-ritual-status]', panel);
+    status.textContent = '';
+    try {
+      if (!await addItems(items)) status.textContent = 'Non è stato possibile aggiungere i pezzi al carrello.';
+    } catch {
+      status.textContent = 'Non è stato possibile aggiornare il carrello.';
+    } finally {
+      panel.removeAttribute('aria-busy');
+      paintRitual(panel);
+    }
+  });
 
   const stoneGrid = q('#gem-grid');
   if (stoneGrid) {

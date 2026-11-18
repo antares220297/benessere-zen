@@ -11,32 +11,32 @@
     {% render 'bz-menu' %}
   </nav>
   <div class="header-actions">
-    <a href="{{ routes.search_url }}" aria-label="{{ section.settings.search_label | default: 'Cerca' | escape }}">{% render 'bz-icon', name: 'hdr-search' %}</a>
+    <a data-bz-header-search href="{{ routes.search_url }}" aria-label="{{ section.settings.search_label | default: 'Cerca' | escape }}">{% render 'bz-icon', name: 'hdr-search' %}</a>
     <a class="bz-header-account" href="{{ routes.account_url }}" aria-label="{{ section.settings.account_label | default: 'Account' | escape }}">{% render 'bz-icon', name: 'hdr-account' %}</a>
-    <button type="button" data-cart-open aria-label="{{ section.settings.cart_label | default: 'Carrello' | escape }}">
+    <button type="button" data-bz-header-cart data-cart-open aria-label="{{ section.settings.cart_label | default: 'Carrello' | escape }}">
       {% render 'bz-icon', name: 'hdr-bag' %}
       <span class="sr-only" data-cart-count>{{ cart.item_count }}</span>
     </button>
-    <button class="menu-toggle" type="button" data-bz-burger aria-label="Apri menu" aria-expanded="false" aria-controls="bz-mobile">{% render 'bz-icon', name: 'menu' %}</button>
+    <button class="menu-toggle" type="button" data-bz-burger aria-label="Apri menu" aria-expanded="false" aria-controls="bz-mobile"><span class="bz-burger-icon" aria-hidden="true"><span></span><span></span><span></span></span></button>
   </div>
 
 </header>
 
-<div class="mobile-nav menu-shade" id="bz-mobile" hidden>
-  <aside class="menu-dialog" role="dialog" aria-modal="true" aria-labelledby="mobile-title">
-    <div class="menu-heading">
-      <span id="mobile-title">{{ section.settings.wordmark_lead | default: 'Benessere' | escape }} <em>{{ section.settings.wordmark_accent | default: 'Zen' | escape }}</em></span>
-      <button class="phone-close" type="button" aria-label="Chiudi menu">{% render 'bz-icon', name: 'close' %}</button>
-    </div>
-    <nav class="mobile-content" aria-label="Menu mobile">
+<div class="mobile-nav menu-shade" id="bz-mobile" aria-hidden="true" inert>
+  <div class="menu-dialog">
+    <nav class="mobile-content" aria-label="Navigazione">
       {% render 'bz-menu' %}
+      <div class="bz-mobile-tools">
+        <a href="{{ routes.search_url }}">{% render 'bz-icon', name: 'hdr-search' %} {{ section.settings.search_label | default: 'Cerca' | escape }}</a>
+        <button type="button" data-cart-open>{% render 'bz-icon', name: 'hdr-bag' %} {{ section.settings.cart_label | default: 'Carrello' | escape }}</button>
+      </div>
       <div class="phone-bottom">
         {%- assign visit_url = pages['il-negozio'].url | default: '/pages/il-negozio' -%}
         {% render 'bz-open-badge', variant: 'compact', linked: true, url: visit_url %}
         <p>{{ settings.bz_address | default: 'Via Marcello Provenzali 1, 44042 Cento FE' | escape }}</p>
       </div>
     </nav>
-  </aside>
+  </div>
 </div>
 
 <div class="cart-overlay" hidden>

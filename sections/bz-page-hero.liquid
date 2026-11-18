@@ -24,10 +24,11 @@
 -%}
 <header class="bz bz-pages bz-phero{% unless shot or store_photo %} is-plain{% endunless %}">
   {%- if store_photo and shot == blank -%}
-    <img src="{{ 'bz-store.jpg' | asset_url }}" alt="Scatole in velluto nel negozio" class="bz-phero__photo" width="900" height="700" loading="eager">
+    <link rel="preload" as="image" href="{{ 'bz-store.jpg' | asset_url }}" fetchpriority="high">
+    <img src="{{ 'bz-store.jpg' | asset_url }}" alt="Scatole in velluto nel negozio" class="bz-phero__photo" width="900" height="700" loading="eager" fetchpriority="high">
     <span class="bz-phero__veil" aria-hidden="true"></span>
   {%- elsif shot -%}
-    {{ shot | image_url: width: 1800 | image_tag: alt: section.settings.title, class: 'bz-phero__photo', widths: '700, 1200, 1800', sizes: '100vw', loading: 'eager' }}
+    {{ shot | image_url: width: 1800 | image_tag: alt: section.settings.title, class: 'bz-phero__photo', widths: '700, 1200, 1800', sizes: '100vw', loading: 'eager', fetchpriority: 'high', preload: true }}
     <span class="bz-phero__veil" aria-hidden="true"></span>
   {%- endif -%}
   <div class="bz-phero__copy bz-reveal">

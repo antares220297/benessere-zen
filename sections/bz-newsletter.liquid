@@ -1,6 +1,6 @@
 <section class="bz bz-bottom bz-news" id="newsletter">
   <div class="bz-news__card">
-    <h2>{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h2>
+    <h2>{{ section.settings.heading | default: 'Novità,' | escape }} <em>{{ section.settings.heading_accent | default: 'via email' | escape }}</em></h2>
     <div>
       {%- form 'customer', id: 'newsletter-form', class: 'contact-form' -%}
         <input type="hidden" name="contact[tags]" value="newsletter">
@@ -21,8 +21,8 @@
 {
   "name": "Newsletter",
   "settings": [
-    { "type": "text", "id": "heading", "label": "Titolo", "default": "I nuovi arrivi," },
-    { "type": "text", "id": "heading_accent", "label": "Corsivo", "default": "nella tua email" },
+    { "type": "text", "id": "heading", "label": "Titolo", "default": "Novità," },
+    { "type": "text", "id": "heading_accent", "label": "Corsivo", "default": "via email" },
     { "type": "text", "id": "placeholder", "label": "Segnaposto", "default": "La tua email" },
     { "type": "text", "id": "button_label", "label": "Pulsante", "default": "Iscriviti" },
     { "type": "text", "id": "note", "label": "Nota", "default": "Ti scriviamo quando arrivano pietre nuove o tornano quelle finite." }

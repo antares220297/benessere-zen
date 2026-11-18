@@ -1,9 +1,6 @@
 <section class="bestsellers picked">
   <div class="bz-sh">
     <h2>{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h2>
-    {%- if section.settings.link_label != blank -%}
-      <a class="bz-sh-more" href="{{ section.settings.link }}">{{ section.settings.link_label | escape }} <span aria-hidden="true">→</span></a>
-    {%- endif -%}
     <div class="bz-pills" role="tablist" aria-label="Selezione prodotti">
       {%- for block in section.blocks -%}
         <button type="button" role="tab" id="picked-tab-{{ section.id }}-{{ forloop.index }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="picked-panel-{{ section.id }}-{{ forloop.index }}" data-picked="{{ forloop.index0 }}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</button>
@@ -23,6 +20,9 @@
       {%- endif -%}
     </div>
   {%- endfor -%}
+  {%- if section.settings.link_label != blank and section.settings.link != blank -%}
+    <a class="bz-row-link" href="{{ section.settings.link }}">{{ section.settings.link_label | escape }} <span aria-hidden="true">→</span></a>
+  {%- endif -%}
 </section>
 <script>
   document.querySelectorAll('#shopify-section-{{ section.id }} [data-picked]').forEach(function (tab) {

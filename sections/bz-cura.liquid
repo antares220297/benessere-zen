@@ -1,6 +1,6 @@
 <div class="bz-stack">
   <section class="cura-hero" aria-labelledby="cura-title">
-    <img src="{{ 'bz-cover-cura-di-se-v3b.jpg' | asset_url }}" alt="" width="1600" height="1000">
+    <img src="{{ 'bz-cover-cura-di-se-v3b.jpg' | asset_url }}" alt="" width="1600" height="1000" loading="eager" fetchpriority="high">
     <div class="cura-hero-copy">
       <h1 id="cura-title">Cura di <em>sé</em></h1>
       <p>{{ section.settings.intro | escape }}</p>
@@ -49,7 +49,6 @@
   <section class="picked" id="piu-scelti">
     <div class="bz-sh">
       <h2>I più <em>scelti</em></h2>
-      <a class="bz-sh-more" href="/collections/cosmetica">Vedi tutto <span aria-hidden="true">→</span></a>
       <div class="bz-pills" role="tablist" aria-label="Gruppi prodotti">
         <button type="button" data-picked="0" aria-selected="true">Viso</button>
         <button type="button" data-picked="1" aria-selected="false">Corpo</button>
@@ -73,6 +72,7 @@
         {%- for product in picks limit: 4 -%}{% render 'bz-product-card', card: product %}{%- endfor -%}
       </div>
     {%- endfor -%}
+    <a class="bz-row-link" href="/collections/cosmetica">Vedi tutto <span aria-hidden="true">→</span></a>
   </section>
   <section class="cura-routine" id="routine" aria-labelledby="routine-title">
     <div class="cura-routine-bg cura-day" aria-hidden="true"></div>

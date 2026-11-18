@@ -36,7 +36,7 @@
 
 .bz-bento.is-four {
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  grid-template-rows: 270px 270px;
+  grid-template-rows: repeat(2, minmax(270px, auto));
 }
 
 .bz-bento__lead,
@@ -179,9 +179,7 @@
 
 .bz-mchips a span {
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
 }
 
 .bz-mchips img {
@@ -258,13 +256,17 @@
 }
 
 .bz-bento__product > a {
-  display: block;
-  height: 100%;
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  justify-content: end;
   color: inherit;
   text-decoration: none;
 }
 
 .bz-bento__product img {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
@@ -283,11 +285,13 @@
 }
 
 .bz-bento__product .bz-bento__caption {
+  position: relative;
   padding-right: 68px;
 }
 
 .bz-bento__caption b {
   display: block;
+  overflow-wrap: anywhere;
   font-weight: 500;
   font-size: 14.5px;
 }
@@ -835,6 +839,7 @@
   }
 
   .bz-bento__product img {
+    position: static;
     width: 100%;
     height: auto;
     aspect-ratio: 4 / 3;

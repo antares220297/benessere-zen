@@ -4,7 +4,7 @@
       <h1>Benessere Zen, a <em>Cento</em></h1>
       <p>In Via Marcello Provenzali 1 le pietre sono in vetrina e gli oli dietro il banco. Sul sito trovi lo stesso catalogo: puoi farti spedire il pezzo, ritirarlo in negozio o venire a sceglierlo qui.</p>
     </div>
-    <div class="split-photo"><img src="{{ 'bz-negozio-chi-siamo-apertura.jpg' | asset_url }}" alt="Benessere Zen a Cento" width="1400" height="900"></div>
+    <div class="split-photo"><img src="{{ 'bz-negozio-chi-siamo-apertura.jpg' | asset_url }}" alt="Benessere Zen a Cento" width="1400" height="900" loading="eager" fetchpriority="high"></div>
   </section>
   <section class="split story flip history">
     <div class="split-photo"><img src="{{ 'bz-negozio-chi-siamo-la-storia.jpg' | asset_url }}" alt="" width="1200" height="900" loading="lazy"></div>
@@ -42,9 +42,9 @@
     <div class="visit-copy">
       <h2 id="visit-title">Passa quando <em>vuoi</em></h2>
       <p>{{ settings.bz_address }}</p>
-      <div class="visit-actions">
-        {% render 'bz-open-badge', variant: 'full', linked: true %}
-        <a class="btn gold" href="{{ settings.bz_maps | default: 'https://www.google.com/maps/search/?api=1&query=Via+Marcello+Provenzali+1+Cento' }}">{% render 'bz-icon', name: 'directions' %} Come arrivare →</a>
+      <div class="visit-actions bz-visit-actions">
+        {% render 'bz-open-badge', variant: 'status' %}
+        <a class="btn gold" href="{{ settings.bz_maps | default: 'https://www.google.com/maps/search/?api=1&query=Via+Marcello+Provenzali+1+Cento' }}">Come arrivare <span aria-hidden="true">→</span></a>
       </div>
     </div>
     <div>

@@ -28,7 +28,7 @@
             {%- if block.type == 'dosha_product' and block.settings.dosha == dosha_index -%}
               {%- assign product = block.settings.product -%}
               {%- if product.title != blank -%}
-                {% render 'bz-product-card', card: product, title: block.settings.label %}
+                {% render 'bz-product-card', card: product %}
               {%- endif -%}
             {%- endif -%}
           {%- endfor -%}
@@ -47,17 +47,16 @@
         <article class="ay-cat{% cycle ' is-band', '' %}"{% if block.settings.anchor != blank %} id="{{ block.settings.anchor | handleize }}"{% endif %} {{ block.shopify_attributes }}>
           <div class="ay-cat-head">
             <h3>{{ block.settings.title }}</h3>
-            {%- if block.settings.link != blank -%}
-              <a class="ay-all" href="{{ block.settings.link }}">Vedi tutti&nbsp;<span aria-hidden="true">→</span></a>
-            {%- endif -%}
           </div>
           <div class="ay-copy">{{ block.settings.body }}</div>
           <div class="ay-cat-grid">
-            {%- assign labels = block.settings.product_labels | newline_to_br | split: '<br />' -%}
             {%- for product in block.settings.products -%}
-              {% render 'bz-product-card', card: product, labels: labels %}
+              {% render 'bz-product-card', card: product %}
             {%- endfor -%}
           </div>
+          {%- if block.settings.link != blank -%}
+            <a class="bz-row-link" href="{{ block.settings.link }}">Vedi tutti <span aria-hidden="true">→</span></a>
+          {%- endif -%}
         </article>
       {%- endfor -%}
     </div>

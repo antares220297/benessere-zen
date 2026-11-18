@@ -1,7 +1,7 @@
 <section class="home-hero" aria-label="In primo piano">
   <div class="hero-slides" data-bz-hero aria-label="Dal negozio">
-    <div class="hero-slide active" aria-label="1 di 3">
-      <img class="hero-photo" src="{{ 'bz-negozio-home-hero-negozio.jpg' | asset_url }}" alt="{{ section.settings.image_alt | escape }}" width="1600" height="1066" fetchpriority="high">
+    <div class="hero-slide hero-slide--featured active" aria-label="1 di 3">
+      <img class="hero-photo" src="{{ 'bz-negozio-home-hero-negozio.jpg' | asset_url }}" alt="{{ section.settings.image_alt | escape }}" width="1600" height="900" loading="eager" fetchpriority="high">
       <div class="hero-copy">
         <h1>{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h1>
         <p>{{ section.settings.text | escape }}</p>
@@ -10,19 +10,27 @@
           <a class="btn outline" href="{{ section.settings.secondary_link }}">{{ section.settings.secondary_label | escape }}</a>
         </div>
       </div>
-      {%- assign mini = section.settings.featured_product -%}
-      {%- if mini == blank -%}{%- assign mini = all_products['mala-diaspro-rosso-108-perle'] -%}{%- endif -%}
-      {%- if mini != blank and mini.title != blank -%}
-        <div class="hero-mini">
-          <a href="{{ mini.url }}">
-            {%- if mini.featured_image -%}
-              {{ mini.featured_image | image_url: width: 240 | image_tag: alt: mini.title, loading: 'eager', widths: '120, 180, 240', sizes: '80px', width: 80, height: 80 }}
-            {%- endif -%}
-            <span>{{ mini.title | escape }}</span>
-            <b>{% render 'bz-money', cents: mini.price %}</b>
-          </a>
-          <button class="add" type="button" data-bz-add="{{ mini.selected_or_first_available_variant.id }}" {% unless mini.available %}disabled{% endunless %} aria-label="Aggiungi al carrello: {{ mini.title | escape }}">+</button>
-        </div>
+      {%- liquid
+        assign mini = section.settings.featured_product | default: all_products['mala-diaspro-rosso-108-perle']
+        assign shown = 0
+      -%}
+      {%- capture hero_products -%}
+        {%- if mini.available -%}
+          {% render 'bz-hero-product', item: mini, first: true %}
+          {%- assign shown = 1 -%}
+        {%- endif -%}
+        {%- for item in section.settings.rotation_collection.products -%}
+          {%- if shown == 12 -%}{%- break -%}{%- endif -%}
+          {%- if item.available and item.id != mini.id -%}
+            {%- assign first = false -%}
+            {%- if shown == 0 -%}{%- assign first = true -%}{%- endif -%}
+            {% render 'bz-hero-product', item: item, first: first %}
+            {%- assign shown = shown | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endcapture -%}
+      {%- if shown > 0 -%}
+        <div class="hero-mini" data-hero-products aria-live="off">{{ hero_products }}</div>
       {%- endif -%}
     </div>
     <div class="hero-slide new-slide" aria-hidden="true" inert aria-label="2 di 3">
@@ -34,7 +42,7 @@
             {% render 'bz-product-card', card: product, style: 'home' %}
           {%- endfor -%}
         </div>
-        <a class="text-link" href="{{ section.settings.slide_2_link }}">Vedi i nuovi arrivi →</a>
+        <a class="bz-row-link" href="{{ section.settings.slide_2_link }}">Vedi i nuovi arrivi →</a>
       </div>
     </div>
     <div class="hero-slide" aria-hidden="true" inert aria-label="3 di 3">
@@ -83,6 +91,7 @@
     { "type": "text", "id": "secondary_label", "label": "Pulsante secondario", "default": "Tutti i gioielli" },
     { "type": "url", "id": "secondary_link", "label": "Link secondario" },
     { "type": "product", "id": "featured_product", "label": "Mini scheda" },
+    { "type": "collection", "id": "rotation_collection", "label": "Collezione per la rotazione" },
     { "type": "text", "id": "slide_2_heading", "label": "Slide 2 titolo", "default": "Nuovi arrivi" },
     { "type": "text", "id": "slide_2_accent", "label": "Slide 2 corsivo", "default": "dal negozio" },
     { "type": "text", "id": "slide_2_text", "label": "Slide 2 testo", "default": "Le ultime pietre che abbiamo scelto." },

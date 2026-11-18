@@ -1,0 +1,52 @@
+{%- liquid
+  assign bundle_variant = bundle.selected_or_first_available_variant
+  assign use_bundle = false
+  assign display_total = total
+  assign savings = 0
+  if bundle.available and bundle_variant.available and count > 0 and count == piece_count
+    assign use_bundle = true
+    assign display_total = bundle_variant.price
+    assign savings = bundle_variant.compare_at_price | minus: bundle_variant.price
+  endif
+  assign goal = settings.bz_free_shipping | default: 50 | times: 100
+  assign progress = display_total | at_most: goal
+  assign missing = goal | minus: progress
+-%}
+<div class="ritual-grid{% if shot == blank and asset == blank %} ritual-grid--solo{% endif %}" id="{{ panel_id }}" data-ritual-set="{{ panel_id }}"{% unless first %} hidden{% endunless %}{% if use_bundle %} data-bundle-variant="{{ bundle_variant.id }}" data-bundle-price="{{ bundle_variant.price }}"{% endif %} {{ block.shopify_attributes }}>
+  <div class="ritual-list">
+    {{ rows }}
+    <div class="ritual-total">
+      <div>
+        <small class="ritual-count">{{ count }} {% if count == 1 %}pezzo scelto{% else %}pezzi scelti{% endif %}</small>
+        {%- if savings > 0 -%}<s class="ritual-compare">{% render 'bz-money', cents: bundle_variant.compare_at_price %}</s>{%- endif -%}
+        <div class="ritual-sum price">{% render 'bz-money', cents: display_total %}</div>
+        {%- if savings > 0 -%}<span class="ritual-saving">Risparmi {% render 'bz-money', cents: savings %}</span>{%- endif -%}
+      </div>
+      <button class="btn gold" type="button" data-bz-add-set{% if count == 0 %} disabled{% endif %}>Aggiungi al carrello <span aria-hidden="true">→</span></button>
+    </div>
+    <p class="ritual-status" role="status" data-ritual-status></p>
+    <div class="ritual-shipping" data-shipping>
+      <p data-shipping-text>{% if missing == 0 %}Spedizione gratuita{% else %}Ti mancano <strong>{% render 'bz-money', cents: missing %}</strong> per la spedizione gratuita{% endif %}</p>
+      <div class="track" role="progressbar" aria-label="Verso la spedizione gratuita" aria-valuemin="0" aria-valuemax="{{ goal }}" aria-valuenow="{{ progress }}">
+        <span style="transform:scaleX({{ progress | times: 1.0 | divided_by: goal }})"></span>
+      </div>
+    </div>
+  </div>
+  {%- if shot or asset != blank -%}
+    <div class="ritual-visual">
+      {%- if shot -%}
+        {{ shot | image_url: width: 1600 | image_tag: alt: shot_alt, class: 'ritual-shot', loading: 'lazy', decoding: 'async', widths: '400, 600, 1000, 1600', sizes: '(min-width: 1024px) 50vw, 100vw', width: shot.width, height: shot.height }}
+      {%- else -%}
+        <img class="ritual-shot" src="{{ asset | asset_url }}" alt="{{ shot_alt | escape }}" width="1600" height="1200" loading="lazy" decoding="async">
+      {%- endif -%}
+      {%- if caption_title != blank or caption_accent != blank or caption != blank -%}
+        <div class="ritual-caption">
+          {%- if caption_title != blank or caption_accent != blank -%}
+            <h3>{{ caption_title | escape }} <em>{{ caption_accent | escape }}</em></h3>
+          {%- endif -%}
+          {%- if caption != blank -%}<p>{{ caption | escape }}</p>{%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+</div>

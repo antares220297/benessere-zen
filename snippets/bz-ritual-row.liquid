@@ -1,9 +1,12 @@
-<label class="bz-set__row">
-  <input type="checkbox" checked data-bz-price="{{ rec.price }}" value="{{ rec.selected_or_first_available_variant.id }}">
-  {%- if rec.featured_image != blank -%}
-    {{ rec.featured_image | image_url: width: 140 | image_tag: alt: rec.title, width: 64, height: 64, loading: 'lazy' }}
+{%- assign variant = rec.selected_or_first_available_variant -%}
+<label class="ritual-row{% unless variant.available %} is-unavailable{% endunless %}">
+  <input class="bz-vh" type="checkbox" {% if variant.available %}checked data-variant="{{ variant.id }}" data-price="{{ variant.price }}"{% else %}disabled{% endif %} aria-label="Includi nel set: {{ rec.title | escape }}">
+  <span class="set-check">{% render 'bz-icon', name: 'check' %}</span>
+  {%- if rec.featured_image -%}
+    {{ rec.featured_image | image_url: width: 160 | image_tag: alt: '', loading: 'lazy', decoding: 'async', width: 56, height: 56 }}
   {%- endif -%}
-  {%- assign row_name = rec.title -%}
-  <span>{{ row_name | escape }}{%- if rec.type != blank -%}<small>{{ rec.type | escape }}</small>{%- endif -%}</span>
-  <span class="bz-price">{% render 'bz-money', cents: rec.price %}</span>
+  <span class="ritual-item">
+    <span class="ritual-product">{{ rec.title | escape }}</span>
+    <span class="row-price">{% render 'bz-money', cents: variant.price %}</span>
+  </span>
 </label>

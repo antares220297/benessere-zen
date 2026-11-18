@@ -335,8 +335,8 @@
     "newsletter": {
       "type": "bz-newsletter",
       "settings": {
-        "heading": "I nuovi arrivi,",
-        "heading_accent": "nella tua email",
+        "heading": "Novità,",
+        "heading_accent": "via email",
         "placeholder": "La tua email",
         "button_label": "Iscriviti",
         "note": "Ti scriviamo quando arrivano pietre nuove o tornano quelle finite."

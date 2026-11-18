@@ -1,0 +1,11 @@
+{%- assign variant = item.selected_or_first_available_variant -%}
+<div class="hero-mini-item{% if first %} is-active{% endif %}" data-hero-product{% unless first %} inert aria-hidden="true"{% endunless %}>
+  <a href="{{ item.url }}">
+    {%- if item.featured_image -%}
+      {{ item.featured_image | image_url: width: 160 | image_tag: alt: '', loading: 'lazy', decoding: 'async', widths: '80, 160', sizes: '62px', width: 62, height: 62 }}
+    {%- endif -%}
+    <span>{{ item.title | escape }}</span>
+    <b>{% render 'bz-money', cents: variant.price %}</b>
+  </a>
+  <button class="add" type="button" data-bz-add="{{ variant.id }}" aria-label="Aggiungi al carrello: {{ item.title | escape }}">{% render 'bz-icon', name: 'add' %}</button>
+</div>

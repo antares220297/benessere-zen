@@ -5,7 +5,7 @@
   document.querySelectorAll("[data-bz-seg]").forEach(function (seg) {
     var knob = seg.querySelector("[data-bz-knob]");
     var buttons = seg.querySelectorAll("button");
-    var root = seg.closest("[data-bz-picked], [data-bz-switch]");
+    var root = seg.closest("[data-bz-picked]");
 
     function place(button) {
       if (!knob || !button) return;
@@ -29,7 +29,6 @@
       root.querySelectorAll("[data-bz-shot]").forEach(function (shot) {
         shot.hidden = shot.getAttribute("data-bz-shot") !== button.getAttribute("data-bz-pane");
       });
-      if (window.bzSumSet) window.bzSumSet(root);
     }
 
     buttons.forEach(function (button) {
@@ -48,40 +47,6 @@
     return grouped + "," + rest + "\u00a0€";
   }
 
-  window.bzSumSet = function (root) {
-    var pane = root.querySelector(".bz-pane.is-on");
-    if (!pane) return;
-    var total = 0;
-    var count = 0;
-    pane.querySelectorAll("input:checked").forEach(function (input) {
-      total += Number(input.getAttribute("data-bz-price")) || 0;
-      count += 1;
-    });
-    var countNode = root.querySelector("[data-bz-count]");
-    var sumNode = root.querySelector("[data-bz-sum]");
-    if (countNode) countNode.textContent = String(count);
-    if (sumNode) sumNode.innerHTML = money(total);
-  };
-
-  document.querySelectorAll("[data-bz-switch]").forEach(function (root) {
-    window.bzSumSet(root);
-    root.addEventListener("change", function () { window.bzSumSet(root); });
-  });
-
-  document.addEventListener("click", function (event) {
-    var button = event.target.closest("[data-bz-add-set]");
-    if (!button || !window.fetch) return;
-    var root = button.closest("[data-bz-switch]");
-    var pane = root && root.querySelector(".bz-pane.is-on");
-    if (!pane) return;
-    var items = [];
-    pane.querySelectorAll("input:checked").forEach(function (input) {
-      if (input.value) items.push({ id: Number(input.value), quantity: 1 });
-    });
-    if (!items.length) return;
-    if (window.bzAddItems) window.bzAddItems(items);
-  });
-
   document.addEventListener("click", function (event) {
     var chip = event.target.closest("[data-bz-filter]");
     if (!chip) return;
@@ -98,13 +63,6 @@
       card.hidden = key !== "tutte" && intent !== key;
     });
   });
-
-  function bindRitual(root) {
-    if (!root || root.getAttribute("data-bz-bound") === "1") return;
-    root.setAttribute("data-bz-bound", "1");
-    if (window.bzSumSet) window.bzSumSet(root);
-    root.addEventListener("change", function () { window.bzSumSet(root); });
-  }
 
   if (window.fetch) {
     document.querySelectorAll("[data-bz-complementary]").forEach(function (node) {
@@ -127,18 +85,18 @@
           return response.text();
         })
         .then(function (html) {
+          if (node.hasAttribute("data-ritual-interacted") || node.matches(":focus-within")) return;
           var doc = new DOMParser().parseFromString(html, "text/html");
-          var nextSet = doc.querySelector("[data-bz-switch]");
-          if (nextSet && nextSet.querySelector("input[data-bz-price]")) {
+          var nextSet = doc.querySelector("[data-bz-ritual]");
+          if (nextSet && nextSet.querySelector("input[data-variant]")) {
             nextSet.removeAttribute("data-bz-complementary");
             node.replaceWith(nextSet);
-            bindRitual(nextSet);
-          } else if (!node.querySelector("input[data-bz-price]")) {
+          } else if (!node.querySelector("input[data-variant]")) {
             node.remove();
           }
         })
         .catch(function () {
-          if (!node.querySelector("input[data-bz-price]")) node.remove();
+          if (!node.querySelector("input[data-variant]")) node.remove();
         });
     });
   }

@@ -1,228 +1,87 @@
-{%- liquid
-  assign ritual_home = false
-  if product == blank
-    for block in section.blocks
-      if block.type == 'set'
-        if block.settings.product_1 != blank or block.settings.product_2 != blank or block.settings.product_3 != blank
-          assign ritual_home = true
-        endif
-      endif
-    endfor
-  endif
-
-  assign ritual_count = 0
-  assign ritual_total = 0
-  assign ritual_ids = '|'
-  assign ritual_shot = blank
-  assign ritual_shot_alt = blank
-  assign current_id = product.id
-  assign type_key = product.type | downcase | strip
--%}
-
-{%- if product != blank and recommendations.performed -%}
-  {%- for rec in recommendations.products -%}
-    {%- if ritual_count < 3 and rec.available and rec.id != current_id -%}
-      {%- assign ritual_mark = rec.id | prepend: '|' | append: '|' -%}
-      {%- unless ritual_ids contains ritual_mark -%}
-        {%- assign ritual_ids = ritual_ids | append: ritual_mark -%}
-        {%- assign ritual_count = ritual_count | plus: 1 -%}
-        {%- assign ritual_total = ritual_total | plus: rec.price -%}
-        {%- if ritual_shot == blank and rec.featured_image != blank -%}
-          {%- assign ritual_shot = rec.featured_image -%}
-          {%- assign ritual_shot_alt = rec.title -%}
+{%- if product != blank and product.available -%}
+  {%- liquid
+    assign count = 0
+    assign total = 0
+    assign seen = '|'
+    assign shot = blank
+    assign shot_alt = blank
+    assign type_key = product.type | downcase | strip
+    assign rule_keys = 'collection_1,collection_2' | split: ','
+  -%}
+  {%- capture rows -%}
+    {%- if recommendations.performed -%}
+      {%- for rec in recommendations.products -%}
+        {%- assign variant = rec.selected_or_first_available_variant -%}
+        {%- assign marker = rec.id | prepend: '|' | append: '|' -%}
+        {%- if count < 3 and variant.available and rec.id != product.id -%}
+          {%- unless seen contains marker -%}
+            {%- liquid
+              assign seen = seen | append: marker
+              assign count = count | plus: 1
+              assign total = total | plus: variant.price
+              if shot == blank and rec.featured_image
+                assign shot = rec.featured_image
+                assign shot_alt = rec.title
+              endif
+            -%}
+            {% render 'bz-ritual-row', rec: rec %}
+          {%- endunless -%}
         {%- endif -%}
-      {%- endunless -%}
-    {%- endif -%}
-  {%- endfor -%}
-{%- elsif product != blank -%}
-  {%- for block in section.blocks -%}
-    {%- if block.type == 'type_rule' -%}
-      {%- assign rule_type = block.settings.product_type | downcase | strip -%}
-      {%- if rule_type != blank and rule_type == type_key -%}
-        {%- assign rule_keys = 'collection_1,collection_2' | split: ',' -%}
-        {%- for rule_key in rule_keys -%}
-          {%- assign rule_col = block.settings[rule_key] -%}
-          {%- if rule_col != blank and ritual_count < 3 -%}
-            {%- for rec in rule_col.products -%}
-              {%- if ritual_count < 3 and rec.available and rec.id != current_id -%}
-                {%- assign ritual_mark = rec.id | prepend: '|' | append: '|' -%}
-                {%- unless ritual_ids contains ritual_mark -%}
-                  {%- assign ritual_ids = ritual_ids | append: ritual_mark -%}
-                  {%- assign ritual_count = ritual_count | plus: 1 -%}
-                  {%- assign ritual_total = ritual_total | plus: rec.price -%}
-                  {%- if ritual_shot == blank and rec.featured_image != blank -%}
-                    {%- assign ritual_shot = rec.featured_image -%}
-                    {%- assign ritual_shot_alt = rec.title -%}
-                  {%- endif -%}
+      {%- endfor -%}
+    {%- else -%}
+      {%- for block in section.blocks -%}
+        {%- assign rule_type = block.settings.product_type | downcase | strip -%}
+        {%- if block.type == 'type_rule' and rule_type != blank and rule_type == type_key -%}
+          {%- for key in rule_keys -%}
+            {%- assign collection = block.settings[key] -%}
+            {%- for rec in collection.products -%}
+              {%- assign variant = rec.selected_or_first_available_variant -%}
+              {%- assign marker = rec.id | prepend: '|' | append: '|' -%}
+              {%- if count < 3 and variant.available and rec.id != product.id -%}
+                {%- unless seen contains marker -%}
+                  {%- liquid
+                    assign seen = seen | append: marker
+                    assign count = count | plus: 1
+                    assign total = total | plus: variant.price
+                    if shot == blank and rec.featured_image
+                      assign shot = rec.featured_image
+                      assign shot_alt = rec.title
+                    endif
+                  -%}
+                  {% render 'bz-ritual-row', rec: rec %}
                   {%- break -%}
                 {%- endunless -%}
               {%- endif -%}
             {%- endfor -%}
-          {%- endif -%}
-        {%- endfor -%}
-      {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      {%- endfor -%}
     {%- endif -%}
-  {%- endfor -%}
-{%- endif -%}
-
-{%- if product != blank and product.available -%}
-  {%- unless recommendations.performed -%}
-    {{ 'bz-tokens.css' | asset_url | stylesheet_tag }}
-    {{ 'bz-home.css' | asset_url | stylesheet_tag }}
-    {{ 'bz-mid.css' | asset_url | stylesheet_tag }}
-  {%- endunless -%}
-  {%- if ritual_count > 0 or recommendations.performed == false -%}
+  {%- endcapture -%}
+  {%- if count > 0 or recommendations.performed == false -%}
+    {%- assign panel_id = section.id | append: '-ritual-product' -%}
     {%- assign rec_url = routes.product_recommendations_url | append: '?section_id=' | append: section.id | append: '&product_id=' | append: product.id | append: '&limit=3&intent=complementary' -%}
-    <div class="bz bz-mid bz-ritual" data-bz-switch{% unless recommendations.performed %} data-bz-complementary data-url="{{ rec_url | escape }}"{% endunless %}{% if ritual_count == 0 %} hidden{% endif %}>
-      {%- if ritual_count > 0 -%}
-        <div class="bz-ritual__head">
+    <section class="ritual-section ritual-section--product" data-bz-ritual{% unless recommendations.performed %} data-bz-complementary data-url="{{ rec_url | escape }}"{% endunless %}{% if count == 0 %} hidden{% endif %}>
+      {%- if count > 0 -%}
+        <div class="bz-sh">
           <h2>{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h2>
-        </div>
-        <div class="bz-set{% if ritual_shot == blank %} bz-set--solo{% endif %}">
-          <div class="bz-set__card">
-            {%- if section.settings.intro != blank -%}
-              <p>{{ section.settings.intro | escape }}</p>
-            {%- endif -%}
-            <div class="bz-pane is-on" data-bz-pane="ritual-product">
-              {%- assign ritual_shown = '|' -%}
-              {%- if recommendations.performed -%}
-                {%- for rec in recommendations.products -%}
-                  {%- assign ritual_mark = rec.id | prepend: '|' | append: '|' -%}
-                  {%- if ritual_ids contains ritual_mark -%}
-                    {%- unless ritual_shown contains ritual_mark -%}
-                      {%- assign ritual_shown = ritual_shown | append: ritual_mark -%}
-                      {% render 'bz-ritual-row', rec: rec %}
-                    {%- endunless -%}
-                  {%- endif -%}
-                {%- endfor -%}
-              {%- else -%}
-                {%- for block in section.blocks -%}
-                  {%- if block.type == 'type_rule' -%}
-                    {%- assign rule_keys = 'collection_1,collection_2' | split: ',' -%}
-                    {%- for rule_key in rule_keys -%}
-                      {%- assign rule_col = block.settings[rule_key] -%}
-                      {%- if rule_col != blank -%}
-                        {%- for rec in rule_col.products -%}
-                          {%- assign ritual_mark = rec.id | prepend: '|' | append: '|' -%}
-                          {%- if ritual_ids contains ritual_mark -%}
-                            {%- unless ritual_shown contains ritual_mark -%}
-                              {%- assign ritual_shown = ritual_shown | append: ritual_mark -%}
-                              {% render 'bz-ritual-row', rec: rec %}
-                            {%- endunless -%}
-                          {%- endif -%}
-                        {%- endfor -%}
-                      {%- endif -%}
-                    {%- endfor -%}
-                  {%- endif -%}
-                {%- endfor -%}
-              {%- endif -%}
-            </div>
-            <div class="bz-set__total">
-              <div>
-                <span class="bz-note"><span data-bz-count>{{ ritual_count }}</span> pezzi scelti</span>
-                <div class="bz-set__sum" data-bz-sum>{% render 'bz-money', cents: ritual_total %}</div>
-              </div>
-              <button class="bz-btn bz-btn--gold" type="button" data-bz-add-set>Aggiungi al carrello <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-            </div>
+          {%- if section.settings.intro != blank -%}<p class="bz-sh-sub">{{ section.settings.intro | escape }}</p>{%- endif -%}
+          <div class="bz-pills">
+            <button type="button" data-select-all aria-pressed="true" aria-controls="{{ panel_id }}">Tutti i pezzi</button>
           </div>
-          {%- if ritual_shot != blank -%}
-            <div class="bz-set__visual">
-              <span data-bz-shot="ritual-product">
-                {{ ritual_shot | image_url: width: 1200 | image_tag: alt: ritual_shot_alt, width: 800, height: 600, loading: 'lazy' }}
-              </span>
-            </div>
-          {%- endif -%}
         </div>
+        {% render 'bz-ritual-panel', panel_id: panel_id, first: true, rows: rows, count: count, total: total, shot: shot, shot_alt: shot_alt %}
       {%- endif -%}
-    </div>
+    </section>
     {%- unless recommendations.performed -%}
       <script src="{{ 'bz-home.js' | asset_url }}" defer></script>
     {%- endunless -%}
   {%- endif -%}
-{%- elsif ritual_home -%}
-{{ 'bz-tokens.css' | asset_url | stylesheet_tag }}
-{{ 'bz-home.css' | asset_url | stylesheet_tag }}
-{{ 'bz-mid.css' | asset_url | stylesheet_tag }}
-
-<div class="bz bz-mid bz-ritual" data-bz-switch>
-  <div class="bz-ritual__head">
-    <h2>{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h2>
-    {%- if section.settings.link_label != blank -%}
-      <a class="bz-picked__all" href="{{ section.settings.link }}">{{ section.settings.link_label | escape }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-    {%- endif -%}
-  </div>
-  <div class="bz-set">
-    <div class="bz-set__card">
-      {%- if section.settings.intro != blank -%}
-        <p>{{ section.settings.intro | escape }}</p>
-      {%- endif -%}
-      <div class="bz-pills" data-bz-seg role="tablist">
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'set' -%}
-            <button type="button" role="tab" class="{% if forloop.first %}is-on{% endif %}" data-bz-pane="ritual-{{ forloop.index }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">{{ block.settings.label | escape }}</button>
-          {%- endif -%}
-        {%- endfor -%}
-      </div>
-      {%- assign active_count = 0 -%}
-      {%- assign active_total = 0 -%}
-      {%- for block in section.blocks -%}
-        {%- if block.type == 'set' -%}
-          <div class="bz-pane{% if forloop.first %} is-on{% endif %}" data-bz-pane="ritual-{{ forloop.index }}" {{ block.shopify_attributes }}>
-            {%- assign picks = 'product_1,product_2,product_3' | split: ',' -%}
-            {%- for key in picks -%}
-              {%- assign item = block.settings[key] -%}
-              {%- if item != blank -%}
-                {%- if forloop.parentloop.first -%}
-                  {%- assign active_count = active_count | plus: 1 -%}
-                  {%- assign active_total = active_total | plus: item.price -%}
-                {%- endif -%}
-                {%- assign rec = item -%}
-                {% render 'bz-ritual-row', rec: rec %}
-              {%- endif -%}
-            {%- endfor -%}
-          </div>
-        {%- endif -%}
-      {%- endfor -%}
-      <div class="bz-set__total">
-        <div>
-          <span class="bz-note"><span data-bz-count>{{ active_count }}</span> pezzi scelti</span>
-          <div class="bz-set__sum" data-bz-sum>{% render 'bz-money', cents: active_total %}</div>
-        </div>
-        <button class="bz-btn bz-btn--gold" type="button" data-bz-add-set>Aggiungi al carrello <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-      </div>
-    </div>
-    <div class="bz-set__visual">
-      {%- for block in section.blocks -%}
-        {%- if block.type == 'set' -%}
-          {%- liquid
-            assign shot = block.settings.image
-            if shot == blank
-              assign shot_keys = 'product_1,product_2,product_3' | split: ','
-              for shot_key in shot_keys
-                assign shot_product = block.settings[shot_key]
-                if shot == blank and shot_product != blank and shot_product.featured_image != blank
-                  assign shot = shot_product.featured_image
-                endif
-              endfor
-            endif
-          -%}
-          <span data-bz-shot="ritual-{{ forloop.index }}"{% unless forloop.first %} hidden{% endunless %}>
-            {%- if shot != blank -%}
-              {{ shot | image_url: width: 1200 | image_tag: alt: block.settings.caption_title, width: 800, height: 600, loading: 'lazy' }}
-            {%- endif -%}
-            {%- if block.settings.caption_title != blank -%}
-              <div class="bz-set__caption">
-                <h3>{{ block.settings.caption_title | escape }} <em>{{ block.settings.caption_accent | escape }}</em></h3>
-                <p>{{ block.settings.caption | escape }}</p>
-              </div>
-            {%- endif -%}
-          </span>
-        {%- endif -%}
-      {%- endfor -%}
-    </div>
-  </div>
-</div>
-<script src="{{ 'bz-home.js' | asset_url }}" defer></script>
+{%- elsif product == blank -%}
+  {%- assign sets = section.blocks | where: 'type', 'set' -%}
+  {%- if sets.size > 0 -%}
+    {% render 'bz-ritual-sets', blocks: sets %}
+  {%- endif -%}
 {%- endif -%}
 
 {% schema %}
@@ -234,6 +93,7 @@
     { "type": "text", "id": "heading_accent", "label": "Titolo in corsivo", "default": "il rituale" },
     { "type": "text", "id": "link_label", "label": "Link" },
     { "type": "url", "id": "link", "label": "Destinazione" },
+    { "type": "checkbox", "id": "bundle_discount", "label": "Prezzo del prodotto bundle", "default": false },
     { "type": "textarea", "id": "intro", "label": "Introduzione", "default": "Due o tre pezzi che stanno bene con questo." }
   ],
   "blocks": [
@@ -242,6 +102,7 @@
       "name": "Set della home",
       "settings": [
         { "type": "text", "id": "label", "label": "Nome", "default": "Tutto nero" },
+        { "type": "product", "id": "bundle_product", "label": "Prodotto bundle" },
         { "type": "product", "id": "product_1", "label": "Primo pezzo" },
         { "type": "product", "id": "product_2", "label": "Secondo pezzo" },
         { "type": "product", "id": "product_3", "label": "Terzo pezzo" },

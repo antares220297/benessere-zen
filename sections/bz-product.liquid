@@ -63,7 +63,7 @@
       </div>
       <div class="bz-stage">
         {%- if product.featured_image -%}
-          {{ product.featured_image | image_url: width: 1400 | image_tag: alt: product.featured_image.alt, id: 'BzStage', widths: '600, 1000, 1400', sizes: '(min-width: 860px) 45vw, 100vw', width: 900, height: 900 }}
+          {{ product.featured_image | image_url: width: 1400 | image_tag: alt: product.featured_image.alt, id: 'BzStage', loading: 'eager', fetchpriority: 'high', preload: true, widths: '600, 1000, 1400', sizes: '(min-width: 860px) 45vw, 100vw', width: 900, height: 900 }}
         {%- endif -%}
         <div class="bz-stage__badges">
           {%- if current.inventory_management != blank and current.inventory_quantity == 1 and current.available -%}
@@ -248,7 +248,7 @@
       {%- if pair != blank and pair.id != blank -%}
         <div class="bz-pair">
           {%- if pair.featured_image -%}
-            {{ pair.featured_image | image_url: width: 120 | image_tag: alt: pair.title, width: 52, height: 52 }}
+            {{ pair.featured_image | image_url: width: 120 | image_tag: alt: pair.title, loading: 'lazy', width: 52, height: 52 }}
           {%- endif -%}
           <div>Si abbina a {{ pair.title | escape }}<small>{% render 'bz-money', cents: pair.price %}</small></div>
           <form class="bz-ajax-cart" action="{{ routes.cart_add_url }}" method="post">
@@ -419,10 +419,10 @@
   </div>
   {%- endif -%}
 
-  <form class="bz-sticky bz-ajax-cart" action="{{ routes.cart_add_url }}" method="post">
+  <form class="bz-sticky bz-ajax-cart" inert action="{{ routes.cart_add_url }}" method="post">
     <input type="hidden" name="id" value="{{ current.id }}">
     {%- if product.featured_image -%}
-      {{ product.featured_image | image_url: width: 100 | image_tag: alt: '', width: 44, height: 44 }}
+      {{ product.featured_image | image_url: width: 100 | image_tag: alt: '', loading: 'lazy', width: 44, height: 44 }}
     {%- endif -%}
     <span><em class="bz-sticky__name">{{ product.title | escape }}</em><b>{% render 'bz-money', cents: product.price %}</b></span>
     <button type="submit"{% unless current.available %} disabled{% endunless %}>{% if current.available %}Aggiungi{% else %}Esaurito{% endif %}</button>
