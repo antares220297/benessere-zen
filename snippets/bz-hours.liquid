@@ -1,5 +1,5 @@
 {% comment %}
-  Single hours source. part: boot | summary | footer
+  Single hours source. part: boot | summary | footer | table
 {% endcomment %}
 {%- liquid
   assign mon = settings.bz_hours_mon
@@ -9,7 +9,7 @@
   assign fri = settings.bz_hours_fri
   assign sat = settings.bz_hours_sat
   assign sun = settings.bz_hours_sun
-  assign note = settings.bz_sunday_note | default: 'Domenica: dal 1° dicembre aperto, orari in arrivo'
+  assign note = settings.bz_sunday_note | default: 'Dal 1 dicembre aperti anche la domenica'
 
   assign pretty_mon = mon | replace: ',', ' e ' | replace: '-', '–' | replace: '09:', '9:' | replace: '08:', '8:'
   assign pretty_thu = thu | replace: ',', ' e ' | replace: '-', '–' | replace: '09:', '9:' | replace: '08:', '8:'
@@ -74,6 +74,25 @@
       "exceptions": {{ settings.bz_hours_exceptions | json }}
     }
   </script>
+{%- elsif part == 'table' -%}
+  <table class="shop-hours-table">
+    <caption class="sr-only">Orari del negozio</caption>
+    <tbody>
+      {%- assign rows = 'mon:Lunedì,tue:Martedì,wed:Mercoledì,thu:Giovedì,fri:Venerdì,sat:Sabato,sun:Domenica' | split: ',' -%}
+      {%- for row in rows -%}
+        {%- liquid
+          assign fields = row | split: ':'
+          assign key = fields.first | prepend: 'bz_hours_'
+          assign intervals = settings[key] | replace: ',', ' e ' | replace: '-', '–' | replace: '09:', '9:' | replace: '08:', '8:'
+          assign day = forloop.index | modulo: 7
+        -%}
+        <tr data-shop-day="{{ day }}">
+          <th scope="row">{{ fields.last }}</th>
+          <td>{% if day == 0 and intervals == blank %}{{ note | escape }}{% else %}{{ intervals | default: 'Chiuso' | escape }}{% endif %}</td>
+        </tr>
+      {%- endfor -%}
+    </tbody>
+  </table>
 {%- elsif part == 'footer' -%}
   Orari: {{ footer_line | strip }}
 {%- else -%}

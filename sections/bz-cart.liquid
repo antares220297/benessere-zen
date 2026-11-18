@@ -41,12 +41,12 @@
           <div class="track" role="progressbar" aria-label="Avanzamento verso la spedizione gratuita" aria-valuemin="0" aria-valuemax="{{ goal }}" aria-valuenow="{{ cart.total_price }}">
             <span style="transform:scaleX({{ cart.total_price | times: 1.0 | divided_by: goal | at_most: 1 }})"></span>
           </div>
-          <span>{{ settings.bz_free_shipping | default: 50 }} €</span>
+          <span>{{ settings.bz_free_shipping | default: 50 }}&nbsp;€</span>
         </div>
       </div>
       <div class="cart-total"><span>Totale</span><strong id="cart-total">{% render 'bz-money', cents: cart.total_price %}</strong></div>
       <a class="btn gold checkout" href="{{ routes.cart_url }}/checkout">Vai al pagamento →</a>
-      <p>Spediamo solo in Italia. Il corriere Express è {{ settings.bz_express_rate | default: '5,90' }} €, gratuito da {{ settings.bz_free_shipping | default: 50 }} €.</p>
+      <p>Spediamo solo in Italia. Il corriere Express è {{ settings.bz_express_rate | default: '5,90' }}&nbsp;€, gratuito da {{ settings.bz_free_shipping | default: 50 }}&nbsp;€.</p>
       <div class="pickup-note">
         {% render 'bz-icon', name: 'storefront' %}
         <div>

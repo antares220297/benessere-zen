@@ -1,0 +1,37 @@
+{%- comment -%} Signed two-level menu. A group starts with its title, followed by label/route pairs. {%- endcomment -%}
+{%- capture items -%}
+  Pietre e rituali~Tutto Pietre e rituali|/pages/pietre-e-rituali~Gioielli con pietre|/collections/gioielli-con-pietre~Mala tibetani|/collections/mala-tibetani~Pietre e cristalli|/collections/pietre-burattate~Pendoli|/collections/pendoli~Candele|/collections/candele-e-brucia-candele~Incensi e smudge|/collections/incensi-e-brucia-incensi~Statuette e casa|/collections/statuette~Ultimi pezzi|/collections/ultimi-pezzi;
+  Cura di sé~Tutto Cura di sé|/pages/cura-di-se~Viso|/collections/cosmetica~Corpo|/collections/cosmesi-corpo~Capelli|/collections/prodotti-per-capelli~Igiene e bagno|/collections/cura-della-persona~Ayurveda|/pages/cose-layurveda~Oli e profumi|/collections/essenze-e-brucia-essenze~Tè e tisane|/collections/te-tisane;
+  Il negozio|/pages/il-negozio;
+  Chi siamo|/pages/chi-siamo;
+  Contatti|/pages/contact
+{%- endcapture -%}
+{%- assign groups = items | split: ';' -%}
+<ul class="bz-menu-list">
+  {%- for group in groups -%}
+    {%- assign entries = group | strip | split: '~' -%}
+    <li class="bz-menu-item">
+      {%- if entries.size > 1 -%}
+        <details class="bz-menu-group">
+          <summary class="bz-menu-top">
+            {{ entries.first | escape }}
+            {% render 'bz-icon', name: 'expand_more' %}
+          </summary>
+          <ul class="bz-menu-sub">
+            {%- for entry in entries offset: 1 -%}
+              {%- assign link = entry | split: '|' -%}
+              {%- assign link_path = routes.root_url | append: link.last | replace: '//', '/' -%}
+              <li{% if forloop.first %} class="bz-menu-all"{% endif %}>
+                <a href="{{ link_path }}"{% if request.path == link_path %} aria-current="page"{% endif %}>{{ link.first | escape }}</a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </details>
+      {%- else -%}
+        {%- assign link = entries.first | split: '|' -%}
+        {%- assign link_path = routes.root_url | append: link.last | replace: '//', '/' -%}
+        <a class="bz-menu-top" href="{{ link_path }}"{% if request.path == link_path %} aria-current="page"{% endif %}>{{ link.first | escape }}</a>
+      {%- endif -%}
+    </li>
+  {%- endfor -%}
+</ul>

@@ -1,12 +1,3 @@
-{%- liquid
-  assign nav = section.settings.menu
-  if nav == blank or nav.links.size == 0
-    assign nav = linklists['main-menu']
-  endif
-  if nav == blank or nav.links.size == 0
-    assign nav = linklists['bz-menu-v2']
-  endif
--%}
 <header>
   <a class="brand" href="{{ routes.root_url }}">
     {%- if section.settings.logo != blank -%}
@@ -17,19 +8,11 @@
     <span>{{ section.settings.wordmark_lead | default: 'Benessere' | escape }} <em>{{ section.settings.wordmark_accent | default: 'Zen' | escape }}</em></span>
   </a>
   <nav class="main-nav" aria-label="{{ section.settings.menu_label | default: 'Menu principale' | escape }}">
-    {%- for link in nav.links -%}
-      <div class="nav-item">
-        {%- if link.links.size > 0 -%}
-          <a href="{{ link.url }}" data-vetrina="{{ forloop.index0 }}" aria-expanded="false" aria-controls="vetrina">{{ link.title | escape }}</a>
-        {%- else -%}
-          <a href="{{ link.url }}" {% if link.current %}aria-current="page"{% endif %}>{{ link.title | escape }}</a>
-        {%- endif -%}
-      </div>
-    {%- endfor -%}
+    {% render 'bz-menu' %}
   </nav>
   <div class="header-actions">
     <a href="{{ routes.search_url }}" aria-label="{{ section.settings.search_label | default: 'Cerca' | escape }}">{% render 'bz-icon', name: 'hdr-search' %}</a>
-    <a href="{{ routes.account_url }}" aria-label="{{ section.settings.account_label | default: 'Account' | escape }}">{% render 'bz-icon', name: 'hdr-account' %}</a>
+    <a class="bz-header-account" href="{{ routes.account_url }}" aria-label="{{ section.settings.account_label | default: 'Account' | escape }}">{% render 'bz-icon', name: 'hdr-account' %}</a>
     <button type="button" data-cart-open aria-label="{{ section.settings.cart_label | default: 'Carrello' | escape }}">
       {% render 'bz-icon', name: 'hdr-bag' %}
       <span class="sr-only" data-cart-count>{{ cart.item_count }}</span>
@@ -37,132 +20,24 @@
     <button class="menu-toggle" type="button" data-bz-burger aria-label="Apri menu" aria-expanded="false" aria-controls="bz-mobile">{% render 'bz-icon', name: 'menu' %}</button>
   </div>
 
-  <section class="vetrina" id="vetrina" aria-label="Categorie del catalogo" hidden>
-    <div class="vetrina-top">
-      <a class="text-link" data-world-link href="{{ routes.root_url }}">Vedi tutto →</a>
-      <button class="vetrina-close" type="button" aria-label="Chiudi menu">{% render 'bz-icon', name: 'close' %}</button>
-    </div>
-    {%- for link in nav.links -%}
-      {%- if link.links.size > 0 -%}
-        <div class="b-panel" data-world="{{ forloop.index0 }}" {% unless forloop.first %}hidden{% endunless %}>
-          <nav class="b-mothers" aria-label="{{ link.title | escape }}">
-            {%- for child in link.links -%}
-              <div class="mother-row{% if forloop.first %} is-active{% endif %}">
-                <a href="{% render 'bz-link', link: child %}">{{ child.title | escape }}</a>
-                <button type="button" data-mother="{{ forloop.index0 }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}" aria-label="{{ child.title | escape }}">{% render 'bz-icon', name: 'chevron_right' %}</button>
-              </div>
-            {%- endfor -%}
-          </nav>
-          <div class="b-children">
-            {%- for child in link.links -%}
-              <div data-children="{{ forloop.index0 }}" {% unless forloop.first %}hidden{% endunless %}>
-                {%- for grand in child.links -%}
-                  <a class="m-child" href="{% render 'bz-link', link: grand %}">{{ grand.title | escape }}</a>
-                {%- endfor -%}
-                {%- if child.links.size == 0 -%}
-                  <a class="m-child" href="{% render 'bz-link', link: child %}">Vedi tutto</a>
-                {%- endif -%}
-              </div>
-            {%- endfor -%}
-          </div>
-          <div class="b-photo">
-            {%- for child in link.links -%}
-              {%- liquid
-                assign photo_collection = child.object
-                if photo_collection == blank or photo_collection.products_count == nil
-                  assign photo_collection = blank
-                endif
-                assign photo = photo_collection.image | default: photo_collection.featured_image
-                if photo == blank and photo_collection.products.first
-                  assign photo = photo_collection.products.first.featured_image
-                endif
-              -%}
-              <a class="photo-face" data-photo="{{ forloop.index0 }}" href="{% render 'bz-link', link: child %}" {% unless forloop.first %}hidden{% endunless %}>
-                {%- if photo != blank -%}
-                  {{ photo | image_url: width: 900 | image_tag: alt: child.title, loading: 'lazy', widths: '400, 700, 900', sizes: '380px' }}
-                {%- endif -%}
-                <div>
-                  <h3>{{ child.title | escape }}</h3>
-                  {%- if photo_collection.title != blank -%}
-                    {%- capture min_cents -%}{% render 'bz-min-price', handle: photo_collection.handle %}{%- endcapture -%}
-                    {%- assign min_cents = min_cents | strip -%}
-                    <p>{%- if min_cents != blank -%}da {% render 'bz-money', cents: min_cents %}{% endif %}</p>
-                  {%- endif -%}
-                  <span class="btn outline">Vedi tutto →</span>
-                </div>
-              </a>
-            {%- endfor -%}
-          </div>
-        </div>
-      {%- endif -%}
-    {%- endfor -%}
-  </section>
 </header>
 
-<nav class="mobile-nav menu-shade" id="bz-mobile" hidden aria-label="Menu mobile">
-  <button class="menu-backdrop" type="button" aria-label="Chiudi menu"></button>
-  <aside class="menu-dialog" role="dialog" aria-modal="true" aria-labelledby="mobile-title" tabindex="-1">
+<div class="mobile-nav menu-shade" id="bz-mobile" hidden>
+  <aside class="menu-dialog" role="dialog" aria-modal="true" aria-labelledby="mobile-title">
     <div class="menu-heading">
-      <span id="mobile-title">Benessere <em>Zen</em></span>
+      <span id="mobile-title">{{ section.settings.wordmark_lead | default: 'Benessere' | escape }} <em>{{ section.settings.wordmark_accent | default: 'Zen' | escape }}</em></span>
       <button class="phone-close" type="button" aria-label="Chiudi menu">{% render 'bz-icon', name: 'close' %}</button>
     </div>
-    <div class="mobile-content">
-      <div class="phone-start">
-        <form class="phone-search" action="{{ routes.search_url }}" method="get" role="search">
-          <label class="sr-only" for="menu-search">Cerca</label>
-          <div>
-            <input id="menu-search" type="search" name="q" placeholder="Cerca">
-            <button type="submit" aria-label="Cerca">{% render 'bz-icon', name: 'search' %}</button>
-          </div>
-        </form>
-        <div class="phone-doors">
-          {%- for link in nav.links -%}
-            {%- if link.links.size > 0 -%}
-              <button class="phone-door" type="button" data-door="{{ forloop.index0 }}">
-                <span>{{ link.title | escape }}</span>
-                {% render 'bz-icon', name: 'north_east' %}
-              </button>
-            {%- endif -%}
-          {%- endfor -%}
-        </div>
-        <nav class="phone-links">
-          {%- for link in nav.links -%}
-            {%- if link.links.size == 0 -%}
-              <a href="{{ link.url }}">{% render 'bz-icon', name: 'storefront' %}{{ link.title | escape }}</a>
-            {%- endif -%}
-          {%- endfor -%}
-        </nav>
-      </div>
-      {%- for link in nav.links -%}
-        {%- if link.links.size > 0 -%}
-          <div class="phone-panel" data-panel="{{ forloop.index0 }}" hidden>
-            <button class="phone-back" type="button">{% render 'bz-icon', name: 'arrow_back' %} {{ link.title | escape }}</button>
-            <div class="phone-groups">
-              {%- for child in link.links -%}
-                <div class="phone-group">
-                  {%- if child.links.size > 0 -%}
-                    <button class="phone-row mother-row" type="button" aria-expanded="false">{{ child.title | escape }} {% render 'bz-icon', name: 'expand_more' %}</button>
-                    <div class="phone-group-children" hidden>
-                      {%- for grand in child.links -%}
-                        <a href="{% render 'bz-link', link: grand %}">{{ grand.title | escape }}</a>
-                      {%- endfor -%}
-                    </div>
-                  {%- else -%}
-                    <a class="phone-row" href="{% render 'bz-link', link: child %}">{{ child.title | escape }} {% render 'bz-icon', name: 'north_east' %}</a>
-                  {%- endif -%}
-                </div>
-              {%- endfor -%}
-            </div>
-          </div>
-        {%- endif -%}
-      {%- endfor -%}
+    <nav class="mobile-content" aria-label="Menu mobile">
+      {% render 'bz-menu' %}
       <div class="phone-bottom">
-        {% render 'bz-open-badge', variant: 'compact', linked: true %}
-        <p>{{ settings.bz_address | default: 'Via Marcello Provenzali 1, 44042 Cento FE' }}</p>
+        {%- assign visit_url = pages['il-negozio'].url | default: '/pages/il-negozio' -%}
+        {% render 'bz-open-badge', variant: 'compact', linked: true, url: visit_url %}
+        <p>{{ settings.bz_address | default: 'Via Marcello Provenzali 1, 44042 Cento FE' | escape }}</p>
       </div>
-    </div>
+    </nav>
   </aside>
-</nav>
+</div>
 
 <div class="cart-overlay" hidden>
   <button class="backdrop" type="button" data-cart-close aria-label="Chiudi carrello"></button>
@@ -179,7 +54,7 @@
         <div class="track" role="progressbar" aria-valuemin="0" aria-valuemax="{{ goal }}" aria-valuenow="{{ cart.total_price }}">
           <span style="transform:scaleX({{ cart.total_price | times: 1.0 | divided_by: goal | at_most: 1 }})"></span>
         </div>
-        <span>{{ settings.bz_free_shipping | default: 50 }} €</span>
+        <span>{{ settings.bz_free_shipping | default: 50 }}&nbsp;€</span>
       </div>
     </div>
     <div data-cart-rows>

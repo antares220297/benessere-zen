@@ -3036,7 +3036,7 @@
         "type": "text",
         "id": "bz_sunday_note",
         "label": "Testo domenica senza orari",
-        "default": "Domenica: dal 1° dicembre aperto, orari in arrivo"
+        "default": "Dal 1 dicembre aperti anche la domenica"
       },
       {
         "type": "textarea",

@@ -60,7 +60,7 @@
           var euros = Math.floor(cents / 100);
           var rest = String(cents % 100).padStart(2, "0");
           var grouped = String(euros).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-          priceNode.textContent = grouped + "," + rest + " €";
+          priceNode.textContent = grouped + "," + rest + "\u00a0€";
         }
       });
     });

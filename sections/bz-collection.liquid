@@ -1,3 +1,6 @@
+{%- if collection.handle == 'cosmetica' or collection.handle == 'cosmesi-corpo' -%}
+  {% render 'bz-collection-groups' %}
+{%- else -%}
 {%- liquid
   assign per_page = section.settings.per_page | default: 24
   assign accent = section.settings.heading_accent
@@ -188,11 +191,14 @@
     root.querySelectorAll('[data-filters-close]').forEach(function (button) { button.addEventListener('click', function () { setOpen(false); }); });
   })();
 </script>
+{%- endif -%}
 {% schema %}
 {
   "name": "Collezione",
   "class": "bz-home",
   "settings": [
+    {"type": "textarea", "id": "viso_intro", "label": "Descrizione viso", "default": "Il rituale del viso, un passo alla volta: detergere, tonificare, trattare. Per ogni passaggio trovi formule a base di piante e argille, come aloe, bardana e argilla verde."},
+    {"type": "textarea", "id": "corpo_intro", "label": "Descrizione corpo", "default": "Uno scrub per rinnovare la pelle, un olio o una crema da stendere dopo la doccia, un balsamo da massaggiare. Diverse formule vengono dalla tradizione ayurvedica."},
     { "type": "text", "id": "heading", "label": "Titolo (non usato: vale il titolo della collezione)" },
     { "type": "text", "id": "heading_accent", "label": "Parola in corsivo", "default": "pietre" },
     { "type": "text", "id": "accent", "label": "Accento" },

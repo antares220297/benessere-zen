@@ -3,130 +3,311 @@
     "page": {
       "type": "bz-ayurveda",
       "settings": {
-        "collection_link": "/collections/ayurveda",
-        "origin_products": [
-          "sapone-curcuma-holy-lama",
-          "olio-profumato-naturale-sandalwood-10-ml"
-        ],
-        "picked_products": [
-          "protein-shampoo-volumizzante-laghu-200ml",
-          "sapone-yogi-di-holy-lama-alla-lavanda",
-          "sapone-yogi-di-holy-lama-alla-rosa",
-          "olio-profumato-naturale-sandalwood-10-ml"
-        ],
-        "oli_products": [
-          "profumo-vapo-per-ambienti",
-          "olio-profumato-naturale-opium-10-ml",
-          "olio-profumato-naturale-oudh-10-ml",
-          "oli-profumati-corpo-ancient-witch-perduto-nel-peccato"
-        ],
-        "tisane_products": [
-          "spray-per-ambienti-eye-of-providence-salvia-e-te-bianco",
-          "incensi-sagrada-madre-botanico-te-verde-e-champa",
-          "mug-infusore-per-te-buddha-paradiso",
-          "mug-infusore-per-te-albero-della-vita"
-        ],
-        "counsel_product": "olio-ayurvedico-viola-armonia"
+        "intro": "L'Ayurveda è la medicina tradizionale dell'India, con radici che risalgono a circa tremila anni fa. Il nome unisce due parole sanscrite: āyus, «vita», e veda, «conoscenza». Guarda alla persona intera: cinque elementi, tre dosha, abitudini di ogni giorno. Qui trovi le basi spiegate in breve e gli oli, i saponi e le tisane che arrivano da questa tradizione.",
+        "overview": "<p>Ayurveda viene dal sanscrito. Āyus vuol dire «vita», nel senso di una vita lunga e piena, e veda vuol dire «conoscenza»: per questo si traduce spesso «scienza della vita». Gli stessi testi classici la legano all'Atharvaveda, uno dei quattro Veda, i testi sacri dell'India antica.</p><p>Secondo l'Ayurveda il mondo è fatto di cinque elementi: terra, acqua, fuoco, aria ed etere. Nella persona si combinano in tre dosha, vata, pitta e kapha, e ognuno ha la sua proporzione. La tradizione cerca l'equilibrio tra i tre e lo coltiva prima di tutto con le abitudini: una routine del mattino (dinacharya) fatta di gesti semplici, come pulire la lingua, massaggiarsi con l'olio e fare il bagno, e un'attenzione speciale al cibo e alle stagioni.</p>"
+      }
+    },
+    "timeline": {
+      "type": "bz-ayurveda-timeline",
+      "blocks": {
+        "stage-1": {
+          "type": "stage",
+          "settings": {
+            "date": "Circa 1200 a.C.",
+            "title": "L'Atharvaveda",
+            "body": "<p>È il Veda più ricco di nozioni sul corpo e sulle piante. Gli inni più antichi risalgono a circa il 1200 a.C.; Britannica colloca i primi concetti dell'Ayurveda nel II millennio a.C. I testi ayurvedici successivi si dichiarano eredi di questo Veda.</p>",
+            "numeral": "I",
+            "painting": "tappa-1-atharvaveda",
+            "image_alt": "Dipinto evocativo in stile miniatura con cornice a fiori rossi: tre saggi dai capelli bianchi siedono attorno a un altare del fuoco sotto un baniano, mentre un ragazzo porta cesti di erbe appena raccolte"
+          }
+        },
+        "stage-2": {
+          "type": "stage",
+          "settings": {
+            "date": "Tra il 100 a.C. e il 200 d.C. circa",
+            "title": "La Charaka Samhita",
+            "body": "<p>È il grande trattato di medicina generale dell'Ayurveda. Il testo che leggiamo oggi è stato rivisto e completato da Dṛḍhabala, tra il IV e il VI secolo.</p>",
+            "numeral": "II",
+            "painting": "tappa-2-charaka",
+            "image_alt": "Dipinto evocativo in stile miniatura con margine dorato: un anziano maestro con il turbante insegna a tre allievi su un tappeto in giardino, accanto a un mortaio, ciotole di erbe e radici"
+          }
+        },
+        "stage-3": {
+          "type": "stage",
+          "settings": {
+            "date": "Dagli ultimi secoli a.C. al 500 d.C. circa",
+            "title": "La Sushruta Samhita",
+            "body": "<p>È il trattato che si occupa anche di chirurgia. È nato in più strati: la composizione comincia negli ultimi secoli a.C. e la versione arrivata fino a noi esisteva già entro il 300-500 d.C. La data del 600 a.C., che si legge spesso, oggi gli studiosi non la accettano più.</p>",
+            "numeral": "III",
+            "painting": "tappa-3-sushruta",
+            "image_alt": "Dipinto evocativo in stile affresco consumato, con crepe e cadute di intonaco: un guaritore fascia il braccio di un uomo seduto, mentre una donna regge un vassoio con una ciotola e bende di cotone"
+          }
+        },
+        "stage-4": {
+          "type": "stage",
+          "settings": {
+            "date": "Circa 600 d.C.",
+            "title": "L'Ashtanga Hridaya di Vagbhata",
+            "body": "<p>Riunisce in versi gli insegnamenti di Charaka e Sushruta ed è uno dei testi più commentati della tradizione. Insieme agli altri due forma i «tre grandi» dell'Ayurveda.</p>",
+            "numeral": "IV",
+            "painting": "tappa-4-vagbhata",
+            "image_alt": "Dipinto evocativo a olio in cornice dorata: uno studioso in scialle bianco riflette sotto un padiglione in giardino, con mortaio, spezie, piante di tulsi e un fascio di foglie di palma chiuso"
+          }
+        }
+      },
+      "block_order": [
+        "stage-1",
+        "stage-2",
+        "stage-3",
+        "stage-4"
+      ],
+      "settings": {
+        "heading": "Una storia di <em>millenni</em>",
+        "line_color": "#c9a96e",
+        "curve_width": 100,
+        "disable_sticky": false
+      }
+    },
+    "details": {
+      "type": "bz-ayurveda-details",
+      "settings": {
+        "products_intro": "In negozio abbiamo una scelta di prodotti che vengono dalla tradizione ayurvedica, per la cura di ogni giorno. Sono cosmetici, tè e accessori, non rimedi: li trovi divisi per gesto.",
+        "disclaimer": "Le informazioni di questa pagina descrivono la tradizione ayurvedica e, come i prodotti, non sostituiscono il parere del medico.",
+        "vata_text": "",
+        "pitta_text": "",
+        "kapha_text": ""
       },
       "blocks": {
-        "s0": {
-          "type": "sphere",
-          "settings": {
-            "label": "Viso",
-            "collection": "cosmesi-viso-ayurvedica"
-          }
-        },
-        "s1": {
-          "type": "sphere",
-          "settings": {
-            "label": "Corpo",
-            "collection": "cosmesi-corpo-ayurvedica"
-          }
-        },
-        "s2": {
-          "type": "sphere",
-          "settings": {
-            "label": "Tè",
-            "collection": "te-e-tisane-ayurvediche"
-          }
-        },
         "d0": {
           "type": "dosha_product",
           "settings": {
             "dosha": "0",
-            "product": "olio-ayurvedico-corpo-viso-sandalo-himalayas-dreams"
+            "product": "olio-ayurvedico-corpo-viso-sandalo-himalayas-dreams",
+            "label": ""
           }
         },
         "d1": {
           "type": "dosha_product",
           "settings": {
             "dosha": "0",
-            "product": "olio-profumato-ayurveda-vaniglia"
+            "product": "olio-profumato-ayurveda-vaniglia",
+            "label": ""
           }
         },
         "d2": {
           "type": "dosha_product",
           "settings": {
             "dosha": "0",
-            "product": "sapone-yogi-di-holy-lama-alla-lavanda"
+            "product": "sapone-yogi-di-holy-lama-alla-lavanda",
+            "label": ""
           }
         },
         "d3": {
           "type": "dosha_product",
           "settings": {
             "dosha": "1",
-            "product": "olio-ayurvedico-loto-rosa-felicita"
+            "product": "olio-ayurvedico-loto-rosa-felicita",
+            "label": ""
           }
         },
         "d4": {
           "type": "dosha_product",
           "settings": {
             "dosha": "1",
-            "product": "sapone-yogi-di-holy-lama-alla-rosa"
+            "product": "sapone-yogi-di-holy-lama-alla-rosa",
+            "label": ""
           }
         },
         "d5": {
           "type": "dosha_product",
           "settings": {
             "dosha": "1",
-            "product": "olio-profumato-naturale-sandalwood-10-ml"
+            "product": "olio-profumato-naturale-sandalwood-10-ml",
+            "label": ""
           }
         },
         "d6": {
           "type": "dosha_product",
           "settings": {
             "dosha": "2",
-            "product": "olio-ayurvedico-santulan-himalayas-dreams"
+            "product": "olio-da-massaggio-naturale-gold",
+            "label": ""
           }
         },
         "d7": {
           "type": "dosha_product",
           "settings": {
             "dosha": "2",
-            "product": "sapone-curcuma-holy-lama"
+            "product": "sapone-curcuma-holy-lama",
+            "label": ""
           }
         },
         "d8": {
           "type": "dosha_product",
           "settings": {
             "dosha": "2",
-            "product": "te-yogi-speziato"
+            "product": "te-yogi-speziato",
+            "label": ""
           }
         },
-        "s3": {
-          "type": "sphere",
+        "oli": {
+          "type": "category",
           "settings": {
-            "label": "Capelli",
-            "collection": "prodotti-per-capelli-ayurvedici",
-            "image_asset": "bz-sfera-ay-capelli.jpg"
+            "anchor": "oli",
+            "title": "Oli per il <em>massaggio</em> (abhyanga)",
+            "body": "<p>L'abhyanga è il massaggio con olio che la tradizione ayurvedica mette nella routine del mattino, prima del bagno. Si stende su tutto il corpo, con più attenzione a testa, orecchie e piedi, e gli oli classici sono quelli di sesamo e di cocco. Qui trovi oli per corpo e viso a base di mandorla, sesamo o crusca di riso, e un balsamo da massaggio con olio di sesamo, burro di karité e 18 erbe.</p>",
+            "link": "/collections/cosmesi-viso-ayurvedica",
+            "products": [
+              "olio-ayurvedico-corpo-viso-sandalo-himalayas-dreams",
+              "olio-ayurvedico-viola-armonia",
+              "olio-ayurvedico-loto-rosa-felicita",
+              "ayurvenat-balsamo-massaggio-18-erbe-bio",
+              "olio-ayurvedico-rosa-equilibrio",
+              "olio-ayurvedico-centella-chiarezza-himalayas-dreams"
+            ],
+            "product_labels": "olio-ayurvedico-corpo-viso-sandalo-himalayas-dreams|Olio ayurvedico corpo e viso di Himalaya’s Dreams, sandalo\nolio-ayurvedico-viola-armonia|Olio ayurvedico corpo e viso di Himalaya’s Dreams con viola\nolio-ayurvedico-loto-rosa-felicita|Olio ayurvedico corpo e viso di Himalaya’s Dreams con loto\nayurvenat-balsamo-massaggio-18-erbe-bio|Balsamo massaggio 18 erbe ayurvediche BIO - Ayurvenat, 50 ml\nolio-ayurvedico-rosa-equilibrio|Olio ayurvedico corpo e viso di Himalaya’s Dreams con rosa\nolio-ayurvedico-centella-chiarezza-himalayas-dreams|Olio ayurvedico corpo e viso di Himalaya’s Dreams con centella"
+          }
+        },
+        "oil-pulling": {
+          "type": "category",
+          "settings": {
+            "anchor": "oil-pulling",
+            "title": "<em>Oil pulling</em> e cura della bocca",
+            "body": "<p>Nella routine ayurvedica la giornata comincia dalla bocca. Prima si passa il nettalingua, poi si fa il gandusha: si tiene in bocca un liquido, per esempio olio di sesamo, e lo si muove piano. Oggi questo gesto si chiama oil pulling. L'olio Balance unisce sesamo, cocco e spezie, e il nettalingua è in rame.</p>",
+            "link": "/collections/igiene-e-cura-della-persona-ayurvedica",
+            "products": [
+              "olio-ayurvedico-santulan-himalayas-dreams",
+              "netta-lingua-rame",
+              "ayurvenat-dentifricio-miswak-organico",
+              "olio-dentale-curcuma-organico-eliah-sahil"
+            ],
+            "product_labels": "olio-ayurvedico-santulan-himalayas-dreams|Olio Balance per l'oil pulling\nnetta-lingua-rame|Netta lingua in rame, igiene orale naturale\nayurvenat-dentifricio-miswak-organico|Dentifricio con Miswak senza fluoro, 75 ml\nolio-dentale-curcuma-organico-eliah-sahil|Olio alla curcuma per oil pulling"
+          }
+        },
+        "capelli": {
+          "type": "category",
+          "settings": {
+            "anchor": "capelli",
+            "title": "<em>Capelli</em>",
+            "body": "<p>Nell'abhyanga la testa ha un posto suo: la tradizione la massaggia con l'olio prima del bagno. Molti prodotti ayurvedici per capelli usano piante della tradizione indiana, come lo shikakai o la triphala, una miscela di tre frutti (haritaki, bibhitaki e amalaki). L'olio per capelli con triphala si usa come impacco prima dello shampoo.</p>",
+            "link": "/collections/prodotti-per-capelli-ayurvedici",
+            "products": [
+              "rasayana-kesha-olio-capelli-rivitalizzante-con-triphala",
+              "shampoo-rivitalizzante-con-triphala-200ml",
+              "shampoo-ayurvedico-shikakai-limone",
+              "rasayana-balsamo-leave-in-con-triphala-200ml-nutre-le-lunghezze-anticrespo"
+            ],
+            "product_labels": "rasayana-kesha-olio-capelli-rivitalizzante-con-triphala|Olio capelli Rasayana Kesha con Triphala, «Rivitalizzante»\nshampoo-rivitalizzante-con-triphala-200ml|Shampoo Rasayana «Rivitalizzante», 200 ml\nshampoo-ayurvedico-shikakai-limone|Shampoo ayurvedico con Shikakai e limone\nrasayana-balsamo-leave-in-con-triphala-200ml-nutre-le-lunghezze-anticrespo|Balsamo Rasayana leave-in (senza risciacquo) con Triphala"
+          }
+        },
+        "saponi": {
+          "type": "category",
+          "settings": {
+            "anchor": "saponi",
+            "title": "Saponi <em>ayurvedici</em>",
+            "body": "<p>Il bagno chiude la routine del mattino nella tradizione ayurvedica, con acqua né troppo calda né troppo fredda. Le nostre saponette usano erbe e piante della tradizione indiana: curcuma, neem e tulsi, rosa, lavanda. Quella alla lavanda è fatta a mano in India con olio di cocco.</p>",
+            "link": "/collections/saponi-naturali-ayurvedici",
+            "products": [
+              "sapone-curcuma-holy-lama",
+              "holy-lama-sapone-yogi-neem-tulsi",
+              "sapone-yogi-di-holy-lama-alla-lavanda",
+              "sapone-18-erbe-ayurvediche-bio-ayurvenat"
+            ],
+            "product_labels": "sapone-curcuma-holy-lama|Sapone ayurvedico Holy Lama, curcuma, 100 g\nholy-lama-sapone-yogi-neem-tulsi|Sapone ayurvedico Yogi Holy Lama, Neem e Tulsi, 100 g\nsapone-yogi-di-holy-lama-alla-lavanda|Sapone ayurvedico Holy Lama, lavanda, 100 g\nsapone-18-erbe-ayurvediche-bio-ayurvenat|Sapone di Ayurvenat con 18 erbe ayurvediche BIO"
+          }
+        },
+        "te-e-tisane": {
+          "type": "category",
+          "settings": {
+            "anchor": "te-e-tisane",
+            "title": "Tè e <em>tisane</em>",
+            "body": "<p>La tradizione ayurvedica dà molto peso a quello che mangi e bevi, e le spezie hanno un posto importante. Il Tè Yogi è una miscela speziata; la Buddha Box raccoglie 11 infusi biologici di erbe, spezie e fiori. Le tisane della serie Cinque Elementi richiamano terra, acqua, fuoco, aria ed etere: Joyful Silence è quella dell'etere, con mela, limone e spezie.</p>",
+            "link": "/collections/te-e-tisane-ayurvediche",
+            "products": [
+              "te-yogi-speziato",
+              "hari-tea-buddha-box-tutte-le-varieta-organico",
+              "shoti-maa-tisana-joyful-silence",
+              "mug-infusore-per-te-buddha-paradiso"
+            ],
+            "product_labels": "te-yogi-speziato|Tè Yogi speziato, 50 g\nhari-tea-buddha-box-tutte-le-varieta-organico|Hari Tea Buddha box\nshoti-maa-tisana-joyful-silence|Shoti Maa Magic Box, 16 tisane, Joyful Silence, 32 g\nmug-infusore-per-te-buddha-paradiso|Tazza con infusore, Buddha"
+          }
+        },
+        "profumi": {
+          "type": "category",
+          "settings": {
+            "anchor": "profumi",
+            "title": "Profumi in <em>olio</em>",
+            "body": "<p>Nella Charaka Samhita il profumo fa parte della routine di ogni giorno: tra i gesti consigliati c'è quello di portare essenze e ghirlande di fiori. Tra gli aromi che il testo nomina ci sono il sandalo e l'aguru, il legno da cui si ricava l'oudh. I nostri profumi in olio arrivano dall'India, in roll-on da 10 ml: se ne passa poco su polsi e dietro le orecchie.</p>",
+            "link": "/collections/ayurveda",
+            "products": [
+              "olio-profumato-naturale-sandalwood-10-ml",
+              "olio-profumato-naturale-oudh-10-ml",
+              "olio-profumato-ayurveda-vaniglia",
+              "olio-profumato-ayurveda-ambra"
+            ],
+            "product_labels": "olio-profumato-naturale-sandalwood-10-ml|Profumo ayurvedico roll-on, legno di sandalo, 10 ml\nolio-profumato-naturale-oudh-10-ml|Profumo ayurvedico roll-on, oudh, 10 ml\nolio-profumato-ayurveda-vaniglia|Profumo ayurvedico roll-on, vaniglia, 10 ml\nolio-profumato-ayurveda-ambra|Profumo ayurvedico roll-on, ambra, 10 ml"
+          }
+        },
+        "roll-on": {
+          "type": "category",
+          "settings": {
+            "anchor": "roll-on",
+            "title": "Roll-on <em>ayurvedici</em>",
+            "body": "<p>Sono roll-on da 10 ml per viso e corpo, con oli essenziali ed estratti vegetali, che le schede presentano come ayurvedici. La sferetta permette di stenderli con un piccolo massaggio, senza toccare l'olio con le dita.</p>",
+            "link": "/collections/roll-on-ayurvedici",
+            "products": [
+              "energyliner-harmony-roll-on-ayurvedico-himalayas-dreams",
+              "energyliner-balance-skin-roll-on-himalayas-dreams",
+              "energyliner-happiness-skin-roll-on",
+              "energyliner-serenity-roll-on-himalayas-dreams"
+            ],
+            "product_labels": "energyliner-harmony-roll-on-ayurvedico-himalayas-dreams|Roll-on viso e corpo - Energyliner Harmony\nenergyliner-balance-skin-roll-on-himalayas-dreams|Roll-on viso e corpo - Energyliner Balance Skin\nenergyliner-happiness-skin-roll-on|Roll-on viso e corpo - Energyliner Happiness Skin\nenergyliner-serenity-roll-on-himalayas-dreams|Roll-on viso e corpo - Energyliner Serenity"
+          }
+        },
+        "faq-1": {
+          "type": "faq",
+          "settings": {
+            "question": "Che cos'è un dosha?",
+            "answer": "<p>Un dosha è una delle tre energie con cui l'Ayurveda descrive la persona: vata, pitta e kapha. Ognuno nasce da due dei cinque elementi: vata da aria ed etere, pitta da fuoco e acqua, kapha da acqua e terra. Nella tradizione ciascuno di noi li ha tutti e tre, in proporzioni diverse.</p>"
+          }
+        },
+        "faq-2": {
+          "type": "faq",
+          "settings": {
+            "question": "Come capisco qual è il mio dosha?",
+            "answer": "<p>I test che trovi online danno solo un'idea di massima: nella tradizione la valutazione spetta a un medico ayurvedico. Per scegliere un olio o una tisana puoi partire dalle tre schede qui sopra.</p>"
+          }
+        },
+        "faq-3": {
+          "type": "faq",
+          "settings": {
+            "question": "L'Ayurveda è una medicina riconosciuta in Italia?",
+            "answer": "<p>No, in Italia l'Ayurveda non è una medicina ufficiale e non ha una regolamentazione nazionale. Dal 2002 la Federazione degli Ordini dei Medici (FNOMCeO) la considera tra le medicine non convenzionali che può esercitare solo un medico. In India invece è un sistema di medicina riconosciuto dallo Stato, con un ministero dedicato dal 2014.</p>"
+          }
+        },
+        "faq-4": {
+          "type": "faq",
+          "settings": {
+            "question": "Che cos'è l'abhyanga e come si usa l'olio?",
+            "answer": "<p>L'abhyanga è il massaggio con olio della routine ayurvedica del mattino. Si fa prima del bagno, su tutto il corpo, con più attenzione a testa, orecchie e piedi. Per le quantità e il modo d'uso di ogni olio segui l'indicazione in scheda.</p>"
+          }
+        },
+        "faq-5": {
+          "type": "faq",
+          "settings": {
+            "question": "Che cos'è l'oil pulling?",
+            "answer": "<p>L'oil pulling è il nome moderno del gandusha, un gesto della routine ayurvedica: si tiene in bocca un olio, per esempio di sesamo, e lo si muove piano. Nella tradizione si fa al mattino, dopo aver passato il nettalingua. Non sostituisce spazzolino, filo e controlli dal dentista.</p>"
+          }
+        },
+        "faq-6": {
+          "type": "faq",
+          "settings": {
+            "question": "Posso usare questi prodotti se seguo già una terapia?",
+            "answer": "<p>Sono cosmetici, tè e accessori per la cura di ogni giorno, non farmaci. Se segui una terapia, sei in gravidanza o hai dubbi su un ingrediente, chiedi prima al tuo medico.</p>"
           }
         }
       },
       "block_order": [
-        "s0",
-        "s1",
-        "s2",
-        "s3",
         "d0",
         "d1",
         "d2",
@@ -135,11 +316,37 @@
         "d5",
         "d6",
         "d7",
-        "d8"
+        "d8",
+        "oli",
+        "oil-pulling",
+        "capelli",
+        "saponi",
+        "te-e-tisane",
+        "profumi",
+        "roll-on",
+        "faq-1",
+        "faq-2",
+        "faq-3",
+        "faq-4",
+        "faq-5",
+        "faq-6"
       ]
+    },
+    "newsletter": {
+      "type": "bz-newsletter",
+      "settings": {
+        "heading": "I nuovi arrivi,",
+        "heading_accent": "nella tua email",
+        "placeholder": "La tua email",
+        "button_label": "Iscriviti",
+        "note": "Ti scriviamo quando arrivano pietre nuove o tornano quelle finite."
+      }
     }
   },
   "order": [
-    "page"
+    "page",
+    "timeline",
+    "details",
+    "newsletter"
   ]
 }

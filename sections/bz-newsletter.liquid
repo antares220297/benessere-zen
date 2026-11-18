@@ -6,7 +6,7 @@
         <input type="hidden" name="contact[tags]" value="newsletter">
         <label class="news-label bz-vh" for="newsletter-email">{{ section.settings.placeholder | escape }}</label>
         {%- if form.posted_successfully? -%}
-          <p id="newsletter-status" role="status">Fatto. Ci sentiamo il mese prossimo.</p>
+          <p id="newsletter-status" role="status">Fatto. Ti scriviamo al prossimo arrivo.</p>
         {%- else -%}
           <input id="newsletter-email" type="email" name="contact[email]" required aria-label="{{ section.settings.placeholder | escape }}" placeholder="{{ section.settings.placeholder | escape }}" autocomplete="email">
           <button type="submit">{{ section.settings.button_label | escape }}</button>
@@ -21,11 +21,11 @@
 {
   "name": "Newsletter",
   "settings": [
-    { "type": "text", "id": "heading", "label": "Titolo", "default": "Una lettera" },
-    { "type": "text", "id": "heading_accent", "label": "Corsivo", "default": "al mese" },
+    { "type": "text", "id": "heading", "label": "Titolo", "default": "I nuovi arrivi," },
+    { "type": "text", "id": "heading_accent", "label": "Corsivo", "default": "nella tua email" },
     { "type": "text", "id": "placeholder", "label": "Segnaposto", "default": "La tua email" },
     { "type": "text", "id": "button_label", "label": "Pulsante", "default": "Iscriviti" },
-    { "type": "text", "id": "note", "label": "Nota", "default": "Una mail al mese con arrivi e pezzi che tornano disponibili." }
+    { "type": "text", "id": "note", "label": "Nota", "default": "Ti scriviamo quando arrivano pietre nuove o tornano quelle finite." }
   ],
   "presets": [{ "name": "Newsletter" }]
 }

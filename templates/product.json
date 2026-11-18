@@ -14,7 +14,7 @@
       "settings": {
         "store_badge": "Anche in negozio",
         "photo_note": "Pietra naturale: ogni pezzo è un po' diverso",
-        "shipping_note": "Spedizione gratuita da 50 €",
+        "shipping_note": "Spedizione gratuita da 50 €",
         "pickup_link": "",
         "bento_title": "La nappa",
         "bento_accent": "chiude il giro",
@@ -89,7 +89,7 @@
           "type": "detail",
           "settings": {
             "title": "Spedizione, ritiro e reso",
-            "text": "<p>Gratuita da 50 €. Ritiro gratuito in negozio, Reso entro 14 giorni.</p>"
+            "text": "<p>Gratuita da 50 €. Ritiro gratuito in negozio, Reso entro 14 giorni.</p>"
           }
         },
         "cap-1": {

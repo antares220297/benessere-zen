@@ -4,7 +4,7 @@
   assign shop_url = shop_page.url | default: '/pages/il-negozio'
 -%}
 <div class="announcement" role="region" aria-label="{{ section.settings.region_label | escape }}">
-  <span>Spedizione gratuita da <b>{{ threshold }} €</b></span>
+  <span>Spedizione gratuita da <b>{{ threshold }}&nbsp;€</b></span>
   <span><a href="{{ shop_url }}">Ogni pezzo è anche <b>in negozio</b></a></span>
 </div>
 {% schema %}

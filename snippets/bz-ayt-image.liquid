@@ -1,0 +1,9 @@
+{%- assign sizes = '(min-width: 900px) min(480px, 40vw), min(440px, 82vw)' -%}
+{%- if image != blank -%}
+  {{ image | image_url: width: 900 | image_tag: alt: image.alt, widths: '450, 900', sizes: sizes, loading: 'lazy', decoding: 'async' }}
+{%- else -%}
+  {%- assign large = painting | prepend: 'bz-ayt-' | append: '.webp' -%}
+  {%- assign small = painting | prepend: 'bz-ayt-' | append: '-sm.webp' -%}
+  <img src="{{ large | asset_url }}" srcset="{{ small | asset_url }} 450w, {{ large | asset_url }} 900w"
+    sizes="{{ sizes }}" alt="{{ alt | escape }}" width="900" height="1200" loading="lazy" decoding="async">
+{%- endif -%}

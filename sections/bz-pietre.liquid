@@ -8,39 +8,50 @@
     <div class="split-photo"><img src="{{ 'bz-negozio-pietre-e-rituali-copertina.jpg' | asset_url }}" alt="Vaschette di pietre burattate viste dall’alto" width="1400" height="900" fetchpriority="high"></div>
   </section>
 
+  {%- assign months = section.blocks | where: 'type', 'month' -%}
+  {%- assign month_indices = '0,1,2,3,4,5,6,7,8,9,10,11' | split: ',' -%}
   <section class="birthstones" data-birthstones aria-labelledby="birthstone-title">
     <div class="bz-sh">
       <h2 id="birthstone-title">La pietra del tuo <em>mese</em></h2>
       <div class="bz-pills" role="group" aria-label="Scegli il mese">
-        {%- assign current = 'now' | date: '%m' | plus: 0 | minus: 1 | append: '' -%}
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'month' -%}
-            <button type="button" data-month="{{ block.settings.index }}" aria-pressed="{% if block.settings.index == current %}true{% else %}false{% endif %}" aria-label="{{ block.settings.name | escape }}">{{ block.settings.short | escape }}</button>
-          {%- endif -%}
+        {%- assign current = '10' -%}
+        {%- for month_index in month_indices -%}
+          {%- for block in months -%}
+            {%- if block.settings.index == month_index -%}
+              <button type="button" data-month="{{ month_index }}" aria-pressed="{% if month_index == current %}true{% else %}false{% endif %}" aria-controls="birthstone-{{ block.id }}" aria-label="{{ block.settings.name | escape }}">{{ block.settings.short | escape }}</button>
+              {%- break -%}
+            {%- endif -%}
+          {%- endfor -%}
         {%- endfor -%}
       </div>
     </div>
     {%- for block in section.blocks -%}
       {%- if block.type == 'month' -%}
-        <div class="month-panel" data-month-panel="{{ block.settings.index }}" {% unless block.settings.index == current %}hidden{% endunless %} {{ block.shopify_attributes }}>
+        <div class="month-panel" id="birthstone-{{ block.id }}" data-month-panel="{{ block.settings.index }}" {% unless block.settings.index == current %}hidden{% endunless %} {{ block.shopify_attributes }}>
           <div class="month-identity">
             {% render 'bz-month-stone', index: block.settings.index %}
             <div>
               <span class="month-name">{{ block.settings.name | escape }}</span>
-              <h3>{{ block.settings.stone | escape }}</h3>
+              {%- assign name_length = block.settings.stone | size -%}
+              <h3{% if name_length > 16 %} class="is-long"{% endif %}>{{ block.settings.stone | escape }}</h3>
               <p>{{ block.settings.text | escape }}</p>
             </div>
           </div>
-          {%- if block.settings.products.size > 0 -%}
-            <div class="products">
-              {%- for product in block.settings.products -%}
-                {% render 'bz-product-card', card: product %}
-              {%- endfor -%}
-            </div>
-            <button class="text-link" type="button" data-add-month>Aggiungi tutti →</button>
-          {%- else -%}
-            <p>Questa pietra non è disponibile online. <a href="{{ section.settings.hero_link }}">Chiedi in negozio →</a></p>
-          {%- endif -%}
+          <div class="month-products-area">
+            {%- if block.settings.products.size > 0 -%}
+              <div class="products month-cards">
+                {%- for product in block.settings.products -%}
+                  {% render 'bz-product-card', card: product %}
+                {%- endfor -%}
+              </div>
+              {%- assign available = block.settings.products | where: 'available', true -%}
+              {%- if available.size > 0 -%}
+                <button class="btn gold month-add-all" type="button" data-add-month>Aggiungi tutti →</button>
+              {%- endif -%}
+            {%- else -%}
+              <p>{{ block.settings.empty_text | default: 'Questa pietra non è disponibile online.' | escape }} <a class="text-link" href="{{ section.settings.hero_link }}">Chiedi in negozio →</a></p>
+            {%- endif -%}
+          </div>
         </div>
       {%- endif -%}
     {%- endfor -%}
@@ -164,16 +175,13 @@
   </section>
   <section class="split story flip">
     <div class="split-copy">
-      <h2>In mano, a <em>Cento</em></h2>
-      <p>Le trovi in Via Marcello Provenzali 1: le stesse del sito, da guardare da vicino.</p>
-      <p>Al pagamento puoi scegliere il ritiro in negozio: è gratuito e di solito è pronto in 4 ore.</p>
-      <p>{% render 'bz-hours', part: 'summary' %}</p>
+      <h2>Le pietre, <em>dal vivo</em></h2>
+      <p>{{ section.settings.visit_text | escape }}</p>
       <div class="visit-actions">
-        <a class="btn gold" href="{{ section.settings.visit_link }}">Orari e indicazioni →</a>
-        {% render 'bz-open-badge', variant: 'compact', linked: true %}
+        <a class="btn gold" href="{{ section.settings.visit_link }}">Orari e indicazioni <span aria-hidden="true">→</span></a>
       </div>
     </div>
-    <div class="split-photo"><img src="{{ 'bz-negozio-pietre-in-mano-a-cento.jpg' | asset_url }}" alt="Pietre in mano a Cento" width="1400" height="1000" loading="lazy"></div>
+    <div class="split-photo"><img src="{{ 'bz-negozio-negozio-copertina.jpg' | asset_url }}" alt="Il negozio Benessere Zen a Cento" width="1400" height="1000" loading="lazy"></div>
   </section>
 </div>
 {% schema %}
@@ -184,6 +192,7 @@
     { "type": "textarea", "id": "intro", "label": "Intro", "default": "Una pietra in tasca, un mala da 108 grani, un incenso, una candela accesa con un’intenzione." },
     { "type": "text", "id": "hero_label", "label": "Pulsante hero", "default": "Vieni in negozio →" },
     { "type": "url", "id": "hero_link", "label": "Link hero" },
+    { "type": "textarea", "id": "visit_text", "label": "Testo del negozio" },
     { "type": "url", "id": "visit_link", "label": "Link orari" },
     { "type": "product_list", "id": "mala_products", "label": "Mala", "limit": 5 },
     { "type": "product_list", "id": "pendoli_products", "label": "Pendoli", "limit": 5 }
@@ -195,6 +204,7 @@
       { "type": "text", "id": "name", "label": "Mese", "default": "Gennaio" },
       { "type": "text", "id": "stone", "label": "Pietra", "default": "Granato" },
       { "type": "textarea", "id": "text", "label": "Testo" },
+      { "type": "text", "id": "empty_text", "label": "Testo senza prodotti" },
       { "type": "product_list", "id": "products", "label": "Prodotti", "limit": 3 }
     ] },
     { "type": "intention", "name": "Intenzione", "settings": [

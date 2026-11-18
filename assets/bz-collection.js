@@ -40,7 +40,7 @@
     var sign = num < 0 ? "-" : "";
     var bits = Math.abs(num).toFixed(2).split(".");
     var whole = bits[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    return sign + whole + "," + bits[1] + " €";
+    return sign + whole + "," + bits[1] + "\u00a0€";
   }
 
   function paintRange(input) {

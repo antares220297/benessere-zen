@@ -1,8 +1,8 @@
-<section class="store-faq">
-  <article class="store-card">
-    <img src="{{ 'bz-negozio-home-hero-negozio.jpg' | asset_url }}" alt="" width="1200" height="800" loading="lazy">
-    <div>
-      <h2>{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h2>
+<section class="store-bleed" aria-labelledby="store-title">
+  <div class="store-bleed-inner">
+    <img src="{{ 'bz-negozio-home-hero-negozio.jpg' | asset_url }}" alt="Scaffali del negozio Benessere Zen in Via Marcello Provenzali 1 a Cento" width="1600" height="900" loading="lazy">
+    <div class="store-bleed-copy">
+      <h2 id="store-title">{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h2>
       {% render 'bz-open-badge', variant: 'compact', linked: true %}
       <p>{{ section.settings.text | escape }}</p>
       <p>{{ settings.bz_address | default: 'Via Marcello Provenzali 1, 44042 Cento (FE)' }}<br>
@@ -13,26 +13,30 @@
       <p>{{ section.settings.pickup | escape }}</p>
       <a class="btn outline" href="{{ section.settings.button_link }}">{{ section.settings.button_label | escape }}</a>
     </div>
-  </article>
-  <article class="faq-card" data-faq>
+  </div>
+</section>
+<section class="faq-wide" aria-labelledby="home-faq-title">
+  <article class="faq-card bz-faq" data-faq>
     <div class="bz-sh">
-      <h2>Domande <em>frequenti</em></h2>
-      <div class="bz-pills" role="tablist" aria-label="Argomento delle domande">
+      <h2 id="home-faq-title">Domande <em>frequenti</em></h2>
+      <div class="bz-pills" role="group" aria-label="Argomento delle domande">
         {%- assign tabs = 'Spedizione e resi|Ordini e regali|Le pietre' | split: '|' -%}
         {%- for tab in tabs -%}
-          <button type="button" role="tab" data-faq-tab="{{ forloop.index0 }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">{{ tab }}</button>
+          <button type="button" data-faq-tab="{{ forloop.index0 }}" aria-controls="home-faq-panel-{{ forloop.index0 }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}">{{ tab }}</button>
         {%- endfor -%}
       </div>
     </div>
     {%- for tab in tabs -%}
-      <div id="{% if forloop.first %}faq-content{% endif %}" data-faq-panel="{{ forloop.index0 }}" {% unless forloop.first %}hidden{% endunless %}>
+      <div id="home-faq-panel-{{ forloop.index0 }}" data-faq-panel="{{ forloop.index0 }}" {% unless forloop.first %}hidden{% endunless %}>
+        {%- assign first_question = true -%}
         {%- for block in section.blocks -%}
           {%- assign tab_index = forloop.parentloop.index0 | append: '' -%}
           {%- if block.type == 'faq' and block.settings.tab == tab_index -%}
-            <details {% if forloop.parentloop.first and forloop.first %}open{% endif %} {{ block.shopify_attributes }}>
+            <details name="home-faq-{{ tab_index }}" {% if first_question %}open{% endif %} {{ block.shopify_attributes }}>
               <summary>{{ block.settings.question | escape }}</summary>
               <div class="faq-answer">{{ block.settings.answer }}</div>
             </details>
+            {%- assign first_question = false -%}
           {%- endif -%}
         {%- endfor -%}
       </div>
@@ -41,16 +45,8 @@
 </section>
 <div class="trust-strip">
   <span>{% render 'bz-icon', name: 'diamond_shine' %} Pietre naturali</span>
-  <span>{% render 'bz-icon', name: 'storefront' %} Gratis da {{ settings.bz_free_shipping | default: 50 }} €</span>
-  {%- liquid
-    assign show_returns = true
-    if shop.refund_policy.body != blank
-      unless shop.refund_policy.body contains '14'
-        assign show_returns = false
-      endunless
-    endif
-  -%}
-  {%- if show_returns -%}<span>{% render 'bz-icon', name: 'check' %} Reso entro 14 giorni</span>{%- endif -%}
+  <span>{% render 'bz-icon', name: 'storefront' %} Gratis da {{ settings.bz_free_shipping | default: 50 }}&nbsp;€</span>
+  <span>{% render 'bz-icon', name: 'check' %} Reso entro 14 giorni</span>
   <span>{% render 'bz-icon', name: 'check' %} Pagamenti sicuri</span>
 </div>
 {% schema %}

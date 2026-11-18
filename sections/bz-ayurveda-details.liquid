@@ -1,0 +1,212 @@
+<div class="bz-stack ayurveda">
+  <section class="dosha-section" id="tre-energie">
+    <h2>Tre <em>energie</em></h2>
+    <p class="dosha-intro">Nella tradizione si distinguono tre dosha: vata, pitta e kapha. Non è una diagnosi. Puoi partire da qui per scegliere un olio o un gesto di ogni giorno.</p>
+    <article class="dosha-idea" id="dosha-cerchi">
+      <div class="dosha-layout">
+        <div class="venn-stage" role="group" aria-label="Scegli un dosha">
+          <button class="dosha-circle vata" type="button" data-dosha="0" aria-label="Vata, aria e spazio" aria-pressed="true" aria-controls="circle-panel"></button>
+          <button class="dosha-circle pitta" type="button" data-dosha="1" aria-label="Pitta, fuoco e acqua" aria-pressed="false" aria-controls="circle-panel"></button>
+          <button class="dosha-circle kapha" type="button" data-dosha="2" aria-label="Kapha, terra e acqua" aria-pressed="false" aria-controls="circle-panel"></button>
+          <svg class="venn-orbit" aria-hidden="true" focusable="false"></svg>
+        </div>
+        <div class="dosha-panel" id="circle-panel" aria-live="polite" aria-atomic="true"></div>
+      </div>
+    </article>
+    {%- assign doshas = 'Vata|Pitta|Kapha' | split: '|' -%}
+    {%- assign lines = section.settings.vata_text | append: '||' | append: section.settings.pitta_text | append: '||' | append: section.settings.kapha_text | split: '||' -%}
+    {%- for name in doshas -%}
+      <template id="dosha-content-{{ forloop.index0 }}">
+        <div class="dosha-copy">
+          <span class="dosha-eyebrow">Nella tradizione ayurvedica</span>
+          <h3><em>{{ name }}</em></h3>
+          <p>{{ lines[forloop.index0] | escape }}</p>
+        </div>
+        <div class="dosha-products">
+          {%- for block in section.blocks -%}
+            {%- assign dosha_index = forloop.parentloop.index0 | append: '' -%}
+            {%- if block.type == 'dosha_product' and block.settings.dosha == dosha_index -%}
+              {%- assign product = block.settings.product -%}
+              {%- if product.title != blank -%}
+                {% render 'bz-product-card', card: product, title: block.settings.label %}
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </template>
+    {%- endfor -%}
+    <p class="ay-disclaimer">I significati appartengono alla tradizione e non sostituiscono il parere di un medico.</p>
+  </section>
+
+  <section id="prodotti" aria-labelledby="ay-prod-title">
+    <h2 id="ay-prod-title">I prodotti della tradizione <em>ayurvedica</em></h2>
+    <p class="ay-prod-intro">{{ section.settings.products_intro | escape }}</p>
+    <div class="ay-cats">
+      {%- assign categories = section.blocks | where: 'type', 'category' -%}
+      {%- for block in categories -%}
+        <article class="ay-cat{% cycle ' is-band', '' %}"{% if block.settings.anchor != blank %} id="{{ block.settings.anchor | handleize }}"{% endif %} {{ block.shopify_attributes }}>
+          <div class="ay-cat-head">
+            <h3>{{ block.settings.title }}</h3>
+            {%- if block.settings.link != blank -%}
+              <a class="ay-all" href="{{ block.settings.link }}">Vedi tutti&nbsp;<span aria-hidden="true">→</span></a>
+            {%- endif -%}
+          </div>
+          <div class="ay-copy">{{ block.settings.body }}</div>
+          <div class="ay-cat-grid">
+            {%- assign labels = block.settings.product_labels | newline_to_br | split: '<br />' -%}
+            {%- for product in block.settings.products -%}
+              {% render 'bz-product-card', card: product, labels: labels %}
+            {%- endfor -%}
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+  </section>
+  <section id="faq" aria-labelledby="ay-faq-title">
+    <div class="ay-faq bz-faq">
+      <h2 id="ay-faq-title">Domande <em>frequenti</em></h2>
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'faq' -%}
+          <details {{ block.shopify_attributes }}>
+            <summary>{{ block.settings.question | escape }}</summary>
+            <div class="faq-answer">{{ block.settings.answer }}</div>
+          </details>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    <p class="ay-page-disclaimer">{{ section.settings.disclaimer | escape }}</p>
+  </section>
+</div>
+{% schema %}
+{
+  "name": "Ayurveda: dosha e cura",
+  "max_blocks": 30,
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "vata_text",
+      "label": "Vata",
+      "default": "Aria e spazio. Movimento e leggerezza, un ritmo che fa fatica a fermarsi. Nella pratica, routine stabili e oli più caldi."
+    },
+    {
+      "type": "textarea",
+      "id": "pitta_text",
+      "label": "Pitta",
+      "default": "Fuoco e acqua. Trasformazione e determinazione, un fuoco che a volte sale troppo. Nella pratica, pause e cose più fresche."
+    },
+    {
+      "type": "textarea",
+      "id": "kapha_text",
+      "label": "Kapha",
+      "default": "Terra e acqua. Stabilità e costanza, un passo che a volte si fa pesante. Nella pratica, movimento e spezie più vive."
+    },
+    {
+      "type": "textarea",
+      "id": "products_intro",
+      "label": "Introduzione prodotti"
+    },
+    {
+      "type": "textarea",
+      "id": "disclaimer",
+      "label": "Nota finale"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "dosha_product",
+      "name": "Prodotto dosha",
+      "settings": [
+        {
+          "type": "select",
+          "id": "dosha",
+          "label": "Dosha",
+          "default": "0",
+          "options": [
+            {
+              "value": "0",
+              "label": "Vata"
+            },
+            {
+              "value": "1",
+              "label": "Pitta"
+            },
+            {
+              "value": "2",
+              "label": "Kapha"
+            }
+          ]
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Prodotto"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Titolo in pagina"
+        }
+      ]
+    },
+    {
+      "type": "category",
+      "name": "Categoria",
+      "settings": [
+        {
+          "type": "text",
+          "id": "anchor",
+          "label": "Ancora"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "title",
+          "label": "Titolo"
+        },
+        {
+          "type": "richtext",
+          "id": "body",
+          "label": "Testo"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link alla collezione"
+        },
+        {
+          "type": "product_list",
+          "id": "products",
+          "label": "Prodotti",
+          "limit": 12
+        },
+        {
+          "type": "textarea",
+          "id": "product_labels",
+          "label": "Titoli in pagina",
+          "info": "Un prodotto per riga: handle|titolo."
+        }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "Domanda",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Domanda"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Risposta"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ayurveda: dosha e cura"
+    }
+  ]
+}
+{% endschema %}

@@ -37,7 +37,7 @@
           "settings": {
             "title": "Regali",
             "accent": "piccoli",
-            "text": "Pietre, ciondoli, scatole in velluto, sotto i 30 €.",
+            "text": "Pietre, ciondoli, scatole in velluto, sotto i 30 €.",
             "button_label": "Idee regalo →",
             "link": "/collections/oggettistica-e-idee-regalo",
             "collection": "oggettistica-e-idee-regalo",
@@ -516,7 +516,9 @@
           "ciondolo-a-goccia-in-corniola",
           "candele-da-tavola-profumate-chakra-set-da-7-3",
           "portacandela-in-vetro-smerigliato-interno-metallizzato-mystical-albero-della-vita"
-        ]
+        ],
+        "heading_accent": "sotto 30 €",
+        "product_labels": "portacandela-mano-con-loto-color-oro|Portacandela mano dorata, fiore di loto\nciondolo-a-goccia-in-corniola|Ciondolo in corniola, goccia\ncandele-da-tavola-profumate-chakra-set-da-7-3|Candele profumate a stelo, 7 Chakra\nportacandela-in-vetro-smerigliato-interno-metallizzato-mystical-albero-della-vita|Portacandela in vetro, Albero della Vita mystical"
       }
     },
     "bz_store": {
@@ -530,7 +532,7 @@
           "settings": {
             "tab": "0",
             "question": "Quanto costa la spedizione?",
-            "answer": "<p>La spedizione Express costa 5,90 €, ed è gratuita da 50 € di spesa.</p>"
+            "answer": "<p>La spedizione Express costa 5,90&nbsp;€, ed è gratuita da 50&nbsp;€ di spesa.</p>"
           }
         },
         "faq-1": {
@@ -586,7 +588,7 @@
           "settings": {
             "tab": "1",
             "question": "In cosa posso regalare un gioiello?",
-            "answer": "<p>Nelle nostre <a href=\"/collections/scatole-porta-gioielli\">scatole porta gioielli</a>: in velluto a 18,50 €, in legno e pietra a 29,90 €.</p>"
+            "answer": "<p>Nelle nostre <a href=\"/collections/scatole-porta-gioielli\">scatole porta gioielli</a>: in velluto a 18,50&nbsp;€, in legno e pietra a 29,90&nbsp;€.</p>"
           }
         },
         "faq-8": {
@@ -649,8 +651,9 @@
     "bz_newsletter": {
       "type": "bz-newsletter",
       "settings": {
-        "heading": "Una lettera",
-        "heading_accent": "al mese"
+        "heading": "I nuovi arrivi,",
+        "heading_accent": "nella tua email",
+        "note": "Ti scriviamo quando arrivano pietre nuove o tornano quelle finite."
       }
     }
   },

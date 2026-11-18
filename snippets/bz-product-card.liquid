@@ -1,28 +1,37 @@
 {% comment %}
-  Product card. card: product. style: home (default) or plp.
+  Product card. card: product. style: home (default), plp or gift.
+  title: optional display title. labels: optional handle|title entries.
 {% endcomment %}
 {%- liquid
-  assign card = card
+  assign card_title = title | default: card.title
+  for line in labels
+    assign pair = line | strip | split: '|'
+    if pair.size > 1 and pair.first == card.handle
+      assign card_title = pair.last
+      break
+    endif
+  endfor
   assign variant = card.selected_or_first_available_variant
   assign card_style = style | default: 'home'
 -%}
-<article class="product{% if card_style == 'plp' %} pcard{% endif %}{% if card_style == 'gift' %} gift-card{% endif %}">
+<article class="product{% if card_style == 'plp' %} pcard{% endif %}{% if card_style == 'gift' %} gift-card{% endif %}"{% if sortable %} data-price="{{ card.price }}" data-published="{{ card.published_at | date: '%s' }}"{% endif %}>
   <a href="{{ card.url }}">
     {%- if card_style == 'plp' -%}
       <div class="pc-well">
         {%- unless card.available -%}<span class="pc-badge">Esaurito</span>{%- endunless -%}
         {%- if card.featured_image != blank -%}
-          {{ card.featured_image | image_url: width: 800 | image_tag: alt: card.title, loading: 'lazy', widths: '240, 400, 640, 800', sizes: '(min-width: 1024px) 22vw, 45vw', width: card.featured_image.width, height: card.featured_image.height }}
+          {{ card.featured_image | image_url: width: 800 | image_tag: alt: card_title, loading: 'lazy', widths: '240, 400, 640, 800', sizes: '(min-width: 1024px) 22vw, 45vw', width: card.featured_image.width, height: card.featured_image.height }}
         {%- endif -%}
       </div>
-      <h3 class="pc-name">{{ card.title | escape }}</h3>
+      <h3 class="pc-name">{{ card_title | escape }}</h3>
     {%- else -%}
       {%- if card_style == 'gift' -%}<div class="gift-photo">{%- endif -%}
       {%- if card.featured_image != blank -%}
-        {{ card.featured_image | image_url: width: 800 | image_tag: alt: card.title, loading: 'lazy', widths: '240, 400, 640, 800', sizes: '(min-width: 1024px) 18vw, 45vw', width: card.featured_image.width, height: card.featured_image.height }}
+        {{ card.featured_image | image_url: width: 800 | image_tag: alt: card_title, loading: 'lazy', widths: '240, 400, 640, 800', sizes: '(min-width: 1024px) 18vw, 45vw', width: card.featured_image.width, height: card.featured_image.height }}
       {%- endif -%}
       {%- if card_style == 'gift' -%}</div>{%- endif -%}
-      <h3>{{ card.title | escape }}</h3>
+      <h3>{{ card_title | escape }}</h3>
+      {%- if card_style == 'gift' -%}<span class="gift-cta">Vedi <span aria-hidden="true">→</span></span>{%- endif -%}
     {%- endif -%}
   </a>
   <div class="product-bottom">
@@ -38,7 +47,7 @@
       class="add"
       type="button"
       {% if card.available and variant %}data-bz-add="{{ variant.id }}"{% else %}disabled{% endif %}
-      aria-label="{% if card.available %}Aggiungi al carrello: {{ card.title | escape }}{% else %}{{ card.title | escape }}: esaurito{% endif %}"
-    >+</button>
+      aria-label="{% if card.available %}Aggiungi al carrello: {{ card_title | escape }}{% else %}{{ card_title | escape }}: esaurito{% endif %}"
+    >{% render 'bz-icon', name: 'add' %}</button>
   </div>
 </article>

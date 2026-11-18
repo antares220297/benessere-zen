@@ -4,7 +4,7 @@
       "type": "bz-pietre",
       "settings": {
         "hero_link": "/pages/il-negozio",
-        "visit_link": "/pages/contact",
+        "visit_link": "/pages/il-negozio",
         "mala_products": [
           "palo-santo-mala-con-grano-guru",
           "mala-diaspro-giallo-occhio-di-tigre-e-quarzo-fume",
@@ -16,7 +16,8 @@
           "pendolo-in-ottone-placcato-oro",
           "pendolo-in-ottone-color-titanio",
           "pendolo-quarzo-rosa-e-catenina-dei-chakra"
-        ]
+        ],
+        "visit_text": "Benessere Zen è anche un negozio, in Via Marcello Provenzali 1 a Cento. Sugli scaffali trovi le pietre e i bijoux del sito: puoi prenderli in mano, guardarne colori e venature e scegliere quello che senti tuo. Se ordini online, al pagamento puoi scegliere il ritiro in negozio."
       },
       "blocks": {
         "m0": {
@@ -42,8 +43,7 @@
             "text": "Nella tradizione, da sempre legata alla meditazione.",
             "products": [
               "ametista",
-              "pietre-burattate-ametista-1",
-              "pendolo-in-ametista-sferico-e-metallo"
+              "pietre-burattate-ametista-1"
             ]
           }
         },
@@ -71,8 +71,7 @@
             "text": "Nella tradizione, accompagna l’intenzione.",
             "products": [
               "cristallo-di-rocca",
-              "pietre-burattate-cristallo-di-rocca",
-              "braccialetto-ametista-chevron-cristallo-di-rocca-loto"
+              "pietre-burattate-cristallo-di-rocca"
             ]
           }
         },
@@ -111,7 +110,7 @@
             "short": "Lug",
             "name": "Luglio",
             "stone": "Rubino zoisite",
-            "text": "Nella tradizione luglio è il mese del rubino. Qui trovi cristalli di rubino nella zoisite verde, in un ciondolo grezzo: non è un rubino da gioielleria.",
+            "text": "Rubino in zoisite: pietra di luglio, grezza.",
             "products": [
               "ciondolo-in-rubino-zoisite-anyolite-grezzo",
               "braccialetto-con-perle-di-rubino-zoisite"
@@ -124,9 +123,13 @@
             "index": "7",
             "short": "Ago",
             "name": "Agosto",
-            "stone": "Peridoto",
-            "text": "Nella tradizione, pietra di agosto.",
-            "products": []
+            "stone": "Corniola",
+            "text": "Pietra storica di agosto, legata al coraggio.",
+            "products": [
+              "pietre-burattate-corniola",
+              "braccialetto-corniola",
+              "ciondolo-a-goccia-in-corniola"
+            ]
           }
         },
         "m8": {
@@ -136,11 +139,10 @@
             "short": "Set",
             "name": "Settembre",
             "stone": "Lapislazzuli",
-            "text": "Nella tradizione è legato alla verità ed è pietra di settembre, accanto allo zaffiro. Qui lo trovi burattato, 2/3 cm.",
+            "text": "Pietra di settembre, legata alla verità.",
             "products": [
               "pietre-burattate-lapislazzuli",
-              "lapislazzuli",
-              "ciondolo-a-cuore-in-lapislazzuli"
+              "lapislazzuli"
             ]
           }
         },
@@ -166,7 +168,7 @@
             "short": "Nov",
             "name": "Novembre",
             "stone": "Citrino",
-            "text": "Nella tradizione, legato alla creatività.",
+            "text": "Nella tradizione, simbolo di abbondanza.",
             "products": [
               "pietre-burattate-quarzo-citrino",
               "orgone-pendolo-citrino-sfaccettato-appuntito",
@@ -180,9 +182,13 @@
             "index": "11",
             "short": "Dic",
             "name": "Dicembre",
-            "stone": "Turchese",
-            "text": "Nella tradizione, pietra di protezione spirituale.",
-            "products": []
+            "stone": "Lapislazzuli",
+            "text": "Pietra di dicembre, legata alla saggezza.",
+            "products": [
+              "ciondolo-in-lapis-lazuli",
+              "braccialetto-lapis-lazuli",
+              "ciondolo-a-cuore-in-lapislazzuli"
+            ]
           }
         },
         "in-0": {
@@ -200,7 +206,7 @@
             "word": "Protezione",
             "line": "Tormalina e ossidiana, nella tradizione, sono pietre di protezione.",
             "collection": "intenzione-protezione",
-            "image_asset": "bz-intenzione-protezione.jpg"
+            "image_asset": "bz-intenzione-protezione-ossidiana.jpg"
           }
         },
         "in-2": {

@@ -4,7 +4,7 @@
   const qa = (s, r = document) => [...r.querySelectorAll(s)];
   const params = new URLSearchParams(location.search);
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  const euro = cents => (cents / 100).toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+  const euro = cents => (cents / 100).toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '\u00a0€';
 
   const hoursNode = q('#bz-hours');
   const hours = hoursNode ? JSON.parse(hoursNode.textContent) : { note: '', free: 50, days: ['', '', '', '', '', '', ''], exceptions: '' };
@@ -127,7 +127,14 @@
       line.style.top = ((now.min - 540) / 660 * 100) + '%';
     });
   }
-  function paintHours() { const now = romeNow(); paintBadges(now); paintCharts(now); }
+  function paintHours() {
+    const now = romeNow();
+    paintBadges(now);
+    paintCharts(now);
+    qa('[data-shop-day]').forEach(row => {
+      row.classList.toggle('is-today', Number(row.dataset.shopDay) === now.day);
+    });
+  }
   paintHours();
   setInterval(paintHours, 60000);
 
@@ -142,65 +149,61 @@
     addEventListener('resize', update);
   });
 
-  const chrome = q('.bz-chrome');
-  const vetrina = q('#vetrina');
-  const mobile = q('.mobile-nav');
-  const toggle = q('.menu-toggle');
-  const closeVetrina = () => {
-    if (!vetrina) return;
-    vetrina.hidden = true;
-    qa('[data-vetrina]').forEach(a => a.setAttribute('aria-expanded', 'false'));
-  };
-  qa('[data-vetrina]').forEach(a => {
-    const open = () => {
-      const id = a.dataset.vetrina;
-      qa('.b-panel', vetrina).forEach(panel => { panel.hidden = panel.dataset.world !== id; });
-      const link = q('[data-world-link]', vetrina);
-      if (link) { link.href = a.href; link.textContent = 'Vedi tutto →'; }
-      vetrina.hidden = false;
-      a.setAttribute('aria-expanded', 'true');
-    };
-    a.addEventListener('click', event => {
-      if (matchMedia('(min-width:1024px)').matches) { event.preventDefault(); const was = a.getAttribute('aria-expanded') === 'true'; closeVetrina(); if (!was) open(); }
+  const desktopMenu = q('.bz-header-section .main-nav');
+  const mobile = q('#bz-mobile');
+  const toggle = q('[data-bz-burger]');
+  const mobileClose = mobile && q('.phone-close', mobile);
+  const desktop = matchMedia('(min-width:1024px)');
+
+  function closeGroups(menu, except) {
+    if (!menu) return;
+    qa('.bz-menu-group[open]', menu).forEach(group => {
+      if (group !== except) group.open = false;
     });
-    a.addEventListener('mouseenter', () => { if (matchMedia('(hover:hover) and (min-width:1024px)').matches) open(); });
+  }
+  [desktopMenu, mobile].filter(Boolean).forEach(menu => {
+    qa('.bz-menu-group', menu).forEach(group => {
+      group.addEventListener('toggle', () => { if (group.open) closeGroups(menu, group); });
+    });
   });
-  chrome?.addEventListener('mouseleave', closeVetrina);
-  q('.vetrina-close')?.addEventListener('click', closeVetrina);
-  qa('.b-panel').forEach(panel => {
-    const mothers = qa('[data-mother]', panel);
-    mothers.forEach(button => button.addEventListener('click', () => {
-      mothers.forEach(other => other.classList.toggle('is-active', other === button));
-      mothers.forEach(other => other.setAttribute('aria-pressed', String(other === button)));
-      qa('[data-children]', panel).forEach(list => { list.hidden = list.dataset.children !== button.dataset.mother; });
-      qa('[data-photo]', panel).forEach(photo => {
-        const on = photo.dataset.photo === button.dataset.mother;
-        photo.hidden = !on;
-        if (on) { photo.classList.remove('entering'); void photo.offsetWidth; photo.classList.add('entering'); }
-      });
-    }));
-    });
-  qa('.phone-group > button.mother-row').forEach(button => button.addEventListener('click', () => {
-    const group = button.closest('.phone-group');
-    const list = group && q('.phone-group-children', group);
-    if (!list) return;
-    const open = list.hidden;
-    list.hidden = !open;
-    button.setAttribute('aria-expanded', String(open));
-  }));
-  const openMobile = () => { if (!mobile) return; mobile.hidden = false; document.body.classList.add('menu-locked'); toggle?.setAttribute('aria-expanded', 'true'); };
-  const closeMobile = () => { if (!mobile) return; mobile.hidden = true; document.body.classList.remove('menu-locked'); toggle?.setAttribute('aria-expanded', 'false'); qa('.phone-panel', mobile).forEach(p => p.hidden = true); q('.phone-start', mobile)?.removeAttribute('hidden'); };
-  toggle?.addEventListener('click', () => mobile?.hidden ? openMobile() : closeMobile());
-  q('.menu-backdrop')?.addEventListener('click', closeMobile);
-  q('.phone-close')?.addEventListener('click', closeMobile);
-  qa('.phone-door').forEach(button => button.addEventListener('click', () => {
-    q('.phone-start', mobile)?.setAttribute('hidden', '');
-    qa('.phone-panel', mobile).forEach(panel => { panel.hidden = panel.dataset.panel !== button.dataset.door; });
-  }));
-  qa('.phone-back').forEach(button => button.addEventListener('click', () => {
-    qa('.phone-panel', mobile).forEach(panel => panel.hidden = true);
-    q('.phone-start', mobile)?.removeAttribute('hidden');
-  }));
+  document.addEventListener('click', event => {
+    if (!desktopMenu?.contains(event.target)) closeGroups(desktopMenu);
+  });
+
+  function setMobileMenu(open, restoreFocus = true) {
+    if (!mobile || mobile.hidden === !open) return;
+    mobile.hidden = !open;
+    document.body.classList.toggle('menu-locked', open);
+    toggle?.setAttribute('aria-expanded', String(open));
+    if (open) mobileClose?.focus();
+    else {
+      closeGroups(mobile);
+      if (restoreFocus) toggle?.focus();
+    }
+  }
+  toggle?.addEventListener('click', () => setMobileMenu(mobile.hidden));
+  mobileClose?.addEventListener('click', () => setMobileMenu(false));
+  desktop.addEventListener('change', () => {
+    closeGroups(desktopMenu);
+    setMobileMenu(false, !desktop.matches);
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') {
+      if (mobile && !mobile.hidden) setMobileMenu(false);
+      const openGroup = desktopMenu && q('.bz-menu-group[open]', desktopMenu);
+      if (openGroup) {
+        closeGroups(desktopMenu);
+        q('summary', openGroup)?.focus();
+      }
+    }
+    if (event.key !== 'Tab' || !mobile || mobile.hidden) return;
+    const items = qa('a[href], button, summary', mobile).filter(item => item.getClientRects().length);
+    const first = items[0], last = items[items.length - 1];
+    if ((event.shiftKey && document.activeElement === first) || (!event.shiftKey && document.activeElement === last)) {
+      event.preventDefault();
+      (event.shiftKey ? last : first)?.focus();
+    }
+  });
 
   const overlay = q('.cart-overlay');
   const drawer = q('.drawer');
@@ -241,7 +244,7 @@
   qa('[data-cart-open]').forEach(button => button.addEventListener('click', openCart));
   qa('[data-cart-close]').forEach(button => button.addEventListener('click', closeCart));
   document.addEventListener('keydown', event => {
-    if (event.key === 'Escape') { closeVetrina(); closeMobile(); if (overlay && !overlay.hidden) closeCart(); }
+    if (event.key === 'Escape' && overlay && !overlay.hidden) closeCart();
   });
   async function addItems(items) {
     const response = await fetch(routes.add, {
@@ -411,7 +414,7 @@
   qa('[data-faq]').forEach(faq => {
     const panels = qa('[data-faq-panel]', faq);
     qa('[data-faq-tab]', faq).forEach(tab => tab.addEventListener('click', () => {
-      qa('[data-faq-tab]', faq).forEach(other => other.setAttribute('aria-selected', String(other === tab)));
+      qa('[data-faq-tab]', faq).forEach(other => other.setAttribute('aria-pressed', String(other === tab)));
       panels.forEach(panel => { panel.hidden = panel.dataset.faqPanel !== tab.dataset.faqTab; });
     }));
   });
@@ -432,10 +435,26 @@
     if (items.length) addItems(items);
   }));
   qa('[data-birthstones]').forEach(root => {
-    qa('[data-month]', root).forEach(button => button.addEventListener('click', () => {
-      qa('[data-month]', root).forEach(other => other.setAttribute('aria-pressed', String(other === button)));
-      qa('[data-month-panel]', root).forEach(panel => { panel.hidden = panel.dataset.monthPanel !== button.dataset.month; });
+    const row = q('.bz-pills', root);
+    const buttons = qa('[data-month]', row);
+    const panels = qa('[data-month-panel]', root);
+    const desktopMonths = matchMedia('(min-width: 1024px)');
+    function centerMonth(button, animate = false) {
+      if (!button || desktopMonths.matches) return;
+      const delta = button.getBoundingClientRect().left - row.getBoundingClientRect().left;
+      const left = row.scrollLeft + delta - (row.clientWidth - button.offsetWidth) / 2;
+      row.scrollTo({ left, behavior: animate && !reduced.matches ? 'smooth' : 'instant' });
+    }
+    const selected = () => buttons.find(button => button.getAttribute('aria-pressed') === 'true');
+    buttons.forEach(button => button.addEventListener('click', () => {
+      buttons.forEach(other => other.setAttribute('aria-pressed', String(other === button)));
+      panels.forEach(panel => { panel.hidden = panel.dataset.monthPanel !== button.dataset.month; });
+      centerMonth(button, true);
     }));
+    const resizeMonths = new ResizeObserver(() => centerMonth(selected()));
+    resizeMonths.observe(row);
+    document.fonts?.ready.then(() => centerMonth(selected()));
+    centerMonth(selected());
   });
 
   const routine = q('#routine');
@@ -589,6 +608,7 @@
   });
   const tour = q('#shop-lightbox');
   const tourCards = qa('.tour-card');
+  const tourOpener = q('[data-tour-open]');
   if (tour && tourCards.length) {
     const shot = q('.tour-large', tour);
     const caption = q('.tour-caption h3', tour);
@@ -604,14 +624,18 @@
       if (caption) caption.textContent = img ? img.alt : '';
       if (count) count.textContent = (tourIndex + 1) + ' / ' + tourCards.length;
       if (!tour.open) tour.showModal();
+      tourOpener?.setAttribute('aria-expanded', 'true');
       document.body.classList.add('tour-locked');
     };
     tourCards.forEach((card, index) => card.addEventListener('click', () => showTour(index)));
-    q('[data-tour-open]')?.addEventListener('click', () => showTour(0));
+    tourOpener?.addEventListener('click', () => showTour(0));
     q('.tour-prev', tour)?.addEventListener('click', () => showTour(tourIndex - 1));
     q('.tour-next', tour)?.addEventListener('click', () => showTour(tourIndex + 1));
     q('.tour-close', tour)?.addEventListener('click', () => tour.close());
-    tour.addEventListener('close', () => document.body.classList.remove('tour-locked'));
+    tour.addEventListener('close', () => {
+      document.body.classList.remove('tour-locked');
+      tourOpener?.setAttribute('aria-expanded', 'false');
+    });
     tour.addEventListener('click', event => { if (event.target === tour) tour.close(); });
   }
 

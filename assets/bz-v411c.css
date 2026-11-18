@@ -1207,3 +1207,490 @@ main.bz-page-home>.shopify-section .category-row{padding-top:39px}
   .bz-page-contact .contact-form{order:1}
   .bz-page-contact .hours-card{order:2}
 }
+
+/* Signed r8c storefront */
+:root, .bz-scope { --side: 20px; }
+@media (min-width: 1024px) {
+  :root, .bz-scope { --side: 28px; }
+}
+.bz-scope .add > svg { width: 28px; height: 28px; }
+
+/* Header and two-level menu */
+.bz-header-section .bz-menu-list,
+.bz-header-section .bz-menu-sub { list-style: none; margin: 0; padding: 0; }
+.bz-header-section .bz-menu-top {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.bz-header-section .bz-menu-top::-webkit-details-marker { display: none; }
+.bz-header-section .bz-menu-top::marker { content: ''; }
+.bz-header-section .bz-menu-top svg { width: 20px; height: 20px; flex: none; }
+.bz-header-section .bz-menu-group[open] > .bz-menu-top svg { transform: rotate(180deg); }
+.bz-header-section .bz-menu-top[aria-current='page'],
+.bz-header-section .bz-menu-sub a:hover { color: var(--goldl); }
+.bz-header-section .bz-menu-sub .bz-menu-all > a { font-weight: 600; }
+.bz-header-section .main-nav .bz-menu-list { display: flex; gap: 2px; }
+.bz-header-section .main-nav .bz-menu-item { position: relative; }
+.bz-header-section .main-nav .bz-menu-top {
+  padding: 0 clamp(9px, 1.1vw, 16px);
+  border-radius: 40px;
+  font: 500 14px/1 var(--sans);
+}
+.bz-header-section .main-nav .bz-menu-group[open] > .bz-menu-top,
+.bz-header-section .main-nav .bz-menu-top:hover { background: var(--card2); }
+.bz-header-section .main-nav .bz-menu-sub {
+  position: absolute;
+  inset: calc(100% + 12px) auto auto 0;
+  min-width: 260px;
+  width: max-content;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--card);
+  box-shadow: 0 16px 40px #0007;
+}
+.bz-header-section .main-nav .bz-menu-sub a {
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0;
+  font: 400 15px/1.3 var(--sans);
+}
+.bz-header-section .main-nav .bz-menu-all { padding-bottom: 8px; margin-bottom: 8px; border-bottom: 1px solid var(--line); }
+.bz-header-section .header-actions { gap: 4px; margin-right: -12px; }
+.bz-header-section .menu-shade { z-index: 100; }
+.bz-header-section .menu-dialog { width: 100%; grid-template-rows: 72px minmax(0, 1fr); }
+.bz-header-section .menu-heading { padding-inline: var(--side); }
+.bz-header-section .menu-heading > span { font-family: 'Zen Old Mincho', var(--serif); font-weight: 900; }
+.bz-header-section .menu-heading em { font-style: normal; }
+.bz-header-section .mobile-content { overflow-y: auto; overscroll-behavior: contain; padding: 0 var(--side) 32px; }
+.bz-header-section .mobile-content .bz-menu-item { border-bottom: 1px solid var(--line); }
+.bz-header-section .mobile-content .bz-menu-top { justify-content: space-between; min-height: 56px; font: 400 22px/1.2 var(--serif); }
+.bz-header-section .mobile-content .bz-menu-top svg { width: 26px; height: 26px; }
+.bz-header-section .mobile-content .bz-menu-sub { padding: 0 0 12px 16px; }
+.bz-header-section .mobile-content .bz-menu-sub a { display: flex; align-items: center; min-height: 48px; }
+.bz-header-section .phone-bottom { background: none; border: 0; padding: 24px 0 0; }
+.bz-header-section :is(button, a, summary):focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+body.menu-locked { overflow: hidden; }
+@media (max-width: 600px) {
+  .bz-header-section .header-actions .bz-header-account { display: none; }
+  .bz-header-section .header-actions { margin-right: -8px; }
+  .bz-header-section header { gap: 6px; }
+  .bz-header-section .header-actions svg { width: 24px; height: 24px; }
+}
+
+/* Home */
+.bz-page-home .mala-band > .mala-lead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-height: 0;
+}
+.bz-page-home .mala-band .mala-photo { grid-area: auto; height: auto; aspect-ratio: 4/3; }
+.bz-page-home .mala-band .mala-photo picture { position: absolute; inset: 0; }
+.bz-page-home .mala-band .mala-copy { grid-area: auto; padding: 24px 20px; }
+.bz-page-home .mala-copy h2 em { display: block; }
+.bz-page-home .mala-band .bento {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: auto;
+  margin-top: 16px;
+}
+.bz-page-home .gift-card .gift-cta { display: inline-flex; gap: 6px; margin: 0 10px 10px; color: var(--goldl); font-size: 13px; }
+.bz-page-home .gift-card > a:hover .gift-cta { text-decoration: underline; }
+.bz-page-home .gift-card .product-bottom { gap: 4px; }
+.bz-page-home .gift-card .price { font-size: clamp(17px, 2.2vw, 24px); }
+
+.bz-page-home .store-bleed { margin-inline: calc(-1 * var(--side)); }
+.bz-page-home .store-bleed-inner { position: relative; min-height: clamp(340px, 42vw, 560px); overflow: hidden; }
+.bz-page-home .store-bleed-inner > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 60% 45%;
+}
+.bz-page-home .store-bleed-inner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent 0 46%, #14131273 50%, #141312e0 54%, #141312eb);
+}
+.bz-page-home .store-bleed-copy {
+  position: relative;
+  z-index: 1;
+  margin-left: auto;
+  max-width: min(42em, 46%);
+  padding: clamp(28px, 4vw, 56px);
+}
+.bz-page-home .store-bleed-copy h2 { margin: 0 0 18px; }
+.bz-page-home .store-bleed-copy p { color: var(--ivory2); font-size: 14px; overflow-wrap: anywhere; }
+.bz-page-home .store-bleed-copy .store-hours { font-size: 13px; }
+.bz-page-home .store-bleed-copy .btn { margin-top: 22px; }
+.bz-page-home .store-bleed-copy .open-badge { margin-bottom: 14px; }
+
+.bz-page-home .faq-wide { margin-top: 18px; }
+.bz-page-home .faq-wide .faq-card { width: 100%; padding: 24px 20px; }
+.bz-page-home .faq-wide .bz-sh { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; margin: 0; }
+.bz-page-home .faq-wide .bz-pills { flex-wrap: wrap; overflow: visible; mask-image: none; }
+.bz-page-home .faq-wide .bz-pills > button {
+  padding-inline: clamp(6px, 2vw, 13px);
+  border-color: #655c4e55;
+  color: #201b16;
+}
+.bz-page-home .faq-wide .bz-pills > [aria-pressed='true'] { background: #201b16; border-color: #201b16; color: var(--ivory); }
+.bz-page-home .faq-wide [data-faq-panel] { margin-top: 22px; min-width: 0; }
+.bz-scope .bz-faq details { border-top: 1px solid #6c5a3b33; }
+.bz-scope .bz-faq summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 44px;
+  padding: 16px 0;
+  list-style: none;
+  color: #201b16;
+  cursor: pointer;
+  font: clamp(21px, 2vw, 26px)/1.2 var(--serif);
+}
+.bz-scope .bz-faq summary::-webkit-details-marker { display: none; }
+.bz-scope .bz-faq summary::marker { content: ''; }
+.bz-scope .bz-faq summary::after { content: '+'; flex: none; color: #8b672b; font: 24px/1 var(--sans); }
+.bz-scope .bz-faq details[open] > summary::after { content: '−'; }
+.bz-scope .bz-faq summary:focus-visible { outline: 2px solid #8b672b; outline-offset: 2px; }
+.bz-scope .bz-faq .faq-answer { padding-bottom: 16px; }
+.bz-scope .bz-faq .faq-answer p { margin: 0; color: #655c4e; font: 14px/1.55 var(--sans); max-width: 66ch; }
+
+.bz-page-home .trust-strip {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  gap: 16px 12px;
+  padding: 20px 14px;
+  width: 100%;
+}
+.bz-page-home .trust-strip > span { justify-content: center; min-width: 0; text-align: center; }
+.bz-page-home .trust-strip svg { flex: none; }
+
+.bz-scope .bz-news h2 em { display: block; }
+main.bz-page-home:has(#newsletter), main.bz-page-ayurveda:has(#newsletter) { padding-bottom: 16px; }
+.bz-page-home .bz-news form, .bz-page-ayurveda .bz-news form {
+  display: flex;
+  gap: 12px;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.bz-page-home .bz-news input[type=email], .bz-page-ayurveda .bz-news input[type=email] {
+  flex: 1;
+  min-width: 0;
+  min-height: 48px;
+  margin: 0;
+  padding: 0 20px;
+  border: 1px solid var(--line2);
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--ivory);
+  font-size: 16px;
+}
+.bz-scope .bz-news button { min-height: 48px; }
+@media (max-width: 1023px) {
+  .bz-page-home .store-bleed-inner { min-height: 0; }
+  .bz-page-home .store-bleed-inner > img { position: relative; height: auto; aspect-ratio: 16/9; object-position: 58% 42%; }
+  .bz-page-home .store-bleed-inner::after { content: none; }
+  .bz-page-home .store-bleed-copy { max-width: none; padding: 24px var(--side); }
+}
+@media (max-width: 767px) {
+  .bz-page-home .mala-copy .btn { width: 100%; }
+  .bz-page-home .store-bleed-inner > img { aspect-ratio: 4/3; object-position: 55% 40%; }
+  .bz-page-home .faq-wide .bz-pills { gap: 5px; }
+  .bz-page-home .faq-wide .bz-pills > button { font-size: 12px; }
+  .bz-scope .bz-news form { flex-direction: column; align-items: stretch; }
+  .bz-scope .bz-news form input[type=email] { flex: none; width: 100%; }
+  .bz-scope .bz-news button { width: 100%; }
+}
+@media (min-width: 768px) {
+  .bz-page-home .mala-band .mala-photo { aspect-ratio: 16/10; }
+  .bz-page-home .mala-band .mala-copy { padding: 28px; }
+  .bz-page-home .trust-strip { grid-template-columns: repeat(4, minmax(0, 1fr)); padding-inline: 16px; }
+}
+@media (min-width: 1024px) {
+  .bz-page-home .mala-band > .mala-lead { grid-template-columns: minmax(0, 1.38fr) minmax(0, .95fr); }
+  .bz-page-home .mala-band .mala-photo { height: clamp(360px, 27.5vw, 420px); aspect-ratio: auto; }
+  .bz-page-home .mala-band .bento { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .bz-page-home .faq-wide .faq-card { display: grid; grid-template-columns: minmax(220px, .4fr) minmax(0, 1fr); gap: 8px 40px; align-items: start; padding: 40px; }
+  .bz-page-home .faq-wide [data-faq-panel] { margin-top: 0; }
+  .bz-page-home .faq-wide details:first-child { border-top: 0; }
+  .bz-page-home .faq-wide details:first-child > summary { padding-top: 0; }
+  .bz-page-home .faq-wide details:last-child > summary { padding-bottom: 0; }
+  .bz-page-home .faq-wide details:last-child .faq-answer { padding: 12px 0 0; }
+}
+@media (min-width: 1440px) {
+  .bz-page-home .faq-wide .faq-card { padding-block: 48px; grid-template-columns: minmax(300px, .46fr) minmax(0, 1fr); }
+}
+
+/* Pietre e rituali */
+.bz-page-pietre-e-rituali .bz-stack > .hero { margin-top: var(--side); }
+.bz-page-pietre-e-rituali .birthstones .bz-sh { min-width: 0; }
+.bz-page-pietre-e-rituali .month-panel { grid-template-columns: minmax(0, .72fr) minmax(0, 1.8fr); gap: 24px; align-items: center; }
+.bz-page-pietre-e-rituali .month-cards {
+  display: grid;
+  grid-auto-flow: row;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  overflow: visible;
+  gap: 12px;
+}
+.bz-page-pietre-e-rituali .month-products-area { min-width: 0; }
+.bz-page-pietre-e-rituali .month-add-all { margin-top: 16px; min-height: 48px; }
+@media (min-width: 1024px) {
+  .bz-page-pietre-e-rituali .birthstones .bz-pills { flex-wrap: wrap; overflow: visible; mask-image: none; }
+}
+@media (max-width: 1023px) {
+  .bz-page-pietre-e-rituali .month-panel { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 767px) {
+  .bz-page-pietre-e-rituali .month-cards {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: 72%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .bz-page-pietre-e-rituali .month-cards > article { scroll-snap-align: start; }
+  .bz-page-pietre-e-rituali .month-add-all { width: 100%; }
+  .bz-page-pietre-e-rituali .month-identity h3.is-long { font-size: clamp(22px, 7.4vw, 29px); }
+}
+
+/* Ayurveda */
+.bz-page-ayurveda .ay-hero, .bz-page-ayurveda .ay-cose { display: grid; align-items: center; gap: 28px 40px; }
+.bz-page-ayurveda .ay-hero { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); margin-top: var(--side); }
+.bz-page-ayurveda .ay-cose { grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); }
+.bz-page-ayurveda .ay-cose .ay-photo { order: -1; }
+.bz-page-ayurveda .ay-bc { display: flex; flex-wrap: wrap; align-items: center; margin-bottom: 16px; font-size: 13px; color: var(--ivory2); }
+.bz-page-ayurveda .ay-bc-sep { margin-inline: .55em; color: var(--mute); }
+.bz-page-ayurveda .ay-bc [aria-current] { color: var(--ivory); }
+.bz-page-ayurveda .ay-hero h1 { font-size: clamp(36px, 4.2vw, 62px); max-width: 16ch; }
+.bz-page-ayurveda .ay-lead { margin-top: 18px; max-width: 48ch; font-size: clamp(15px, 1.15vw, 17px); }
+.bz-page-ayurveda .ay-soft, .bz-page-ayurveda .ay-all { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--goldl); }
+.bz-page-ayurveda .ay-soft { margin-top: 12px; }
+.bz-page-ayurveda .ay-soft:hover, .bz-page-ayurveda .ay-all:hover { text-decoration: underline; }
+.bz-page-ayurveda .ay-photo { min-width: 0; margin: 0; overflow: hidden; border: 1px solid var(--line); border-radius: var(--rl); }
+.bz-page-ayurveda .ay-photo img { width: 100%; height: auto; object-fit: cover; }
+.bz-page-ayurveda .ay-hero .ay-photo img { aspect-ratio: 4/3; object-position: center 40%; }
+.bz-page-ayurveda .ay-cose .ay-photo img { aspect-ratio: 4/5; max-height: 560px; object-position: center 22%; }
+.bz-page-ayurveda .ay-cose h2 { margin-bottom: 18px; }
+.bz-page-ayurveda .ay-cose p { max-width: 58ch; }
+.bz-page-ayurveda :is(#cose,#prodotti,#faq) { scroll-margin-top: 110px; }
+.bz-page-ayurveda .ay-prod-intro { margin-top: 16px; max-width: 66ch; }
+.bz-page-ayurveda .ay-cats { display: grid; gap: 28px; margin-top: 36px; }
+.bz-page-ayurveda .ay-cat { min-width: 0; padding: 4px 0; }
+.bz-page-ayurveda .ay-cat.is-band { padding: 28px; border-radius: var(--rl); border: 1px solid var(--line); background: #1b1916; }
+.bz-page-ayurveda .ay-cat-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 24px; }
+.bz-page-ayurveda .ay-cat-head h3 { margin: 0; font-size: clamp(26px, 2.6vw, 36px); }
+.bz-page-ayurveda .ay-cat .ay-copy p { max-width: 66ch; font-size: clamp(14px, 1.15vw, 16px); }
+.bz-page-ayurveda .ay-cat-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 22px; }
+.bz-page-ayurveda .ay-faq { padding: 28px; border-radius: var(--rl); background: var(--ivory); }
+.bz-page-ayurveda .ay-faq h2 { margin: 0 0 22px; font-size: clamp(30px, 3vw, 42px); color: #201b16; }
+.bz-page-ayurveda .ay-faq h2 em { color: #8b672b; }
+.bz-page-ayurveda .ay-page-disclaimer { margin-top: 28px; max-width: 72ch; font-size: 12px; color: var(--mute); }
+.bz-page-ayurveda .bz-news { padding: 0; }
+.bz-page-ayurveda .bz-news__card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+  padding: 48px;
+  border-radius: var(--rl);
+  background: linear-gradient(140deg, #e3cb95, #b8955a);
+}
+.bz-page-ayurveda .bz-news h2 { margin: 0; color: #17130d; font-size: clamp(30px, 2.8vw, 42px); }
+.bz-page-ayurveda .bz-news h2 em { color: #6b4512; }
+.bz-page-ayurveda .bz-news button { padding-inline: 24px; border-radius: 999px; background: #17130d; color: var(--ivory); }
+.bz-page-ayurveda .bz-news small { display: block; margin-top: 10px; color: #4a3d28; }
+@media (max-width: 1200px) {
+  .bz-page-ayurveda .ay-cat-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 900px) {
+  .bz-page-ayurveda .ay-hero, .bz-page-ayurveda .ay-cose { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .bz-page-ayurveda .ay-hero .ay-photo { order: -1; }
+  .bz-page-ayurveda .ay-cose .ay-photo { order: 0; }
+  .bz-page-ayurveda .ay-hero .ay-photo img { max-height: 280px; }
+  .bz-page-ayurveda .ay-cose .ay-photo img { max-height: 420px; }
+  .bz-page-ayurveda .ay-cat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .bz-page-ayurveda .venn-stage { width: min(440px, 100%); }
+  .bz-page-ayurveda .bz-news__card { grid-template-columns: 1fr; padding: 32px; gap: 18px; }
+}
+@media (max-width: 767px) {
+  .bz-page-ayurveda .dosha-products, .bz-page-ayurveda .ay-cat-grid {
+    display: grid;
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: 72%;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    padding-bottom: 12px;
+  }
+  .bz-page-ayurveda :is(.dosha-products, .ay-cat-grid) > .product { scroll-snap-align: start; }
+  .bz-page-ayurveda .ay-cat.is-band, .bz-page-ayurveda .ay-faq, .bz-page-ayurveda .bz-news__card { padding: 20px; }
+  .bz-page-ayurveda .ay-hero .ay-photo img { max-height: 240px; }
+  .bz-page-ayurveda .ay-cose .ay-photo img { max-height: 360px; }
+}
+
+/* Viso and Corpo catalog groups */
+.plp .bz-grouped-plp .plp-head { padding: 16px 0 24px; }
+.plp .bz-grouped-plp h1 { margin-top: 12px; }
+.plp .bz-grouped-plp .plp-desc { margin-top: 12px; max-width: 62ch; }
+.plp .bz-grouped-plp .plp-bar { position: sticky; top: 0; z-index: 10; padding: 12px 0; background: var(--bg); }
+.plp .bz-grouped-plp .plp-bar.has-more::after {
+  content: '';
+  position: absolute;
+  inset: 0 calc(-1 * var(--side)) 0 auto;
+  width: 48px;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, var(--bg) 85%);
+}
+.plp .bz-grouped-plp .plp-tools { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; margin: 12px 0 16px; }
+.plp .bz-grouped-plp .plp-tools p { margin: 0; font-size: 14px; white-space: nowrap; }
+.plp .bz-grouped-plp .sort { width: auto; }
+.plp .bz-grouped-plp .sort select { width: auto; padding: 0 38px; text-align: left; text-align-last: left; }
+.plp .bz-grouped-plp .sort svg { position: absolute; left: 12px; width: 20px; height: 20px; pointer-events: none; }
+.plp .bz-grouped-plp .plp-groups { display: flex; flex-direction: column; gap: 48px; }
+.plp .bz-grouped-plp .plp-group { scroll-margin-top: calc(var(--plp-bar-height, 72px) + 12px); }
+.plp .bz-grouped-plp .plp-group-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #c9a96e47;
+}
+.plp .bz-grouped-plp .plp-group-head h2 { margin: 0; font: 400 22px/1.2 var(--serif); }
+.plp .bz-grouped-plp .plp-group-head span { color: var(--mute); font-size: 13px; white-space: nowrap; }
+.plp .bz-grouped-plp .pgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.plp .bz-grouped-plp .product .price { font-size: clamp(18px, 2vw, 24px); }
+.plp .bz-grouped-plp .product-bottom { gap: 4px; }
+.plp .bz-grouped-plp .plp-pagination { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 12px; }
+@media (min-width: 768px) {
+  .plp .bz-grouped-plp .pgrid { gap: 24px 16px; }
+}
+@media (min-width: 1024px) {
+  .plp .bz-grouped-plp .plp-bar { display: flex; align-items: flex-start; gap: 24px; margin-inline: calc(-1 * var(--side)); padding: 16px var(--side); }
+  .plp .bz-grouped-plp .plp-bar.has-more::after { content: none; }
+  .plp .bz-grouped-plp .chips-scroll { overflow: visible; }
+  .plp .bz-grouped-plp .chips { flex-wrap: wrap; width: auto; }
+  .plp .bz-grouped-plp .plp-tools { margin: 0; flex: none; }
+  .plp .bz-grouped-plp .plp-groups { gap: 64px; margin-top: 24px; }
+  .plp .bz-grouped-plp .plp-group-head h2 { font-size: 24px; }
+  .plp .bz-grouped-plp .pgrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (min-width: 1280px) {
+  .plp .bz-grouped-plp .pgrid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px 24px; }
+}
+
+/* Il negozio */
+.bz-page-il-negozio .shop-hero {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: flex-end;
+  aspect-ratio: 16/7;
+  margin-top: 16px;
+  overflow: hidden;
+  border-radius: var(--rl);
+}
+.bz-page-il-negozio .shop-hero > img {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-position: 50% 55%;
+}
+.bz-page-il-negozio .shop-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(0deg, #0d0c0bf2, #0d0c0bc7 40%, #0d0c0b2e 75%, transparent),
+    linear-gradient(90deg, #0d0c0b99, transparent 60%);
+}
+.bz-page-il-negozio .shop-hero-copy { max-width: 720px; padding: 48px; }
+.bz-page-il-negozio .shop-hero-copy p { margin-top: 16px; font-size: 18px; color: var(--ivory); }
+.bz-page-il-negozio .shop-hero-copy .open-badge { margin-top: 24px; }
+.bz-page-il-negozio .shop-visit {
+  display: grid;
+  gap: 24px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--rl);
+  background: linear-gradient(120deg, #2a241c, var(--card) 60%);
+}
+.bz-page-il-negozio .shop-visit-col { min-width: 0; }
+.bz-page-il-negozio .shop-visit-col + .shop-visit-col { padding-top: 24px; border-top: 1px solid var(--line); }
+.bz-page-il-negozio .shop-visit h2 { margin: 0 0 24px; font-size: clamp(30px, 2.6vw, 40px); }
+.bz-page-il-negozio .shop-hours-table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.bz-page-il-negozio .shop-hours-table :is(th, td) { height: 44px; padding: 6px 8px; text-align: left; border-bottom: 1px solid var(--line); }
+.bz-page-il-negozio .shop-hours-table th { width: 1%; padding-right: 16px; font-weight: 500; white-space: nowrap; }
+.bz-page-il-negozio .shop-hours-table td { color: var(--ivory2); }
+.bz-page-il-negozio .shop-hours-table tr:last-child > * { border: 0; }
+.bz-page-il-negozio .shop-hours-table .is-today > * { background: #c9a96e1a; color: var(--goldl); }
+.bz-page-il-negozio .shop-where { display: grid; list-style: none; margin: 0 0 24px; padding: 0; }
+.bz-page-il-negozio .shop-where li { display: flex; align-items: center; gap: 12px; min-height: 44px; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+.bz-page-il-negozio .shop-where li:last-child { border: 0; color: var(--ivory2); }
+.bz-page-il-negozio .shop-where svg { width: 24px; height: 24px; flex: none; color: var(--gold); }
+.bz-page-il-negozio .shop-where a:hover { color: var(--goldl); }
+.bz-page-il-negozio .shop-gallery-head { display: flex; justify-content: space-between; flex-wrap: wrap; align-items: flex-end; gap: 16px; margin-bottom: 24px; }
+.bz-page-il-negozio .shop-gallery-head h2 { margin: 0; }
+.bz-page-il-negozio .shop-gallery-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  height: clamp(420px, 39vw, 560px);
+}
+.bz-page-il-negozio .shop-gallery-grid .tour-card { position: relative; inset: auto; width: 100%; height: 100%; min-height: 0; transform: none; border-radius: var(--r); }
+.bz-page-il-negozio .shop-gallery-grid .tour-card:first-child { grid-row: 1/3; }
+.bz-page-il-negozio .shop-gallery-grid .tour-card:nth-child(n+4) { display: none; }
+.bz-page-il-negozio .shop-gallery-grid .tour-card img { width: 100%; height: 100%; object-fit: cover; }
+.bz-page-il-negozio :is(.shop-visit, .shop-gallery) .btn svg, .bz-page-il-negozio .tour-close svg { width: 22px; height: 22px; flex: none; }
+@media (min-width: 1024px) {
+  .bz-page-il-negozio .shop-visit { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px; padding: 48px; }
+  .bz-page-il-negozio .shop-visit-col + .shop-visit-col { padding: 0 0 0 48px; border: 0; border-left: 1px solid var(--line); }
+  .bz-page-il-negozio .shop-hours-table th { padding-right: 32px; }
+}
+@media (max-width: 1023px) {
+  .bz-page-il-negozio .shop-hero { display: block; aspect-ratio: auto; overflow: visible; }
+  .bz-page-il-negozio .shop-hero::after { content: none; }
+  .bz-page-il-negozio .shop-hero > img { position: static; aspect-ratio: 16/9; height: auto; border-radius: var(--r); }
+  .bz-page-il-negozio .shop-hero-copy { padding: 24px 0 0; }
+  .bz-page-il-negozio .shop-hero-copy p { font-size: 16px; color: var(--ivory2); }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .bz-page-il-negozio .shop-visit { padding: 32px; gap: 32px; }
+}
+@media (max-width: 767px) {
+  .bz-page-il-negozio .shop-hero > img { aspect-ratio: 4/3; }
+  .bz-page-il-negozio .shop-visit .btn { width: 100%; }
+  .bz-page-il-negozio .shop-gallery-grid {
+    display: flex;
+    height: auto;
+    gap: 12px;
+    margin-inline: calc(-1 * var(--side));
+    padding-inline: var(--side);
+    overflow-x: auto;
+    scroll-padding-inline: var(--side);
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .bz-page-il-negozio .shop-gallery-grid .tour-card { flex: 0 0 80%; height: auto; aspect-ratio: 4/5; scroll-snap-align: start; }
+  .bz-page-il-negozio .shop-gallery-grid .tour-card:nth-child(n+4) { display: block; }
+}

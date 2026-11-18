@@ -43,7 +43,7 @@
     var whole = Math.floor(amount / 100);
     var rest = String(amount % 100).padStart(2, "0");
     var grouped = String(whole).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    return grouped + "," + rest + " €";
+    return grouped + "," + rest + "\u00a0€";
   }
   window.bzMoney = formatEuro;
 
@@ -353,11 +353,11 @@
     if (price == null || price === "") return "";
     var text = String(price).replace(/<[^>]+>/g, "").trim();
     var prefixed = text.match(/^€\s*(.+)$/);
-    if (prefixed) return prefixed[1].trim() + " €";
+    if (prefixed) return prefixed[1].trim() + "\u00a0€";
     if (/€\s*$/.test(text)) return text;
     var amount = Number(text);
     if (!Number.isFinite(amount)) return text;
-    return amount.toLocaleString("it-IT", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €";
+    return amount.toLocaleString("it-IT", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + "\u00a0€";
   }
 
   function renderProducts(products, query) {

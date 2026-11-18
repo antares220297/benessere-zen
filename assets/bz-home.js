@@ -45,7 +45,7 @@
     var whole = Math.floor(cents / 100);
     var rest = String(cents % 100).padStart(2, "0");
     var grouped = String(whole).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    return grouped + "," + rest + " €";
+    return grouped + "," + rest + "\u00a0€";
   }
 
   window.bzSumSet = function (root) {

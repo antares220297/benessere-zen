@@ -206,7 +206,7 @@
           <i style="width: {{ ship_width }}%"></i>
           <span class="bz-ship__mark"><svg viewBox="0 0 24 24"><path d="M2 7h12v9H2zM14 10h4l3 3v3h-7"/><circle cx="6" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg></span>
         </div>
-        <div class="bz-shipbox__labels"><span>0 €</span><span>Gratis da {{ ship_euros }} €</span></div>
+        <div class="bz-shipbox__labels"><span>0&nbsp;€</span><span>Gratis da {{ ship_euros }}&nbsp;€</span></div>
       </div>
 
       {%- form 'product', product, class: 'bz-ajax-cart' -%}
@@ -313,7 +313,7 @@
                   <p>{{ pietra_cura | escape }}</p>
                 {%- endif -%}
               {%- elsif block.settings.title contains 'Spedizione' -%}
-                <p>In Italia la spedizione è gratuita da {{ ship_free }} €. Sotto quella cifra è Express, 5,90 €.</p>
+                <p>In Italia la spedizione è gratuita da {{ ship_free }}&nbsp;€. Sotto quella cifra è Express, 5,90&nbsp;€.</p>
                 <p>Il ritiro in negozio è in Via Marcello Provenzali 1, a Cento.</p>
                 <p>Hai 14 giorni dalla consegna per chiedere un reso. Il pezzo torna non indossato, con i cartellini e la confezione. Il pacco va a Via Olindo Malagodi 2, Cento. Se il reso è accettato, il rimborso arriva entro 10 giorni lavorativi. <a href="{{ shop.refund_policy.url | default: '/policies/refund-policy' }}">Informativa sui rimborsi</a></p>
               {%- elsif block.settings.text != blank -%}
