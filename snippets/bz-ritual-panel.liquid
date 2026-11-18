@@ -22,7 +22,7 @@
         <div class="ritual-sum price">{% render 'bz-money', cents: display_total %}</div>
         {%- if savings > 0 -%}<span class="ritual-saving">Risparmi {% render 'bz-money', cents: savings %}</span>{%- endif -%}
       </div>
-      <button class="btn gold" type="button" data-bz-add-set{% if count == 0 %} disabled{% endif %}>Aggiungi al carrello <span aria-hidden="true">→</span></button>
+      <button class="btn gold" type="button" data-bz-add-set{% if count == 0 %} disabled{% endif %}>Aggiungi al carrello</button>
     </div>
     <p class="ritual-status" role="status" data-ritual-status></p>
     <div class="ritual-shipping" data-shipping>

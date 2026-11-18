@@ -44,7 +44,7 @@
       <p>{{ settings.bz_address }}</p>
       <div class="visit-actions bz-visit-actions">
         {% render 'bz-open-badge', variant: 'status' %}
-        <a class="btn gold" href="{{ settings.bz_maps | default: 'https://www.google.com/maps/search/?api=1&query=Via+Marcello+Provenzali+1+Cento' }}">Come arrivare <span aria-hidden="true">→</span></a>
+        <a class="btn gold" href="{{ settings.bz_maps | default: 'https://www.google.com/maps/search/?api=1&query=Via+Marcello+Provenzali+1+Cento' }}">{% render 'bz-nav-label', label: 'Come arrivare' %}</a>
       </div>
     </div>
     <div>

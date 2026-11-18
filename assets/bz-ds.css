@@ -1,0 +1,795 @@
+/* Benessere Zen — applicazione del design system sopra il CSS generato.
+   I numeri di questo file sono i token di bz-tokens.css. Va caricato per ultimo. */
+
+html body{
+  background:var(--bz-bg);
+  color:var(--bz-text);
+  font-family:var(--bz-font-sans);
+  font-size:var(--bz-fs-body)!important;
+  font-weight:400;
+  line-height:var(--bz-lh-body);
+  overflow-x:clip!important;
+}
+html .bz-scope{
+  font-size:var(--bz-fs-body);
+  line-height:var(--bz-lh-body);
+}
+
+/* Contenitore: al massimo 1440, contenuto 1384 con il margine interno. */
+html .bz-scope main{
+  box-sizing:border-box;
+  width:min(100%,var(--bz-container-max));
+  max-width:var(--bz-container-max);
+  margin-inline:auto;
+  padding-left:var(--bz-margin);
+  padding-right:var(--bz-margin);
+}
+@media (min-width:1440px){
+  html .bz-scope header,
+  html .bz-scope .announcement,
+  html .bz-scope footer{
+    padding-left:calc((100vw - var(--bz-container-max)) / 2 + var(--bz-margin));
+    padding-right:calc((100vw - var(--bz-container-max)) / 2 + var(--bz-margin));
+  }
+}
+
+/* Annuncio + header restano attaccati in alto, anche sulla ricerca. */
+html .bz-chrome{
+  position:sticky;
+  top:0;
+  z-index:80;
+  background:var(--bz-bg);
+}
+html .bz-scope header{
+  background:var(--bz-bg);
+}
+html .bz-scope main :is(section,[id]){
+  scroll-margin-top:calc(var(--bz-sticky-h,120px) + var(--bz-sp-8));
+}
+
+/* Ritmo: una distanza di sezione tra i bordi visibili. */
+html .bz-scope main>.shopify-section+.shopify-section,
+html .bz-scope .bz-stack>section+section,
+html .bz-page-home .faq-wide{
+  margin-top:var(--bz-section-gap);
+}
+
+/* Tipi. I !important battono le decine di font-size del foglio generato.
+   I titoli prodotto sono esclusi più sotto e restano sulla scala prodotto. */
+html .bz-scope h1{
+  font-family:var(--bz-font-serif)!important;
+  font-size:var(--bz-fs-h1)!important;
+  font-weight:400!important;
+  line-height:var(--bz-lh-h1)!important;
+  letter-spacing:var(--bz-ls-h1);
+  text-wrap:balance;
+  hyphens:manual;
+}
+html .bz-scope :is(.bz-pdp,.bz-page-cart,.bz-search) h1,
+html .bz-scope section.bz-search h1,
+html .bz-scope.theme-template-product h1,
+html .bz-scope .bz-buy h1{
+  font-size:var(--bz-fs-h1-compact)!important;
+  line-height:1.1!important;
+  letter-spacing:0;
+}
+html .bz-scope h2{
+  font-family:var(--bz-font-serif)!important;
+  font-size:var(--bz-fs-h2)!important;
+  font-weight:400!important;
+  line-height:var(--bz-lh-h2)!important;
+  letter-spacing:var(--bz-ls-h2);
+  text-wrap:balance;
+  hyphens:manual;
+}
+html .bz-scope h3{
+  font-family:var(--bz-font-serif)!important;
+  font-size:var(--bz-fs-h3)!important;
+  font-weight:400!important;
+  line-height:var(--bz-lh-h3)!important;
+  text-wrap:balance;
+  hyphens:manual;
+}
+html .bz-scope h4,
+html .bz-scope .faq-card summary,
+html .bz-scope .bz-faq summary{
+  font-family:var(--bz-font-serif)!important;
+  font-size:var(--bz-fs-h4)!important;
+  font-weight:400!important;
+  line-height:var(--bz-lh-h4)!important;
+  text-wrap:balance;
+}
+html .bz-scope p,
+html .bz-scope .bz-sh-sub,
+html .bz-scope .dosha-intro,
+html .bz-scope .ay-prod-intro{
+  font-size:var(--bz-fs-lead);
+  line-height:var(--bz-lh-body);
+  color:var(--bz-text-2);
+  text-wrap:pretty;
+  hyphens:manual;
+  overflow-wrap:break-word;
+}
+html .bz-scope :is(small,.footer-bottom,.announcement,.shipping-line){
+  font-size:var(--bz-fs-xs);
+}
+html .bz-scope em{color:var(--bz-gold);font-weight:400}
+html .bz-on-light em,
+html .bz-scope .faq-card em,
+html .bz-page-cura-di-se .cura-routine:not(.is-night) h2 em,
+html .bz-page-cura-di-se .cura-routine:not(.is-night) em{
+  color:var(--bz-gold-on-light);
+}
+
+/* Comparsa del solo blocco titolo, sotto la piega. La classe la aggiunge lo script. */
+html .bz-ds-reveal{
+  opacity:0;
+  transform:translateY(12px);
+}
+html .bz-ds-reveal.is-in{
+  opacity:1;
+  transform:none;
+  transition:opacity var(--bz-dur-large) var(--bz-ease-enter),transform var(--bz-dur-large) var(--bz-ease-enter);
+}
+html .bz-motion .bz-reveal.is-in{
+  transition:opacity var(--bz-dur-large) var(--bz-ease-enter),transform var(--bz-dur-large) var(--bz-ease-enter);
+}
+html .bz-ptile:hover,
+html .bz-compare a:hover,
+html .bz-gesture:hover,
+html .bz-value:hover,
+html .bz-dosha__card:hover{transform:none}
+
+/* CTA: primaria oro, secondaria pill di contorno, niente sollevamento. */
+html .bz-scope :is(.btn,.bz-row-link){
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:var(--bz-sp-8);
+  min-height:var(--bz-control-h);
+  padding:0 var(--bz-sp-16);
+  border-radius:var(--bz-r-pill);
+  border:1px solid var(--bz-line-2);
+  background:transparent;
+  color:var(--bz-text);
+  font-family:var(--bz-font-sans);
+  font-size:var(--bz-fs-btn)!important;
+  font-weight:500;
+  line-height:1;
+  white-space:nowrap;
+  text-decoration:none;
+  transition:background-color var(--bz-dur-hover) var(--bz-ease-standard),border-color var(--bz-dur-hover) var(--bz-ease-standard);
+}
+html .bz-scope .btn.gold,
+html .bz-scope a.gold,
+html .bz-scope button.gold{
+  padding-inline:var(--bz-sp-24);
+  border-color:transparent;
+  background:var(--bz-gold);
+  color:var(--bz-on-gold);
+  font-weight:600;
+}
+html .bz-scope .bz-row-link{
+  display:flex;
+  width:fit-content;
+  max-width:100%;
+  margin:var(--bz-gap-content-cta) auto 0;
+}
+@media (hover:hover){
+  html .bz-scope .btn.gold:hover,
+  html .bz-scope a.gold:hover,
+  html .bz-scope button.gold:hover{background:var(--bz-gold-hover)}
+  html .bz-scope :is(.btn.outline,.bz-row-link):hover{border-color:var(--bz-gold)}
+  html .bz-scope .text-link:hover{text-decoration:underline;text-underline-offset:4px}
+}
+html .bz-scope :is(.btn,.bz-row-link):hover{transform:none}
+html .bz-scope :is(.btn,.bz-row-link):active{transform:scale(.98)}
+html .bz-scope :is(a,button,summary,input,textarea):focus-visible{
+  outline:var(--bz-focus-width) solid var(--bz-focus-color);
+  outline-offset:var(--bz-focus-offset);
+}
+html .bz-on-light :is(a,button,summary,input):focus-visible,
+html .bz-scope .faq-card :focus-visible,
+html .bz-page-cura-di-se .cura-routine:not(.is-night) :focus-visible{
+  outline-color:var(--bz-ink);
+}
+html .bz-scope :is(.btn,.add,.bz-card__add):disabled,
+html .bz-scope :is(.btn,.add)[aria-disabled="true"]{
+  opacity:.38;
+  pointer-events:none;
+}
+html .bz-scope .text-link{
+  color:var(--bz-gold);
+  font-size:var(--bz-fs-btn);
+  font-weight:500;
+}
+html .bz-scope .bz-ico{
+  display:block;
+  flex:none;
+  fill:currentColor;
+  stroke:none;
+}
+html .bz-scope .bz-ico--sm{width:var(--bz-icon-sm);height:var(--bz-icon-sm)}
+html .bz-scope .bz-ico--lg{width:var(--bz-icon-lg);height:var(--bz-icon-lg)}
+/* Il link accanto al titolo non si usa: la CTA sta sotto i prodotti. */
+html .bz-scope .bz-sh>.bz-sh-more,
+html .bz-scope .world-aside>.text-link{display:none}
+
+/* Prezzo: uno stile. Il protagonista (scheda, routine, totale del set) è più grande. */
+html .bz-scope :is(.price,.bz-price,.row-price,.compare-price,.ay-price){
+  font-family:var(--bz-font-serif)!important;
+  font-size:var(--bz-fs-price)!important;
+  font-weight:400!important;
+  line-height:var(--bz-lh-price)!important;
+  color:var(--bz-text)!important;
+  white-space:nowrap;
+  font-variant-numeric:lining-nums tabular-nums;
+}
+html .bz-scope :is(.bz-pdp .price,.bz-buy__price strong,.cura-product-copy .price,.ritual-total .price,.bz-price--lg){
+  font-size:var(--bz-fs-price-lg)!important;
+  font-family:var(--bz-font-serif)!important;
+  font-weight:400!important;
+  line-height:var(--bz-lh-price)!important;
+  color:var(--bz-text)!important;
+  font-variant-numeric:lining-nums tabular-nums;
+}
+html .bz-on-light :is(.price,.bz-price),
+html .bz-page-cura-di-se .cura-routine:not(.is-night) .cura-product-copy .price{
+  color:var(--bz-ink)!important;
+}
+html .bz-page-cura-di-se .cura-routine.is-night .cura-product-copy .price{
+  color:var(--bz-text)!important;
+}
+
+/* Card prodotto, una sola. I regali sotto i 768 restano com'erano. */
+html .bz-scope .product:not(.gift-card),
+html .bz-scope .compare-card{
+  display:flex;
+  flex-direction:column;
+  height:100%;
+  min-width:0;
+  padding:var(--bz-card-pad);
+  background:var(--bz-surface);
+  border:1px solid var(--bz-line);
+  border-radius:var(--bz-r-card);
+  transform:none;
+}
+html .bz-scope .product:not(.gift-card)>a{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+  color:inherit;
+}
+html .bz-scope .product:not(.gift-card) img,
+html .bz-scope .compare-photo img{
+  width:100%;
+  aspect-ratio:1/1;
+  height:auto;
+  object-fit:cover;
+  border-radius:var(--bz-r-img);
+}
+html .bz-scope .gift-card h3{
+  font-family:var(--bz-font-sans)!important;
+  font-size:13px!important;
+  font-weight:400!important;
+  line-height:1.4!important;
+  color:var(--bz-text)!important;
+}
+@media (max-width:767px){
+  html .bz-page-home .gift-card .price{font-size:clamp(17px,2.2vw,24px)!important}
+}
+html .bz-scope .product:not(.gift-card) h3,
+html .bz-scope .pcard .pc-name,
+html .bz-page-ayurveda .dosha-panel .product h3,
+html .bz-page-ayurveda .dosha-products .product h3,
+html .bz-page-ayurveda .ay-cat-grid .product h3{
+  font-family:var(--bz-font-sans)!important;
+  font-size:var(--bz-fs-product)!important;
+  font-weight:400!important;
+  line-height:var(--bz-lh-product)!important;
+  color:var(--bz-text)!important;
+  margin:var(--bz-sp-12) var(--bz-sp-4) 0!important;
+  min-height:calc(2 * var(--bz-lh-product) * 1em);
+  text-wrap:pretty;
+  hyphens:manual;
+  overflow-wrap:break-word;
+}
+html .bz-scope .product:not(.gift-card) .product-bottom{
+  margin-top:auto;
+  padding:var(--bz-sp-12) var(--bz-sp-4) 0;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) var(--bz-control-h);
+  align-items:center;
+  column-gap:var(--bz-sp-8);
+}
+html .bz-scope .product:not(.gift-card) .product-bottom>div{display:contents}
+html .bz-scope .product:not(.gift-card) small{
+  grid-column:1/-1;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  margin:0 0 var(--bz-sp-4);
+  font-size:var(--bz-fs-xs);
+  font-weight:500;
+  line-height:var(--bz-lh-xs);
+  color:var(--bz-text-3);
+  white-space:nowrap;
+}
+html .bz-scope .product:not(.gift-card) small:before{
+  content:"";
+  width:6px;
+  height:6px;
+  border-radius:var(--bz-r-round);
+  background:var(--bz-gold);
+  font-size:0;
+}
+html .bz-scope :is(.add,.bz-card__add){
+  display:grid;
+  place-items:center;
+  width:var(--bz-control-h);
+  height:var(--bz-control-h);
+  min-width:var(--bz-control-h);
+  min-height:var(--bz-control-h);
+  padding:0;
+  border:0;
+  border-radius:var(--bz-r-round);
+  background:var(--bz-gold);
+  color:var(--bz-on-gold);
+  justify-self:end;
+}
+html .bz-scope :is(.add,.bz-card__add) svg{
+  width:var(--bz-icon-lg);
+  height:var(--bz-icon-lg);
+  fill:currentColor;
+  stroke:none;
+}
+@media (hover:hover){
+  html .bz-scope :is(.add,.bz-card__add):hover{
+    background:var(--bz-gold-hover);
+    transform:none;
+  }
+  html .bz-scope .product:not(.gift-card):hover{border-color:var(--bz-line-2)}
+  html .bz-scope .product:not(.gift-card)>a img{
+    transition:transform var(--bz-dur-large) var(--bz-ease-enter);
+  }
+}
+@media (hover:hover){
+  html .bz-scope .product:not(.gift-card):hover>a img{transform:scale(1.03)}
+}
+html .bz-scope :is(.add,.bz-card__add):active{transform:scale(.94)}
+
+/* File di prodotti: 2,2 card in vista su mobile; 3/4/5 e il resto con Vedi tutto. */
+html .bz-scope .products,
+html .bz-scope .dosha-products,
+html .bz-scope .ay-cat-grid{
+  align-items:stretch;
+  gap:var(--bz-grid-gap);
+}
+@media (max-width:767px){
+  html .bz-scope .products,
+  html .bz-scope .dosha-products,
+  html .bz-scope .ay-cat-grid{
+    display:flex;
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    scroll-padding-inline:var(--bz-margin);
+    margin-right:calc(var(--bz-margin) * -1);
+    padding-bottom:var(--bz-sp-4);
+    scrollbar-width:none;
+  }
+  html .bz-scope .products::-webkit-scrollbar,
+  html .bz-scope .dosha-products::-webkit-scrollbar{display:none}
+  html .bz-scope :is(.products,.dosha-products,.ay-cat-grid)>.product{
+    flex:0 0 calc((100vw - var(--bz-margin) - 2 * var(--bz-grid-gap)) / 2.2);
+    width:calc((100vw - var(--bz-margin) - 2 * var(--bz-grid-gap)) / 2.2);
+    scroll-snap-align:start;
+    display:flex;
+  }
+}
+@media (min-width:768px){
+  html .bz-scope .products,
+  html .bz-scope .ay-cat-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+  html .bz-scope .products:not(.bz-fixed-3)>.product:nth-child(n+4),
+  html .bz-scope .ay-cat-grid>.product:nth-child(n+4){display:none}
+}
+@media (min-width:1024px){
+  html .bz-scope .products:not(.bz-fixed-3),
+  html .bz-scope .ay-cat-grid{
+    grid-template-columns:repeat(4,minmax(0,1fr));
+  }
+  html .bz-scope .products:not(.bz-fixed-3)>.product:nth-child(-n+4),
+  html .bz-scope .ay-cat-grid>.product:nth-child(-n+4){display:flex}
+  html .bz-scope .products:not(.bz-fixed-3)>.product:nth-child(n+5),
+  html .bz-scope .ay-cat-grid>.product:nth-child(n+5){display:none}
+}
+@media (min-width:1280px){
+  html .bz-scope .products:not(.bz-fixed-3),
+  html .bz-scope .ay-cat-grid{
+    grid-template-columns:repeat(5,minmax(0,1fr));
+  }
+  html .bz-scope .products:not(.bz-fixed-3)>.product:nth-child(-n+5),
+  html .bz-scope .ay-cat-grid>.product:nth-child(-n+5){display:flex}
+  html .bz-scope .products:not(.bz-fixed-3)>.product:nth-child(n+6),
+  html .bz-scope .ay-cat-grid>.product:nth-child(n+6){display:none}
+}
+html .bz-scope .products.bz-fixed-3{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+html .bz-scope .products.bz-fixed-3>.product{display:flex}
+html .bz-scope .pgrid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:var(--bz-grid-gap);
+}
+@media (min-width:768px){
+  html .bz-scope .pgrid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+}
+html .bz-scope .dosha-products{
+  margin-top:var(--bz-gap-head-content);
+}
+@media (min-width:768px){
+  html .bz-scope .dosha-products{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    overflow:visible;
+  }
+  html .bz-scope .dosha-products>.product{
+    display:flex;
+    width:auto;
+    flex:none;
+  }
+}
+
+/* Regali: su desktop la card standard. Sotto i 768 resta il formato approvato. */
+@media (min-width:768px){
+  html .bz-page-home .gift-card{
+    padding:var(--bz-card-pad);
+    border-radius:var(--bz-r-card);
+  }
+  html .bz-page-home .gift-card .gift-photo{aspect-ratio:1/1;border-radius:var(--bz-r-img)}
+  html .bz-page-home .gift-card .gift-cta{display:none}
+  html .bz-page-home .gift-card h3{
+    font-family:var(--bz-font-sans)!important;
+    font-size:var(--bz-fs-product)!important;
+    font-weight:400!important;
+    line-height:var(--bz-lh-product)!important;
+    min-height:calc(2 * var(--bz-lh-product) * 1em);
+  }
+  html .bz-page-home .gift-card .price{
+    font-size:var(--bz-fs-price)!important;
+    color:var(--bz-text)!important;
+  }
+}
+
+/* Badge prodotto: una riga, 24px, oro. Il pallino non c'è. */
+html .bz-scope .bz-badge{
+  display:inline-flex;
+  align-items:center;
+  height:24px;
+  padding:0 10px;
+  border-radius:var(--bz-r-pill);
+  background:var(--bz-gold);
+  color:var(--bz-on-gold);
+  font:600 var(--bz-fs-xs)/1 var(--bz-font-sans);
+  letter-spacing:var(--bz-ls-badge);
+  white-space:nowrap;
+  flex:none;
+}
+html .bz-scope .bz-badge__dot{display:none}
+html .bz-scope .product>a>.bz-badge{
+  position:absolute;
+  top:var(--bz-sp-8);
+  left:var(--bz-sp-8);
+  z-index:2;
+}
+html .bz-scope .bz-stage__badges{
+  display:flex;
+  flex-wrap:nowrap;
+  gap:var(--bz-sp-8);
+}
+html .bz-scope .bz-stage__badges .bz-badge{position:static}
+html .bz-scope .open-badge{
+  display:inline-flex;
+  align-items:center;
+  height:32px;
+  min-height:32px;
+  padding:0 14px 0 12px;
+  border:1px solid var(--bz-line-2);
+  border-radius:var(--bz-r-pill);
+  color:var(--bz-text);
+  font:500 13px/1 var(--bz-font-sans);
+  white-space:nowrap;
+}
+html .bz-scope a.open-badge{position:relative}
+html .bz-scope a.open-badge:before{
+  content:"";
+  position:absolute;
+  left:0;right:0;
+  top:50%;
+  height:var(--bz-control-h);
+  transform:translateY(-50%);
+}
+
+/* Chip. */
+html .bz-scope .bz-pills{gap:var(--bz-sp-8)}
+html .bz-scope .bz-pills>button,
+html .bz-scope .bz-pills>a{
+  min-height:var(--bz-control-h);
+  padding:0 var(--bz-sp-16);
+  border:1px solid var(--bz-line-2);
+  border-radius:var(--bz-r-pill);
+  background:transparent;
+  color:var(--bz-text);
+  font:500 var(--bz-fs-btn)/1 var(--bz-font-sans);
+}
+html .bz-scope .bz-pills>[aria-pressed="true"],
+html .bz-scope .bz-pills>[aria-selected="true"]{
+  background:var(--bz-text);
+  border-color:var(--bz-text);
+  color:var(--bz-bg);
+}
+@media (hover:hover){
+  html .bz-scope .bz-pills>button:hover,
+  html .bz-scope .bz-pills>a:hover{border-color:var(--bz-gold)}
+}
+
+/* Campi e ricerca. */
+html .bz-scope input:not([type=hidden]):not([type=checkbox]):not([type=radio]),
+html .bz-scope section.bz-search input[type=search]{
+  height:var(--bz-control-h);
+  min-height:var(--bz-control-h);
+  padding:0 var(--bz-sp-20);
+  border:1px solid var(--bz-line-field);
+  border-radius:var(--bz-r-pill);
+  background:var(--bz-surface);
+  color:var(--bz-text);
+  font-size:var(--bz-fs-body);
+  line-height:1;
+}
+html .bz-scope input::placeholder{color:var(--bz-text-3);opacity:1}
+html .bz-scope section.bz-search .bz-search__form,
+html .bz-scope .bz-news form{
+  display:flex;
+  align-items:stretch;
+  gap:var(--bz-sp-8);
+}
+html .bz-scope section.bz-search .bz-search__form input,
+html .bz-scope .bz-news input[type=email]{flex:1;min-width:0;margin:0}
+html .bz-scope section.bz-search .bz-search__form button,
+html .bz-scope .bz-news button{
+  height:var(--bz-control-h);
+  min-height:var(--bz-control-h);
+  padding:0 var(--bz-sp-24);
+  border:0;
+  border-radius:var(--bz-r-pill);
+  background:var(--bz-gold);
+  color:var(--bz-on-gold);
+  font:600 var(--bz-fs-btn)/1 var(--bz-font-sans);
+  white-space:nowrap;
+}
+@media (max-width:479px){
+  html .bz-scope section.bz-search .bz-search__form,
+  html .bz-scope .bz-news form{flex-direction:column}
+  html .bz-scope section.bz-search .bz-search__form button,
+  html .bz-scope .bz-news button{width:100%}
+}
+
+/* Newsletter: un pannello scuro, in home e in Ayurveda. */
+html .bz-scope .bz-news__card,
+html .bz-page-home .bz-news__card,
+html .bz-page-ayurveda .bz-news__card{
+  background:var(--bz-surface);
+  color:var(--bz-text);
+  border:1px solid var(--bz-line);
+  border-radius:var(--bz-r-panel);
+  padding:var(--bz-panel-pad);
+}
+html .bz-scope .bz-news h2,
+html .bz-page-home .bz-news h2,
+html .bz-page-ayurveda .bz-news h2{
+  color:var(--bz-text)!important;
+  font-size:var(--bz-fs-h3)!important;
+}
+html .bz-scope .bz-news h2 em,
+html .bz-page-ayurveda .bz-news h2 em{color:var(--bz-gold)!important}
+html .bz-scope .bz-news small,
+html .bz-page-ayurveda .bz-news small{
+  color:var(--bz-text-2);
+  font-size:var(--bz-fs-sm);
+}
+
+/* Anche a Cento è l'unica fascia; la FAQ desktop è una sezione aperta. */
+html .bz-page-home .store-bleed{
+  width:100vw;
+  max-width:100vw;
+  margin-left:calc(50% - 50vw);
+  margin-right:calc(50% - 50vw);
+}
+html .bz-page-home .store-bleed-inner::after{
+  background:var(--bz-veil-side);
+}
+@media (min-width:1024px){
+  html .bz-page-home .faq-wide{
+    display:block;
+    background:transparent!important;
+    padding:0;
+    border-radius:0;
+  }
+  html .bz-page-home .faq-card{
+    background:transparent!important;
+    color:var(--bz-text);
+    border-radius:0;
+    padding:0!important;
+  }
+  html .bz-page-home .faq-card h2,
+  html .bz-page-home .faq-card summary{
+    color:var(--bz-text)!important;
+  }
+  html .bz-page-home .faq-card em{color:var(--bz-gold)!important}
+  html .bz-page-home .faq-card .faq-answer,
+  html .bz-page-home .faq-card .faq-answer p{
+    color:var(--bz-text-2);
+    font-size:var(--bz-fs-body);
+  }
+  html .bz-page-home .faq-card summary:after{color:var(--bz-gold)}
+  html .bz-page-home .faq-card .bz-pills>button{
+    color:var(--bz-text);
+    border-color:var(--bz-line-2);
+    background:transparent;
+  }
+  html .bz-page-home .faq-card .bz-pills>[aria-pressed="true"]{
+    background:var(--bz-text);
+    border-color:var(--bz-text);
+    color:var(--bz-bg);
+  }
+  html .bz-page-home .faq-card [data-faq-panel]{
+    column-count:2;
+    column-gap:var(--bz-grid-gap);
+  }
+  html .bz-page-home .faq-card details{break-inside:avoid}
+  html .bz-page-home .trust-strip{display:none}
+}
+html .bz-page-home .faq-card .faq-answer,
+html .bz-scope .bz-faq .faq-answer{
+  animation:bz-fade var(--bz-dur-ui) var(--bz-ease-enter);
+}
+@keyframes bz-fade{from{opacity:0}to{opacity:1}}
+
+/* Card dell'hero: a 1440 il titolo intero sta su due righe, senza taglio. */
+html .bz-page-home .hero-mini-item>a{
+  align-items:center;
+  font-family:var(--bz-font-sans);
+  font-size:var(--bz-fs-product)!important;
+  font-weight:400;
+  line-height:var(--bz-lh-product);
+  overflow-wrap:break-word;
+  hyphens:manual;
+}
+@media (min-width:1280px){
+  html .bz-page-home .hero-slide--featured .hero-mini{width:min(680px,calc(100% - 32px))}
+  html .bz-page-home .hero-mini-item>a{grid-template-columns:64px minmax(0,1fr)}
+  html .bz-page-home .hero-mini-item img{width:64px;height:64px}
+  html .bz-page-home .hero-slides{min-height:720px}
+  html .bz-page-home .hero-slide--featured .hero-copy{bottom:190px;max-width:min(560px,62%)}
+}
+html .bz-page-home .hero-mini-item span{
+  display:block;
+  text-wrap:pretty;
+  overflow:visible;
+  overflow-wrap:break-word;
+  -webkit-line-clamp:unset;
+  line-clamp:unset;
+}
+html .bz-page-home .hero-mini-item img{border-radius:var(--bz-r-img)}
+html .bz-page-home .hero-mini-item b{
+  font-family:var(--bz-font-serif);
+  font-size:var(--bz-fs-price);
+  font-weight:400;
+  color:var(--bz-text);
+  white-space:nowrap;
+}
+
+/* Sfere categoria: il sollevamento e l'alone erano agganciati a .spheres, la home usa .category-row. */
+html .bz-page-home .category-row a,
+html .bz-scope .spheres>a{position:relative}
+html .bz-page-home .category-row img,
+html .bz-scope .spheres img{
+  position:relative;
+  z-index:1;
+  transition:transform var(--bz-dur-hover) var(--bz-ease-standard);
+}
+html .bz-page-home .category-row a:after,
+html .bz-scope .spheres>a:after{
+  content:"";
+  position:absolute;
+  top:0;
+  left:50%;
+  width:clamp(72px,7.2vw,106px);
+  height:clamp(72px,7.2vw,106px);
+  transform:translateX(-50%);
+  border-radius:var(--bz-r-round);
+  box-shadow:0 0 0 1px var(--bz-gold),0 8px 24px rgba(201,169,110,.28);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity var(--bz-dur-hover) var(--bz-ease-standard),transform var(--bz-dur-hover) var(--bz-ease-standard);
+}
+@media (hover:hover){
+  html .bz-page-home .category-row a:hover img,
+  html .bz-scope .spheres>a:hover img{transform:translateY(-4px)}
+  html .bz-page-home .category-row a:hover:after,
+  html .bz-scope .spheres>a:hover:after{
+    opacity:1;
+    transform:translateX(-50%) translateY(-4px);
+  }
+}
+html .bz-page-home .category-row a:active img,
+html .bz-scope .spheres>a:active img{transform:scale(.97)}
+
+/* Icona cerca del menu: il glifo Material. Il sacchetto resta il suo tratto. */
+html .bz-scope .bz-mobile-tools .bz-ico{
+  width:var(--bz-icon-lg);
+  height:var(--bz-icon-lg);
+  fill:currentColor;
+  stroke:none;
+  color:var(--bz-gold);
+}
+html .bz-scope .bz-badge--quiet{
+  background:transparent;
+  color:var(--bz-text-3);
+  border:1px solid var(--bz-line-2);
+}
+html .bz-scope :is(.bz-drawer__go,.continue-shopping,.text-link){
+  display:inline-flex;
+  align-items:center;
+  gap:var(--bz-sp-8);
+}
+html .bz-scope :is(.bz-btn,.ay-soft){
+  display:inline-flex;
+  align-items:center;
+  gap:var(--bz-sp-8);
+  min-height:var(--bz-control-h);
+  white-space:nowrap;
+}
+html .bz-scope .bz-btn--gold{
+  padding:0 var(--bz-sp-24);
+  border-radius:var(--bz-r-pill);
+  background:var(--bz-gold);
+  color:var(--bz-on-gold);
+  font-weight:600;
+}
+html .bz-scope footer small,
+html .bz-scope .footer-bottom,
+html .bz-scope .announcement{
+  font-size:var(--bz-fs-xs)!important;
+}
+
+/* Fascia Mattina e sera: testo su chiaro. */
+html .bz-page-cura-di-se .cura-routine:not(.is-night){
+  color:var(--bz-ink);
+}
+html .bz-page-cura-di-se .cura-routine:not(.is-night) h2{color:var(--bz-ink)!important}
+
+@media (prefers-reduced-motion:reduce){
+  html *,html *::before,html *::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
+    scroll-behavior:auto!important;
+  }
+  html .bz-ds-reveal,
+  html .bz-ds-reveal.is-in,
+  html .bz-motion .bz-reveal,
+  html .bz-motion .bz-reveal.is-in{
+    opacity:1!important;
+    transform:none!important;
+    transition:opacity 150ms linear!important;
+  }
+  html .bz-page-home .category-row a:hover img,
+  html .bz-scope .spheres>a:hover img,
+  html .bz-scope .product:hover>a img{transform:none!important}
+}

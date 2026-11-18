@@ -67,7 +67,7 @@
         {%- endif -%}
         <div class="bz-stage__badges">
           {%- if current.inventory_management != blank and current.inventory_quantity == 1 and current.available -%}
-            <span class="bz-badge"><span class="bz-badge__dot"></span>Ultimo pezzo</span>
+            <span class="bz-badge">Ultimo pezzo</span>
           {%- endif -%}
           {%- if section.settings.store_badge != blank -%}
             <span class="bz-pill">{{ section.settings.store_badge | escape }}</span>

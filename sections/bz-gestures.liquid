@@ -32,7 +32,7 @@
           <div class="bz-gesture__copy">
             <h3>{{ block.settings.title | escape }}</h3>
             {%- if block.settings.text != blank -%}<p>{{ block.settings.text | escape }}</p>{%- endif -%}
-            <span class="bz-picked__all">{{ item.title | escape }}{% if template.suffix == 'cura-di-se' %} <span aria-hidden="true">→</span>{% endif %}</span>
+            <span class="bz-picked__all">{{ item.title | escape }}{% if template.suffix == 'cura-di-se' %} {% render 'bz-icon', name: 'arrow_forward', icon_class: 'bz-ico bz-ico--sm' %}{% endif %}</span>
           </div>
         </a>
       {%- endif -%}

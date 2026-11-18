@@ -29,7 +29,7 @@
         {%- endfor -%}
       </ul>
       <p class="cart-empty" {% if cart.item_count > 0 %}hidden{% endif %}>Il tuo carrello è vuoto.</p>
-      <a class="continue-shopping" href="{{ routes.all_products_collection_url }}">Continua gli acquisti →</a>
+      <a class="continue-shopping" href="{{ routes.all_products_collection_url }}">{% render 'bz-nav-label', label: 'Continua gli acquisti' %}</a>
     </div>
     <aside class="cart-summary" aria-labelledby="summary-title">
       <h2 id="summary-title">Riepilogo</h2>
@@ -45,7 +45,7 @@
         </div>
       </div>
       <div class="cart-total"><span>Totale</span><strong id="cart-total">{% render 'bz-money', cents: cart.total_price %}</strong></div>
-      <a class="btn gold checkout" href="{{ routes.cart_url }}/checkout">Vai al pagamento →</a>
+      <a class="btn gold checkout" href="{{ routes.cart_url }}/checkout">{% render 'bz-nav-label', label: 'Vai al pagamento' %}</a>
       <p>Spediamo solo in Italia. Il corriere Express è {{ settings.bz_express_rate | default: '5,90' }}&nbsp;€, gratuito da {{ settings.bz_free_shipping | default: 50 }}&nbsp;€.</p>
       <div class="pickup-note">
         {% render 'bz-icon', name: 'storefront' %}

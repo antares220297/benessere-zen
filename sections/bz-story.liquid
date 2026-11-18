@@ -27,7 +27,7 @@
         {%- if block.settings.text != blank -%}<p>{{ block.settings.text | escape }}</p>{%- endif -%}
         {%- if block.settings.text_2 != blank -%}<p>{{ block.settings.text_2 | escape }}</p>{%- endif -%}
         {%- if block.settings.button_label != blank and block.settings.button_link != blank -%}
-          <a class="bz-btn {% if pages_v2 %}bz-btn--line{% else %}bz-btn--gold{% endif %}" href="{{ block.settings.button_link }}">{{ block.settings.button_label | escape }}{% if pages_v2 %} <span aria-hidden="true">→</span>{% endif %}</a>
+          <a class="bz-btn {% if pages_v2 %}bz-btn--line{% else %}bz-btn--gold{% endif %}" href="{{ block.settings.button_link }}">{% render 'bz-nav-label', label: block.settings.button_label %}</a>
         {%- endif -%}
       </div>
     </article>

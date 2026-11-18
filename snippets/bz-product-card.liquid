@@ -1,44 +1,54 @@
 {% comment %}
   Product card. card: product. style: home (default), plp or gift.
+  cat: optional category (the form label on «tre forme»).
+  Titles stay the full Shopify title.
 {% endcomment %}
 {%- liquid
   assign card_title = card.title
   assign variant = card.selected_or_first_available_variant
   assign card_style = style | default: 'home'
+  if cat != blank
+    assign category = cat
+  elsif card.available == false
+    assign category = 'Esaurito'
+  else
+    assign category = card.type
+  endif
+  assign last_one = false
+  if variant.inventory_management != blank and variant.inventory_quantity == 1 and card.available
+    assign last_one = true
+  endif
 -%}
 <article class="product{% if card_style == 'plp' %} pcard{% endif %}{% if card_style == 'gift' %} gift-card{% endif %}"{% if sortable %} data-price="{{ card.price }}" data-published="{{ card.published_at | date: '%s' }}"{% endif %}>
   <a href="{{ card.url }}">
+    {%- if last_one and card_style != 'gift' -%}
+      <span class="bz-badge">Ultimo pezzo</span>
+    {%- endif -%}
     {%- if card_style == 'plp' -%}
       <div class="pc-well">
-        {%- unless card.available -%}<span class="pc-badge">Esaurito</span>{%- endunless -%}
         {%- if card.featured_image != blank -%}
           {{ card.featured_image | image_url: width: 800 | image_tag: decoding: 'async', alt: card_title, loading: 'lazy', widths: '240, 400, 640, 800', sizes: '(min-width: 1024px) 22vw, 45vw', width: card.featured_image.width, height: card.featured_image.height }}
         {%- endif -%}
       </div>
-      <h3 class="pc-name">{{ card_title | escape }}</h3>
     {%- else -%}
       {%- if card_style == 'gift' -%}<div class="gift-photo">{%- endif -%}
       {%- if card.featured_image != blank -%}
         {{ card.featured_image | image_url: width: 800 | image_tag: decoding: 'async', alt: card_title, loading: 'lazy', widths: '240, 400, 640, 800', sizes: '(min-width: 1024px) 18vw, 45vw', width: card.featured_image.width, height: card.featured_image.height }}
       {%- endif -%}
       {%- if card_style == 'gift' -%}</div>{%- endif -%}
-      <h3>{{ card_title | escape }}</h3>
-      {%- if card_style == 'gift' -%}<span class="gift-cta">Vedi <span aria-hidden="true">→</span></span>{%- endif -%}
     {%- endif -%}
+    <h3{% if card_style == 'plp' %} class="pc-name"{% endif %}>{{ card_title | escape }}</h3>
+    {%- if card_style == 'gift' -%}<span class="gift-cta">Vedi <span aria-hidden="true">→</span></span>{%- endif -%}
   </a>
   <div class="product-bottom">
-    {%- if card_style == 'plp' -%}
-      <div class="price{% unless card.available %} out{% endunless %}">{% render 'bz-money', cents: card.price %}</div>
-    {%- else -%}
-      <div>
-        {%- if card.type != blank -%}<small>{{ card.type | escape }}</small>{%- endif -%}
-        <div class="price">{% render 'bz-money', cents: card.price %}</div>
-      </div>
-    {%- endif -%}
+    <div>
+      {%- if category != blank -%}<small>{{ category | escape }}</small>{%- endif -%}
+      <div class="price{% if card_style == 'plp' and card.available == false %} out{% endif %}">{% render 'bz-money', cents: card.price %}</div>
+    </div>
     <button
       class="add"
       type="button"
-      {% if card.available and variant %}data-bz-add="{{ variant.id }}"{% else %}disabled{% endif %}
+      {% if card.available and variant %}data-bz-add="{{ variant.id }}"{% else %}disabled aria-disabled="true"{% endif %}
       aria-label="{% if card.available %}Aggiungi al carrello: {{ card_title | escape }}{% else %}{{ card_title | escape }}: esaurito{% endif %}"
     >{% render 'bz-icon', name: 'add' %}</button>
   </div>

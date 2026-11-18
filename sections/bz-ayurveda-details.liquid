@@ -55,7 +55,7 @@
             {%- endfor -%}
           </div>
           {%- if block.settings.link != blank -%}
-            <a class="bz-row-link" href="{{ block.settings.link }}">Vedi tutti <span aria-hidden="true">→</span></a>
+            <a class="bz-row-link" href="{{ block.settings.link }}">{% render 'bz-nav-label', label: 'Vedi tutti' %}</a>
           {%- endif -%}
         </article>
       {%- endfor -%}

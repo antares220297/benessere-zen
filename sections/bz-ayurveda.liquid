@@ -8,7 +8,7 @@
       </nav>
       <h1 id="ay-h1">Che cos'è l'<em>Ayurveda</em></h1>
       <p class="ay-lead">{{ section.settings.intro | escape }}</p>
-      <a class="ay-soft" href="#prodotti">Scopri le categorie <span aria-hidden="true">→</span></a>
+      <a class="ay-soft" href="#prodotti">{% render 'bz-nav-label', label: 'Scopri le categorie' %}</a>
     </div>
     <figure class="ay-photo">
       <img src="{{ 'bz-ayurveda-hero-scaffali.jpg' | asset_url }}" alt="Scaffali di oli, saponi e cosmetici ayurvedici nel negozio Benessere Zen a Cento" width="1400" height="1050" loading="eager" fetchpriority="high">

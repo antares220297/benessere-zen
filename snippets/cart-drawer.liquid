@@ -161,7 +161,7 @@
           <small>IVA inclusa. La spedizione è gratuita. Oppure ritiro gratuito in negozio.</small>
         {%- endif -%}
         <form action="{{ routes.cart_url }}" method="post">
-          <button id="checkout-submit" class="bz-drawer__go" type="submit" name="checkout">Vai al pagamento →</button>
+          <button id="checkout-submit" class="bz-drawer__go" type="submit" name="checkout">{% render 'bz-nav-label', label: 'Vai al pagamento' %}</button>
         </form>
       </footer>
     {%- endif -%}

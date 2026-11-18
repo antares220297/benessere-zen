@@ -27,7 +27,7 @@
     <nav class="mobile-content" aria-label="Navigazione">
       {% render 'bz-menu' %}
       <div class="bz-mobile-tools">
-        <a href="{{ routes.search_url }}">{% render 'bz-icon', name: 'hdr-search' %} {{ section.settings.search_label | default: 'Cerca' | escape }}</a>
+        <a href="{{ routes.search_url }}">{% render 'bz-icon', name: 'search', icon_class: 'bz-ico bz-ico--lg' %} {{ section.settings.search_label | default: 'Cerca' | escape }}</a>
         <button type="button" data-cart-open>{% render 'bz-icon', name: 'hdr-bag' %} {{ section.settings.cart_label | default: 'Carrello' | escape }}</button>
       </div>
       <div class="phone-bottom">
@@ -73,7 +73,7 @@
       {%- endfor -%}
     </div>
     <div class="cart-total"><span>Totale</span><strong data-cart-total>{% render 'bz-money', cents: cart.total_price %}</strong></div>
-    <a class="btn gold" href="{{ routes.cart_url }}/checkout">Vai al pagamento →</a>
+    <a class="btn gold" href="{{ routes.cart_url }}/checkout">{% render 'bz-nav-label', label: 'Vai al pagamento' %}</a>
     <a class="text-link" href="{{ routes.cart_url }}">Modifica il carrello</a>
   </aside>
 </div>

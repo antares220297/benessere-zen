@@ -21,7 +21,7 @@
     </div>
   {%- endfor -%}
   {%- if section.settings.link_label != blank and section.settings.link != blank -%}
-    <a class="bz-row-link" href="{{ section.settings.link }}">{{ section.settings.link_label | escape }} <span aria-hidden="true">→</span></a>
+    <a class="bz-row-link" href="{{ section.settings.link }}">{% render 'bz-nav-label', label: section.settings.link_label %}</a>
   {%- endif -%}
 </section>
 <script>

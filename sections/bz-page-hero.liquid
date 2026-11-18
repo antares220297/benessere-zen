@@ -40,7 +40,7 @@
     {%- else -%}{{ section.settings.title | escape }}{%- endif -%}</h1>
     {%- if section.settings.text != blank -%}<p>{{ section.settings.text | escape }}</p>{%- endif -%}
     {%- if section.settings.button_label != blank and href != blank -%}
-      <a class="bz-btn bz-btn--gold" href="{{ href }}">{{ section.settings.button_label | escape }}{% if pages_v2 %} <span aria-hidden="true">→</span>{% endif %}</a>
+      <a class="bz-btn bz-btn--gold" href="{{ href }}">{% render 'bz-nav-label', label: section.settings.button_label %}</a>
     {%- endif -%}
   </div>
 </header>

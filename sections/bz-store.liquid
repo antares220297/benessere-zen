@@ -11,7 +11,7 @@
       </p>
       <p class="store-hours">{% render 'bz-hours', part: 'summary' %}</p>
       <p>{{ section.settings.pickup | escape }}</p>
-      <a class="btn outline store-directions" href="{{ section.settings.button_link }}">{{ section.settings.button_label | escape }}</a>
+      <a class="btn outline store-directions" href="{{ section.settings.button_link }}">{% render 'bz-nav-label', label: section.settings.button_label %}</a>
     </div>
   </div>
 </section>

@@ -96,7 +96,7 @@
             {{ featured.featured_image | image_url: width: 800 | image_tag: alt: featured.title, widths: '400, 800', sizes: '25vw', loading: 'lazy', width: 480, height: 360 }}
           {%- endif -%}
           {%- if feat_variant.inventory_management != blank and feat_variant.inventory_quantity == 1 and featured.available -%}
-            <span class="bz-badge"><span class="bz-badge__dot"></span>Ultimo pezzo</span>
+            <span class="bz-badge">Ultimo pezzo</span>
           {%- endif -%}
           <span class="bz-bento__caption">
             <b>{{ featured.title | escape }}</b>

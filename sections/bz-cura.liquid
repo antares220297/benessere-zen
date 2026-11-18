@@ -72,7 +72,7 @@
         {%- for product in picks limit: 4 -%}{% render 'bz-product-card', card: product %}{%- endfor -%}
       </div>
     {%- endfor -%}
-    <a class="bz-row-link" href="/collections/cosmetica">Vedi tutto <span aria-hidden="true">→</span></a>
+    <a class="bz-row-link" href="/collections/cosmetica">{% render 'bz-nav-label', label: 'Vedi tutto' %}</a>
   </section>
   <section class="cura-routine" id="routine" aria-labelledby="routine-title">
     <div class="cura-routine-bg cura-day" aria-hidden="true"></div>
@@ -105,7 +105,7 @@
                   <span class="cura-product-step">{% if block.settings.mode == '1' %}Sera{% else %}Mattina{% endif %} · 0{{ block.settings.step | plus: 1 }} / 03</span>
                   <h3><a href="{{ product.url }}">{{ product.title | escape }}</a></h3>
                   <span class="price">{% render 'bz-money', cents: product.price %}</span>
-                  <a class="btn gold" href="{{ product.url }}">Vedi il prodotto →</a>
+                  <a class="btn gold" href="{{ product.url }}">{% render 'bz-nav-label', label: 'Vedi il prodotto' %}</a>
                 </div>
               </article>
             {%- endif -%}

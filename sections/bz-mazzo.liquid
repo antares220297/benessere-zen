@@ -21,7 +21,6 @@
         <h2 id="{{ heading_id }}">{{ title | escape }} <em>{{ accent | escape }}</em></h2>
         <div class="world-aside">
           <p class="world-intro">{{ intro | escape }}</p>
-          <a class="text-link" href="{{ more }}">{{ more_label | escape }}</a>
         </div>
       </div>
       <div class="fan" aria-label="{{ title | escape }} {{ accent | escape }}">
@@ -47,6 +46,9 @@
           {%- endif -%}
         {%- endfor -%}
       </div>
+      {%- if more != blank -%}
+        <a class="bz-row-link" href="{{ more }}">{% render 'bz-nav-label', label: more_label %}</a>
+      {%- endif -%}
     </section>
     {%- if world == 'pietre' and section.settings.show_divider -%}
       <div class="deck-divider" aria-hidden="true"><span class="tone tone-up"></span><span class="tone tone-down"></span><span class="hairline"></span></div>

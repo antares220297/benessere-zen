@@ -6,8 +6,8 @@
         <h1>{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h1>
         <p>{{ section.settings.text | escape }}</p>
         <div class="hero-actions">
-          <a class="btn gold" href="{{ section.settings.primary_link }}">{{ section.settings.primary_label | escape }}</a>
-          <a class="btn outline" href="{{ section.settings.secondary_link }}">{{ section.settings.secondary_label | escape }}</a>
+          <a class="btn gold" href="{{ section.settings.primary_link }}">{% render 'bz-nav-label', label: section.settings.primary_label %}</a>
+          <a class="btn outline" href="{{ section.settings.secondary_link }}">{% render 'bz-nav-label', label: section.settings.secondary_label %}</a>
         </div>
       </div>
       {%- liquid
@@ -42,7 +42,7 @@
             {% render 'bz-product-card', card: product, style: 'home' %}
           {%- endfor -%}
         </div>
-        <a class="bz-row-link" href="{{ section.settings.slide_2_link }}">Vedi i nuovi arrivi →</a>
+        <a class="bz-row-link" href="{{ section.settings.slide_2_link }}">{% render 'bz-nav-label', label: 'Vedi i nuovi arrivi' %}</a>
       </div>
     </div>
     <div class="hero-slide" aria-hidden="true" inert aria-label="3 di 3">
@@ -50,7 +50,7 @@
       <div class="hero-copy">
         <h2>{{ section.settings.slide_3_heading | escape }} <em>{{ section.settings.slide_3_accent | escape }}</em></h2>
         <p>{{ section.settings.slide_3_text | escape }}</p>
-        <a class="btn gold" href="{{ section.settings.slide_3_link }}">{{ section.settings.slide_3_label | escape }}</a>
+        <a class="btn gold" href="{{ section.settings.slide_3_link }}">{% render 'bz-nav-label', label: section.settings.slide_3_label %}</a>
       </div>
     </div>
   </div>
@@ -69,7 +69,7 @@
             {%- if block.settings.badge != blank -%}<span class="badge">{{ block.settings.badge | escape }}</span>{%- endif -%}
             <h2>{{ block.settings.title | escape }} <em>{{ block.settings.accent | escape }}</em></h2>
             <p>{{ block.settings.text | escape }}</p>
-            <span class="btn">{{ block.settings.button_label | escape }}</span>
+            <span class="btn">{% render 'bz-nav-label', label: block.settings.button_label %}</span>
           </div>
         </a>
       {%- endif -%}

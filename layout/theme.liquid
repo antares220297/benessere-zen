@@ -127,6 +127,7 @@
 
     {{ 'custom.css' | asset_url | stylesheet_tag }}
     {{ 'bz-cart.css' | asset_url | stylesheet_tag }}
+    {{ 'bz-tokens.css' | asset_url | stylesheet_tag }}
     {{ 'bz-v411c.css' | asset_url | stylesheet_tag }}
   </head>
   <body 
@@ -242,6 +243,7 @@
     {%- endif -%}
     <script src="{{ 'theme.js' | asset_url }}" defer></script>
     <script src="{{ 'bz-v411c.js' | asset_url }}" defer></script>
+    {{ 'bz-ds.css' | asset_url | stylesheet_tag }}
     <script src="{{ 'vendors.js' | asset_url }}" defer></script>
 
 <script>

@@ -51,9 +51,6 @@
   {%- endif -%}
   <div class="bz-sh">
     <h2>{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h2>
-    {%- if section.settings.link_label != blank and section.settings.link != blank -%}
-      <a class="bz-sh-more" href="{{ section.settings.link }}">{{ section.settings.link_label | escape }} <span aria-hidden="true">→</span></a>
-    {%- endif -%}
     {%- if section.settings.intro != blank -%}<p class="bz-sh-sub">{{ section.settings.intro | escape }}</p>{%- endif -%}
     <div class="bz-pills" role="group" aria-label="Scegli un set">
       {%- for block in blocks -%}
@@ -63,4 +60,7 @@
     </div>
   </div>
   {{ panels }}
+  {%- if section.settings.link_label != blank and section.settings.link != blank -%}
+    <a class="bz-row-link" href="{{ section.settings.link }}">{% render 'bz-nav-label', label: section.settings.link_label %}</a>
+  {%- endif -%}
 </section>

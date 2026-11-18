@@ -621,7 +621,7 @@
       const source = q('#dosha-content-' + index);
       if (panel && source) {
         panel.replaceChildren(source.content.cloneNode(true));
-        if (!reduced.matches) panel.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 240, easing: 'cubic-bezier(.4,0,.2,1)' });
+        if (!reduced.matches) panel.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 250, easing: 'cubic-bezier(.2,.7,.1,1)' });
       }
     };
     stage.addEventListener('click', event => {
@@ -875,6 +875,41 @@
     triStage.addEventListener('pointercancel', stop);
     vertexButtons.forEach((button, i) => button.addEventListener('click', () => move(vertices[i])));
     move(center);
+  }
+
+  const chrome = q('.bz-chrome');
+  const setSticky = () => {
+    if (!chrome) return;
+    document.documentElement.style.setProperty('--bz-sticky-h', Math.ceil(chrome.getBoundingClientRect().height) + 'px');
+  };
+  setSticky();
+  addEventListener('resize', setSticky);
+  if (chrome && 'ResizeObserver' in window) new ResizeObserver(setSticky).observe(chrome);
+
+  if (!reduced.matches && 'IntersectionObserver' in window) {
+    const reveal = [];
+    qa('main h2').forEach(title => {
+      if (title.closest('.home-hero, .hero, .cura-hero, .bz-phero')) return;
+      if (title.getBoundingClientRect().top < innerHeight * 0.85) return;
+      const block = [title];
+      const parent = title.parentElement;
+      if (parent) {
+        const lead = q(':scope > .bz-sh-sub, :scope > .dosha-intro, :scope > .ay-prod-intro', parent) || q(':scope > .world-aside > .world-intro', parent);
+        if (lead) block.push(lead);
+      }
+      block.forEach(el => el.classList.add('bz-ds-reveal'));
+      reveal.push(...block);
+    });
+    if (reveal.length) {
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-in');
+          io.unobserve(entry.target);
+        });
+      }, { threshold: 0.15 });
+      reveal.forEach(el => io.observe(el));
+    }
   }
 
   qa('.card-name').forEach(name => {

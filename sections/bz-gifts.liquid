@@ -13,7 +13,7 @@
     <div class="mala-copy">
       <h2 id="gift-title">{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h2>
       <p>{{ section.settings.text | escape }}</p>
-      <a class="btn gold" href="{{ section.settings.link }}">{{ section.settings.button_label | escape }}</a>
+      <a class="btn gold" href="{{ section.settings.link }}">{% render 'bz-nav-label', label: section.settings.button_label %}</a>
     </div>
   </article>
   <div class="bento">

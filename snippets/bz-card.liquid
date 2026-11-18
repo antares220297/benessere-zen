@@ -43,9 +43,9 @@
 <article class="bz-card{% unless product.available %} is-sold{% endunless %}">
   <a class="bz-card__photo" href="{{ product.url }}">
     {%- if variant.inventory_management != blank and variant.inventory_quantity == 1 and product.available -%}
-      <span class="bz-badge"><span class="bz-badge__dot"></span>Ultimo pezzo</span>
+      <span class="bz-badge">Ultimo pezzo</span>
     {%- elsif product.available == false -%}
-      <span class="bz-badge bz-badge--quiet"><span class="bz-badge__dot"></span>Esaurito</span>
+      <span class="bz-badge bz-badge--quiet">Esaurito</span>
     {%- endif -%}
     {%- if product.featured_image != blank -%}
       {%- if eager_load -%}

@@ -3,7 +3,7 @@
     <div class="split-copy">
       <h1>Pietre e <em>rituali</em></h1>
       <p>{{ section.settings.intro | escape }}</p>
-      <a class="btn gold" href="{{ section.settings.hero_link }}">{{ section.settings.hero_label | escape }}</a>
+      <a class="btn gold" href="{{ section.settings.hero_link }}">{% render 'bz-nav-label', label: section.settings.hero_label %}</a>
     </div>
     <div class="split-photo"><img src="{{ 'bz-negozio-pietre-e-rituali-copertina.jpg' | asset_url }}" alt="Vaschette di pietre burattate viste dall’alto" width="1400" height="900" loading="eager" fetchpriority="high"></div>
   </section>
@@ -46,10 +46,10 @@
               </div>
               {%- assign available = block.settings.products | where: 'available', true -%}
               {%- if available.size > 0 -%}
-                <button class="btn gold month-add-all" type="button" data-add-month>Aggiungi tutti →</button>
+                <button class="btn gold month-add-all" type="button" data-add-month>Aggiungi tutti</button>
               {%- endif -%}
             {%- else -%}
-              <p>{{ block.settings.empty_text | default: 'Questa pietra non è disponibile online.' | escape }} <a class="text-link" href="{{ section.settings.hero_link }}">Chiedi in negozio →</a></p>
+              <p>{{ block.settings.empty_text | default: 'Questa pietra non è disponibile online.' | escape }} <a class="text-link" href="{{ section.settings.hero_link }}">{% render 'bz-nav-label', label: 'Chiedi in negozio' %}</a></p>
             {%- endif -%}
           </div>
         </div>
@@ -75,7 +75,7 @@
             <div>
               <h3>{{ block.settings.word | escape }}</h3>
               <p>{{ block.settings.line | escape }}</p>
-              <a class="text-link" href="{{ coll.url }}">Scopri i pezzi →</a>
+              <a class="text-link" href="{{ coll.url }}">{% render 'bz-nav-label', label: 'Scopri i pezzi' %}</a>
             </div>
           </article>
         {%- endif -%}
@@ -103,7 +103,7 @@
     {%- for block in section.blocks -%}
       {%- if block.type == 'compare' -%}
         <div class="compare-group" data-compare-group="{{ block.settings.name | handleize }}" {% unless compare_index == 0 %}hidden{% endunless %}>
-        <div class="compare-grid">
+        <div class="products bz-fixed-3">
           {%- assign forms = 'Grezza|Burattata|' | append: block.settings.wear_label | split: '|' -%}
           {%- for form in forms -%}
             {%- liquid
@@ -115,20 +115,9 @@
                 assign product = block.settings.worn
               endif
             -%}
-            <div class="compare-column">
-              <article class="compare-card">
-                <div class="compare-photo">
-                    {%- if product.featured_image -%}{{ product.featured_image | image_url: width: 900 | image_tag: alt: product.title, loading: 'lazy', widths: '300, 600, 900', sizes: '(min-width: 900px) 30vw, 96px' }}{%- endif -%}
-                </div>
-                <div class="compare-body">
-                  <span class="compare-form">{{ form | escape }}</span>
-                  <h3><a class="compare-link" href="{{ product.url }}">{{ product.title | escape }}</a></h3>
-                  <div class="compare-bottom">
-                    <span class="compare-price">{% render 'bz-money', cents: product.price %}</span>
-                  </div>
-                </div>
-              </article>
-            </div>
+            {%- if product.title != blank -%}
+              {% render 'bz-product-card', card: product, cat: form %}
+            {%- endif -%}
           {%- endfor -%}
         </div>
         </div>
@@ -137,7 +126,8 @@
     {%- endfor -%}
     </div>
     <p class="compare-description">La grezza resta com’è uscita. La burattata è levigata, da tasca. Il gioiello è la stessa pietra da portare.</p>
-    <p class="compare-links"><a class="text-link" href="/collections/pietre-burattate">Vedi tutte le pietre <span aria-hidden="true">→</span></a></p>
+    {%- assign stones = collections['pietre-burattate'] -%}
+    <a class="bz-row-link" href="{{ stones.url | default: '/collections/pietre-burattate' }}">{% render 'bz-nav-label', label: 'Vedi tutte le pietre' %}</a>
   </section>
 
   <section class="categories">
@@ -177,7 +167,7 @@
       <h2>Le pietre, <em>dal vivo</em></h2>
       <p>{{ section.settings.visit_text | escape }}</p>
       <div class="visit-actions">
-        <a class="btn gold" href="{{ section.settings.visit_link }}">Orari e indicazioni <span aria-hidden="true">→</span></a>
+        <a class="btn gold" href="{{ section.settings.visit_link }}">{% render 'bz-nav-label', label: 'Orari e indicazioni' %}</a>
       </div>
     </div>
     <div class="split-photo"><img src="{{ 'bz-negozio-negozio-copertina.jpg' | asset_url }}" alt="Il negozio Benessere Zen a Cento" width="1400" height="1000" loading="lazy"></div>
