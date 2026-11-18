@@ -25,13 +25,13 @@
       </div>
     </div>
     {%- for tab in tabs -%}
-      <div data-faq-panel="{{ forloop.index0 }}" {% unless forloop.first %}hidden{% endunless %}>
+      <div id="{% if forloop.first %}faq-content{% endif %}" data-faq-panel="{{ forloop.index0 }}" {% unless forloop.first %}hidden{% endunless %}>
         {%- for block in section.blocks -%}
           {%- assign tab_index = forloop.parentloop.index0 | append: '' -%}
           {%- if block.type == 'faq' and block.settings.tab == tab_index -%}
             <details {{ block.shopify_attributes }}>
               <summary>{{ block.settings.question | escape }}</summary>
-              <div>{{ block.settings.answer }}</div>
+              <div class="faq-answer">{{ block.settings.answer }}</div>
             </details>
           {%- endif -%}
         {%- endfor -%}

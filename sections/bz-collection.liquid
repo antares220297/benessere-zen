@@ -39,9 +39,30 @@
     <section class="plp-controls" aria-label="Filtra e ordina">
       <div class="chips-scroll">
         <div class="chips" role="group" aria-label="Tipo">
-          {%- for type in collection.all_types -%}
-            <a class="chip" href="{{ collection.url }}?filter.p.product_type={{ type | url_encode }}">{{ type | escape }}</a>
-          {%- endfor -%}
+          {%- liquid
+            assign type_filter = blank
+            for filter in collection.filters
+              if filter.param_name == 'filter.p.product_type'
+                assign type_filter = filter
+              endif
+            endfor
+            assign type_active = false
+            if type_filter
+              for value in type_filter.active_values
+                assign type_active = true
+              endfor
+            endif
+          -%}
+          <a class="chip{% unless type_active %} is-on{% endunless %}" href="{{ collection.url }}">Tutti</a>
+          {%- if type_filter -%}
+            {%- for value in type_filter.values -%}
+              <a class="chip{% if value.active %} is-on{% endif %}" href="{% if value.active %}{{ value.url_to_remove }}{% else %}{{ value.url_to_add }}{% endif %}">{{ value.label | escape }} <span class="chip-count">{{ value.count }}</span></a>
+            {%- endfor -%}
+          {%- else -%}
+            {%- for type in collection.all_types -%}
+              <a class="chip" href="{{ collection.url }}?filter.p.product_type={{ type | url_encode }}">{{ type | escape }}</a>
+            {%- endfor -%}
+          {%- endif -%}
           {%- for block in section.blocks -%}
             {%- if block.type == 'chip' -%}
               {%- assign show = block.settings.show_on -%}

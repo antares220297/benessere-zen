@@ -1,34 +1,47 @@
 <div class="bz-stack contatti">
   <section class="contact-hero" aria-labelledby="contact-title">
-    <h1 id="contact-title">Contatta<em>ci</em></h1>
-    <p>Scrivici per un ordine o un consiglio. Ti rispondiamo dal negozio di Cento.</p>
+    <h1 id="contact-title">Scrivi un <em>messaggio</em></h1>
+    <p>Per un ordine o un consiglio. Ti rispondiamo dal negozio di Cento.</p>
   </section>
   <section class="contact-layout" aria-label="Recapiti e messaggi">
     {%- form 'contact', class: 'contact-form' -%}
-        <h2>Scrivici un messaggio</h2>
+        <h2>Scrivi un <em>messaggio</em></h2>
         {%- if form.posted_successfully? -%}
           <p role="status">Grazie. Ti rispondiamo dal negozio.</p>
         {%- else -%}
           <div class="fields">
             <label>Nome <input type="text" name="contact[name]" required autocomplete="name"></label>
             <label>Email <input type="email" name="contact[email]" required autocomplete="email"></label>
+            <label>Telefono <span class="optional">(facoltativo)</span> <input type="tel" name="contact[phone]" autocomplete="tel"></label>
             <label class="wide">Messaggio <textarea name="contact[body]" rows="6" required></textarea></label>
           </div>
           <button class="btn gold" type="submit">Invia</button>
           {%- if form.errors -%}<p role="alert">Controlla i campi e riprova.</p>{%- endif -%}
         {%- endif -%}
       {%- endform -%}
-    <aside class="info-card">
-      <h2>Il negozio</h2>
-      <p><strong>Indirizzo</strong><br>{{ settings.bz_address }}</p>
-      <p><strong>Telefono</strong><br><a href="tel:{{ settings.bz_phone | replace: ' ', '' }}">{{ settings.bz_phone }}</a></p>
-      <p><strong>Email</strong><br><a href="mailto:{{ settings.bz_email }}">{{ settings.bz_email }}</a></p>
-      <p><strong>Seguici</strong><br>
-        {%- if settings.social_instagram_link != blank -%}<a href="{{ settings.social_instagram_link }}">Instagram ↗</a>{%- endif -%}
-        {%- if settings.social_facebook_link != blank -%}<a href="{{ settings.social_facebook_link }}">Facebook ↗</a>{%- endif -%}
-      </p>
-      {% render 'bz-open-badge', variant: 'full', linked: false %}
-    </aside>
+    <div class="contact-details">
+      <div class="contact-tiles">
+        <article class="contact-tile">
+          <h2>Indirizzo</h2>
+          <p class="tile-value">{{ settings.bz_address | default: 'Via Marcello Provenzali 1, 44042 Cento (FE)' }}</p>
+        </article>
+        <article class="contact-tile">
+          <h2>Telefono</h2>
+          <p class="tile-value"><a href="tel:{{ settings.bz_phone | default: '+39 347 088 3168' | replace: ' ', '' }}">{{ settings.bz_phone | default: '+39 347 088 3168' }}</a></p>
+        </article>
+        <article class="contact-tile">
+          <h2>Email</h2>
+          <p class="tile-value tile-value-email"><a href="mailto:{{ settings.bz_email | default: 'info@benesserezen.shop' }}">{{ settings.bz_email | default: 'info@benesserezen.shop' }}</a></p>
+        </article>
+        <article class="contact-tile">
+          <h2>Seguici</h2>
+          <p class="social-links">
+            {%- if settings.social_instagram_link != blank -%}<a href="{{ settings.social_instagram_link }}">Instagram ↗</a>{%- endif -%}
+            {%- if settings.social_facebook_link != blank -%}<a href="{{ settings.social_facebook_link }}">Facebook ↗</a>{%- endif -%}
+          </p>
+        </article>
+      </div>
+    </div>
   </section>
   <section class="hours-card" id="orari" aria-labelledby="hours-title">
     <div class="hours-top">

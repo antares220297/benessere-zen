@@ -34,13 +34,14 @@
             {%- endif -%}
             {%- capture min_cents -%}{% render 'bz-min-price', handle: coll.handle %}{%- endcapture -%}
             {%- assign min_cents = min_cents | strip -%}
+            {%- assign min_amount = min_cents | plus: 0 -%}
             {%- assign ks = '-2.5,-1.5,-0.5,0.5,1.5,2.5' | split: ',' -%}
             {%- assign k = ks[index] -%}
             <a class="tarot-card" href="{{ coll.url }}" aria-label="Vedi la collezione {{ block.settings.title | escape }}, da {% render 'bz-money', cents: min_cents %}" style="--k:{{ k }};--order:{{ index | plus: 1 }}" {{ block.shopify_attributes }}>
               <span class="card-top" aria-hidden="true"><span class="rule"></span>{% render 'bz-icon', name: 'gi-moon', icon_class: 'moon' %}<span class="moon-diamond"></span>{% render 'bz-icon', name: 'gi-moon', icon_class: 'moon moon-r' %}<span class="rule rule-r"></span></span>
               <span class="card-icon" aria-hidden="true">{% render 'bz-icon', name: block.settings.icon, icon_class: 'sigil' %}</span>
               <span class="card-caption" aria-hidden="true"><span class="card-name">{{ block.settings.title | escape }}</span></span>
-              <span class="card-price" aria-hidden="true">{%- if min_cents != blank -%}da {% render 'bz-money', cents: min_cents | plus: 0 %}{%- endif -%}<span class="card-arrow">→</span></span>
+              <span class="card-price" aria-hidden="true">{%- if min_cents != blank -%}da {% render 'bz-money', cents: min_amount %}{%- endif -%}<span class="card-arrow">→</span></span>
             </a>
             {%- assign index = index | plus: 1 -%}
           {%- endif -%}

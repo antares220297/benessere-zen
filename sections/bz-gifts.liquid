@@ -15,7 +15,7 @@
       </div>
     </article>
     {%- for product in section.settings.products limit: 4 -%}
-      {% render 'bz-product-card', card: product %}
+      {% render 'bz-product-card', card: product, style: 'gift' %}
     {%- endfor -%}
   </div>
 </section>

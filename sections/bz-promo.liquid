@@ -118,7 +118,7 @@
       {%- if side_image != blank -%}
         {{ side_image | image_url: width: 900 | image_tag: alt: '', widths: '400, 800', sizes: '25vw', loading: 'lazy', width: 480, height: 360 }}
       {%- else -%}
-        <img src="{{ 'bz-pendoli.jpg' | asset_url }}" alt="" width="480" height="360">
+        <img src="{{ 'bz-pendoli.jpg' | asset_url }}" alt="" width="480" height="360" loading="lazy">
       {%- endif -%}
       <div class="bz-bento__caption">
         <h3>{{ section.settings.side_title | escape }} <em>{{ section.settings.side_accent | escape }}</em></h3>

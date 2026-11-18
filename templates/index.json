@@ -309,7 +309,7 @@
       ]
     },
     "bz_ritual": {
-      "type": "bz-ritual",
+      "type": "bz-home-ritual",
       "settings": {
         "bundle_discount": false
       },

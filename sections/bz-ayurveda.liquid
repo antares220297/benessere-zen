@@ -8,10 +8,19 @@
     <div class="split-photo"><img src="{{ 'bz-cover-ayurveda-v3.jpg' | asset_url }}" alt="Cos’è l’Ayurveda" width="1400" height="900"></div>
   </section>
   <section class="split story flip">
-    <div class="split-photo"><img src="{{ 'bz-cover-ayurveda-v3.jpg' | asset_url }}" alt="" width="1200" height="800" loading="lazy"></div>
     <div class="split-copy">
       <h2>Da dove <em>arriva</em></h2>
       <p>Nella tradizione, le radici arrivano molto indietro nel tempo. Si usano erbe, oli e gesti di ogni giorno.</p>
+    </div>
+    <div class="ay-product-pair">
+      {%- for product in section.settings.origin_products limit: 2 -%}
+        <a class="ay-product" href="{{ product.url }}">
+          <div class="ay-product-photo">{%- if product.featured_image -%}{{ product.featured_image | image_url: width: 700 | image_tag: alt: product.title, loading: 'lazy', widths: '300, 500, 700', sizes: '240px' }}{%- endif -%}</div>
+          <h4>{{ product.title | escape }}</h4>
+          <span class="ay-price">{% render 'bz-money', cents: product.price %}</span>
+          <span class="ay-view">Vedi prodotto →</span>
+        </a>
+      {%- endfor -%}
     </div>
   </section>
   <section class="categories" id="iniziare">
@@ -20,7 +29,14 @@
       {%- for block in section.blocks -%}
         {%- if block.type == 'sphere' -%}
           {%- assign coll = block.settings.collection -%}
-          <a href="{{ coll.url }}"><span>{{ block.settings.label | escape }}</span></a>
+          <a href="{{ coll.url }}">
+            {%- if coll.image -%}
+              {{ coll.image | image_url: width: 240 | image_tag: alt: block.settings.label, width: 106, height: 106, loading: 'lazy' }}
+            {%- elsif coll.products.first.featured_image -%}
+              {{ coll.products.first.featured_image | image_url: width: 240 | image_tag: alt: block.settings.label, width: 106, height: 106, loading: 'lazy' }}
+            {%- endif -%}
+            <span>{{ block.settings.label | escape }}</span>
+          </a>
         {%- endif -%}
       {%- endfor -%}
     </div>
@@ -67,6 +83,17 @@
       </template>
     {%- endfor -%}
   </section>
+  <section class="picked" id="piu-scelti">
+    <div class="bz-sh">
+      <h2>I più <em>scelti</em></h2>
+      <a class="bz-sh-more" href="{{ section.settings.collection_link | default: '/collections/ayurveda' }}">Vedi tutto <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="products">
+      {%- for product in section.settings.picked_products limit: 4 -%}
+        {% render 'bz-product-card', card: product %}
+      {%- endfor -%}
+    </div>
+  </section>
   <section class="split story counsel">
     <div class="split-copy">
       <h2>Simona <em>consiglia</em></h2>
@@ -82,6 +109,8 @@
   "settings": [
     { "type": "textarea", "id": "intro", "label": "Intro", "default": "Una tradizione nata in India. Si porta in casa con un olio, un’infusione, un lavaggio." },
     { "type": "url", "id": "collection_link", "label": "Link collezione" },
+    { "type": "product_list", "id": "origin_products", "label": "Da dove arriva", "limit": 2 },
+    { "type": "product_list", "id": "picked_products", "label": "I più scelti", "limit": 4 },
     { "type": "textarea", "id": "vata_text", "label": "Vata", "default": "Aria e spazio. Movimento e leggerezza, un ritmo che fa fatica a fermarsi. Nella pratica, routine stabili e oli più caldi." },
     { "type": "textarea", "id": "pitta_text", "label": "Pitta", "default": "Fuoco e acqua. Trasformazione e determinazione, un fuoco che a volte sale troppo. Nella pratica, pause e cose più fresche." },
     { "type": "textarea", "id": "kapha_text", "label": "Kapha", "default": "Terra e acqua. Stabilità e costanza, un passo che a volte si fa pesante. Nella pratica, movimento e spezie più vive." }

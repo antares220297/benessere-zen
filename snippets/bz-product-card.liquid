@@ -6,7 +6,7 @@
   assign variant = card.selected_or_first_available_variant
   assign card_style = style | default: 'home'
 -%}
-<article class="product{% if card_style == 'plp' %} pcard{% endif %}">
+<article class="product{% if card_style == 'plp' %} pcard{% endif %}{% if card_style == 'gift' %} gift-card{% endif %}">
   <a href="{{ card.url }}">
     {%- if card_style == 'plp' -%}
       <div class="pc-well">

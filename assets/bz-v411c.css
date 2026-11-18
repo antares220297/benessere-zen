@@ -1140,3 +1140,54 @@ main.bz-main>.shopify-section{margin-left:0;margin-right:0}
 .bz-page-home .ritual-row.is-unavailable{opacity:.38;pointer-events:none}
 main.bz-page-home>.shopify-section .category-row{padding-top:39px}
 .bz-page-home .ritual-saving[hidden]{display:none!important}
+
+/* Fix round 1: mockup parity that lost to earlier specificity. */
+.bz-page-home .faq-card h2{color:#201b16}
+.bz-page-home .faq-card [data-faq-panel]{margin-top:8px}
+.bz-page-home .faq-card details{border-top:1px solid #6c5a3b33}
+.bz-page-home .faq-card summary{display:flex;justify-content:space-between;align-items:center;gap:16px;list-style:none;cursor:pointer;min-height:44px;padding:16px 0;font:clamp(22px,2vw,28px)/1.2 var(--serif);color:#201b16}
+.bz-page-home .faq-card summary::-webkit-details-marker{display:none}
+.bz-page-home .faq-card summary::marker{content:""}
+.bz-page-home .faq-card summary:after{content:"+";flex:none;color:#8b672b;font:28px/1 var(--sans)}
+.bz-page-home .faq-card details[open]>summary:after{content:"−"}
+.bz-page-home .faq-card summary:focus-visible{outline:2px solid #8b672b;outline-offset:2px;border-radius:4px}
+.bz-page-home .faq-card .faq-answer,.bz-page-home .faq-card .faq-answer p{color:#655c4e;font-size:13px;line-height:1.5;margin:0 0 16px;max-width:62ch}
+
+.bz-page-home .stone__toggle svg,
+.bz-page-home #stones .stone__toggle svg{width:18px;height:18px;flex:none}
+
+@media(min-width:901px){
+  .bz-page-home .bento{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr);grid-template-rows:minmax(220px,1fr) minmax(220px,1fr);gap:14px}
+  .bz-page-home .bento>.mala-lead{grid-column:1;grid-row:1 / span 2;display:flex;align-items:center;min-height:0}
+  .bz-page-home .bento>.gift-card{min-width:0;min-height:0}
+}
+.bz-page-home .mala-photo{display:none}
+.bz-page-home .mala-copy{padding:28px}
+
+.bz-page-home .bz-news__card{background:#201e1b;color:#eee7db;border:1px solid rgba(238,231,219,.16)}
+.bz-page-home .bz-news h2,.bz-page-home .bz-news .news-label{color:#eee7db}
+.bz-page-home .bz-news h2 em{color:#c9a96e}
+.bz-page-home .bz-news small,.bz-page-home .bz-news p{color:#cfc6b8}
+.bz-page-home .bz-news form{background:#141312;border:1px solid rgba(238,231,219,.2)}
+.bz-page-home .bz-news input[type=email]{background:transparent;border:0;color:#eee7db}
+.bz-page-home .bz-news input::placeholder{color:#958d7f}
+.bz-page-home .bz-news button{background:#c9a96e;color:#17140f;border-color:#c9a96e}
+
+.bz-page-home .store-card>img{min-height:0;height:100%;width:100%;object-fit:cover;align-self:stretch}
+
+.bz-page-cura-di-se .cura-quote blockquote{margin:0 0 12px;font:italic clamp(26px,2.4vw,36px)/1.2 var(--serif);color:#eee7db}
+.bz-page-cura-di-se .cura-sign{margin:16px 0 0;font:italic 32px/1 var(--serif);color:#c9a96e}
+.bz-page-cura-di-se .cura-routine h2{color:#24201b}
+.bz-page-cura-di-se .cura-routine.is-night h2{color:#eee7db}
+
+.bz-page-pietre-e-rituali .compare-description,.bz-page-pietre-e-rituali .compare-links{margin:16px 0 0;font-size:14px;color:var(--ivory2)}
+.bz-page-pietre-e-rituali .compare-links a{margin-right:18px;color:var(--gold)}
+
+.plp .chip.is-on{background:var(--ivory);color:var(--bg)}
+.plp .chip-count{margin-left:4px;opacity:.72}
+
+.bz-page-contact h1 em,.bz-page-contact .contact-form h2 em{color:#c9a96e;font-style:italic}
+.bz-page-contact .contatti .fields{display:grid;grid-template-columns:1fr 1fr}
+.bz-page-contact .contatti .fields .wide{grid-column:1 / -1}
+.bz-page-contact .optional{font-size:12px;color:var(--mute)}
+.bz-page-il-negozio .tour-arrow svg{width:22px;height:22px}

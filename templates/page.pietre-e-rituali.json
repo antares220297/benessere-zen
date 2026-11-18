@@ -6,10 +6,16 @@
         "hero_link": "/pages/il-negozio",
         "visit_link": "/pages/contact",
         "mala_products": [
+          "palo-santo-mala-con-grano-guru",
+          "mala-diaspro-giallo-occhio-di-tigre-e-quarzo-fume",
+          "mala-108-cristallo-di-rocca-aa-nappa-bianca-borsa",
           "mala-diaspro-rosso-108-perle"
         ],
         "pendoli_products": [
-          "pendolo-in-ottone-dorato"
+          "pendolo-in-ottone-dorato",
+          "pendolo-in-ottone-placcato-oro",
+          "pendolo-in-ottone-color-titanio",
+          "pendolo-quarzo-rosa-e-catenina-dei-chakra"
         ]
       },
       "blocks": {

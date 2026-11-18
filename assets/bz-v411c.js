@@ -580,6 +580,33 @@
     root.querySelectorAll('[data-picked]').forEach(other => other.setAttribute('aria-selected', String(other === tab)));
     root.querySelectorAll('[data-picked-panel]').forEach(panel => { panel.hidden = panel.dataset.pickedPanel !== tab.dataset.picked; });
   });
+  const tour = q('#shop-lightbox');
+  const tourCards = qa('.tour-card');
+  if (tour && tourCards.length) {
+    const shot = q('.tour-large', tour);
+    const caption = q('.tour-caption h3', tour);
+    const count = q('.tour-caption p', tour);
+    let tourIndex = 0;
+    const showTour = index => {
+      tourIndex = (index + tourCards.length) % tourCards.length;
+      const img = q('img', tourCards[tourIndex]);
+      if (shot && img) {
+        shot.src = img.currentSrc || img.src;
+        shot.alt = img.alt;
+      }
+      if (caption) caption.textContent = img ? img.alt : '';
+      if (count) count.textContent = (tourIndex + 1) + ' / ' + tourCards.length;
+      if (!tour.open) tour.showModal();
+      document.body.classList.add('tour-locked');
+    };
+    tourCards.forEach((card, index) => card.addEventListener('click', () => showTour(index)));
+    q('.tour-prev', tour)?.addEventListener('click', () => showTour(tourIndex - 1));
+    q('.tour-next', tour)?.addEventListener('click', () => showTour(tourIndex + 1));
+    q('.tour-close', tour)?.addEventListener('click', () => tour.close());
+    tour.addEventListener('close', () => document.body.classList.remove('tour-locked'));
+    tour.addEventListener('click', event => { if (event.target === tour) tour.close(); });
+  }
+
   qa('.card-name').forEach(name => {
     let tracking = 0.08;
     name.style.letterSpacing = tracking + 'em';

@@ -3,7 +3,17 @@
     "page": {
       "type": "bz-ayurveda",
       "settings": {
-        "collection_link": "/collections/ayurveda"
+        "collection_link": "/collections/ayurveda",
+        "origin_products": [
+          "sapone-curcuma-holy-lama",
+          "olio-profumato-naturale-sandalwood-10-ml"
+        ],
+        "picked_products": [
+          "protein-shampoo-volumizzante-laghu-200ml",
+          "sapone-yogi-di-holy-lama-alla-lavanda",
+          "sapone-yogi-di-holy-lama-alla-rosa",
+          "olio-profumato-naturale-sandalwood-10-ml"
+        ]
       },
       "blocks": {
         "s0": {
@@ -37,15 +47,57 @@
         "d1": {
           "type": "dosha_product",
           "settings": {
-            "dosha": "1",
-            "product": "sapone-curcuma-holy-lama"
+            "dosha": "0",
+            "product": "olio-profumato-ayurveda-vaniglia"
           }
         },
         "d2": {
           "type": "dosha_product",
           "settings": {
+            "dosha": "0",
+            "product": "sapone-yogi-di-holy-lama-alla-lavanda"
+          }
+        },
+        "d3": {
+          "type": "dosha_product",
+          "settings": {
+            "dosha": "1",
+            "product": "olio-ayurvedico-loto-rosa-felicita"
+          }
+        },
+        "d4": {
+          "type": "dosha_product",
+          "settings": {
+            "dosha": "1",
+            "product": "sapone-yogi-di-holy-lama-alla-rosa"
+          }
+        },
+        "d5": {
+          "type": "dosha_product",
+          "settings": {
+            "dosha": "1",
+            "product": "olio-profumato-naturale-sandalwood-10-ml"
+          }
+        },
+        "d6": {
+          "type": "dosha_product",
+          "settings": {
             "dosha": "2",
-            "product": "te-rooibos-relax-50gr"
+            "product": "olio-ayurvedico-santulan-himalayas-dreams"
+          }
+        },
+        "d7": {
+          "type": "dosha_product",
+          "settings": {
+            "dosha": "2",
+            "product": "sapone-curcuma-holy-lama"
+          }
+        },
+        "d8": {
+          "type": "dosha_product",
+          "settings": {
+            "dosha": "2",
+            "product": "te-yogi-speziato"
           }
         }
       },
@@ -55,7 +107,13 @@
         "s2",
         "d0",
         "d1",
-        "d2"
+        "d2",
+        "d3",
+        "d4",
+        "d5",
+        "d6",
+        "d7",
+        "d8"
       ]
     }
   },

@@ -49,7 +49,10 @@
       <p>Spediamo solo in Italia. Il corriere Express è {{ settings.bz_express_rate | default: '5,90' }} €, gratuito da {{ settings.bz_free_shipping | default: 50 }} €.</p>
       <div class="pickup-note">
         {% render 'bz-icon', name: 'storefront' %}
-        <p><strong>Ritiri un ordine?</strong> Al pagamento scegli <em>Ritiro in negozio</em>: è gratuito e di solito è pronto in 4 ore.</p>
+        <div>
+          {% render 'bz-open-badge', variant: 'compact', linked: true %}
+          <p><strong>Ritiri un ordine?</strong> Al pagamento scegli <em>Ritiro in negozio</em>: è gratuito e di solito è pronto in 4 ore.</p>
+        </div>
       </div>
       <p>{% render 'bz-hours', part: 'summary' %}</p>
     </aside>

@@ -148,7 +148,7 @@
           {% sections 'aside-group' %}
       {% endcase %}
       
-      <main id="MainContent" class="content-for-layout focus-none outline-none grow theme-template-{{ template.name }} theme-template-suffix-{{ template.suffix | default: 'none' }} bz-scope bz-main{% if template.name == 'index' %} bz-page-home{% elsif template.name == 'collection' %} plp{% elsif template.name == 'cart' %} bz-page-cart{% elsif template.suffix == 'cos-e-ayurveda' or template.suffix == 'cose-layurveda' %} bz-page-ayurveda{% elsif template.suffix != blank %} bz-page-{{ template.suffix }}{% endif %}" role="main" tabindex="-1">
+      <main id="MainContent" class="content-for-layout focus-none outline-none grow theme-template-{{ template.name }} theme-template-suffix-{{ template.suffix | default: 'none' }} bz-scope bz-main{% if template.name == 'index' %} bz-page-home{% elsif template.name == 'collection' %} plp{% elsif template.name == 'cart' %} bz-page-cart{% elsif template.suffix == 'cos-e-ayurveda' or template.suffix == 'cose-layurveda' %} bz-page-ayurveda{% elsif template.suffix == 'chi-siamo' or template.suffix == 'about-us.whiff' %} bz-page-chi-siamo{% elsif template.suffix != blank %} bz-page-{{ template.suffix }}{% endif %}" role="main" tabindex="-1">
         {{ content_for_layout }}
       </main>
 

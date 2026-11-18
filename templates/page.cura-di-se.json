@@ -3,7 +3,31 @@
     "page": {
       "type": "bz-cura",
       "settings": {
-        "ayurveda_link": "/pages/cose-layurveda"
+        "ayurveda_link": "/pages/cose-layurveda",
+        "viso_products": [
+          "siero-viso-rimpolpante-ebrand-cosmetics-30-ml-copia",
+          "crema-viso-purificante-ebrand-cosmetics-50-ml-copia",
+          "detergente-delicato-100-ml-ebrand-cosmetics",
+          "siero-viso-rimpolpante-30-ml-ebrand-cosmetics"
+        ],
+        "corpo_products": [
+          "scrub-corpo-al-sale-marino-lavanda-300g",
+          "scrub-corpo-al-sale-marino-fragole-e-panna-300g",
+          "scrub-corpo-al-sale-marino-mirtilli-e-more-300g",
+          "balsamo-del-gufo-piedi-bio"
+        ],
+        "capelli_products": [
+          "rasayana-lozione-rinforzante-con-triphala-50ml-ideale-nei-cambi-di-stagione-ma-puoi-usarla-tutto-lanno-per-rinforzare-i-capelli",
+          "rasayana-balsamo-leave-in-con-triphala-200ml-nutre-le-lunghezze-anticrespo",
+          "rasayana-balsamo-capelli-districante-200ml",
+          "rasayana-shampoo-delicato-uso-frequente-200ml"
+        ],
+        "oli_products": [
+          "profumo-in-olio-ancient-witch-athame-noir",
+          "profumo-in-olio-ancient-witch-maledetto",
+          "olio-profumato-ayurveda-ambra",
+          "olio-profumato-ayurveda-vaniglia"
+        ]
       },
       "blocks": {
         "s0": {

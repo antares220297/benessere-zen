@@ -5,7 +5,7 @@
       <p>{{ section.settings.intro | escape }}</p>
       <a class="btn gold" href="{{ section.settings.hero_link }}">{{ section.settings.hero_label | escape }}</a>
     </div>
-    <div class="split-photo"><img src="{{ 'bz-pietre-hero-v3.jpg' | asset_url }}" alt="Pietre nel negozio" width="1400" height="900"></div>
+    <div class="split-photo"><img src="{{ 'bz-negozio-pietre-e-rituali-copertina.jpg' | asset_url }}" alt="Vaschette di pietre burattate viste dall’alto" width="1400" height="900" fetchpriority="high"></div>
   </section>
 
   <section class="birthstones" data-birthstones aria-labelledby="birthstone-title">
@@ -56,7 +56,11 @@
         {%- if block.type == 'intention' -%}
           {%- assign coll = block.settings.collection -%}
           <article class="intention" {{ block.shopify_attributes }}>
-            {%- if coll.image -%}{{ coll.image | image_url: width: 600 | image_tag: alt: '', loading: 'lazy' }}{%- endif -%}
+            {%- if coll.image -%}
+              {{ coll.image | image_url: width: 800 | image_tag: alt: block.settings.word, loading: 'lazy', widths: '300, 500, 800', sizes: '(min-width: 1024px) 18vw, 80vw' }}
+            {%- elsif coll.products.first.featured_image -%}
+              {{ coll.products.first.featured_image | image_url: width: 800 | image_tag: alt: block.settings.word, loading: 'lazy', widths: '300, 500, 800', sizes: '(min-width: 1024px) 18vw, 80vw' }}
+            {%- endif -%}
             <div>
               <h3>{{ block.settings.word | escape }}</h3>
               <p>{{ block.settings.line | escape }}</p>
@@ -86,7 +90,8 @@
     {%- assign compare_index = 0 -%}
     {%- for block in section.blocks -%}
       {%- if block.type == 'compare' -%}
-        <div class="compare-grid" data-compare-group="{{ block.settings.name | handleize }}" {% unless compare_index == 0 %}hidden{% endunless %}>
+        <div class="compare-group" data-compare-group="{{ block.settings.name | handleize }}" {% unless compare_index == 0 %}hidden{% endunless %}>
+        <div class="compare-grid">
           {%- assign forms = 'Grezza|Burattata|' | append: block.settings.wear_label | split: '|' -%}
           {%- for form in forms -%}
             {%- liquid
@@ -116,6 +121,9 @@
               </article>
             </div>
           {%- endfor -%}
+        </div>
+        <p class="compare-description">La grezza resta com’è uscita. La burattata è levigata, da tasca. Il gioiello è la stessa pietra da portare.</p>
+        <p class="compare-links"><a href="/collections/pietre-grezze">Vedi le pietre grezze →</a> <a href="/collections/pietre-burattate">Vedi le burattate →</a></p>
         </div>
         {%- assign compare_index = compare_index | plus: 1 -%}
       {%- endif -%}
