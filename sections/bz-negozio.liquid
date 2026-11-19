@@ -23,7 +23,7 @@
         <li>{% render 'bz-icon', name: 'location_on' %}<span>{{ store_address | escape }}</span></li>
         <li>{% render 'bz-icon', name: 'call' %}<a href="tel:{{ store_phone | remove: ' ' }}">{{ store_phone | escape }}</a></li>
         <li>{% render 'bz-icon', name: 'mail' %}<a href="mailto:{{ store_email | escape }}">{{ store_email | escape }}</a></li>
-        <li>{% render 'bz-icon', name: 'storefront' %}<span>Ritiro in negozio gratuito, di solito pronto in 4 ore.</span></li>
+        <li>{% render 'bz-icon', name: 'storefront' %}<span>Ritiro gratuito in negozio.</span></li>
       </ul>
       <div class="bz-visit-actions">
         {% render 'bz-open-badge', variant: 'status' %}
