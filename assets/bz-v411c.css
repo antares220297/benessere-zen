@@ -1748,13 +1748,8 @@ main.bz-page-home:has(#newsletter), main.bz-page-ayurveda:has(#newsletter) { pad
 }
 .plp .bz-grouped-plp .plp-group-head h2 { margin: 0; font: 400 22px/1.2 var(--serif); }
 .plp .bz-grouped-plp .plp-group-head span { color: var(--mute); font-size: 13px; white-space: nowrap; }
-.plp .bz-grouped-plp .pgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .plp .bz-grouped-plp .product .price { font-size: clamp(18px, 2vw, 24px); }
-.plp .bz-grouped-plp .product-bottom { gap: 4px; }
 .plp .bz-grouped-plp .plp-pagination { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 12px; }
-@media (min-width: 768px) {
-  .plp .bz-grouped-plp .pgrid { gap: 24px 16px; }
-}
 @media (min-width: 1024px) {
   .plp .bz-grouped-plp .plp-bar { display: flex; align-items: flex-start; gap: 24px; margin-inline: calc(-1 * var(--side)); padding: 16px var(--side); }
   .plp .bz-grouped-plp .plp-bar.has-more::after { content: none; }
@@ -1763,10 +1758,6 @@ main.bz-page-home:has(#newsletter), main.bz-page-ayurveda:has(#newsletter) { pad
   .plp .bz-grouped-plp .plp-tools { margin: 0; flex: none; }
   .plp .bz-grouped-plp .plp-groups { gap: 64px; margin-top: 24px; }
   .plp .bz-grouped-plp .plp-group-head h2 { font-size: 24px; }
-  .plp .bz-grouped-plp .pgrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-}
-@media (min-width: 1280px) {
-  .plp .bz-grouped-plp .pgrid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px 24px; }
 }
 
 /* Il negozio */

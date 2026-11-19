@@ -8,14 +8,14 @@
     </div>
   </div>
   {%- for block in section.blocks -%}
-    <div class="products bz-product-group" role="tabpanel" id="picked-panel-{{ section.id }}-{{ forloop.index }}" aria-labelledby="picked-tab-{{ section.id }}-{{ forloop.index }}" {% unless forloop.first %}hidden{% endunless %} data-picked-panel="{{ forloop.index0 }}">
+    <div class="products pgrid" role="tabpanel" id="picked-panel-{{ section.id }}-{{ forloop.index }}" aria-labelledby="picked-tab-{{ section.id }}-{{ forloop.index }}" {% unless forloop.first %}hidden{% endunless %} data-picked-panel="{{ forloop.index0 }}">
       {%- if block.settings.products != blank and block.settings.products.size > 0 -%}
         {%- for product in block.settings.products limit: section.settings.limit -%}
-          {% render 'bz-product-card', card: product %}
+          {% render 'bz-product-card', card: product, style: 'grid' %}
         {%- endfor -%}
       {%- elsif block.settings.collection != blank -%}
         {%- for product in block.settings.collection.products limit: section.settings.limit -%}
-          {% render 'bz-product-card', card: product %}
+          {% render 'bz-product-card', card: product, style: 'grid' %}
         {%- endfor -%}
       {%- endif -%}
     </div>

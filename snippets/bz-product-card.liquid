@@ -1,5 +1,5 @@
 {% comment %}
-  Product card. card: product. style: home (default), plp or gift.
+  Product card. card: product. style: home (default), grid, form, plp or gift.
   cat: optional category (the form label on «tre forme»).
   Use nome_vetrina for the visible name and keep the Shopify title for image alt.
 {% endcomment %}
@@ -17,22 +17,30 @@
   assign category = cat | default: product_type
   assign dot_type = product_type | default: category
   assign image_sizes = '(min-width: 1024px) 18vw, 45vw'
-  if card_style == 'plp'
-    assign image_sizes = '(min-width: 1024px) 22vw, 45vw'
-  endif
+  assign vertical = false
+  case card_style
+    when 'grid', 'plp'
+      assign vertical = true
+      assign image_sizes = '(min-width: 1440px) 315px, (min-width: 1024px) calc((100vw - 180px) / 4), (min-width: 768px) calc((100vw - 120px) / 3), calc((100vw - 84px) / 2)'
+    when 'form'
+      assign vertical = true
+      assign image_sizes = '(min-width: 1440px) 432px, (min-width: 1024px) calc((100vw - 144px) / 3), (min-width: 768px) calc((100vw - 120px) / 3), calc((100vw - 56px) / 1.5)'
+  endcase
 -%}
-<article class="product bz-product-tile {{ name_class }}{% if card_style != 'plp' and template.name != 'collection' %} bz-section-product{% endif %}{% if card_style == 'plp' %} pcard{% elsif card_style == 'gift' %} gift-card{% endif %}"{% if sortable %} data-price="{{ card.price }}" data-published="{{ card.published_at | date: '%s' }}"{% endif %}>
+<article class="product bz-product-tile {{ name_class }}{% if vertical %} bz-product-tile--vertical{% elsif template.name != 'collection' %} bz-section-product{% endif %}{% if card_style == 'plp' %} pcard{% elsif card_style == 'gift' %} gift-card{% endif %}"{% if sortable %} data-price="{{ card.price }}" data-published="{{ card.published_at | date: '%s' }}"{% endif %}>
   <a class="bz-product-tile__link" href="{{ card.url }}">
-    <div class="bz-product-tile__media{% if card_style == 'plp' %} pc-well{% endif %}">
+    <div class="bz-product-tile__media">
       {%- if card.featured_image != blank -%}
         {{ card.featured_image | image_url: width: 800 | image_tag: decoding: 'async', alt: card_title, loading: 'lazy', widths: '240, 400, 640, 800', sizes: image_sizes, width: card.featured_image.width, height: card.featured_image.height }}
       {%- endif -%}
       {%- render 'bz-card-stock', available: card.available, variant: variant -%}
     </div>
-    <h3 class="bz-product-tile__title{% if card_style == 'plp' %} pc-name{% endif %}">{{ display_name | escape }}</h3>
+    <h3 class="bz-product-tile__title">{{ display_name | escape }}</h3>
     {%- if card_style == 'gift' -%}<span class="gift-cta">{% render 'bz-nav-label', label: 'Vedi' %}</span>{%- endif -%}
   </a>
-  <small class="bz-product-tile__meta bz-category-label" style="--bz-category-dot:{% render 'bz-category-dot', type: dot_type %}">{{ category | escape }}</small>
+  <small class="bz-product-tile__meta bz-category-label" style="--bz-category-dot:{% render 'bz-category-dot', type: dot_type %}">
+    {%- if vertical and category != blank -%}<span>{{ category | escape }}</span>{%- else -%}{{ category | escape }}{%- endif -%}
+  </small>
   <div class="product-bottom bz-product-tile__bottom">
     <div class="price{% if card_style == 'plp' and card.available == false %} out{% endif %}">{% render 'bz-money', cents: card.price %}</div>
     <button

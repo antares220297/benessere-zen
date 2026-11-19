@@ -329,14 +329,15 @@ html .bz-scope .bz-product-tile .bz-card__form{
   margin:0;
 }
 html .bz-scope .bz-product-tile .bz-card__price{margin:0}
-html .bz-scope .bz-product-tile:not(.bz-section-product) .bz-product-tile__title{
+html .bz-scope .bz-product-tile:not(.bz-section-product,.bz-product-tile--vertical) .bz-product-tile__title{
   min-height:calc(3 * var(--bz-lh-product) * 1em);
 }
 html .bz-scope :is(.bz-section-product,.bz-pair){
   --bz-fs-product:var(--bz-fs-sm);
 }
-html .bz-scope .bz-section-product .bz-product-tile__title{
-  min-height:0;
+html .bz-scope .bz-section-product .bz-product-tile__title:not(:where(.month-cards *, .bz-related *)){
+  min-height:calc(2 * var(--bz-lh-product) * 1em);
+  max-height:calc(2 * var(--bz-lh-product) * 1em);
 }
 html .bz-scope :is(.bz-pair__name,.ritual-product,.cura-product-copy h3),
 html .bz-scope .bz-section-product .bz-product-tile__title{
@@ -355,22 +356,22 @@ html .bz-scope .bz-section-product .bz-product-tile__bottom{
   margin-top:auto;
 }
 @supports (grid-template-rows:subgrid){
-  html .bz-scope .bz-product-tile:not(.bz-section-product){
+  html .bz-scope .bz-product-tile:not(.bz-section-product,.bz-product-tile--vertical){
     display:grid;
     grid-row:span 5;
     grid-template-rows:subgrid;
     row-gap:0;
   }
-  html .bz-scope .bz-product-tile:not(.bz-section-product) .bz-product-tile__link{
+  html .bz-scope .bz-product-tile:not(.bz-section-product,.bz-product-tile--vertical) .bz-product-tile__link{
     display:grid;
     grid-row:1/4;
     grid-template-rows:subgrid;
     row-gap:0;
   }
-  html .bz-scope .bz-product-tile:not(.bz-section-product) .bz-product-tile__media{grid-row:1}
-  html .bz-scope .bz-product-tile:not(.bz-section-product) .bz-product-tile__title{grid-row:2}
-  html .bz-scope .bz-product-tile:not(.bz-section-product) .bz-product-tile__meta{grid-row:4;margin-top:0}
-  html .bz-scope .bz-product-tile:not(.bz-section-product) .bz-product-tile__bottom{grid-row:5}
+  html .bz-scope .bz-product-tile:not(.bz-section-product,.bz-product-tile--vertical) .bz-product-tile__media{grid-row:1}
+  html .bz-scope .bz-product-tile:not(.bz-section-product,.bz-product-tile--vertical) .bz-product-tile__title{grid-row:2}
+  html .bz-scope .bz-product-tile:not(.bz-section-product,.bz-product-tile--vertical) .bz-product-tile__meta{grid-row:4;margin-top:0}
+  html .bz-scope .bz-product-tile:not(.bz-section-product,.bz-product-tile--vertical) .bz-product-tile__bottom{grid-row:5}
 }
 
 /* Category dots and stock badges have independent colors. */
@@ -595,12 +596,19 @@ html .bz-page-home .home-hero>.photo-card p{
   font-size:var(--bz-fs-sm);
   line-height:1.5;
 }
-html .bz-page-home .home-hero>.photo-card .btn{
-  min-height:var(--bz-sp-40);
+html .bz-page-home .home-hero>.photo-card .btn.ivory{
+  height:var(--bz-control-h);
+  min-height:var(--bz-control-h);
   margin:0;
-  font-size:13px!important;
+  padding:0 18px;
+  gap:6px;
+  border-radius:var(--bz-r-pill);
+  border-color:var(--bz-text);
+  background:var(--bz-text);
+  color:var(--bz-bg);
+  font:600 var(--bz-fs-btn)/1 var(--bz-font-sans);
 }
-html .bz-page-home .home-hero :is(.hero-actions,.photo-card) .btn.outline{
+html .bz-page-home .home-hero .hero-actions .btn.outline{
   background:rgba(20,19,18,.2);
 }
 html .bz-page-home .home-hero>.photo-card .badge{
@@ -747,9 +755,6 @@ html .bz-scope .ritual-row .bz-category-label{
   overflow:hidden;
 }
 
-@media (768px <= width < 1024px){
-  html .bz-scope .picked .bz-product-group>.bz-product-tile:nth-child(n+4){display:none}
-}
 @media (min-width:1024px){
   html .bz-scope{
     --bz-row-cols:4;
@@ -761,25 +766,132 @@ html .bz-scope .ritual-row .bz-category-label{
     justify-content:center;
   }
 }
-@media (1024px <= width < 1280px){
-  html .bz-scope .picked .bz-product-group>.bz-product-tile:nth-child(n+5){display:none}
-}
 @media (min-width:1280px){
   html .bz-scope{--bz-row-cols:5}
-  html .bz-scope .picked .bz-product-group>.bz-product-tile:nth-child(n+6){display:none}
 }
 
+/* Griglie di Ayurveda, I più scelti e collezioni. */
 html .bz-scope .pgrid{
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
   gap:var(--bz-grid-gap);
+  align-items:stretch;
 }
 @media (min-width:768px){
-  html .bz-scope .pgrid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+  html .bz-scope .pgrid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (min-width:1024px){
+  html .bz-scope .pgrid{grid-template-columns:repeat(4,minmax(0,1fr))}
+  html .bz-scope .pgrid:has(>.bz-product-tile:nth-child(3):last-child){
+    --card-w:calc((min(100vw,var(--bz-container-max)) - 2 * var(--bz-margin) - 3 * var(--bz-grid-gap)) / 4);
+    grid-template-columns:repeat(3,var(--card-w));
+    justify-content:center;
+  }
+}
+
+html .bz-scope .bz-product-tile--vertical{border:0}
+html .bz-scope .bz-product-tile--vertical .bz-product-tile__link{flex:none}
+html .bz-scope .bz-product-tile--vertical .bz-product-tile__media{background:var(--bz-bg-2)}
+html .bz-scope .bz-product-tile--vertical .bz-product-tile__media:has(>.bz-stock--soldout) img{opacity:.55}
+html .bz-scope .bz-product-tile--vertical .bz-product-tile__media>.bz-badge{
+  height:22px;
+  font-size:11px;
+  letter-spacing:normal;
+}
+html .bz-scope .bz-product-tile--vertical .bz-badge.bz-stock--low{
+  background:var(--bz-gold);
+  color:var(--bz-bg);
+}
+html .bz-scope .bz-product-tile--vertical .bz-badge.bz-stock--low::before{content:none}
+html .bz-scope .bz-product-tile--vertical .bz-badge.bz-stock--soldout{
+  background:var(--bz-text);
+  color:var(--bz-bg);
+}
+html .bz-scope .bz-product-tile--vertical .bz-product-tile__title{
+  margin:10px 0 0!important;
+  min-height:calc(2 * 19px);
+  max-height:calc(2 * 19px);
+  font:500 var(--bz-fs-sm)/19px var(--bz-font-sans)!important;
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+  overflow:hidden;
+  overflow-wrap:normal;
+  word-break:normal;
+  hyphens:manual;
+}
+html .bz-scope .bz-product-tile--vertical .bz-product-tile__meta{
+  align-items:center;
+  margin:2px 0 0;
+  padding:0;
+  min-height:0;
+  font:400 var(--bz-fs-xs)/16px var(--bz-font-sans);
+  color:rgba(238,231,219,.6);
+}
+html .bz-scope .bz-product-tile--vertical .bz-product-tile__meta:empty{display:none}
+html .bz-scope .bz-product-tile--vertical .bz-product-tile__meta>span{
+  min-width:0;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+html .bz-scope .bz-product-tile--vertical .bz-product-tile__bottom{
+  margin:auto 0 0;
+  padding:var(--bz-sp-8) 0 0;
+  gap:var(--bz-sp-8);
+}
+html .bz-scope .bz-product-tile--vertical .price{
+  font-size:18px!important;
+  line-height:22px!important;
+}
+html .bz-scope .bz-product-tile--vertical.pcard .add:disabled{
+  border:0;
+  background:var(--bz-gold);
+  color:var(--bz-on-gold);
+}
+
+/* Stessa pietra, tre forme. */
+html .bz-scope .compare .compare-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:var(--bz-grid-gap);
+  align-items:stretch;
+}
+html .bz-scope .compare .bz-product-tile--vertical .bz-product-tile__title{
+  min-height:calc(2 * 20px);
+  max-height:calc(2 * 20px);
+  font:500 15px/20px var(--bz-font-sans)!important;
+}
+@media (width < 1024px){
+  html .bz-scope .compare .bz-product-tile__media{aspect-ratio:4/5}
+  html .bz-scope .compare .bz-pills{
+    max-width:none;
+    margin-inline-end:calc(-1 * var(--bz-margin));
+    padding-inline-end:var(--bz-margin);
+  }
+}
+@media (min-width:1024px){
+  html .bz-scope .compare .bz-pills{flex-wrap:wrap;overflow:visible;mask-image:none}
+}
+@media (width < 768px){
+  html .bz-scope .compare .compare-grid{
+    display:flex;
+    overflow-x:auto;
+    margin-inline:calc(-1 * var(--bz-margin));
+    padding-inline:var(--bz-margin);
+    scroll-padding-inline:var(--bz-margin);
+    scroll-snap-type:x mandatory;
+    scrollbar-width:none;
+  }
+  html .bz-scope .compare .compare-grid::-webkit-scrollbar{display:none}
+  html .bz-scope .compare .compare-grid>.bz-product-tile{
+    flex:0 0 calc((100vw - var(--bz-margin) - var(--bz-grid-gap)) / 1.5);
+    scroll-snap-align:start;
+  }
 }
 
 @media (width < 768px){
-  html .bz-scope .bz-product-group:where(:not(.ay-product-group)):has(>.bz-product-tile:nth-child(5)){
+  html .bz-scope .bz-product-group:has(>.bz-product-tile:nth-child(5)){
     grid-template-columns:none;
     grid-auto-flow:column;
     grid-auto-columns:calc((100% - 2 * var(--bz-grid-gap)) / 2.2);
@@ -788,20 +900,17 @@ html .bz-scope .pgrid{
     scrollbar-width:none;
     padding-block-end:var(--bz-sp-4);
   }
-  html .bz-page-home .picked .bz-product-group:has(>.bz-product-tile:nth-child(5)){
-    margin-inline-end:calc(-1 * var(--bz-margin));
-  }
-  html .bz-scope .bz-product-group:where(:not(.ay-product-group)):has(>.bz-product-tile:nth-child(5))>.bz-product-tile{
+  html .bz-scope .bz-product-group:has(>.bz-product-tile:nth-child(5))>.bz-product-tile{
     scroll-snap-align:start;
   }
-  html .bz-scope .bz-product-group:where(.ay-product-group,:not(:has(>.bz-product-tile:nth-child(5)))){
+  html .bz-scope .bz-product-group:where(:not(:has(>.bz-product-tile:nth-child(5)))){
     grid-template-columns:minmax(0,1fr);
     grid-auto-flow:row;
     gap:0;
     padding-block-end:0;
     margin-inline:0;
   }
-  html .bz-scope .bz-product-group:where(.ay-product-group,:not(:has(>.bz-product-tile:nth-child(5))))>.bz-section-product{
+  html .bz-scope .bz-product-group:where(:not(:has(>.bz-product-tile:nth-child(5))))>.bz-section-product{
     display:grid;
     grid-template-columns:var(--bz-row-thumb, var(--bz-sp-56)) minmax(0,1fr) auto;
     grid-template-rows:minmax(0,1fr) auto auto minmax(0,1fr);
@@ -814,40 +923,40 @@ html .bz-scope .pgrid{
     border-block-end:1px solid var(--bz-line);
     border-radius:0;
   }
-  html .bz-scope .bz-product-group:where(.ay-product-group,:not(:has(>.bz-product-tile:nth-child(5))))>.has-nome-vetrina{
+  html .bz-scope .bz-product-group:where(:not(:has(>.bz-product-tile:nth-child(5))))>.has-nome-vetrina{
     height:var(--bz-sp-88);
   }
-  html .bz-scope .bz-product-group:where(.ay-product-group,:not(:has(>.bz-product-tile:nth-child(5)))) .bz-product-tile__link{
+  html .bz-scope .bz-product-group:where(:not(:has(>.bz-product-tile:nth-child(5)))) .bz-product-tile__link{
     display:contents;
   }
-  html .bz-scope .bz-product-group:where(.ay-product-group,:not(:has(>.bz-product-tile:nth-child(5)))) .bz-product-tile__link:focus-visible .bz-product-tile__media{
+  html .bz-scope .bz-product-group:where(:not(:has(>.bz-product-tile:nth-child(5)))) .bz-product-tile__link:focus-visible .bz-product-tile__media{
     outline:var(--bz-focus-width) solid var(--bz-focus-color);
     outline-offset:var(--bz-focus-offset);
   }
   @supports (grid-template-columns:subgrid){
-    html .bz-scope .bz-product-group:where(.ay-product-group,:not(:has(>.bz-product-tile:nth-child(5)))) .bz-product-tile__link{
+    html .bz-scope .bz-product-group:where(:not(:has(>.bz-product-tile:nth-child(5)))) .bz-product-tile__link{
       display:grid;
       grid-area:1 / 1 / -1 / 3;
       grid-template:subgrid / subgrid;
     }
   }
-  html .bz-scope .bz-product-group:where(.ay-product-group,:not(:has(>.bz-product-tile:nth-child(5)))) .bz-product-tile__media{
+  html .bz-scope .bz-product-group:where(:not(:has(>.bz-product-tile:nth-child(5)))) .bz-product-tile__media{
     grid-area:1 / 1 / -1;
     align-self:center;
     width:var(--bz-row-thumb, var(--bz-sp-56));
     height:var(--bz-row-thumb, var(--bz-sp-56));
   }
-  html .bz-scope .bz-product-group:where(.ay-product-group,:not(:has(>.bz-product-tile:nth-child(5)))) .bz-product-tile .bz-product-tile__title{
+  html .bz-scope .bz-product-group:where(:not(:has(>.bz-product-tile:nth-child(5)))) .bz-product-tile .bz-product-tile__title{
     grid-area:2 / 2;
     margin:0!important;
   }
-  html .bz-scope .bz-product-group:where(.ay-product-group,:not(:has(>.bz-product-tile:nth-child(5)))) .bz-product-tile .bz-product-tile__meta{
+  html .bz-scope .bz-product-group:where(:not(:has(>.bz-product-tile:nth-child(5)))) .bz-product-tile .bz-product-tile__meta{
     grid-area:3 / 2;
     margin:0;
     padding:0;
     min-height:0;
   }
-  html .bz-scope .bz-product-group:where(.ay-product-group,:not(:has(>.bz-product-tile:nth-child(5)))) .bz-product-tile .bz-product-tile__bottom{
+  html .bz-scope .bz-product-group:where(:not(:has(>.bz-product-tile:nth-child(5)))) .bz-product-tile .bz-product-tile__bottom{
     grid-area:1 / 3 / -1;
     grid-template-columns:auto var(--bz-control-h);
     gap:var(--bz-sp-12);
@@ -855,7 +964,7 @@ html .bz-scope .pgrid{
     padding:0;
     text-align:end;
   }
-  html .bz-scope .bz-product-group:where(.ay-product-group,:not(:has(>.bz-product-tile:nth-child(5)))) .bz-product-tile__media>.bz-badge{
+  html .bz-scope .bz-product-group:where(:not(:has(>.bz-product-tile:nth-child(5)))) .bz-product-tile__media>.bz-badge{
     inset:0 0 auto;
     height:auto;
     padding:var(--bz-sp-4);
@@ -866,14 +975,14 @@ html .bz-scope .pgrid{
   }
 }
 
-/* Ayurveda uses the shared product card markup in both layouts. */
+/* Pallini dei prodotti per dosha. */
 html .bz-page-ayurveda .dosha-selection{margin-block-start:var(--bz-sp-16)}
 html .bz-page-ayurveda [data-dosha-tone="vata"]{--bz-dosha-dot:var(--bz-dosha-vata)}
 html .bz-page-ayurveda [data-dosha-tone="pitta"]{--bz-dosha-dot:var(--bz-dosha-pitta)}
 html .bz-page-ayurveda [data-dosha-tone="kapha"]{--bz-dosha-dot:var(--bz-dosha-kapha)}
 html .bz-page-ayurveda .dosha-products .bz-category-label::before{background:var(--bz-dosha-dot)}
 
-html .bz-scope :is(.ritual-row,.ay-product-group) .bz-category-label{
+html .bz-scope .ritual-row .bz-category-label{
   display:block;
   min-width:0;
   overflow:hidden;
@@ -881,61 +990,10 @@ html .bz-scope :is(.ritual-row,.ay-product-group) .bz-category-label{
   white-space:nowrap;
   font:500 12px/16px var(--bz-font-sans);
 }
-html .bz-scope :is(.ritual-row,.ay-product-group) .bz-category-label::before{
+html .bz-scope .ritual-row .bz-category-label::before{
   display:inline-block;
   margin-inline-end:6px;
   vertical-align:middle;
-}
-@media (width < 768px){
-  html .bz-page-ayurveda .ay-product-group>.bz-section-product{
-    --bz-row-thumb:var(--bz-sp-72);
-    height:var(--bz-sp-88);
-    padding-block:var(--bz-sp-8);
-    border:0;
-    box-shadow:0 1px 0 var(--bz-line-divider);
-  }
-  html .bz-page-ayurveda .ay-product-group>.bz-section-product:last-child{box-shadow:none}
-  html .bz-page-ayurveda .ay-product-group .bz-product-tile .bz-product-tile__title{
-    font:500 15px/20px var(--bz-font-sans)!important;
-  }
-  html .bz-page-ayurveda .ay-product-group .bz-product-tile .bz-product-tile__meta{
-    margin-top:var(--bz-sp-4);
-  }
-  html .bz-page-ayurveda .ay-product-group .bz-product-tile .bz-product-tile__bottom{
-    display:flex;
-    align-items:center;
-    gap:10px;
-  }
-  html .bz-page-ayurveda .ay-product-group .price{
-    font-size:18px!important;
-    line-height:22px!important;
-  }
-}
-@media (min-width:768px){
-  html .bz-page-ayurveda .ay-product-group{
-    --content:calc(100vw - 2 * var(--bz-sp-28));
-    --card-w:calc((min(var(--content),1384px) - 3 * var(--bz-sp-20)) / 4);
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    gap:var(--bz-sp-20);
-  }
-  html .bz-page-ayurveda .ay-product-group>.bz-section-product{
-    flex:0 0 min(var(--card-w),100%);
-    padding:var(--bz-sp-8) var(--bz-sp-8) var(--bz-sp-12);
-    border:0;
-    border-radius:var(--bz-sp-16);
-  }
-  html .bz-page-ayurveda .ay-product-group .bz-product-tile .bz-product-tile__meta{
-    margin:var(--bz-sp-4) var(--bz-sp-4) 0;
-    min-height:0;
-    padding:0;
-  }
-  html .bz-page-ayurveda .ay-product-group .bz-product-tile .bz-product-tile__bottom{
-    display:flex;
-    justify-content:space-between;
-    padding-top:10px;
-  }
 }
 
 /* Completa il rituale. */
@@ -1153,6 +1211,45 @@ html .bz-scope .ritual-section .ritual-caption p{
 }
 @media (min-width:768px){
   html .bz-scope .ritual-section .ritual-grid:not(.ritual-grid--solo){grid-template-areas:"visual" "panel"}
+}
+@media (width < 1024px){
+  /* Interleave the active panel's photo with the heading controls. */
+  html .bz-scope .ritual-section{
+    display:flex;
+    flex-direction:column;
+  }
+  html .bz-scope .ritual-section .bz-sh,
+  html .bz-scope .ritual-section .ritual-grid:not([hidden]){display:contents}
+  html .bz-scope .ritual-section .bz-sh>h2{margin-block-end:22px}
+  html .bz-scope .ritual-section .bz-sh>.bz-sh-sub{margin-block-end:var(--bz-sp-20)}
+  html .bz-scope .ritual-section .ritual-visual{
+    order:1;
+    margin:0 0 var(--bz-sp-20);
+    width:100%;
+    aspect-ratio:16/9;
+  }
+  html .bz-scope .ritual-section .ritual-visual::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background:linear-gradient(0deg,rgba(20,19,18,.86) 0%,rgba(20,19,18,.5) 38%,rgba(20,19,18,0) 70%);
+  }
+  html .bz-scope .ritual-section .ritual-shot{object-position:center 58%}
+  html .bz-scope .ritual-section .ritual-caption{inset:auto var(--bz-sp-16) 14px}
+  html .bz-scope .ritual-section .ritual-caption h3{font-size:clamp(26px,7vw,32px)!important}
+  html .bz-scope .ritual-section .ritual-caption p{line-height:18px}
+  html .bz-scope .ritual-section .bz-pills{
+    order:2;
+    margin-block:0 var(--bz-sp-20);
+  }
+  html .bz-scope .ritual-section .ritual-list{order:3}
+  html .bz-scope .ritual-section>.bz-row-link{order:4}
+}
+@media (768px <= width < 1024px){
+  html .bz-scope .ritual-section .ritual-caption{inset-inline-start:var(--bz-sp-28);bottom:var(--bz-sp-24)}
+  html .bz-scope .ritual-section .ritual-caption h3{font-size:var(--bz-sp-40)!important}
+  html .bz-scope .ritual-section .ritual-caption p{font-size:15px;line-height:22px}
 }
 @media (min-width:1024px){
   html .bz-scope .ritual-section .bz-pills>button{

@@ -3,6 +3,8 @@
     "page": {
       "type": "bz-ayurveda",
       "settings": {
+        "cose_heading": "Il sapere",
+        "cose_heading_accent": "della vita",
         "intro": "L'Ayurveda è la medicina tradizionale dell'India, con radici che risalgono a circa tremila anni fa. Il nome unisce due parole sanscrite: āyus, «vita», e veda, «conoscenza». Guarda alla persona intera: cinque elementi, tre dosha, abitudini di ogni giorno. Qui trovi le basi spiegate in breve e gli oli, i saponi e le tisane che arrivano da questa tradizione.",
         "overview": "<p>Ayurveda viene dal sanscrito. Āyus vuol dire «vita», nel senso di una vita lunga e piena, e veda vuol dire «conoscenza»: per questo si traduce spesso «scienza della vita». Gli stessi testi classici la legano all'Atharvaveda, uno dei quattro Veda, i testi sacri dell'India antica.</p><p>Secondo l'Ayurveda il mondo è fatto di cinque elementi: terra, acqua, fuoco, aria ed etere. Nella persona si combinano in tre dosha, vata, pitta e kapha, e ognuno ha la sua proporzione. La tradizione cerca l'equilibrio tra i tre e lo coltiva prima di tutto con le abitudini: una routine del mattino (dinacharya) fatta di gesti semplici, come pulire la lingua, massaggiarsi con l'olio e fare il bagno, e un'attenzione speciale al cibo e alle stagioni.</p>"
       }
@@ -102,6 +104,13 @@
             "label": ""
           }
         },
+        "d9": {
+          "type": "dosha_product",
+          "settings": {
+            "dosha": "0",
+            "product": "candela-ayurvedica-vata-tuberosa-gelsomino-200g"
+          }
+        },
         "d3": {
           "type": "dosha_product",
           "settings": {
@@ -126,6 +135,13 @@
             "label": ""
           }
         },
+        "d10": {
+          "type": "dosha_product",
+          "settings": {
+            "dosha": "1",
+            "product": "pitta-aqua-oud-candela-ayurveda"
+          }
+        },
         "d6": {
           "type": "dosha_product",
           "settings": {
@@ -148,6 +164,13 @@
             "dosha": "2",
             "product": "te-yogi-speziato",
             "label": ""
+          }
+        },
+        "d11": {
+          "type": "dosha_product",
+          "settings": {
+            "dosha": "2",
+            "product": "candela-ayurvedica-kapha-salvia-menta-200g"
           }
         },
         "oli": {
@@ -311,12 +334,15 @@
         "d0",
         "d1",
         "d2",
+        "d9",
         "d3",
         "d4",
         "d5",
+        "d10",
         "d6",
         "d7",
         "d8",
+        "d11",
         "oli",
         "oil-pulling",
         "capelli",

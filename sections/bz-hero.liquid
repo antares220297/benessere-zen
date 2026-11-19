@@ -35,6 +35,14 @@
   {%- assign tile_sizes = '(min-width: 1024px) 41vw, (min-width: 768px) 50vw, 100vw' -%}
   {%- for block in section.blocks -%}
     {%- if block.type == 'tile' -%}
+      {%- liquid
+        assign tile_label = block.settings.button_label | strip
+        assign last_character = tile_label | slice: -1, 1
+        if last_character == '→'
+          assign label_length = tile_label.size | minus: 1
+          assign tile_label = tile_label | slice: 0, label_length | strip
+        endif
+      -%}
       <a class="photo-card small" href="{{ block.settings.link }}" {{ block.shopify_attributes }}>
         {%- if block.settings.image != blank -%}
           {{ block.settings.image | image_url: width: 900 | image_tag: alt: '', loading: 'lazy', widths: '400, 700, 900', sizes: tile_sizes }}
@@ -47,7 +55,7 @@
         <div>
           <h2>{{ block.settings.title | escape }} <em>{{ block.settings.accent | escape }}</em></h2>
           <p>{{ block.settings.text | escape }}</p>
-          <span class="btn outline">{% render 'bz-nav-label', label: block.settings.button_label %}</span>
+          <span class="btn ivory">{{ tile_label | escape }}{% render 'bz-icon', name: 'arrow_forward', icon_class: 'bz-ico bz-ico--sm' %}</span>
         </div>
       </a>
     {%- endif -%}

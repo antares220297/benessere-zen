@@ -52,7 +52,7 @@
                 assign all_ids = all_ids | append: product_key
               endunless
             -%}
-            {% render 'bz-product-card', card: product, sortable: true %}
+            {% render 'bz-product-card', card: product, style: 'grid', sortable: true %}
           {%- endfor -%}
         {%- endfor -%}
       {%- endcapture -%}
@@ -73,7 +73,7 @@
           assign all_ids = all_ids | append: product_key
           assign other_count = other_count | plus: 1
         -%}
-        {% render 'bz-product-card', card: product, sortable: true %}
+        {% render 'bz-product-card', card: product, style: 'grid', sortable: true %}
       {%- endfor -%}
     {%- endcapture -%}
     {%- if other_count > 0 -%}

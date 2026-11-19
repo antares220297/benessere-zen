@@ -25,13 +25,13 @@
           {%- if section.settings[text_key] != blank -%}<p>{{ section.settings[text_key] | escape }}</p>{%- endif -%}
         </div>
         <div class="dosha-selection" data-dosha-tone="{{ name | downcase }}">
-          <div class="dosha-products bz-product-group ay-product-group">
+          <div class="dosha-products pgrid">
             {%- assign product_count = 0 -%}
             {%- for block in section.blocks -%}
               {%- if block.type == 'dosha_product' and block.settings.dosha == dosha_index -%}
                 {%- assign product = block.settings.product -%}
                 {%- if product.title != blank -%}
-                  {% render 'bz-product-card', card: product %}
+                  {% render 'bz-product-card', card: product, style: 'grid' %}
                   {%- assign product_count = product_count | plus: 1 -%}
                 {%- endif -%}
               {%- endif -%}
@@ -57,9 +57,9 @@
             <h3>{{ block.settings.title }}</h3>
           </div>
           <div class="ay-copy">{{ block.settings.body }}</div>
-          <div class="ay-cat-grid bz-product-group ay-product-group">
+          <div class="ay-cat-grid pgrid">
             {%- for product in block.settings.products -%}
-              {% render 'bz-product-card', card: product %}
+              {% render 'bz-product-card', card: product, style: 'grid' %}
             {%- endfor -%}
           </div>
           {%- if block.settings.link != blank -%}

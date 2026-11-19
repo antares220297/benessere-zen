@@ -16,7 +16,7 @@
   </section>
   <section class="ay-cose" id="cose" aria-labelledby="ay-cose-h">
     <div class="ay-copy">
-      <h2 id="ay-cose-h">Che <em>cos'è</em></h2>
+      <h2 id="ay-cose-h">{{ section.settings.cose_heading | escape }} <em>{{ section.settings.cose_heading_accent | escape }}</em></h2>
       {{ section.settings.overview }}
     </div>
     <figure class="ay-photo">
@@ -28,6 +28,8 @@
 {
   "name": "Ayurveda",
   "settings": [
+    { "type": "text", "id": "cose_heading", "label": "Titolo della panoramica", "default": "Il sapere" },
+    { "type": "text", "id": "cose_heading_accent", "label": "Titolo della panoramica in corsivo", "default": "della vita" },
     { "type": "richtext", "id": "overview", "label": "Che cos’è" },
     { "type": "textarea", "id": "intro", "label": "Intro", "default": "Una tradizione nata in India. Si porta in casa con un olio, un’infusione, un lavaggio." },
     { "type": "url", "id": "collection_link", "label": "Link collezione" },
