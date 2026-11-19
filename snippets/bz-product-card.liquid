@@ -1,6 +1,5 @@
 {% comment %}
   Product card. card: product. style: home (default), grid, form, plp or gift.
-  cat: optional category (the form label on «tre forme»).
   Use nome_vetrina for the visible name and keep the Shopify title for image alt.
 {% endcomment %}
 {%- liquid
@@ -13,9 +12,7 @@
     assign display_name = card_title
     assign name_class = 'is-title-fallback'
   endif
-  assign product_type = card.type | strip
-  assign category = cat | default: product_type
-  assign dot_type = product_type | default: category
+  assign subtitle = card.metafields.custom.variante_vetrina.value | strip
   assign image_sizes = '(min-width: 1024px) 18vw, 45vw'
   assign vertical = false
   case card_style
@@ -36,11 +33,11 @@
       {%- render 'bz-card-stock', available: card.available, variant: variant -%}
     </div>
     <h3 class="bz-product-tile__title">{{ display_name | escape }}</h3>
+    {%- if subtitle != blank -%}
+      <p class="bz-product-tile__sub">{{ subtitle | escape }}</p>
+    {%- endif -%}
     {%- if card_style == 'gift' -%}<span class="gift-cta">{% render 'bz-nav-label', label: 'Vedi' %}</span>{%- endif -%}
   </a>
-  <small class="bz-product-tile__meta bz-category-label" style="--bz-category-dot:{% render 'bz-category-dot', type: dot_type %}">
-    {%- if vertical and category != blank -%}<span>{{ category | escape }}</span>{%- else -%}{{ category | escape }}{%- endif -%}
-  </small>
   <div class="product-bottom bz-product-tile__bottom">
     <div class="price{% if card_style == 'plp' and card.available == false %} out{% endif %}">{% render 'bz-money', cents: card.price %}</div>
     <button

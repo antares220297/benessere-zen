@@ -1,6 +1,6 @@
 {%- liquid
   assign variant = rec.selected_or_first_available_variant
-  assign category = rec.type | strip
+  assign subtitle = rec.metafields.custom.variante_vetrina.value | strip
   assign display_name = rec.metafields.custom.nome_vetrina.value | strip
   if display_name == blank
     assign display_name = rec.title
@@ -19,7 +19,9 @@
   </span>
   <span class="ritual-item">
     <span class="ritual-product">{{ display_name | escape }}</span>
-    <small class="ritual-category bz-category-label" style="--bz-category-dot:{% render 'bz-category-dot', type: category %}">{{ category | escape }}</small>
+    {%- if subtitle != blank -%}
+      <span class="ritual-row__sub">{{ subtitle | escape }}</span>
+    {%- endif -%}
   </span>
   <span class="row-price">{% render 'bz-money', cents: variant.price %}</span>
 </label>

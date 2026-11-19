@@ -105,19 +105,18 @@
       {%- if block.type == 'compare' -%}
         <div class="compare-group" data-compare-group="{{ block.settings.name | handleize }}" {% unless compare_index == 0 %}hidden{% endunless %}>
         <div class="compare-grid">
-          {%- assign forms = 'Grezza|Burattata|' | append: block.settings.wear_label | split: '|' -%}
-          {%- for form in forms -%}
+          {%- for form_index in (1..3) -%}
             {%- liquid
-              if forloop.index == 1
+              if form_index == 1
                 assign product = block.settings.rough
-              elsif forloop.index == 2
+              elsif form_index == 2
                 assign product = block.settings.tumbled
               else
                 assign product = block.settings.worn
               endif
             -%}
             {%- if product.title != blank -%}
-              {% render 'bz-product-card', card: product, style: 'form', cat: form %}
+              {% render 'bz-product-card', card: product, style: 'form' %}
             {%- endif -%}
           {%- endfor -%}
         </div>

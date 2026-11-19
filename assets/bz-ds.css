@@ -242,7 +242,7 @@ html .bz-page-cura-di-se .cura-routine.is-night .cura-product-copy .price{
   color:var(--bz-text)!important;
 }
 
-/* Product tiles share the row's media, title, link, metadata and controls. */
+/* Product tiles share the row's media, title, link and controls. */
 html .bz-scope .bz-product-tile,
 html .bz-scope .compare-card{
   display:flex;
@@ -316,6 +316,23 @@ html .bz-scope .bz-product-tile .bz-product-tile__meta{
   padding-top:var(--bz-sp-12);
   min-height:calc(var(--bz-sp-12) + var(--bz-lh-xs) * 1em);
 }
+html .bz-scope :is(.bz-product-tile__sub,.ritual-row__sub){
+  display:block;
+  min-width:0;
+  max-height:32px;
+  margin:0;
+  overflow:hidden;
+  font:400 var(--bz-fs-xs)/16px var(--bz-font-sans);
+  color:rgba(238,231,219,.68);
+  color:color-mix(in srgb,var(--bz-text) 68%,transparent);
+  white-space:normal;
+  overflow-wrap:normal;
+  word-break:normal;
+  hyphens:manual;
+}
+html .bz-scope .bz-product-tile .bz-product-tile__sub{
+  margin:2px var(--bz-sp-4) 0;
+}
 html .bz-scope .bz-product-tile .bz-product-tile__bottom{
   margin:0;
   padding:var(--bz-sp-4) var(--bz-sp-4) 0;
@@ -324,23 +341,25 @@ html .bz-scope .bz-product-tile .bz-product-tile__bottom{
   align-items:center;
   gap:var(--bz-sp-8);
 }
+html .bz-scope .product.bz-product-tile .bz-product-tile__bottom{margin-top:auto}
 html .bz-scope .bz-product-tile .bz-card__form{
   position:static;
   margin:0;
 }
 html .bz-scope .bz-product-tile .bz-card__price{margin:0}
-html .bz-scope .bz-product-tile:not(.bz-section-product,.bz-product-tile--vertical) .bz-product-tile__title{
+html .bz-scope .bz-card:not(.bz-section-product) .bz-product-tile__title{
   min-height:calc(3 * var(--bz-lh-product) * 1em);
 }
 html .bz-scope :is(.bz-section-product,.bz-pair){
   --bz-fs-product:var(--bz-fs-sm);
 }
-html .bz-scope .bz-section-product .bz-product-tile__title:not(:where(.month-cards *, .bz-related *)){
+html .bz-scope .bz-card.bz-section-product .bz-product-tile__title:not(:where(.month-cards *, .bz-related *)){
   min-height:calc(2 * var(--bz-lh-product) * 1em);
   max-height:calc(2 * var(--bz-lh-product) * 1em);
 }
 html .bz-scope :is(.bz-pair__name,.ritual-product,.cura-product-copy h3),
-html .bz-scope .bz-section-product .bz-product-tile__title{
+html .bz-scope .bz-section-product .bz-product-tile__title,
+html .bz-scope .product.bz-product-tile .bz-product-tile__title{
   display:-webkit-box;
   -webkit-box-orient:vertical;
   -webkit-line-clamp:2;
@@ -349,6 +368,7 @@ html .bz-scope .bz-section-product .bz-product-tile__title{
   word-break:normal;
   hyphens:manual;
 }
+html .bz-scope .product.bz-product-tile .bz-product-tile__link>.bz-product-tile__title{min-height:0}
 html .bz-scope .bz-section-product .bz-product-tile__meta{
   margin-top:0;
 }
@@ -356,22 +376,16 @@ html .bz-scope .bz-section-product .bz-product-tile__bottom{
   margin-top:auto;
 }
 @supports (grid-template-rows:subgrid){
-  html .bz-scope .bz-product-tile:not(.bz-section-product,.bz-product-tile--vertical){
+  html .bz-scope .bz-card:not(.bz-section-product){
     display:grid;
     grid-row:span 5;
     grid-template-rows:subgrid;
     row-gap:0;
   }
-  html .bz-scope .bz-product-tile:not(.bz-section-product,.bz-product-tile--vertical) .bz-product-tile__link{
-    display:grid;
-    grid-row:1/4;
-    grid-template-rows:subgrid;
-    row-gap:0;
-  }
-  html .bz-scope .bz-product-tile:not(.bz-section-product,.bz-product-tile--vertical) .bz-product-tile__media{grid-row:1}
-  html .bz-scope .bz-product-tile:not(.bz-section-product,.bz-product-tile--vertical) .bz-product-tile__title{grid-row:2}
-  html .bz-scope .bz-product-tile:not(.bz-section-product,.bz-product-tile--vertical) .bz-product-tile__meta{grid-row:4;margin-top:0}
-  html .bz-scope .bz-product-tile:not(.bz-section-product,.bz-product-tile--vertical) .bz-product-tile__bottom{grid-row:5}
+  html .bz-scope .bz-card:not(.bz-section-product) .bz-product-tile__media{grid-row:1}
+  html .bz-scope .bz-card:not(.bz-section-product) .bz-product-tile__title{grid-row:2}
+  html .bz-scope .bz-card:not(.bz-section-product) .bz-product-tile__meta{grid-row:4;margin-top:0}
+  html .bz-scope .bz-card:not(.bz-section-product) .bz-product-tile__bottom{grid-row:5}
 }
 
 /* Category dots and stock badges have independent colors. */
@@ -749,8 +763,7 @@ html .bz-scope .bz-product-group{
   min-width:0;
   overflow:visible;
 }
-html .bz-scope .bz-section-product .bz-category-label,
-html .bz-scope .ritual-row .bz-category-label{
+html .bz-scope .bz-section-product .bz-category-label{
   white-space:nowrap;
   overflow:hidden;
 }
@@ -774,11 +787,15 @@ html .bz-scope .ritual-row .bz-category-label{
 html .bz-scope .pgrid{
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
+  grid-auto-rows:auto;
   gap:var(--bz-grid-gap);
   align-items:stretch;
 }
 @media (min-width:768px){
   html .bz-scope .pgrid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (768px <= width < 1024px){
+  html .bz-scope .dosha-products.pgrid{grid-template-columns:repeat(4,minmax(0,1fr))}
 }
 @media (min-width:1024px){
   html .bz-scope .pgrid{grid-template-columns:repeat(4,minmax(0,1fr))}
@@ -809,32 +826,9 @@ html .bz-scope .bz-product-tile--vertical .bz-badge.bz-stock--soldout{
 }
 html .bz-scope .bz-product-tile--vertical .bz-product-tile__title{
   margin:10px 0 0!important;
-  min-height:calc(2 * 19px);
-  max-height:calc(2 * 19px);
   font:500 var(--bz-fs-sm)/19px var(--bz-font-sans)!important;
-  display:-webkit-box;
-  -webkit-box-orient:vertical;
-  -webkit-line-clamp:2;
-  overflow:hidden;
-  overflow-wrap:normal;
-  word-break:normal;
-  hyphens:manual;
 }
-html .bz-scope .bz-product-tile--vertical .bz-product-tile__meta{
-  align-items:center;
-  margin:2px 0 0;
-  padding:0;
-  min-height:0;
-  font:400 var(--bz-fs-xs)/16px var(--bz-font-sans);
-  color:rgba(238,231,219,.6);
-}
-html .bz-scope .bz-product-tile--vertical .bz-product-tile__meta:empty{display:none}
-html .bz-scope .bz-product-tile--vertical .bz-product-tile__meta>span{
-  min-width:0;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
+html .bz-scope .bz-product-tile--vertical .bz-product-tile__sub{margin-inline:0}
 html .bz-scope .bz-product-tile--vertical .bz-product-tile__bottom{
   margin:auto 0 0;
   padding:var(--bz-sp-8) 0 0;
@@ -858,8 +852,6 @@ html .bz-scope .compare .compare-grid{
   align-items:stretch;
 }
 html .bz-scope .compare .bz-product-tile--vertical .bz-product-tile__title{
-  min-height:calc(2 * 20px);
-  max-height:calc(2 * 20px);
   font:500 15px/20px var(--bz-font-sans)!important;
 }
 @media (width < 1024px){
@@ -890,6 +882,60 @@ html .bz-scope .compare .bz-product-tile--vertical .bz-product-tile__title{
   }
 }
 
+/* Condividi le righe di foto, nome, sottotitolo e prezzo fra le card affiancate. */
+@supports (grid-template-rows:subgrid){
+  html .bz-scope :is(.pgrid,.compare .compare-grid,.bento){
+    row-gap:0;
+  }
+  /* Spacing belongs between card rows, even when the subtitle track is empty. */
+  html .bz-scope :is(.pgrid,.bento){
+    margin-block-end:calc(-1 * var(--bz-grid-gap));
+  }
+  html .bz-scope :is(.pgrid,.bento)>.product{
+    margin-block-end:var(--bz-grid-gap);
+  }
+  @media (min-width:768px){
+    html .bz-scope .bz-product-group:has(>.product){
+      row-gap:0;
+      margin-block-end:calc(-1 * var(--bz-grid-gap));
+    }
+    html .bz-scope .bz-product-group>.product{
+      margin-block-end:var(--bz-grid-gap);
+    }
+  }
+  html .bz-scope :is(.pgrid,.compare-grid,.bz-product-group,.bento)>.product:where(.bz-product-tile){
+    display:grid;
+    grid-row:span 4;
+    grid-template-rows:subgrid;
+    row-gap:0;
+  }
+  html .bz-scope :is(.pgrid,.compare-grid,.bz-product-group,.bento)>.product:where(.bz-product-tile)>.bz-product-tile__link{
+    display:grid;
+    grid-row:1 / -2;
+    grid-template-rows:subgrid;
+    row-gap:0;
+  }
+  html .bz-scope :where(.product.bz-product-tile)>.bz-product-tile__link>.bz-product-tile__media{grid-row:1}
+  html .bz-scope :where(.product.bz-product-tile)>.bz-product-tile__link>.bz-product-tile__title{grid-row:2;align-self:start}
+  html .bz-scope :where(.product.bz-product-tile)>.bz-product-tile__link>.bz-product-tile__sub{grid-row:3;align-self:start}
+  html .bz-scope :where(.product.bz-product-tile)>.bz-product-tile__link>.gift-cta{grid-row:4}
+  html .bz-scope :is(.pgrid,.compare-grid,.bz-product-group,.bento)>.product:where(.bz-product-tile)>.bz-product-tile__bottom{
+    grid-row:-2 / -1;
+    align-self:end;
+    margin-top:0;
+  }
+  html .bz-scope .bento>.product.gift-card{grid-row:span 5}
+  @media (width < 768px){
+    html .bz-scope .compare .compare-grid{
+      display:grid;
+      grid-template-columns:none;
+      grid-template-rows:repeat(4,auto);
+      grid-auto-flow:column;
+      grid-auto-columns:calc((100vw - var(--bz-margin) - var(--bz-grid-gap)) / 1.5);
+    }
+  }
+}
+
 @media (width < 768px){
   html .bz-scope .bz-product-group:has(>.bz-product-tile:nth-child(5)){
     grid-template-columns:none;
@@ -899,6 +945,12 @@ html .bz-scope .compare .bz-product-tile--vertical .bz-product-tile__title{
     scroll-snap-type:inline mandatory;
     scrollbar-width:none;
     padding-block-end:var(--bz-sp-4);
+  }
+  @supports (grid-template-rows:subgrid){
+    html .bz-scope .bz-product-group:has(>.product:nth-child(5)){
+      grid-template-rows:repeat(4,auto);
+      row-gap:0;
+    }
   }
   html .bz-scope .bz-product-group:has(>.bz-product-tile:nth-child(5))>.bz-product-tile{
     scroll-snap-align:start;
@@ -912,6 +964,7 @@ html .bz-scope .compare .bz-product-tile--vertical .bz-product-tile__title{
   }
   html .bz-scope .bz-product-group:where(:not(:has(>.bz-product-tile:nth-child(5))))>.bz-section-product{
     display:grid;
+    grid-row:auto;
     grid-template-columns:var(--bz-row-thumb, var(--bz-sp-56)) minmax(0,1fr) auto;
     grid-template-rows:minmax(0,1fr) auto auto minmax(0,1fr);
     column-gap:var(--bz-sp-12);
@@ -923,7 +976,7 @@ html .bz-scope .compare .bz-product-tile--vertical .bz-product-tile__title{
     border-block-end:1px solid var(--bz-line);
     border-radius:0;
   }
-  html .bz-scope .bz-product-group:where(:not(:has(>.bz-product-tile:nth-child(5))))>.has-nome-vetrina{
+  html .bz-scope .bz-product-group:where(:not(:has(>.bz-product-tile:nth-child(5))))>.bz-card.has-nome-vetrina{
     height:var(--bz-sp-88);
   }
   html .bz-scope .bz-product-group:where(:not(:has(>.bz-product-tile:nth-child(5)))) .bz-product-tile__link{
@@ -950,14 +1003,19 @@ html .bz-scope .compare .bz-product-tile--vertical .bz-product-tile__title{
     grid-area:2 / 2;
     margin:0!important;
   }
-  html .bz-scope .bz-product-group:where(:not(:has(>.bz-product-tile:nth-child(5)))) .bz-product-tile .bz-product-tile__meta{
+  html .bz-scope .bz-product-group:where(:not(:has(>.bz-product-tile:nth-child(5)))) .bz-card .bz-product-tile__meta{
     grid-area:3 / 2;
     margin:0;
     padding:0;
     min-height:0;
   }
+  html .bz-scope .bz-product-group:where(:not(:has(>.bz-product-tile:nth-child(5)))) .product.bz-section-product .bz-product-tile__sub{
+    grid-area:3 / 2;
+    margin-inline:0;
+  }
   html .bz-scope .bz-product-group:where(:not(:has(>.bz-product-tile:nth-child(5)))) .bz-product-tile .bz-product-tile__bottom{
     grid-area:1 / 3 / -1;
+    align-self:center;
     grid-template-columns:auto var(--bz-control-h);
     gap:var(--bz-sp-12);
     margin:0;
@@ -973,28 +1031,15 @@ html .bz-scope .compare .bz-product-tile--vertical .bz-product-tile__title{
     line-height:var(--bz-lh-xs);
     white-space:normal;
   }
+  @supports (grid-template-rows:subgrid){
+    html .bz-scope .bz-product-group:where(:not(:has(>.bz-product-tile:nth-child(5)))) .bz-section-product>.bz-product-tile__link{
+      grid-area:1 / 1 / -1 / 3;
+      grid-template:subgrid / subgrid;
+    }
+  }
 }
 
-/* Pallini dei prodotti per dosha. */
 html .bz-page-ayurveda .dosha-selection{margin-block-start:var(--bz-sp-16)}
-html .bz-page-ayurveda [data-dosha-tone="vata"]{--bz-dosha-dot:var(--bz-dosha-vata)}
-html .bz-page-ayurveda [data-dosha-tone="pitta"]{--bz-dosha-dot:var(--bz-dosha-pitta)}
-html .bz-page-ayurveda [data-dosha-tone="kapha"]{--bz-dosha-dot:var(--bz-dosha-kapha)}
-html .bz-page-ayurveda .dosha-products .bz-category-label::before{background:var(--bz-dosha-dot)}
-
-html .bz-scope .ritual-row .bz-category-label{
-  display:block;
-  min-width:0;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-  font:500 12px/16px var(--bz-font-sans);
-}
-html .bz-scope .ritual-row .bz-category-label::before{
-  display:inline-block;
-  margin-inline-end:6px;
-  vertical-align:middle;
-}
 
 /* Completa il rituale. */
 html .bz-scope .ritual-section{
@@ -1048,9 +1093,8 @@ html .bz-scope .ritual-section .ritual-row{
   grid-template-columns:var(--bz-sp-72) minmax(0,1fr) auto;
   align-items:center;
   column-gap:var(--bz-sp-12);
-  height:var(--bz-sp-88);
-  min-height:var(--bz-sp-88);
-  padding:var(--bz-sp-8) 0;
+  min-height:100px;
+  padding:var(--bz-sp-12) 0;
   border:0;
   box-shadow:0 1px 0 var(--bz-line-divider);
   cursor:pointer;
@@ -1121,6 +1165,21 @@ html .bz-scope .ritual-section .row-price{
   font-size:18px!important;
   line-height:22px!important;
   text-align:end;
+}
+@media (width < 1024px){
+  html .bz-scope .ritual-section .ritual-rows{grid-auto-rows:1fr}
+}
+@media (max-width:389.98px){
+  html .bz-scope .ritual-section .ritual-row{
+    grid-template-columns:var(--bz-sp-72) minmax(0,1fr);
+    grid-template-areas:"media copy" "media price";
+    grid-template-rows:auto auto;
+    align-content:center;
+    row-gap:6px;
+  }
+  html .bz-scope .ritual-section .ritual-row-media{grid-area:media;align-self:center}
+  html .bz-scope .ritual-section .ritual-item{grid-area:copy;align-self:end}
+  html .bz-scope .ritual-section .row-price{grid-area:price;align-self:start;text-align:start}
 }
 html .bz-scope .ritual-section .ritual-total{
   display:flex;
@@ -1314,14 +1373,6 @@ html .bz-scope .ritual-section .ritual-caption p{
   html .bz-scope .ritual-section .ritual-product{
     font-size:var(--bz-fs-body);
     line-height:22px;
-  }
-  html .bz-scope .ritual-section .ritual-row .bz-category-label{
-    font-size:13px;
-    line-height:18px;
-  }
-  html .bz-scope .ritual-section .ritual-row .bz-category-label::before{
-    width:var(--bz-sp-8);
-    height:var(--bz-sp-8);
   }
   html .bz-scope .ritual-section .row-price{
     font-size:var(--bz-fs-price)!important;
