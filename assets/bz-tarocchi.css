@@ -1,0 +1,336 @@
+/* Benessere Zen · volti, dorsi e ventagli delle carte approvate. */
+.bz-tarocchi .tc,.bz-tarocchi .tc *{box-sizing:border-box}
+.bz-tarocchi .tc{--acc:#c9a96e;--gold:#c9a96e;--goldl:#e3cb95;--ink:#14110e;
+  width:var(--cw,140px);aspect-ratio:2/3;}
+.bz-tarocchi .tc__flip{position:relative;display:block;width:100%;height:100%;container-type:size;transform-style:preserve-3d;
+  transform:perspective(calc(var(--cw,140px) * 6)) rotateY(0deg);transition:transform var(--bz-dur-flip) var(--bz-ease-flip);transition-delay:var(--fd,0ms)}
+/* carta scelta (hover col mouse, fuoco da tastiera, tocco): esce dal mazzo e gira sull'asse Y mostrando il retro con le pietre */
+.bz-tarocchi .tc.is-active .tc__flip{transform:perspective(calc(var(--cw,140px) * 6)) rotateY(180deg)}
+.bz-tarocchi .tc__face{position:absolute;inset:0;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;
+  border-radius:4.5cqw;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  box-shadow:0 1px 0 rgba(255,255,255,.04) inset,0 14px 30px -12px rgba(0,0,0,.75),0 2px 6px rgba(0,0,0,.5)}
+
+/* ---------- FRONTE ---------- */
+.bz-tarocchi .tc__front{color:var(--goldl);text-align:center;padding:9cqw 8cqw 8cqw;
+  background:
+   radial-gradient(70% 42% at 50% 40%,color-mix(in srgb,var(--acc) 16%,transparent),transparent 72%),
+   radial-gradient(120% 70% at 50% 110%,rgba(201,169,110,.10),transparent 60%),
+   linear-gradient(180deg,#1d1915,#120f0c 70%,#0e0c0a);
+  border:1px solid rgba(201,169,110,.55)}
+/* un filetto interno (carte uniformate: niente rombi agli angoli, niente secondo filetto) */
+.bz-tarocchi .tc__front::before{content:"";position:absolute;inset:3.6cqw;border:1px solid rgba(201,169,110,.42);border-radius:2.6cqw;pointer-events:none}
+.bz-tarocchi .tc__num{position:relative;display:flex;align-items:center;justify-content:center;gap:3cqw;margin-top:1cqw;
+  font:400 9.5cqw/1 var(--serif,Baskervville,Georgia,serif);letter-spacing:.12em;color:var(--goldl)}
+.bz-tarocchi .tc__num::before,.bz-tarocchi .tc__num::after{content:"";width:9cqw;height:1px;background:linear-gradient(90deg,transparent,rgba(201,169,110,.8))}
+.bz-tarocchi .tc__num::after{transform:scaleX(-1)}
+/* marchio BZ (ensō e figura dal logo ufficiale, ricolorato con l'oro della carta via maschera) al posto del numero.
+   Maschera in linea (data URI, da build/logo_mask.py): da file:// le maschere esterne non si caricano */
+.bz-tarocchi .tc__bz{display:block;width:13.4cqw;height:12cqw;background:var(--goldl);--bz:url(data:image/png;base64,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);-webkit-mask:var(--bz) center/contain no-repeat;mask:var(--bz) center/contain no-repeat}
+/* il pozzo del simbolo è un contenitore: il disco (62% della carta) non supera mai la sua altezza. Sulle carte piccole (mobile),
+   dove pietre e cartiglio hanno corpi minimi in px, il disco si riduce invece di finire sopra il nome. --k = 1% della carta, ma limitato in altezza */
+.bz-tarocchi .tc__art{position:relative;flex:1 1 auto;display:grid;place-items:center;width:100%;min-height:0;margin:3cqw 0 2cqw;container-type:size;--k:min(1.2081cqw,1.6129cqh)}
+/* alone a due cerchi sottili dietro al simbolo */
+.bz-tarocchi .tc__art::before{content:"";position:absolute;width:calc(62*var(--k));aspect-ratio:1;border-radius:50%;
+  border:1px solid rgba(201,169,110,.38);box-shadow:0 0 0 calc(2.6*var(--k)) rgba(201,169,110,0),0 0 0 calc(3*var(--k)) rgba(201,169,110,.16)}
+.bz-tarocchi .tc__art::after{content:"";position:absolute;width:calc(76*var(--k));aspect-ratio:1;border-radius:50%;
+  background:repeating-conic-gradient(from 0deg,rgba(201,169,110,.20) 0 .7deg,transparent .7deg 15deg);
+  -webkit-mask:radial-gradient(circle,transparent 63%,#000 64%,#000 70%,transparent 71%);mask:radial-gradient(circle,transparent 63%,#000 64%,#000 70%,transparent 71%)}
+.bz-tarocchi .tc__sym{position:relative;z-index:1;width:calc(40*var(--k));height:calc(40*var(--k));color:var(--goldl);
+  filter:drop-shadow(0 0 calc(3*var(--k)) color-mix(in srgb,var(--acc) 55%,transparent))}
+.bz-tarocchi .tc__sym svg,.bz-tarocchi .tc__sym img{display:block;width:100%;height:100%;object-fit:contain}
+/* cartiglio: largo fin quasi alla cornice interna (5–95cqw, la cornice è a 3,6cqw); dentro, almeno 2,5px di aria ai lati del nome */
+.bz-tarocchi .tc__cart{--cpad:max(2.5px,2.5cqw);position:relative;width:calc(100% + 6cqw);margin-inline:-3cqw;padding:3.4cqw var(--cpad) 3.2cqw;border-top:1px solid rgba(201,169,110,.5);border-bottom:1px solid rgba(201,169,110,.5)}
+.bz-tarocchi .tc__cart::before,.bz-tarocchi .tc__cart::after{content:"";position:absolute;left:50%;width:2.6cqw;height:2.6cqw;background:var(--goldl);transform:translate(-50%,-50%) rotate(45deg)}
+.bz-tarocchi .tc__cart::before{top:0}.bz-tarocchi .tc__cart::after{top:100%}
+/* titolo: stesso corpo su tutte le 14 carte e spazio SEMPRE riservato a due righe (2 × 1,16em), centrato in verticale:
+   «Agitazione e rabbia» e «Tristezza e poco slancio» vanno a capo senza spingere il cartiglio né toccare pietre o cornice */
+/* corpo del nome uguale per tutte le carte del mazzo, deciso dalla parola più lunga («Concentrazione»: larga 7,0 em in Baskervville; 7,2 con margine):
+   - deve stare intera su una riga nel cartiglio:            (90cqw − 2·cpad) / 7,2
+   - da 768 in su, sulla carta coperta deve stare nella striscia scoperta (passo 0,79 × carta − 5cqw di bordo − cpad − 4px):
+                                                              (74cqw − 4px − cpad) / 7,2
+   - mai più grande di prima (11,2cqw). Niente sillabazione, niente parole spezzate. */
+/* nome: almeno 9,5px quando il cartiglio lo consente (carte piccole a 360) */
+.bz-tarocchi .tc__title{--tfit:calc((90cqw - 2 * var(--cpad)) / 7.2);display:flex;align-items:center;justify-content:center;min-height:2.32em;
+  font:400 max(min(9.5px,var(--tfit)),min(11.2cqw,var(--tfit)))/1.16 var(--serif,Baskervville,Georgia,serif);color:#f3ead8;text-wrap:balance;white-space:pre-line;hyphens:none;overflow-wrap:normal;word-break:normal}
+@media (min-width:768px){.bz-tarocchi .tc__title{font-size:min(11.2cqw,var(--tfit),calc((74cqw - 4px - var(--cpad)) / 7.2))}}
+.bz-tarocchi .tc__motto{display:block;margin-top:1.6cqw;font:italic 400 7.4cqw/1.2 var(--serif,Baskervville,Georgia,serif);color:rgba(227,203,149,.82)}
+.bz-tarocchi.no-motti .tc__motto{display:none}
+/* pietre: 10px; su carte sotto i ~72px scenderebbero fino a 7cqw per restare dentro la carta (oggi la carta più piccola è 79,5px: sempre 10px) */
+/* ---------- RETRO v3 (19/11 23:30, ultimo giro): griglia vera ----------
+   Unità u = 4% della larghezza della carta (cqw del flipper). Cornice doppia a distanze costanti: bordo → filetto a 1u → filetto a 1,5u.
+   Margine interno M uguale sui 4 lati (2,5u desktop, 2u mobile). Colonna: sigillo in alto a M dal bordo, firma «Benessere Zen» in basso a M dal bordo;
+   in mezzo il gruppo nome · filetto con punto · 3 pietre · filetto · motto, centrato in verticale nello spazio tra sigillo e firma, con un solo passo g tra gli elementi.
+   Corpi misurati sulla carta ingrandita (--sa): a schermo nome ≥ 10,5px, pietre ≥ 10px, motto ≥ 9,5px. */
+.bz-tarocchi .tc__back{--u:4cqw;--m:calc(var(--u) * 2.5);--g:calc(var(--u) * 1.2);transform:rotateY(180deg);justify-content:space-between;align-items:center;
+  padding:var(--m);color:var(--goldl);text-align:center;
+  background:
+   radial-gradient(70% 38% at 50% 50%,rgba(227,203,149,.10),transparent 72%),
+   repeating-linear-gradient(45deg,rgba(201,169,110,.075) 0 1px,transparent 1px 7cqw),
+   repeating-linear-gradient(-45deg,rgba(201,169,110,.075) 0 1px,transparent 1px 7cqw),
+   linear-gradient(180deg,var(--back1,#1c1712),var(--back2,#0f0d0b));
+  border:1px solid rgba(201,169,110,.55)}
+.bz-tarocchi .deck--senti .tc__back{--back1:#3a1621;--back2:#1d0a10}
+.bz-tarocchi .deck--des .tc__back{--back1:#18233d;--back2:#0b111f}
+.bz-tarocchi .tc__back::before{content:"";position:absolute;inset:var(--u);border:1px solid rgba(227,203,149,.45);border-radius:calc(var(--u) * .65);pointer-events:none}
+.bz-tarocchi .tc__back::after{content:"";position:absolute;inset:calc(var(--u) * 1.5);border:1px solid rgba(201,169,110,.18);border-radius:calc(var(--u) * .4);pointer-events:none}
+.bz-tarocchi .tc__back > *{position:relative;flex:0 0 auto}
+.bz-tarocchi .tc__back .tc__seal{display:block;width:28cqw;filter:drop-shadow(0 0 3cqw rgba(227,203,149,.16))}
+.bz-tarocchi .tc__back .tc__seal img{display:block;width:100%;height:auto}
+.bz-tarocchi .tc__bgroup{flex:1 1 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--g);width:100%;min-height:0}
+.bz-tarocchi .tc__bname{display:block;white-space:pre-line;text-wrap:balance;
+  font:500 max(calc(10.5px / var(--sa,1)),min(11.7cqw,calc(86cqw / 6.75)))/1.1 var(--serif,Baskervville,Georgia,serif);letter-spacing:.01em;color:var(--goldl)}
+.bz-tarocchi .tc__brule{display:block;position:relative;flex:0 0 auto;width:calc(var(--u) * 11);height:1px;background:linear-gradient(90deg,transparent,rgba(227,203,149,.85),transparent)}
+.bz-tarocchi .tc__brule::after{content:"";position:absolute;left:50%;top:50%;width:calc(var(--u) * .6);height:calc(var(--u) * .6);background:var(--goldl);transform:translate(-50%,-50%) rotate(45deg)}
+.bz-tarocchi .tc__brule--plain{width:calc(var(--u) * 7);background:linear-gradient(90deg,transparent,rgba(227,203,149,.6),transparent)}
+.bz-tarocchi .tc__brule--plain::after{content:none}
+.bz-tarocchi .tc__stones{display:flex;flex-direction:column;align-items:center;
+  font:500 max(calc(10px / var(--sa,1)),7cqw)/1.18 var(--sans,Figtree,Arial,sans-serif);letter-spacing:.01em;color:#eee7db;text-wrap:balance;hyphens:none;overflow-wrap:normal}
+.bz-tarocchi .tc__stones{opacity:0;transition:opacity var(--bz-dur-menu) ease}
+.bz-tarocchi .tc.is-active .tc__stones{opacity:1;transition-delay:calc(var(--fd,0ms) + var(--face-swap))}
+.bz-tarocchi .tc__stones > span{display:block}
+.bz-tarocchi .tc__stones > span + span::before{content:"";display:block;width:calc(var(--u) * .45);height:calc(var(--u) * .45);margin:calc(var(--u) * .4) auto;background:rgba(227,203,149,.8);transform:rotate(45deg)}
+.bz-tarocchi .tc__bmotto{display:block;font:italic 400 max(calc(9.5px / var(--sa,1)),6.4cqw)/1.18 var(--serif,Baskervville,Georgia,serif);color:rgba(227,203,149,.85);text-wrap:balance}
+.bz-tarocchi .tc__brand{display:block;font:400 max(calc(6.5px / var(--sa,1)),4.4cqw)/1 var(--serif,Baskervville,Georgia,serif);letter-spacing:.3em;padding-left:.3em;white-space:nowrap;text-transform:uppercase;color:rgba(227,203,149,.62)}
+@media (max-width:767.98px){
+  .bz-tarocchi .tc__back{--m:calc(var(--u) * 2);--g:calc(var(--u) * .85)}
+  .bz-tarocchi .tc__back .tc__seal{width:20cqw}
+  .bz-tarocchi .tc__stones{line-height:1.1}
+  .bz-tarocchi .tc__stones > span + span::before{margin:calc(var(--u) * .22) auto}
+  .bz-tarocchi .tc__back{--g:calc(var(--u) * .75)}
+  .bz-tarocchi .tc__back .tc__seal{width:17cqw}
+  .bz-tarocchi .tc__bname{font-size:min(calc(13.5px / var(--sa,1)),calc((100cqw - var(--u) * 3) / 6.4));line-height:1.02;letter-spacing:0;margin-inline:calc(var(--u) * -.5)}
+  .bz-tarocchi .tc__bmotto{margin-inline:calc(var(--u) * -.5)}
+}
+
+/* ---------- stati: alone della carta attiva ---------- */
+.bz-tarocchi .tc__glow{position:absolute;inset:-1px;border-radius:7px;pointer-events:none;opacity:0;transition:opacity var(--glow-duration) ease;
+  box-shadow:0 0 0 1px rgba(227,203,149,.9),0 0 26px 2px color-mix(in srgb,var(--acc) 55%,rgba(201,169,110,.5)),0 24px 44px -14px rgba(0,0,0,.9)}
+/* l'alone non gira con la carta: si accende a flip quasi finito e si spegne subito quando la carta viene lasciata */
+.bz-tarocchi .tc.is-active .tc__glow{opacity:1;transition:opacity var(--glow-duration) ease calc(var(--bz-dur-fan) - 80ms)}
+/* reduced motion: niente flip, il retro compare in dissolvenza sopra il fronte */
+@media (prefers-reduced-motion:reduce){
+  .bz-tarocchi .tc__flip,.bz-tarocchi .tc.is-active .tc__flip{transform:none!important;transition:none!important}
+  .bz-tarocchi .tc__glow,.bz-tarocchi .tc__stones{transition:none!important}
+  .bz-tarocchi .tc__back{transform:none;opacity:0;transition:opacity var(--bz-dur-toast) ease}
+  .bz-tarocchi .tc.is-active .tc__back{opacity:1}
+}
+
+/* ---------- incisioni PD (default): oro su trasparente, riempiono il pozzo del simbolo ---------- */
+.bz-tarocchi .tc__sym--art{width:calc(66*var(--k));height:calc(66*var(--k));filter:none}
+.bz-tarocchi .tc__sym--art img{width:100%;height:100%;object-fit:contain;
+  filter:brightness(1.16) drop-shadow(0 0 calc(3*var(--k)) color-mix(in srgb,var(--acc) 30%,transparent))}
+/* lastre a tratto rado: a misura di ventaglio il segno si perde, due ombre da 0,6 px lo ispessiscono senza ridisegnare.
+   Le lastre piene (leone, sole, mano, grano…) restano senza: ispessite si impastano. */
+.bz-tarocchi .tc__sym--art img:is(.tc__art-image--amore,.tc__art-image--comunicazione,.tc__art-image--purificazione,.tc__art-image--confusione,.tc__art-image--serenita){
+  filter:brightness(1.22) drop-shadow(0 0 .6px #e3cb95) drop-shadow(0 0 .6px #e3cb95) drop-shadow(0 0 calc(3*var(--k)) color-mix(in srgb,var(--acc) 30%,transparent))}
+
+/* ---------- PALETTE DEI DISCHI: unica fonte delle 16 tinte ----------
+   Una famiglia sola: OKLCH con stessa luminosità (L .38) e croma contenuta (.045–.055), toni gioiello smorzati
+   che stanno su #141312 senza spegnere l'oro #c9a96e. Cambia solo la tinta, legata alle pietre della carta.
+   Le due carte nuove (Insicurezza, Senso di blocco) stanno nella stessa banda. I due neutri (Protezione carbone, Purificazione perla) restano nella stessa banda di luminosità. */
+.bz-tarocchi,.bz-tarocchi .tc{
+  --disc-agitazione:     oklch(0.38 0.055 335); /* ametista, rodonite */
+  --disc-tristezza:      oklch(0.38 0.055  62); /* citrino, ambra */
+  --disc-paura:          oklch(0.38 0.040 115); /* quarzo fumé, malachite: oliva fumé */
+  --disc-confusione:     oklch(0.38 0.050 232); /* cianite, calcite blu */
+  --disc-amore:          oklch(0.38 0.055   8); /* quarzo rosa, kunzite */
+  --disc-abbondanza:     oklch(0.38 0.050 158); /* avventurina, giada */
+  --disc-gioia:          oklch(0.38 0.055  88); /* pietra del sole, opale giallo */
+  --disc-protezione:     oklch(0.35 0.012 265); /* tormalina, ossidiana, onice: carbone */
+  --disc-serenita:       oklch(0.38 0.050 195); /* amazzonite, crisocolla */
+  --disc-coraggio:       oklch(0.38 0.055  40); /* occhio di tigre, corniola, diaspro rosso */
+  --disc-concentrazione: oklch(0.38 0.050 282); /* fluorite, sodalite */
+  --disc-comunicazione:  oklch(0.38 0.055 258); /* lapislazzuli, acquamarina */
+  --disc-intuizione:     oklch(0.38 0.045 308); /* labradorite, pietra di luna */
+  --disc-purificazione:  oklch(0.39 0.016  85); /* selenite, quarzo latteo: perla */
+  --disc-insicurezza:    #543e1f;               /* diaspro giallo, calcite miele, septaria: miele (disco dell'asset) */
+  --disc-blocco:         #314a32;               /* unakite, ossidiana neve, avventurina arancione: verde unakite (disco dell'asset) */
+}
+.bz-tarocchi .tc--agitazione{--acc:var(--disc-agitazione)}.bz-tarocchi .tc--tristezza{--acc:var(--disc-tristezza)}.bz-tarocchi .tc--paura{--acc:var(--disc-paura)}
+.bz-tarocchi .tc--confusione{--acc:var(--disc-confusione)}.bz-tarocchi .tc--amore{--acc:var(--disc-amore)}.bz-tarocchi .tc--abbondanza{--acc:var(--disc-abbondanza)}
+.bz-tarocchi .tc--gioia{--acc:var(--disc-gioia)}.bz-tarocchi .tc--protezione{--acc:var(--disc-protezione)}.bz-tarocchi .tc--serenita{--acc:var(--disc-serenita)}
+.bz-tarocchi .tc--coraggio{--acc:var(--disc-coraggio)}.bz-tarocchi .tc--concentrazione{--acc:var(--disc-concentrazione)}.bz-tarocchi .tc--comunicazione{--acc:var(--disc-comunicazione)}
+.bz-tarocchi .tc--intuizione{--acc:var(--disc-intuizione)}.bz-tarocchi .tc--purificazione{--acc:var(--disc-purificazione)}
+.bz-tarocchi .tc--insicurezza{--acc:var(--disc-insicurezza)}.bz-tarocchi .tc--blocco{--acc:var(--disc-blocco)}
+/* il disco: tinta piena al centro, che scende verso il nero del tavolo al bordo */
+.bz-tarocchi .tc__art::before{background:radial-gradient(circle at 50% 40%,var(--acc) 0,color-mix(in oklab,var(--acc) 62%,#141312) 72%,color-mix(in oklab,var(--acc) 40%,#141312) 100%)}
+/* Concentrazione (sparviero, Bewick 1797): sagoma orizzontale; -12° la fa leggere appollaiata e attenta, non distesa */
+.bz-tarocchi .tc__sym--art img.tc__art-image--concentrazione{transform:rotate(-12deg) scale(1.04)}
+
+
+
+/* ---------- FRONTE pieno (19/11, riferimento di Michael ricerca/iphone-michael-2158/rif-arco-michael.png), tutte le larghezze ----------
+   Carta 2:3, disco grande (74% della larghezza), nome subito sotto, nessuna area pietre (le pietre sono sul retro).
+   Cartiglio largo fin quasi alla cornice interna: «Concentrazione» intero a 9,5px da 78px di carta (decks.js non scende sotto i 78px). */
+.bz-tarocchi .tc__front{padding:7cqw 4cqw 6cqw}
+.bz-tarocchi .tc__front .tc__num{margin-top:0}
+/* disco 74cqw della carta: l'area è larga 92cqw, quindi 74/92 = 80,4% dell'area = 62k con k = 1,2973cqw (dell'area);
+   l'area prende l'altezza che avanza (almeno 78cqw) e il disco ci sta al centro */
+.bz-tarocchi .tc__art{flex:1 0 78cqw;margin:1.5cqw 0 1cqw;--k:min(1.2973cqw,1.6129cqh)}
+.bz-tarocchi .tc__cart{--cpad:1.5cqw;width:100%;margin-inline:0;padding:2.6cqw var(--cpad) 2.6cqw}
+.bz-tarocchi .tc__title{--tfit:calc((92cqw - 2 * var(--cpad)) / 7.2);font-size:max(min(9.5px,var(--tfit)),min(12cqw,var(--tfit)))}
+@media (min-width:768px){.bz-tarocchi .tc__title{font-size:max(min(9.5px,var(--tfit)),min(12cqw,var(--tfit),calc((74cqw - 4px - var(--cpad)) / 7.2)))}}
+
+
+/* 19/11 23:10: su mobile la carta è 3:5 come nel riferimento di Michael (ricerca/iphone-michael-2302/riferimento.png, Gioia 146×242) */
+@media (max-width:767.98px){.bz-tarocchi .deck .tc{aspect-ratio:3/5}}
+
+/* 19/11 23:10 · fix iOS Safari: sulla carta girata l'incisione del fronte restava visibile sul retro.
+   1) backface nascosto anche sui figli (WebKit non lo eredita sugli strati composti come img con filter) e preserve-3d col prefisso;
+   2) rete di sicurezza: a metà rotazione (90°: con la curva cubic-bezier(.3,.7,.2,1) da la faccia cambia a circa il 19,3% della durata, dopo il ritardo --fd) il fronte sparisce a scatto e il retro compare, al ritorno l'inverso.
+   Solo opacity/visibility a scatto, nessuna nuova animazione. */
+.bz-tarocchi .tc__flip{-webkit-transform-style:preserve-3d;transform-style:preserve-3d}
+.bz-tarocchi .tc__face,.bz-tarocchi .tc__face *{-webkit-backface-visibility:hidden;backface-visibility:hidden}
+.bz-tarocchi .tc__front{transition:opacity 0s linear var(--face-swap),visibility 0s linear var(--face-swap)}
+.bz-tarocchi .tc__back{opacity:0;visibility:hidden;transition:opacity 0s linear var(--face-swap),visibility 0s linear var(--face-swap)}
+.bz-tarocchi .tc.is-active .tc__front{opacity:0;visibility:hidden;transition-delay:calc(var(--fd,0ms) + var(--face-swap)),calc(var(--fd,0ms) + var(--face-swap))}
+.bz-tarocchi .tc.is-active .tc__back{opacity:1;visibility:visible;transition-delay:calc(var(--fd,0ms) + var(--face-swap)),calc(var(--fd,0ms) + var(--face-swap))}
+@media (prefers-reduced-motion:reduce){
+  .bz-tarocchi .tc__front,.bz-tarocchi .tc.is-active .tc__front{opacity:1;visibility:visible;transition:none}
+  .bz-tarocchi .tc__back{visibility:visible;opacity:0;transition:opacity var(--bz-dur-toast) ease}
+  .bz-tarocchi .tc.is-active .tc__back{opacity:1;transition:opacity var(--bz-dur-toast) ease}
+}
+
+/* ---------- ultimo giro (19/11 23:30): incisioni più luminose e piene, nomi più marcati ----------
+   Incisioni: stesse lastre RWS (nessun asset nuovo); l'immagine passa da 66k a 71k (il disegno occupa ~84% del diametro del disco)
+   ed è ritagliata sul cerchio del disco; oro più brillante e contrastato con un filo di luce che ispessisce il segno. */
+.bz-tarocchi .tc__sym--art{width:calc(71*var(--k));height:calc(71*var(--k));clip-path:circle(calc(31*var(--k)) at 50% 50%)}
+.bz-tarocchi .tc .tc__sym--art img{filter:brightness(1.32) contrast(1.18) saturate(1.15) drop-shadow(0 0 .45px rgba(255,236,180,.95)) drop-shadow(0 0 calc(2.2*var(--k)) rgba(227,203,149,.34))}
+.bz-tarocchi .tc .tc__sym--art img:is(.tc__art-image--amore,.tc__art-image--comunicazione,.tc__art-image--purificazione,.tc__art-image--confusione,.tc__art-image--serenita){
+  filter:brightness(1.36) contrast(1.18) saturate(1.15) drop-shadow(0 0 .6px #f3dfa6) drop-shadow(0 0 .6px #f3dfa6) drop-shadow(0 0 calc(2.2*var(--k)) rgba(227,203,149,.34))}
+/* nomi: Baskervville 500 (più marcato e, in questo taglio, più stretto: «Concentrazione» 6,28em), tracking .02em, avorio pieno.
+   Corpo uguale su tutte le carte, deciso da «Concentrazione» (6,55em con il tracking; 6,75 con margine) */
+.bz-tarocchi .tc__title{--tfit:calc((92cqw - 2 * var(--cpad)) / 6.75);font-weight:500;letter-spacing:.02em;color:#fbf4e4;text-shadow:0 1px 2px rgba(0,0,0,.55);
+  font-size:max(min(9.5px,var(--tfit)),min(13cqw,var(--tfit)))}
+@media (min-width:768px){.bz-tarocchi .tc__title{font-size:max(min(9.5px,var(--tfit)),min(13cqw,var(--tfit),calc((74cqw - 4px - var(--cpad)) / 6.75)))}}
+
+/* ==========================================================================
+   GIRO DEFINITIVO (19/11 notte) · regole universali
+   FRONTE · nome: Baskervville 400 (come nei giri approvati), nessun tracking. Il corpo qui è il TETTO;
+   decks.js (fitTexts) misura ogni nome senza trasformazioni e lo riduce finché sta nella fascia con
+   aria laterale pari allo spazio cornice-bordo (3,6cqw), poi a capo bilanciato, mai sotto 9px.
+   Vale con qualsiasi font (anche il ripiego di sistema, se il webfont non arrivasse).
+   ========================================================================== */
+.bz-tarocchi .tc__title{font-weight:400;letter-spacing:0;font-size:13cqw}
+@media (min-width:768px){.bz-tarocchi .tc__title{font-size:min(13cqw,calc((74cqw - 4px - var(--cpad)) / 7.2))}}
+
+/* RETRO · stessa carta del fronte: stesso bordo esterno, stesso filetto interno (3,6cqw, raggio 2,6cqw), stesso raggio.
+   Unità unica u = 3,6cqw (lo spazio cornice-bordo del fronte). Margine dal filetto al contenuto = 1u su tutti e 4 i lati
+   (padding 2u dal bordo). Colonna: sigillo in alto, gruppo al centro dello spazio che resta (aria uguale sopra e sotto),
+   firma in basso, speculare al sigillo. Passi del gruppo = g (0,75u mobile, 1u desktop); decks.js stringe prima il motto,
+   poi g, solo se il gruppo non ci sta. Corpi a schermo (÷ --sa, la scala della carta scelta): nome 13,5px mobile / 20px desktop,
+   pietre 10 / 12px, motto 9,5 / 11px. */
+.bz-tarocchi .tc__back{--u:3.6cqw;--g:var(--u);--pad:calc(var(--u) * 2);padding:var(--pad);justify-content:space-between;
+  background:
+   radial-gradient(70% 38% at 50% 50%,rgba(227,203,149,.10),transparent 72%),
+   repeating-linear-gradient(45deg,rgba(201,169,110,.075) 0 1px,transparent 1px 7cqw),
+   repeating-linear-gradient(-45deg,rgba(201,169,110,.075) 0 1px,transparent 1px 7cqw),
+   linear-gradient(180deg,var(--back1,#1c1712),var(--back2,#0f0d0b));
+  border:1px solid rgba(201,169,110,.55)}
+.bz-tarocchi .tc__back::before{inset:3.6cqw;border:1px solid rgba(201,169,110,.42);border-radius:2.6cqw}
+.bz-tarocchi .tc__back::after{content:none}
+.bz-tarocchi .tc__back .tc__seal{width:24cqw;filter:drop-shadow(0 0 2cqw rgba(227,203,149,.18))}
+.bz-tarocchi .tc__bgroup{gap:var(--g);width:100%;margin:0}
+.bz-tarocchi .tc__bname{margin:0;font:400 calc(20px / var(--sa,1))/1.06 var(--serif,Baskervville,Georgia,serif);letter-spacing:0;color:var(--goldl);white-space:pre;text-wrap:balance}
+.bz-tarocchi .tc__brule{width:calc(var(--u) * 7);height:1px;margin:0}
+.bz-tarocchi .tc__brule::after{width:calc(var(--u) * .5);height:calc(var(--u) * .5)}
+.bz-tarocchi .tc__brule--plain{width:calc(var(--u) * 4.5)}
+.bz-tarocchi .tc__stones{font:500 calc(12px / var(--sa,1))/1.18 var(--sans,Figtree,Arial,sans-serif);letter-spacing:0}
+.bz-tarocchi .tc__stones > span + span::before{width:calc(var(--u) * .35);height:calc(var(--u) * .35);margin:calc(var(--u) * .3) auto}
+.bz-tarocchi .tc__bmotto{margin:0;font:italic 400 calc(11px * var(--mk,1) / var(--sa,1))/1.18 var(--serif,Baskervville,Georgia,serif)}
+.bz-tarocchi .tc__brand{font-size:calc(7px / var(--sa,1))}
+@media (max-width:767.98px){
+  .bz-tarocchi .tc__back{--g:calc(var(--u) * .75)}
+  .bz-tarocchi .tc__back .tc__seal{width:24cqw}
+  .bz-tarocchi .tc__bname{font-size:calc(13.5px / var(--sa,1));line-height:1.04;margin:0}
+  .bz-tarocchi .tc__stones{font-size:calc(10px / var(--sa,1));line-height:1.15}
+  .bz-tarocchi .tc__stones > span + span::before{margin:calc(var(--u) * .25) auto}
+  .bz-tarocchi .tc__bmotto{font-size:calc(9.5px * var(--mk,1) / var(--sa,1));margin:0}
+  .bz-tarocchi .tc__brand{font-size:calc(6.5px / var(--sa,1))}
+}
+
+/* ==========================================================================
+   Benessere Zen · mazzi delle intenzioni: due pannelli come «La storia» e «Le pietre e il resto» di Chi siamo
+   (mockup-v411c/chi-siamo.html, .split.story). Approvati da Michael (v3, 19/11/2026).
+   Pannello: raggio 28px, bordo 1px rgba(238,231,219,.11), fondo --tint a 120°, min-height 330, 6vw tra i pannelli, margini laterali della home.
+   Colonna testo (40%): padding 32px 4vw, testo centrato in verticale, sfumatura verso il mazzo (transparent 60% → --tint-end).
+   Colonna mazzo (60%): al posto della foto, cielo a puntini sul colore del dorso, velo rgba(13,12,11,.18) e sfumatura verso il testo
+   (--tint-end → transparent 35%). Lati alternati: «Come ti senti» testo a sinistra, «Cosa desideri» mazzo a sinistra.
+   Una colonna (sotto 768px, o se la carta a due colonne verrebbe < 100px): testo sopra, mazzo sotto.
+   Le facce delle carte sono in cards.css. Animazioni solo transform e opacity.
+   ========================================================================== */
+/* margini laterali: quelli della home (var(--side), 20/28px), così i pannelli stanno in colonna con hero, «I più scelti», FAQ.
+   (Chi siamo usa 1,7vw: in home darebbe 14/17/24px e i pannelli uscirebbero dalla colonna di 6–11px.) */
+.bz-tarocchi{
+  --serif:var(--bz-font-serif,Baskervville,Georgia,serif);
+  --sans:var(--bz-font-sans,Figtree,Arial,sans-serif);
+  --title-duration:calc(var(--bz-dur-large) + 20ms);
+  --glow-duration:calc(var(--bz-dur-hover) * 2);
+  --face-swap:calc(var(--bz-dur-flip) * .193);
+  position:relative;
+  padding:0;
+}
+.bz-tarocchi .tar-table{display:flex;flex-direction:column;gap:6vw}
+.bz-tarocchi .deck{position:relative;display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr);min-width:0;min-height:330px;
+  border-radius:28px;border:1px solid rgba(238,231,219,.11);overflow:hidden;isolation:isolate;background:var(--tint)}
+.bz-tarocchi .deck--des{grid-template-columns:minmax(0,3fr) minmax(0,2fr)}
+/* tinte: stessa luminosità di .history e .stones di Chi siamo, virate sui dorsi (bordeaux #3a1621→#1d0a10, blu notte #18233d→#0b111f) */
+.bz-tarocchi .deck--senti{--tint:linear-gradient(120deg,#26141a 0%,#2e171d 60%,#1f1115 100%);--tint-end:#2e171d;--sky:linear-gradient(120deg,#3a1621,#1d0a10)}
+.bz-tarocchi .deck--des{--tint:linear-gradient(120deg,#171b24 0%,#1b202d 55%,#14161e 100%);--tint-end:#1b202d;--sky:linear-gradient(120deg,#18233d,#0b111f)}
+/* testo */
+.bz-tarocchi .deck__head{grid-column:1;grid-row:1;align-self:stretch;display:flex;flex-direction:column;justify-content:center;min-width:0;
+  padding:32px 4vw;text-align:left;background:linear-gradient(90deg,transparent 60%,var(--tint-end)),var(--tint)}
+.bz-tarocchi .deck--des .deck__head{grid-column:2;background:linear-gradient(270deg,transparent 60%,var(--tint-end)),var(--tint)}
+.bz-tarocchi .deck__head h2{margin:0;font:400 clamp(30px,3vw,44px)/1.1 var(--serif,Baskervville,Georgia,serif);color:var(--ivory,#eee7db)}
+.bz-tarocchi .deck__head h2 em{color:var(--gold,#c9a96e);font-style:italic}
+.bz-tarocchi .deck__head p{margin:16px 0 0;max-width:48em;font:400 clamp(16px,1.25vw,18px)/1.55 var(--sans,Figtree,Arial,sans-serif);color:var(--ivory2,#cdc4b4)}
+/* link come «Vedi tutto →» della home (.bz-sh-more) */
+.bz-tarocchi .deck__more{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;min-height:44px;margin-top:10px;color:var(--goldl,#e3cb95);
+  font:500 14px var(--sans,Figtree,Arial,sans-serif);text-decoration:none;white-space:nowrap}
+.bz-tarocchi .deck__more:hover{color:var(--ivory,#eee7db)}
+.bz-tarocchi .deck__more:focus-visible{outline:2px solid #f3e2b6;outline-offset:4px;border-radius:4px}
+/* mazzo: il cielo a puntini prende il posto della foto */
+.bz-tarocchi .deck__body{grid-column:2;grid-row:1;position:relative;display:flex;flex-direction:column;justify-content:center;min-width:0;padding:18px 0;
+  background:url(bz-tarot-cielo-punti-a.svg) 0 0/523px 467px repeat,url(bz-tarot-cielo-punti-b.svg) 137px 211px/811px 613px repeat,var(--sky)}
+.bz-tarocchi .deck--des .deck__body{grid-column:1}
+.bz-tarocchi .deck__body::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:rgba(13,12,11,.18)}
+.bz-tarocchi .deck__body::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(90deg,var(--tint-end),transparent 35%)}
+.bz-tarocchi .deck--des .deck__body::after{background:linear-gradient(270deg,var(--tint-end),transparent 35%)}
+.bz-tarocchi .deck__stage,.bz-tarocchi .deck__actions{position:relative;z-index:1}
+.bz-tarocchi .deck__stage{height:var(--stage-h,330px);touch-action:pan-y;-webkit-tap-highlight-color:transparent}
+.bz-tarocchi .deck__fan{position:absolute;inset:0;margin:0;padding:0;list-style:none}
+.bz-tarocchi .deck__fan .tc{margin:0;padding:0;list-style:none}
+.bz-tarocchi .deck__fan .tc{position:absolute;left:calc(50% - var(--cw) / 2);top:var(--top,40px);transform-origin:50% 50%;
+  transition:transform var(--bz-dur-fan) var(--bz-ease-enter),opacity var(--title-duration) ease;transition-delay:var(--d,0ms);will-change:transform}
+.bz-tarocchi .deck:not(.is-live) .tc{will-change:auto}
+.bz-tarocchi .tc__hit{position:absolute;inset:0;display:block;border-radius:7px;color:inherit;text-decoration:none;outline:none}
+.bz-tarocchi .tc__hit:focus-visible{outline:2px solid #f3e2b6;outline-offset:5px}
+/* titoli delle carte coperte: scivolano a sinistra nella striscia scoperta (mazzo aperto); la carta attiva torna centrata */
+.bz-tarocchi .deck .tc__title{transition:transform var(--title-duration) var(--bz-ease-enter)}
+.bz-tarocchi .deck.is-open .tc:not(.is-active) .tc__title{transform:translateX(var(--tx,0px))}
+/* «Apri la carta» (touch): spazio sempre riservato, niente salti di layout */
+.bz-tarocchi .deck__actions{display:flex;justify-content:center;align-items:center;min-height:52px;margin-top:6px}
+.bz-tarocchi .deck__open{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 26px;border-radius:999px;
+  background:var(--goldl,#e3cb95);color:#16130f;font:600 14px/1 var(--sans);text-decoration:none;white-space:nowrap;
+  opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity var(--bz-dur-ui) ease,transform var(--bz-dur-ui) ease;box-shadow:0 10px 26px -10px rgba(227,203,149,.55)}
+.bz-tarocchi .deck.has-sel .deck__open{opacity:1;transform:none;pointer-events:auto}
+.bz-tarocchi .deck__open:focus-visible{outline:2px solid #f3e2b6;outline-offset:3px}
+@media (hover:hover) and (pointer:fine){.bz-tarocchi .deck__actions{display:none}}
+/* una colonna: testo sopra e mazzo sotto, padding e sfumature come Chi siamo sotto i 600px (girate: qui il mazzo sta sotto) */
+.bz-tarocchi.tar-1col .deck,.bz-tarocchi.tar-1col .deck--des{grid-template-columns:minmax(0,1fr)}
+.bz-tarocchi.tar-1col .deck__head,.bz-tarocchi.tar-1col .deck--des .deck__head{grid-column:1;grid-row:1;padding:26px 24px 30px;background:linear-gradient(0deg,var(--tint-end),transparent 40%),var(--tint)}
+.bz-tarocchi.tar-1col .deck__body,.bz-tarocchi.tar-1col .deck--des .deck__body{grid-column:1;grid-row:2;padding:10px 0 22px}
+.bz-tarocchi.tar-1col .deck__body::after,.bz-tarocchi.tar-1col .deck--des .deck__body::after{background:linear-gradient(180deg,var(--tint-end),transparent 35%)}
+@media (max-width:767.98px){
+  .bz-tarocchi .tar-table{gap:54px}
+  .bz-tarocchi .deck__more{font-size:13px}
+}
+.bz-tarocchi .tar-credit{margin:18px 0 0;text-align:center;font:400 12px/1.4 var(--sans);color:var(--mute,#958d7f)}
+.bz-tarocchi .tar-credit a{color:inherit}
+.bz-tarocchi .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+.bz-tarocchi .tar-toast{position:fixed;z-index:999;left:50%;bottom:22px;transform:translate(-50%,20px);opacity:0;padding:12px 18px;border-radius:12px;
+  background:#efe4cc;color:#17130f;font:500 14px/1.3 var(--sans);box-shadow:0 14px 30px rgba(0,0,0,.5);transition:opacity var(--bz-dur-toast),transform var(--bz-dur-toast);pointer-events:none;max-width:90vw}
+.bz-tarocchi .tar-toast.on{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){
+  .bz-tarocchi .deck__fan .tc,.bz-tarocchi .deck__open,.bz-tarocchi .deck .tc__title,.bz-tarocchi .deck .tc__title *{transition:none!important}
+}
