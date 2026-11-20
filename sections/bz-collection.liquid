@@ -33,7 +33,54 @@
       assign parent_label = 'Cura di sé'
       assign parent_url = pages['cura-di-se'].url | default: '/pages/cura-di-se'
   endcase
+  assign departments = false
+  assign generic = false
+  case collection.handle
+    when 'oggettistica-e-idee-regalo'
+      assign departments = true
+    when 'cosmetica', 'cosmesi-corpo', 'ayurveda', 'cura-della-persona', 'prodotti-per-capelli', 'essenze-e-brucia-essenze', 'te-tisane'
+      assign generic = false
+    else
+      assign generic = true
+  endcase
+  assign group_page_size = per_page
+  if collection.products_count <= 250 or departments
+    assign group_page_size = 250
+  endif
+  if departments and collection.products_count > 250
+    assign per_page = group_page_size
+  endif
+  assign grouped = false
+  assign visible_total = collection.products_count
 -%}
+{%- comment -%}Classify at the group page size first. A flat result keeps the theme's configured page size.{%- endcomment -%}
+{%- paginate collection.products by group_page_size -%}
+  {%- liquid
+    assign classify_page = false
+    if paginate.current_page == 1 or collection.products_count > 250
+      assign classify_page = true
+    endif
+  -%}
+  {%- if classify_page and collection.products.size > 1 -%}
+    {%- assign products = collection.products -%}
+    {%- if stock_first -%}
+      {%- assign available_products = products | where: 'available', true -%}
+      {%- assign sold_out_products = products | where: 'available', false -%}
+      {%- assign products = available_products | concat: sold_out_products -%}
+    {%- endif -%}
+    {%- capture group_output -%}
+      {% render 'bz-collection-groups', collection: collection, products: products, departments: departments, generic: generic %}
+    {%- endcapture -%}
+    {%- assign group_output = group_output | split: '<!--BZ:GROUPS-->' -%}
+    {%- assign group_count = group_output.first | plus: 0 -%}
+    {%- if group_count >= 2 -%}
+      {%- assign grouped = true -%}
+      {%- assign per_page = group_page_size -%}
+      {%- assign visible_total = group_output[1] -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endpaginate -%}
+{%- if grouped -%}<div class="bz-grouped-plp" data-bz-grouped-plp>{%- endif -%}
 <section class="plp-head" aria-labelledby="plp-title">
   <nav class="crumbs" aria-label="Percorso">
     <ol>
@@ -64,7 +111,7 @@
       {%- elsif intro != blank -%}
         <p>{{ intro | escape }}</p>
       {%- endif -%}
-      <p class="plp-count"><span data-total>{{ collection.products_count }}</span> pezzi</p>
+      <p class="plp-count"><span data-total{% if grouped %} aria-live="polite" aria-atomic="true"{% endif %}>{{ visible_total }}</span> pezzi</p>
     </div>
   </div>
 </section>
@@ -72,6 +119,14 @@
 {%- paginate collection.products by per_page -%}
   <form method="get" action="{{ collection.url }}">
     <section class="plp-controls" aria-label="Filtra e ordina">
+      {%- if grouped -%}
+        <div class="chips-scroll" data-group-chips hidden>
+          <div class="chips" role="group" aria-label="Gruppi di prodotti">
+            <button class="chip" type="button" data-bz-chip="all" data-count="{{ visible_total }}" aria-pressed="true">Tutti <span class="chip-count">{{ collection.products.size }}</span></button>
+            {{ group_output[2] }}
+          </div>
+        </div>
+      {%- else -%}
       <div class="chips-scroll">
         <div class="chips" role="group" aria-label="Tipo">
           {%- liquid
@@ -114,6 +169,7 @@
           {%- endfor -%}
         </div>
       </div>
+      {%- endif -%}
       <div class="toolbar">
         <button class="tool-btn" type="button" data-filters-open aria-haspopup="dialog" aria-controls="filters-{{ section.id }}" aria-expanded="false">Filtri</button>
         <label class="sort"><span>Ordina</span>
@@ -169,6 +225,12 @@
   </form>
 
   <section class="plp-results" aria-label="Prodotti">
+    {%- if grouped -%}
+      <div class="plp-groups">{{ group_output[3] }}</div>
+      {%- if paginate.pages > 1 -%}
+        <nav class="plp-pagination" aria-label="Pagine della collezione">{{ paginate | default_pagination }}</nav>
+      {%- endif -%}
+    {%- else -%}
     {%- assign products = collection.products -%}
     {%- if stock_first -%}
       {%- assign available_products = products | where: 'available', true -%}
@@ -192,11 +254,16 @@
       <p class="more-line"><span data-shown>{{ shown }}</span> di <span data-of>{{ paginate.items }}</span></p>
       <div class="more-track" aria-hidden="true"><span data-bar style="transform:scaleX({{ ratio }})"></span></div>
       {%- if paginate.next -%}
-        <a class="btn outline" data-load href="{{ paginate.next.url }}">Carica altri</a>
+        <a class="btn outline"{% if collection.products_count <= 250 %} data-load{% endif %} href="{{ paginate.next.url }}">Carica altri</a>
       {%- endif -%}
     </div>
+    {%- endif -%}
   </section>
 {%- endpaginate -%}
+{%- if grouped -%}
+  </div>
+  <script src="{{ 'bz-collection-groups.js' | asset_url }}" defer></script>
+{%- endif -%}
 <script>
   (function () {
     var root = document.getElementById('shopify-section-{{ section.id }}');

@@ -1720,26 +1720,8 @@ main.bz-page-home:has(#newsletter), main.bz-page-ayurveda:has(#newsletter) { pad
   .bz-page-ayurveda .ay-cose .ay-photo img { max-height: 360px; }
 }
 
-/* Viso and Corpo catalog groups */
-.plp .bz-grouped-plp .plp-head { padding: 16px 0 24px; }
-.plp .bz-grouped-plp h1 { margin-top: 12px; }
-.plp .bz-grouped-plp .plp-desc { margin-top: 12px; max-width: 62ch; font-size: 16px; line-height: 1.55; }
-.plp .bz-grouped-plp .plp-bar { position: sticky; top: 0; z-index: 10; padding: 12px 0; background: var(--bg); }
-.plp .bz-grouped-plp .plp-bar.has-more::after {
-  content: '';
-  position: absolute;
-  inset: 0 0 0 auto;
-  width: 40px;
-  pointer-events: none;
-  background: linear-gradient(90deg, transparent, var(--bg) 85%);
-}
-.plp .bz-grouped-plp .plp-tools { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; margin: 12px 0 16px; }
-.plp .bz-grouped-plp .plp-tools p { margin: 0; font-size: 14px; white-space: nowrap; }
-.plp .bz-grouped-plp .sort { width: auto; }
-.plp .bz-grouped-plp .sort select { width: auto; padding: 0 38px; text-align: left; text-align-last: left; }
-.plp .bz-grouped-plp .sort svg { position: absolute; left: 12px; width: 20px; height: 20px; pointer-events: none; }
+/* Collection groups */
 .plp .bz-grouped-plp .plp-groups { display: flex; flex-direction: column; gap: 48px; }
-.plp .bz-grouped-plp .plp-group { scroll-margin-top: calc(var(--plp-bar-height, 72px) + 12px); }
 .plp .bz-grouped-plp .plp-group-head {
   display: flex;
   align-items: baseline;
@@ -1750,14 +1732,11 @@ main.bz-page-home:has(#newsletter), main.bz-page-ayurveda:has(#newsletter) { pad
 }
 .plp .bz-grouped-plp .plp-group-head h2 { margin: 0; font: 400 22px/1.2 var(--serif); }
 .plp .bz-grouped-plp .plp-group-head span { color: var(--mute); font-size: 13px; white-space: nowrap; }
-.plp .bz-grouped-plp .product .price { font-size: clamp(18px, 2vw, 24px); }
+.plp .bz-grouped-plp .plp-group-link { display: inline-flex; align-items: center; min-height: 44px; margin-top: 12px; }
 .plp .bz-grouped-plp .plp-pagination { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 12px; }
 @media (min-width: 1024px) {
-  .plp .bz-grouped-plp .plp-bar { display: flex; align-items: flex-start; gap: 24px; margin-inline: calc(-1 * var(--side)); padding: 16px var(--side); }
-  .plp .bz-grouped-plp .plp-bar.has-more::after { content: none; }
   .plp .bz-grouped-plp .chips-scroll { overflow: visible; }
   .plp .bz-grouped-plp .chips { flex-wrap: wrap; width: auto; }
-  .plp .bz-grouped-plp .plp-tools { margin: 0; flex: none; }
   .plp .bz-grouped-plp .plp-groups { gap: 64px; margin-top: 24px; }
   .plp .bz-grouped-plp .plp-group-head h2 { font-size: 24px; }
 }
