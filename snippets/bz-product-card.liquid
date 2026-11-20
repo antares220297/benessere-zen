@@ -14,7 +14,10 @@
   assign image_sizes = '(min-width: 1024px) 18vw, 45vw'
   assign vertical = false
   case card_style
-    when 'grid', 'plp'
+    when 'plp'
+      assign vertical = true
+      assign image_sizes = '(min-width: 1440px) 220px, (min-width: 1024px) 23vw, (min-width: 768px) 31vw, 46vw'
+    when 'grid'
       assign vertical = true
       assign image_sizes = '(min-width: 1440px) 315px, (min-width: 1024px) calc((100vw - 180px) / 4), (min-width: 768px) calc((100vw - 120px) / 3), calc((100vw - 84px) / 2)'
     when 'form'
@@ -22,7 +25,7 @@
       assign image_sizes = '(min-width: 1440px) 432px, (min-width: 1024px) calc((100vw - 144px) / 3), (min-width: 768px) calc((100vw - 120px) / 3), calc((100vw - 56px) / 1.5)'
   endcase
 -%}
-<article class="product bz-product-tile {{ name_class }}{% if vertical %} bz-product-tile--vertical{% elsif template.name != 'collection' %} bz-section-product{% endif %}{% if card_style == 'plp' %} pcard{% elsif card_style == 'gift' %} gift-card{% endif %}"{% if sortable %} data-price="{{ card.price }}" data-published="{{ card.published_at | date: '%s' }}"{% endif %}>
+<article class="product bz-product-tile {{ name_class }}{% if vertical %} bz-product-tile--vertical{% elsif template.name != 'collection' %} bz-section-product{% endif %}{% if card_style == 'plp' %} pcard{% elsif card_style == 'gift' %} gift-card{% endif %}"{% if card_style == 'plp' and card.available == false %} data-sold-out{% endif %}{% if sortable %} data-price="{{ card.price }}" data-published="{{ card.published_at | date: '%s' }}"{% endif %}>
   <a class="bz-product-tile__link" href="{{ card.url }}">
     <div class="bz-product-tile__media">
       {%- if card.featured_image != blank -%}

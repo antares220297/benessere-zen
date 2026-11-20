@@ -121,7 +121,7 @@
           "type": "link",
           "settings": {
             "label": "Regali sotto 25 €",
-            "link": "/search?q=regalo",
+            "link": "/collections/oggettistica-e-idee-regalo?filter.v.price.lte=24.99",
             "style": "pill"
           }
         },

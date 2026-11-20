@@ -3,22 +3,45 @@
     <h1>Le nostre collezioni</h1>
     {% render 'bz-main-collections' %}
   </section>
-{%- elsif collection.handle == 'cosmetica' or collection.handle == 'cosmesi-corpo' -%}
-  {% render 'bz-collection-groups' %}
 {%- else -%}
 {%- liquid
   assign per_page = section.settings.per_page | default: 24
   assign accent = section.settings.heading_accent
   assign title = collection.title
+  assign intro = section.settings.intro
+  assign parent_label = section.settings.parent_label
+  assign parent_url = section.settings.parent_url
+  assign sort_by = collection.sort_by | default: collection.default_sort_by
+  assign stock_first = false
+  if sort_by == collection.default_sort_by
+    assign stock_first = true
+  endif
+  case collection.handle
+    when 'all'
+      assign title = 'Tutti i prodotti'
+      assign parent_label = blank
+    when 'cosmetica'
+      assign title = 'Cosmesi viso'
+      assign accent = 'viso'
+      assign intro = section.settings.viso_intro
+      assign parent_label = 'Cura di sé'
+      assign parent_url = pages['cura-di-se'].url | default: '/pages/cura-di-se'
+    when 'cosmesi-corpo'
+      assign title = 'Cosmesi corpo'
+      assign accent = 'corpo'
+      assign intro = section.settings.corpo_intro
+      assign parent_label = 'Cura di sé'
+      assign parent_url = pages['cura-di-se'].url | default: '/pages/cura-di-se'
+  endcase
 -%}
 <section class="plp-head" aria-labelledby="plp-title">
   <nav class="crumbs" aria-label="Percorso">
     <ol>
       <li><a href="{{ routes.root_url }}">Home</a></li>
-      {%- if section.settings.parent_label != blank and section.settings.parent_url != blank -%}
-        <li><a href="{{ section.settings.parent_url }}">{{ section.settings.parent_label | escape }}</a></li>
+      {%- if parent_label != blank and parent_url != blank -%}
+        <li><a href="{{ parent_url }}">{{ parent_label | escape }}</a></li>
       {%- endif -%}
-      <li><span aria-current="page">{{ collection.title | escape }}</span></li>
+      <li><span aria-current="page">{{ title | escape }}</span></li>
     </ol>
   </nav>
   <div class="plp-head-row">
@@ -34,8 +57,8 @@
     <div class="plp-intro">
       {%- if collection.description != blank -%}
         <p>{{ collection.description | strip_html }}</p>
-      {%- elsif section.settings.intro != blank -%}
-        <p>{{ section.settings.intro | escape }}</p>
+      {%- elsif intro != blank -%}
+        <p>{{ intro | escape }}</p>
       {%- endif -%}
       <p class="plp-count"><span data-total>{{ collection.products_count }}</span> pezzi</p>
     </div>
@@ -48,20 +71,23 @@
       <div class="chips-scroll">
         <div class="chips" role="group" aria-label="Tipo">
           {%- liquid
-            assign type_filter = blank
+            assign type_filter = nil
+            assign type_active = false
             for filter in collection.filters
               if filter.param_name == 'filter.p.product_type'
                 assign type_filter = filter
+                if filter.active_values.size > 0
+                  assign type_active = true
+                endif
+                break
               endif
             endfor
-            assign type_active = false
-            if type_filter
-              for value in type_filter.active_values
-                assign type_active = true
-              endfor
-            endif
           -%}
-          <a class="chip{% unless type_active %} is-on{% endunless %}" href="{{ collection.url }}">Tutti</a>
+          {%- if type_active -%}
+            <a class="chip" href="{{ type_filter.url_to_remove | escape }}">Tutti</a>
+          {%- else -%}
+            <span class="chip is-on" aria-current="true">Tutti</span>
+          {%- endif -%}
           {%- if type_filter -%}
             {%- for value in type_filter.values -%}
               <a class="chip{% if value.active %} is-on{% endif %}" href="{% if value.active %}{{ value.url_to_remove }}{% else %}{{ value.url_to_add }}{% endif %}">{{ value.label | escape }} <span class="chip-count">{{ value.count }}</span></a>
@@ -89,7 +115,7 @@
         <label class="sort"><span>Ordina</span>
           <select name="sort_by" data-sort>
             {%- for option in collection.sort_options -%}
-              <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected{% endif %}>{{ option.name | escape }}</option>
+              <option value="{{ option.value }}" {% if option.value == sort_by %}selected{% endif %}>{{ option.name | escape }}</option>
             {%- endfor -%}
           </select>
         </label>
@@ -139,8 +165,14 @@
   </form>
 
   <section class="plp-results" aria-label="Prodotti">
-    <div class="pgrid" data-grid>
-      {%- for product in collection.products -%}
+    {%- assign products = collection.products -%}
+    {%- if stock_first -%}
+      {%- assign available_products = products | where: 'available', true -%}
+      {%- assign sold_out_products = products | where: 'available', false -%}
+      {%- assign products = available_products | concat: sold_out_products -%}
+    {%- endif -%}
+    <div class="pgrid bz-catalog-grid" data-grid{% if stock_first %} data-stock-first{% endif %}>
+      {%- for product in products -%}
         {% render 'bz-product-card', card: product, style: 'plp' %}
       {%- endfor -%}
     </div>

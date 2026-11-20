@@ -716,7 +716,10 @@
       if (!q('[data-grid]', doc)) throw new Error('Griglia mancante');
       link.textContent = 'Carica altri';
       const grid = q('[data-grid]');
-      doc.querySelectorAll('[data-grid] .product').forEach(card => grid?.append(card));
+      const firstSoldOut = grid?.hasAttribute('data-stock-first') ? q('[data-sold-out]', grid) : null;
+      doc.querySelectorAll('[data-grid] .product').forEach(card => {
+        grid?.insertBefore(card, card.hasAttribute('data-sold-out') ? null : firstSoldOut);
+      });
       const next = doc.querySelector('[data-load]');
       const shown = q('[data-shown]');
       const of = q('[data-of]');

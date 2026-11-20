@@ -213,7 +213,7 @@
         <div class="bz-shipbox__labels"><span>0&nbsp;€</span><span>Gratis da {{ ship_euros }}&nbsp;€</span></div>
       </div>
 
-      {% render 'bz-trust' %}
+      {% render 'bz-trust', item: product %}
 
       {%- if section.settings.pickup_link != blank -%}
         <a class="bz-pickup" href="{{ section.settings.pickup_link }}">

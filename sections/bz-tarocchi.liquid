@@ -25,7 +25,7 @@
         <p class="deck__intro">Scegli la carta che somiglia a oggi</p>
         <p>Ci sono giornate agitate, altre stanche o confuse. Sfoglia le sei carte e fermati su quella più vicina alla tua.</p>
         <p>Dietro ogni carta trovi le pietre che, nella tradizione, si tengono vicine in quei momenti, con incensi e candele per un piccolo rituale.</p>
-        <a class="deck__more" href="{{ senti_url | escape }}">Vedi tutte le emozioni <span aria-hidden="true">→</span></a>
+        <a class="deck__more" href="{{ senti_url | escape }}">{% render 'bz-nav-label', label: 'Vedi tutte le emozioni' %}</a>
       </div>
       <div class="deck__body">
         <div class="deck__stage"><ul class="deck__fan" aria-describedby="deck-senti-{{ section.id }}-help"></ul>
@@ -42,7 +42,7 @@
         <p class="deck__intro">Scegli la carta di ciò che vuoi coltivare</p>
         <p>Amore, protezione, un po' di fortuna, una casa da purificare: dieci carte, una per ogni intenzione. Gira quella che ti chiama.</p>
         <p>Dentro trovi le pietre che la tradizione lega a quel desiderio, con gli incensi, le candele e gli amuleti per dargli forma ogni giorno.</p>
-        <a class="deck__more" href="{{ desideri_url | escape }}">Vedi tutte le intenzioni <span aria-hidden="true">→</span></a>
+        <a class="deck__more" href="{{ desideri_url | escape }}">{% render 'bz-nav-label', label: 'Vedi tutte le intenzioni' %}</a>
       </div>
       <div class="deck__body">
         <div class="deck__stage"><ul class="deck__fan" aria-describedby="deck-desideri-{{ section.id }}-help"></ul>

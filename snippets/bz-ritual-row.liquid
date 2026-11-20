@@ -12,7 +12,6 @@
         {{ rec.featured_image | image_url: width: 900 | image_tag: alt: display_name, loading: 'lazy', decoding: 'async', widths: '144, 240, 360, 540, 720, 900', sizes: '(min-width: 1024px) min(30vw, 410px), 72px' }}
       {%- endif -%}
     </span>
-    {%- render 'bz-card-stock', available: variant.available, variant: variant -%}
   </span>
   <span class="ritual-item">
     <span class="ritual-product">{{ display_name | escape }}</span>

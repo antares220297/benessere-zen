@@ -28,27 +28,14 @@
             "title": "Pietre",
             "accent": "da tasca",
             "text": "Burattate e grezze, da tenere vicino.",
-            "button_label": "Scegli la tua →",
+            "button_label": "Vedi le pietre",
             "link": "#stones",
             "collection": "pietre-burattate"
-          }
-        },
-        "tile-regali": {
-          "type": "tile",
-          "settings": {
-            "title": "Regali",
-            "accent": "piccoli",
-            "text": "Pietre, ciondoli, scatole in velluto, sotto i 30 €.",
-            "button_label": "Idee regalo →",
-            "link": "/collections/oggettistica-e-idee-regalo",
-            "collection": "oggettistica-e-idee-regalo",
-            "image_asset": "bz-hero-regali.jpg"
           }
         }
       },
       "block_order": [
-        "tile-pietre",
-        "tile-regali"
+        "tile-pietre"
       ]
     },
     "bz_spheres": {
@@ -617,14 +604,16 @@
     "bz_gifts": {
       "type": "bz-gifts",
       "settings": {
-        "link": "/collections/oggettistica-e-idee-regalo",
+        "link": "/collections/oggettistica-e-idee-regalo?filter.v.price.lte=24.99",
         "products": [
           "portacandela-mano-con-loto-color-oro",
           "ciondolo-a-goccia-in-corniola",
           "candele-da-tavola-profumate-chakra-set-da-7-3",
           "portacandela-in-vetro-smerigliato-interno-metallizzato-mystical-albero-della-vita"
         ],
-        "heading_accent": "sotto 30 €",
+        "heading": "Regali",
+        "heading_accent": "sotto 25 €",
+        "button_label": "Vedi i regali",
         "product_labels": "portacandela-mano-con-loto-color-oro|Portacandela mano dorata, fiore di loto\nciondolo-a-goccia-in-corniola|Ciondolo in corniola, goccia\ncandele-da-tavola-profumate-chakra-set-da-7-3|Candele profumate a stelo, 7 Chakra\nportacandela-in-vetro-smerigliato-interno-metallizzato-mystical-albero-della-vita|Portacandela in vetro, Albero della Vita mystical"
       }
     },

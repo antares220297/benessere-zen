@@ -3,12 +3,14 @@
   Product card for related products, guides and search results.
   @param {product} product - Product to render
   @param {boolean} [eager] - Load the photo immediately
+  @param {boolean} [show_variant] - Show the display variant when present
 {% enddoc %}
 
 {%- liquid
   assign variant = product.first_available_variant | default: product.selected_or_first_available_variant
   assign secondary = product.images[1]
   assign category = product.type | strip
+  assign display_variant = product.metafields.custom.variante_vetrina.value | strip
   assign name_class = 'has-nome-vetrina'
   if product.metafields.custom.nome_vetrina.value == blank
     assign name_class = 'is-title-fallback'
@@ -31,7 +33,11 @@
     {%- render 'bz-card-stock', available: product.available, variant: variant -%}
   </a>
   <h3 class="bz-product-tile__title"><a class="bz-card__name" href="{{ product.url }}">{{ display_name | escape }}</a></h3>
-  <small class="bz-product-tile__meta bz-category-label" style="--bz-category-dot:{% render 'bz-category-dot', type: category %}">{{ category | escape }}</small>
+  {%- if show_variant and display_variant != blank -%}
+    <small class="bz-product-tile__meta bz-card__variant">{{ display_variant | escape }}</small>
+  {%- else -%}
+    <small class="bz-product-tile__meta bz-category-label" style="--bz-category-dot:{% render 'bz-category-dot', type: category %}">{{ category | escape }}</small>
+  {%- endif -%}
   <div class="bz-card__bottom bz-product-tile__bottom">
     <p class="bz-card__price bz-price">{% render 'bz-money', cents: variant.price %}</p>
     {%- if variant.available -%}
