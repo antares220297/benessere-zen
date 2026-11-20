@@ -6,9 +6,9 @@
     {%- endif -%}
     <a href="{{ coll.url | default: routes.all_products_collection_url }}" {{ block.shopify_attributes }}>
       {%- if coll.image != blank -%}
-        {{ coll.image | image_url: width: 240 | image_tag: alt: block.settings.label, loading: 'lazy', widths: '120, 180, 240', sizes: '106px', width: 106, height: 106 }}
+        {{ coll.image | image_url: width: 240 | image_tag: alt: '', loading: 'lazy', widths: '120, 180, 240', sizes: '106px', width: 106, height: 106 }}
       {%- elsif coll.products.first.featured_image -%}
-        {{ coll.products.first.featured_image | image_url: width: 240 | image_tag: alt: block.settings.label, loading: 'lazy', widths: '120, 180, 240', sizes: '106px', width: 106, height: 106 }}
+        {{ coll.products.first.featured_image | image_url: width: 240 | image_tag: alt: '', loading: 'lazy', widths: '120, 180, 240', sizes: '106px', width: 106, height: 106 }}
       {%- endif -%}
       <span>{{ block.settings.label | escape }}</span>
     </a>

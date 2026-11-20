@@ -3,9 +3,9 @@
     <div>
       <a class="brand" href="{{ routes.root_url }}">
         {%- if section.settings.logo != blank -%}
-          {{ section.settings.logo | image_url: width: 160 | image_tag: alt: shop.name, loading: 'lazy', widths: '80, 120, 160', width: 43, height: 43 }}
+          {{ section.settings.logo | image_url: width: 160 | image_tag: alt: '', loading: 'lazy', widths: '80, 120, 160', width: 43, height: 43 }}
         {%- else -%}
-          <img src="{{ 'shop-logo.png' | asset_url }}" alt="{{ shop.name | escape }}" width="43" height="43" loading="lazy">
+          <img src="{{ 'shop-logo.png' | asset_url }}" alt="" width="43" height="43" loading="lazy">
         {%- endif -%}
         <span>{{ section.settings.word_first | escape }} <em>{{ section.settings.word_second | escape }}</em></span>
       </a>
@@ -23,7 +23,8 @@
             {%- endfor -%}
           {%- elsif block.settings.menu != blank and block.settings.menu.links.size > 0 -%}
             {%- for link in block.settings.menu.links -%}
-              <a href="{{ link.url }}">{{ link.title | escape }}</a>
+              {%- if link.type == 'blog_link' or link.type == 'article_link' or link.url contains '/blogs/' -%}{%- continue -%}{%- endif -%}
+              {% render 'bz-menu-link', url: link.url, label: link.title %}
             {%- endfor -%}
           {%- else -%}
             {%- for i in (1..4) -%}
@@ -32,7 +33,8 @@
               {%- assign label = block.settings[label_key] -%}
               {%- assign href = block.settings[link_key] -%}
               {%- if label != blank and href != blank -%}
-                <a href="{{ href }}">{{ label | escape }}</a>
+                {%- if href contains '/blogs/' -%}{%- continue -%}{%- endif -%}
+                {% render 'bz-menu-link', url: href, label: label %}
               {%- endif -%}
             {%- endfor -%}
           {%- endif -%}

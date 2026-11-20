@@ -183,60 +183,9 @@
             "products": [
               "olio-ayurvedico-corpo-viso-sandalo-himalayas-dreams",
               "olio-ayurvedico-viola-armonia",
-              "olio-ayurvedico-loto-rosa-felicita",
-              "ayurvenat-balsamo-massaggio-18-erbe-bio",
-              "olio-ayurvedico-rosa-equilibrio",
-              "olio-ayurvedico-centella-chiarezza-himalayas-dreams"
+              "olio-ayurvedico-loto-rosa-felicita"
             ],
-            "product_labels": "olio-ayurvedico-corpo-viso-sandalo-himalayas-dreams|Olio ayurvedico corpo e viso di Himalaya’s Dreams, sandalo\nolio-ayurvedico-viola-armonia|Olio ayurvedico corpo e viso di Himalaya’s Dreams con viola\nolio-ayurvedico-loto-rosa-felicita|Olio ayurvedico corpo e viso di Himalaya’s Dreams con loto\nayurvenat-balsamo-massaggio-18-erbe-bio|Balsamo massaggio 18 erbe ayurvediche BIO - Ayurvenat, 50 ml\nolio-ayurvedico-rosa-equilibrio|Olio ayurvedico corpo e viso di Himalaya’s Dreams con rosa\nolio-ayurvedico-centella-chiarezza-himalayas-dreams|Olio ayurvedico corpo e viso di Himalaya’s Dreams con centella"
-          }
-        },
-        "oil-pulling": {
-          "type": "category",
-          "settings": {
-            "anchor": "oil-pulling",
-            "title": "<em>Oil pulling</em> e cura della bocca",
-            "body": "<p>Nella routine ayurvedica la giornata comincia dalla bocca. Prima si passa il nettalingua, poi si fa il gandusha: si tiene in bocca un liquido, per esempio olio di sesamo, e lo si muove piano. Oggi questo gesto si chiama oil pulling. L'olio Balance unisce sesamo, cocco e spezie, e il nettalingua è in rame.</p>",
-            "link": "/collections/igiene-e-cura-della-persona-ayurvedica",
-            "products": [
-              "olio-ayurvedico-santulan-himalayas-dreams",
-              "netta-lingua-rame",
-              "ayurvenat-dentifricio-miswak-organico",
-              "olio-dentale-curcuma-organico-eliah-sahil"
-            ],
-            "product_labels": "olio-ayurvedico-santulan-himalayas-dreams|Olio Balance per l'oil pulling\nnetta-lingua-rame|Netta lingua in rame, igiene orale naturale\nayurvenat-dentifricio-miswak-organico|Dentifricio con Miswak senza fluoro, 75 ml\nolio-dentale-curcuma-organico-eliah-sahil|Olio alla curcuma per oil pulling"
-          }
-        },
-        "capelli": {
-          "type": "category",
-          "settings": {
-            "anchor": "capelli",
-            "title": "<em>Capelli</em>",
-            "body": "<p>Nell'abhyanga la testa ha un posto suo: la tradizione la massaggia con l'olio prima del bagno. Molti prodotti ayurvedici per capelli usano piante della tradizione indiana, come lo shikakai o la triphala, una miscela di tre frutti (haritaki, bibhitaki e amalaki). L'olio per capelli con triphala si usa come impacco prima dello shampoo.</p>",
-            "link": "/collections/prodotti-per-capelli-ayurvedici",
-            "products": [
-              "rasayana-kesha-olio-capelli-rivitalizzante-con-triphala",
-              "shampoo-rivitalizzante-con-triphala-200ml",
-              "shampoo-ayurvedico-shikakai-limone",
-              "rasayana-balsamo-leave-in-con-triphala-200ml-nutre-le-lunghezze-anticrespo"
-            ],
-            "product_labels": "rasayana-kesha-olio-capelli-rivitalizzante-con-triphala|Olio capelli Rasayana Kesha con Triphala, «Rivitalizzante»\nshampoo-rivitalizzante-con-triphala-200ml|Shampoo Rasayana «Rivitalizzante», 200 ml\nshampoo-ayurvedico-shikakai-limone|Shampoo ayurvedico con Shikakai e limone\nrasayana-balsamo-leave-in-con-triphala-200ml-nutre-le-lunghezze-anticrespo|Balsamo Rasayana leave-in (senza risciacquo) con Triphala"
-          }
-        },
-        "saponi": {
-          "type": "category",
-          "settings": {
-            "anchor": "saponi",
-            "title": "Saponi <em>ayurvedici</em>",
-            "body": "<p>Il bagno chiude la routine del mattino nella tradizione ayurvedica, con acqua né troppo calda né troppo fredda. Le nostre saponette usano erbe e piante della tradizione indiana: curcuma, neem e tulsi, rosa, lavanda. Quella alla lavanda è fatta a mano in India con olio di cocco.</p>",
-            "link": "/collections/saponi-naturali-ayurvedici",
-            "products": [
-              "sapone-curcuma-holy-lama",
-              "holy-lama-sapone-yogi-neem-tulsi",
-              "sapone-yogi-di-holy-lama-alla-lavanda",
-              "sapone-18-erbe-ayurvediche-bio-ayurvenat"
-            ],
-            "product_labels": "sapone-curcuma-holy-lama|Sapone ayurvedico Holy Lama, curcuma, 100 g\nholy-lama-sapone-yogi-neem-tulsi|Sapone ayurvedico Yogi Holy Lama, Neem e Tulsi, 100 g\nsapone-yogi-di-holy-lama-alla-lavanda|Sapone ayurvedico Holy Lama, lavanda, 100 g\nsapone-18-erbe-ayurvediche-bio-ayurvenat|Sapone di Ayurvenat con 18 erbe ayurvediche BIO"
+            "product_labels": "olio-ayurvedico-corpo-viso-sandalo-himalayas-dreams|Olio ayurvedico corpo e viso di Himalaya’s Dreams, sandalo\nolio-ayurvedico-viola-armonia|Olio ayurvedico corpo e viso di Himalaya’s Dreams con viola\nolio-ayurvedico-loto-rosa-felicita|Olio ayurvedico corpo e viso di Himalaya’s Dreams con loto"
           }
         },
         "te-e-tisane": {
@@ -249,42 +198,9 @@
             "products": [
               "te-yogi-speziato",
               "hari-tea-buddha-box-tutte-le-varieta-organico",
-              "shoti-maa-tisana-joyful-silence",
-              "mug-infusore-per-te-buddha-paradiso"
+              "shoti-maa-tisana-joyful-silence"
             ],
-            "product_labels": "te-yogi-speziato|Tè Yogi speziato, 50 g\nhari-tea-buddha-box-tutte-le-varieta-organico|Hari Tea Buddha box\nshoti-maa-tisana-joyful-silence|Shoti Maa Magic Box, 16 tisane, Joyful Silence, 32 g\nmug-infusore-per-te-buddha-paradiso|Tazza con infusore, Buddha"
-          }
-        },
-        "profumi": {
-          "type": "category",
-          "settings": {
-            "anchor": "profumi",
-            "title": "Profumi in <em>olio</em>",
-            "body": "<p>Nella Charaka Samhita il profumo fa parte della routine di ogni giorno: tra i gesti consigliati c'è quello di portare essenze e ghirlande di fiori. Tra gli aromi che il testo nomina ci sono il sandalo e l'aguru, il legno da cui si ricava l'oudh. I nostri profumi in olio arrivano dall'India, in roll-on da 10 ml: se ne passa poco su polsi e dietro le orecchie.</p>",
-            "link": "/collections/ayurveda",
-            "products": [
-              "olio-profumato-naturale-sandalwood-10-ml",
-              "olio-profumato-naturale-oudh-10-ml",
-              "olio-profumato-ayurveda-vaniglia",
-              "olio-profumato-ayurveda-ambra"
-            ],
-            "product_labels": "olio-profumato-naturale-sandalwood-10-ml|Profumo ayurvedico roll-on, legno di sandalo, 10 ml\nolio-profumato-naturale-oudh-10-ml|Profumo ayurvedico roll-on, oudh, 10 ml\nolio-profumato-ayurveda-vaniglia|Profumo ayurvedico roll-on, vaniglia, 10 ml\nolio-profumato-ayurveda-ambra|Profumo ayurvedico roll-on, ambra, 10 ml"
-          }
-        },
-        "roll-on": {
-          "type": "category",
-          "settings": {
-            "anchor": "roll-on",
-            "title": "Roll-on <em>ayurvedici</em>",
-            "body": "<p>Sono roll-on da 10 ml per viso e corpo, con oli essenziali ed estratti vegetali, che le schede presentano come ayurvedici. La sferetta permette di stenderli con un piccolo massaggio, senza toccare l'olio con le dita.</p>",
-            "link": "/collections/roll-on-ayurvedici",
-            "products": [
-              "energyliner-harmony-roll-on-ayurvedico-himalayas-dreams",
-              "energyliner-balance-skin-roll-on-himalayas-dreams",
-              "energyliner-happiness-skin-roll-on",
-              "energyliner-serenity-roll-on-himalayas-dreams"
-            ],
-            "product_labels": "energyliner-harmony-roll-on-ayurvedico-himalayas-dreams|Roll-on viso e corpo - Energyliner Harmony\nenergyliner-balance-skin-roll-on-himalayas-dreams|Roll-on viso e corpo - Energyliner Balance Skin\nenergyliner-happiness-skin-roll-on|Roll-on viso e corpo - Energyliner Happiness Skin\nenergyliner-serenity-roll-on-himalayas-dreams|Roll-on viso e corpo - Energyliner Serenity"
+            "product_labels": "te-yogi-speziato|Tè Yogi speziato, 50 g\nhari-tea-buddha-box-tutte-le-varieta-organico|Hari Tea Buddha box\nshoti-maa-tisana-joyful-silence|Shoti Maa Magic Box, 16 tisane, Joyful Silence, 32 g"
           }
         },
         "faq-1": {
@@ -344,12 +260,7 @@
         "d8",
         "d11",
         "oli",
-        "oil-pulling",
-        "capelli",
-        "saponi",
         "te-e-tisane",
-        "profumi",
-        "roll-on",
         "faq-1",
         "faq-2",
         "faq-3",

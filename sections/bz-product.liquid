@@ -14,10 +14,6 @@
 
 {%- liquid
   assign current = product.selected_or_first_available_variant
-  assign cents_num = current.price | modulo: 100
-  assign euros = current.price | minus: cents_num | divided_by: 100
-  assign cents = cents_num | prepend: '00' | slice: -2, 2
-  assign opener = section.settings.opener
   assign type_key = product.type | downcase | strip
   assign show_mala_facts = false
   if type_key contains 'mala'
@@ -27,19 +23,11 @@
   if show_mala_facts or type_key contains 'pietr' or type_key contains 'braccial' or type_key contains 'ciondol' or type_key contains 'collan' or type_key contains 'pendol'
     assign show_stone_facts = true
   endif
-  assign show_stone_note = false
-  if show_mala_facts or type_key contains 'pietr'
-    assign show_stone_note = true
-  endif
-  if product.metafields.custom.pietra.value != blank
-    assign note_stone = product.metafields.custom.pietra.value.nome.value | default: product.metafields.custom.pietra.value.nome | append: ''
-    unless note_stone == blank or note_stone contains 'Metaobject' or note_stone contains 'Drop'
-      assign show_stone_note = true
-    endunless
-  endif
 -%}
 
-<div class="bz bz-product" data-bz-product>
+{%- capture display_name -%}{% render 'bz-product-name', product: product %}{%- endcapture -%}
+{%- assign stage_image = current.featured_image | default: product.featured_image -%}
+<div class="bz bz-product" data-bz-product data-featured-image-id="{{ product.featured_image.id }}">
   <nav class="bz-crumb" aria-label="Percorso">
     <a href="{{ routes.root_url }}">Home</a>
     <span aria-hidden="true">›</span>
@@ -47,7 +35,7 @@
       <a href="{{ collection.url }}">{{ collection.title | escape }}</a>
       <span aria-hidden="true">›</span>
     {%- endif -%}
-    <span>{{ product.title | escape }}</span>
+    <span>{{ display_name | escape }}</span>
   </nav>
 
   <section class="bz-pdp">
@@ -55,171 +43,70 @@
       <div class="bz-thumbs">
         <div class="bz-thumbs__scroll">
           {%- for image in product.images -%}
-            <button type="button" class="{% if forloop.first %}is-on{% endif %}" data-bz-thumb="{{ forloop.index }}" data-full="{{ image | image_url: width: 1400 | escape }}" aria-label="Foto {{ forloop.index }}">
-              {{ image | image_url: width: 160 | image_tag: alt: image.alt, width: 84, height: 84, loading: 'lazy' }}
+            {%- assign image_alt = display_name | append: ', foto ' | append: forloop.index -%}
+            <button type="button" class="{% if image.id == stage_image.id %}is-on{% endif %}" data-bz-thumb="{{ forloop.index }}" data-image-id="{{ image.id }}" aria-pressed="{% if image.id == stage_image.id %}true{% else %}false{% endif %}" data-full="{{ image | image_url: width: 1400 | escape }}" aria-label="{{ image_alt | escape }}">
+              {{ image | image_url: width: 160 | image_tag: alt: '', width: 84, height: 84, loading: 'lazy' }}
             </button>
           {%- endfor -%}
         </div>
       </div>
       <div class="bz-stage">
-        {%- if product.featured_image -%}
-          {{ product.featured_image | image_url: width: 1400 | image_tag: alt: product.featured_image.alt, id: 'BzStage', loading: 'eager', fetchpriority: 'high', preload: true, widths: '600, 1000, 1400', sizes: '(min-width: 860px) 45vw, 100vw', width: 900, height: 900 }}
+        {%- if stage_image -%}
+          {%- assign stage_position = stage_image.position | default: 1 -%}
+          {%- assign stage_alt = display_name | append: ', foto ' | append: stage_position -%}
+          {{ stage_image | image_url: width: 1400 | image_tag: alt: stage_alt, id: 'BzStage', loading: 'eager', fetchpriority: 'high', preload: true, widths: '600, 1000, 1400', sizes: '(min-width: 861px) 45vw, 95vw', width: 900, height: 900 }}
         {%- endif -%}
         <div class="bz-stage__badges">
           {%- if current.inventory_management != blank and current.inventory_quantity == 1 and current.available -%}
             <span class="bz-badge bz-stock--low">Ultimo pezzo</span>
           {%- endif -%}
-          {%- if section.settings.store_badge != blank -%}
-            <span class="bz-pill">{{ section.settings.store_badge | escape }}</span>
-          {%- endif -%}
         </div>
+        {%- if product.has_only_default_variant == false or product.images.size > 1 -%}
         <div class="bz-stage__note">
-          {%- if show_stone_note and section.settings.photo_note != blank -%}
-            <span>{{ section.settings.photo_note | escape }}</span>
-          {%- endif -%}
+          {%- unless product.has_only_default_variant -%}
+            <span data-bz-gallery-variant>{{ current.title | escape }}</span>
+          {%- endunless -%}
           {%- if product.images.size > 1 -%}
-            <span data-bz-frame>1 / {{ product.images.size }}</span>
+            <span data-bz-frame>{{ stage_image.position | default: 1 }} / {{ product.images.size }}</span>
           {%- endif -%}
         </div>
-      </div>
-      <div class="bz-minis">
-        {%- assign mini_seen = '|' -%}
-        {%- for slot in (1..2) -%}
-          {%- assign mini = product.images[slot] -%}
-          {%- if mini != blank and mini.src != product.featured_image.src -%}
-          {%- assign mini_key = mini.id | append: '|' -%}
-          {%- unless mini_seen contains mini_key -%}
-          {%- assign mini_seen = mini_seen | append: mini_key -%}
-          {%- assign mini_label = mini.alt -%}
-          {%- assign cap_i = 0 -%}
-          {%- for block in section.blocks -%}
-            {%- if block.type == 'caption' -%}
-              {%- assign cap_i = cap_i | plus: 1 -%}
-              {%- if cap_i == slot and block.settings.text != blank -%}
-                {%- assign mini_label = block.settings.text -%}
-              {%- endif -%}
-            {%- endif -%}
-          {%- endfor -%}
-          <div class="bz-mini">
-            {%- if mini != blank -%}
-              {{ mini | image_url: width: 800 | image_tag: alt: mini_label, width: 400, height: 320, loading: 'lazy' }}
-            {%- endif -%}
-            {%- if mini_label != blank -%}
-              <span>{{ mini_label | escape }}</span>
-            {%- endif -%}
-          </div>
-          {%- endunless -%}
-          {%- endif -%}
-        {%- endfor -%}
+        {%- endif -%}
       </div>
     </div>
 
     <div class="bz-buy">
-      <h1>{{ product.title | escape }}</h1>
-      {%- if product.type != blank -%}
-        <p class="bz-buy__sub">{{ product.type | escape }}</p>
+      <h1>{{ display_name | escape }}</h1>
+      {%- if product.title contains '|' -%}
+        {%- assign title_prefix = product.title | split: '|' | first | append: '|' -%}
+        {%- assign subtitle = product.title | remove_first: title_prefix | strip -%}
+        {%- if subtitle != blank -%}<p class="bz-buy__sub"><em>{{ subtitle | escape }}</em></p>{%- endif -%}
       {%- endif -%}
       <div class="bz-buy__price">
         <strong data-bz-price>{% render 'bz-money', cents: current.price %}</strong>
         <small>IVA inclusa</small>
-        {%- if section.settings.shipping_note != blank -%}
-          <span class="bz-pill">{{ section.settings.shipping_note | escape }}</span>
-        {%- endif -%}
       </div>
-      {%- liquid
-        assign foto_mode = product.metafields.custom.foto_pezzo.value | default: product.metafields.custom.foto_pezzo | append: ''
-      -%}
-      {%- if product.metafields.custom.apertura != blank -%}
-        <div class="bz-buy__open rte">{{ product.metafields.custom.apertura | metafield_tag }}</div>
-      {%- elsif opener != blank -%}
-        <div class="bz-buy__open" data-bz-open>
-          <p>{{ opener | escape }}</p>
-          <button type="button" data-bz-more-copy aria-expanded="false">Continua</button>
+      {%- if product.description != blank -%}
+        <div class="bz-description" data-bz-description>
+          <div class="bz-buy__open rte" data-bz-intro hidden></div>
+          <div class="bz-brief" data-bz-brief hidden>
+            <h2>In breve</h2>
+            <ul role="list"></ul>
+          </div>
+          <button class="bz-description__toggle" type="button" aria-expanded="false" aria-controls="BzDescription-{{ section.id }}" hidden>Leggi tutto</button>
+          <div class="bz-description__body rte" id="BzDescription-{{ section.id }}">{{ product.description }}</div>
         </div>
-      {%- elsif product.description != blank -%}
-        <div class="bz-buy__open rte">{{ product.description }}</div>
       {%- endif -%}
-      {%- if foto_mode contains 'modello' -%}
-        <p class="bz-buy__use">Colore e venature possono variare da un pezzo all'altro.</p>
-      {%- elsif foto_mode contains 'pezzo' or foto_mode == 'true' -%}
-        <p class="bz-buy__use">Il pezzo in foto è quello che parte, o che ritiri in negozio a Cento.</p>
-      {%- endif -%}
-
-      {%- capture fact_pills -%}
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'fact' -%}
-            {%- liquid
-              assign fact_key = block.settings.metafield
-              assign fact_value = block.settings.value
-              assign fact_label = block.settings.label
-              assign show_fact = false
-              if fact_key != blank
-                assign fact_value = product.metafields.custom[fact_key].value
-                if fact_key == 'pietra' and fact_value != blank
-                  assign fact_name = fact_value.nome.value | default: fact_value.nome
-                  if fact_name != blank
-                    assign fact_value = fact_name
-                  endif
-                endif
-                assign fact_text = fact_value | append: ''
-                if fact_text contains 'Metaobject' or fact_text contains 'Drop'
-                  assign fact_value = blank
-                endif
-                assign fact_allowed = true
-                if fact_key == 'grani' or fact_key == 'diametro'
-                  unless show_mala_facts
-                    assign fact_allowed = false
-                  endunless
-                endif
-                if fact_key == 'peso' or fact_key == 'pietra'
-                  unless show_stone_facts
-                    assign fact_allowed = false
-                  endunless
-                endif
-                if fact_allowed and fact_value != blank
-                  assign show_fact = true
-                endif
-              elsif fact_value != blank or fact_label != blank
-                assign show_fact = true
-              endif
-            -%}
-            {%- if show_fact -%}
-              <span class="bz-fact" {{ block.shopify_attributes }}>{%- if block.settings.swatch != blank -%}<i style="background: {{ block.settings.swatch }}"></i>{%- endif -%}{%- if fact_value != blank -%}<b>{{ fact_value | escape }}</b>{%- endif -%}{%- if fact_label != blank -%} {{ fact_label | escape }}{%- endif -%}</span>
-            {%- endif -%}
-          {%- endif -%}
-        {%- endfor -%}
-      {%- endcapture -%}
-      {%- if fact_pills contains 'class="bz-fact"' -%}
-        <div class="bz-facts">{{ fact_pills }}</div>
-      {%- endif -%}
-
-      {%- assign ship_euros = settings.bz_free_shipping_threshold | default: section.settings.free_shipping | default: 50 -%}
-      {%- assign threshold = ship_euros | times: 100 -%}
-      <div class="bz-shipbox">
-        {%- if current.price >= threshold -%}
-          <p>Con questo pezzo la <b>spedizione è gratuita</b></p>
-          {%- assign ship_width = 100 -%}
-        {%- else -%}
-          {%- assign short = threshold | minus: current.price -%}
-          <p>Ti mancano <b>{% render 'bz-money', cents: short %}</b> per la spedizione gratuita</p>
-          {%- assign ship_width = current.price | times: 100 | divided_by: threshold -%}
-        {%- endif -%}
-        <div class="bz-ship__track" aria-hidden="true">
-          <i style="width: {{ ship_width }}%"></i>
-          <span class="bz-ship__mark"><svg viewBox="0 0 24 24"><path d="M2 7h12v9H2zM14 10h4l3 3v3h-7"/><circle cx="6" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg></span>
-        </div>
-        <div class="bz-shipbox__labels"><span>0&nbsp;€</span><span>Gratis da {{ ship_euros }}&nbsp;€</span></div>
-      </div>
-
-      {%- form 'product', product, class: 'bz-ajax-cart' -%}
+      <p class="bz-buy__disclaimer">I significati appartengono alla tradizione e non sostituiscono il parere di un medico.</p>
+      {%- assign main_form_id = 'BzProductForm-' | append: section.id -%}
+      {%- form 'product', product, id: main_form_id, class: 'bz-ajax-cart' -%}
         {%- if product.has_only_default_variant -%}
           <input type="hidden" name="id" value="{{ current.id }}">
         {%- else -%}
-          <div class="bz-variants">
+          <div class="bz-variants" role="group" aria-label="Variante">
             {%- for variant in product.variants -%}
               <label>
-                <input type="radio" name="id" value="{{ variant.id }}" {% if variant.id == current.id %}checked{% endif %} {% unless variant.available %}disabled{% endunless %} data-bz-variant="{{ variant.price }}">
-                {{ variant.title | escape }}
+                <input type="radio" name="id" value="{{ variant.id }}" {% if variant.id == current.id %}checked{% endif %} {% unless variant.available %}disabled{% endunless %} data-bz-variant="{{ variant.price }}" data-image-id="{{ variant.featured_image.id }}">
+                <span>{{ variant.title | escape }}</span>
               </label>
             {%- endfor -%}
           </div>
@@ -227,137 +114,202 @@
         <div class="bz-atc" data-bz-atc>
           <div class="bz-qty">
             <button type="button" data-bz-qty="-1" aria-label="Meno">−</button>
-            <input type="number" name="quantity" value="1" min="1" aria-label="Quantità" style="width:28px;border:0;background:transparent;color:inherit;text-align:center">
+            <input type="number" name="quantity" value="1" min="1" aria-label="Quantità">
             <button type="button" data-bz-qty="1" aria-label="Più">+</button>
           </div>
-          <button class="bz-btn bz-btn--gold{% unless current.available %} bz-stock--soldout{% endunless %}" type="submit" name="add" {% unless current.available %}disabled{% endunless %}>
-            {%- if current.available -%}
-              Aggiungi al carrello
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            {%- else -%}
-              Esaurito
-            {%- endif -%}
+          <button class="bz-btn bz-btn--gold{% unless current.available %} bz-stock--soldout{% endunless %}" type="submit" name="add" {% if current.available %}aria-label="Aggiungi al carrello: {{ display_name | escape }}"{% endif %} {% unless current.available %}disabled{% endunless %}>
+            {% render 'bz-icon', name: 'shopping_bag', icon_class: 'bz-ico' %}
+            <span data-bz-add-label>{% if current.available %}Aggiungi al carrello{% else %}Esaurito{% endif %}</span>
           </button>
         </div>
       {%- endform -%}
-      {% render 'bz-trust' %}
+      <p class="bz-buy__return">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 6 4 11l5 5M4 11h10a5 5 0 0 1 0 10"/></svg>
+        Reso entro 14 giorni dalla ricezione
+      </p>
 
-      {%- if section.settings.pickup_link != blank -%}
-        <a class="bz-pickup" href="{{ section.settings.pickup_link }}">
-      {%- else -%}
-        <p class="bz-pickup">
-      {%- endif -%}
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10l2-5h12l2 5M5 10h14v9H5zM9 19v-5h6v5"/></svg>
-        Ritira <strong>gratis</strong> in negozio, Via Marcello Provenzali 1, Cento
-      {%- if section.settings.pickup_link != blank -%}</a>{%- else -%}</p>{%- endif -%}
-
-      {%- assign pair = product.metafields.custom.pairs_with.value -%}
-      {%- if pair != blank and pair.id != blank -%}
-        {%- assign pair_name = pair.metafields.custom.nome_vetrina.value | strip -%}
-        <div class="bz-pair{% if pair_name != blank %} has-nome-vetrina{% else %} is-title-fallback{% endif %}">
-          {%- if pair.featured_image -%}
-            {{ pair.featured_image | image_url: width: 120 | image_tag: alt: pair.title, loading: 'lazy', width: 52, height: 52 }}
-          {%- endif -%}
-          <div>Si abbina a <span class="bz-pair__name">{{ pair_name | default: pair.title | escape }}</span><small>{% render 'bz-money', cents: pair.price %}</small></div>
-          <form class="bz-ajax-cart" action="{{ routes.cart_add_url }}" method="post">
-            <input type="hidden" name="id" value="{{ pair.selected_or_first_available_variant.id }}">
-            <button class="add bz-card__add" type="submit" aria-label="Aggiungi al carrello: {{ pair_name | default: pair.title | escape }}">{% render 'bz-icon', name: 'add' %}</button>
-          </form>
+      {%- assign ship_euros = settings.bz_free_shipping_threshold | default: 50 | at_least: 1 -%}
+      {%- assign threshold = ship_euros | times: 100 -%}
+      {%- assign projected_total = cart.total_price | plus: current.price -%}
+      <div class="bz-shipbox" data-bz-shipping data-threshold="{{ threshold }}" data-price="{{ current.price }}">
+        {%- if projected_total >= threshold -%}
+          <p aria-live="polite"><b>Spedizione gratuita</b></p>
+          {%- assign ship_width = 100 -%}
+        {%- else -%}
+          {%- assign short = threshold | minus: projected_total -%}
+          <p aria-live="polite">Ti mancano <b>{% render 'bz-money', cents: short %}</b> per la spedizione gratuita</p>
+          {%- assign ship_width = projected_total | times: 100 | divided_by: threshold -%}
+        {%- endif -%}
+        <div class="bz-ship__track" aria-hidden="true">
+          <i style="width: {{ ship_width }}%"></i>
         </div>
-      {%- endif -%}
+      </div>
 
-      {%- liquid
-        assign pietra = product.metafields.custom.pietra.value
-        assign pietra_tradizione = blank
-        assign pietra_cura = blank
-        if show_stone_facts and pietra != blank
-          assign pietra_tradizione = pietra.tradizione.value | default: pietra.tradizione
-          assign pietra_cura = pietra.cura.value | default: pietra.cura
-        endif
-        assign meta_trad = product.metafields.custom.tradizione.value | default: product.metafields.custom.tradizione
-        assign meta_cura = product.metafields.custom.cura.value | default: product.metafields.custom.cura
-        if meta_trad != blank
-          assign pietra_tradizione = meta_trad
-        endif
-        if meta_cura != blank
-          assign pietra_cura = meta_cura
-        endif
-        assign ship_free = settings.bz_free_shipping_threshold | default: 50
-      -%}
-      <div class="bz-acc">
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'detail' -%}
-            {%- capture acc_body -%}
-              {%- if block.settings.title == 'Dettagli' -%}
-                {%- capture spec_table -%}
-                  {%- for spec in section.blocks -%}
-                    {%- if spec.type == 'spec' -%}
-                      {%- assign spec_value = product.metafields.custom[spec.settings.metafield].value -%}
-                      {%- if spec.settings.metafield == 'pietra' and spec_value != blank -%}
-                        {%- assign spec_name = spec_value.nome.value | default: spec_value.nome -%}
-                        {%- if spec_name != blank -%}
-                          {%- assign spec_value = spec_name -%}
+      {%- assign shipping_block = section.blocks | where: 'type', 'detail' | where: 'id', 'det-4' | first -%}
+      <div class="bz-acc bz-acc--shipping">
+        <details {{ shipping_block.shopify_attributes }}>
+          <summary>Spedizione e reso<i aria-hidden="true"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></i></summary>
+          <div class="bz-acc__body">
+            <p>Spedizione Express {{ settings.bz_express_rate | default: '5,90' | escape }}&nbsp;€ quando la soglia indicata sopra non è raggiunta.</p>
+            <p>Puoi chiedere un reso entro 14 giorni dalla ricezione. Il prodotto va restituito non indossato, con cartellini e confezione. La spedizione del reso è a tuo carico. Il pacco va a Via Olindo Malagodi 2, Cento. Se il reso è accettato, il rimborso arriva entro 10 giorni lavorativi. <a href="{{ shop.refund_policy.url | default: '/policies/refund-policy' }}">Informativa sui rimborsi</a></p>
+          </div>
+        </details>
+      </div>
+      <div class="bz-buy__details">
+        {%- capture fact_pills -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'fact' -%}
+              {%- liquid
+                assign fact_key = block.settings.metafield
+                assign fact_value = block.settings.value
+                assign fact_label = block.settings.label
+                assign show_fact = false
+                if fact_key != blank
+                  assign fact_value = product.metafields.custom[fact_key].value
+                  if fact_key == 'pietra' and fact_value != blank
+                    assign fact_name = fact_value.nome.value | default: fact_value.nome
+                    if fact_name != blank
+                      assign fact_value = fact_name
+                    endif
+                  endif
+                  assign fact_text = fact_value | append: ''
+                  if fact_text contains 'Metaobject' or fact_text contains 'Drop'
+                    assign fact_value = blank
+                  endif
+                  assign fact_allowed = true
+                  if fact_key == 'grani' or fact_key == 'diametro'
+                    unless show_mala_facts
+                      assign fact_allowed = false
+                    endunless
+                  endif
+                  if fact_key == 'peso' or fact_key == 'pietra'
+                    unless show_stone_facts
+                      assign fact_allowed = false
+                    endunless
+                  endif
+                  if fact_allowed and fact_value != blank
+                    assign show_fact = true
+                  endif
+                elsif fact_value != blank or fact_label != blank
+                  assign show_fact = true
+                endif
+              -%}
+              {%- if show_fact -%}
+                <span class="bz-fact" {{ block.shopify_attributes }}>{%- if block.settings.swatch != blank -%}<i style="background: {{ block.settings.swatch }}"></i>{%- endif -%}{%- if fact_value != blank -%}<b>{{ fact_value | escape }}</b>{%- endif -%}{%- if fact_label != blank -%} {{ fact_label | escape }}{%- endif -%}</span>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endcapture -%}
+        {%- if fact_pills contains 'class="bz-fact"' -%}
+          <div class="bz-facts">{{ fact_pills }}</div>
+        {%- endif -%}
+
+        {%- assign pair = product.metafields.custom.pairs_with.value -%}
+        {%- if pair != blank and pair.id != blank -%}
+          {%- assign pair_variant = pair.first_available_variant | default: pair.selected_or_first_available_variant -%}
+          {%- capture pair_name -%}{% render 'bz-product-name', product: pair %}{%- endcapture -%}
+          <div class="bz-pair{% if pair.metafields.custom.nome_vetrina.value != blank %} has-nome-vetrina{% else %} is-title-fallback{% endif %}">
+            {%- if pair.featured_image -%}
+              {{ pair.featured_image | image_url: width: 120 | image_tag: alt: pair_name, loading: 'lazy', width: 52, height: 52 }}
+            {%- endif -%}
+            <div>Si abbina a <span class="bz-pair__name">{{ pair_name | escape }}</span><small>{% render 'bz-money', cents: pair_variant.price %}</small></div>
+            {%- if pair_variant.available -%}
+            <form class="bz-ajax-cart" action="{{ routes.cart_add_url }}" method="post">
+              <input type="hidden" name="id" value="{{ pair_variant.id }}">
+              <button class="add bz-card__add" type="submit" aria-label="Aggiungi al carrello: {{ pair_name | escape }}">{% render 'bz-icon', name: 'add' %}</button>
+            </form>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- liquid
+          assign pietra = product.metafields.custom.pietra.value
+          assign pietra_tradizione = blank
+          assign pietra_cura = blank
+          if show_stone_facts and pietra != blank
+            assign pietra_tradizione = pietra.tradizione.value | default: pietra.tradizione
+            assign pietra_cura = pietra.cura.value | default: pietra.cura
+          endif
+          assign meta_trad = product.metafields.custom.tradizione.value | default: product.metafields.custom.tradizione
+          assign meta_cura = product.metafields.custom.cura.value | default: product.metafields.custom.cura
+          if meta_trad != blank
+            assign pietra_tradizione = meta_trad
+          endif
+          if meta_cura != blank
+            assign pietra_cura = meta_cura
+          endif
+        -%}
+        <div class="bz-acc">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'detail' and block.id != 'det-4' -%}
+              {%- capture acc_body -%}
+                {%- if block.id == 'det-1' -%}
+                  {%- capture spec_table -%}
+                    {%- for spec in section.blocks -%}
+                      {%- if spec.type == 'spec' -%}
+                        {%- assign spec_value = product.metafields.custom[spec.settings.metafield].value -%}
+                        {%- if spec.settings.metafield == 'pietra' and spec_value != blank -%}
+                          {%- assign spec_name = spec_value.nome.value | default: spec_value.nome -%}
+                          {%- if spec_name != blank -%}
+                            {%- assign spec_value = spec_name -%}
+                          {%- endif -%}
+                        {%- endif -%}
+                        {%- assign spec_text = spec_value | append: '' -%}
+                        {%- if spec_text contains 'Metaobject' or spec_text contains 'Drop' -%}
+                          {%- assign spec_value = blank -%}
+                        {%- endif -%}
+                        {%- if spec_value != blank -%}
+                          <tr><td>{{ spec.settings.label | escape }}</td><td>{{ spec_value | escape }}</td></tr>
                         {%- endif -%}
                       {%- endif -%}
-                      {%- assign spec_text = spec_value | append: '' -%}
-                      {%- if spec_text contains 'Metaobject' or spec_text contains 'Drop' -%}
-                        {%- assign spec_value = blank -%}
-                      {%- endif -%}
-                      {%- if spec_value != blank -%}
-                        <tr><td>{{ spec.settings.label | escape }}</td><td>{{ spec_value | escape }}</td></tr>
-                      {%- endif -%}
-                    {%- endif -%}
-                  {%- endfor -%}
-                {%- endcapture -%}
-                {%- if spec_table contains '<tr>' -%}
-                  <table>{{ spec_table }}</table>
+                    {%- endfor -%}
+                  {%- endcapture -%}
+                  {%- if spec_table contains '<tr>' -%}
+                    <table>{{ spec_table }}</table>
+                  {%- endif -%}
+                {%- elsif block.id == 'det-2' -%}
+                  {%- if pietra_tradizione != blank -%}
+                    <p>{{ pietra_tradizione | escape }}</p>
+                  {%- endif -%}
+                {%- elsif block.id == 'det-3' -%}
+                  {%- if pietra_cura != blank -%}
+                    <p>{{ pietra_cura | escape }}</p>
+                  {%- endif -%}
+                {%- elsif block.settings.text != blank -%}
+                  {{ block.settings.text }}
                 {%- endif -%}
-              {%- elsif block.settings.title == 'Nella tradizione' -%}
-                {%- if pietra_tradizione != blank -%}
-                  <p>{{ pietra_tradizione | escape }}</p>
-                {%- endif -%}
-              {%- elsif block.settings.title == 'Come averne cura' -%}
-                {%- if pietra_cura != blank -%}
-                  <p>{{ pietra_cura | escape }}</p>
-                {%- endif -%}
-              {%- elsif block.settings.title contains 'Spedizione' -%}
-                <p>In Italia la spedizione è gratuita da {{ ship_free }}&nbsp;€. Sotto quella cifra è Express, 5,90&nbsp;€.</p>
-                <p>Il ritiro in negozio è in Via Marcello Provenzali 1, a Cento.</p>
-                <p>Hai 14 giorni dalla consegna per chiedere un reso. Il pezzo torna non indossato, con i cartellini e la confezione. Il pacco va a Via Olindo Malagodi 2, Cento. Se il reso è accettato, il rimborso arriva entro 10 giorni lavorativi. <a href="{{ shop.refund_policy.url | default: '/policies/refund-policy' }}">Informativa sui rimborsi</a></p>
-              {%- elsif block.settings.text != blank -%}
-                {{ block.settings.text }}
+              {%- endcapture -%}
+              {%- assign acc_body = acc_body | strip -%}
+              {%- if acc_body != blank -%}
+                <details {% if block.settings.open %}open{% endif %} {{ block.shopify_attributes }}>
+                  <summary>{{ block.settings.title | escape }}<i aria-hidden="true"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></i></summary>
+                  <div class="bz-acc__body">{{ acc_body }}</div>
+                </details>
               {%- endif -%}
-            {%- endcapture -%}
-            {%- assign acc_body = acc_body | strip -%}
-            {%- if acc_body != blank -%}
-              <details {% if block.settings.open %}open{% endif %} {{ block.shopify_attributes }}>
-                <summary>{{ block.settings.title | escape }}<i aria-hidden="true"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></i></summary>
-                <div class="bz-acc__body">{{ acc_body }}</div>
-              </details>
             {%- endif -%}
-          {%- endif -%}
-        {%- endfor -%}
-        {%- assign uso_meta = product.metafields.custom.come_si_usa.value | default: product.metafields.custom.come_si_usa -%}
-        {%- if uso_meta != blank -%}
-          <details>
-            <summary>Come si usa<i aria-hidden="true"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></i></summary>
-            <div class="bz-acc__body"><p>{{ uso_meta | escape }}</p></div>
-          </details>
-        {%- endif -%}
-        {%- for faq_i in (1..3) -%}
-          {%- liquid
-            assign faq_q_key = 'faq_' | append: faq_i | append: '_domanda'
-            assign faq_a_key = 'faq_' | append: faq_i | append: '_risposta'
-            assign faq_q = product.metafields.custom[faq_q_key].value | default: product.metafields.custom[faq_q_key]
-            assign faq_a = product.metafields.custom[faq_a_key].value | default: product.metafields.custom[faq_a_key]
-          -%}
-          {%- if faq_q != blank and faq_a != blank -%}
+          {%- endfor -%}
+          {%- assign uso_meta = product.metafields.custom.come_si_usa.value | default: product.metafields.custom.come_si_usa -%}
+          {%- if uso_meta != blank -%}
             <details>
-              <summary>{{ faq_q | escape }}<i aria-hidden="true"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></i></summary>
-              <div class="bz-acc__body"><p>{{ faq_a | escape }}</p></div>
+              <summary>Come si usa<i aria-hidden="true"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></i></summary>
+              <div class="bz-acc__body"><p>{{ uso_meta | escape }}</p></div>
             </details>
           {%- endif -%}
-        {%- endfor -%}
+          {%- for faq_i in (1..3) -%}
+            {%- liquid
+              assign faq_q_key = 'faq_' | append: faq_i | append: '_domanda'
+              assign faq_a_key = 'faq_' | append: faq_i | append: '_risposta'
+              assign faq_q = product.metafields.custom[faq_q_key].value | default: product.metafields.custom[faq_q_key]
+              assign faq_a = product.metafields.custom[faq_a_key].value | default: product.metafields.custom[faq_a_key]
+            -%}
+            {%- if faq_q != blank and faq_a != blank -%}
+              <details>
+                <summary>{{ faq_q | escape }}<i aria-hidden="true"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></i></summary>
+                <div class="bz-acc__body"><p>{{ faq_a | escape }}</p></div>
+              </details>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
       </div>
     </div>
   </section>
@@ -417,24 +369,16 @@
       <h3>{{ section.settings.wide_title | escape }} <em>{{ section.settings.wide_accent | escape }}</em></h3>
       <p>{{ section.settings.wide_text | escape }}</p>
     </article>
-    <article>
-      <h3>{{ section.settings.visit_title | escape }}</h3>
-      <p>{{ section.settings.visit_text | escape }}</p>
-      {%- if section.settings.pickup_link != blank and section.settings.visit_link != blank -%}
-        <a class="bz-picked__all" href="{{ section.settings.pickup_link }}">{{ section.settings.visit_link | escape }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      {%- endif -%}
-    </article>
   </div>
   {%- endif -%}
 
-  <form class="bz-sticky bz-ajax-cart" inert action="{{ routes.cart_add_url }}" method="post">
-    <input type="hidden" name="id" value="{{ current.id }}">
+  <div class="bz-sticky" inert>
     {%- if product.featured_image -%}
       {{ product.featured_image | image_url: width: 100 | image_tag: alt: '', loading: 'lazy', width: 44, height: 44 }}
     {%- endif -%}
-    <span><em class="bz-sticky__name">{{ product.title | escape }}</em><b data-bz-price>{% render 'bz-money', cents: current.price %}</b></span>
-    <button type="submit"{% unless current.available %} disabled{% endunless %}>{% if current.available %}Aggiungi{% else %}Esaurito{% endif %}</button>
-  </form>
+    <span><em class="bz-sticky__name">{{ display_name | escape }}</em><b data-bz-price>{% render 'bz-money', cents: current.price %}</b></span>
+    <button type="submit" form="{{ main_form_id }}"{% if current.available %} aria-label="Aggiungi al carrello: {{ display_name | escape }}"{% else %} disabled{% endif %}>{% if current.available %}Aggiungi{% else %}Esaurito{% endif %}</button>
+  </div>
 </div>
 <script type="application/ld+json">
   {
@@ -444,21 +388,21 @@
       { "@type": "ListItem", "position": 1, "name": "Home", "item": {{ request.origin | json }} }
       {%- if collection -%}
       ,{ "@type": "ListItem", "position": 2, "name": {{ collection.title | json }}, "item": {{ request.origin | append: collection.url | json }} }
-      ,{ "@type": "ListItem", "position": 3, "name": {{ product.title | json }}, "item": {{ request.origin | append: product.url | json }} }
+      ,{ "@type": "ListItem", "position": 3, "name": {{ display_name | json }}, "item": {{ request.origin | append: product.url | json }} }
       {%- else -%}
-      ,{ "@type": "ListItem", "position": 2, "name": {{ product.title | json }}, "item": {{ request.origin | append: product.url | json }} }
+      ,{ "@type": "ListItem", "position": 2, "name": {{ display_name | json }}, "item": {{ request.origin | append: product.url | json }} }
       {%- endif -%}
     ]
   }
 </script>
 {%- liquid
-  assign bz_price = current.price | money_without_currency | replace: '.', '' | replace: ',', '.'
+  assign bz_price = current.price | divided_by: 100.0
 -%}
 <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Product",
-    "name": {{ product.title | json }},
+    "name": {{ display_name | json }},
     "url": {{ request.origin | append: product.url | json }},
     {%- if product.featured_image -%}
     "image": {{ product.featured_image | image_url: width: 1200 | prepend: 'https:' | json }},
@@ -481,13 +425,6 @@
   "name": "Scheda prodotto",
   "class": "bz-home",
   "settings": [
-    { "type": "text", "id": "store_badge", "label": "Etichetta foto", "default": "Anche in negozio" },
-    { "type": "text", "id": "photo_note", "label": "Nota foto", "default": "Pietra naturale: ogni pezzo è un po' diverso" },
-    { "type": "textarea", "id": "opener", "label": "Testo di apertura" },
-    { "type": "text", "id": "shipping_note", "label": "Nota spedizione", "default": "Spedizione gratuita" },
-    { "type": "number", "id": "free_shipping", "label": "Soglia spedizione gratuita", "default": 50 },
-    { "type": "text", "id": "pickup_hours", "label": "Tempo di ritiro", "info": "Lascia vuoto. Non promettere un orario se non è una regola del negozio." },
-    { "type": "url", "id": "pickup_link", "label": "Link ritiro" },
     { "type": "text", "id": "bento_title", "label": "Titolo grande", "info": "Non stampato. Il titolo in pagina è il metafield custom.bento_title.", "default": "La nappa" },
     { "type": "text", "id": "bento_accent", "label": "Corsivo", "info": "Non stampato. Il titolo in pagina è il metafield custom.bento_title.", "default": "chiude il giro" },
     { "type": "textarea", "id": "bento_text", "label": "Testo", "default": "Annodata a mano, con l'anello che separa il grano guru." },
@@ -504,10 +441,7 @@
     { "type": "collection", "id": "related", "label": "Collezione correlata" },
     { "type": "text", "id": "related_heading", "label": "Titolo correlati", "default": "Altri mala," },
     { "type": "text", "id": "related_accent", "label": "Corsivo correlati", "default": "stessi 108 grani" },
-    { "type": "text", "id": "related_link", "label": "Link correlati", "default": "Tutti i mala" },
-    { "type": "text", "id": "visit_title", "label": "Titolo visita", "default": "Vuoi vederlo prima?" },
-    { "type": "text", "id": "visit_text", "label": "Testo visita", "default": "È anche in negozio, in via Provenzali 1." },
-    { "type": "text", "id": "visit_link", "label": "Link visita", "default": "Orari" }
+    { "type": "text", "id": "related_link", "label": "Link correlati", "default": "Tutti i mala" }
   ],
   "blocks": [
     { "type": "fact", "name": "Dato", "settings": [

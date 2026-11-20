@@ -5,18 +5,13 @@
       "settings": {
         "heading": "Un rituale",
         "heading_accent": "da portare addosso",
-        "text": "Mala, bracciali e ciondoli in pietra naturale.",
-        "primary_label": "Vedi i mala →",
-        "primary_link": "/collections/mala-tibetani",
-        "secondary_label": "Tutti i gioielli",
-        "secondary_link": "/collections/gioielli-con-pietre",
+        "text": "Ciondoli, pietre, candele e creme naturali.",
+        "primary_label": "Tutti i gioielli",
+        "primary_link": "/collections/gioielli-con-pietre",
+        "secondary_label": "Ayurveda",
+        "secondary_link": "/collections/ayurveda",
         "featured_product": "mala-diaspro-rosso-108-perle",
         "rotation_collection": "gioielli-con-pietre",
-        "slide_2_products": [
-          "epidoto-4-varianti",
-          "pietra-di-luna-arcobaleno-4-varianti-1",
-          "giada"
-        ],
         "slide_2_link": "/collections/all?sort_by=created-descending",
         "slide_3_link": "/pages/cura-di-se"
       },
@@ -28,9 +23,10 @@
             "title": "Pietre",
             "accent": "da tasca",
             "text": "Burattate e grezze, da tenere vicino.",
-            "button_label": "Scegli la tua →",
+            "button_label": "Vedi le pietre",
             "link": "#stones",
-            "collection": "pietre-burattate"
+            "collection": "pietre-burattate",
+            "image_alt": "Pietre burattate in una vaschetta, viste da vicino"
           }
         },
         "tile-regali": {
@@ -38,9 +34,9 @@
           "settings": {
             "title": "Regali",
             "accent": "piccoli",
-            "text": "Pietre, ciondoli, scatole in velluto, sotto i 30 €.",
+            "text": "Pietre, ciondoli e scatole in velluto sotto 25 €.",
             "button_label": "Idee regalo →",
-            "link": "/collections/oggettistica-e-idee-regalo",
+            "link": "/collections/oggettistica-e-idee-regalo?filter.v.price.lte=24.99",
             "collection": "oggettistica-e-idee-regalo",
             "image_asset": "bz-hero-regali.jpg"
           }
@@ -419,7 +415,7 @@
         "set-0": {
           "type": "set",
           "settings": {
-            "label": "Serenità",
+            "label": "Intuizione",
             "caption": "Ametista da tenere vicino o portare addosso.",
             "image_asset": "bz-rituale-serenita.jpg",
             "bundle_product": "set-rituale-serenita",
@@ -455,7 +451,7 @@
         "set-3": {
           "type": "set",
           "settings": {
-            "label": "Affetti",
+            "label": "Amore",
             "caption": "Il quarzo rosa, in tre forme.",
             "image_asset": "bz-rituale-affetti.jpg",
             "bundle_product": "set-rituale-affetti",
@@ -467,7 +463,7 @@
         "set-4": {
           "type": "set",
           "settings": {
-            "label": "Concentrazione",
+            "label": "Comunicazione",
             "caption": "Il blu del lapislazzuli, al collo e al polso.",
             "image_asset": "bz-rituale-concentrazione.jpg",
             "bundle_product": "set-rituale-concentrazione",
@@ -518,8 +514,8 @@
           "type": "stone",
           "settings": {
             "name": "Ametista",
-            "intent": "meditazione",
-            "meaning": "Legata da sempre alla meditazione",
+            "intent": "intuizione",
+            "meaning": "Nella tradizione, una delle pietre dell’intuizione.",
             "front": "bz-pietra-macro-ametista.jpg",
             "loose": "ametista",
             "bracelet": "braccialetto-ametista-avventurina-cristallo-di-rocca-om",
@@ -556,8 +552,8 @@
           "type": "stone",
           "settings": {
             "name": "Lapislazzuli",
-            "intent": "meditazione",
-            "meaning": "Il blu degli antichi Egizi, legato alla verità",
+            "intent": "comunicazione",
+            "meaning": "Nella tradizione, una delle pietre della comunicazione.",
             "front": "bz-pietra-macro-lapislazzuli.jpg",
             "loose": "lapislazzuli",
             "bracelet": "braccialetto-lapis-lazuli",
@@ -582,8 +578,8 @@
           "type": "stone",
           "settings": {
             "name": "Cristallo di rocca",
-            "intent": "meditazione",
-            "meaning": "Accompagna l’intenzione",
+            "intent": "purificazione",
+            "meaning": "Nella tradizione, una delle pietre della purificazione.",
             "front": "bz-pietra-macro-cristallo-di-rocca.jpg",
             "loose": "cristallo-di-rocca",
             "bracelet": "braccialetto-ametista-chevron-cristallo-di-rocca-loto",
@@ -594,8 +590,8 @@
           "type": "stone",
           "settings": {
             "name": "Occhio di tigre",
-            "intent": "protezione",
-            "meaning": "Protezione spirituale, nella tradizione",
+            "intent": "coraggio",
+            "meaning": "Nella tradizione, una delle pietre del coraggio.",
             "front": "bz-pietra-macro-occhio-di-tigre.jpg",
             "loose": "occhio-di-tigre",
             "bracelet": "mala-braccialetto-elastico-con-pietra-occhio-di-tigre-coraggio-iniziativa",
@@ -614,20 +610,6 @@
         "stone-7"
       ]
     },
-    "bz_gifts": {
-      "type": "bz-gifts",
-      "settings": {
-        "link": "/collections/oggettistica-e-idee-regalo",
-        "products": [
-          "portacandela-mano-con-loto-color-oro",
-          "ciondolo-a-goccia-in-corniola",
-          "candele-da-tavola-profumate-chakra-set-da-7-3",
-          "portacandela-in-vetro-smerigliato-interno-metallizzato-mystical-albero-della-vita"
-        ],
-        "heading_accent": "sotto 30 €",
-        "product_labels": "portacandela-mano-con-loto-color-oro|Portacandela mano dorata, fiore di loto\nciondolo-a-goccia-in-corniola|Ciondolo in corniola, goccia\ncandele-da-tavola-profumate-chakra-set-da-7-3|Candele profumate a stelo, 7 Chakra\nportacandela-in-vetro-smerigliato-interno-metallizzato-mystical-albero-della-vita|Portacandela in vetro, Albero della Vita mystical"
-      }
-    },
     "bz_store": {
       "type": "bz-store",
       "settings": {
@@ -639,7 +621,7 @@
           "settings": {
             "tab": "0",
             "question": "Quanto costa la spedizione?",
-            "answer": "<p>La spedizione Express costa 5,90&nbsp;€, ed è gratuita da 50&nbsp;€ di spesa.</p>"
+            "answer": ""
           }
         },
         "faq-1": {
@@ -663,7 +645,7 @@
           "settings": {
             "tab": "0",
             "question": "Posso restituire un acquisto?",
-            "answer": "<p>Sì, entro 14 giorni dalla ricezione, con il pezzo non usato e nel suo imballo originale. Scrivi a <a href=\"mailto:info@benesserezen.shop\">info@benesserezen.shop</a>: se il reso è accettato ti mandiamo noi l’etichetta, e il rimborso arriva entro 10 giorni lavorativi.</p>"
+            "answer": "<p>Sì, entro 14 giorni dalla ricezione, con il pezzo non usato e nel suo imballo originale. Scrivi a <a href=\"mailto:info@benesserezen.shop\">info@benesserezen.shop</a>: se il reso è accettato ti mandiamo le istruzioni. La spedizione del reso è a carico tuo, e il rimborso arriva entro 10 giorni lavorativi dall'approvazione.</p>"
           }
         },
         "faq-4": {
@@ -703,7 +685,7 @@
           "settings": {
             "tab": "2",
             "question": "Ricevo la pietra della foto?",
-            "answer": "<p>Ricevi la stessa pietra, nella stessa misura. La natura però non fa copie: forma e venature cambiano da un pezzo all’altro.</p>"
+            "answer": "<p>Ricevi la stessa pietra, nella misura indicata in scheda. La foto mostra il tipo di pietra: forma e venature cambiano da un pezzo all’altro.</p>"
           }
         },
         "faq-9": {
@@ -771,7 +753,6 @@
     "bz_picked",
     "bz_ritual",
     "bz_stones",
-    "bz_gifts",
     "bz_store",
     "bz_newsletter"
   ]

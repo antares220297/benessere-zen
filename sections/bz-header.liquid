@@ -1,21 +1,21 @@
 <header>
   <a class="brand" href="{{ routes.root_url }}">
     {%- if section.settings.logo != blank -%}
-      {{ section.settings.logo | image_url: width: 160 | image_tag: alt: shop.name, loading: 'eager', widths: '80, 120, 160', width: 43, height: 43 }}
+      {{ section.settings.logo | image_url: width: 160 | image_tag: alt: '', loading: 'eager', widths: '80, 120, 160', width: 43, height: 43 }}
     {%- else -%}
-      <img src="{{ 'shop-logo.png' | asset_url }}" alt="{{ shop.name | escape }}" width="43" height="43">
+      <img src="{{ 'shop-logo.png' | asset_url }}" alt="" width="43" height="43">
     {%- endif -%}
     <span>{{ section.settings.wordmark_lead | default: 'Benessere' | escape }} <em>{{ section.settings.wordmark_accent | default: 'Zen' | escape }}</em></span>
   </a>
   <nav class="main-nav" aria-label="{{ section.settings.menu_label | default: 'Menu principale' | escape }}">
-    {% render 'bz-menu' %}
+    {% render 'bz-menu', menu: section.settings.menu %}
   </nav>
   <div class="header-actions">
     <a data-bz-header-search href="{{ routes.search_url }}" aria-label="{{ section.settings.search_label | default: 'Cerca' | escape }}">{% render 'bz-icon', name: 'hdr-search' %}</a>
     <a class="bz-header-account" href="{{ routes.account_url }}" aria-label="{{ section.settings.account_label | default: 'Account' | escape }}">{% render 'bz-icon', name: 'hdr-account' %}</a>
-    <button type="button" data-bz-header-cart data-cart-open aria-label="{{ section.settings.cart_label | default: 'Carrello' | escape }}">
+    <button type="button" data-bz-header-cart="{{ section.settings.cart_label | default: 'Carrello' | escape }}" data-cart-open aria-label="{{ section.settings.cart_label | default: 'Carrello' | escape }}{% if cart.item_count > 0 %}, {{ cart.item_count }} {% if cart.item_count == 1 %}pezzo{% else %}pezzi{% endif %}{% endif %}">
       {% render 'bz-icon', name: 'hdr-bag' %}
-      <span class="sr-only" data-cart-count>{{ cart.item_count }}</span>
+      <span class="bz-cart-count" data-cart-count aria-hidden="true"{% if cart.item_count == 0 %} hidden{% endif %}>{{ cart.item_count }}</span>
     </button>
     <button class="menu-toggle" type="button" data-bz-burger aria-label="Apri menu" aria-expanded="false" aria-controls="bz-mobile"><span class="bz-burger-icon" aria-hidden="true"><span></span><span></span><span></span></span></button>
   </div>
@@ -25,10 +25,11 @@
 <div class="mobile-nav menu-shade" id="bz-mobile" aria-hidden="true" inert>
   <div class="menu-dialog">
     <nav class="mobile-content" aria-label="Navigazione">
-      {% render 'bz-menu' %}
+      {% render 'bz-menu', menu: section.settings.menu %}
       <div class="bz-mobile-tools">
         <a href="{{ routes.search_url }}">{% render 'bz-icon', name: 'search', icon_class: 'bz-ico bz-ico--lg' %} {{ section.settings.search_label | default: 'Cerca' | escape }}</a>
-        <button type="button" data-cart-open>{% render 'bz-icon', name: 'hdr-bag' %} {{ section.settings.cart_label | default: 'Carrello' | escape }}</button>
+        <a href="{{ routes.account_url }}">{% render 'bz-icon', name: 'hdr-account' %} {{ section.settings.account_label | default: 'Account' | escape }}</a>
+        <button type="button" data-cart-open>{% render 'bz-icon', name: 'shopping_bag' %} {{ section.settings.cart_label | default: 'Carrello' | escape }}</button>
       </div>
       <div class="phone-bottom">
         {%- assign visit_url = pages['il-negozio'].url | default: '/pages/il-negozio' -%}
@@ -40,13 +41,18 @@
 </div>
 
 <div class="cart-overlay" hidden>
-  <button class="backdrop" type="button" data-cart-close aria-label="Chiudi carrello"></button>
+  <button class="backdrop" type="button" tabindex="-1" data-cart-close aria-label="Chiudi carrello"></button>
   <aside class="drawer" role="dialog" aria-modal="true" aria-label="Il tuo carrello" tabindex="-1">
     <button class="close" type="button" data-cart-close aria-label="Chiudi carrello">×</button>
     <h2>Il tuo <em>carrello</em></h2>
+    <div data-cart-content data-section-id="{{ section.id }}" data-item-count="{{ cart.item_count }}" data-total-price="{{ cart.total_price }}">
+    {%- if cart.item_count == 0 -%}
+      <p>Il carrello è vuoto.</p>
+      <a class="btn gold" href="{{ routes.all_products_collection_url }}">Scopri i prodotti</a>
+    {%- else -%}
     <div class="shipping" data-shipping>
       <p data-shipping-text>
-        {%- assign goal = settings.bz_free_shipping | default: 50 | times: 100 -%}
+        {%- assign goal = settings.bz_free_shipping_threshold | default: 50 | at_least: 1 | times: 100 -%}
         {%- assign missing = goal | minus: cart.total_price -%}
         {%- if cart.total_price >= goal -%}Spedizione gratuita{%- else -%}Ti mancano <strong>{% render 'bz-money', cents: missing %}</strong> per la spedizione gratuita{%- endif -%}
       </p>
@@ -54,27 +60,33 @@
         <div class="track" role="progressbar" aria-valuemin="0" aria-valuemax="{{ goal }}" aria-valuenow="{{ cart.total_price }}">
           <span style="transform:scaleX({{ cart.total_price | times: 1.0 | divided_by: goal | at_most: 1 }})"></span>
         </div>
-        <span>{{ settings.bz_free_shipping | default: 50 }}&nbsp;€</span>
+        <span>{{ settings.bz_free_shipping_threshold | default: 50 | at_least: 1 }}&nbsp;€</span>
       </div>
     </div>
     <div data-cart-rows>
       {%- for item in cart.items -%}
+          {%- capture item_name -%}{% render 'bz-product-name', product: item.product %}{%- endcapture -%}
         <div class="cart-row">
           {%- if item.image -%}
-            {{ item.image | image_url: width: 200 | image_tag: alt: item.product.title, loading: 'lazy', width: 90, height: 90 }}
+            {{ item.image | image_url: width: 200 | image_tag: alt: item_name, loading: 'lazy', width: 90, height: 90 }}
           {%- endif -%}
           <div>
-            <a href="{{ item.url }}">{{ item.product.title | escape }}</a>
+            <a href="{{ item.url }}">{{ item_name | escape }}</a>
+            {%- unless item.product.has_only_default_variant -%}
+              <p>{{ item.variant.title | escape }}</p>
+            {%- endunless -%}
             <p>{{ item.quantity }} × {% render 'bz-money', cents: item.final_price %}</p>
           </div>
         </div>
-      {%- else -%}
-        <p>Il carrello è vuoto.</p>
       {%- endfor -%}
     </div>
     <div class="cart-total"><span>Totale</span><strong data-cart-total>{% render 'bz-money', cents: cart.total_price %}</strong></div>
-    <a class="btn gold" href="{{ routes.cart_url }}/checkout">{% render 'bz-nav-label', label: 'Vai al pagamento' %}</a>
+    <form class="cart-checkout-form" action="{{ routes.cart_url }}" method="post">
+      <button class="btn gold" type="submit" name="checkout">{% render 'bz-nav-label', label: 'Vai al pagamento' %}</button>
+    </form>
     <a class="text-link" href="{{ routes.cart_url }}">Modifica il carrello</a>
+    {%- endif -%}
+    </div>
   </aside>
 </div>
 

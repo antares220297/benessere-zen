@@ -3,7 +3,7 @@
     <h2>{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h2>
     <div class="bz-pills" role="tablist" aria-label="Selezione prodotti">
       {%- for block in section.blocks -%}
-        <button type="button" role="tab" id="picked-tab-{{ section.id }}-{{ forloop.index }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="picked-panel-{{ section.id }}-{{ forloop.index }}" data-picked="{{ forloop.index0 }}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</button>
+        <button type="button" role="tab" tabindex="{% if forloop.first %}0{% else %}-1{% endif %}" id="picked-tab-{{ section.id }}-{{ forloop.index }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="picked-panel-{{ section.id }}-{{ forloop.index }}" data-picked="{{ forloop.index0 }}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</button>
       {%- endfor -%}
     </div>
   </div>
@@ -24,21 +24,6 @@
     <a class="bz-row-link" href="{{ section.settings.link }}">{% render 'bz-nav-label', label: section.settings.link_label %}</a>
   {%- endif -%}
 </section>
-<script>
-  document.querySelectorAll('#shopify-section-{{ section.id }} [data-picked]').forEach(function (tab) {
-    tab.addEventListener('click', function () {
-      var root = tab.closest('section');
-      root.querySelectorAll('[data-picked]').forEach(function (other) {
-        var on = other === tab;
-        other.setAttribute('aria-selected', String(on));
-        other.tabIndex = on ? 0 : -1;
-      });
-      root.querySelectorAll('[data-picked-panel]').forEach(function (panel) {
-        panel.hidden = panel.dataset.pickedPanel !== tab.dataset.picked;
-      });
-    });
-  });
-</script>
 {% schema %}
 {
   "name": "I più scelti",

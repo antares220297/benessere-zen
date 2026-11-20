@@ -2,9 +2,8 @@
   {%- liquid
     assign count = 0
     assign total = 0
-    assign seen = '|'
     assign shot = blank
-    assign shot_alt = blank
+    assign seen = '|'
     assign type_key = product.type | downcase | strip
     assign rule_keys = 'collection_1,collection_2' | split: ','
   -%}
@@ -19,9 +18,8 @@
               assign seen = seen | append: marker
               assign count = count | plus: 1
               assign total = total | plus: variant.price
-              if shot == blank and rec.featured_image
+              if shot == blank
                 assign shot = rec.featured_image
-                assign shot_alt = rec.title
               endif
             -%}
             {% render 'bz-ritual-row', rec: rec %}
@@ -43,9 +41,8 @@
                     assign seen = seen | append: marker
                     assign count = count | plus: 1
                     assign total = total | plus: variant.price
-                    if shot == blank and rec.featured_image
+                    if shot == blank
                       assign shot = rec.featured_image
-                      assign shot_alt = rec.title
                     endif
                   -%}
                   {% render 'bz-ritual-row', rec: rec %}
@@ -66,11 +63,8 @@
         <div class="bz-sh">
           <h2>{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h2>
           {%- if section.settings.intro != blank -%}<p class="bz-sh-sub">{{ section.settings.intro | escape }}</p>{%- endif -%}
-          <div class="bz-pills">
-            <button type="button" data-select-all aria-pressed="true" aria-controls="{{ panel_id }}">Tutti i pezzi</button>
-          </div>
         </div>
-        {% render 'bz-ritual-panel', panel_id: panel_id, first: true, rows: rows, count: count, total: total, shot: shot, shot_alt: shot_alt %}
+        {% render 'bz-ritual-panel', panel_id: panel_id, first: true, rows: rows, count: count, total: total, shot: shot, product_panel: true %}
       {%- endif -%}
     </section>
     {%- unless recommendations.performed -%}

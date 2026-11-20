@@ -28,11 +28,12 @@
       {%- endif -%}
       {%- if item != blank -%}
         <a class="bz-gesture bz-reveal{% if template.suffix == 'cura-di-se' %} bz-tile {% if forloop.first %}bz-tile--am{% else %}bz-tile--ox{% endif %}{% endif %}" href="{{ item.url }}" {{ block.shopify_attributes }}>
-          {%- if item.featured_image -%}{{ item.featured_image | image_url: width: 900 | image_tag: alt: item.title, loading: 'lazy', width: 640, height: 420 }}{%- endif -%}
+          {%- capture item_name -%}{% render 'bz-product-name', product: item %}{%- endcapture -%}
+          {%- if item.featured_image -%}{{ item.featured_image | image_url: width: 900 | image_tag: alt: item_name, loading: 'lazy', width: 640, height: 420 }}{%- endif -%}
           <div class="bz-gesture__copy">
             <h3>{{ block.settings.title | escape }}</h3>
             {%- if block.settings.text != blank -%}<p>{{ block.settings.text | escape }}</p>{%- endif -%}
-            <span class="bz-picked__all">{{ item.title | escape }}{% if template.suffix == 'cura-di-se' %} {% render 'bz-icon', name: 'arrow_forward', icon_class: 'bz-ico bz-ico--sm' %}{% endif %}</span>
+            <span class="bz-picked__all">{{ item_name | escape }}{% if template.suffix == 'cura-di-se' %} {% render 'bz-icon', name: 'arrow_forward', icon_class: 'bz-ico bz-ico--sm' %}{% endif %}</span>
           </div>
         </a>
       {%- endif -%}

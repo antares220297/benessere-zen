@@ -1,6 +1,6 @@
 <section class="store-bleed" aria-labelledby="store-title">
   <div class="store-bleed-inner">
-    <img src="{{ 'bz-negozio-home-hero-negozio.jpg' | asset_url }}" alt="Scaffali del negozio Benessere Zen in Via Marcello Provenzali 1 a Cento" width="1600" height="900" loading="lazy">
+    <img src="{{ 'bz-negozio-negozio-copertina.jpg' | asset_url }}" srcset="{% render 'bz-cover-srcset', asset: 'bz-negozio-negozio-copertina.jpg', width: 1600 %}" sizes="(min-width: 1024px) 60vw, 95vw" alt="Il banco e l’isola centrale del negozio, circondati dagli scaffali" width="1600" height="900" loading="lazy">
     <div class="store-bleed-copy">
       <h2 id="store-title">{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h2>
       {% render 'bz-open-badge', variant: 'compact', linked: true %}
@@ -34,7 +34,11 @@
           {%- if block.type == 'faq' and block.settings.tab == tab_index -%}
             <details name="home-faq-{{ tab_index }}" {% if first_question %}open{% endif %} {{ block.shopify_attributes }}>
               <summary>{{ block.settings.question | escape }}</summary>
-              <div class="faq-answer">{{ block.settings.answer }}</div>
+              <div class="faq-answer">{%- if block.id == 'faq-0' -%}
+                  <p>La spedizione Express costa {{ settings.bz_express_rate | default: '5,90' | escape }}&nbsp;€, ed è gratuita da {{ settings.bz_free_shipping_threshold | default: 50 | at_least: 1 }}&nbsp;€ di spesa.</p>
+                {%- else -%}
+                  {{ block.settings.answer }}
+                {%- endif -%}</div>
             </details>
             {%- assign first_question = false -%}
           {%- endif -%}

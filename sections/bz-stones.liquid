@@ -3,10 +3,16 @@
     <h2>{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h2>
     <div class="bz-pills" id="stone-filters" role="group" aria-label="Filtra le pietre">
       <button type="button" data-stone-filter="all" aria-pressed="true">Tutte</button>
-      <button type="button" data-stone-filter="protezione" aria-pressed="false">Protezione</button>
-      <button type="button" data-stone-filter="amore" aria-pressed="false">Amore</button>
-      <button type="button" data-stone-filter="abbondanza" aria-pressed="false">Abbondanza</button>
-      <button type="button" data-stone-filter="meditazione" aria-pressed="false">Meditazione</button>
+      {%- assign intents = 'Amore|Abbondanza|Comunicazione|Coraggio|Intuizione|Protezione|Purificazione' | split: '|' -%}
+      {%- for label in intents -%}
+        {%- assign intent = label | handleize -%}
+        {%- for block in section.blocks -%}
+          {%- if block.settings.intent == intent -%}
+            <button type="button" data-stone-filter="{{ intent }}" aria-pressed="false">{{ label }}</button>
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endfor -%}
     </div>
   </div>
   <div class="gem-grid is-collapsed" id="gem-grid">
@@ -33,7 +39,7 @@
       <article class="gem" id="gem-{{ forloop.index0 }}" data-intent="{{ block.settings.intent }}" {{ block.shopify_attributes }}>
         <div class="gem-turn">
           <div class="gem-front">
-            <img src="{{ block.settings.front | asset_url }}" alt="{{ block.settings.name | escape }}" width="1200" height="1600" loading="lazy" style="object-position:{{ block.settings.position | default: '50% 50%' }}">
+            <img src="{{ block.settings.front | asset_url }}" alt="" width="1200" height="1600" loading="lazy" style="object-position:{{ block.settings.position | default: '50% 50%' }}">
             <div class="gem-front-copy">
               <h3 class="gem-title">{{ block.settings.name | escape }}</h3>
               {%- if lowest != blank -%}<p class="gem-price">da {% render 'bz-money', cents: lowest %}</p>{%- endif -%}
@@ -55,12 +61,12 @@
         </div>
         <button class="stone__toggle" type="button" aria-expanded="false" aria-controls="gem-back-{{ forloop.index0 }}">
           {% render 'bz-icon', name: '360' %}
-          <span>Scopri il significato</span>
+          <span class="stone__label">Significato</span>
         </button>
       </article>
     {%- endfor -%}
   </div>
-  <button id="stones-toggle" class="btn outline stones-toggle" type="button">Vedile tutte</button>
+  <button id="stones-toggle" class="btn outline stones-toggle" type="button" aria-controls="gem-grid" aria-expanded="false">Vedile tutte</button>
   <p class="disclaimer">{{ section.settings.note | escape }}</p>
 </section>
 {% schema %}
@@ -78,7 +84,10 @@
         { "value": "protezione", "label": "Protezione" },
         { "value": "amore", "label": "Amore" },
         { "value": "abbondanza", "label": "Abbondanza" },
-        { "value": "meditazione", "label": "Meditazione" }
+        { "value": "comunicazione", "label": "Comunicazione" },
+        { "value": "coraggio", "label": "Coraggio" },
+        { "value": "intuizione", "label": "Intuizione" },
+        { "value": "purificazione", "label": "Purificazione" }
       ] },
       { "type": "textarea", "id": "meaning", "label": "Significato" },
       { "type": "text", "id": "front", "label": "File fronte in assets", "default": "bz-pietra-macro-quarzo-rosa.jpg" },
