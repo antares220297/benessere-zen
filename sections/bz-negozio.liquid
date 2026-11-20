@@ -8,7 +8,7 @@
     <img src="{{ 'bz-negozio-negozio-copertina.jpg' | asset_url }}" alt="La sala del negozio: il banco col logo, l'isola centrale e gli scaffali" width="1600" height="900" loading="eager" fetchpriority="high">
     <div class="shop-hero-copy">
       <h1 id="shop-title">Il <em>negozio</em></h1>
-      <p>{{ section.settings.intro | escape }}</p>
+      <p>{{ section.settings.intro | replace: 'Via Marcello Provenzali 1 a Cento', store_address | escape }}</p>
       {% render 'bz-open-badge', variant: 'compact' %}
     </div>
   </section>
@@ -27,7 +27,7 @@
       </ul>
       <div class="bz-visit-actions">
         {% render 'bz-open-badge', variant: 'status' %}
-        <a class="btn gold" href="https://www.google.com/maps/search/?api=1&amp;query=Benessere+Zen+Via+Marcello+Provenzali+1+Cento" rel="noopener" target="_blank">{% render 'bz-nav-label', label: 'Come arrivare' %}</a>
+        <a class="btn gold" href="https://www.google.com/maps/search/?api=1&amp;query={{ store_address | url_encode }}" rel="noopener" target="_blank">{% render 'bz-nav-label', label: 'Come arrivare' %}</a>
       </div>
     </div>
   </section>

@@ -1,5 +1,5 @@
 {%- liquid
-  assign threshold = section.settings.free_shipping_threshold | default: settings.bz_free_shipping | default: 50
+  assign threshold = settings.bz_free_shipping_threshold | default: 50 | at_least: 1
   assign shop_page = pages['il-negozio']
   assign shop_url = shop_page.url | default: '/pages/il-negozio'
 -%}

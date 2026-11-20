@@ -23,7 +23,7 @@
       <div class="contact-tiles">
         <article class="contact-tile">
           <h2>{% render 'bz-icon', name: 'location_on' %}Indirizzo</h2>
-          <p class="tile-value">{{ settings.bz_address | default: 'Via Marcello Provenzali 1, 44042 Cento (FE)' }}</p>
+          <p class="tile-value">{{ settings.bz_address | default: 'Via Marcello Provenzali 1, 44042 Cento (FE)' | escape }}</p>
         </article>
         <article class="contact-tile">
           <h2>{% render 'bz-icon', name: 'call' %}Telefono</h2>

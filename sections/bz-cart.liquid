@@ -1,4 +1,4 @@
-{%- assign goal = settings.bz_free_shipping | default: 50 | times: 100 -%}
+{%- assign goal = settings.bz_free_shipping_threshold | default: 50 | at_least: 1 | times: 100 -%}
 {%- assign missing = goal | minus: cart.total_price -%}
 <section class="cart-page" aria-labelledby="cart-title">
   <h1 id="cart-title">Il tuo <em>carrello</em></h1>
@@ -8,6 +8,7 @@
   {%- else -%}
   <div class="cart-layout">
     <div class="cart-products">
+      <p class="bz-cart-error" data-cart-error role="alert" hidden></p>
       <ul class="cart-items">
         {%- for item in cart.items -%}
           {%- capture item_name -%}{% render 'bz-product-name', product: item.product %}{%- endcapture -%}
@@ -48,20 +49,18 @@
           <div class="track" role="progressbar" aria-label="Avanzamento verso la spedizione gratuita" aria-valuemin="0" aria-valuemax="{{ goal }}" aria-valuenow="{{ cart.total_price }}">
             <span style="transform:scaleX({{ cart.total_price | times: 1.0 | divided_by: goal | at_most: 1 }})"></span>
           </div>
-          <span>{{ settings.bz_free_shipping | default: 50 }}&nbsp;€</span>
+          <span>{{ settings.bz_free_shipping_threshold | default: 50 | at_least: 1 }}&nbsp;€</span>
         </div>
       </div>
       <div class="cart-total"><span>Totale</span><strong id="cart-total">{% render 'bz-money', cents: cart.total_price %}</strong></div>
       <form class="cart-checkout-form" action="{{ routes.cart_url }}" method="post">
         <button class="btn gold checkout" type="submit" name="checkout">{% render 'bz-nav-label', label: 'Vai al pagamento' %}</button>
       </form>
-      <p>Spediamo solo in Italia. Il corriere Express è {{ settings.bz_express_rate | default: '5,90' }}&nbsp;€, gratuito da {{ settings.bz_free_shipping | default: 50 }}&nbsp;€.</p>
+      <p>Spediamo solo in Italia. Il corriere Express è {{ settings.bz_express_rate | default: '5,90' | escape }}&nbsp;€, gratuito da {{ settings.bz_free_shipping_threshold | default: 50 | at_least: 1 }}&nbsp;€.</p>
       <div class="pickup-note">
         {% render 'bz-icon', name: 'storefront' %}
-        <div>
-          {% render 'bz-open-badge', variant: 'compact', linked: true %}
-          <p><strong>Ritiri un ordine?</strong> Al pagamento scegli <em>Ritiro gratuito in negozio</em>.</p>
-        </div>
+        {% render 'bz-open-badge', variant: 'compact', linked: true %}
+        <p><strong>Ritiri un ordine?</strong> Al pagamento scegli <em>Ritiro gratuito in negozio</em>.</p>
       </div>
       <p>{% render 'bz-hours', part: 'summary' %}</p>
     </aside>

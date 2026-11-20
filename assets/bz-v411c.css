@@ -1930,3 +1930,38 @@ main.bz-page-home:has(#newsletter), main.bz-page-ayurveda:has(#newsletter) { pad
 .bz-scope .bz-credits ul { display: grid; gap: 12px; padding-left: 22px; margin: 24px 0; }
 .bz-scope .bz-credits li { overflow-wrap: anywhere; }
 .bz-scope .bz-credits a { color: var(--goldl); text-decoration: underline; text-underline-offset: 3px; }
+
+.bz-header-section [data-bz-header-cart] { position: relative; }
+.bz-cart-count:not([hidden]) {
+  position: absolute;
+  inset: 2px 0 auto auto;
+  min-width: 18px;
+  min-height: 18px;
+  padding-inline: 3px;
+  border-radius: 999px;
+  background: var(--bz-gold);
+  color: var(--bz-bg);
+  font: 700 11px/18px var(--bz-font-sans);
+  text-align: center;
+  pointer-events: none;
+}
+
+@media (max-width: 340px) {
+  .bz-scope .bz-header-section header > .brand > span { font-size: 16px; white-space: nowrap; }
+  .bz-scope .bz-header-section header > .brand { gap: 4px; }
+  .bz-scope .bz-header-section header > .brand img { width: 28px; height: 28px; }
+  .bz-scope .bz-header-section header .header-actions { gap: 0; }
+}
+
+.bz-page-cart .pickup-note {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  align-items: center;
+}
+.bz-page-cart .pickup-note > svg { width: 22px; height: 22px; margin: 0; }
+.bz-page-cart .pickup-note .open-badge { margin: 0; justify-self: start; }
+.bz-page-cart .pickup-note > p { grid-column: 2; }
+.bz-scope .bz-news__card > .bz-news__heading { display: block; visibility: visible; }
+.bz-news__privacy { display: inline-flex; min-height: 44px; align-items: center; text-decoration: underline; }
+.bz-cart-error { color: var(--bz-text); font-size: 14px; overflow-wrap: anywhere; }
+.bz-ajax-error { width: 100%; margin-block: 8px; }

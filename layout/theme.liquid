@@ -80,7 +80,8 @@
     {%- liquid
       assign bz_meta = page_description
       if bz_meta == blank and template.name == 'cart'
-        assign bz_meta = 'Il carrello di Benessere Zen. Spedizione gratuita in Italia da 50 €, oppure ritiro in negozio a Cento (FE).'
+        assign shipping_threshold = settings.bz_free_shipping_threshold | default: 50 | at_least: 1
+        assign bz_meta = 'Il carrello di Benessere Zen. Spedizione gratuita in Italia da ' | append: shipping_threshold | append: ' €, oppure ritiro in negozio a Cento (FE).'
       elsif bz_meta == blank and template.name == '404'
         assign bz_meta = 'Questa pagina non c’è. Torna ai gioielli, alle pietre e alla cura di sé di Benessere Zen, negozio a Cento (FE).'
       elsif bz_meta == blank and template.name == 'collection' and collection.handle == 'all'

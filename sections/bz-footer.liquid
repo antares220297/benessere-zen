@@ -24,7 +24,7 @@
           {%- elsif block.settings.menu != blank and block.settings.menu.links.size > 0 -%}
             {%- for link in block.settings.menu.links -%}
               {%- if link.type == 'blog_link' or link.type == 'article_link' or link.url contains '/blogs/' -%}{%- continue -%}{%- endif -%}
-              <a href="{{ link.url }}">{{ link.title | escape }}</a>
+              {% render 'bz-menu-link', url: link.url, label: link.title %}
             {%- endfor -%}
           {%- else -%}
             {%- for i in (1..4) -%}
@@ -34,7 +34,7 @@
               {%- assign href = block.settings[link_key] -%}
               {%- if label != blank and href != blank -%}
                 {%- if href contains '/blogs/' -%}{%- continue -%}{%- endif -%}
-                <a href="{{ href }}">{{ label | escape }}</a>
+                {% render 'bz-menu-link', url: href, label: label %}
               {%- endif -%}
             {%- endfor -%}
           {%- endif -%}

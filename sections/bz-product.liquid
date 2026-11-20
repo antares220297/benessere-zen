@@ -13,6 +13,7 @@
 {{ 'bz-cart.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
+  assign store_address = settings.bz_address | default: 'Via Marcello Provenzali 1, 44042 Cento (FE)'
   assign current = product.selected_or_first_available_variant
   assign cents_num = current.price | modulo: 100
   assign euros = current.price | minus: cents_num | divided_by: 100
@@ -98,10 +99,11 @@
         <strong data-bz-price>{% render 'bz-money', cents: current.price %}</strong>
         <small>IVA inclusa</small>
         {%- if section.settings.shipping_note != blank -%}
-          <span class="bz-pill">{{ section.settings.shipping_note | escape }}</span>
+          <span class="bz-pill">Spedizione gratuita da {{ settings.bz_free_shipping_threshold | default: 50 | at_least: 1 }}&nbsp;€</span>
         {%- endif -%}
       </div>
-      {%- form 'product', product, class: 'bz-ajax-cart' -%}
+      {%- assign main_form_id = 'BzProductForm-' | append: section.id -%}
+      {%- form 'product', product, id: main_form_id, class: 'bz-ajax-cart' -%}
         {%- if product.has_only_default_variant -%}
           <input type="hidden" name="id" value="{{ current.id }}">
         {%- else -%}
@@ -192,16 +194,17 @@
         <div class="bz-facts">{{ fact_pills }}</div>
       {%- endif -%}
 
-      {%- assign ship_euros = settings.bz_free_shipping_threshold | default: section.settings.free_shipping | default: 50 -%}
+      {%- assign ship_euros = settings.bz_free_shipping_threshold | default: 50 | at_least: 1 -%}
       {%- assign threshold = ship_euros | times: 100 -%}
-      <div class="bz-shipbox">
-        {%- if current.price >= threshold -%}
-          <p>Con questo pezzo la <b>spedizione è gratuita</b></p>
+      {%- assign projected_total = cart.total_price | plus: current.price -%}
+      <div class="bz-shipbox" data-bz-shipping data-threshold="{{ threshold }}" data-price="{{ current.price }}">
+        {%- if projected_total >= threshold -%}
+          <p aria-live="polite">Con questo pezzo la <b>spedizione è gratuita</b></p>
           {%- assign ship_width = 100 -%}
         {%- else -%}
-          {%- assign short = threshold | minus: current.price -%}
-          <p>Ti mancano <b>{% render 'bz-money', cents: short %}</b> per la spedizione gratuita</p>
-          {%- assign ship_width = current.price | times: 100 | divided_by: threshold -%}
+          {%- assign short = threshold | minus: projected_total -%}
+          <p aria-live="polite">Con questo pezzo ti mancano <b>{% render 'bz-money', cents: short %}</b> per la spedizione gratuita</p>
+          {%- assign ship_width = projected_total | times: 100 | divided_by: threshold -%}
         {%- endif -%}
         <div class="bz-ship__track" aria-hidden="true">
           <i style="width: {{ ship_width }}%"></i>
@@ -218,21 +221,24 @@
         <p class="bz-pickup">
       {%- endif -%}
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10l2-5h12l2 5M5 10h14v9H5zM9 19v-5h6v5"/></svg>
-        Ritira <strong>gratis</strong> in negozio, Via Marcello Provenzali 1, Cento
+        Ritira <strong>gratis</strong> in negozio, {{ store_address | escape }}
       {%- if section.settings.pickup_link != blank -%}</a>{%- else -%}</p>{%- endif -%}
 
       {%- assign pair = product.metafields.custom.pairs_with.value -%}
       {%- if pair != blank and pair.id != blank -%}
+        {%- assign pair_variant = pair.first_available_variant | default: pair.selected_or_first_available_variant -%}
         {%- capture pair_name -%}{% render 'bz-product-name', product: pair %}{%- endcapture -%}
         <div class="bz-pair{% if pair.metafields.custom.nome_vetrina.value != blank %} has-nome-vetrina{% else %} is-title-fallback{% endif %}">
           {%- if pair.featured_image -%}
             {{ pair.featured_image | image_url: width: 120 | image_tag: alt: pair_name, loading: 'lazy', width: 52, height: 52 }}
           {%- endif -%}
-          <div>Si abbina a <span class="bz-pair__name">{{ pair_name | escape }}</span><small>{% render 'bz-money', cents: pair.price %}</small></div>
+          <div>Si abbina a <span class="bz-pair__name">{{ pair_name | escape }}</span><small>{% render 'bz-money', cents: pair_variant.price %}</small></div>
+          {%- if pair_variant.available -%}
           <form class="bz-ajax-cart" action="{{ routes.cart_add_url }}" method="post">
-            <input type="hidden" name="id" value="{{ pair.selected_or_first_available_variant.id }}">
+            <input type="hidden" name="id" value="{{ pair_variant.id }}">
             <button class="add bz-card__add" type="submit" aria-label="Aggiungi al carrello: {{ pair_name | escape }}">{% render 'bz-icon', name: 'add' %}</button>
           </form>
+          {%- endif -%}
         </div>
       {%- endif -%}
 
@@ -252,13 +258,13 @@
         if meta_cura != blank
           assign pietra_cura = meta_cura
         endif
-        assign ship_free = settings.bz_free_shipping_threshold | default: 50
+        assign ship_free = settings.bz_free_shipping_threshold | default: 50 | at_least: 1
       -%}
       <div class="bz-acc">
         {%- for block in section.blocks -%}
           {%- if block.type == 'detail' -%}
             {%- capture acc_body -%}
-              {%- if block.settings.title == 'Dettagli' -%}
+              {%- if block.id == 'det-1' -%}
                 {%- capture spec_table -%}
                   {%- for spec in section.blocks -%}
                     {%- if spec.type == 'spec' -%}
@@ -282,17 +288,17 @@
                 {%- if spec_table contains '<tr>' -%}
                   <table>{{ spec_table }}</table>
                 {%- endif -%}
-              {%- elsif block.settings.title == 'Nella tradizione' -%}
+              {%- elsif block.id == 'det-2' -%}
                 {%- if pietra_tradizione != blank -%}
                   <p>{{ pietra_tradizione | escape }}</p>
                 {%- endif -%}
-              {%- elsif block.settings.title == 'Come averne cura' -%}
+              {%- elsif block.id == 'det-3' -%}
                 {%- if pietra_cura != blank -%}
                   <p>{{ pietra_cura | escape }}</p>
                 {%- endif -%}
-              {%- elsif block.settings.title contains 'Spedizione' -%}
-                <p>In Italia la spedizione è gratuita da {{ ship_free }}&nbsp;€. Sotto quella cifra è Express, 5,90&nbsp;€.</p>
-                <p>Il ritiro in negozio è in Via Marcello Provenzali 1, a Cento.</p>
+              {%- elsif block.id == 'det-4' -%}
+                <p>In Italia la spedizione è gratuita da {{ ship_free }}&nbsp;€. Sotto quella cifra è Express, {{ settings.bz_express_rate | default: '5,90' | escape }}&nbsp;€.</p>
+                <p>Il ritiro in negozio è in {{ store_address | escape }}.</p>
                 <p>Hai 14 giorni dalla consegna per chiedere un reso. Il pezzo torna non indossato, con i cartellini e la confezione. Il pacco va a Via Olindo Malagodi 2, Cento. Se il reso è accettato, il rimborso arriva entro 10 giorni lavorativi. <a href="{{ shop.refund_policy.url | default: '/policies/refund-policy' }}">Informativa sui rimborsi</a></p>
               {%- elsif block.settings.text != blank -%}
                 {{ block.settings.text }}
@@ -389,7 +395,7 @@
     </article>
     <article>
       <h3>{{ section.settings.visit_title | escape }}</h3>
-      <p>{{ section.settings.visit_text | escape }}</p>
+      <p>{{ section.settings.visit_text | replace: 'via Provenzali 1', store_address | escape }}</p>
       {%- if section.settings.pickup_link != blank and section.settings.visit_link != blank -%}
         <a class="bz-picked__all" href="{{ section.settings.pickup_link }}">{{ section.settings.visit_link | escape }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       {%- endif -%}
@@ -397,14 +403,13 @@
   </div>
   {%- endif -%}
 
-  <form class="bz-sticky bz-ajax-cart" inert action="{{ routes.cart_add_url }}" method="post">
-    <input type="hidden" name="id" value="{{ current.id }}">
+  <div class="bz-sticky" inert>
     {%- if product.featured_image -%}
       {{ product.featured_image | image_url: width: 100 | image_tag: alt: '', loading: 'lazy', width: 44, height: 44 }}
     {%- endif -%}
     <span><em class="bz-sticky__name">{{ display_name | escape }}</em><b data-bz-price>{% render 'bz-money', cents: current.price %}</b></span>
-    <button type="submit"{% if current.available %} aria-label="Aggiungi {{ display_name | escape }} al carrello"{% else %} disabled{% endif %}>{% if current.available %}Aggiungi{% else %}Esaurito{% endif %}</button>
-  </form>
+    <button type="submit" form="{{ main_form_id }}"{% if current.available %} aria-label="Aggiungi {{ display_name | escape }} al carrello"{% else %} disabled{% endif %}>{% if current.available %}Aggiungi{% else %}Esaurito{% endif %}</button>
+  </div>
 </div>
 <script type="application/ld+json">
   {
@@ -422,7 +427,7 @@
   }
 </script>
 {%- liquid
-  assign bz_price = current.price | money_without_currency | replace: '.', '' | replace: ',', '.'
+  assign bz_price = current.price | divided_by: 100.0
 -%}
 <script type="application/ld+json">
   {

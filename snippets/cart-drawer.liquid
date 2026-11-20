@@ -4,7 +4,7 @@
   replaces #CartDrawer inner HTML from the same response. This markup is both paths.
 {% endcomment %}
 {%- liquid
-  assign threshold_euros = settings.bz_free_shipping_threshold | default: 50 | plus: 0
+  assign threshold_euros = settings.bz_free_shipping_threshold | default: 50 | at_least: 1
   if threshold_euros <= 0
     assign threshold_euros = 50
   endif
@@ -94,6 +94,7 @@
               {%- unless cart_ids contains pid -%}
                 {%- if upsell_count < 2 and product.available -%}
                   {%- assign upsell_count = upsell_count | plus: 1 -%}
+                  {%- assign upsell_variant = product.first_available_variant -%}
                   {%- capture upsell_name -%}{% render 'bz-product-name', product: product %}{%- endcapture -%}
                   <div class="bz-upsell">
                     <a href="{{ product.url }}">
@@ -102,8 +103,8 @@
                       {%- endif -%}
                     </a>
                     <a href="{{ product.url }}">{{ upsell_name | escape }}</a>
-                    <span>{% render 'bz-money', cents: product.price %}</span>
-                    <button type="button" class="bz-drawer__plus" data-bz-upsell-add="{{ product.selected_or_first_available_variant.id }}" aria-label="Aggiungi {{ upsell_name | escape }}">+</button>
+                    <span>{% render 'bz-money', cents: upsell_variant.price %}</span>
+                    <button type="button" class="bz-drawer__plus" data-bz-upsell-add="{{ upsell_variant.id }}" aria-label="Aggiungi {{ upsell_name | escape }}">+</button>
                   </div>
                 {%- endif -%}
               {%- endunless -%}
@@ -115,6 +116,7 @@
               {%- unless cart_ids contains pid -%}
                 {%- if upsell_count < 2 and product.available -%}
                   {%- assign upsell_count = upsell_count | plus: 1 -%}
+                  {%- assign upsell_variant = product.first_available_variant -%}
                   {%- capture upsell_name -%}{% render 'bz-product-name', product: product %}{%- endcapture -%}
                   <div class="bz-upsell">
                     <a href="{{ product.url }}">
@@ -123,8 +125,8 @@
                       {%- endif -%}
                     </a>
                     <a href="{{ product.url }}">{{ upsell_name | escape }}</a>
-                    <span>{% render 'bz-money', cents: product.price %}</span>
-                    <button type="button" class="bz-drawer__plus" data-bz-upsell-add="{{ product.selected_or_first_available_variant.id }}" aria-label="Aggiungi {{ upsell_name | escape }}">+</button>
+                    <span>{% render 'bz-money', cents: upsell_variant.price %}</span>
+                    <button type="button" class="bz-drawer__plus" data-bz-upsell-add="{{ upsell_variant.id }}" aria-label="Aggiungi {{ upsell_name | escape }}">+</button>
                   </div>
                 {%- endif -%}
               {%- endunless -%}
@@ -137,6 +139,7 @@
                 {%- unless cart_ids contains pid -%}
                 {%- if upsell_count < 2 and product.id != seed.id and product.available -%}
                   {%- assign upsell_count = upsell_count | plus: 1 -%}
+                  {%- assign upsell_variant = product.first_available_variant -%}
                   {%- capture upsell_name -%}{% render 'bz-product-name', product: product %}{%- endcapture -%}
                   <div class="bz-upsell">
                     <a href="{{ product.url }}">
@@ -145,8 +148,8 @@
                       {%- endif -%}
                     </a>
                     <a href="{{ product.url }}">{{ upsell_name | escape }}</a>
-                    <span>{% render 'bz-money', cents: product.price %}</span>
-                    <button type="button" class="bz-drawer__plus" data-bz-upsell-add="{{ product.selected_or_first_available_variant.id }}" aria-label="Aggiungi {{ upsell_name | escape }}">+</button>
+                    <span>{% render 'bz-money', cents: upsell_variant.price %}</span>
+                    <button type="button" class="bz-drawer__plus" data-bz-upsell-add="{{ upsell_variant.id }}" aria-label="Aggiungi {{ upsell_name | escape }}">+</button>
                   </div>
                 {%- endif -%}
                 {%- endunless -%}

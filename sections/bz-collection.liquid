@@ -116,25 +116,8 @@
           {%- case filter.type -%}
             {%- when 'price_range' -%}
               {%- liquid
-                assign currencies_using_comma_decimals = 'ANG,ARS,BRL,BYN,BYR,CLF,CLP,COP,CRC,CZK,DKK,EUR,HRK,HUF,IDR,ISK,MZN,NOK,PLN,RON,RUB,SEK,TRY,UYU,VES,VND' | split: ','
-                assign uses_comma_decimals = false
-                if currencies_using_comma_decimals contains cart.currency.iso_code
-                  assign uses_comma_decimals = true
-                endif
-                if filter.min_value.value
-                  if uses_comma_decimals
-                    assign price_min = filter.min_value.value | money_without_currency | replace: '.', '' | replace: ',', '.'
-                  else
-                    assign price_min = filter.min_value.value | money_without_currency | replace: ',', ''
-                  endif
-                endif
-                if filter.max_value.value
-                  if uses_comma_decimals
-                    assign price_max = filter.max_value.value | money_without_currency | replace: '.', '' | replace: ',', '.'
-                  else
-                    assign price_max = filter.max_value.value | money_without_currency | replace: ',', ''
-                  endif
-                endif
+                assign price_min = filter.min_value.value | divided_by: 100.0
+                assign price_max = filter.max_value.value | divided_by: 100.0
               -%}
               <label class="filter-price">Da <input type="number" name="{{ filter.min_value.param_name }}" min="0" step="0.01" {% if filter.min_value.value %}value="{{ price_min }}"{% endif %}></label>
               <label class="filter-price">A <input type="number" name="{{ filter.max_value.param_name }}" min="0" step="0.01" {% if filter.max_value.value %}value="{{ price_max }}"{% endif %}></label>

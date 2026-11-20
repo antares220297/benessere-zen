@@ -13,7 +13,7 @@
     endif
   endif
   assign featured = section.settings.featured_product
-  assign ship_euros = settings.bz_free_shipping_threshold | default: section.settings.shipping_amount | default: 50 | plus: 0
+  assign ship_euros = settings.bz_free_shipping_threshold | default: 50 | at_least: 1 | plus: 0
   assign tile_count = 0
   if section.settings.stat_value != blank
     assign tile_count = tile_count | plus: 1

@@ -55,6 +55,35 @@
         button.hidden = true;
       });
     });
+    var shipping = root.querySelector("[data-bz-shipping]");
+    var quantity = root.querySelector("[data-bz-atc] input[name='quantity']");
+    var currency = new Intl.NumberFormat("it-IT", { style: "currency", currency: "EUR" });
+    var cartTotal = Number(document.querySelector("[data-cart-content]")?.dataset.totalPrice || 0);
+    var variantPrice = Number(shipping.dataset.price);
+    var threshold = Number(shipping.dataset.threshold);
+
+    function updateShipping() {
+      var count = Math.max(1, Math.floor(Number(quantity.value) || 1));
+      var projected = cartTotal + variantPrice * count;
+      var missing = Math.max(0, threshold - projected);
+      var lead = count === 1 ? "Con questo pezzo" : "Con questi pezzi";
+      var text = shipping.querySelector("p");
+      var amount = document.createElement("b");
+      amount.textContent = missing ? currency.format(missing / 100) : "spedizione è gratuita";
+      if (missing) {
+        text.replaceChildren(lead + " ti mancano ", amount, " per la spedizione gratuita");
+      } else {
+        text.replaceChildren(lead + " la ", amount);
+      }
+      shipping.querySelector(".bz-ship__track i").style.width = Math.min(100, 100 * projected / threshold) + "%";
+    }
+
+    quantity.addEventListener("input", updateShipping);
+    document.addEventListener("bz:cart-updated", function (event) {
+      cartTotal = event.detail.totalPrice;
+      updateShipping();
+    });
+
     root.querySelectorAll("[data-bz-variant]").forEach(function (radio) {
       radio.addEventListener("change", function () {
         var imageId = radio.dataset.imageId || root.dataset.featuredImageId;
@@ -64,9 +93,7 @@
         if (thumb) thumb.click();
         var galleryVariant = root.querySelector("[data-bz-gallery-variant]");
         if (galleryVariant) galleryVariant.textContent = radio.nextElementSibling.textContent;
-        var stickyId = root.querySelector(".bz-sticky input[name='id']");
         var stickyButton = root.querySelector(".bz-sticky button");
-        if (stickyId) stickyId.value = radio.value;
         if (mainAdd) {
           mainAdd.disabled = radio.disabled;
           mainAdd.classList.toggle("bz-stock--soldout", radio.disabled);
@@ -80,6 +107,8 @@
         }
         var cents = Number(radio.getAttribute("data-bz-variant"));
         if (Number.isFinite(cents) && cents >= 0) {
+          variantPrice = cents;
+          updateShipping();
           var euros = Math.floor(cents / 100);
           var rest = String(cents % 100).padStart(2, "0");
           var grouped = String(euros).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -95,6 +124,7 @@
         if (!input) return;
         var next = Math.max(1, Number(input.value || 1) + Number(button.getAttribute("data-bz-qty")));
         input.value = String(next);
+        updateShipping();
       });
     });
   });

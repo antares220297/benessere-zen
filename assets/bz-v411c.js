@@ -41,11 +41,14 @@
 
   const hoursNode = q('#bz-hours');
   const hours = hoursNode ? JSON.parse(hoursNode.textContent) : { note: '', free: 50, days: ['', '', '', '', '', '', ''], exceptions: '' };
-  const parseRanges = value => String(value || '').split(',').map(part => part.trim()).filter(Boolean).map(part => {
-    const [a, b] = part.split('-');
-    const toMin = t => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
-    return [toMin(a), toMin(b)];
-  });
+  const parseRanges = value => String(value || '').split(',').flatMap(part => {
+    const range = /^(\d{1,2}):([0-5]\d)\s*-\s*(\d{1,2}):([0-5]\d)$/.exec(part.trim());
+    if (!range) return [];
+    const [, startHour, startMinute, endHour, endMinute] = range.map(Number);
+    const start = startHour * 60 + startMinute;
+    const end = endHour * 60 + endMinute;
+    return startHour < 24 && end <= 1440 && start < end ? [[start, end]] : [];
+  }).sort((a, b) => a[0] - b[0]);
   const H = hours.days.map(parseRanges);
   const exceptions = String(hours.exceptions || '').split('\n').map(line => line.trim()).filter(Boolean);
   const DAYS = ['domenica', 'lunedì', 'martedì', 'mercoledì', 'giovedì', 'venerdì', 'sabato'];
@@ -71,9 +74,13 @@
     }
     return parts(new Date());
   }
+  function shiftDate(now, offset) {
+    const date = new Date(Date.UTC(now.y, now.mo - 1, now.d + offset));
+    return { day: date.getUTCDay(), y: date.getUTCFullYear(), mo: date.getUTCMonth() + 1, d: date.getUTCDate() };
+  }
   function rangesFor(now) {
     const key = `${now.y}-${String(now.mo).padStart(2, '0')}-${String(now.d).padStart(2, '0')}`;
-    const hit = exceptions.find(line => line.startsWith(key));
+    const hit = exceptions.find(line => line === key || line.startsWith(key + ' '));
     if (hit) {
       const rest = hit.slice(key.length).trim();
       if (!rest || rest === 'closed' || rest === 'chiuso') return [];
@@ -100,10 +107,9 @@
     let when = 'oggi';
     if (!next) {
       for (let offset = 1; offset <= 7; offset++) {
-        const nextDay = (day + offset) % 7;
-        const probe = { ...now, day: nextDay };
-        const nextRanges = nextDay === day ? ranges : (H[nextDay] || []);
-        if (nextRanges.length) { next = nextRanges[0]; when = DAYS[nextDay]; break; }
+        const date = shiftDate(now, offset);
+        const nextRanges = rangesFor(date);
+        if (nextRanges.length) { next = nextRanges[0]; when = DAYS[date.day]; break; }
       }
     }
     if (!next) return { open: false, closing: false, state: hours.note || 'Orari in arrivo', more: '', text: hours.note, key: 'none', day, min, ranges };
@@ -138,9 +144,10 @@
   const chartDays = new WeakMap();
   function buildChart(el, now) {
     const first = !chartDays.has(el);
+    const monday = shiftDate(now, -((now.day + 6) % 7));
     const columns = [1, 2, 3, 4, 5, 6, 0].map((day, index) => {
       const today = day === now.day;
-      const ranges = H[day] || [];
+      const ranges = rangesFor(shiftDate(monday, index));
       const bars = ranges.map(([start, end], slot) => {
         const label = fmt(start) + '–' + fmt(end);
         return '<div class="bw-slot" tabindex="0" aria-label="' + DAYS[day] + ': ' + label + '" style="--bw-top:' + ((start - 540) / 660 * 100) + '%;--bw-size:' + ((end - start) / 660 * 100) + '%;--bw-delay:' + ((index * 2 + slot) * 40) + 'ms"><span class="bw-bar"></span><span class="bw-time">' + label + '</span></div>';
@@ -149,12 +156,12 @@
       return '<div class="bw-day' + (today ? ' bw-today' : '') + '"><span class="bw-name">' + SHORT[day] + '</span><div class="bw-track">' + bars + empty + (today ? '<span class="bw-now" hidden><span></span></span>' : '') + '</div></div>';
     }).join('');
     el.innerHTML = '<p class="bw-heading">Questa settimana</p><div class="bw-plot" role="img" aria-label="Orari settimanali. ' + (q('[data-hours-summary]')?.textContent || hours.note) + '"><div class="bw-guides" aria-hidden="true">' + [540, 780, 1020, 1200].map(m => '<span style="--bw-guide:' + ((m - 540) / 660 * 100) + '%"><i>' + fmt(m) + '</i></span>').join('') + '</div><div class="bw-days">' + columns + '</div></div>';
-    chartDays.set(el, now.day);
+    chartDays.set(el, now.d);
     el.classList.add('bw-ready');
   }
   function paintCharts(now) {
     qa('[data-week-chart]').forEach(el => {
-      if (chartDays.get(el) !== now.day) buildChart(el, now);
+      if (chartDays.get(el) !== now.d) buildChart(el, now);
       const line = q('.bw-now', el);
       if (!line) return;
       line.hidden = now.min < 540 || now.min > 1200;
@@ -216,6 +223,7 @@
     menuSection.classList.toggle('is-menu-open', open);
     document.body.classList.toggle('menu-locked', open);
     mobile.toggleAttribute('inert', !open);
+    q('.brand', menuHeader)?.toggleAttribute('inert', open);
     mobile.setAttribute('aria-hidden', String(!open));
     toggle.setAttribute('aria-expanded', String(open));
     toggle.setAttribute('aria-label', open ? 'Chiudi menu' : 'Apri menu');
@@ -256,17 +264,20 @@
         q('summary', openGroup)?.focus();
       }
     }
-    if (event.key !== 'Tab' || !isMenuOpen()) return;
-    const items = qa('a[href], button:not(:disabled), summary', menuSection)
-      .filter(item => !item.closest('.cart-overlay') && item.getClientRects().length &&
-        getComputedStyle(item).visibility === 'visible' && (item.matches('summary') || !item.closest('details:not([open])')));
+    if (event.key === 'Tab' && isMenuOpen()) trapTab(event, menuSection);
+  });
+
+  function trapTab(event, root) {
+    const items = qa('a[href], button:not(:disabled), summary, input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [tabindex="0"]', root)
+      .filter(item => !item.closest('[inert]') && item.getClientRects().length &&
+        getComputedStyle(item).visibility === 'visible');
     const first = items[0], last = items[items.length - 1];
     const active = document.activeElement;
     if (!items.includes(active) || (event.shiftKey ? active === first : active === last)) {
       event.preventDefault();
       (event.shiftKey ? last : first)?.focus();
     }
-  });
+  }
 
   const overlay = q('.cart-overlay');
   const drawer = q('.drawer');
@@ -290,7 +301,8 @@
       count.hidden = itemCount < 1;
     }
     const label = q('[data-bz-header-cart]');
-    if (label) label.setAttribute('aria-label', 'Carrello, ' + itemCount + (itemCount === 1 ? ' pezzo' : ' pezzi'));
+    if (label) label.setAttribute('aria-label', label.dataset.bzHeaderCart + (itemCount ? ', ' + itemCount + (itemCount === 1 ? ' pezzo' : ' pezzi') : ''));
+    document.dispatchEvent(new CustomEvent('bz:cart-updated', { detail: { totalPrice: Number(updated.dataset.totalPrice) } }));
   }
   function paintShipping(box, cents) {
     if (!box) return;
@@ -305,6 +317,7 @@
   }
   function openCart() {
     if (!overlay) return;
+    if (!overlay.hidden) return;
     if (isMenuOpen()) setMobileMenu(false);
     returnFocus = document.activeElement;
     overlay.hidden = false;
@@ -315,36 +328,72 @@
   qa('[data-cart-open]').forEach(button => button.addEventListener('click', openCart));
   qa('[data-cart-close]').forEach(button => button.addEventListener('click', closeCart));
   document.addEventListener('keydown', event => {
-    if (event.key === 'Escape' && overlay && !overlay.hidden) closeCart();
+    if (!drawer || overlay.hidden) return;
+    if (event.key === 'Escape') closeCart();
+    if (event.key === 'Tab') trapTab(event, drawer);
   });
-  async function addItems(items) {
-    const response = await fetch(routes.add, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({ items })
-    });
-    if (!response.ok) return false;
-    await refreshCart().catch(() => {});
-    openCart();
-    return true;
+
+  let cartQueue = Promise.resolve();
+  function queueCart(task) {
+    const operation = cartQueue.then(task);
+    cartQueue = operation.catch(() => {});
+    return operation;
   }
-  document.addEventListener('submit', async event => {
+
+  function addItems(items) {
+    return queueCart(async () => {
+      const response = await fetch(routes.add, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ items })
+      });
+      if (!response.ok) return false;
+      await refreshCart().catch(() => {});
+      openCart();
+      return true;
+    });
+  }
+
+  const adding = new WeakSet();
+  async function submitItems(owner, anchor, items) {
+    if (adding.has(owner)) return;
+    adding.add(owner);
+    owner.setAttribute('aria-busy', 'true');
+    qa('.bz-ajax-error', owner.parentElement).forEach(message => { message.hidden = true; });
+    const sibling = anchor.nextElementSibling;
+    const status = sibling?.matches('.bz-ajax-error') ? sibling : document.createElement('p');
+    status.className = 'bz-cart-error bz-ajax-error';
+    status.setAttribute('role', 'alert');
+    status.hidden = true;
+    if (!status.isConnected) anchor.after(status);
+    try {
+      if (!await addItems(items)) {
+        status.textContent = 'Impossibile aggiungere al carrello. Verifica la disponibilità e riprova.';
+        status.hidden = false;
+      }
+    } catch {
+      status.textContent = 'Impossibile confermare l’aggiunta. Controlla il carrello prima di riprovare.';
+      status.hidden = false;
+    } finally {
+      adding.delete(owner);
+      owner.removeAttribute('aria-busy');
+    }
+  }
+
+  document.addEventListener('submit', event => {
     const form = event.target;
     if (!(form instanceof HTMLFormElement) || !form.classList.contains('bz-ajax-cart')) return;
     event.preventDefault();
     const data = new FormData(form);
     const id = Number(data.get('id'));
     const quantity = Math.max(1, Number(data.get('quantity') || 1));
-    if (!id) { form.submit(); return; }
-    let added = false;
-    try { added = await addItems([{ id, quantity }]); } catch (error) { added = false; }
-    if (!added) form.submit();
+    if (id) submitItems(form, event.submitter?.closest('.bz-sticky') ? event.submitter : form, [{ id, quantity }]);
   });
   document.addEventListener('click', event => {
     const button = event.target.closest('[data-bz-add]');
     if (!button || button.disabled) return;
     event.preventDefault();
-    addItems([{ id: Number(button.dataset.bzAdd), quantity: 1 }]);
+    submitItems(button, button.closest('.product-bottom') || button, [{ id: Number(button.dataset.bzAdd), quantity: 1 }]);
   });
 
   const hero = q('[data-bz-hero]');
@@ -526,7 +575,7 @@
   qa('[data-add-month]').forEach(button => button.addEventListener('click', () => {
     const panel = button.closest('[data-month-panel]');
     const items = qa('[data-bz-add]', panel).filter(node => !node.disabled).map(node => ({ id: Number(node.dataset.bzAdd), quantity: 1 }));
-    if (items.length) addItems(items);
+    if (items.length) submitItems(panel, button, items);
   }));
   qa('[data-birthstones]').forEach(root => {
     const row = q('.bz-pills', root);
@@ -661,8 +710,11 @@
     if (!link.href || link.getAttribute('aria-busy') === 'true') return;
     link.setAttribute('aria-busy', 'true');
     try {
-      const html = await fetch(link.href).then(r => r.text());
-      const doc = new DOMParser().parseFromString(html, 'text/html');
+      const response = await fetch(link.href);
+      if (!response.ok) throw new Error('Caricamento');
+      const doc = new DOMParser().parseFromString(await response.text(), 'text/html');
+      if (!q('[data-grid]', doc)) throw new Error('Griglia mancante');
+      link.textContent = 'Carica altri';
       const grid = q('[data-grid]');
       doc.querySelectorAll('[data-grid] .product').forEach(card => grid?.append(card));
       const next = doc.querySelector('[data-load]');
@@ -675,6 +727,8 @@
       const bar = q('[data-bar]');
       if (bar && shown && of) bar.style.transform = 'scaleX(' + (Number(shown.textContent) / Number(of.textContent) || 0) + ')';
       if (next) link.href = next.href; else link.hidden = true;
+    } catch {
+      link.textContent = 'Riprova';
     } finally {
       link.removeAttribute('aria-busy');
     }
@@ -682,18 +736,54 @@
 
   qa('[data-sort]').forEach(select => select.addEventListener('change', () => select.form?.requestSubmit()));
 
-  qa('.cart-item [data-delta]').forEach(button => button.addEventListener('click', async () => {
+  let pendingLines = 0;
+  let cartChanged = false;
+  let cartFailed = false;
+  document.addEventListener('click', event => {
+    const button = event.target.closest('.cart-page [data-delta], .cart-page .remove-item');
+    if (!button) return;
     const item = button.closest('.cart-item');
-    const key = item?.dataset.key;
-    const qty = Number(item?.dataset.quantity || 1) + Number(button.dataset.delta);
-    await fetch(routes.change, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ id: key, quantity: Math.max(0, qty) }) });
-    location.reload();
-  }));
-  qa('.remove-item').forEach(button => button.addEventListener('click', async () => {
-    const key = button.closest('.cart-item')?.dataset.key;
-    await fetch(routes.change, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ id: key, quantity: 0 }) });
-    location.reload();
-  }));
+    const status = q('[data-cart-error]');
+    if (pendingLines === 0) {
+      status.hidden = true;
+      cartFailed = false;
+    }
+    pendingLines++;
+    queueCart(async () => {
+      const current = Number(item.dataset.quantity);
+      if (!current) return;
+      const quantity = button.matches('.remove-item') ? 0 : Math.max(0, current + Number(button.dataset.delta));
+      const response = await fetch(routes.change, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ id: item.dataset.key, quantity })
+      });
+      if (!response.ok) throw new Error('Modifica rifiutata');
+      const cart = await response.json();
+      const line = cart.items.find(entry => entry.key === item.dataset.key);
+      item.dataset.quantity = line?.quantity || 0;
+      if (line) {
+        q('output', item).textContent = line.quantity;
+        q('[data-delta="-1"]', item).disabled = line.quantity <= 1;
+        q('.item-total', item).textContent = euro(line.final_line_price);
+      } else {
+        item.remove();
+      }
+      q('#cart-total').textContent = euro(cart.total_price);
+      paintShipping(q('.cart-page [data-shipping]'), cart.total_price);
+      cartChanged = true;
+    }).catch(() => {
+      cartFailed = true;
+      status.textContent = 'Impossibile aggiornare la quantità. Riprova.';
+      status.hidden = false;
+    }).finally(() => {
+      pendingLines--;
+      if (pendingLines || !cartChanged) return;
+      cartChanged = false;
+      if (cartFailed) refreshCart().catch(() => {});
+      else location.reload();
+    });
+  });
 
   const footerMedia = matchMedia('(max-width:600px)');
   const adjustFooter = () => qa('footer details').forEach(details => { if (footerMedia.matches) details.open = false; else details.open = true; });

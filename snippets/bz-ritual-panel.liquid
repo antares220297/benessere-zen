@@ -8,7 +8,7 @@
     assign display_total = bundle_variant.price
     assign savings = bundle_variant.compare_at_price | minus: bundle_variant.price
   endif
-  assign goal = settings.bz_free_shipping | default: 50 | times: 100
+  assign goal = settings.bz_free_shipping_threshold | default: 50 | at_least: 1 | times: 100
   assign progress = display_total | at_most: goal
   assign missing = goal | minus: progress
 -%}

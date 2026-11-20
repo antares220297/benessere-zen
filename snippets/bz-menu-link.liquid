@@ -1,0 +1,14 @@
+{%- liquid
+  assign link_path = url | split: '?' | first
+  assign link_handle = link_path | split: '/' | last
+  case link_handle
+    when 'pietre-grezze', 'pietre-burattate'
+      assign label = 'Pietre e cristalli'
+      assign url = collections['pietre-burattate'].url | default: '/collections/pietre-burattate'
+    when 'incensi-e-brucia-incensi'
+      assign label = 'Incensi e smudge'
+    when 'il-negozio'
+      assign label = 'Il negozio'
+  endcase
+-%}
+<a{% if top %} class="bz-menu-top"{% endif %} href="{{ url | escape }}"{% if active or request.path == url %} aria-current="page"{% endif %}>{{ label | escape }}</a>
