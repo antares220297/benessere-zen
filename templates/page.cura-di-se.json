@@ -5,8 +5,8 @@
       "settings": {
         "ayurveda_link": "/pages/cose-layurveda",
         "viso_products": [
-          "siero-viso-rimpolpante-ebrand-cosmetics-30-ml-copia",
-          "crema-viso-purificante-ebrand-cosmetics-50-ml-copia",
+          "gel-detergente-viso-purificante-ebrand-200-ml",
+          "crema-gel-viso-purificante-ebrand-50-ml",
           "detergente-delicato-100-ml-ebrand-cosmetics",
           "siero-viso-rimpolpante-30-ml-ebrand-cosmetics"
         ],
@@ -90,7 +90,7 @@
           "settings": {
             "mode": "0",
             "step": "0",
-            "product": "siero-viso-rimpolpante-ebrand-cosmetics-30-ml-copia"
+            "product": "gel-detergente-viso-purificante-ebrand-200-ml"
           }
         },
         "st1": {
@@ -114,7 +114,7 @@
           "settings": {
             "mode": "1",
             "step": "0",
-            "product": "siero-viso-rimpolpante-ebrand-cosmetics-30-ml-copia"
+            "product": "gel-detergente-viso-purificante-ebrand-200-ml"
           }
         },
         "st4": {

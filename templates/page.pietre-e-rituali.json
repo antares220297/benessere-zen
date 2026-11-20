@@ -43,7 +43,7 @@
             "text": "L’ametista, in molte pratiche, è la pietra di febbraio e si tiene vicina durante la meditazione. La tradizione la associa alla quiete e a un pensiero più raccolto. In negozio la trovi grezza o burattata, da scegliere con calma.",
             "products": [
               "ametista",
-              "pietre-burattate-ametista-1"
+              "pietre-burattate-ametista"
             ]
           }
         },
@@ -97,7 +97,7 @@
             "stone": "Pietra di luna",
             "text": "La pietra di luna, nella tradizione, è la pietra di giugno. Si lega ai cicli lunari e a un ascolto più intimo di sé. In molte pratiche si porta addosso nelle fasi di passaggio.",
             "products": [
-              "pietra-di-luna-arcobaleno-4-varianti-1",
+              "pietra-di-luna-arcobaleno-4-varianti",
               "braccialetto-pierre-de-lune-blanche",
               "ciondolo-in-pietra-di-luna-bianca-grezza"
             ]
@@ -250,7 +250,7 @@
             "name": "Ametista",
             "wear_label": "Bracciale",
             "rough": "ametista",
-            "tumbled": "pietre-burattate-ametista-1",
+            "tumbled": "pietre-burattate-ametista",
             "worn": "bracciale-ametista-naturale"
           }
         },

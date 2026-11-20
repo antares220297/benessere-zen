@@ -14,7 +14,7 @@
         "rotation_collection": "gioielli-con-pietre",
         "slide_2_products": [
           "epidoto-4-varianti",
-          "pietra-di-luna-arcobaleno-4-varianti-1",
+          "pietra-di-luna-arcobaleno-4-varianti",
           "giada"
         ],
         "slide_2_link": "/collections/all?sort_by=created-descending",
@@ -361,7 +361,7 @@
               "acquamarina",
               "pietre-burattate-amazzonite",
               "amazzonite",
-              "pietre-burattate-ametista-1"
+              "pietre-burattate-ametista"
             ]
           }
         },
@@ -371,7 +371,7 @@
             "label": "Novità",
             "products": [
               "epidoto-4-varianti",
-              "pietra-di-luna-arcobaleno-4-varianti-1",
+              "pietra-di-luna-arcobaleno-4-varianti",
               "giada",
               "kunzite",
               "opale-blu"
@@ -596,13 +596,13 @@
         "products": [
           "portacandela-mano-con-loto-color-oro",
           "ciondolo-a-goccia-in-corniola",
-          "candele-da-tavola-profumate-chakra-set-da-7-3",
+          "candele-profumate-a-stelo-7-chakra",
           "portacandela-in-vetro-smerigliato-interno-metallizzato-mystical-albero-della-vita"
         ],
         "heading": "Regali",
         "heading_accent": "sotto 25 €",
         "button_label": "Vedi i regali",
-        "product_labels": "portacandela-mano-con-loto-color-oro|Portacandela mano dorata, fiore di loto\nciondolo-a-goccia-in-corniola|Ciondolo in corniola, goccia\ncandele-da-tavola-profumate-chakra-set-da-7-3|Candele profumate a stelo, 7 Chakra\nportacandela-in-vetro-smerigliato-interno-metallizzato-mystical-albero-della-vita|Portacandela in vetro, Albero della Vita mystical"
+        "product_labels": "portacandela-mano-con-loto-color-oro|Portacandela mano dorata, fiore di loto\nciondolo-a-goccia-in-corniola|Ciondolo in corniola, goccia\ncandele-profumate-a-stelo-7-chakra|Candele profumate a stelo, 7 Chakra\nportacandela-in-vetro-smerigliato-interno-metallizzato-mystical-albero-della-vita|Portacandela in vetro, Albero della Vita mystical"
       }
     },
     "bz_store": {
