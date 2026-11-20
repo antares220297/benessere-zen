@@ -188,7 +188,7 @@
         endif
       -%}
       {%- capture chip -%}
-        <button class="chip" type="button" data-bz-chip="{{ key }}" data-count="{{ shown }}" aria-pressed="false">{{ label | escape }} <span class="chip-count">{{ count }}</span></button>
+        <button class="filter-group-option" type="button" data-bz-chip="{{ key }}" data-count="{{ shown }}" aria-pressed="false">{{ label | escape }} <small>{{ count }}</small></button>
       {%- endcapture -%}
       {%- assign chips = chips | append: chip -%}
       {% render 'bz-collection-group', id: key, title: label, count: count, shown: shown, cards: cards, child_url: child_url %}

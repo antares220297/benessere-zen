@@ -156,33 +156,21 @@
 .plp .plp-intro p{margin:0;font-size:15px}
 .plp .plp-count{margin-top:6px!important;font-size:13px!important;color:var(--goldl)!important;letter-spacing:.04em}
 
-/* 2-3. pill sottocategorie + barra strumenti */
-.plp .plp-controls{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:18px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.plp .chips-scroll{min-width:0;flex:1 1 auto;overflow-x:auto;scrollbar-width:none;margin:-4px;padding:4px}
-.plp .chips-scroll::-webkit-scrollbar{display:none}
-.plp .chips{display:flex;gap:10px;width:max-content}
-.plp .chip{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 20px;border:1px solid var(--line2);border-radius:999px;font-size:14px;color:var(--ivory);white-space:nowrap;background:transparent;transition:background-color var(--t-ui,240ms),color var(--t-ui,240ms),border-color var(--t-ui,240ms)}
-.plp .chip small{font-size:12px;color:var(--ivory2)}
-.plp .chip:hover{border-color:var(--gold)}
-.plp .chip.zero:not([aria-pressed=true]){border-style:dashed;color:var(--ivory2)}
-.plp .chip[aria-pressed=true]{background:var(--ivory);border-color:var(--ivory);color:var(--bg)}
-.plp .chip[aria-pressed=true] small{color:#4d463c}
-.plp .toolbar{display:flex;align-items:center;gap:10px;flex:none}
-.plp .tool-btn,.plp .sort,.plp .sort select{width:auto;flex:none}
-.plp .tool-btn,.plp .sort select{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 12px;border:1px solid var(--line2);border-radius:999px;font-size:14px;color:var(--ivory);background:transparent}
-.plp .tool-btn{border-color:var(--gold)}
-.plp .sort select:hover,.plp .sort select:focus{border-color:var(--line2)}
-.plp .tool-btn .ico{width:20px;height:20px}
-.plp .tool-badge{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:var(--gold);color:#17140f;font-size:12px;font-weight:600}
-.plp .sort{display:inline-flex;align-items:center;gap:10px;font-size:13px;color:var(--ivory2)}
-.plp .sort select{appearance:none;-webkit-appearance:none;padding-inline-end:32px;font:inherit;font-size:14px;color:var(--ivory2);cursor:pointer;background:transparent}
-.plp .sort{position:relative}
-.plp .sort:after{content:'';position:absolute;inset-inline-end:8px;top:50%;width:18px;height:18px;margin-top:-9px;background:url("bz-ms3-expand-ivory2.svg") center/contain no-repeat;pointer-events:none}
+/* Barra strumenti PLP */
+html .bz-scope.plp section.plp-controls{display:flex;flex-direction:row;align-items:center;padding:0 0 12px;border-bottom:1px solid var(--line)}
+html .bz-scope.plp section.plp-controls>.toolbar{display:flex;flex:1 1 auto;min-width:0;align-items:center;justify-content:space-between;gap:12px}
+html .bz-scope.plp .toolbar .tool-btn{display:inline-flex;flex:none;align-items:center;gap:8px;min-height:0;height:40px;padding:0 18px;border:1px solid var(--gold);border-radius:999px;font-size:14px;color:var(--ivory);background:transparent;white-space:nowrap}
+.plp .tool-btn .ico{width:20px;height:20px;flex:none}
+.plp .sort{position:relative;display:inline-flex;align-items:center;gap:4px;min-width:0;font-size:14px;color:var(--ivory2);text-align:right}
+.plp .sort-value{color:var(--ivory)}
+.plp .sort::after{content:'';flex:none;width:18px;height:18px;background:url("bz-ms3-expand-ivory2.svg") center/contain no-repeat;pointer-events:none}
+.plp .sort select{position:absolute;inset:0;inline-size:stretch;block-size:stretch;margin:0;opacity:0;cursor:pointer}
 .plp .sort select option{background:var(--card);color:var(--ivory)}
-.plp .sort select:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
+.plp .sort:has(select:focus-visible){outline:2px solid var(--gold);outline-offset:4px}
 
 /* filtri attivi */
 .plp .active-filters{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding-top:18px}
+.plp .active-filters:empty{display:none}
 .plp .afchip{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 10px 0 16px;border-radius:999px;background:var(--card2);border:1px solid var(--line);font-size:13px;color:var(--ivory)}
 .plp .afchip .ico{width:18px;height:18px;opacity:.75}
 .plp .afchip:hover{border-color:var(--gold)}
@@ -190,7 +178,7 @@
 .plp .af-clear{min-height:40px;padding:0 8px;font-size:13px;color:var(--goldl);text-decoration:underline;text-underline-offset:3px}
 
 /* 4. griglia */
-.plp .plp-results{padding-top:clamp(28px,3vw,44px)}
+.plp .plp-results{padding-top:clamp(12px,1.25vw,18px)}
 .plp .pgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:clamp(12px,1.9vw,28px);row-gap:clamp(22px,2.8vw,44px)}
 @media(min-width:1000px){.plp .pgrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(min-width:1280px){.plp .pgrid{grid-template-columns:repeat(4,minmax(0,1fr))}}
@@ -237,6 +225,10 @@ body.locked{overflow:hidden}
 .plp .filter-option{display:grid;grid-template-columns:20px minmax(0,1fr);align-items:center;gap:var(--bz-sp-12);min-height:var(--bz-control-h);cursor:pointer}
 .plp .filter-option input[type=checkbox]{position:static;appearance:auto;-webkit-appearance:checkbox;width:20px;height:20px;margin:0;accent-color:var(--bz-gold)}
 .plp .filter-option small{color:var(--bz-text-3)}
+.plp .filter-group-option{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:var(--bz-control-h);padding:0 10px;border-radius:4px;text-align:start;color:inherit}
+.plp .filter-group-option small{color:var(--bz-text-3)}
+.plp .filter-group-option:hover,.plp .filter-group-option[aria-pressed=true]{background:var(--card2)}
+.plp .filter-group-option[aria-pressed=true]{color:var(--ivory);box-shadow:inset 2px 0 var(--gold)}
 .plp .filter-option:has(input:disabled){color:var(--bz-text-3);cursor:default}
 .plp .filters-top{display:flex;align-items:center;justify-content:space-between;padding:22px 24px 18px 28px;border-bottom:1px solid var(--line)}
 .plp .filters-top h2{font-size:32px;margin:0}
@@ -287,24 +279,9 @@ body.locked{overflow:hidden}
  .plp .plp-head-row{flex-direction:column;align-items:flex-start;gap:10px}
  .plp .plp-intro{text-align:left;padding:0;max-width:60ch;text-wrap:pretty}
 }
-@media(min-width:1024px){
- html .bz-scope.plp section.plp-controls{flex-direction:row;flex-wrap:wrap;align-items:center;row-gap:10px}
- html .bz-scope.plp section.plp-controls>.chips-scroll{flex:1 1 min-content;min-width:0}
- html .bz-scope.plp section.plp-controls>.toolbar{justify-content:flex-end;margin-inline-start:auto}
-}
-@media(max-width:1023px){
- .plp .plp-controls{flex-direction:column;align-items:stretch;gap:14px}
- .plp .toolbar{align-self:flex-start;max-width:100%}
-}
 @media(max-width:767px){
  .plp .plp-head-row{flex-direction:column;align-items:flex-start;gap:10px}
  .plp .plp-intro p{font-size:16px;line-height:1.55}
- .plp .chips-scroll{overflow-x:auto;margin:-4px calc(-1 * var(--side));padding:4px var(--side);scroll-padding-inline:var(--side);clip-path:inset(0 var(--side))}
- .plp .chip{padding:0 16px}
- .plp section.plp-controls>.toolbar{display:flex;flex-wrap:nowrap;justify-content:flex-start}
- .plp section.plp-controls .sort{width:auto;min-width:0;flex-shrink:1}
- .plp section.plp-controls .sort select{width:auto;max-width:100%}
- .plp .sort>span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
  .plp .pcard{padding:6px}
  .plp .pc-well img{width:84%;height:84%}
  .plp .pcard .pc-name{font-size:15.5px;margin:12px 4px 0}
@@ -1316,8 +1293,6 @@ main.bz-page-home>.shopify-section .category-row{padding-top:39px}
 .bz-page-pietre-e-rituali .compare-description,.bz-page-pietre-e-rituali .compare-links{margin:16px 0 0;font-size:14px;color:var(--ivory2)}
 .bz-page-pietre-e-rituali .compare-links a{margin-right:18px;color:var(--gold)}
 
-.plp .chip.is-on{background:var(--ivory);color:var(--bg)}
-.plp .chip-count{margin-left:4px;opacity:.72}
 
 .bz-page-contact h1 em,.bz-page-contact .contact-form h2 em{color:#c9a96e;font-style:italic}
 .bz-page-contact .contatti .fields{display:grid;grid-template-columns:1fr 1fr}
@@ -1746,9 +1721,7 @@ main.bz-page-home:has(#newsletter), main.bz-page-ayurveda:has(#newsletter) { pad
 .plp .bz-grouped-plp .plp-group-link { display: inline-flex; align-items: center; min-height: 44px; margin-top: 12px; }
 .plp .bz-grouped-plp .plp-pagination { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 12px; }
 @media (min-width: 1024px) {
-  .plp .bz-grouped-plp .chips-scroll { overflow: visible; }
-  .plp .bz-grouped-plp .chips { flex-wrap: wrap; width: auto; }
-  .plp .bz-grouped-plp .plp-groups { gap: 64px; margin-top: 24px; }
+  .plp .bz-grouped-plp .plp-groups { gap: 64px; }
   .plp .bz-grouped-plp .plp-group-head h2 { font-size: 24px; }
 }
 

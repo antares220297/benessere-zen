@@ -119,61 +119,14 @@
 {%- paginate collection.products by per_page -%}
   <form method="get" action="{{ collection.url }}">
     <section class="plp-controls" aria-label="Filtra e ordina">
-      {%- if grouped -%}
-        <div class="chips-scroll" data-group-chips hidden>
-          <div class="chips" role="group" aria-label="Gruppi di prodotti">
-            <button class="chip" type="button" data-bz-chip="all" data-count="{{ visible_total }}" aria-pressed="true">Tutti <span class="chip-count">{{ collection.products.size }}</span></button>
-            {{ group_output[2] }}
-          </div>
-        </div>
-      {%- else -%}
-      <div class="chips-scroll">
-        <div class="chips" role="group" aria-label="Tipo">
-          {%- liquid
-            assign type_filter = nil
-            assign type_active = false
-            for filter in collection.filters
-              if filter.param_name == 'filter.p.product_type'
-                assign type_filter = filter
-                if filter.active_values.size > 0
-                  assign type_active = true
-                endif
-                break
-              endif
-            endfor
-          -%}
-          {%- if type_active -%}
-            <a class="chip" href="{{ type_filter.url_to_remove | escape }}">Tutti</a>
-          {%- else -%}
-            <span class="chip is-on" aria-current="true">Tutti</span>
-          {%- endif -%}
-          {%- if type_filter -%}
-            {%- for value in type_filter.values -%}
-              <a class="chip{% if value.active %} is-on{% endif %}" href="{% if value.active %}{{ value.url_to_remove }}{% else %}{{ value.url_to_add }}{% endif %}">{{ value.label | escape }} <span class="chip-count">{{ value.count }}</span></a>
-            {%- endfor -%}
-          {%- else -%}
-            {%- for type in collection.all_types -%}
-              <a class="chip" href="{{ collection.url }}?filter.p.product_type={{ type | url_encode }}">{{ type | escape }}</a>
-            {%- endfor -%}
-          {%- endif -%}
-          {%- for block in section.blocks -%}
-            {%- if block.type == 'chip' -%}
-              {%- assign show = block.settings.show_on -%}
-              {%- if show == blank or show == collection.handle -%}
-                {%- assign chip_collection = collections[block.settings.collection] -%}
-                {%- if chip_collection.title != blank -%}
-                  <a class="chip" href="{{ chip_collection.url }}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>
-                {%- endif -%}
-              {%- endif -%}
-            {%- endif -%}
-          {%- endfor -%}
-        </div>
-      </div>
-      {%- endif -%}
       <div class="toolbar">
-        <button class="tool-btn" type="button" data-filters-open aria-haspopup="dialog" aria-controls="filters-{{ section.id }}" aria-expanded="false">Filtri</button>
-        <label class="sort"><span>Ordina</span>
-          <select name="sort_by" data-sort>
+        <button class="tool-btn" type="button" data-filters-open aria-haspopup="dialog" aria-controls="filters-{{ section.id }}" aria-expanded="false">
+          <span class="ico ico-tune" aria-hidden="true"></span>
+          <span data-filters-label>Filtri</span>
+        </button>
+        <label class="sort">
+          <span aria-hidden="true">Ordina: <span class="sort-value">{{ collection.sort_options | where: 'value', sort_by | map: 'name' | first | escape }}</span></span>
+          <select name="sort_by" data-sort aria-label="Ordina">
             {%- for option in collection.sort_options -%}
               <option value="{{ option.value }}" {% if option.value == sort_by %}selected{% endif %}>{{ option.name | escape }}</option>
             {%- endfor -%}
@@ -194,8 +147,17 @@
       {%- endfor -%}
     </div>
     <dialog class="filters" id="filters-{{ section.id }}" aria-labelledby="filters-title-{{ section.id }}">
-      <div class="filters-top"><h2 id="filters-title-{{ section.id }}">Filtri</h2><button class="icon-btn" type="button" data-filters-close autofocus aria-label="Chiudi filtri">{% render 'bz-icon', name: 'close' %}</button></div>
+      <div class="filters-top"><h2 id="filters-title-{{ section.id }}">Filtri</h2><button class="icon-btn" type="button" data-filters-close aria-label="Chiudi filtri">{% render 'bz-icon', name: 'close' %}</button></div>
       <div class="filters-body">
+      {%- if grouped -%}
+        <fieldset class="fgroup">
+          <legend>Tipologia</legend>
+          <div class="filter-options" data-group-chips>
+            <button class="filter-group-option" type="button" data-bz-chip="all" data-count="{{ visible_total }}" aria-pressed="true">Tutti <small>{{ collection.products.size }}</small></button>
+            {{ group_output[2] }}
+          </div>
+        </fieldset>
+      {%- endif -%}
       {%- for filter in collection.filters -%}
         <fieldset class="fgroup">
           <legend>{{ filter.label | escape }}</legend>
