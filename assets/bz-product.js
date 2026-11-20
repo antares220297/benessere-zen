@@ -15,8 +15,7 @@
           stage.removeAttribute("sizes");
           stage.src = full;
         }
-        var thumbImage = button.querySelector("img");
-        if (stage && thumbImage) stage.alt = thumbImage.alt || "";
+        if (stage) stage.alt = button.getAttribute("aria-label") || "";
         if (frame) {
           frame.textContent = button.getAttribute("data-bz-thumb") + " / " + String(thumbs.length);
         }
@@ -42,19 +41,6 @@
       mobile.addEventListener("change", updateSticky);
       updateSticky();
     }
-    root.querySelectorAll("[data-bz-open]").forEach(function (box) {
-      var text = box.querySelector("p");
-      var button = box.querySelector("[data-bz-more-copy]");
-      if (!text || !button) return;
-      if (text.scrollHeight <= text.clientHeight + 2) {
-        button.hidden = true;
-        return;
-      }
-      button.addEventListener("click", function () {
-        box.classList.add("is-open");
-        button.hidden = true;
-      });
-    });
     var shipping = root.querySelector("[data-bz-shipping]");
     var quantity = root.querySelector("[data-bz-atc] input[name='quantity']");
     var currency = new Intl.NumberFormat("it-IT", { style: "currency", currency: "EUR" });

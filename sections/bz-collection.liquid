@@ -56,7 +56,11 @@
     </h1>
     <div class="plp-intro">
       {%- if collection.description != blank -%}
-        <p>{{ collection.description | strip_html }}</p>
+        {%- assign collection_intro = collection.description | strip_html -%}
+        {%- if collection.handle == 'gioielli-con-pietre' -%}
+          {%- assign collection_intro = collection_intro | replace: 'Puoi anche scegliere per intenzione: serenità, coraggio, protezione, affetti o concentrazione.', ' Puoi anche partire da quello che desideri: amore, protezione, serenità e le altre carte di «Cosa desideri».' -%}
+        {%- endif -%}
+        <p>{{ collection_intro }}</p>
       {%- elsif intro != blank -%}
         <p>{{ intro | escape }}</p>
       {%- endif -%}

@@ -3,9 +3,9 @@
     <div>
       <a class="brand" href="{{ routes.root_url }}">
         {%- if section.settings.logo != blank -%}
-          {{ section.settings.logo | image_url: width: 160 | image_tag: alt: shop.name, loading: 'lazy', widths: '80, 120, 160', width: 43, height: 43 }}
+          {{ section.settings.logo | image_url: width: 160 | image_tag: alt: '', loading: 'lazy', widths: '80, 120, 160', width: 43, height: 43 }}
         {%- else -%}
-          <img src="{{ 'shop-logo.png' | asset_url }}" alt="{{ shop.name | escape }}" width="43" height="43" loading="lazy">
+          <img src="{{ 'shop-logo.png' | asset_url }}" alt="" width="43" height="43" loading="lazy">
         {%- endif -%}
         <span>{{ section.settings.word_first | escape }} <em>{{ section.settings.word_second | escape }}</em></span>
       </a>

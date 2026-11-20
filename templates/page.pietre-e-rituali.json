@@ -195,9 +195,8 @@
           "type": "intention",
           "settings": {
             "word": "Serenità",
-            "line": "In molte pratiche l’ametista si tiene vicina quando si cerca quiete.",
-            "collection": "intenzione-serenita",
-            "image_asset": "bz-intenzione-serenita.jpg"
+            "line": "Amazzonite, angelite e crisocolla sono, nella tradizione, le pietre della serenità.",
+            "collection": "desiderio-serenita"
           }
         },
         "in-1": {
@@ -205,16 +204,16 @@
           "settings": {
             "word": "Protezione",
             "line": "Tormalina e ossidiana, nella tradizione, sono pietre di protezione.",
-            "collection": "intenzione-protezione",
+            "collection": "desiderio-protezione",
             "image_asset": "bz-intenzione-protezione-ossidiana.jpg"
           }
         },
         "in-2": {
           "type": "intention",
           "settings": {
-            "word": "Affetti",
+            "word": "Amore",
             "line": "Il quarzo rosa, in tante tradizioni, è la pietra che si regala a chi si vuole bene.",
-            "collection": "intenzione-affetti",
+            "collection": "desiderio-amore",
             "image_asset": "bz-intenzione-affetti.jpg"
           }
         },
@@ -222,17 +221,17 @@
           "type": "intention",
           "settings": {
             "word": "Coraggio",
-            "line": "Corniola e diaspro rosso, nella tradizione, accompagnano il coraggio.",
-            "collection": "intenzione-coraggio",
+            "line": "Occhio di tigre, corniola e diaspro rosso sono, nella tradizione, le pietre del coraggio.",
+            "collection": "desiderio-coraggio",
             "image_asset": "bz-intenzione-coraggio.jpg"
           }
         },
         "in-4": {
           "type": "intention",
           "settings": {
-            "word": "Concentrazione",
-            "line": "Il lapislazzuli, nella tradizione, accompagna chiarezza e concentrazione.",
-            "collection": "intenzione-concentrazione",
+            "word": "Comunicazione",
+            "line": "Lapislazzuli, acquamarina e calcedonio sono, nella tradizione, le pietre della comunicazione.",
+            "collection": "desiderio-comunicazione",
             "image_asset": "bz-intenzione-concentrazione.jpg"
           }
         },
@@ -241,7 +240,7 @@
           "settings": {
             "word": "Purificazione",
             "line": "Il cristallo di rocca, in molte pratiche, si tiene vicino quando si vuole fare spazio e ripartire con un’intenzione più chiara.",
-            "collection": "pietre-grezze",
+            "collection": "desiderio-purificazione",
             "image_asset": "bz-intenzione-purificazione.jpg"
           }
         },

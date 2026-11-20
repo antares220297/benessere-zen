@@ -1820,3 +1820,135 @@ html .bz-scope .bz-main-collections img {
     grid-template-columns:repeat(6,minmax(0,1fr));
   }
 }
+
+/* Manual hero navigation and natural slide height for product cards. */
+html .bz-page-home .home-hero .hero-slide[hidden],
+html .bz-page-home .home-hero .hero-navigation[hidden] {
+  display: none;
+}
+
+html .bz-page-home .home-hero > .hero-slides {
+  grid-template-rows: minmax(min-content, 1fr) auto;
+}
+
+html .bz-page-home .home-hero .hero-slide {
+  position: relative;
+}
+
+html .bz-page-home .home-hero .hero-slide:not(.new-slide)::after,
+html .bz-page-home .home-hero > .photo-card::after {
+  background: var(--bz-veil-badge) !important;
+}
+
+html .bz-page-home .home-hero .hero-slide:not(.new-slide) .hero-photo {
+  position: absolute;
+  inset: 0;
+}
+
+html .bz-page-home .home-hero .hero-slide:not(.new-slide) .hero-copy {
+  position: relative;
+  inset: auto;
+  padding: clamp(var(--bz-sp-24), 4vw, var(--bz-sp-56));
+}
+
+html .bz-page-home .home-hero > .hero-slides:has(.new-slide.active) {
+  height: auto;
+  max-height: none;
+  aspect-ratio: auto;
+}
+
+html .bz-page-home .home-hero .new-slide .hero-copy {
+  width: 100%;
+  max-width: none;
+}
+
+html .bz-page-home .home-hero .new-products {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-columns: auto;
+}
+
+html .bz-page-home .home-hero .new-products .bz-product-tile__title,
+html .bz-page-home .home-hero .new-products .product h3 {
+  display: block;
+  white-space: normal;
+  overflow: visible;
+  overflow-wrap: anywhere;
+  -webkit-line-clamp: unset;
+}
+
+@media (max-width: 480px) {
+  html .bz-page-home .home-hero .new-products {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+html .bz-page-home .hero-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--bz-sp-12);
+  padding: var(--bz-sp-8);
+  background: var(--bz-surface-2);
+  color: var(--bz-text);
+}
+
+html .bz-page-home .hero-navigation button {
+  display: grid;
+  place-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  border: 1px solid var(--bz-line-divider);
+  border-radius: 50%;
+}
+
+html .bz-page-home #stones .stone__toggle {
+  white-space: nowrap;
+}
+
+html .bz-page-home #stones .stone__label {
+  overflow-wrap: normal;
+  text-wrap: nowrap;
+}
+
+@media (min-width: 1024px) {
+  html .bz-scope .ritual-section--home .ritual-visual {
+    aspect-ratio: auto;
+    min-height: 220px;
+    max-height: 260px;
+  }
+}
+
+.shopify-policy__body :is(h2, h3) {
+  margin-block-start: var(--bz-sp-24);
+}
+
+.shopify-policy__body table :is(th, td) {
+  word-break: normal;
+  overflow-wrap: normal;
+}
+
+@media (max-width: 600px) {
+  .shopify-policy__body table.bz-policy-table,
+  .shopify-policy__body .bz-policy-table :is(thead, tbody, tfoot, tr, th, td) {
+    display: block;
+    width: auto !important;
+    max-width: 100%;
+  }
+
+  .shopify-policy__body .bz-policy-table tr + tr {
+    margin-block-start: var(--bz-sp-12);
+  }
+
+  .shopify-policy__body .bz-policy-table :is(th, td) {
+    overflow-wrap: break-word;
+  }
+}
+
+html .bz-scope .picked [role="tab"] {
+  min-height: var(--bz-control-h);
+}
+
+html .bz-scope .picked [role="tabpanel"][hidden] {
+  display: none;
+}

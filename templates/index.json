@@ -30,7 +30,8 @@
             "text": "Burattate e grezze, da tenere vicino.",
             "button_label": "Vedi le pietre",
             "link": "#stones",
-            "collection": "pietre-burattate"
+            "collection": "pietre-burattate",
+            "image_alt": "Pietre burattate in una vaschetta, viste da vicino"
           }
         }
       },
@@ -406,7 +407,7 @@
         "set-0": {
           "type": "set",
           "settings": {
-            "label": "Serenità",
+            "label": "Intuizione",
             "caption": "Ametista da tenere vicino o portare addosso.",
             "image_asset": "bz-rituale-serenita.jpg",
             "bundle_product": "set-rituale-serenita",
@@ -442,7 +443,7 @@
         "set-3": {
           "type": "set",
           "settings": {
-            "label": "Affetti",
+            "label": "Amore",
             "caption": "Il quarzo rosa, in tre forme.",
             "image_asset": "bz-rituale-affetti.jpg",
             "bundle_product": "set-rituale-affetti",
@@ -454,25 +455,13 @@
         "set-4": {
           "type": "set",
           "settings": {
-            "label": "Concentrazione",
+            "label": "Comunicazione",
             "caption": "Il blu del lapislazzuli, al collo e al polso.",
             "image_asset": "bz-rituale-concentrazione.jpg",
             "bundle_product": "set-rituale-concentrazione",
             "product_1": "lapislazzuli",
             "product_2": "braccialetto-lapis-lazuli",
             "product_3": "ciondolo-a-cuore-in-lapislazzuli"
-          }
-        },
-        "set-5": {
-          "type": "set",
-          "settings": {
-            "label": "Sera",
-            "caption": "Ametista e una candela alla lavanda.",
-            "image_asset": "bz-rituale-sera.jpg",
-            "bundle_product": "set-rituale-sera",
-            "product_1": "pietre-burattate-ametista-1",
-            "product_2": "bracciale-ametista-naturale",
-            "product_3": "candela-profumata-in-cera-di-soia-chakra-ajna-lavanda-tierra"
           }
         }
       },
@@ -481,8 +470,7 @@
         "set-1",
         "set-2",
         "set-3",
-        "set-4",
-        "set-5"
+        "set-4"
       ]
     },
     "bz_stones": {
@@ -505,8 +493,8 @@
           "type": "stone",
           "settings": {
             "name": "Ametista",
-            "intent": "meditazione",
-            "meaning": "Legata da sempre alla meditazione",
+            "intent": "intuizione",
+            "meaning": "Nella tradizione, una delle pietre dell’intuizione.",
             "front": "bz-pietra-macro-ametista.jpg",
             "loose": "ametista",
             "bracelet": "braccialetto-ametista-avventurina-cristallo-di-rocca-om",
@@ -543,8 +531,8 @@
           "type": "stone",
           "settings": {
             "name": "Lapislazzuli",
-            "intent": "meditazione",
-            "meaning": "Il blu degli antichi Egizi, legato alla verità",
+            "intent": "comunicazione",
+            "meaning": "Nella tradizione, una delle pietre della comunicazione.",
             "front": "bz-pietra-macro-lapislazzuli.jpg",
             "loose": "lapislazzuli",
             "bracelet": "braccialetto-lapis-lazuli",
@@ -569,8 +557,8 @@
           "type": "stone",
           "settings": {
             "name": "Cristallo di rocca",
-            "intent": "meditazione",
-            "meaning": "Accompagna l’intenzione",
+            "intent": "purificazione",
+            "meaning": "Nella tradizione, una delle pietre della purificazione.",
             "front": "bz-pietra-macro-cristallo-di-rocca.jpg",
             "loose": "cristallo-di-rocca",
             "bracelet": "braccialetto-ametista-chevron-cristallo-di-rocca-loto",
@@ -581,8 +569,8 @@
           "type": "stone",
           "settings": {
             "name": "Occhio di tigre",
-            "intent": "protezione",
-            "meaning": "Protezione spirituale, nella tradizione",
+            "intent": "coraggio",
+            "meaning": "Nella tradizione, una delle pietre del coraggio.",
             "front": "bz-pietra-macro-occhio-di-tigre.jpg",
             "loose": "occhio-di-tigre",
             "bracelet": "mala-braccialetto-elastico-con-pietra-occhio-di-tigre-coraggio-iniziativa",

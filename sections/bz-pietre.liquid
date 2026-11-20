@@ -5,7 +5,7 @@
       <p>{{ section.settings.intro | escape }}</p>
       <a class="btn gold" href="{{ section.settings.hero_link }}">{% render 'bz-nav-label', label: section.settings.hero_label %}</a>
     </div>
-    <div class="split-photo"><img src="{{ 'bz-negozio-pietre-e-rituali-copertina.jpg' | asset_url }}" alt="Vaschette di pietre burattate viste dall’alto" width="1400" height="900" loading="eager" fetchpriority="high"></div>
+    <div class="split-photo"><img src="{{ 'bz-negozio-pietre-e-rituali-copertina.jpg' | asset_url }}" srcset="{% render 'bz-cover-srcset', asset: 'bz-negozio-pietre-e-rituali-copertina.jpg', width: 1600 %}" sizes="(min-width: 1024px) 50vw, 95vw" alt="Vaschette di pietre burattate viste dall’alto" width="1600" height="900" loading="eager" fetchpriority="high"></div>
   </section>
 
   {%- assign months = section.blocks | where: 'type', 'month' -%}
@@ -18,7 +18,7 @@
         {%- for month_index in month_indices -%}
           {%- for block in months -%}
             {%- if block.settings.index == month_index -%}
-              <button type="button" data-month="{{ month_index }}" aria-pressed="{% if month_index == current %}true{% else %}false{% endif %}" aria-controls="birthstone-{{ block.id }}" aria-label="{{ block.settings.name | escape }}">{{ block.settings.short | escape }}</button>
+              <button type="button" data-month="{{ month_index }}" aria-pressed="{% if month_index == current %}true{% else %}false{% endif %}" aria-controls="birthstone-{{ block.id }}" aria-label="{{ block.settings.short | escape }} · {{ block.settings.name | escape }}">{{ block.settings.short | escape }}</button>
               {%- break -%}
             {%- endif -%}
           {%- endfor -%}
@@ -66,11 +66,11 @@
           <article class="intention" {{ block.shopify_attributes }}>
             <div class="intention-media">
               {%- if block.settings.image_asset != blank -%}
-                <img src="{{ block.settings.image_asset | asset_url }}" alt="{{ block.settings.word | escape }}" width="900" height="900" loading="lazy">
+                <img src="{{ block.settings.image_asset | asset_url }}" alt="" width="900" height="900" loading="lazy">
               {%- elsif coll.image -%}
-                {{ coll.image | image_url: width: 800 | image_tag: alt: block.settings.word, loading: 'lazy', widths: '300, 500, 800', sizes: '(min-width: 768px) 33vw, 50vw' }}
+                {{ coll.image | image_url: width: 800 | image_tag: alt: '', loading: 'lazy', widths: '300, 500, 800', sizes: '(min-width: 768px) 33vw, 50vw' }}
               {%- elsif coll.products.first.featured_image -%}
-                {{ coll.products.first.featured_image | image_url: width: 800 | image_tag: alt: block.settings.word, loading: 'lazy', widths: '300, 500, 800', sizes: '(min-width: 768px) 33vw, 50vw' }}
+                {{ coll.products.first.featured_image | image_url: width: 800 | image_tag: alt: '', loading: 'lazy', widths: '300, 500, 800', sizes: '(min-width: 768px) 33vw, 50vw' }}
               {%- endif -%}
             </div>
             <div class="intention-copy">
@@ -138,7 +138,7 @@
           {%- assign coll = block.settings.collection -%}
           <a href="{{ coll.url }}" {{ block.shopify_attributes }}>
             {%- if coll.products.first.featured_image -%}
-              {{ coll.products.first.featured_image | image_url: width: 300 | image_tag: alt: block.settings.label, loading: 'lazy', width: 106, height: 106 }}
+              {{ coll.products.first.featured_image | image_url: width: 300 | image_tag: alt: '', loading: 'lazy', width: 106, height: 106 }}
             {%- endif -%}
             <span>{{ block.settings.label | escape }}</span>
           </a>
@@ -151,14 +151,14 @@
     <div class="bz-sh">
       <h2>I più <em>scelti</em></h2>
       <div class="bz-pills" role="tablist" aria-label="Mala e pendoli">
-        <button type="button" data-picked="0" aria-selected="true">Mala</button>
-        <button type="button" data-picked="1" aria-selected="false">Pendoli</button>
+        <button type="button" data-picked="0" role="tab" id="pietre-tab-{{ section.id }}-0" aria-controls="pietre-panel-{{ section.id }}-0" tabindex="0" aria-selected="true">Mala</button>
+        <button type="button" data-picked="1" role="tab" id="pietre-tab-{{ section.id }}-1" aria-controls="pietre-panel-{{ section.id }}-1" tabindex="-1" aria-selected="false">Pendoli</button>
       </div>
     </div>
-    <div class="products bz-product-group" data-picked-panel="0">
+    <div class="products bz-product-group" data-picked-panel="0" role="tabpanel" id="pietre-panel-{{ section.id }}-0" aria-labelledby="pietre-tab-{{ section.id }}-0">
       {%- for product in section.settings.mala_products -%}{% render 'bz-product-card', card: product %}{%- endfor -%}
     </div>
-    <div class="products bz-product-group" data-picked-panel="1" hidden>
+    <div class="products bz-product-group" data-picked-panel="1" role="tabpanel" id="pietre-panel-{{ section.id }}-1" aria-labelledby="pietre-tab-{{ section.id }}-1" hidden>
       {%- for product in section.settings.pendoli_products -%}{% render 'bz-product-card', card: product %}{%- endfor -%}
     </div>
     <a class="bz-row-link" href="{{ routes.all_products_collection_url }}">{% render 'bz-nav-label', label: 'Vedi tutto' %}</a>

@@ -25,19 +25,43 @@
     {%- if template.name == 'product' -%}
       {%- capture product_name -%}{% render 'bz-product-name', product: product %}{%- endcapture -%}
     {%- endif -%}
+    {%- liquid
+      assign bz_title = page_title | default: shop.name
+      case template.name
+        when 'index'
+          assign bz_title = 'Pietre, mala e incensi a Cento (FE)'
+        when '404'
+          assign bz_title = "Questa pagina non c'è"
+        when 'page'
+          if template.suffix == 'crediti-immagini' or page.handle == 'crediti-immagini'
+            assign bz_title = 'Crediti immagini'
+          endif
+        when 'collection'
+          case collection.handle
+            when 'come-ti-senti'
+              assign bz_title = 'Come ti senti: pietre e incensi'
+            when 'cosa-desideri'
+              assign bz_title = 'Cosa desideri: pietre per ogni intenzione'
+          endcase
+        when 'product'
+          assign bz_title = product_name
+          case product.handle
+            when 'braccialetto-ametista-avventurina-cristallo-di-rocca-om'
+              assign bz_title = 'Bracciale Om in ametista e avventurina'
+            when 'candela-ayurvedica-vata-tuberosa-gelsomino-200g'
+              assign bz_title = 'Candela ayurvedica Vata, 200 g'
+            when 'incenso-tribale-smudge-banjara-salvia-bianca-1'
+              assign bz_title = 'Smudge Banjara alla salvia bianca'
+            when 'ametista'
+              assign bz_title = 'Ametista grezza, pietra naturale'
+          endcase
+      endcase
+    -%}
     <title>
-      {%- if template.name == '404' -%}
-        Questa pagina non c'è &ndash; {{ shop.name }}
-      {%- elsif template.name == 'product' -%}
-        {{ product_name | escape }} &ndash; {{ shop.name | escape }}
-      {%- elsif template.suffix == 'crediti-immagini' -%}
-        Crediti immagini &ndash; {{ shop.name }}
-      {%- else -%}
-        {{ page_title }}
-        {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
-        {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
-        {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
-      {%- endif -%}
+      {{- bz_title | escape -}}
+      {%- if current_tags %} | {{ current_tags | join: ', ' | escape }}{% endif -%}
+      {%- if current_page > 1 %} | Pagina {{ current_page }}{% endif -%}
+      {%- unless bz_title contains shop.name %} | {{ shop.name | escape }}{% endunless -%}
     </title>
     {%- if settings.enable_organization_schema and template.name == 'index' -%}
       {% liquid 
@@ -78,7 +102,7 @@
     {%- endif -%}
     
     {%- liquid
-      assign bz_meta = page_description
+      assign bz_meta = page_description | strip
       if bz_meta == blank and template.name == 'cart'
         assign shipping_threshold = settings.bz_free_shipping_threshold | default: 50 | at_least: 1
         assign bz_meta = 'Il carrello di Benessere Zen. Spedizione gratuita in Italia da ' | append: shipping_threshold | append: ' €, oppure ritiro in negozio a Cento (FE).'
@@ -93,25 +117,34 @@
     {%- endif -%}
     {%- liquid
       assign bz_hero_asset = blank
+      assign bz_hero_width = 1600
+      assign bz_hero_sizes = '95vw'
       if template.name == 'index'
         assign bz_hero_asset = 'bz-negozio-home-hero-negozio.jpg'
+        assign bz_hero_sizes = '(min-width: 1440px) 798px, (min-width: 1024px) 57vw, 95vw'
       elsif template.name == 'page'
         case template.suffix
           when 'cura-di-se'
             assign bz_hero_asset = 'bz-cover-cura-di-se-v3b.jpg'
+            assign bz_hero_width = 1280
           when 'pietre-e-rituali'
             assign bz_hero_asset = 'bz-negozio-pietre-e-rituali-copertina.jpg'
+            assign bz_hero_sizes = '(min-width: 1024px) 50vw, 95vw'
           when 'chi-siamo', 'about-us.whiff'
             assign bz_hero_asset = 'bz-negozio-chi-siamo-apertura.jpg'
+            assign bz_hero_width = 1200
+            assign bz_hero_sizes = '(min-width: 1024px) 50vw, 95vw'
           when 'il-negozio'
             assign bz_hero_asset = 'bz-negozio-negozio-copertina.jpg'
           when 'cose-layurveda', 'cos-e-ayurveda'
             assign bz_hero_asset = 'bz-ayurveda-hero-scaffali.jpg'
+            assign bz_hero_width = 1400
+            assign bz_hero_sizes = '(min-width: 1024px) 50vw, 95vw'
         endcase
       endif
     -%}
     {%- if bz_hero_asset != blank -%}
-      <link rel="preload" as="image" href="{{ bz_hero_asset | asset_url }}" fetchpriority="high">
+      <link rel="preload" as="image" imagesrcset="{% render 'bz-cover-srcset', asset: bz_hero_asset, width: bz_hero_width %}" imagesizes="{{ bz_hero_sizes }}" fetchpriority="high">
     {%- endif -%}
     <link rel="preload" href="{{ 'theme.css' | asset_url }}" as="style" crossorigin="anonymous" />
     {%- unless settings.type_body_font.family contains 'Japanese' or settings.type_header_font.family contains 'Japanese' -%}
@@ -119,7 +152,7 @@
     {%- endunless -%}
     
     {% liquid 
-      render 'meta-tags', product_name: product_name
+      render 'meta-tags', social_title: bz_title, social_description: bz_meta
       render 'font-face'
       echo 'theme.css' | asset_url | stylesheet_tag: preload: true
       render 'css-variables'

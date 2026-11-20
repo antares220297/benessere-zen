@@ -1,9 +1,9 @@
 <header>
   <a class="brand" href="{{ routes.root_url }}">
     {%- if section.settings.logo != blank -%}
-      {{ section.settings.logo | image_url: width: 160 | image_tag: alt: shop.name, loading: 'eager', widths: '80, 120, 160', width: 43, height: 43 }}
+      {{ section.settings.logo | image_url: width: 160 | image_tag: alt: '', loading: 'eager', widths: '80, 120, 160', width: 43, height: 43 }}
     {%- else -%}
-      <img src="{{ 'shop-logo.png' | asset_url }}" alt="{{ shop.name | escape }}" width="43" height="43">
+      <img src="{{ 'shop-logo.png' | asset_url }}" alt="" width="43" height="43">
     {%- endif -%}
     <span>{{ section.settings.wordmark_lead | default: 'Benessere' | escape }} <em>{{ section.settings.wordmark_accent | default: 'Zen' | escape }}</em></span>
   </a>

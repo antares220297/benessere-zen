@@ -40,7 +40,7 @@
       {%- endfor -%}
     {%- endcapture -%}
     {%- if home -%}{%- assign piece_count = 3 -%}{%- endif -%}
-    {% render 'bz-ritual-panel', panel_id: panel_id, first: first, rows: rows, count: count, total: total, piece_count: piece_count, bundle: bundle, block: block, shot: shot, asset: asset, shot_alt: block.settings.label, caption_title: caption_title, caption_accent: caption_accent, caption: block.settings.caption %}
+    {% render 'bz-ritual-panel', panel_id: panel_id, first: first, rows: rows, count: count, total: total, piece_count: piece_count, bundle: bundle, block: block, shot: shot, asset: asset, caption_title: caption_title, caption_accent: caption_accent, caption: block.settings.caption %}
   {%- endfor -%}
 {%- endcapture -%}
 <section class="ritual-section{% if home %} ritual-section--home{% endif %}" id="{% if home %}ritual{% else %}ritual-{{ section.id }}{% endif %}" data-bz-ritual data-bz-warm-images>

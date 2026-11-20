@@ -58,15 +58,18 @@
       <div class="bz-thumbs">
         <div class="bz-thumbs__scroll">
           {%- for image in product.images -%}
-            <button type="button" class="{% if image.id == stage_image.id %}is-on{% endif %}" data-bz-thumb="{{ forloop.index }}" data-image-id="{{ image.id }}" aria-pressed="{% if image.id == stage_image.id %}true{% else %}false{% endif %}" data-full="{{ image | image_url: width: 1400 | escape }}" aria-label="Foto {{ forloop.index }}">
-              {{ image | image_url: width: 160 | image_tag: alt: display_name, width: 84, height: 84, loading: 'lazy' }}
+            {%- assign image_alt = display_name | append: ', foto ' | append: forloop.index -%}
+            <button type="button" class="{% if image.id == stage_image.id %}is-on{% endif %}" data-bz-thumb="{{ forloop.index }}" data-image-id="{{ image.id }}" aria-pressed="{% if image.id == stage_image.id %}true{% else %}false{% endif %}" data-full="{{ image | image_url: width: 1400 | escape }}" aria-label="{{ image_alt | escape }}">
+              {{ image | image_url: width: 160 | image_tag: alt: '', width: 84, height: 84, loading: 'lazy' }}
             </button>
           {%- endfor -%}
         </div>
       </div>
       <div class="bz-stage">
         {%- if stage_image -%}
-          {{ stage_image | image_url: width: 1400 | image_tag: alt: display_name, id: 'BzStage', loading: 'eager', fetchpriority: 'high', preload: true, widths: '600, 1000, 1400', sizes: '(min-width: 861px) 45vw, 95vw', width: 900, height: 900 }}
+          {%- assign stage_position = stage_image.position | default: 1 -%}
+          {%- assign stage_alt = display_name | append: ', foto ' | append: stage_position -%}
+          {{ stage_image | image_url: width: 1400 | image_tag: alt: stage_alt, id: 'BzStage', loading: 'eager', fetchpriority: 'high', preload: true, widths: '600, 1000, 1400', sizes: '(min-width: 861px) 45vw, 95vw', width: 900, height: 900 }}
         {%- endif -%}
         <div class="bz-stage__badges">
           {%- if current.inventory_management != blank and current.inventory_quantity == 1 and current.available -%}
@@ -133,10 +136,7 @@
       {%- if product.metafields.custom.apertura != blank -%}
         <div class="bz-buy__open rte">{{ product.metafields.custom.apertura | metafield_tag }}</div>
       {%- elsif opener != blank -%}
-        <div class="bz-buy__open" data-bz-open>
-          <p>{{ opener | escape }}</p>
-          <button type="button" data-bz-more-copy aria-expanded="false">Continua</button>
-        </div>
+        <div class="bz-buy__open rte"><p>{{ opener | escape }}</p></div>
       {%- elsif product.description != blank -%}
         <div class="bz-buy__open rte">{{ product.description }}</div>
       {%- endif -%}

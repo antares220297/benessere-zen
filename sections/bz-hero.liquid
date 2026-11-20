@@ -1,7 +1,7 @@
 <section class="home-hero" aria-label="In primo piano">
   <div class="hero-slides" data-bz-hero aria-label="Dal negozio">
     <div class="hero-slide hero-slide--featured active" aria-label="1 di 3">
-      <img class="hero-photo" src="{{ 'bz-negozio-home-hero-negozio.jpg' | asset_url }}" alt="{{ section.settings.image_alt | escape }}" width="1600" height="900" loading="eager" fetchpriority="high">
+      <img class="hero-photo" src="{{ 'bz-negozio-home-hero-negozio.jpg' | asset_url }}" srcset="{% render 'bz-cover-srcset', asset: 'bz-negozio-home-hero-negozio.jpg', width: 1600 %}" sizes="(min-width: 1440px) 798px, (min-width: 1024px) 57vw, 95vw" alt="{{ section.settings.image_alt | escape }}" width="1600" height="900" loading="eager" fetchpriority="high">
       <div class="hero-copy">
         <h1>{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h1>
         <p>{{ section.settings.text | escape }}</p>
@@ -11,7 +11,7 @@
         </div>
       </div>
     </div>
-    <div class="hero-slide new-slide" aria-hidden="true" inert aria-label="2 di 3">
+    <div class="hero-slide new-slide" hidden aria-hidden="true" inert aria-label="2 di 3">
       <div class="hero-copy">
         <h2>{{ section.settings.slide_2_heading | escape }} <em>{{ section.settings.slide_2_accent | escape }}</em></h2>
         <p>{{ section.settings.slide_2_text | escape }}</p>
@@ -23,13 +23,18 @@
         <a class="bz-row-link" href="{{ section.settings.slide_2_link }}">{% render 'bz-nav-label', label: 'Vedi i nuovi arrivi' %}</a>
       </div>
     </div>
-    <div class="hero-slide" aria-hidden="true" inert aria-label="3 di 3">
-      <img class="hero-photo" src="{{ 'bz-cover-cura-di-se-v3b.jpg' | asset_url }}" alt="{{ section.settings.slide_3_alt | escape }}" width="1400" height="900" loading="lazy">
+    <div class="hero-slide" hidden aria-hidden="true" inert aria-label="3 di 3">
+      <img class="hero-photo" src="{{ 'bz-cover-cura-di-se-v3b.jpg' | asset_url }}" srcset="{% render 'bz-cover-srcset', asset: 'bz-cover-cura-di-se-v3b.jpg', width: 1280 %}" sizes="(min-width: 1440px) 798px, (min-width: 1024px) 57vw, 95vw" alt="{{ section.settings.slide_3_alt | escape }}" width="1280" height="720" loading="lazy">
       <div class="hero-copy">
         <h2>{{ section.settings.slide_3_heading | escape }} <em>{{ section.settings.slide_3_accent | escape }}</em></h2>
         <p>{{ section.settings.slide_3_text | escape }}</p>
         <a class="btn gold" href="{{ section.settings.slide_3_link }}">{% render 'bz-nav-label', label: section.settings.slide_3_label %}</a>
       </div>
+    </div>
+    <div class="hero-navigation" role="group" aria-label="Comandi delle slide" hidden>
+      <button type="button" data-hero-step="-1" aria-label="Slide precedente">{% render 'bz-icon', name: 'arrow_back' %}</button>
+      <span data-hero-position aria-live="polite">1 di 3</span>
+      <button type="button" data-hero-step="1" aria-label="Slide successiva">{% render 'bz-icon', name: 'arrow_forward' %}</button>
     </div>
   </div>
   {%- assign tile_sizes = '(min-width: 1024px) 41vw, (min-width: 768px) 50vw, 100vw' -%}
@@ -45,11 +50,11 @@
       -%}
       <a class="photo-card small" href="{{ block.settings.link }}" {{ block.shopify_attributes }}>
         {%- if block.settings.image != blank -%}
-          {{ block.settings.image | image_url: width: 900 | image_tag: alt: '', loading: 'lazy', widths: '400, 700, 900', sizes: tile_sizes }}
+          {{ block.settings.image | image_url: width: 900 | image_tag: alt: block.settings.image_alt, loading: 'lazy', widths: '400, 700, 900', sizes: tile_sizes }}
         {%- elsif block.settings.image_asset != blank -%}
-          <img src="{{ block.settings.image_asset | asset_url }}" alt="" width="900" height="900" loading="lazy">
+          <img src="{{ block.settings.image_asset | asset_url }}" alt="{{ block.settings.image_alt | escape }}" width="900" height="900" loading="lazy">
         {%- elsif block.settings.collection != blank and block.settings.collection.image -%}
-          {{ block.settings.collection.image | image_url: width: 900 | image_tag: alt: '', loading: 'lazy', widths: '400, 700, 900', sizes: tile_sizes }}
+          {{ block.settings.collection.image | image_url: width: 900 | image_tag: alt: block.settings.image_alt, loading: 'lazy', widths: '400, 700, 900', sizes: tile_sizes }}
         {%- endif -%}
         {%- if block.settings.badge != blank -%}<span class="badge">{{ block.settings.badge | escape }}</span>{%- endif -%}
         <div>
@@ -88,7 +93,7 @@
     { "type": "text", "id": "slide_3_text", "label": "Slide 3 testo", "default": "Parti da quello che usi ogni giorno." },
     { "type": "text", "id": "slide_3_label", "label": "Slide 3 pulsante", "default": "Vai a Cura di sé →" },
     { "type": "url", "id": "slide_3_link", "label": "Slide 3 link" },
-    { "type": "text", "id": "slide_3_alt", "label": "Slide 3 alt", "default": "Cura di sé" }
+    { "type": "text", "id": "slide_3_alt", "label": "Slide 3 alt", "default": "Un flacone d’olio e una candela accesa su un tavolino" }
   ],
   "blocks": [
     { "type": "tile", "name": "Scheda", "settings": [
@@ -100,6 +105,7 @@
       { "type": "text", "id": "link", "label": "Link" },
       { "type": "collection", "id": "collection", "label": "Collezione" },
       { "type": "image_picker", "id": "image", "label": "Foto" },
+      { "type": "text", "id": "image_alt", "label": "Testo alternativo" },
       { "type": "text", "id": "image_asset", "label": "Foto in assets" }
     ] }
   ],

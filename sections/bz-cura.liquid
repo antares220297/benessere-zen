@@ -1,6 +1,6 @@
 <div class="bz-stack">
   <section class="cura-hero" aria-labelledby="cura-title">
-    <img src="{{ 'bz-cover-cura-di-se-v3b.jpg' | asset_url }}" alt="" width="1600" height="1000" loading="eager" fetchpriority="high">
+    <img src="{{ 'bz-cover-cura-di-se-v3b.jpg' | asset_url }}" srcset="{% render 'bz-cover-srcset', asset: 'bz-cover-cura-di-se-v3b.jpg', width: 1280 %}" sizes="95vw" alt="Un flacone d’olio e una candela accesa su un tavolino" width="1280" height="720" loading="eager" fetchpriority="high">
     <div class="cura-hero-copy">
       <h1 id="cura-title">Cura di <em>sé</em></h1>
       <p>{{ section.settings.intro | escape }}</p>
@@ -18,7 +18,7 @@
         <div class="cura-quote-copy"><p>{{ section.settings.advice | escape }}</p></div>
         <p class="cura-sign">Simona</p>
       </div>
-      <div class="cura-quote-photo"><img src="{{ 'bz-negozio-cura-consiglio-in-negozio.jpg' | asset_url }}" alt="Consiglio in negozio" width="1200" height="900" loading="lazy"></div>
+      <div class="cura-quote-photo"><img src="{{ 'bz-negozio-cura-consiglio-in-negozio.jpg' | asset_url }}" alt="Oli e cosmetici esposti sugli scaffali della bottega" width="1200" height="900" loading="lazy"></div>
     </article>
     <aside class="cura-hours">
       <p>{{ settings.bz_address }}</p>
@@ -34,11 +34,11 @@
           {%- assign coll = block.settings.collection -%}
           <a href="{{ coll.url | default: routes.all_products_collection_url }}">
             {%- if block.settings.image_asset != blank -%}
-              <img src="{{ block.settings.image_asset | asset_url }}" alt="{{ block.settings.label | escape }}" width="106" height="106" loading="lazy">
+              <img src="{{ block.settings.image_asset | asset_url }}" alt="" width="106" height="106" loading="lazy">
             {%- elsif coll.image -%}
-              {{ coll.image | image_url: width: 240 | image_tag: alt: block.settings.label, width: 106, height: 106, loading: 'lazy' }}
+              {{ coll.image | image_url: width: 240 | image_tag: alt: '', width: 106, height: 106, loading: 'lazy' }}
             {%- elsif coll.products.first.featured_image -%}
-              {{ coll.products.first.featured_image | image_url: width: 240 | image_tag: alt: block.settings.label, width: 106, height: 106, loading: 'lazy' }}
+              {{ coll.products.first.featured_image | image_url: width: 240 | image_tag: alt: '', width: 106, height: 106, loading: 'lazy' }}
             {%- endif -%}
             <span>{{ block.settings.label | escape }}</span>
           </a>
@@ -50,17 +50,17 @@
     <div class="bz-sh">
       <h2>I più <em>scelti</em></h2>
       <div class="bz-pills" role="tablist" aria-label="Gruppi prodotti">
-        <button type="button" data-picked="0" aria-selected="true">Viso</button>
-        <button type="button" data-picked="1" aria-selected="false">Corpo</button>
-        <button type="button" data-picked="2" aria-selected="false">Capelli</button>
-        <button type="button" data-picked="3" aria-selected="false">Tè</button>
-        <button type="button" data-picked="4" aria-selected="false">Tazze</button>
-        <button type="button" data-picked="5" aria-selected="false">Oli</button>
+        <button type="button" data-picked="0" role="tab" id="cura-tab-{{ section.id }}-0" aria-controls="cura-panel-{{ section.id }}-0" tabindex="0" aria-selected="true">Viso</button>
+        <button type="button" data-picked="1" role="tab" id="cura-tab-{{ section.id }}-1" aria-controls="cura-panel-{{ section.id }}-1" tabindex="-1" aria-selected="false">Corpo</button>
+        <button type="button" data-picked="2" role="tab" id="cura-tab-{{ section.id }}-2" aria-controls="cura-panel-{{ section.id }}-2" tabindex="-1" aria-selected="false">Capelli</button>
+        <button type="button" data-picked="3" role="tab" id="cura-tab-{{ section.id }}-3" aria-controls="cura-panel-{{ section.id }}-3" tabindex="-1" aria-selected="false">Tè</button>
+        <button type="button" data-picked="4" role="tab" id="cura-tab-{{ section.id }}-4" aria-controls="cura-panel-{{ section.id }}-4" tabindex="-1" aria-selected="false">Tazze</button>
+        <button type="button" data-picked="5" role="tab" id="cura-tab-{{ section.id }}-5" aria-controls="cura-panel-{{ section.id }}-5" tabindex="-1" aria-selected="false">Oli</button>
       </div>
     </div>
     {%- assign lists = 'viso,corpo,capelli,te,tazze,oli' | split: ',' -%}
     {%- for key in lists -%}
-      <div class="products bz-product-group" data-picked-panel="{{ forloop.index0 }}" {% unless forloop.first %}hidden{% endunless %}>
+      <div class="products bz-product-group" data-picked-panel="{{ forloop.index0 }}" role="tabpanel" id="cura-panel-{{ section.id }}-{{ forloop.index0 }}" aria-labelledby="cura-tab-{{ section.id }}-{{ forloop.index0 }}" {% unless forloop.first %}hidden{% endunless %}>
         {%- case key -%}
           {%- when 'viso' -%}{%- assign picks = section.settings.viso_products -%}
           {%- when 'corpo' -%}{%- assign picks = section.settings.corpo_products -%}

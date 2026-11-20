@@ -399,35 +399,23 @@
   const hero = q('[data-bz-hero]');
   if (hero) {
     const slides = qa('.hero-slide', hero);
-    const mobile = matchMedia('(max-width: 767px), (hover: none)');
-    let index = 0, timer, loops = 0, stopped = false, seen = true, hiddenDoc = false;
-    const show = n => {
-      index = (n + slides.length) % slides.length;
+    const navigation = q('.hero-navigation', hero);
+    const position = q('[data-hero-position]', navigation);
+    let index = 0;
+    navigation.hidden = false;
+    navigation.addEventListener('click', event => {
+      const button = event.target.closest('[data-hero-step]');
+      if (!button) return;
+      index = (index + Number(button.dataset.heroStep) + slides.length) % slides.length;
       slides.forEach((slide, i) => {
-        const on = i === index;
-        slide.classList.toggle('active', on);
-        slide.toggleAttribute('inert', !on);
-        slide.setAttribute('aria-hidden', String(!on));
+        const active = i === index;
+        slide.classList.toggle('active', active);
+        slide.hidden = !active;
+        slide.toggleAttribute('inert', !active);
+        slide.setAttribute('aria-hidden', String(!active));
       });
-    };
-    const can = () => !stopped && seen && !hiddenDoc && !reduced.matches && params.get('static') !== '1' && !mobile.matches;
-    const arm = () => { clearInterval(timer); if (can()) timer = setInterval(() => {
-      const next = (index + 1) % slides.length;
-      if (next === 0) { loops += 1; show(0); if (loops >= 3) { stopped = true; clearInterval(timer); } return; }
-      show(next);
-    }, 7000); };
-    const stopForever = () => { stopped = true; clearInterval(timer); };
-    show(0);
-    arm();
-    hero.addEventListener('pointerenter', stopForever);
-    hero.addEventListener('focusin', stopForever);
-    hero.addEventListener('touchstart', stopForever, { passive: true });
-    document.addEventListener('visibilitychange', () => { hiddenDoc = document.hidden; arm(); });
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(entries => { seen = entries.some(entry => entry.intersectionRatio >= 0.3); arm(); }, { threshold: [0, 0.3, 1] }).observe(hero);
-    }
-    mobile.addEventListener?.('change', arm);
-    reduced.addEventListener?.('change', arm);
+      position.textContent = `${index + 1} di ${slides.length}`;
+    });
   }
 
   function warmHiddenImages(section) {
@@ -513,10 +501,12 @@
 
   const stoneGrid = q('#gem-grid');
   if (stoneGrid) {
+    let intent = 'all';
     qa('[data-stone-filter]').forEach(button => button.addEventListener('click', () => {
       qa('[data-stone-filter]').forEach(other => other.setAttribute('aria-pressed', String(other === button)));
-      const intent = button.dataset.stoneFilter;
+      intent = button.dataset.stoneFilter;
       qa('.gem', stoneGrid).forEach(card => { card.hidden = intent !== 'all' && card.dataset.intent !== intent; });
+      syncStones();
     }));
     let openCard = null;
     const setOpen = (card, open) => {
@@ -525,8 +515,8 @@
       const back = q('.gem-back', card);
       card.classList.toggle('flipped', open);
       button?.setAttribute('aria-expanded', String(open));
-      const label = q('span', button);
-      if (label) label.textContent = open ? 'Torna alla foto' : 'Scopri il significato';
+      const label = q('.stone__label', button);
+      if (label) label.textContent = open ? 'Foto' : 'Significato';
       front?.toggleAttribute('inert', open);
       back?.toggleAttribute('inert', !open);
       if (back) back.setAttribute('aria-hidden', String(!open));
@@ -545,9 +535,10 @@
     const mobileStones = matchMedia('(max-width: 767px)');
     const syncStones = () => {
       if (!more) return;
-      const collapsed = mobileStones.matches && more.dataset.expanded !== 'true';
+      const showToggle = mobileStones.matches && intent === 'all';
+      const collapsed = showToggle && more.dataset.expanded !== 'true';
       stoneGrid.classList.toggle('is-collapsed', collapsed);
-      more.hidden = !mobileStones.matches;
+      more.hidden = !showToggle;
     };
     more?.addEventListener('click', () => { more.dataset.expanded = more.dataset.expanded === 'true' ? 'false' : 'true'; more.textContent = more.dataset.expanded === 'true' ? 'Mostra meno' : 'Vedile tutte'; syncStones(); });
     syncStones();
@@ -792,14 +783,50 @@
   const adjustFooter = () => qa('footer details').forEach(details => { if (footerMedia.matches) details.open = false; else details.open = true; });
   adjustFooter();
   footerMedia.addEventListener?.('change', adjustFooter);
+  function selectPickedTab(tab) {
+    const root = tab.closest('.picked');
+    qa('[data-picked]', root).forEach(other => {
+      other.setAttribute('aria-selected', String(other === tab));
+      other.tabIndex = other === tab ? 0 : -1;
+    });
+    qa('[data-picked-panel]', root).forEach(panel => { panel.hidden = panel.id !== tab.getAttribute('aria-controls'); });
+  }
+
   document.addEventListener('click', event => {
     const tab = event.target.closest('button[data-picked]');
-    if (!tab) return;
-    const root = tab.closest('section');
-    if (!root) return;
-    root.querySelectorAll('[data-picked]').forEach(other => other.setAttribute('aria-selected', String(other === tab)));
-    root.querySelectorAll('[data-picked-panel]').forEach(panel => { panel.hidden = panel.dataset.pickedPanel !== tab.dataset.picked; });
+    if (tab) selectPickedTab(tab);
   });
+
+  document.addEventListener('keydown', event => {
+    const tab = event.target.closest('button[data-picked]');
+    if (!tab) return;
+    const tabs = qa('[data-picked]', tab.closest('[role="tablist"]'));
+    const index = tabs.indexOf(tab);
+    let next;
+    switch (event.key) {
+      case 'ArrowLeft': next = (index - 1 + tabs.length) % tabs.length; break;
+      case 'ArrowRight': next = (index + 1) % tabs.length; break;
+      case 'Home': next = 0; break;
+      case 'End': next = tabs.length - 1; break;
+      default: return;
+    }
+    event.preventDefault();
+    selectPickedTab(tabs[next]);
+    tabs[next].focus();
+  });
+  qa('.shopify-policy__body table').forEach(table => {
+    table.classList.add('bz-policy-table');
+    table.setAttribute('role', 'table');
+    qa('thead, tbody, tfoot', table).forEach(group => group.setAttribute('role', 'rowgroup'));
+    [...table.rows].forEach(row => {
+      row.setAttribute('role', 'row');
+      [...row.cells].forEach(cell => {
+        const role = cell.tagName === 'TD' ? 'cell' : cell.scope === 'row' || cell.scope === 'rowgroup' ? 'rowheader' : 'columnheader';
+        cell.setAttribute('role', role);
+      });
+    });
+  });
+
   const tour = q('#shop-lightbox');
   const tourCards = qa('.tour-card');
   const tourOpener = q('[data-tour-open]');

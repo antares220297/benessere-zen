@@ -3,8 +3,6 @@
     assign count = 0
     assign total = 0
     assign seen = '|'
-    assign shot = blank
-    assign shot_alt = blank
     assign type_key = product.type | downcase | strip
     assign rule_keys = 'collection_1,collection_2' | split: ','
   -%}
@@ -19,10 +17,6 @@
               assign seen = seen | append: marker
               assign count = count | plus: 1
               assign total = total | plus: variant.price
-              if shot == blank and rec.featured_image
-                assign shot = rec.featured_image
-                assign shot_alt = rec.title
-              endif
             -%}
             {% render 'bz-ritual-row', rec: rec %}
           {%- endunless -%}
@@ -43,10 +37,6 @@
                     assign seen = seen | append: marker
                     assign count = count | plus: 1
                     assign total = total | plus: variant.price
-                    if shot == blank and rec.featured_image
-                      assign shot = rec.featured_image
-                      assign shot_alt = rec.title
-                    endif
                   -%}
                   {% render 'bz-ritual-row', rec: rec %}
                   {%- break -%}
@@ -70,7 +60,7 @@
             <button type="button" data-select-all aria-pressed="true" aria-controls="{{ panel_id }}">Tutti i pezzi</button>
           </div>
         </div>
-        {% render 'bz-ritual-panel', panel_id: panel_id, first: true, rows: rows, count: count, total: total, shot: shot, shot_alt: shot_alt %}
+        {% render 'bz-ritual-panel', panel_id: panel_id, first: true, rows: rows, count: count, total: total %}
       {%- endif -%}
     </section>
     {%- unless recommendations.performed -%}
