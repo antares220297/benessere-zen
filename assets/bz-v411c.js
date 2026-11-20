@@ -400,13 +400,12 @@
   if (hero) {
     const slides = qa('.hero-slide', hero);
     const navigation = q('.hero-navigation', hero);
-    const position = q('[data-hero-position]', navigation);
-    let index = 0;
+    const buttons = qa('[data-hero-target]', navigation);
     navigation.hidden = false;
     navigation.addEventListener('click', event => {
-      const button = event.target.closest('[data-hero-step]');
+      const button = event.target.closest('[data-hero-target]');
       if (!button) return;
-      index = (index + Number(button.dataset.heroStep) + slides.length) % slides.length;
+      const index = Number(button.dataset.heroTarget);
       slides.forEach((slide, i) => {
         const active = i === index;
         slide.classList.toggle('active', active);
@@ -414,7 +413,10 @@
         slide.toggleAttribute('inert', !active);
         slide.setAttribute('aria-hidden', String(!active));
       });
-      position.textContent = `${index + 1} di ${slides.length}`;
+      buttons.forEach((control, i) => {
+        if (i === index) control.setAttribute('aria-current', 'true');
+        else control.removeAttribute('aria-current');
+      });
     });
   }
 
@@ -470,6 +472,9 @@
     if (target.hasAttribute('data-set')) {
       qa('[data-ritual-set]', ritual).forEach(panel => { panel.hidden = panel.id !== target.dataset.set; });
       qa('[data-set]', ritual).forEach(pill => pill.setAttribute('aria-pressed', String(pill === target)));
+      qa('[data-ritual-background]', ritual).forEach(layer => {
+        layer.classList.toggle('on', layer.dataset.ritualBackground === target.dataset.set);
+      });
       return;
     }
 

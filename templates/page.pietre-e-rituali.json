@@ -3,7 +3,8 @@
     "page": {
       "type": "bz-pietre",
       "settings": {
-        "hero_link": "/pages/il-negozio",
+        "hero_label": "Vedi le pietre",
+        "hero_link": "/collections/pietre-burattate",
         "visit_link": "/pages/il-negozio",
         "mala_products": [
           "palo-santo-mala-con-grano-guru",
@@ -17,7 +18,7 @@
           "pendolo-in-ottone-color-titanio",
           "pendolo-quarzo-rosa-e-catenina-dei-chakra"
         ],
-        "visit_text": "Benessere Zen è anche un negozio, in Via Marcello Provenzali 1 a Cento. Sugli scaffali trovi le pietre e i bijoux del sito: puoi prenderli in mano, guardarne colori e venature e scegliere quello che senti tuo. Se ordini online, al pagamento puoi scegliere il ritiro in negozio."
+        "visit_text": "Il negozio Benessere Zen si trova in Via Marcello Provenzali 1 a Cento."
       },
       "blocks": {
         "m0": {

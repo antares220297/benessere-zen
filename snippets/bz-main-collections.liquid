@@ -6,10 +6,10 @@
       <li>
         <a href="{{ group.url }}">
           {%- if group.featured_image -%}
-            {{ group.featured_image | image_url: width: 640 | image_tag: alt: '', widths: '300, 480, 640', sizes: '(min-width: 1024px) 300px, 45vw', loading: 'lazy' }}
+            {{ group.featured_image | image_url: width: 640 | image_tag: alt: '', widths: '300, 480, 640', sizes: '(min-width: 1024px) 300px, (min-width: 360px) 45vw, 90vw', loading: 'lazy' }}
           {%- endif -%}
           <span>{{ group.title | escape }}</span>
-          {% render 'bz-icon', name: 'arrow_forward' %}
+          {% render 'bz-icon', name: 'arrow_forward', icon_class: 'bz-main-collections__arrow' %}
         </a>
       </li>
     {%- endif -%}

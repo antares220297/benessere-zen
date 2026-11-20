@@ -1,5 +1,89 @@
 (function () {
+  function initDescription(description) {
+    var intro = description.querySelector("[data-bz-intro]");
+    var brief = description.querySelector("[data-bz-brief]");
+    var toggle = description.querySelector(".bz-description__toggle");
+    var body = description.querySelector(".bz-description__body");
+    var list = brief.querySelector("ul");
+    var extracted = [];
+
+    body.querySelectorAll("p, li, div").forEach(function (paragraph) {
+      if (paragraph.closest("table") || paragraph.querySelector("p, li, div, ul, ol, table, h2, h3, h4")) return;
+      var breaks = Array.from(paragraph.querySelectorAll("br"));
+      if (!paragraph.textContent.includes("✅") && !intro.hasChildNodes() && paragraph.tagName === "P") {
+        // A paragraph with ordinary line breaks is still a single opening paragraph.
+        breaks = [];
+      }
+
+      // Keep the original paragraph markup and split only at actual line breaks.
+      for (var i = 0; i <= breaks.length; i++) {
+        var line = document.createRange();
+        line.selectNodeContents(paragraph);
+        if (i > 0) line.setStartAfter(breaks[i - 1]);
+        if (i < breaks.length) line.setEndBefore(breaks[i]);
+        var content = line.toString().trim();
+        if (!content) continue;
+
+        if (!content.startsWith("✅") && !intro.hasChildNodes() && paragraph.tagName !== "LI") {
+          var opening = document.createElement("p");
+          opening.append(line.cloneContents());
+          intro.append(opening);
+          intro.hidden = false;
+        } else if (content.startsWith("✅") && list.children.length < 3) {
+          var item = document.createElement("li");
+          var text = document.createElement("span");
+          var value = content.replace(/^✅\uFE0F?\s*/, "");
+          var colon = value.indexOf(":");
+          if (colon > 0) {
+            var label = document.createElement("strong");
+            label.textContent = value.slice(0, colon + 1);
+            text.append(label, value.slice(colon + 1));
+          } else {
+            text.textContent = value;
+          }
+          item.append(text);
+          list.append(item);
+          brief.hidden = false;
+        } else {
+          continue;
+        }
+
+        if (i < breaks.length) line.setEndAfter(breaks[i]);
+        extracted.push({ line: line, paragraph: paragraph });
+      }
+    });
+
+    extracted.reverse().forEach(function (entry) {
+      entry.line.deleteContents();
+      if (!entry.paragraph.textContent.trim() && !entry.paragraph.querySelector("img, video, iframe, svg")) {
+        entry.paragraph.remove();
+      }
+    });
+    body.querySelectorAll("h2, h3, h4").forEach(function (heading) {
+      if (!/^in breve\s*:?$/i.test(heading.textContent.trim())) return;
+      var next = heading.nextElementSibling;
+      if (!next || !next.textContent.trim() && !next.querySelector("img, video, iframe, svg")) heading.remove();
+    });
+
+    if (!body.textContent.trim() && !body.querySelector("table, img, video, iframe, svg")) {
+      body.hidden = true;
+      return;
+    }
+    if (!extracted.length) return;
+
+    body.hidden = true;
+    toggle.hidden = false;
+    toggle.addEventListener("click", function () {
+      var expanded = toggle.getAttribute("aria-expanded") === "true";
+      body.hidden = expanded;
+      toggle.setAttribute("aria-expanded", String(!expanded));
+      toggle.textContent = expanded ? "Leggi tutto" : "Mostra meno";
+    });
+  }
+
   document.querySelectorAll("[data-bz-product]").forEach(function (root) {
+    var description = root.querySelector("[data-bz-description]");
+    if (description) initDescription(description);
     var stage = root.querySelector("#BzStage");
     var frame = root.querySelector("[data-bz-frame]");
     var thumbs = root.querySelectorAll("[data-bz-thumb]");
@@ -52,14 +136,13 @@
       var count = Math.max(1, Math.floor(Number(quantity.value) || 1));
       var projected = cartTotal + variantPrice * count;
       var missing = Math.max(0, threshold - projected);
-      var lead = count === 1 ? "Con questo pezzo" : "Con questi pezzi";
       var text = shipping.querySelector("p");
       var amount = document.createElement("b");
-      amount.textContent = missing ? currency.format(missing / 100) : "spedizione è gratuita";
+      amount.textContent = missing ? currency.format(missing / 100) : "Spedizione gratuita";
       if (missing) {
-        text.replaceChildren(lead + " ti mancano ", amount, " per la spedizione gratuita");
+        text.replaceChildren("Ti mancano ", amount, " per la spedizione gratuita");
       } else {
-        text.replaceChildren(lead + " la ", amount);
+        text.replaceChildren(amount);
       }
       shipping.querySelector(".bz-ship__track i").style.width = Math.min(100, 100 * projected / threshold) + "%";
     }
@@ -84,12 +167,12 @@
           mainAdd.disabled = radio.disabled;
           mainAdd.classList.toggle("bz-stock--soldout", radio.disabled);
           mainAdd.querySelector("[data-bz-add-label]").textContent = radio.disabled ? "Esaurito" : "Aggiungi al carrello";
-          if (!radio.disabled) mainAdd.setAttribute("aria-label", "Aggiungi " + root.querySelector("h1").textContent + " al carrello");
+          if (!radio.disabled) mainAdd.setAttribute("aria-label", "Aggiungi al carrello: " + root.querySelector("h1").textContent);
         }
         if (stickyButton) {
           stickyButton.disabled = radio.disabled;
           stickyButton.textContent = radio.disabled ? "Esaurito" : "Aggiungi";
-          if (!radio.disabled) stickyButton.setAttribute("aria-label", "Aggiungi " + root.querySelector("h1").textContent + " al carrello");
+          if (!radio.disabled) stickyButton.setAttribute("aria-label", "Aggiungi al carrello: " + root.querySelector("h1").textContent);
         }
         var cents = Number(radio.getAttribute("data-bz-variant"));
         if (Number.isFinite(cents) && cents >= 0) {

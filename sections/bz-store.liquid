@@ -1,6 +1,6 @@
 <section class="store-bleed" aria-labelledby="store-title">
   <div class="store-bleed-inner">
-    <img src="{{ 'bz-negozio-negozio-copertina.jpg' | asset_url }}" srcset="{% render 'bz-cover-srcset', asset: 'bz-negozio-negozio-copertina.jpg', width: 1600 %}" sizes="95vw" alt="Il banco e l’isola centrale del negozio, circondati dagli scaffali" width="1600" height="900" loading="lazy">
+    <img src="{{ 'bz-negozio-negozio-copertina.jpg' | asset_url }}" srcset="{% render 'bz-cover-srcset', asset: 'bz-negozio-negozio-copertina.jpg', width: 1600 %}" sizes="(min-width: 1024px) 60vw, 95vw" alt="Il banco e l’isola centrale del negozio, circondati dagli scaffali" width="1600" height="900" loading="lazy">
     <div class="store-bleed-copy">
       <h2 id="store-title">{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h2>
       {% render 'bz-open-badge', variant: 'compact', linked: true %}

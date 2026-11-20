@@ -24,12 +24,14 @@
       </div>
       <button class="btn gold" type="button" data-bz-add-set{% if count == 0 %} disabled{% endif %}>Aggiungi al carrello</button>
       <p class="ritual-status" role="status" data-ritual-status></p>
+      {%- unless hide_shipping -%}
       <div class="ritual-shipping" data-shipping>
         <p data-shipping-text>{% if missing == 0 %}Spedizione gratuita{% else %}Ti mancano <strong>{% render 'bz-money', cents: missing %}</strong> per la spedizione gratuita{% endif %}</p>
         <div class="track" role="progressbar" aria-label="Verso la spedizione gratuita" aria-valuemin="0" aria-valuemax="{{ goal }}" aria-valuenow="{{ progress }}">
           <span style="transform:scaleX({{ progress | times: 1.0 | divided_by: goal }})"></span>
         </div>
       </div>
+      {%- endunless -%}
     </div>
   </div>
   {%- if shot != blank or asset != blank -%}

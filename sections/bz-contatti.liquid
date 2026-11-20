@@ -1,13 +1,13 @@
 <div class="bz-stack contatti">
   <section class="contact-hero" aria-labelledby="contact-title">
     <h1 id="contact-title">Contatta<em>ci</em></h1>
-    <p>Scrivici per un ordine o un consiglio. Ti rispondiamo dal negozio di Cento.</p>
+    <p>Scrivici per un ordine o un consiglio.</p>
   </section>
   <section class="contact-layout" aria-label="Recapiti e messaggi">
     {%- form 'contact', class: 'contact-form' -%}
         <h2 id="form-title">Scrivici un <em>messaggio</em></h2>
         {%- if form.posted_successfully? -%}
-          <p role="status">Grazie. Ti rispondiamo dal negozio.</p>
+          <p role="status">Grazie, il tuo messaggio è stato inviato.</p>
         {%- else -%}
           <div class="fields">
             <label>Nome * <input type="text" name="contact[name]" required autocomplete="name"></label>

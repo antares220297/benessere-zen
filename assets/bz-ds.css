@@ -738,7 +738,7 @@ html .bz-page-home .home-hero>.bz-trust svg{
   }
   html .bz-page-home .home-hero>.photo-card{
     aspect-ratio:auto;
-    height:calc(var(--hero-height) / 2);
+    height:100%;
   }
   html .bz-page-home .hero-slide--featured .hero-copy{padding:var(--bz-sp-56)}
   html .bz-page-home .hero-slide--featured h1{font-size:clamp(48px,4.2vw,64px)!important}
@@ -1049,6 +1049,34 @@ html .bz-scope .ritual-section--home .bz-sh>h2{
   line-height:1.05!important;
   letter-spacing:normal;
 }
+html .bz-scope .ritual-section.ritual-section--home{
+  position:relative;
+  isolation:isolate;
+  padding:var(--bz-sp-16);
+  border-radius:var(--bz-r-panel);
+  background:#1b1714;
+}
+html .bz-scope .ritual-section--home .ritual-bg{
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  border-radius:inherit;
+  opacity:0;
+  pointer-events:none;
+  background:
+    radial-gradient(ellipse 70% 90% at 78% 30%,var(--ritual-tone,#2b2142),transparent 70%),
+    linear-gradient(125deg,var(--ritual-tone,#2b2142),var(--ritual-tone-end,#171420) 75%);
+  transition:opacity .4s cubic-bezier(.4,0,.2,1);
+}
+html .bz-scope .ritual-section--home .ritual-bg.on{opacity:1}
+html .bz-scope .ritual-bg[data-tone="set-1"]{--ritual-tone:#3d1e15;--ritual-tone-end:#1d1511}
+html .bz-scope .ritual-bg[data-tone="set-2"]{--ritual-tone:#1c222b;--ritual-tone-end:#111214}
+html .bz-scope .ritual-bg[data-tone="set-3"]{--ritual-tone:#3b1e2b;--ritual-tone-end:#1c1518}
+html .bz-scope .ritual-bg[data-tone="set-4"]{--ritual-tone:#16233f;--ritual-tone-end:#12151c}
+html .bz-scope .ritual-bg[data-tone="set-5"]{--ritual-tone:#1f1b3a;--ritual-tone-end:#22180f}
+@media (prefers-reduced-motion:reduce){
+  html .bz-scope .ritual-section--home .ritual-bg{transition:none}
+}
 html .bz-scope .ritual-section .bz-pills{
   flex-wrap:wrap;
   overflow:visible;
@@ -1216,6 +1244,9 @@ html .bz-scope .ritual-section .ritual-shipping p{
   color:var(--bz-text-3);
   font-size:var(--bz-fs-xs);
 }
+html .bz-scope .ritual-section--home :is(.ritual-count,.ritual-compare,.ritual-shipping p){
+  color:var(--bz-text-2);
+}
 html .bz-scope .ritual-section .ritual-shipping .track{height:4px}
 html .bz-scope .ritual-section .ritual-shipping .track span{
   transition:transform var(--bz-dur-large) var(--bz-ease-enter);
@@ -1256,6 +1287,11 @@ html .bz-scope .ritual-section .ritual-caption p{
   margin:var(--bz-sp-4) 0 0;
   font-size:13px;
   color:var(--bz-text-2);
+}
+html .bz-scope .ritual-section--home .ritual-caption{
+  padding:var(--bz-sp-8) var(--bz-sp-12);
+  border-radius:var(--bz-r-img);
+  background:rgb(20 19 18 / 85%);
 }
 @media (min-width:768px){
   html .bz-scope .ritual-section .ritual-grid:not(.ritual-grid--solo){grid-template-areas:"visual" "panel"}
@@ -1300,6 +1336,13 @@ html .bz-scope .ritual-section .ritual-caption p{
   html .bz-scope .ritual-section .ritual-caption p{font-size:15px;line-height:22px}
 }
 @media (min-width:1024px){
+  html .bz-scope .ritual-section.ritual-section--home{padding:var(--bz-sp-24)}
+  html .bz-scope .ritual-section--home .ritual-product{
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2;
+    overflow:hidden;
+  }
   html .bz-scope .ritual-section .bz-pills>button{
     height:var(--bz-sp-40);
     padding:0 18px;
@@ -1561,14 +1604,13 @@ html .bz-page-ayurveda .bz-news small{
   font-size:var(--bz-fs-sm);
 }
 
-/* Anche a Cento è l'unica fascia; la FAQ desktop è una sezione aperta. */
+/* Anche a Cento e FAQ. */
 html .bz-page-home .store-bleed{
   width:100%;
   max-width:100%;
   margin-inline:0;
-}
-html .bz-page-home .store-bleed-inner::after{
-  background:var(--bz-veil-side);
+  border-radius:var(--bz-r-panel);
+  overflow:hidden;
 }
 @media (min-width:1024px){
   html .bz-page-home .faq-wide{
@@ -1795,6 +1837,24 @@ html .bz-scope .bz-main-collections a {
   background:var(--bz-surface);
   color:var(--bz-text);
 }
+html .bz-scope .bz-main-collections__arrow {
+  width:18px;
+  height:18px;
+  flex-shrink:0;
+}
+html .bz-scope .bz-main-collections a > span {
+  overflow-wrap:anywhere;
+}
+@media (width < 360px) {
+  html .bz-scope .bz-main-collections { grid-template-columns:minmax(0,1fr); }
+}
+@media (360px <= width < 768px) {
+  html .bz-scope .bz-main-collections { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  html .bz-scope .bz-main-collections a {
+    gap:var(--bz-sp-8);
+    padding:var(--bz-sp-12);
+  }
+}
 html .bz-scope .bz-main-collections img {
   grid-column:1 / -1;
   width:100%;
@@ -1887,19 +1947,38 @@ html .bz-page-home .hero-navigation {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--bz-sp-12);
   padding: var(--bz-sp-8);
   background: var(--bz-surface-2);
-  color: var(--bz-text);
 }
-
 html .bz-page-home .hero-navigation button {
-  display: grid;
-  place-items: center;
-  min-width: 44px;
-  min-height: 44px;
-  border: 1px solid var(--bz-line-divider);
-  border-radius: 50%;
+  display:grid;
+  place-items:center;
+  width:32px;
+  height:32px;
+  padding:0;
+  border:0;
+  border-radius:50%;
+  background:transparent;
+}
+html .bz-page-home .hero-navigation button::before {
+  content:"";
+  width:8px;
+  height:8px;
+  border:1px solid var(--bz-gold);
+  border-radius:50%;
+}
+html .bz-page-home .hero-navigation button[aria-current="true"]::before {
+  background:var(--bz-gold);
+}
+html .bz-page-home .hero-navigation button:focus-visible {
+  outline:2px solid var(--bz-gold);
+  outline-offset:1px;
+}
+@media (prefers-reduced-motion:reduce) {
+  html .bz-page-home .home-hero .hero-slide {
+    animation:none!important;
+    transition:none!important;
+  }
 }
 
 html .bz-page-home #stones .stone__toggle {
@@ -1909,14 +1988,6 @@ html .bz-page-home #stones .stone__toggle {
 html .bz-page-home #stones .stone__label {
   overflow-wrap: normal;
   text-wrap: nowrap;
-}
-
-@media (min-width: 1024px) {
-  html .bz-scope .ritual-section--home .ritual-visual {
-    aspect-ratio: auto;
-    min-height: 220px;
-    max-height: 260px;
-  }
 }
 
 .shopify-policy__body :is(h2, h3) {

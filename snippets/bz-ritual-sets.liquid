@@ -44,6 +44,11 @@
   {%- endfor -%}
 {%- endcapture -%}
 <section class="ritual-section{% if home %} ritual-section--home{% endif %}" id="{% if home %}ritual{% else %}ritual-{{ section.id }}{% endif %}" data-bz-ritual data-bz-warm-images>
+  {%- if home -%}
+    {%- for block in blocks -%}
+      <div class="ritual-bg{% if forloop.first %} on{% endif %}" data-ritual-background="{{ section.id }}-ritual-{{ forloop.index }}" data-tone="{{ block.id | escape }}" aria-hidden="true"></div>
+    {%- endfor -%}
+  {%- endif -%}
   <div class="bz-sh">
     <h2>{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h2>
     {%- if section.settings.intro != blank -%}<p class="bz-sh-sub">{{ section.settings.intro | escape }}</p>{%- endif -%}

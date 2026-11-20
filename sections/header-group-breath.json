@@ -17,35 +17,7 @@
         "region_label": "Annunci",
         "free_shipping_threshold": 50,
         "pill_text": "Spedizione gratuita da [soglia] €"
-      },
-      "blocks": {
-        "msg-ritiro": {
-          "type": "message",
-          "settings": {
-            "text": "",
-            "text_mobile": ""
-          }
-        },
-        "msg-reso": {
-          "type": "message",
-          "settings": {
-            "text": "Reso entro 14 giorni",
-            "text_mobile": "Reso entro 14 giorni"
-          }
-        },
-        "msg-negozio": {
-          "type": "message",
-          "settings": {
-            "text": "Quello che vedi qui viene dal negozio di Cento",
-            "text_mobile": "Dal negozio di Cento"
-          }
-        }
-      },
-      "block_order": [
-        "msg-ritiro",
-        "msg-reso",
-        "msg-negozio"
-      ]
+      }
     },
     "bz-header": {
       "type": "bz-header",

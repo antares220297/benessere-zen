@@ -1,11 +1,8 @@
 {%- liquid
   assign threshold = settings.bz_free_shipping_threshold | default: 50 | at_least: 1
-  assign shop_page = pages['il-negozio']
-  assign shop_url = shop_page.url | default: '/pages/il-negozio'
 -%}
 <div class="announcement" role="region" aria-label="{{ section.settings.region_label | escape }}">
-  <span>Spedizione gratuita da <b>{{ threshold }}&nbsp;€</b></span>
-  <span><a href="{{ shop_url }}">Dagli scaffali del negozio di <b>Cento</b></a></span>
+  <div>Spedizione gratuita da <b>{{ threshold }}&nbsp;€</b></div>
 </div>
 {% schema %}
 {
