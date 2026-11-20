@@ -953,14 +953,14 @@ html .bz-scope .compare .bz-product-tile--vertical .bz-product-tile__title{
   html .bz-scope .bz-product-group:has(>.bz-product-tile:nth-child(5))>.bz-product-tile{
     scroll-snap-align:start;
   }
-  html .bz-scope .bz-product-group:where(:not(:has(>.bz-product-tile:nth-child(5)))){
+  html .bz-scope .bz-product-group:where(:not(.new-products, :has(>.bz-product-tile:nth-child(5)))){
     grid-template-columns:minmax(0,1fr);
     grid-auto-flow:row;
     gap:0;
     padding-block-end:0;
     margin-inline:0;
   }
-  html .bz-scope .bz-product-group:where(:not(:has(>.bz-product-tile:nth-child(5))))>.bz-section-product{
+  html .bz-scope .bz-product-group:where(:not(.new-products, :has(>.bz-product-tile:nth-child(5))))>.bz-section-product{
     display:grid;
     grid-row:auto;
     grid-template-columns:var(--bz-row-thumb, var(--bz-sp-56)) minmax(0,1fr) auto;
@@ -974,41 +974,41 @@ html .bz-scope .compare .bz-product-tile--vertical .bz-product-tile__title{
     border-block-end:1px solid var(--bz-line);
     border-radius:0;
   }
-  html .bz-scope .bz-product-group:where(:not(:has(>.bz-product-tile:nth-child(5)))) .bz-product-tile__link{
+  html .bz-scope .bz-product-group:where(:not(.new-products, :has(>.bz-product-tile:nth-child(5)))) .bz-product-tile__link{
     display:contents;
   }
-  html .bz-scope .bz-product-group:where(:not(:has(>.bz-product-tile:nth-child(5)))) .bz-product-tile__link:focus-visible .bz-product-tile__media{
+  html .bz-scope .bz-product-group:where(:not(.new-products, :has(>.bz-product-tile:nth-child(5)))) .bz-product-tile__link:focus-visible .bz-product-tile__media{
     outline:var(--bz-focus-width) solid var(--bz-focus-color);
     outline-offset:var(--bz-focus-offset);
   }
   @supports (grid-template-columns:subgrid){
-    html .bz-scope .bz-product-group:where(:not(:has(>.bz-product-tile:nth-child(5)))) .bz-product-tile__link{
+    html .bz-scope .bz-product-group:where(:not(.new-products, :has(>.bz-product-tile:nth-child(5)))) .bz-product-tile__link{
       display:grid;
       grid-area:1 / 1 / -1 / 3;
       grid-template:subgrid / subgrid;
     }
   }
-  html .bz-scope .bz-product-group:where(:not(:has(>.bz-product-tile:nth-child(5)))) .bz-product-tile__media{
+  html .bz-scope .bz-product-group:where(:not(.new-products, :has(>.bz-product-tile:nth-child(5)))) .bz-product-tile__media{
     grid-area:1 / 1 / -1;
     align-self:center;
     width:var(--bz-row-thumb, var(--bz-sp-56));
     height:var(--bz-row-thumb, var(--bz-sp-56));
   }
-  html .bz-scope .bz-product-group:where(:not(:has(>.bz-product-tile:nth-child(5)))) .bz-product-tile .bz-product-tile__title{
+  html .bz-scope .bz-product-group:where(:not(.new-products, :has(>.bz-product-tile:nth-child(5)))) .bz-product-tile .bz-product-tile__title{
     grid-area:2 / 2;
     margin:0!important;
   }
-  html .bz-scope .bz-product-group:where(:not(:has(>.bz-product-tile:nth-child(5)))) .bz-card .bz-product-tile__meta{
+  html .bz-scope .bz-product-group:where(:not(.new-products, :has(>.bz-product-tile:nth-child(5)))) .bz-card .bz-product-tile__meta{
     grid-area:3 / 2;
     margin:0;
     padding:0;
     min-height:0;
   }
-  html .bz-scope .bz-product-group:where(:not(:has(>.bz-product-tile:nth-child(5)))) .product.bz-section-product .bz-product-tile__sub{
+  html .bz-scope .bz-product-group:where(:not(.new-products, :has(>.bz-product-tile:nth-child(5)))) .product.bz-section-product .bz-product-tile__sub{
     grid-area:3 / 2;
     margin-inline:0;
   }
-  html .bz-scope .bz-product-group:where(:not(:has(>.bz-product-tile:nth-child(5)))) .bz-product-tile .bz-product-tile__bottom{
+  html .bz-scope .bz-product-group:where(:not(.new-products, :has(>.bz-product-tile:nth-child(5)))) .bz-product-tile .bz-product-tile__bottom{
     grid-area:1 / 3 / -1;
     align-self:center;
     grid-template-columns:auto var(--bz-control-h);
@@ -1017,11 +1017,11 @@ html .bz-scope .compare .bz-product-tile--vertical .bz-product-tile__title{
     padding:0;
     text-align:end;
   }
-  html .bz-scope .bz-product-group:where(:not(:has(>.bz-product-tile:nth-child(5)))) .bz-product-tile__media>.bz-badge{
+  html .bz-scope .bz-product-group:where(:not(.new-products, :has(>.bz-product-tile:nth-child(5)))) .bz-product-tile__media>.bz-badge{
     display:none;
   }
   @supports (grid-template-rows:subgrid){
-    html .bz-scope .bz-product-group:where(:not(:has(>.bz-product-tile:nth-child(5)))) .bz-section-product>.bz-product-tile__link{
+    html .bz-scope .bz-product-group:where(:not(.new-products, :has(>.bz-product-tile:nth-child(5)))) .bz-section-product>.bz-product-tile__link{
       grid-area:1 / 1 / -1 / 3;
       grid-template:subgrid / subgrid;
     }
@@ -1937,9 +1937,44 @@ html .bz-page-home .home-hero .new-products .product h3 {
   -webkit-line-clamp: unset;
 }
 
-@media (max-width: 480px) {
-  html .bz-page-home .home-hero .new-products {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+@media (width < 768px) {
+  html .bz-page-home .home-hero .new-slide .new-products {
+    column-gap: var(--bz-grid-gap);
+  }
+  html .bz-page-home .home-hero .new-slide .new-products .bz-product-tile__title {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+  html .bz-page-home .home-hero .new-slide .bz-product-tile__bottom {
+    padding-inline: 0;
+    gap: var(--bz-sp-4);
+  }
+  html .bz-page-home .home-hero .new-slide .price {
+    font-size: var(--bz-fs-body) !important;
+  }
+}
+
+@media (width < 480px) {
+  html .bz-page-home .home-hero .new-slide .new-products {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 46%);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: var(--bz-sp-4);
+    margin-inline: calc(-1 * var(--bz-sp-8));
+    scroll-padding-inline: var(--bz-sp-4);
+  }
+  html .bz-page-home .home-hero .new-slide .new-products > .product {
+    scroll-snap-align: start;
+  }
+  @supports (grid-template-rows: subgrid) {
+    html .bz-page-home .home-hero .new-slide .new-products {
+      grid-template-rows: repeat(4, auto);
+      row-gap: 0;
+    }
   }
 }
 
