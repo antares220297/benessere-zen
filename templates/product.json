@@ -12,7 +12,7 @@
     "bz_product": {
       "type": "bz-product",
       "settings": {
-        "store_badge": "Anche in negozio",
+        "store_badge": "Dal negozio di Cento",
         "photo_note": "Pietra naturale: ogni pezzo è un po' diverso",
         "shipping_note": "Spedizione gratuita da 50 €",
         "pickup_link": "",
@@ -32,7 +32,7 @@
         "free_shipping": 50,
         "pickup_hours": "",
         "visit_title": "Vuoi vederlo prima?",
-        "visit_text": "È anche in negozio, in via Provenzali 1.",
+        "visit_text": "Viene dal nostro negozio di Via Provenzali 1, a Cento.",
         "visit_link": "Orari"
       },
       "blocks": {
@@ -89,7 +89,7 @@
           "type": "detail",
           "settings": {
             "title": "Spedizione, ritiro e reso",
-            "text": "<p>Gratuita da 50 €. Ritiro gratuito in negozio, Reso entro 14 giorni.</p>"
+            "text": "<p>Spedizione Express 5,90 €, gratuita da 50 €. Ritiro gratuito in negozio a Cento. Reso entro 14 giorni dalla ricezione, con spedizione del reso a tuo carico.</p>"
           }
         },
         "cap-1": {

@@ -75,7 +75,7 @@
           {%- if current.inventory_management != blank and current.inventory_quantity == 1 and current.available -%}
             <span class="bz-badge bz-stock--low">Ultimo pezzo</span>
           {%- endif -%}
-          {%- if section.settings.store_badge != blank -%}
+          {%- if product.available and section.settings.store_badge != blank -%}
             <span class="bz-pill">{{ section.settings.store_badge | escape }}</span>
           {%- endif -%}
         </div>
@@ -143,7 +143,7 @@
       {%- if foto_mode contains 'modello' -%}
         <p class="bz-buy__use">Colore e venature possono variare da un pezzo all'altro.</p>
       {%- elsif foto_mode contains 'pezzo' or foto_mode == 'true' -%}
-        <p class="bz-buy__use">Il pezzo in foto è quello che parte, o che ritiri in negozio a Cento.</p>
+        <p class="bz-buy__use">La foto mostra il tipo di pietra: ogni pezzo è un po' diverso per forma e venature.</p>
       {%- endif -%}
 
       {%- capture fact_pills -%}
@@ -395,7 +395,9 @@
     </article>
     <article>
       <h3>{{ section.settings.visit_title | escape }}</h3>
-      <p>{{ section.settings.visit_text | replace: 'via Provenzali 1', store_address | escape }}</p>
+      {%- if product.available and section.settings.visit_text != blank -%}
+        <p>{{ section.settings.visit_text | replace: 'via Provenzali 1', store_address | escape }}</p>
+      {%- endif -%}
       {%- if section.settings.pickup_link != blank and section.settings.visit_link != blank -%}
         <a class="bz-picked__all" href="{{ section.settings.pickup_link }}">{{ section.settings.visit_link | escape }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       {%- endif -%}
@@ -456,7 +458,7 @@
   "name": "Scheda prodotto",
   "class": "bz-home",
   "settings": [
-    { "type": "text", "id": "store_badge", "label": "Etichetta foto", "default": "Anche in negozio" },
+    { "type": "text", "id": "store_badge", "label": "Etichetta foto", "default": "Dal negozio di Cento" },
     { "type": "text", "id": "photo_note", "label": "Nota foto", "default": "Pietra naturale: ogni pezzo è un po' diverso" },
     { "type": "textarea", "id": "opener", "label": "Testo di apertura" },
     { "type": "text", "id": "shipping_note", "label": "Nota spedizione", "default": "Spedizione gratuita" },
@@ -481,7 +483,7 @@
     { "type": "text", "id": "related_accent", "label": "Corsivo correlati", "default": "stessi 108 grani" },
     { "type": "text", "id": "related_link", "label": "Link correlati", "default": "Tutti i mala" },
     { "type": "text", "id": "visit_title", "label": "Titolo visita", "default": "Vuoi vederlo prima?" },
-    { "type": "text", "id": "visit_text", "label": "Testo visita", "default": "È anche in negozio, in via Provenzali 1." },
+    { "type": "text", "id": "visit_text", "label": "Testo visita", "default": "Viene dal nostro negozio di Via Provenzali 1, a Cento." },
     { "type": "text", "id": "visit_link", "label": "Link visita", "default": "Orari" }
   ],
   "blocks": [

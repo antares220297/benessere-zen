@@ -640,7 +640,7 @@
           "settings": {
             "tab": "0",
             "question": "Posso restituire un acquisto?",
-            "answer": "<p>Sì, entro 14 giorni dalla ricezione, con il pezzo non usato e nel suo imballo originale. Scrivi a <a href=\"mailto:info@benesserezen.shop\">info@benesserezen.shop</a>: se il reso è accettato ti mandiamo noi l’etichetta, e il rimborso arriva entro 10 giorni lavorativi.</p>"
+            "answer": "<p>Sì, entro 14 giorni dalla ricezione, con il pezzo non usato e nel suo imballo originale. Scrivi a <a href=\"mailto:info@benesserezen.shop\">info@benesserezen.shop</a>: se il reso è accettato ti mandiamo le istruzioni. La spedizione del reso è a carico tuo, e il rimborso arriva entro 10 giorni lavorativi dall'approvazione.</p>"
           }
         },
         "faq-4": {
@@ -680,7 +680,7 @@
           "settings": {
             "tab": "2",
             "question": "Ricevo la pietra della foto?",
-            "answer": "<p>Ricevi la stessa pietra, nella stessa misura. La natura però non fa copie: forma e venature cambiano da un pezzo all’altro.</p>"
+            "answer": "<p>Ricevi la stessa pietra, nella misura indicata in scheda. La foto mostra il tipo di pietra: forma e venature cambiano da un pezzo all’altro.</p>"
           }
         },
         "faq-9": {

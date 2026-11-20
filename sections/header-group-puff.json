@@ -36,8 +36,8 @@
         "msg-negozio": {
           "type": "message",
           "settings": {
-            "text": "Ogni pezzo del sito è anche in negozio",
-            "text_mobile": "Ogni pezzo è anche in negozio"
+            "text": "Quello che vedi qui viene dal negozio di Cento",
+            "text_mobile": "Dal negozio di Cento"
           }
         }
       },
