@@ -1505,21 +1505,36 @@ html .bz-scope .ritual-section--product .ritual-grid:not(.ritual-grid--solo) {
   grid-template-areas:"panel";
 }
 html .bz-scope .ritual-section--product .ritual-visual {display:none}
+html .bz-scope .ritual-section--product .row-price {align-self:center}
 @media (min-width:1024px) {
   html .bz-scope .ritual-section--home .ritual-grid:not(.ritual-grid--solo) {
     grid-template-columns:minmax(0, 42fr) minmax(0, 58fr);
     grid-template-areas:"visual panel";
+    align-items:stretch;
   }
+  html .bz-scope .ritual-section--home .ritual-grid:not(.ritual-grid--solo) .ritual-list {
+    display:flex;
+    flex-direction:column;
+  }
+  html .bz-scope .ritual-section--home .ritual-grid:not(.ritual-grid--solo) .ritual-total {
+    margin-top:auto;
+  }
+  html .bz-scope .ritual-section--home .ritual-row-media {max-width:190px}
   html .bz-scope .ritual-section--product .ritual-grid:not(.ritual-grid--solo) {
     grid-template-columns:minmax(0,1fr) minmax(0,260px);
     grid-template-areas:"panel visual";
+    align-items:stretch;
   }
   html .bz-scope .ritual-section--product .ritual-visual {
     display:block;
-    aspect-ratio:1;
+    aspect-ratio:auto;
+  }
+  html .bz-scope .ritual-section--product .ritual-shot {
+    object-position:center;
   }
   html .bz-scope .ritual-section--product .ritual-row {
     display:grid;
+    align-items:center;
     padding:var(--bz-sp-8) 0;
     min-height:0;
     background:transparent;

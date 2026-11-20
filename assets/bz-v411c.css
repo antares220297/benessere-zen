@@ -519,7 +519,7 @@ html{scroll-behavior:smooth}.bz-page-home main{padding-top:0}.bz-page-home main>
     grid-template-columns:none;
     grid-template-rows:repeat(2,auto);
     grid-auto-flow:column;
-    grid-auto-columns:max(130px,calc((100% - var(--bz-sp-12)) / 2));
+    grid-auto-columns:calc((100% - var(--bz-sp-12)) / 2);
     gap:var(--bz-sp-12);
     overflow-x:auto;
     scroll-snap-type:x mandatory;
@@ -527,14 +527,12 @@ html{scroll-behavior:smooth}.bz-page-home main{padding-top:0}.bz-page-home main>
     overscroll-behavior-inline:contain;
     padding-block:var(--bz-sp-4) var(--bz-sp-8);
   }
-  .bz-page-home #stones .gem{scroll-snap-align:start}
-  .bz-page-home #stones .gem-front:after{
-    background:linear-gradient(180deg,
-      transparent calc(100% - 162px),
-      rgba(10,9,8,.68) calc(100% - 128px),
-      rgba(10,9,8,.78) calc(100% - 88px),
-      rgba(10,9,8,.93) 100%);
+  .bz-page-home #stones .gem{
+    aspect-ratio:1;
+    max-height:none;
+    scroll-snap-align:start;
   }
+  .bz-page-home #stones .gem-turn{position:absolute;inset:0}
   .bz-page-home #stones .gem-front-copy{inset:auto 12px 64px}
   .bz-page-home #stones .gem-title{font-size:20px!important;line-height:1.1!important;overflow-wrap:anywhere}
   .bz-page-home #stones .gem-price{font-size:13px;margin-top:4px}
@@ -543,8 +541,9 @@ html{scroll-behavior:smooth}.bz-page-home main{padding-top:0}.bz-page-home main>
     justify-content:center;
     gap:6px;
     padding:0 var(--bz-sp-4);
+    font-size:12px;
     line-height:1.1;
-    text-align:left;
+    text-align:center;
   }
   .bz-page-home #stones .stone__toggle svg{width:16px;height:16px}
   .bz-page-home #stones .stone__toggle span{min-width:0;text-wrap:balance;overflow-wrap:anywhere}

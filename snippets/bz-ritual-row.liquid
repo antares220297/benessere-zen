@@ -3,7 +3,7 @@
   assign variant = rec.selected_or_first_available_variant
   assign thumbnail_sizes = '72px'
   if home
-    assign thumbnail_sizes = '(min-width: 1024px) 160px, 28vw'
+    assign thumbnail_sizes = '(min-width: 1024px) 190px, 28vw'
   endif
   assign subtitle = rec.metafields.custom.variante_vetrina.value | strip
 -%}
