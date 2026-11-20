@@ -10,10 +10,10 @@
   assign desideri_collection = collections[desideri_handle]
   assign senti_url = fallback_url
   assign desideri_url = fallback_url
-  if senti_collection.id
+  if senti_collection.url != blank
     assign senti_url = senti_collection.url
   endif
-  if desideri_collection.id
+  if desideri_collection.url != blank
     assign desideri_url = desideri_collection.url
   endif
 -%}
@@ -84,7 +84,7 @@
         endif
         assign card_collection = collections[handle]
         assign card_url = fallback_url
-        if card_collection.id
+        if card_collection.url != blank
           assign card_url = card_collection.url
         endif
       -%}
