@@ -1,0 +1,11 @@
+# Brief: home.html (modifichi SOLO `home.html`, partendo dal file v4.11b già presente)
+Applica SPEC §1, §2, §3, §4, §5, §6, §7 (e §11 per il badge in «Anche dal vivo», variante compatta). Testi: `input/copy-v2.md` sezione Home + extra B, C, D. Niente etichette idea.
+- **Hero** §1: via filo-candela, pausa, indicatori, zoom. Regole hero di COMMON. Card laterali: «25 €» non esiste → usa il testo di copy-v2 («sotto i 30 €»). Prima slide: usa `img/negozio/home-hero-negozio.jpg` o `home-hero-incensi.jpg` se la slide aveva una foto d'atmosfera v3.
+- **108 grani** §2: fascia ferma come v4.10, senza grani né pendolo che oscilla.
+- **Card pietra** §3: 8 card 3:4 con foto catalogo a tutto campo (URL in `image-audit.csv`, righe «Card pietra», aggiungi `&width=900`); Shungite sostituita da **Occhio di tigre** (da 4,50 €, `files/IMG_9345.jpg`), che va sotto il filtro **Protezione**. Pill «Scopri il significato» con icona `360`; retro con la stessa foto a opacity .2 — dove esiste `img/negozio/card-pietra-<pietra>.jpg` usa quella sul retro (in opacità), altrimenti la foto catalogo. Filtri funzionanti, carosello a 768/390 come tabella. `?state=flip` = Quarzo rosa girata.
+- **Regalo** §4: titolo «Un pezzo da *regalare*» (copy-v2 B.1) + sottotitolo copy-v2; resto invariato. `?state=gift`.
+- **Completa il rituale** §5: pill centrate a capo senza frecce, solo spunta (via «ce l'ho già»), immagine `img/rituale-<set>.jpg` a tutto campo alta quanto la colonna (per `rituale-sera.jpg` usa `object-position:60% 50%`), titolo «Il set *Nome*» + riga copy-v2 D sopra sfumatura. Pezzi/prezzi veri da products.json. `?state=ritual` = Affetti con una riga senza spunta.
+- **Pietra del mese**: invariata (luglio e settembre con `[DA CONFERMARE]` visibile come da copy-v2). `?state=month`.
+- **FAQ** §6: «Domande *frequenti*», risposte copy-v2 C. `?state=faq` = seconda pill aperta.
+- **Newsletter** §7: riprendi markup `input/v410-news.html` e CSS `input/v410-news.css` (card oro, 2 colonne ≥861px, 1 sotto), titolo «Nuovi arrivi *dal negozio*», nota v4.10, zero `<svg>` in `.bz-news`. Dopo invio: «Fatto. Ci sentiamo il mese prossimo.» in dissolvenza 240ms. `?state=news` = confermato.
+- Title della pagina: copy-v2 Meta (non «Cura di sé · …»).

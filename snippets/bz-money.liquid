@@ -1,0 +1,6 @@
+{% comment %}
+  Price as 21,90&nbsp;€. The shop money_format prefixes the euro sign.
+  @param {number} cents - Amount in cents
+{% endcomment %}
+{%- assign bz_amount = cents | money_without_currency | strip_html | strip -%}
+{{- bz_amount }}&nbsp;€

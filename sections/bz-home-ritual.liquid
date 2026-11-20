@@ -1,0 +1,25 @@
+{% render 'bz-ritual-sets', blocks: section.blocks, home: true %}
+{% schema %}
+{
+  "name": "Rituale home",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Titolo", "default": "Completa" },
+    { "type": "text", "id": "heading_accent", "label": "Corsivo", "default": "il rituale" },
+    { "type": "checkbox", "id": "bundle_discount", "label": "Prezzo del prodotto bundle", "info": "Usa il prodotto bundle quando è disponibile e tutti i pezzi sono selezionati.", "default": false }
+  ],
+  "blocks": [
+    { "type": "set", "name": "Set", "settings": [
+      { "type": "text", "id": "label", "label": "Nome", "default": "Serenità" },
+      { "type": "text", "id": "caption", "label": "Didascalia" },
+      { "type": "image_picker", "id": "image", "label": "Foto" },
+      { "type": "text", "id": "image_asset", "label": "Nome file in assets, se non c'è una foto", "default": "bz-rituale-serenita.jpg" },
+      { "type": "product", "id": "bundle_product", "label": "Prodotto bundle" },
+      { "type": "product", "id": "product_1", "label": "Pezzo 1" },
+      { "type": "product", "id": "product_2", "label": "Pezzo 2" },
+      { "type": "product", "id": "product_3", "label": "Pezzo 3" }
+    ] }
+  ],
+  "max_blocks": 8,
+  "presets": [{ "name": "Completa il rituale" }]
+}
+{% endschema %}

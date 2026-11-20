@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "main": {
+      "type": "bz-credits",
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}

@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "page": {
+      "type": "bz-negozio",
+      "settings": {}
+    }
+  },
+  "order": [
+    "page"
+  ]
+}

@@ -1,0 +1,10 @@
+{%- case tone -%}
+  {%- when 'pitta' -%}
+    <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6c2 8-4 10-2 16 6-2 10 2 8 8-6 2-10-2-12 4-2-8 4-10 2-16-6 2-10-2-8-8 6-2 10 2 12-4z"/></svg>
+  {%- when 'kapha' -%}
+    <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 30c6-8 10-8 16 0s10 8 16 0"/><path d="M6 38c6-8 10-8 16 0s10 8 16 0"/></svg>
+  {%- else -%}
+    <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="6"/><path d="M24 6v6M24 36v6M6 24h6M36 24h6M10 10l4 4M34 34l4 4M38 10l-4 4M14 34l-4 4"/></svg>
+{%- endcase -%}
+<h3>{{ title | escape }}</h3>
+{%- if text != blank -%}<p>{{ text | escape }}</p>{%- endif -%}

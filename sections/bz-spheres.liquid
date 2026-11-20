@@ -1,0 +1,31 @@
+<div class="category-row" aria-label="{{ section.settings.label | escape }}">
+  {%- for block in section.blocks -%}
+    {%- assign coll = block.settings.collection -%}
+    {%- if coll == blank or coll.title == blank -%}
+      {%- assign coll = collections['pietre-burattate'] -%}
+    {%- endif -%}
+    <a href="{{ coll.url | default: routes.all_products_collection_url }}" {{ block.shopify_attributes }}>
+      {%- if coll.image != blank -%}
+        {{ coll.image | image_url: width: 240 | image_tag: alt: block.settings.label, loading: 'lazy', widths: '120, 180, 240', sizes: '106px', width: 106, height: 106 }}
+      {%- elsif coll.products.first.featured_image -%}
+        {{ coll.products.first.featured_image | image_url: width: 240 | image_tag: alt: block.settings.label, loading: 'lazy', widths: '120, 180, 240', sizes: '106px', width: 106, height: 106 }}
+      {%- endif -%}
+      <span>{{ block.settings.label | escape }}</span>
+    </a>
+  {%- endfor -%}
+</div>
+{% schema %}
+{
+  "name": "Sfere",
+  "class": "bz-home",
+  "settings": [ { "type": "text", "id": "label", "label": "Etichetta", "default": "Categorie" } ],
+  "blocks": [
+    { "type": "sphere", "name": "Sfera", "settings": [
+      { "type": "text", "id": "label", "label": "Nome", "default": "Mala" },
+      { "type": "collection", "id": "collection", "label": "Collezione" }
+    ] }
+  ],
+  "max_blocks": 12,
+  "presets": [{ "name": "Sfere" }]
+}
+{% endschema %}

@@ -1,0 +1,318 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "bz_product": {
+      "type": "bz-product",
+      "settings": {
+        "store_badge": "Anche in negozio",
+        "photo_note": "Pietra naturale: ogni pezzo è un po' diverso",
+        "shipping_note": "Spedizione gratuita da 50 €",
+        "pickup_link": "",
+        "bento_title": "La nappa",
+        "bento_accent": "chiude il giro",
+        "bento_text": "Annodata a mano, con l'anello che separa il grano guru.",
+        "stat_1": "108",
+        "stat_1_text": "grani, il numero dei mantra nella tradizione",
+        "stat_2": "8 mm",
+        "stat_2_text": "ogni perla, lucida e liscia al tatto",
+        "stat_3": "67 g",
+        "stat_3_text": "leggero da portare tutto il giorno",
+        "wide_title": "Al collo",
+        "wide_accent": "o al polso",
+        "wide_text": "Lungo, cade sotto il petto. Avvolto tre o quattro volte, diventa un bracciale a strati.",
+        "related": "mala-tibetani",
+        "related_heading": "Altri mala,",
+        "related_accent": "stessi 108 grani",
+        "related_link": "Tutti i mala",
+        "pair": "bracciale-tormalina-nera-elastico",
+        "free_shipping": 50,
+        "pickup_hours": "",
+        "visit_title": "Vuoi vederlo prima?",
+        "visit_text": "È anche in negozio, in via Provenzali 1.",
+        "visit_link": "Orari"
+      },
+      "blocks": {
+        "fact-1": {
+          "type": "fact",
+          "settings": {
+            "value": "108",
+            "label": "grani"
+          }
+        },
+        "fact-2": {
+          "type": "fact",
+          "settings": {
+            "value": "8 mm",
+            "label": "perla"
+          }
+        },
+        "fact-3": {
+          "type": "fact",
+          "settings": {
+            "value": "67 g",
+            "label": "peso"
+          }
+        },
+        "fact-4": {
+          "type": "fact",
+          "settings": {
+            "label": "Onice nero",
+            "swatch": "#111111"
+          }
+        },
+        "det-1": {
+          "type": "detail",
+          "settings": {
+            "title": "Dettagli",
+            "open": true,
+            "text": "<p></p>"
+          }
+        },
+        "det-2": {
+          "type": "detail",
+          "settings": {
+            "title": "Nella tradizione",
+            "text": "<p>Nella pratica buddista e induista il mala serve a contare mantra o respiri. All'onice la tradizione associa fermezza e protezione. I significati appartengono alla tradizione e alla pratica spirituale; non sostituiscono pareri o terapie mediche.</p>"
+          }
+        },
+        "det-3": {
+          "type": "detail",
+          "settings": {
+            "title": "Come averne cura",
+            "text": "<p>Lontano da profumi e creme. Puliscilo con un panno morbido e asciutto e riponilo da solo, così la nappa non si schiaccia.</p>"
+          }
+        },
+        "det-4": {
+          "type": "detail",
+          "settings": {
+            "title": "Spedizione, ritiro e reso",
+            "text": "<p>Gratuita da 50 €. Ritiro gratuito in negozio, Reso entro 14 giorni.</p>"
+          }
+        },
+        "cap-1": {
+          "type": "caption",
+          "settings": {
+            "text": "Perle da 8 mm"
+          }
+        },
+        "cap-2": {
+          "type": "caption",
+          "settings": {
+            "text": "Nappa annodata"
+          }
+        },
+        "spec-0": {
+          "type": "spec",
+          "settings": {
+            "label": "Pietra",
+            "metafield": "pietra",
+            "fallback": "Onice nero"
+          }
+        },
+        "spec-1": {
+          "type": "spec",
+          "settings": {
+            "label": "Grani",
+            "metafield": "grani",
+            "fallback": "108"
+          }
+        },
+        "spec-2": {
+          "type": "spec",
+          "settings": {
+            "label": "Diametro perla",
+            "metafield": "diametro",
+            "fallback": "circa 8 mm"
+          }
+        },
+        "spec-3": {
+          "type": "spec",
+          "settings": {
+            "label": "Peso",
+            "metafield": "peso",
+            "fallback": "67 g"
+          }
+        },
+        "spec-4": {
+          "type": "spec",
+          "settings": {
+            "label": "Finitura",
+            "metafield": "finitura",
+            "fallback": "Nappa nera"
+          }
+        }
+      },
+      "block_order": [
+        "fact-1",
+        "fact-2",
+        "fact-3",
+        "fact-4",
+        "cap-1",
+        "cap-2",
+        "spec-0",
+        "spec-1",
+        "spec-2",
+        "spec-3",
+        "spec-4",
+        "det-1",
+        "det-2",
+        "det-3",
+        "det-4"
+      ]
+    },
+    "bz_ritual": {
+      "type": "bz-ritual",
+      "blocks": {
+        "rule-bracciali": {
+          "type": "type_rule",
+          "settings": {
+            "product_type": "Bracciali",
+            "collection_1": "candele-e-brucia-candele",
+            "collection_2": "incensi-e-brucia-incensi-2"
+          }
+        },
+        "rule-bracciale": {
+          "type": "type_rule",
+          "settings": {
+            "product_type": "Bracciale",
+            "collection_1": "candele-e-brucia-candele",
+            "collection_2": "incensi-e-brucia-incensi-2"
+          }
+        },
+        "rule-ciondoli": {
+          "type": "type_rule",
+          "settings": {
+            "product_type": "Ciondoli",
+            "collection_1": "collane-e-braccialetti",
+            "collection_2": "candele-e-brucia-candele"
+          }
+        },
+        "rule-ciondolo": {
+          "type": "type_rule",
+          "settings": {
+            "product_type": "Ciondolo",
+            "collection_1": "collane-e-braccialetti",
+            "collection_2": "candele-e-brucia-candele"
+          }
+        },
+        "rule-collane": {
+          "type": "type_rule",
+          "settings": {
+            "product_type": "Collane",
+            "collection_1": "candele-e-brucia-candele",
+            "collection_2": "pietre-burattate"
+          }
+        },
+        "rule-mala": {
+          "type": "type_rule",
+          "settings": {
+            "product_type": "Mala",
+            "collection_1": "pietre-burattate",
+            "collection_2": "candele-e-brucia-candele"
+          }
+        },
+        "rule-pietre": {
+          "type": "type_rule",
+          "settings": {
+            "product_type": "Pietre",
+            "collection_1": "candele-e-brucia-candele",
+            "collection_2": "incensi-e-brucia-incensi-2"
+          }
+        },
+        "rule-cosmetici": {
+          "type": "type_rule",
+          "settings": {
+            "product_type": "Cosmetici",
+            "collection_1": "latte-detergente",
+            "collection_2": "tonico"
+          }
+        },
+        "rule-oli": {
+          "type": "type_rule",
+          "settings": {
+            "product_type": "Oli e profumi",
+            "collection_1": "profumi-in-olio",
+            "collection_2": "cosmetica"
+          }
+        },
+        "rule-tisane": {
+          "type": "type_rule",
+          "settings": {
+            "product_type": "Tè e tisane",
+            "collection_1": "te-tisane",
+            "collection_2": "te-e-tisane-ayurvediche"
+          }
+        },
+        "rule-incensi": {
+          "type": "type_rule",
+          "settings": {
+            "product_type": "Incensi e smudge",
+            "collection_1": "candele-e-brucia-candele",
+            "collection_2": "pietre-burattate"
+          }
+        },
+        "rule-candele": {
+          "type": "type_rule",
+          "settings": {
+            "product_type": "Candele",
+            "collection_1": "incensi-e-brucia-incensi-2",
+            "collection_2": "pietre-burattate"
+          }
+        },
+        "rule-capelli": {
+          "type": "type_rule",
+          "settings": {
+            "product_type": "Capelli",
+            "collection_1": "prodotti-per-capelli",
+            "collection_2": "cura-della-persona"
+          }
+        }
+      },
+      "block_order": [
+        "rule-bracciali",
+        "rule-bracciale",
+        "rule-ciondoli",
+        "rule-ciondolo",
+        "rule-collane",
+        "rule-mala",
+        "rule-pietre",
+        "rule-cosmetici",
+        "rule-oli",
+        "rule-tisane",
+        "rule-incensi",
+        "rule-candele",
+        "rule-capelli"
+      ],
+      "settings": {
+        "heading": "Completa",
+        "heading_accent": "il rituale",
+        "link_label": "",
+        "link": "",
+        "intro": "Due o tre pezzi che stanno bene con questo."
+      }
+    },
+    "bz_related": {
+      "type": "bz-related",
+      "settings": {
+        "heading": "Altri mala,",
+        "heading_accent": "stessi 108 grani",
+        "link_label": "Tutti i mala",
+        "collection": "mala-tibetani",
+        "limit": 5
+      }
+    }
+  },
+  "order": [
+    "bz_product",
+    "bz_ritual",
+    "bz_related"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "main": {
+      "type": "bz-page",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

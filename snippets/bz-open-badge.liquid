@@ -1,0 +1,19 @@
+{% comment %}
+  variant: full | compact | status. linked: true outside the contact page. url: optional link override.
+{% endcomment %}
+{%- liquid
+  assign badge_variant = variant | default: 'compact'
+  assign contact = pages['contatti']
+  if contact.url == blank
+    assign contact = pages['contact']
+  endif
+  assign hours_url = contact.url | append: '#orari'
+  if hours_url == '#orari'
+    assign hours_url = '/pages/contact#orari'
+  endif
+-%}
+{%- if linked -%}
+  <a class="open-badge" data-open-badge="{{ badge_variant }}" href="{{ url | default: hours_url }}"><span class="ob-state">Orari</span></a>
+{%- else -%}
+  <span class="open-badge" data-open-badge="{{ badge_variant }}" role="status" aria-live="polite"><span class="ob-state">Orari</span></span>
+{%- endif -%}

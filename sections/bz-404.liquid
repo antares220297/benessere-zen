@@ -1,0 +1,88 @@
+{{ 'bz-tokens.css' | asset_url | stylesheet_tag }}
+{{ 'bz-home.css' | asset_url | stylesheet_tag }}
+{{ 'bz-search.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign picks = section.settings.collection
+  if picks == blank
+    assign picks = collections['gioielli-con-pietre']
+  endif
+  assign button_href = section.settings.button_link
+  if button_href == blank
+    assign button_href = '/collections/gioielli-con-pietre'
+  endif
+  assign card_limit = section.settings.limit | default: 3 | plus: 0
+  assign heading = section.settings.title | default: "Questa pagina non c'è"
+  assign text = section.settings.text | default: 'Il link non porta a un prodotto o a una collezione.'
+  assign button_label = section.settings.button_label | default: 'Vedi i gioielli'
+-%}
+
+<section class="bz bz-404" aria-labelledby="Bz404Title-{{ section.id }}">
+  <h1 id="Bz404Title-{{ section.id }}">{{ heading | escape }}</h1>
+  <p>{{ text | escape }}</p>
+  <a class="bz-btn bz-btn--gold" href="{{ button_href | escape }}">{{ button_label | escape }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+  {%- if picks != blank and picks.products_count > 0 -%}
+    <div class="bz-404__grid">
+      {%- assign shown = 0 -%}
+      {%- for product in picks.products -%}
+        {%- if shown < card_limit and product.available -%}
+          {% render 'bz-card', product: product, eager: true %}
+          {%- assign shown = shown | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Pagina non trovata",
+  "class": "bz-home",
+  "enabled_on": {
+    "templates": ["404"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titolo",
+      "default": "Questa pagina non c'è"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Testo",
+      "default": "Il link non porta a un prodotto o a una collezione."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Pulsante",
+      "default": "Vedi i gioielli"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Link del pulsante"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collezione dei pezzi",
+      "info": "Se è vuota, mostriamo gioielli con pietre."
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "label": "Numero di pezzi",
+      "default": 3
+    }
+  ],
+  "presets": [
+    { "name": "Pagina non trovata" }
+  ]
+}
+{% endschema %}

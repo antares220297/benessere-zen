@@ -1,0 +1,457 @@
+<section id="zen-ingredients-{{ section.id }}" class="zen-ing-section" data-section-id="{{ section.id }}">
+  {%- assign data_source = section.settings.data_source | default: 'metaobject' -%}
+  {%- assign mo_type = section.settings.metaobject_type | default: 'ingrediente' -%}
+  {%- assign mo = shop.metaobjects[mo_type] -%}
+  {%- if mo != nil and mo.values != blank -%}
+    {%- assign mo_values = mo.values -%}
+  {%- else -%}
+    {%- assign mo_values = blank -%}
+  {%- endif -%}
+
+  <div class="zen-ing-container">
+    <header class="zen-ing-header">
+      <span class="zen-ing-subtitle">Ingredienti</span>
+      <h2 class="zen-ing-title">{{ section.settings.title }}</h2>
+      {% if section.settings.subtitle != blank %}
+        <p class="zen-ing-intro">{{ section.settings.subtitle }}</p>
+      {% endif %}
+
+      <div class="zen-ing-controls">
+        {% if section.settings.enable_search %}
+          <div class="zen-ing-search">
+            <input type="search" class="zen-ing-search-input" placeholder="Cerca ingrediente, INCI, beneficio…" aria-label="Cerca ingredienti">
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" fill="none"/><path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+          </div>
+        {% endif %}
+        {% if section.settings.enable_tags %}
+          <div class="zen-ing-tags js-tags"><!-- tags injected --></div>
+        {% endif %}
+      </div>
+    </header>
+
+    <div class="zen-ing-grid js-grid"><!-- cards injected --></div>
+
+    <!-- Drawer -->
+    <div class="zen-ing-drawer" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="zen-ing-drawer-title-{{ section.id }}">
+      <div class="zen-ing-drawer-backdrop js-close" tabindex="-1" aria-hidden="true"></div>
+      <aside class="zen-ing-drawer-panel" tabindex="-1">
+        <button class="zen-ing-close js-close" aria-label="Chiudi pannello">
+          <svg width="22" height="22" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+
+        <div class="zen-ing-drawer-content">
+          <div class="zen-ing-drawer-media">
+            <img class="js-drawer-image" alt="">
+          </div>
+          <div class="zen-ing-drawer-body">
+            <h3 id="zen-ing-drawer-title-{{ section.id }}" class="zen-ing-drawer-title js-drawer-title"></h3>
+            <p class="zen-ing-drawer-inci"><strong>INCI:</strong> <span class="js-drawer-inci"></span></p>
+            <p class="zen-ing-drawer-short js-drawer-short"></p>
+
+            <div class="zen-ing-drawer-rich">
+              <h4>Benefici</h4>
+              <div class="js-drawer-benefits"></div>
+            </div>
+
+            <div class="zen-ing-drawer-rich">
+              <h4>Come si usa</h4>
+              <div class="js-drawer-usage"></div>
+            </div>
+
+            <div class="zen-ing-related">
+              <h4>Prodotti correlati</h4>
+              <div class="zen-ing-related-grid js-related-grid"><!-- related cards --></div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  {%- comment -%} Data payload (JSON) {%- endcomment -%}
+  <script type="application/json" id="zen-ing-data-{{ section.id }}">
+  {
+    "source": {{ data_source | json }},
+    "items": [
+      {%- if data_source == 'metaobject' and mo_values -%}
+        {%- for item in mo_values -%}
+          {%- assign name = item.name | default: item.fields.name.value -%}
+          {
+            "id": {{ forloop.index }},
+            "name": {{ name | strip | json }},
+            "slug": {{ item.slug | default: item.fields.slug.value | strip | json }},
+            "inci": {{ item.inci | default: item.fields.inci.value | strip | json }},
+            "short_desc": {{ item.short_desc | default: item.fields.short_desc.value | strip | json }},
+            "benefits": {{ item.benefits | default: item.fields.benefits.value | strip | json }},
+            "usage": {{ item.usage | default: item.fields.usage.value | strip | json }},
+            "tags": {{ item.tags | default: item.fields.tags.value | strip | json }},
+            "image": {{ item.image | default: item.fields.image.value | image_url: width: 800 | json }},
+            "products": [
+              {%- assign prods = item.products | default: item.fields.products.value -%}
+              {%- if prods != blank -%}
+                {%- for p in prods -%}
+                  {%- assign prod = all_products[p.handle] | default: p -%}
+                  {
+                    "handle": {{ prod.handle | json }},
+                    "title": {{ prod.title | json }},
+                    "image": {{ prod.featured_image | img_url: '600x600' | json }},
+                    "price_min": {{ prod.price | default: prod.price_min | json }}
+                  }{% unless forloop.last %},{% endunless %}
+                {%- endfor -%}
+              {%- endif -%}
+            ]
+          }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      {%- else -%}
+        {%- for block in section.blocks -%}
+          {%- assign tags_clean = block.settings.tags | strip -%}
+          {
+            "id": {{ forloop.index }},
+            "name": {{ block.settings.name | strip | json }},
+            "slug": {{ block.settings.slug | strip | json }},
+            "inci": {{ block.settings.inci | strip | json }},
+            "short_desc": {{ block.settings.short_desc | strip | json }},
+            "benefits": {{ block.settings.benefits | strip | json }},
+            "usage": {{ block.settings.usage | strip | json }},
+            "tags": {{ tags_clean | json }},
+            "image": {{ block.settings.image | image_url: width: 800 | json }},
+            "products": [
+              {%- for prod in block.settings.products -%}
+                {%- if prod != blank -%}
+                {
+                  "handle": {{ prod.handle | json }},
+                  "title": {{ prod.title | json }},
+                  "image": {{ prod.featured_image | img_url: '600x600' | json }},
+                  "price_min": {{ prod.price | json }}
+                }{% unless forloop.last %},{% endunless %}
+                {%- endif -%}
+              {%- endfor -%}
+            ]
+          }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      {%- endif -%}
+    ]
+  }
+  </script>
+</section>
+
+{% style %}
+:root{
+  --zen-primary:#C8B89F;--zen-bg:#111;--zen-card:#1a1a1a;--zen-text:#fff;--zen-muted:#A0A0A0;--zen-border:#2A2A2A;--zen-ok:#22C55E;
+}
+.zen-ing-section{background:var(--zen-bg);padding:72px 20px;position:relative;overflow:hidden}
+.zen-ing-container{max-width:1200px;margin:0 auto}
+.zen-ing-subtitle{display:inline-block;padding:6px 14px;border:1px solid rgba(200,184,159,.25);border-radius:999px;color:var(--zen-primary);font-size:12px;letter-spacing:2px;text-transform:uppercase;background:rgba(200,184,159,.06)}
+.zen-ing-title{margin:16px 0 8px;font-size:clamp(30px,4.6vw,52px);font-weight:300;color:#fff;letter-spacing:-.5px}
+.zen-ing-intro{color:var(--zen-muted);margin:0 0 22px}
+.zen-ing-controls{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin:18px 0 26px}
+.zen-ing-search{position:relative;flex:1;min-width:240px}
+.zen-ing-search-input{width:100%;background:#131313;border:1px solid var(--zen-border);border-radius:12px;color:#dedede;padding:12px 36px 12px 12px}
+.zen-ing-search svg{position:absolute;right:10px;top:50%;transform:translateY(-50%);opacity:.7}
+.zen-ing-tags{display:flex;gap:8px;flex-wrap:wrap}
+.zen-tag{padding:6px 12px;border:1px solid var(--zen-border);border-radius:999px;color:#eaeaea;background:#171717;font-size:12px;cursor:pointer;transition:all .2s}
+.zen-tag.is-active{border-color:var(--zen-primary);background:rgba(200,184,159,.1);color:#fff}
+.zen-ing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.zen-ing-card{background:var(--zen-card);border:1px solid var(--zen-border);border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .2s, box-shadow .2s}
+.zen-ing-card:hover{transform:translateY(-4px);box-shadow:0 10px 25px rgba(0,0,0,.35)}
+.zen-ing-media{aspect-ratio:1;border-bottom:1px solid var(--zen-border);background:#0f0f0f;display:flex;align-items:center;justify-content:center}
+.zen-ing-media img{width:100%;height:100%;object-fit:cover;opacity:.95}
+.zen-ing-body{padding:12px}
+.zen-ing-name{margin:0 0 4px;color:#fff;font-weight:700;font-size:16px}
+.zen-ing-inci{margin:0;color:var(--zen-muted);font-size:12px}
+.zen-ing-short{margin:8px 0 0;color:#cfcfcf;font-size:13px;line-height:1.6}
+
+/* Drawer */
+.zen-ing-drawer{position:fixed;inset:0;z-index:9999;display:none}
+.zen-ing-drawer[aria-hidden="false"]{display:block}
+.zen-ing-drawer-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(6px)}
+.zen-ing-drawer-panel{position:absolute;right:0;top:0;height:100%;width:min(720px,96%);background:#121212;border-left:1px solid var(--zen-border);transform:translateX(100%);transition:transform .28s ease;outline:none}
+.zen-ing-drawer[aria-hidden="false"] .zen-ing-drawer-panel{transform:translateX(0)}
+.zen-ing-close{position:absolute;top:12px;right:12px;background:#1e1e1e;border:1px solid var(--zen-border);border-radius:999px;width:36px;height:36px;color:#fff;display:flex;align-items:center;justify-content:center}
+.zen-ing-drawer-content{display:grid;grid-template-columns:320px 1fr;gap:18px;height:100%;padding:22px}
+.zen-ing-drawer-media{border:1px solid var(--zen-border);border-radius:14px;overflow:hidden;background:#0f0f0f}
+.zen-ing-drawer-media img{width:100%;height:100%;object-fit:cover}
+.zen-ing-drawer-body{overflow:auto;padding-right:6px}
+.zen-ing-drawer-title{margin:0 0 6px;color:#fff;font-size:24px}
+.zen-ing-drawer-inci{margin:0 0 8px;color:#dcdcdc}
+.zen-ing-drawer-short{margin:0 0 12px;color:#cfcfcf}
+.zen-ing-drawer-rich h4{margin:14px 0 6px;color:#fff}
+.zen-ing-drawer-rich{color:#d9d9d9;font-size:14px;line-height:1.7}
+.zen-ing-related{margin-top:16px}
+.zen-ing-related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.zen-rel-card{background:#151515;border:1px solid var(--zen-border);border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+.zen-rel-media{aspect-ratio:1;background:#0e0e0e;border-bottom:1px solid var(--zen-border);display:flex;align-items:center;justify-content:center}
+.zen-rel-media img{width:100%;height:100%;object-fit:contain}
+.zen-rel-body{padding:10px}
+.zen-rel-title{margin:0 0 6px;color:#fff;font-size:14px;font-weight:700}
+.zen-rel-price{margin:0 0 8px;color:#fff;font-weight:700}
+.zen-rel-add{background:var(--zen-primary);color:#242424;border:none;border-radius:10px;padding:9px 10px;font-weight:800;cursor:pointer}
+.zen-rel-add[disabled]{opacity:.6;cursor:not-allowed}
+@media(max-width: 980px){
+  .zen-ing-drawer-content{grid-template-columns:1fr}
+}
+{% endstyle %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const root = document.getElementById('zen-ingredients-{{ section.id }}');
+  if(!root) return;
+
+  const dataEl = document.getElementById('zen-ing-data-{{ section.id }}');
+  let payload = { items: [] };
+  try { payload = JSON.parse(dataEl.textContent || '{}'); } catch(e){ console.warn('Bad ingredients JSON', e); }
+
+  const grid = root.querySelector('.js-grid');
+  const searchInput = root.querySelector('.zen-ing-search-input');
+  const tagsWrap = root.querySelector('.js-tags');
+  const drawer = root.querySelector('.zen-ing-drawer');
+  const panel = drawer.querySelector('.zen-ing-drawer-panel');
+  const closeEls = drawer.querySelectorAll('.js-close');
+
+  // Drawer fields
+  const dImg = drawer.querySelector('.js-drawer-image');
+  const dTitle = drawer.querySelector('.js-drawer-title');
+  const dInci = drawer.querySelector('.js-drawer-inci');
+  const dShort = drawer.querySelector('.js-drawer-short');
+  const dBenefits = drawer.querySelector('.js-drawer-benefits');
+  const dUsage = drawer.querySelector('.js-drawer-usage');
+  const relatedGrid = drawer.querySelector('.js-related-grid');
+
+  // Build normalized items
+  const items = (payload.items || []).map(it => {
+    // normalize tags to array
+    let tags = [];
+    if (typeof it.tags === 'string' && it.tags.trim() !== '') {
+      tags = it.tags.split(',').map(t => t.trim()).filter(Boolean);
+    } else if (Array.isArray(it.tags)) {
+      tags = it.tags;
+    }
+    return {
+      id: it.id,
+      name: it.name || '',
+      slug: it.slug || '',
+      inci: it.inci || '',
+      short_desc: it.short_desc || '',
+      benefits: it.benefits || '',
+      usage: it.usage || '',
+      image: it.image || '',
+      tags,
+      products: Array.isArray(it.products) ? it.products : []
+    };
+  });
+
+  // Build tag set
+  const tagSet = new Set();
+  items.forEach(i => i.tags.forEach(t => tagSet.add(t)));
+  const allTags = Array.from(tagSet);
+
+  // Render tags
+  let activeTag = null;
+  if (tagsWrap) {
+    tagsWrap.innerHTML = '';
+    if (allTags.length) {
+      const allBtn = document.createElement('button');
+      allBtn.className = 'zen-tag is-active';
+      allBtn.textContent = 'Tutti';
+      allBtn.addEventListener('click', () => { activeTag = null; updateTagUI(allBtn); render(); });
+      tagsWrap.appendChild(allBtn);
+    }
+    allTags.forEach(tag => {
+      const b = document.createElement('button');
+      b.className = 'zen-tag';
+      b.textContent = tag;
+      b.addEventListener('click', () => {
+        activeTag = (activeTag === tag) ? null : tag;
+        updateTagUI(b);
+        render();
+      });
+      tagsWrap.appendChild(b);
+    });
+  }
+  function updateTagUI(activeBtn){
+    tagsWrap.querySelectorAll('.zen-tag').forEach(btn => btn.classList.remove('is-active'));
+    activeBtn.classList.add('is-active');
+  }
+
+  // Render grid
+  function cardTemplate(item){
+    const img = item.image ? `<img src="${item.image}" alt="${escapeHtml(item.name)}" loading="lazy">` : '';
+    return `
+      <article class="zen-ing-card" data-id="${item.id}" tabindex="0" aria-label="${escapeHtml(item.name)}">
+        <div class="zen-ing-media">${img}</div>
+        <div class="zen-ing-body">
+          <h3 class="zen-ing-name">${escapeHtml(item.name)}</h3>
+          ${item.inci ? `<p class="zen-ing-inci">${escapeHtml(item.inci)}</p>` : ''}
+          ${item.short_desc ? `<p class="zen-ing-short">${escapeHtml(item.short_desc)}</p>` : ''}
+        </div>
+      </article>
+    `;
+  }
+
+  function render(){
+    const q = (searchInput?.value || '').toLowerCase().trim();
+    const filtered = items.filter(i => {
+      const matchesTag = !activeTag || i.tags.includes(activeTag);
+      const hay = (i.name + ' ' + i.inci + ' ' + i.short_desc + ' ' + i.benefits).toLowerCase();
+      const matchesQuery = !q || hay.includes(q);
+      return matchesTag && matchesQuery;
+    }).slice(0, {{ section.settings.max_items | default: 100 | plus: 0 }});
+
+    grid.innerHTML = filtered.map(cardTemplate).join('');
+    // bind open events
+    grid.querySelectorAll('.zen-ing-card').forEach(card => {
+      card.addEventListener('click', () => openDrawerById(Number(card.dataset.id)));
+      card.addEventListener('keydown', (e) => {
+        if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openDrawerById(Number(card.dataset.id)); }
+      });
+    });
+  }
+
+  function openDrawerById(id){
+    const item = items.find(x => x.id === id);
+    if(!item) return;
+    dTitle.textContent = item.name || '';
+    dInci.textContent = item.inci || '';
+    dShort.textContent = item.short_desc || '';
+    dBenefits.innerHTML = toRichText(item.benefits);
+    dUsage.innerHTML = toRichText(item.usage);
+    if (item.image) {
+      dImg.src = item.image;
+      dImg.alt = item.name || '';
+    } else {
+      dImg.removeAttribute('src');
+      dImg.alt = '';
+    }
+
+    // Related products
+    relatedGrid.innerHTML = '';
+    (item.products || []).forEach(p => {
+      const card = document.createElement('div');
+      card.className = 'zen-rel-card';
+      card.innerHTML = `
+        <div class="zen-rel-media">
+          ${p.image ? `<img src="${p.image}" alt="${escapeHtml(p.title)}" loading="lazy">` : ''}
+        </div>
+        <div class="zen-rel-body">
+          <p class="zen-rel-title">${escapeHtml(p.title || '')}</p>
+          <p class="zen-rel-price">${formatMoney(p.price_min || 0)}</p>
+          <button class="zen-rel-add" data-handle="${p.handle}">Aggiungi</button>
+        </div>
+      `;
+      // Bind add
+      card.querySelector('.zen-rel-add').addEventListener('click', async (e) => {
+        const btn = e.currentTarget;
+        btn.disabled = true;
+        try {
+          const variantId = await fetchFirstVariantId(btn.dataset.handle);
+          if (variantId) {
+            await ajaxAdd([{ id: variantId, quantity: 1 }]);
+            btn.textContent = 'Aggiunto ✓';
+            setTimeout(() => { btn.textContent = 'Aggiungi'; btn.disabled = false; }, 1400);
+          } else {
+            btn.textContent = 'Esaurito';
+          }
+        } catch(err){
+          console.error(err);
+          btn.textContent = 'Errore';
+          setTimeout(() => { btn.textContent = 'Aggiungi'; btn.disabled = false; }, 1200);
+        }
+      });
+      relatedGrid.appendChild(card);
+    });
+
+    drawer.setAttribute('aria-hidden','false');
+    document.body.style.overflow = 'hidden';
+    // focus trap
+    setTimeout(()=> panel.focus(), 50);
+    document.addEventListener('keydown', escClose);
+  }
+
+  function closeDrawer(){
+    drawer.setAttribute('aria-hidden','true');
+    document.body.style.overflow = '';
+    document.removeEventListener('keydown', escClose);
+  }
+  function escClose(e){ if(e.key === 'Escape'){ closeDrawer(); } }
+  closeEls.forEach(el => el.addEventListener('click', closeDrawer));
+  drawer.querySelector('.zen-ing-drawer-backdrop').addEventListener('click', closeDrawer);
+
+  // Search
+  if (searchInput) {
+    let t; searchInput.addEventListener('input', () => {
+      clearTimeout(t); t = setTimeout(render, 120);
+    });
+  }
+
+  // Utilities
+  function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, (m)=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
+  function toRichText(s){
+    if(!s) return '';
+    // naive conversion: keep line breaks; basic link auto
+    let html = String(s).replace(/\n/g,'<br>');
+    html = html.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+    return html;
+  }
+  function formatMoney(cents){ return new Intl.NumberFormat('it-IT',{style:'currency',currency:'EUR'}).format((cents||0)/100); }
+  async function fetchFirstVariantId(handle){
+    const res = await fetch(`/products/${handle}.js`);
+    if(!res.ok) return null;
+    const data = await res.json();
+    const v = (data.variants||[]).find(va => va.available) || data.variants?.[0];
+    return v ? v.id : null;
+  }
+  async function ajaxAdd(items){
+    const resp = await fetch('/cart/add.js',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},
+      body: JSON.stringify({ items })
+    });
+    if(!resp.ok) throw new Error('Cart error');
+    document.dispatchEvent(new CustomEvent('cart:item-added',{detail:{count:items.length}}));
+  }
+
+  // Initial render
+  render();
+});
+</script>
+
+{% schema %}
+{
+  "name": "Glossario",
+  "class": "zen-ingredienti-viventi",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Titolo", "default": "Ingredienti Viventi" },
+    { "type": "text", "id": "subtitle", "label": "Sottotitolo", "default": "Scopri i benefici reali degli attivi presenti nelle nostre formule." },
+    { "type": "radio", "id": "data_source", "label": "Sorgente dati", "options": [
+        { "value": "metaobject", "label": "Metaobject (consigliato)" },
+        { "value": "manual", "label": "Manuale (blocchi)" }
+      ],
+      "default": "metaobject"
+    },
+    { "type": "text", "id": "metaobject_type", "label": "Handle metaobject", "default": "ingrediente", "info": "Esempio: ingrediente" },
+    { "type": "checkbox", "id": "enable_search", "label": "Abilita ricerca", "default": true },
+    { "type": "checkbox", "id": "enable_tags", "label": "Abilita tag filtro", "default": true },
+    { "type": "range", "id": "max_items", "label": "Numero massimo da mostrare", "min": 6, "max": 200, "step": 2, "default": 60 }
+  ],
+  "blocks": [
+    {
+      "type": "ingredient",
+      "name": "Ingrediente (manuale)",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Nome", "default": "Acido Ialuronico" },
+        { "type": "text", "id": "slug", "label": "Slug (opzionale)" },
+        { "type": "text", "id": "inci", "label": "INCI", "default": "Sodium Hyaluronate" },
+        { "type": "text", "id": "short_desc", "label": "Descrizione breve", "default": "Idrata intensamente e migliora l’elasticità cutanea." },
+        { "type": "textarea", "id": "benefits", "label": "Benefici (testo o HTML breve)" },
+        { "type": "textarea", "id": "usage", "label": "Come si usa (testo o HTML breve)" },
+        { "type": "text", "id": "tags", "label": "Tag (separati da virgola)", "info": "Esempio: idratante,lenitivo" },
+        { "type": "image_picker", "id": "image", "label": "Immagine" },
+        { "type": "product_list", "id": "products", "label": "Prodotti correlati" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Glossario" }
+  ]
+}
+{% endschema %}

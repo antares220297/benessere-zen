@@ -1,0 +1,230 @@
+{%- if collection.handle == 'cosmetica' or collection.handle == 'cosmesi-corpo' -%}
+  {% render 'bz-collection-groups' %}
+{%- else -%}
+{%- liquid
+  assign per_page = section.settings.per_page | default: 24
+  assign accent = section.settings.heading_accent
+  assign title = collection.title
+-%}
+<section class="plp-head" aria-labelledby="plp-title">
+  <nav class="crumbs" aria-label="Percorso">
+    <ol>
+      <li><a href="{{ routes.root_url }}">Home</a></li>
+      {%- if section.settings.parent_label != blank and section.settings.parent_url != blank -%}
+        <li><a href="{{ section.settings.parent_url }}">{{ section.settings.parent_label | escape }}</a></li>
+      {%- endif -%}
+      <li><span aria-current="page">{{ collection.title | escape }}</span></li>
+    </ol>
+  </nav>
+  <div class="plp-head-row">
+    <h1 id="plp-title">
+      {%- if accent != blank and title contains accent -%}
+        {%- assign before = title | split: accent | first -%}
+        {%- assign after = title | remove_first: before | remove_first: accent -%}
+        {{ before | escape }}<em>{{ accent | escape }}</em>{{ after | escape }}
+      {%- else -%}
+        {{ title | escape }}
+      {%- endif -%}
+    </h1>
+    <div class="plp-intro">
+      {%- if collection.description != blank -%}
+        <p>{{ collection.description | strip_html }}</p>
+      {%- elsif section.settings.intro != blank -%}
+        <p>{{ section.settings.intro | escape }}</p>
+      {%- endif -%}
+      <p class="plp-count"><span data-total>{{ collection.products_count }}</span> pezzi</p>
+    </div>
+  </div>
+</section>
+
+{%- paginate collection.products by per_page -%}
+  <form method="get" action="{{ collection.url }}">
+    <section class="plp-controls" aria-label="Filtra e ordina">
+      <div class="chips-scroll">
+        <div class="chips" role="group" aria-label="Tipo">
+          {%- liquid
+            assign type_filter = blank
+            for filter in collection.filters
+              if filter.param_name == 'filter.p.product_type'
+                assign type_filter = filter
+              endif
+            endfor
+            assign type_active = false
+            if type_filter
+              for value in type_filter.active_values
+                assign type_active = true
+              endfor
+            endif
+          -%}
+          <a class="chip{% unless type_active %} is-on{% endunless %}" href="{{ collection.url }}">Tutti</a>
+          {%- if type_filter -%}
+            {%- for value in type_filter.values -%}
+              <a class="chip{% if value.active %} is-on{% endif %}" href="{% if value.active %}{{ value.url_to_remove }}{% else %}{{ value.url_to_add }}{% endif %}">{{ value.label | escape }} <span class="chip-count">{{ value.count }}</span></a>
+            {%- endfor -%}
+          {%- else -%}
+            {%- for type in collection.all_types -%}
+              <a class="chip" href="{{ collection.url }}?filter.p.product_type={{ type | url_encode }}">{{ type | escape }}</a>
+            {%- endfor -%}
+          {%- endif -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'chip' -%}
+              {%- assign show = block.settings.show_on -%}
+              {%- if show == blank or show == collection.handle -%}
+                {%- assign chip_collection = collections[block.settings.collection] -%}
+                {%- if chip_collection.title != blank -%}
+                  <a class="chip" href="{{ chip_collection.url }}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+      <div class="toolbar">
+        <button class="tool-btn" type="button" data-filters-open aria-haspopup="dialog" aria-controls="filters-{{ section.id }}" aria-expanded="false">Filtri</button>
+        <label class="sort"><span>Ordina</span>
+          <select name="sort_by" data-sort>
+            {%- for option in collection.sort_options -%}
+              <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected{% endif %}>{{ option.name | escape }}</option>
+            {%- endfor -%}
+          </select>
+        </label>
+      </div>
+    </section>
+    <div class="active-filters" {% if collection.filters == blank %}hidden{% endif %}>
+      {%- for filter in collection.filters -%}
+        {%- for value in filter.active_values -%}
+          <a class="afchip" href="{{ value.url_to_remove }}">{{ value.label | escape }} <span aria-hidden="true">×</span></a>
+        {%- endfor -%}
+        {%- if filter.type == 'price_range' -%}
+          {%- if filter.min_value.value or filter.max_value.value -%}
+            <a class="afchip" href="{{ filter.url_to_remove }}">Prezzo <span aria-hidden="true">×</span></a>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    <div class="filters-overlay" id="filters-{{ section.id }}" hidden>
+      <button class="filters-backdrop" type="button" data-filters-close aria-label="Chiudi filtri"></button>
+      <div class="filters" role="dialog" aria-modal="true" aria-labelledby="filters-title-{{ section.id }}">
+      <div class="filters-top"><h2 id="filters-title-{{ section.id }}">Filtri</h2><button class="icon-btn" type="button" data-filters-close aria-label="Chiudi">×</button></div>
+      <div class="filters-body">
+      {%- for filter in collection.filters -%}
+        <fieldset class="fgroup">
+          <legend>{{ filter.label | escape }}</legend>
+          {%- case filter.type -%}
+            {%- when 'price_range' -%}
+              {%- liquid
+                assign currencies_using_comma_decimals = 'ANG,ARS,BRL,BYN,BYR,CLF,CLP,COP,CRC,CZK,DKK,EUR,HRK,HUF,IDR,ISK,MZN,NOK,PLN,RON,RUB,SEK,TRY,UYU,VES,VND' | split: ','
+                assign uses_comma_decimals = false
+                if currencies_using_comma_decimals contains cart.currency.iso_code
+                  assign uses_comma_decimals = true
+                endif
+                if filter.min_value.value
+                  if uses_comma_decimals
+                    assign price_min = filter.min_value.value | money_without_currency | replace: '.', '' | replace: ',', '.'
+                  else
+                    assign price_min = filter.min_value.value | money_without_currency | replace: ',', ''
+                  endif
+                endif
+                if filter.max_value.value
+                  if uses_comma_decimals
+                    assign price_max = filter.max_value.value | money_without_currency | replace: '.', '' | replace: ',', '.'
+                  else
+                    assign price_max = filter.max_value.value | money_without_currency | replace: ',', ''
+                  endif
+                endif
+              -%}
+              <label>Da <input type="number" name="{{ filter.min_value.param_name }}" min="0" step="0.01" {% if filter.min_value.value %}value="{{ price_min }}"{% endif %}></label>
+              <label>A <input type="number" name="{{ filter.max_value.param_name }}" min="0" step="0.01" {% if filter.max_value.value %}value="{{ price_max }}"{% endif %}></label>
+            {%- else -%}
+              {%- for value in filter.values -%}
+                <label>
+                  <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" {% if value.active %}checked{% endif %} {% if value.count == 0 and value.active == false %}disabled{% endif %}>
+                  {{ value.label | escape }} <small>{{ value.count }}</small>
+                </label>
+              {%- endfor -%}
+          {%- endcase -%}
+        </fieldset>
+      {%- endfor -%}
+      <button class="btn gold" type="submit">Mostra i pezzi</button>
+      </div>
+      </div>
+    </div>
+  </form>
+
+  <section class="plp-results" aria-label="Prodotti">
+    <div class="pgrid" data-grid>
+      {%- for product in collection.products -%}
+        {% render 'bz-product-card', card: product, style: 'plp' %}
+      {%- endfor -%}
+    </div>
+    <div class="empty" {% if collection.products.size > 0 %}hidden{% endif %}>
+      <h2>Nessun pezzo con questi <em>filtri</em></h2>
+      <p>Prova a togliere una pietra o ad allargare il prezzo.</p>
+      <a class="btn outline" href="{{ collection.url }}">Azzera i filtri</a>
+    </div>
+    {%- assign shown = paginate.current_offset | plus: collection.products.size -%}
+    {%- assign ratio = 0 -%}
+    {%- if paginate.items > 0 -%}{%- assign ratio = shown | times: 1.0 | divided_by: paginate.items | at_most: 1 -%}{%- endif -%}
+    <div class="more">
+      <p class="more-line"><span data-shown>{{ shown }}</span> di <span data-of>{{ paginate.items }}</span></p>
+      <div class="more-track" aria-hidden="true"><span data-bar style="transform:scaleX({{ ratio }})"></span></div>
+      {%- if paginate.next -%}
+        <a class="btn outline" data-load href="{{ paginate.next.url }}">Carica altri</a>
+      {%- endif -%}
+    </div>
+  </section>
+{%- endpaginate -%}
+<script>
+  (function () {
+    var root = document.getElementById('shopify-section-{{ section.id }}');
+    if (!root) return;
+    var overlay = root.querySelector('.filters-overlay');
+    var open = root.querySelector('[data-filters-open]');
+    function setOpen(on) {
+      if (!overlay) return;
+      overlay.hidden = !on;
+      overlay.classList.toggle('open', on);
+      if (open) open.setAttribute('aria-expanded', String(on));
+      document.body.classList.toggle('locked', on);
+    }
+    open && open.addEventListener('click', function () { setOpen(true); });
+    root.querySelectorAll('[data-filters-close]').forEach(function (button) { button.addEventListener('click', function () { setOpen(false); }); });
+  })();
+</script>
+{%- endif -%}
+{% schema %}
+{
+  "name": "Collezione",
+  "class": "bz-home",
+  "settings": [
+    {"type": "textarea", "id": "viso_intro", "label": "Descrizione viso", "default": "Il rituale del viso, un passo alla volta: detergere, tonificare, trattare. Per ogni passaggio trovi formule a base di piante e argille, come aloe, bardana e argilla verde."},
+    {"type": "textarea", "id": "corpo_intro", "label": "Descrizione corpo", "default": "Uno scrub per rinnovare la pelle, un olio o una crema da stendere dopo la doccia, un balsamo da massaggiare. Diverse formule vengono dalla tradizione ayurvedica."},
+    { "type": "text", "id": "heading", "label": "Titolo (non usato: vale il titolo della collezione)" },
+    { "type": "text", "id": "heading_accent", "label": "Parola in corsivo", "default": "pietre" },
+    { "type": "text", "id": "accent", "label": "Accento" },
+    { "type": "text", "id": "accent_handle", "label": "Handle accento" },
+    { "type": "textarea", "id": "intro", "label": "Intro, se la collezione non ha una descrizione" },
+    { "type": "text", "id": "parent_label", "label": "Breadcrumb", "default": "Pietre e rituali" },
+    { "type": "url", "id": "parent_url", "label": "Link breadcrumb" },
+    { "type": "range", "id": "per_page", "label": "Pezzi per pagina", "min": 12, "max": 48, "step": 4, "default": 24 }
+  ],
+  "blocks": [
+    { "type": "chip", "name": "Chip", "settings": [
+      { "type": "text", "id": "label", "label": "Etichetta" },
+      { "type": "text", "id": "collection", "label": "Handle collezione" },
+      { "type": "text", "id": "show_on", "label": "Mostra solo su questo handle" }
+    ] },
+    { "type": "promo", "name": "Promo", "settings": [
+      { "type": "number", "id": "position", "label": "Posizione" },
+      { "type": "text", "id": "style", "label": "Stile" },
+      { "type": "text", "id": "title", "label": "Titolo" },
+      { "type": "text", "id": "accent", "label": "Corsivo" },
+      { "type": "textarea", "id": "text", "label": "Testo" },
+      { "type": "text", "id": "button", "label": "Pulsante" },
+      { "type": "text", "id": "collection_handle", "label": "Collezione" },
+      { "type": "text", "id": "image_product", "label": "Prodotto foto" }
+    ] }
+  ],
+  "presets": [{ "name": "Collezione" }]
+}
+{% endschema %}

@@ -1,0 +1,156 @@
+{
+  "sections": {
+    "page": {
+      "type": "bz-cura",
+      "settings": {
+        "ayurveda_link": "/pages/cose-layurveda",
+        "viso_products": [
+          "siero-viso-rimpolpante-ebrand-cosmetics-30-ml-copia",
+          "crema-viso-purificante-ebrand-cosmetics-50-ml-copia",
+          "detergente-delicato-100-ml-ebrand-cosmetics",
+          "siero-viso-rimpolpante-30-ml-ebrand-cosmetics"
+        ],
+        "corpo_products": [
+          "scrub-corpo-al-sale-marino-lavanda-300g",
+          "scrub-corpo-al-sale-marino-fragole-e-panna-300g",
+          "scrub-corpo-al-sale-marino-mirtilli-e-more-300g",
+          "balsamo-del-gufo-piedi-bio"
+        ],
+        "capelli_products": [
+          "rasayana-lozione-rinforzante-con-triphala-50ml-ideale-nei-cambi-di-stagione-ma-puoi-usarla-tutto-lanno-per-rinforzare-i-capelli",
+          "rasayana-balsamo-leave-in-con-triphala-200ml-nutre-le-lunghezze-anticrespo",
+          "rasayana-balsamo-capelli-districante-200ml",
+          "rasayana-shampoo-delicato-uso-frequente-200ml"
+        ],
+        "oli_products": [
+          "profumo-in-olio-ancient-witch-athame-noir",
+          "profumo-in-olio-ancient-witch-maledetto",
+          "olio-profumato-ayurveda-ambra",
+          "olio-profumato-ayurveda-vaniglia"
+        ],
+        "te_products": [
+          "te-yogi-speziato",
+          "te-verde-marrakech-e-petali-50gr",
+          "te-bianco-eterna-giovinezza-50gr",
+          "te-total-relax-50gr"
+        ],
+        "tazze_products": [
+          "tazza-con-infusore-lovebirds",
+          "tazza-con-infusore-mandala-bianco",
+          "mug-infusore-per-te-mandala-turchese",
+          "mug-infusore-per-te-mandala-viola"
+        ]
+      },
+      "blocks": {
+        "s0": {
+          "type": "sphere",
+          "settings": {
+            "label": "Viso",
+            "collection": "latte-detergente"
+          }
+        },
+        "s1": {
+          "type": "sphere",
+          "settings": {
+            "label": "Corpo",
+            "collection": "cosmesi-corpo"
+          }
+        },
+        "s2": {
+          "type": "sphere",
+          "settings": {
+            "label": "Capelli",
+            "collection": "prodotti-per-capelli"
+          }
+        },
+        "s3": {
+          "type": "sphere",
+          "settings": {
+            "label": "Tè e tisane",
+            "collection": "te-tisane"
+          }
+        },
+        "s4": {
+          "type": "sphere",
+          "settings": {
+            "label": "Tazze",
+            "collection": "tazze",
+            "image_asset": "bz-sfera-tazze.jpg"
+          }
+        },
+        "s5": {
+          "type": "sphere",
+          "settings": {
+            "label": "Oli",
+            "collection": "profumi-in-olio"
+          }
+        },
+        "st0": {
+          "type": "step",
+          "settings": {
+            "mode": "0",
+            "step": "0",
+            "product": "siero-viso-rimpolpante-ebrand-cosmetics-30-ml-copia"
+          }
+        },
+        "st1": {
+          "type": "step",
+          "settings": {
+            "mode": "0",
+            "step": "1",
+            "product": "tonico-viso-idratante-aloe-goji-fico-india-250ml"
+          }
+        },
+        "st2": {
+          "type": "step",
+          "settings": {
+            "mode": "0",
+            "step": "2",
+            "product": "latte-solare-spray-aloha-spf-50-ebrand-cosmetics-150-ml"
+          }
+        },
+        "st3": {
+          "type": "step",
+          "settings": {
+            "mode": "1",
+            "step": "0",
+            "product": "siero-viso-rimpolpante-ebrand-cosmetics-30-ml-copia"
+          }
+        },
+        "st4": {
+          "type": "step",
+          "settings": {
+            "mode": "1",
+            "step": "1",
+            "product": "siero-viso-rimpolpante-30-ml-ebrand-cosmetics"
+          }
+        },
+        "st5": {
+          "type": "step",
+          "settings": {
+            "mode": "1",
+            "step": "2",
+            "product": "olio-ayurvedico-corpo-viso-sandalo-himalayas-dreams"
+          }
+        }
+      },
+      "block_order": [
+        "s0",
+        "s1",
+        "s2",
+        "s3",
+        "s4",
+        "s5",
+        "st0",
+        "st1",
+        "st2",
+        "st3",
+        "st4",
+        "st5"
+      ]
+    }
+  },
+  "order": [
+    "page"
+  ]
+}

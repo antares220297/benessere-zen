@@ -1,0 +1,54 @@
+/* Announcement bar under 360px: two short lines in the same bar, no ellipsis.
+   Just above that, the long lines stay in two halves at a size that fits. */
+
+@media (min-width: 361px) and (max-width: 480px) {
+  .bz .ann {
+    padding-left: 8px;
+    padding-right: 8px;
+    column-gap: 8px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 360px) {
+  :root {
+    --bz-ann-bar: 40px;
+  }
+
+  .bz .ann {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    row-gap: 0;
+    column-gap: 0;
+    padding-left: 8px;
+    padding-right: 8px;
+    font-size: 12px;
+    line-height: 1.25;
+    overflow: visible;
+  }
+
+  .bz-ann__long {
+    display: none;
+  }
+
+  .bz-ann__short {
+    display: inline;
+  }
+
+  .bz-ann__half {
+    width: 100%;
+    flex: none;
+    text-align: center;
+    white-space: nowrap;
+    overflow: visible;
+    text-overflow: clip;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bz .ann,
+  .bz .ann * {
+    animation: none;
+  }
+}

@@ -1,0 +1,5 @@
+{%- if available == false -%}
+  <span class="bz-badge bz-stock--soldout">{{ 'bz.stock.sold_out' | t }}</span>
+{%- elsif available and variant.inventory_management != blank and variant.inventory_quantity == 1 -%}
+  <span class="bz-badge bz-stock--low">{{ 'bz.stock.last_one' | t }}</span>
+{%- endif -%}

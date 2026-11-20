@@ -1,0 +1,28 @@
+{%- liquid
+  assign threshold = section.settings.free_shipping_threshold | default: settings.bz_free_shipping | default: 50
+  assign shop_page = pages['il-negozio']
+  assign shop_url = shop_page.url | default: '/pages/il-negozio'
+-%}
+<div class="announcement" role="region" aria-label="{{ section.settings.region_label | escape }}">
+  <span>Spedizione gratuita da <b>{{ threshold }}&nbsp;€</b></span>
+  <span><a href="{{ shop_url }}">Ogni pezzo è anche <b>in negozio</b></a></span>
+</div>
+{% schema %}
+{
+  "name": "Barra annuncio",
+  "class": "bz-announcement",
+  "max_blocks": 3,
+  "settings": [
+    { "type": "text", "id": "region_label", "label": "Etichetta per lettori di schermo", "default": "Annunci" },
+    { "type": "number", "id": "free_shipping_threshold", "label": "Soglia spedizione gratuita", "default": 50 },
+    { "type": "text", "id": "pill_text", "label": "Testo della pillola", "default": "Spedizione gratuita da [soglia] €" }
+  ],
+  "blocks": [
+    { "type": "message", "name": "Messaggio", "settings": [
+      { "type": "text", "id": "text", "label": "Testo" },
+      { "type": "text", "id": "text_mobile", "label": "Testo breve su telefono" }
+    ] }
+  ],
+  "presets": [{ "name": "Barra annuncio" }]
+}
+{% endschema %}

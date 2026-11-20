@@ -1,0 +1,11 @@
+{% doc %}
+  Wave divider whose fill matches the next section.
+  @param {string} from - Background colour of the section above
+  @param {string} to - Background colour of the section below
+{% enddoc %}
+
+<div class="bz-wave" style="--bz-from: {{ from }}; background: {{ from }};" aria-hidden="true">
+  <svg viewBox="0 0 1440 100" preserveAspectRatio="none" width="100%" height="100%">
+    <path d="M0,40 C360,80 720,10 1080,50 C1260,70 1360,40 1440,48 L1440,100 L0,100 Z" fill="{{ to }}"/>
+  </svg>
+</div>

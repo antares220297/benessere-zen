@@ -1,0 +1,71 @@
+<section class="store-bleed" aria-labelledby="store-title">
+  <div class="store-bleed-inner">
+    <img src="{{ 'bz-negozio-home-hero-negozio.jpg' | asset_url }}" alt="Scaffali del negozio Benessere Zen in Via Marcello Provenzali 1 a Cento" width="1600" height="900" loading="lazy">
+    <div class="store-bleed-copy">
+      <h2 id="store-title">{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h2>
+      {% render 'bz-open-badge', variant: 'compact', linked: true %}
+      <p>{{ section.settings.text | escape }}</p>
+      <p>{{ settings.bz_address | default: 'Via Marcello Provenzali 1, 44042 Cento (FE)' }}<br>
+        <a href="tel:{{ settings.bz_phone | default: '+39 347 088 3168' | replace: ' ', '' }}">{{ settings.bz_phone | default: '+39 347 088 3168' }}</a><br>
+        <a href="mailto:{{ settings.bz_email | default: 'info@benesserezen.shop' }}">{{ settings.bz_email | default: 'info@benesserezen.shop' }}</a>
+      </p>
+      <p class="store-hours">{% render 'bz-hours', part: 'summary' %}</p>
+      <p>{{ section.settings.pickup | escape }}</p>
+      <a class="btn outline store-directions" href="{{ section.settings.button_link }}">{% render 'bz-nav-label', label: section.settings.button_label %}</a>
+    </div>
+  </div>
+</section>
+<section class="faq-wide" aria-labelledby="home-faq-title">
+  <article class="faq-card bz-faq" data-faq>
+    <div class="bz-sh">
+      <h2 id="home-faq-title">Domande <em>frequenti</em></h2>
+      <div class="bz-pills" role="group" aria-label="Argomento delle domande">
+        {%- assign tabs = 'Spedizione e resi|Ordini e regali|Le pietre' | split: '|' -%}
+        {%- for tab in tabs -%}
+          <button type="button" data-faq-tab="{{ forloop.index0 }}" aria-controls="home-faq-panel-{{ forloop.index0 }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}">{{ tab }}</button>
+        {%- endfor -%}
+      </div>
+    </div>
+    {%- for tab in tabs -%}
+      <div id="home-faq-panel-{{ forloop.index0 }}" data-faq-panel="{{ forloop.index0 }}" {% unless forloop.first %}hidden{% endunless %}>
+        {%- assign first_question = true -%}
+        {%- for block in section.blocks -%}
+          {%- assign tab_index = forloop.parentloop.index0 | append: '' -%}
+          {%- if block.type == 'faq' and block.settings.tab == tab_index -%}
+            <details name="home-faq-{{ tab_index }}" {% if first_question %}open{% endif %} {{ block.shopify_attributes }}>
+              <summary>{{ block.settings.question | escape }}</summary>
+              <div class="faq-answer">{{ block.settings.answer }}</div>
+            </details>
+            {%- assign first_question = false -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endfor -%}
+  </article>
+</section>
+{% schema %}
+{
+  "name": "Anche a Cento",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Titolo", "default": "Anche" },
+    { "type": "text", "id": "heading_accent", "label": "Corsivo", "default": "a Cento" },
+    { "type": "textarea", "id": "text", "label": "Testo", "default": "Puoi pagare sul sito, o passare in negozio e scegliere di persona." },
+    { "type": "textarea", "id": "pickup", "label": "Ritiro", "default": "Al pagamento scegli Ritiro gratuito in negozio." },
+    { "type": "text", "id": "button_label", "label": "Pulsante", "default": "Orari e indicazioni →" },
+    { "type": "url", "id": "button_link", "label": "Link" }
+  ],
+  "blocks": [
+    { "type": "faq", "name": "Domanda", "settings": [
+      { "type": "select", "id": "tab", "label": "Scheda", "default": "0", "options": [
+        { "value": "0", "label": "Spedizione e resi" },
+        { "value": "1", "label": "Ordini e regali" },
+        { "value": "2", "label": "Le pietre" }
+      ] },
+      { "type": "text", "id": "question", "label": "Domanda" },
+      { "type": "richtext", "id": "answer", "label": "Risposta" }
+    ] }
+  ],
+  "max_blocks": 16,
+  "presets": [{ "name": "Anche a Cento" }]
+}
+{% endschema %}

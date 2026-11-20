@@ -1,0 +1,383 @@
+{
+  "sections": {
+    "page": {
+      "type": "bz-pietre",
+      "settings": {
+        "hero_link": "/pages/il-negozio",
+        "visit_link": "/pages/il-negozio",
+        "mala_products": [
+          "palo-santo-mala-con-grano-guru",
+          "mala-diaspro-giallo-occhio-di-tigre-e-quarzo-fume",
+          "mala-108-cristallo-di-rocca-aa-nappa-bianca-borsa",
+          "mala-diaspro-rosso-108-perle"
+        ],
+        "pendoli_products": [
+          "pendolo-in-ottone-dorato",
+          "pendolo-in-ottone-placcato-oro",
+          "pendolo-in-ottone-color-titanio",
+          "pendolo-quarzo-rosa-e-catenina-dei-chakra"
+        ],
+        "visit_text": "Benessere Zen è anche un negozio, in Via Marcello Provenzali 1 a Cento. Sugli scaffali trovi le pietre e i bijoux del sito: puoi prenderli in mano, guardarne colori e venature e scegliere quello che senti tuo. Se ordini online, al pagamento puoi scegliere il ritiro in negozio."
+      },
+      "blocks": {
+        "m0": {
+          "type": "month",
+          "settings": {
+            "index": "0",
+            "short": "Gen",
+            "name": "Gennaio",
+            "stone": "Granato",
+            "text": "Il granato, nella tradizione, è la pietra di chi nasce a gennaio. Si tiene vicino quando si cerca forza d’animo, soprattutto all’inizio di un percorso. In tante pratiche è un compagno semplice, da portare in tasca o al polso.",
+            "products": [
+              "bracciale-granato-quarzo-rosa-cuore"
+            ]
+          }
+        },
+        "m1": {
+          "type": "month",
+          "settings": {
+            "index": "1",
+            "short": "Feb",
+            "name": "Febbraio",
+            "stone": "Ametista",
+            "text": "L’ametista, in molte pratiche, è la pietra di febbraio e si tiene vicina durante la meditazione. La tradizione la associa alla quiete e a un pensiero più raccolto. In negozio la trovi grezza o burattata, da scegliere con calma.",
+            "products": [
+              "ametista",
+              "pietre-burattate-ametista-1"
+            ]
+          }
+        },
+        "m2": {
+          "type": "month",
+          "settings": {
+            "index": "2",
+            "short": "Mar",
+            "name": "Marzo",
+            "stone": "Acquamarina",
+            "text": "L’acquamarina, nella tradizione, è la pietra di marzo. Si lega all’acqua e a una serenità lunga, come il mare fermo. In tante pratiche si porta addosso quando si cerca un dialogo più chiaro.",
+            "products": [
+              "acquamarina",
+              "ciondolo-in-acquamarina-grezza"
+            ]
+          }
+        },
+        "m3": {
+          "type": "month",
+          "settings": {
+            "index": "3",
+            "short": "Apr",
+            "name": "Aprile",
+            "stone": "Cristallo di rocca",
+            "text": "Il cristallo di rocca, nella tradizione, è la pietra di aprile. Si tiene vicino quando si formula un’intenzione, perché in molte pratiche si ritiene che la renda più nitida. Lo trovi in negozio grezzo o burattato.",
+            "products": [
+              "cristallo-di-rocca",
+              "pietre-burattate-cristallo-di-rocca"
+            ]
+          }
+        },
+        "m4": {
+          "type": "month",
+          "settings": {
+            "index": "4",
+            "short": "Mag",
+            "name": "Maggio",
+            "stone": "Smeraldo",
+            "text": "Lo smeraldo, nella tradizione, è la pietra di maggio. Si associa al rinnovamento e alla crescita, come le foglie nuove di stagione. In tante pratiche si tiene vicino quando si vuole ricominciare con più cura.",
+            "products": [
+              "ciondolo-di-smeraldo-forato"
+            ]
+          }
+        },
+        "m5": {
+          "type": "month",
+          "settings": {
+            "index": "5",
+            "short": "Giu",
+            "name": "Giugno",
+            "stone": "Pietra di luna",
+            "text": "La pietra di luna, nella tradizione, è la pietra di giugno. Si lega ai cicli lunari e a un ascolto più intimo di sé. In molte pratiche si porta addosso nelle fasi di passaggio.",
+            "products": [
+              "pietra-di-luna-arcobaleno-4-varianti-1",
+              "braccialetto-pierre-de-lune-blanche",
+              "ciondolo-in-pietra-di-luna-bianca-grezza"
+            ]
+          }
+        },
+        "m6": {
+          "type": "month",
+          "settings": {
+            "index": "6",
+            "short": "Lug",
+            "name": "Luglio",
+            "stone": "Rubino zoisite",
+            "text": "Il rubino in zoisite, in questo negozio, è la pietra scelta per luglio. Nella tradizione il rubino è legato alla vitalità; lo zoisite lo accompagna con un carattere più terrestre. Si trova qui grezzo o in bracciale.",
+            "products": [
+              "ciondolo-in-rubino-zoisite-anyolite-grezzo",
+              "braccialetto-con-perle-di-rubino-zoisite"
+            ]
+          }
+        },
+        "m7": {
+          "type": "month",
+          "settings": {
+            "index": "7",
+            "short": "Ago",
+            "name": "Agosto",
+            "stone": "Corniola",
+            "text": "La corniola, nella tradizione, è la pietra di agosto. Da tempo si associa al coraggio e a un passo più deciso. In tante pratiche si tiene in tasca o si porta al polso, come un piccolo promemoria.",
+            "products": [
+              "pietre-burattate-corniola",
+              "braccialetto-corniola",
+              "ciondolo-a-goccia-in-corniola"
+            ]
+          }
+        },
+        "m8": {
+          "type": "month",
+          "settings": {
+            "index": "8",
+            "short": "Set",
+            "name": "Settembre",
+            "stone": "Lapislazzuli",
+            "text": "Il lapislazzuli, nella tradizione, è la pietra di settembre. Si lega alla parola vera e a un pensiero più chiaro. In molte pratiche si tiene vicino quando si ha bisogno di dire le cose come stanno.",
+            "products": [
+              "pietre-burattate-lapislazzuli",
+              "lapislazzuli"
+            ]
+          }
+        },
+        "m9": {
+          "type": "month",
+          "settings": {
+            "index": "9",
+            "short": "Ott",
+            "name": "Ottobre",
+            "stone": "Opale",
+            "text": "L’opale, nella tradizione, è la pietra di ottobre. Si associa alla creatività e a uno sguardo più aperto sul proprio lavoro. In negozio lo trovi in più varianti di colore, da scegliere con calma.",
+            "products": [
+              "opale-blu",
+              "ciondolo-in-opale-rosa-con-montatura-in-metallo",
+              "braccialetto-oplae-jaune"
+            ]
+          }
+        },
+        "m10": {
+          "type": "month",
+          "settings": {
+            "index": "10",
+            "short": "Nov",
+            "name": "Novembre",
+            "stone": "Citrino",
+            "text": "Il citrino, nella tradizione, è la pietra di novembre. Si tiene vicino come simbolo di abbondanza e di un lavoro che porta frutto. In tante pratiche è una pietra solare, da avere in tasca o sul tavolo.",
+            "products": [
+              "pietre-burattate-quarzo-citrino",
+              "orgone-pendolo-citrino-sfaccettato-appuntito",
+              "braccialetto-citrine-naturelle"
+            ]
+          }
+        },
+        "m11": {
+          "type": "month",
+          "settings": {
+            "index": "11",
+            "short": "Dic",
+            "name": "Dicembre",
+            "stone": "Lapislazzuli",
+            "text": "Il lapislazzuli, in questo negozio, è anche la pietra di dicembre. Nella tradizione si associa alla saggezza e a un pensiero che ha bisogno di tempo. Si trova in ciondolo o in bracciale, da scegliere con calma.",
+            "products": [
+              "ciondolo-in-lapis-lazuli",
+              "braccialetto-lapis-lazuli",
+              "ciondolo-a-cuore-in-lapislazzuli"
+            ]
+          }
+        },
+        "in-0": {
+          "type": "intention",
+          "settings": {
+            "word": "Serenità",
+            "line": "In molte pratiche l’ametista si tiene vicina quando si cerca quiete.",
+            "collection": "intenzione-serenita",
+            "image_asset": "bz-intenzione-serenita.jpg"
+          }
+        },
+        "in-1": {
+          "type": "intention",
+          "settings": {
+            "word": "Protezione",
+            "line": "Tormalina e ossidiana, nella tradizione, sono pietre di protezione.",
+            "collection": "intenzione-protezione",
+            "image_asset": "bz-intenzione-protezione-ossidiana.jpg"
+          }
+        },
+        "in-2": {
+          "type": "intention",
+          "settings": {
+            "word": "Affetti",
+            "line": "Il quarzo rosa, in tante tradizioni, è la pietra che si regala a chi si vuole bene.",
+            "collection": "intenzione-affetti",
+            "image_asset": "bz-intenzione-affetti.jpg"
+          }
+        },
+        "in-3": {
+          "type": "intention",
+          "settings": {
+            "word": "Coraggio",
+            "line": "Corniola e diaspro rosso, nella tradizione, accompagnano il coraggio.",
+            "collection": "intenzione-coraggio",
+            "image_asset": "bz-intenzione-coraggio.jpg"
+          }
+        },
+        "in-4": {
+          "type": "intention",
+          "settings": {
+            "word": "Concentrazione",
+            "line": "Il lapislazzuli, nella tradizione, accompagna chiarezza e concentrazione.",
+            "collection": "intenzione-concentrazione",
+            "image_asset": "bz-intenzione-concentrazione.jpg"
+          }
+        },
+        "in-5": {
+          "type": "intention",
+          "settings": {
+            "word": "Purificazione",
+            "line": "Il cristallo di rocca, in molte pratiche, si tiene vicino quando si vuole fare spazio e ripartire con un’intenzione più chiara.",
+            "collection": "pietre-grezze",
+            "image_asset": "bz-intenzione-purificazione.jpg"
+          }
+        },
+        "c-0": {
+          "type": "compare",
+          "settings": {
+            "name": "Ametista",
+            "wear_label": "Bracciale",
+            "rough": "ametista",
+            "tumbled": "pietre-burattate-ametista-1",
+            "worn": "bracciale-ametista-naturale"
+          }
+        },
+        "c-1": {
+          "type": "compare",
+          "settings": {
+            "name": "Quarzo rosa",
+            "wear_label": "Bracciale",
+            "rough": "quarzo-rosa",
+            "tumbled": "pietre-burattate-quarzo-rosa",
+            "worn": "power-bracelet-quarzo-rosa"
+          }
+        },
+        "c-2": {
+          "type": "compare",
+          "settings": {
+            "name": "Lapislazzuli",
+            "wear_label": "Bracciale",
+            "rough": "lapislazzuli",
+            "tumbled": "pietre-burattate-lapislazzuli",
+            "worn": "braccialetto-lapis-lazuli"
+          }
+        },
+        "c-3": {
+          "type": "compare",
+          "settings": {
+            "name": "Cristallo di rocca",
+            "wear_label": "Punta",
+            "rough": "cristallo-di-rocca",
+            "tumbled": "pietre-burattate-cristallo-di-rocca",
+            "worn": "ciondolo-cristallo-di-rocca-grezzo"
+          }
+        },
+        "c-4": {
+          "type": "compare",
+          "settings": {
+            "name": "Ossidiana",
+            "wear_label": "Bracciale",
+            "rough": "ossidiana-nera",
+            "tumbled": "pietre-burattate-ossidiana-nera",
+            "worn": "bracciale-ossidiana-nera-dorata-perle-8mm"
+          }
+        },
+        "c-5": {
+          "type": "compare",
+          "settings": {
+            "name": "Pirite",
+            "wear_label": "Bracciale",
+            "rough": "pirite",
+            "tumbled": "pietre-burattate-pirite",
+            "worn": "braccialetto-pyrite-perles"
+          }
+        },
+        "c-6": {
+          "type": "compare",
+          "settings": {
+            "name": "Occhio di tigre",
+            "wear_label": "Bracciale",
+            "rough": "occhio-di-tigre",
+            "tumbled": "pietre-burattate-occhio-di-tigre",
+            "worn": "mala-braccialetto-elastico-con-pietra-occhio-di-tigre-coraggio-iniziativa"
+          }
+        },
+        "sp-0": {
+          "type": "sphere",
+          "settings": {
+            "label": "Candele",
+            "collection": "candele-e-brucia-candele"
+          }
+        },
+        "sp-1": {
+          "type": "sphere",
+          "settings": {
+            "label": "Incensi",
+            "collection": "incensi-e-brucia-incensi"
+          }
+        },
+        "sp-2": {
+          "type": "sphere",
+          "settings": {
+            "label": "Gioielli",
+            "collection": "gioielli-con-pietre"
+          }
+        },
+        "sp-3": {
+          "type": "sphere",
+          "settings": {
+            "label": "Porta candele",
+            "collection": "portacandele"
+          }
+        }
+      },
+      "block_order": [
+        "m0",
+        "m1",
+        "m2",
+        "m3",
+        "m4",
+        "m5",
+        "m6",
+        "m7",
+        "m8",
+        "m9",
+        "m10",
+        "m11",
+        "in-0",
+        "in-1",
+        "in-2",
+        "in-3",
+        "in-4",
+        "in-5",
+        "c-0",
+        "c-1",
+        "c-2",
+        "c-3",
+        "c-4",
+        "c-5",
+        "c-6",
+        "sp-0",
+        "sp-1",
+        "sp-2",
+        "sp-3"
+      ]
+    }
+  },
+  "order": [
+    "page"
+  ]
+}

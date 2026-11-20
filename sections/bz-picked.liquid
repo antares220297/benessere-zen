@@ -1,0 +1,62 @@
+<section class="bestsellers picked">
+  <div class="bz-sh">
+    <h2>{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h2>
+    <div class="bz-pills" role="tablist" aria-label="Selezione prodotti">
+      {%- for block in section.blocks -%}
+        <button type="button" role="tab" id="picked-tab-{{ section.id }}-{{ forloop.index }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="picked-panel-{{ section.id }}-{{ forloop.index }}" data-picked="{{ forloop.index0 }}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</button>
+      {%- endfor -%}
+    </div>
+  </div>
+  {%- for block in section.blocks -%}
+    <div class="products pgrid" role="tabpanel" id="picked-panel-{{ section.id }}-{{ forloop.index }}" aria-labelledby="picked-tab-{{ section.id }}-{{ forloop.index }}" {% unless forloop.first %}hidden{% endunless %} data-picked-panel="{{ forloop.index0 }}">
+      {%- if block.settings.products != blank and block.settings.products.size > 0 -%}
+        {%- for product in block.settings.products limit: section.settings.limit -%}
+          {% render 'bz-product-card', card: product, style: 'grid' %}
+        {%- endfor -%}
+      {%- elsif block.settings.collection != blank -%}
+        {%- for product in block.settings.collection.products limit: section.settings.limit -%}
+          {% render 'bz-product-card', card: product, style: 'grid' %}
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  {%- endfor -%}
+  {%- if section.settings.link_label != blank and section.settings.link != blank -%}
+    <a class="bz-row-link" href="{{ section.settings.link }}">{% render 'bz-nav-label', label: section.settings.link_label %}</a>
+  {%- endif -%}
+</section>
+<script>
+  document.querySelectorAll('#shopify-section-{{ section.id }} [data-picked]').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      var root = tab.closest('section');
+      root.querySelectorAll('[data-picked]').forEach(function (other) {
+        var on = other === tab;
+        other.setAttribute('aria-selected', String(on));
+        other.tabIndex = on ? 0 : -1;
+      });
+      root.querySelectorAll('[data-picked-panel]').forEach(function (panel) {
+        panel.hidden = panel.dataset.pickedPanel !== tab.dataset.picked;
+      });
+    });
+  });
+</script>
+{% schema %}
+{
+  "name": "I più scelti",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Titolo", "default": "I più" },
+    { "type": "text", "id": "heading_accent", "label": "Corsivo", "default": "scelti" },
+    { "type": "text", "id": "link_label", "label": "Link", "default": "Vedi tutto" },
+    { "type": "url", "id": "link", "label": "Destinazione" },
+    { "type": "range", "id": "limit", "label": "Numero", "min": 3, "max": 8, "step": 1, "default": 5 }
+  ],
+  "blocks": [
+    { "type": "list", "name": "Elenco", "settings": [
+      { "type": "text", "id": "label", "label": "Etichetta", "default": "Più scelti" },
+      { "type": "product_list", "id": "products", "label": "Prodotti", "limit": 8 },
+      { "type": "collection", "id": "collection", "label": "Oppure una collezione" }
+    ] }
+  ],
+  "max_blocks": 4,
+  "presets": [{ "name": "I più scelti" }]
+}
+{% endschema %}

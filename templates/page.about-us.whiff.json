@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "page": {
+      "type": "bz-chi-siamo",
+      "settings": {}
+    }
+  },
+  "order": [
+    "page"
+  ]
+}

@@ -1,0 +1,6 @@
+{% comment %}
+  Navigation label. Strips a trailing text arrow and appends the Material arrow.
+  label: the visible words, which may still end with →.
+{% endcomment %}
+{{- label | replace: '→', '' | strip -}}
+{%- render 'bz-icon', name: 'arrow_forward', icon_class: 'bz-ico bz-ico--sm' -%}

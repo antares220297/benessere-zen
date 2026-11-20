@@ -1,0 +1,29 @@
+<section class="bz-credits">
+  <h1>Crediti immagini</h1>
+  <p>Fonti e licenze delle fotografie delle pietre e delle icone illustrate.</p>
+  {%- capture credits -%}
+    Quarzo rosa|IMGP2025492 (51586040384).jpg|Jan Helebrant|https://commons.wikimedia.org/wiki/File:IMGP2025492_(51586040384).jpg|CC BY-SA 2.0|https://creativecommons.org/licenses/by-sa/2.0/
+    Ossidiana|Golden-sheen obsidian (Mexico) 25.jpg|James St. John|https://commons.wikimedia.org/wiki/File:Golden-sheen_obsidian_(Mexico)_25.jpg|CC BY 2.0|https://creativecommons.org/licenses/by/2.0/
+    Tormalina nera|Schorl tourmaline 5.jpg|James St. John|https://commons.wikimedia.org/wiki/File:Schorl_tourmaline_5.jpg|CC BY 2.0|https://creativecommons.org/licenses/by/2.0/
+    Lapislazzuli|Lapis lazuli (lazuritic metamorphite) … 4 (33761908008).jpg|James St. John|https://commons.wikimedia.org/wiki/File:Lapis_lazuli_(lazuritic_metamorphite)_(Sar-e-Sang_Deposit,_Sakhi_Formation,_Precambrian,_2.4-2.7_Ga_(%3F);_Sar-e-Sang_Mining_District,_Hindu-Kush_Mountains,_Afghanistan)_4_(33761908008).jpg|CC BY 2.0|https://creativecommons.org/licenses/by/2.0/
+    Pirite|Pyrite (Huanzala Mine, Peru) 1 (18952108619).jpg|James St. John|https://commons.wikimedia.org/wiki/File:Pyrite_(Huanzala_Mine,_Peru)_1_(18952108619).jpg|CC BY 2.0|https://creativecommons.org/licenses/by/2.0/
+    Occhio di tigre|Tiger's eye quartz 12.jpg|James St. John|https://commons.wikimedia.org/wiki/File:Tiger%27s_eye_quartz_12.jpg|CC BY 2.0|https://creativecommons.org/licenses/by/2.0/
+    Cristallo di rocca|Agregada de cuarzo.jpg|Erisule|https://commons.wikimedia.org/wiki/File:Agregada_de_cuarzo.jpg|CC BY-SA 4.0|https://creativecommons.org/licenses/by-sa/4.0/
+  {%- endcapture -%}
+  {%- assign entries = credits | newline_to_br | split: '<br />' -%}
+  <ul>
+    {%- for entry in entries -%}
+      {%- assign credit = entry | strip | split: '|' -%}
+      <li><strong>{{ credit[0] | escape }}</strong> · {{ credit[2] | escape }} · <a href="{{ credit[3] | escape }}">{{ credit[1] | escape }}</a> · <a href="{{ credit[5] | escape }}">{{ credit[4] | escape }}</a> · ritagliata</li>
+    {%- endfor -%}
+    <li><strong>Icone illustrate</strong> · Lorc e Delapouite · <a href="https://game-icons.net">game-icons.net</a> · <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a></li>
+  </ul>
+  <p>Le foto sono state ritagliate e adattate. L'ametista (Lisa Ann Yount, CC0) è di pubblico dominio e non richiede attribuzione.</p>
+</section>
+
+{% schema %}
+{
+  "name": "Crediti immagini",
+  "settings": []
+}
+{% endschema %}

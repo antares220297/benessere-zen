@@ -1,0 +1,51 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "bz_collection": {
+      "type": "bz-collection",
+      "settings": {
+        "heading": "Gioielli",
+        "heading_accent": "con pietre",
+        "intro": "Bracciali elastici, ciondoli grezzi e mala in pietra naturale. Ogni pezzo è anche in negozio: lo ordini qui e lo ritiri gratis.",
+        "per_page": 16
+      },
+      "blocks": {
+        "chip-ma": {
+          "type": "chip",
+          "settings": {
+            "label": "Mala",
+            "collection": "mala-tibetani",
+            "show_on": "gioielli-con-pietre"
+          }
+        },
+        "promo-1": {
+          "type": "promo",
+          "settings": {
+            "position": 5,
+            "style": "ox",
+            "title": "Il ciondolo",
+            "accent": "con la sua catenina",
+            "text": "Ogni ciondolo ha l'anello per la catena. La nostra è in acciaio, lunga.",
+            "button": "Aggiungi",
+            "image_product": "ciondolo-quarzo-rosa-cuore"
+          }
+        }
+      },
+      "block_order": [
+        "chip-ma",
+        "promo-1"
+      ]
+    }
+  },
+  "order": [
+    "bz_collection"
+  ]
+}

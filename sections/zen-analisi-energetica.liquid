@@ -1,0 +1,3217 @@
+{% comment %}
+  Zen Energy Quiz Section for Shopify
+  BenesserZen.shop Compatible Design - Root Chakra Red Theme
+  Complete psychometric test with chakra analysis and product recommendations
+{% endcomment %}
+
+<style>
+  .zen-energy-{{ section.id }} {
+    /* Root Chakra - Red Theme (Local to this section) */
+    --zen-primary-red: #dc2626;
+    --zen-accent-red: #ef4444;
+    --zen-light-red: #fca5a5;
+    --zen-bg-red: #fef2f2;
+    --zen-dark-red: #991b1b;
+    --zen-text-gray: #6B7280;
+    --zen-white: #FFFFFF;
+    --zen-success: #10b981;
+    --zen-loading: #6b7280;
+    --zen-gradient-start: #dc2626;
+    --zen-gradient-end: #f87171;
+    --zen-border: #f0f0f0;
+    --zen-muted: #f8f9fa;
+    
+    /* Chakra Colors */
+    --chakra-red: #dc2626;
+    --chakra-orange: #f97316;
+    --chakra-yellow: #eab308;
+    --chakra-green: #16a34a;
+    --chakra-blue: #2563eb;
+    --chakra-indigo: #7c3aed;
+    --chakra-violet: #c026d3;
+    
+    font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(135deg, var(--zen-bg-red) 0%, var(--zen-white) 100%);
+    color: #1f2937;
+    line-height: 1.6;
+    position: relative;
+    overflow: hidden;
+    padding: 3rem 0 5rem;
+    min-height: 100vh;
+  }
+
+  .zen-energy-{{ section.id }}::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(circle at 20% 80%, rgba(252, 165, 165, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(239, 68, 68, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .zen-energy-{{ section.id }} * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  /* Sistema di griglia unificato */
+  .zen-energy-{{ section.id }} .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .zen-energy-{{ section.id }} .quiz-container {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  @media (max-width: 768px) {
+    .zen-energy-{{ section.id }} .container, 
+    .zen-energy-{{ section.id }} .quiz-container {
+      padding: 0 16px;
+    }
+    
+    /* Cart footer mobile adjustments - EXACT RITUALE FINDER */
+    .zen-energy-{{ section.id }} .zen-results-footer {
+      padding: 24px 20px !important;
+    }
+    
+    .zen-energy-{{ section.id }} .zen-results-summary {
+      flex-direction: column !important;
+      text-align: center !important;
+    }
+    
+    .zen-energy-{{ section.id }} .zen-results-actions {
+      flex-direction: column !important;
+      width: 100% !important;
+    }
+    
+    .zen-energy-{{ section.id }} .zen-btn--cta {
+      width: 100% !important;
+    }
+  }
+
+  /* Typography */
+  .zen-energy-{{ section.id }} .card-title {
+    font-size: clamp(20px, 2vw, 24px);
+    font-weight: 600;
+    color: var(--zen-primary-red);
+  }
+
+  .zen-energy-{{ section.id }} .card-text {
+    font-size: clamp(14px, 1.4vw, 16px);
+    line-height: 1.7;
+    color: var(--zen-text-gray);
+  }
+
+  /* Cards */
+  .zen-energy-{{ section.id }} .card {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: 24px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(239, 68, 68, 0.15);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  /* Progress */
+  .zen-energy-{{ section.id }} .progress-container {
+    height: 8px;
+    background: #f3f4f6;
+    border-radius: 50px;
+    overflow: hidden;
+    margin: 1rem 0;
+  }
+
+  .zen-energy-{{ section.id }} .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--zen-primary-red), var(--zen-accent-red));
+    border-radius: 50px;
+    transition: width 0.5s ease;
+  }
+
+  .zen-energy-{{ section.id }} .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .zen-energy-{{ section.id }} .progress-label {
+    color: var(--zen-primary-red);
+    font-weight: 600;
+  }
+
+  .zen-energy-{{ section.id }} .progress-counter {
+    color: var(--zen-text-gray);
+    font-weight: 600;
+  }
+
+  /* Quiz Options */
+  .zen-energy-{{ section.id }} .quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 2rem 0;
+  }
+
+  .zen-energy-{{ section.id }} .quiz-option {
+    padding: 16px 20px;
+    border: 2px solid var(--zen-border);
+    border-radius: 16px;
+    background: var(--zen-white);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .zen-energy-{{ section.id }} .quiz-option:hover {
+    border-color: var(--zen-accent-red);
+    background: rgba(239, 68, 68, 0.05);
+    transform: translateX(8px);
+  }
+
+  .zen-energy-{{ section.id }} .quiz-option.selected {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: var(--zen-primary-red);
+    color: var(--zen-primary-red);
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
+  }
+
+  /* Buttons */
+  .zen-energy-{{ section.id }} .btn-primary {
+    background: linear-gradient(135deg, var(--zen-primary-red), var(--zen-accent-red));
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 1rem 2rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(239, 68, 68, 0.3);
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    gap: 0.5rem;
+  }
+
+  .zen-energy-{{ section.id }} .btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(239, 68, 68, 0.4);
+  }
+
+  .zen-energy-{{ section.id }} .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .zen-energy-{{ section.id }} .btn-previous {
+    background: rgba(239, 68, 68, 0.15);
+    color: var(--zen-primary-red);
+    border: 2px solid var(--zen-primary-red);
+    font-weight: 600;
+  }
+
+  .zen-energy-{{ section.id }} .btn-previous:hover {
+    background: var(--zen-primary-red);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+  }
+
+  /* Navigation */
+  .zen-energy-{{ section.id }} .quiz-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+  }
+
+  .zen-energy-{{ section.id }} .quiz-navigation .spacer {
+    flex: 1;
+  }
+
+  /* Results Layout */
+  .zen-energy-{{ section.id }} .results-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 3rem;
+  }
+
+  @media (max-width: 960px) {
+    .zen-energy-{{ section.id }} .results-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Products Grid */
+  .zen-energy-{{ section.id }} .products-grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    max-width: 1400px;
+    margin: 3rem auto 0;
+  }
+
+  @media (min-width: 768px) {
+    .zen-energy-{{ section.id }} .products-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (min-width: 1200px) {
+    .zen-energy-{{ section.id }} .products-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  @media (min-width: 1600px) {
+    .zen-energy-{{ section.id }} .products-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .zen-energy-{{ section.id }} .product-card {
+    background: var(--zen-white);
+    border: 1px solid var(--zen-border);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.1);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .zen-energy-{{ section.id }} .product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(239, 68, 68, 0.15);
+  }
+
+  .zen-energy-{{ section.id }} .media-wrapper {
+    background: #f8f8f8;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 280px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .zen-energy-{{ section.id }} .media-wrapper img {
+    width: 100%;
+    height: 260px;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+    border-radius: 12px;
+  }
+
+  .zen-energy-{{ section.id }} .product-card:hover .media-wrapper img {
+    transform: scale(1.05);
+  }
+  
+  .zen-energy-{{ section.id }} .media-wrapper:hover {
+    background: #f0f0f0;
+  }
+  
+  /* Image Lightbox */
+  .zen-energy-{{ section.id }} .image-lightbox {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+  
+  .zen-energy-{{ section.id }} .image-lightbox.active {
+    display: flex;
+  }
+  
+  .zen-energy-{{ section.id }} .lightbox-content {
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+  }
+  
+  .zen-energy-{{ section.id }} .lightbox-image {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: 12px;
+  }
+  
+  .zen-energy-{{ section.id }} .lightbox-close {
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    background: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+  
+  @media (max-width: 768px) {
+    .zen-energy-{{ section.id }} .lightbox-close {
+      top: 10px;
+      right: 10px;
+    }
+  }
+
+  .zen-energy-{{ section.id }} .product-content {
+    padding: 1.25rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .zen-energy-{{ section.id }} .product-price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--zen-primary-red);
+    margin: 0.75rem 0;
+  }
+
+  .zen-energy-{{ section.id }} .quantity-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    padding: 0.5rem;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+  }
+
+  .zen-energy-{{ section.id }} .quantity-btn {
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 50%;
+    background: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .zen-energy-{{ section.id }} .quantity-btn:hover {
+    background: var(--zen-primary-red);
+    color: white;
+    transform: scale(1.1);
+  }
+
+  /* Suggestions Grid */
+  .zen-energy-{{ section.id }} .suggestions-grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: 1fr;
+    max-width: 1200px;
+    margin: 3rem auto 0;
+  }
+
+  @media (min-width: 768px) {
+    .zen-energy-{{ section.id }} .suggestions-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .zen-energy-{{ section.id }} .suggestion-card {
+    background: var(--zen-white);
+    border: 1px solid var(--zen-border);
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.1);
+    display: flex;
+    gap: 12px;
+  }
+
+  .zen-energy-{{ section.id }} .suggestion-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--zen-primary-red), var(--zen-accent-red));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  /* Chakra Analysis */
+  .zen-energy-{{ section.id }} .chakra-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background: white;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    border: 1px solid rgba(239, 68, 68, 0.1);
+  }
+
+  .zen-energy-{{ section.id }} .chakra-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .zen-energy-{{ section.id }} .chakra-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+  }
+
+  .zen-energy-{{ section.id }} .chakra-percentage {
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  /* Chakra Colors */
+  .zen-energy-{{ section.id }} .chakra-red { color: var(--chakra-red); }
+  .zen-energy-{{ section.id }} .chakra-orange { color: var(--chakra-orange); }
+  .zen-energy-{{ section.id }} .chakra-yellow { color: var(--chakra-yellow); }
+  .zen-energy-{{ section.id }} .chakra-green { color: var(--chakra-green); }
+  .zen-energy-{{ section.id }} .chakra-blue { color: var(--chakra-blue); }
+  .zen-energy-{{ section.id }} .chakra-indigo { color: var(--chakra-indigo); }
+  .zen-energy-{{ section.id }} .chakra-violet { color: var(--chakra-violet); }
+
+  .zen-energy-{{ section.id }} .bg-chakra-red { background-color: var(--chakra-red); }
+  .zen-energy-{{ section.id }} .bg-chakra-orange { background-color: var(--chakra-orange); }
+  .zen-energy-{{ section.id }} .bg-chakra-yellow { background-color: var(--chakra-yellow); }
+  .zen-energy-{{ section.id }} .bg-chakra-green { background-color: var(--chakra-green); }
+  .zen-energy-{{ section.id }} .bg-chakra-blue { background-color: var(--chakra-blue); }
+  .zen-energy-{{ section.id }} .bg-chakra-indigo { background-color: var(--chakra-indigo); }
+  .zen-energy-{{ section.id }} .bg-chakra-violet { background-color: var(--chakra-violet); }
+
+  /* Energy Code */
+  .zen-energy-{{ section.id }} .zen-code {
+    background: var(--zen-primary-red);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.875rem;
+    letter-spacing: 0.05em;
+    display: inline-block;
+    margin: 1rem 0;
+  }
+
+  /* Intro Cards */
+  .zen-energy-{{ section.id }} .intro-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .zen-energy-{{ section.id }} .intro-card {
+    background: white;
+    border: 1px solid rgba(239, 68, 68, 0.1);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(239, 68, 68, 0.1);
+  }
+
+  .zen-energy-{{ section.id }} .intro-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 30px rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.2);
+  }
+
+  .zen-energy-{{ section.id }} .intro-card-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 2rem;
+    color: white;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(135deg, var(--zen-primary-red), var(--zen-accent-red));
+  }
+
+  /* Product Card Typography */
+  .zen-energy-{{ section.id }} .card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--zen-text-primary);
+    margin: 0 0 0.5rem 0;
+    line-height: 1.3;
+  }
+  
+  .zen-energy-{{ section.id }} .card-text {
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.4;
+    flex: 1;
+    margin-bottom: 1rem;
+  }
+
+  /* Hide number input spinners */
+  .zen-energy-{{ section.id }} input[type="number"]::-webkit-inner-spin-button,
+  .zen-energy-{{ section.id }} input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  .zen-energy-{{ section.id }} input[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+  /* Button Animations */
+  .zen-energy-{{ section.id }} .zen-cart-main-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.6s;
+    z-index: 1;
+  }
+  
+  .zen-energy-{{ section.id }} .zen-cart-main-btn:hover::before {
+    left: 100%;
+  }
+  
+  .zen-energy-{{ section.id }} .zen-cart-main-btn:active {
+    transform: translateY(1px) !important;
+  }
+  
+  .zen-energy-{{ section.id }} .zen-cart-main-btn span {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Utility Classes */
+  .zen-energy-{{ section.id }} .hidden { display: none !important; }
+  .zen-energy-{{ section.id }} .text-center { text-align: center; }
+  .zen-energy-{{ section.id }} .mt-4 { margin-top: 1rem; }
+  .zen-energy-{{ section.id }} .mt-8 { margin-top: 2rem; }
+  .zen-energy-{{ section.id }} .mb-4 { margin-bottom: 1rem; }
+  .zen-energy-{{ section.id }} .mb-6 { margin-bottom: 1.5rem; }
+  .zen-energy-{{ section.id }} .mb-8 { margin-bottom: 2rem; }
+  .zen-energy-{{ section.id }} .py-8 { padding: 2rem 0; }
+  .zen-energy-{{ section.id }} .py-12 { padding: 3rem 0; }
+  .zen-energy-{{ section.id }} .py-16 { padding: 4rem 0; }
+
+  /* Mobile Responsivity */
+  @media (max-width: 768px) {
+    .zen-energy-{{ section.id }} .intro-cards {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    
+    .zen-energy-{{ section.id }} .intro-card {
+      padding: 1.5rem;
+    }
+    
+    .zen-energy-{{ section.id }} .intro-card-icon {
+      width: 48px;
+      height: 48px;
+      font-size: 1.5rem;
+    }
+    
+    .zen-energy-{{ section.id }} .card {
+      padding: 1.5rem;
+    }
+    
+    .zen-energy-{{ section.id }} .product-content {
+      padding: 1rem;
+    }
+    
+    .zen-energy-{{ section.id }} .media-wrapper {
+      min-height: 220px;
+      padding: 1rem;
+    }
+    
+    .zen-energy-{{ section.id }} .media-wrapper img {
+      height: 200px;
+    }
+    
+    /* Zen Cart Summary Mobile - Rituale Finder Style */
+    .zen-energy-{{ section.id }} .zen-cart-summary {
+      padding: 1.5rem !important;
+    }
+    
+    .zen-energy-{{ section.id }} .zen-trust-badges-top {
+      flex-direction: column !important;
+      gap: 0.8rem !important;
+      text-align: center !important;
+    }
+    
+    .zen-energy-{{ section.id }} .zen-trust-badges-top > div {
+      font-size: 0.8rem !important;
+      padding: 0.6rem !important;
+    }
+    
+    .zen-energy-{{ section.id }} .zen-cart-main-btn {
+      flex: 2 !important;
+      min-width: auto !important;
+      font-size: 1.1rem !important;
+      padding: 1.2rem 1.5rem !important;
+      border-radius: 30px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 0.5rem !important;
+    }
+    
+    .zen-energy-{{ section.id }} .zen-cart-secondary-btn {
+      flex: 1 !important;
+      min-width: auto !important;
+      border-radius: 30px !important;
+      padding: 1.2rem 1rem !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 0.5rem !important;
+      background: rgba(239, 68, 68, 0.1) !important;
+      border: 2px solid var(--zen-primary-red) !important;
+    }
+  }
+
+  /* RITUALE FINDER FRAMEWORK - RED THEME ADAPTATION */
+
+  /* === ROOT VARIABLES (RED THEME) === */
+  .zen-energy-{{ section.id }} {
+    --zen-primary: #ef4444;
+    --zen-primary-rgb: 239, 68, 68;
+    --zen-accent: #dc2626;
+    --zen-cta: linear-gradient(135deg, #ef4444, #dc2626);
+    --zen-ink: #1f2937;
+    --zen-muted: #6b7280;
+    --zen-border: #e5e7eb;
+    --zen-bg: #f9fafb;
+    --zen-radius: 16px;
+    --zen-radius-lg: 24px;
+    --zen-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --zen-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --zen-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --zen-ease: cubic-bezier(0.4, 0, 0.2, 1);
+    --zen-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --zen-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  /* === CORE ANIMATIONS === */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideInUp {
+    from {
+      opacity: 0;
+      transform: translateY(100px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: .5; transform: scale(1.2); }
+  }
+
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes fadeInScale {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* === QUIZ SECTION LAYOUT === */
+  .zen-energy-{{ section.id }} .zen-quiz-section {
+    position: relative;
+    /* Stesso sfondo dell'intro */
+    background: linear-gradient(135deg, var(--zen-bg-red) 0%, var(--zen-white) 100%);
+    min-height: 100vh;
+    padding: 40px 20px;
+    overflow: hidden;
+  }
+  
+  /* Stesso sfondo pattern dell'intro */
+  .zen-energy-{{ section.id }} .zen-quiz-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(circle at 20% 80%, rgba(252, 165, 165, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(239, 68, 68, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  /* Particelle rimosse per mantenere sfondo uniforme */
+  .zen-energy-{{ section.id }} .zen-particles {
+    display: none;
+  }
+
+  .zen-energy-{{ section.id }} .zen-quiz-container {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* === HEADER SECTION === */
+  .zen-energy-{{ section.id }} .zen-quiz-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .zen-energy-{{ section.id }} .zen-header-content {
+    margin-bottom: 32px;
+  }
+
+  .zen-energy-{{ section.id }} .zen-quiz-title {
+    font-size: clamp(28px, 5vw, 40px);
+    font-weight: 700;
+    color: var(--zen-ink);
+    margin: 0 0 16px;
+    letter-spacing: -0.02em;
+    animation: fadeInUp .8s var(--zen-ease);
+  }
+
+  /* === Quiz e Results: Uniforma il margine per zen-section-header === */
+  .zen-quiz-section .zen-section-header,
+  .zen-results-section .zen-section-header {
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Stesso sfondo pattern per results */
+  .zen-energy-{{ section.id }} .zen-results-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(circle at 20% 80%, rgba(252, 165, 165, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(239, 68, 68, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  
+  /* === CHAKRA ICON (RED THEME) - Manteniamo per compatibilità === */
+  .zen-energy-{{ section.id }} .zen-chakra-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 16px auto 20px;
+    position: relative;
+    opacity: 0.6;
+    width: 48px;
+    height: 48px;
+  }
+
+  .zen-energy-{{ section.id }} .zen-chakra-icon::before {
+    content: '';
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0) 60%);
+    border-radius: 50%;
+    animation: gentle-pulse 4s infinite;
+  }
+
+  .zen-energy-{{ section.id }} .zen-chakra-icon .chakra-glyph {
+    width: 32px;
+    height: 32px;
+    background: radial-gradient(circle at 30% 30%, #ef4444, #dc2626);
+    border-radius: 50%;
+    position: relative;
+    animation: gentle-pulse 4s infinite;
+    filter: drop-shadow(0 2px 4px rgba(239, 68, 68, 0.3));
+  }
+
+  .zen-energy-{{ section.id }} .zen-chakra-divider {
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(to right, #ef4444, #fca5a5);
+    border-radius: 999px;
+    margin: 12px auto 24px;
+    animation: line-breath 3s ease-in-out infinite;
+  }
+
+  @keyframes gentle-pulse {
+    0%, 100% { 
+      opacity: 0.4; 
+      transform: scale(1); 
+    }
+    50% { 
+      opacity: 0.7; 
+      transform: scale(1.05); 
+    }
+  }
+
+  @keyframes line-breath {
+    0%, 100% { 
+      width: 100px; 
+      opacity: 0.9; 
+      box-shadow: 0 0 16px rgba(239, 68, 68, 0.3); 
+    }
+    50% { 
+      width: 130px; 
+      opacity: 1; 
+      box-shadow: 0 0 24px rgba(239, 68, 68, 0.4); 
+    }
+  }
+
+  /* === LIVE USERS INDICATOR === */
+  .zen-energy-{{ section.id }} .zen-live-users {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: 100px;
+    font-size: 14px;
+    color: var(--zen-ink);
+    animation: fadeInUp .8s .2s var(--zen-ease) backwards;
+  }
+
+  .zen-energy-{{ section.id }} .zen-live-dot {
+    width: 8px;
+    height: 8px;
+    background: #22c55e;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  /* === PROGRESS BAR === */
+  .zen-energy-{{ section.id }} .zen-quiz-progress {
+    margin: 0 0 40px;
+    animation: fadeIn .8s .3s var(--zen-ease) backwards;
+  }
+
+  .zen-energy-{{ section.id }} .zen-quiz-progress-bar {
+    position: relative;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+
+  .zen-energy-{{ section.id }} .zen-quiz-progress-fill {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, var(--zen-primary), #fca5a5);
+    border-radius: 100px;
+    transition: width .6s var(--zen-smooth);
+    position: relative;
+  }
+
+  .zen-energy-{{ section.id }} .zen-quiz-progress-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    animation: shimmer 2s infinite;
+  }
+
+  .zen-energy-{{ section.id }} .zen-quiz-progress-text {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--zen-muted);
+    font-size: 13px;
+    margin-top: 12px;
+    font-weight: 500;
+    justify-content: center;
+  }
+
+  .zen-energy-{{ section.id }} .zen-progress-emoji {
+    font-size: 16px;
+    animation: rotate 3s linear infinite;
+  }
+
+  /* === QUIZ STEPS === */
+  .zen-energy-{{ section.id }} .zen-quiz-step {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: var(--zen-radius-lg);
+    padding: 40px 32px;
+    box-shadow: var(--zen-shadow-lg);
+    animation: slideInUp .6s var(--zen-ease);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .zen-energy-{{ section.id }} .zen-quiz-step::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--zen-primary), rgba(239, 68, 68, 0.5));
+    opacity: 0;
+    transition: opacity .3s;
+  }
+
+  .zen-energy-{{ section.id }} .zen-quiz-step.is-active::before {
+    opacity: 1;
+  }
+
+  /* === QUESTIONS === */
+  .zen-energy-{{ section.id }} .zen-quiz-question {
+    color: var(--zen-ink);
+    margin: 0 0 8px;
+    font-size: 28px;
+    font-weight: 600;
+    text-align: center;
+    letter-spacing: -0.01em;
+    animation: fadeIn .6s .1s var(--zen-ease) backwards;
+  }
+
+  .zen-energy-{{ section.id }} .zen-question-hint {
+    text-align: center;
+    color: var(--zen-muted);
+    margin: 0 0 32px;
+    font-size: 15px;
+    animation: fadeIn .6s .2s var(--zen-ease) backwards;
+  }
+
+  /* === ANSWER STYLES === */
+  .zen-energy-{{ section.id }} .zen-quiz-answers {
+    display: grid;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .zen-energy-{{ section.id }} .zen-answers--large {
+    grid-template-columns: 1fr;
+    max-width: 600px;
+    margin: 0 auto 32px;
+  }
+
+  .zen-energy-{{ section.id }} .zen-quiz-answer {
+    position: relative;
+    background: white;
+    border: 2px solid var(--zen-border);
+    border-radius: var(--zen-radius);
+    padding: 20px;
+    cursor: pointer;
+    transition: all .3s var(--zen-ease);
+    animation: fadeInUp .6s var(--zen-ease) backwards;
+    text-align: left;
+    display: block;
+    width: 100%;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--zen-ink);
+  }
+
+  .zen-energy-{{ section.id }} .zen-quiz-answer:nth-child(1) { animation-delay: .1s; }
+  .zen-energy-{{ section.id }} .zen-quiz-answer:nth-child(2) { animation-delay: .15s; }
+  .zen-energy-{{ section.id }} .zen-quiz-answer:nth-child(3) { animation-delay: .2s; }
+  .zen-energy-{{ section.id }} .zen-quiz-answer:nth-child(4) { animation-delay: .25s; }
+
+  .zen-energy-{{ section.id }} .zen-quiz-answer:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--zen-shadow-lg);
+    border-color: var(--zen-primary);
+  }
+
+  .zen-energy-{{ section.id }} .zen-quiz-answer.selected {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.08), rgba(239, 68, 68, 0.03));
+    border-color: var(--zen-primary);
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1), var(--zen-shadow-lg);
+    transform: scale(1.02);
+  }
+
+  .zen-energy-{{ section.id }} .zen-quiz-answer.selected::after {
+    content: '✓';
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 24px;
+    height: 24px;
+    background: var(--zen-primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    animation: fadeInScale .3s var(--zen-bounce);
+  }
+
+  /* === NAVIGATION BUTTONS === */
+  .zen-energy-{{ section.id }} .zen-quiz-nav {
+    display: flex;
+    flex-direction: column-reverse !important;
+    justify-content: center;
+    align-items: stretch;
+    gap: 12px;
+    margin-top: 32px;
+  }
+
+  .zen-energy-{{ section.id }} .zen-quiz-nav.has-prev {
+    justify-content: center;
+  }
+
+  .zen-energy-{{ section.id }} .zen-btn--premium {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--zen-cta);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 16px 32px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all .3s var(--zen-ease);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+    width: 100% !important;
+  }
+
+  .zen-energy-{{ section.id }} .zen-btn--premium::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width .6s, height .6s;
+  }
+
+  .zen-energy-{{ section.id }} .zen-btn--premium:hover::before {
+    width: 300px;
+    height: 300px;
+  }
+
+  .zen-energy-{{ section.id }} .zen-btn--premium:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(239, 68, 68, 0.35);
+  }
+
+  .zen-energy-{{ section.id }} .zen-btn--premium:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
+  }
+
+  .zen-energy-{{ section.id }} .zen-btn--premium:disabled:hover {
+    transform: none;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
+  }
+
+  .zen-energy-{{ section.id }} .zen-btn--premium:disabled::before {
+    display: none;
+  }
+
+  .zen-energy-{{ section.id }} .zen-btn--ghost {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: white;
+    color: var(--zen-ink);
+    border: 2px solid var(--zen-border);
+    border-radius: 12px;
+    padding: 16px 32px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all .3s var(--zen-ease);
+    width: 100% !important;
+  }
+
+  .zen-energy-{{ section.id }} .zen-btn--ghost:hover {
+    background: var(--zen-bg);
+    border-color: var(--zen-primary);
+    transform: translateY(-1px);
+  }
+
+  /* === PROMOTIONAL BANNERS === */
+  .zen-energy-{{ section.id }} .zen-offer-banner-energy {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, 
+      rgba(239, 68, 68, 0.1),
+      rgba(220, 38, 38, 0.1));
+    border: 2px solid rgba(239, 68, 68, 0.3);
+    border-radius: 100px;
+    font-size: 14px;
+    color: var(--zen-primary-red);
+    margin-bottom: 12px;
+    animation: fadeInUp .8s .4s var(--zen-ease) backwards;
+  }
+
+  .zen-energy-{{ section.id }} .zen-offer-banner-energy svg {
+    color: var(--zen-primary-red);
+  }
+
+  .zen-energy-{{ section.id }} .js-timer-energy {
+    font-weight: 700;
+    color: var(--zen-primary-red);
+  }
+
+  /* Discount Rule Box */
+  .zen-energy-{{ section.id }} .zen-offer-rule-energy {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+    margin: 12px auto 0;
+    padding: 8px 12px;
+    border: 1.5px dashed rgba(239, 68, 68, 0.45);
+    border-radius: 999px;
+    font-size: 13px;
+    color: #3f3f3f;
+    background: rgba(255, 255, 255, 0.8);
+  }
+
+  .zen-energy-{{ section.id }} .zen-offer-rule-energy .status-energy {
+    padding: 4px 8px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 12px;
+  }
+
+  .zen-energy-{{ section.id }} .zen-offer-rule-energy .status-energy.is-active {
+    background: #16a34a15;
+    color: #15803d;
+    border: 1px solid #16a34a55;
+  }
+
+  .zen-energy-{{ section.id }} .zen-offer-rule-energy .status-energy.is-inactive {
+    background: #f59e0b15;
+    color: #b45309;
+    border: 1px solid #f59e0b55;
+  }
+
+  /* === NEW PRODUCT GRID LAYOUT === */
+  .zen-energy-{{ section.id }} .zen-results-grid-energy {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-bottom: 32px;
+    position: relative;
+    z-index: 2;
+  }
+
+  @media (min-width: 992px) {
+    .zen-energy-{{ section.id }} .zen-results-grid-energy .zen-product-card {
+      width: 100%;
+      max-width: 360px;
+      justify-self: center;
+    }
+  }
+
+  /* Product Card Styling */
+  .zen-energy-{{ section.id }} .zen-product-card {
+    background: white;
+    border: 1px solid rgba(239, 68, 68, 0.1);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,.08);
+    transition: all .3s cubic-bezier(.4,0,.2,1);
+    animation: fadeInUp .6s cubic-bezier(.4,0,.2,1) backwards;
+    position: relative;
+  }
+
+  .zen-energy-{{ section.id }} .zen-product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 25px 80px rgba(0,0,0,.15);
+  }
+
+  /* Product Media */
+  .zen-energy-{{ section.id }} .zen-product-media {
+    aspect-ratio: 1;
+    background: linear-gradient(135deg, #f5f5f5, #e8e8e8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .zen-energy-{{ section.id }} .zen-product-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .6s cubic-bezier(.4,0,.2,1);
+  }
+
+  .zen-energy-{{ section.id }} .zen-product-card:hover .zen-product-media img {
+    transform: scale(1.1);
+  }
+
+  /* Product Body */
+  .zen-energy-{{ section.id }} .zen-product-body {
+    padding: 20px;
+  }
+
+  .zen-energy-{{ section.id }} .zen-product-title {
+    margin: 0 0 12px;
+    color: #3f3f3f;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  /* Product Price */
+  .zen-energy-{{ section.id }} .zen-product-price {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .zen-energy-{{ section.id }} .zen-product-price .now {
+    font-size: 24px;
+    font-weight: 700;
+    color: #3f3f3f;
+  }
+
+  .zen-energy-{{ section.id }} .zen-product-price .was {
+    text-decoration: line-through;
+    color: #999;
+    font-size: 14px;
+  }
+
+  .zen-energy-{{ section.id }} .zen-product-price .tax {
+    color: #999;
+    font-size: 12px;
+  }
+
+  /* Quantity Selector */
+  .zen-energy-{{ section.id }} .zen-qty-selector {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    border: 2px solid rgba(239, 68, 68, 0.1);
+    border-radius: 12px;
+    padding: 4px;
+    background: white;
+    margin-bottom: 16px;
+  }
+
+  .zen-energy-{{ section.id }} .zen-qty-selector button {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    border: none;
+    background: #fff5f5;
+    color: var(--zen-primary-red);
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .zen-energy-{{ section.id }} .zen-qty-selector button:hover:not(:disabled) {
+    background: var(--zen-primary-red);
+    color: white;
+    transform: scale(1.1);
+  }
+
+  .zen-energy-{{ section.id }} .zen-qty-selector button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .zen-energy-{{ section.id }} .zen-qty-selector input {
+    width: 50px;
+    text-align: center;
+    border: none;
+    background: transparent;
+    color: #3f3f3f;
+    font-size: 18px;
+    font-weight: 700;
+    padding: 0;
+  }
+
+  /* Product Actions */
+  .zen-energy-{{ section.id }} .zen-product-actions {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+  }
+
+  .zen-energy-{{ section.id }} .zen-add-btn {
+    background: var(--zen-primary-red);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .zen-energy-{{ section.id }} .zen-add-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+  }
+
+  .zen-energy-{{ section.id }} .zen-remove-btn {
+    background: white;
+    color: #3f3f3f;
+    border: 2px solid rgba(239, 68, 68, 0.1);
+    padding: 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all .3s;
+  }
+
+  .zen-energy-{{ section.id }} .zen-remove-btn:hover {
+    background: #fee;
+    border-color: #f87171;
+    color: #dc2626;
+  }
+
+  /* Discount Badge */
+  .zen-energy-{{ section.id }} .zen-discount-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    z-index: 2;
+  }
+
+  /* === MOBILE RESPONSIVE === */
+  @media (max-width: 768px) {
+    /* Hide checkmarks on mobile */
+    .zen-energy-{{ section.id }} .zen-quiz-answer.selected::after {
+      display: none !important;
+    }
+    
+    .zen-energy-{{ section.id }} .zen-quiz-section {
+      padding: 20px 16px;
+    }
+
+    .zen-energy-{{ section.id }} .zen-quiz-step {
+      padding: 24px 20px;
+    }
+
+    .zen-energy-{{ section.id }} .zen-quiz-question {
+      font-size: 24px;
+    }
+
+    .zen-energy-{{ section.id }} .zen-quiz-nav {
+      flex-direction: column !important;
+      gap: 12px;
+    }
+
+    .zen-energy-{{ section.id }} .zen-quiz-nav.has-prev {
+      justify-content: center;
+    }
+
+    .zen-energy-{{ section.id }} .zen-btn--premium,
+    .zen-energy-{{ section.id }} .zen-btn--ghost {
+      width: 100%;
+      justify-content: center;
+      padding: 16px 24px;
+      font-size: 16px !important;
+      font-weight: 600 !important;
+    }
+
+    .zen-energy-{{ section.id }} .zen-quiz-answer {
+      padding: 16px;
+    }
+  }
+
+  /* Zen Section Header - Red Theme */
+  .zen-energy-{{ section.id }} .zen-section-header {
+    text-align: center;
+    margin-bottom: 60px;
+    animation: fade-in-down 1s ease-out;
+  }
+  
+  @keyframes fade-in-down {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .zen-energy-{{ section.id }} .zen-title {
+    font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 500;
+    color: var(--zen-primary-red);
+    margin-bottom: 20px;
+    line-height: 1.2;
+  }
+  
+  .zen-energy-{{ section.id }} .zen-divider {
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(to right, var(--zen-primary-red), var(--zen-accent-red));
+    margin: 0 auto;
+    border-radius: 999px;
+    animation: glow-line-red 3s infinite;
+  }
+  
+  @keyframes glow-line-red {
+    0%, 100% { opacity: 0.8; width: 80px; box-shadow: 0 0 20px rgba(239, 68, 68, 0.3); }
+    50% { opacity: 1; width: 120px; box-shadow: 0 0 30px rgba(239, 68, 68, 0.4); }
+  }
+  
+  /* Muladhara Chakra Icon */
+  .zen-energy-{{ section.id }} .zen-muladhara-icon {
+    display: flex;
+    justify-content: center;
+    margin: 1rem auto 2rem;
+    opacity: 0.3;
+    color: var(--zen-primary-red);
+  }
+
+  .zen-energy-{{ section.id }} .zen-muladhara-icon svg {
+    width: 2rem;
+    height: 2rem;
+    animation: gentle-pulse-red 4s infinite;
+    filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.3));
+  }
+
+  @keyframes gentle-pulse-red {
+    0%, 100% { 
+      opacity: 0.2; 
+      transform: scale(1);
+    }
+    50% { 
+      opacity: 0.4; 
+      transform: scale(1.05);
+    }
+  }
+
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+      transform: scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .zen-energy-{{ section.id }} .zen-section-header {
+      margin-bottom: 40px;
+    }
+    
+    .zen-energy-{{ section.id }} .zen-title {
+      font-size: 28px;
+    }
+    
+    /* Fix promotional text height on mobile */
+    .zen-energy-{{ section.id }} .zen-offer-rule-energy {
+      flex-direction: row;
+      gap: 4px;
+      padding: 4px 8px;
+      font-size: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .zen-energy-{{ section.id }} .zen-offer-rule-energy .rule-text {
+      font-size: 10px;
+      line-height: 1.15;
+      flex: 1;
+    }
+    
+    .zen-energy-{{ section.id }} .zen-offer-rule-energy .status-energy {
+      font-size: 9px;
+      padding: 2px 5px;
+      flex-shrink: 0;
+    }
+  }
+
+</style>
+
+<div class="zen-energy-{{ section.id }}" id="zen-app-{{ section.id }}">
+  <!-- Intro Section -->
+  <section id="intro-section-{{ section.id }}" class="py-20">
+    <div class="container text-center">
+      <div class="mb-12">
+        <div class="zen-section-header">
+          <h1 class="zen-title">{{ section.settings.main_heading | default: 'La Tua Mappa Energetica Personale' }}</h1>
+          <div class="zen-muladhara-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="12" cy="12" r="2" fill="currentColor"/>
+              <path d="M12 2L14.5 8.5L21 9L16 14L17.5 21L12 18L6.5 21L8 14L3 9L9.5 8.5L12 2Z" fill="currentColor" opacity="0.6"/>
+              <circle cx="12" cy="12" r="6" fill="none" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+              <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.2"/>
+            </svg>
+          </div>
+          <div class="zen-divider"></div>
+        </div>
+      </div>
+      
+      <p style="font-size: 1.125rem; color: var(--zen-text-gray); max-width: 32rem; margin: 0 auto 2rem; line-height: 1.7;">
+        {{ section.settings.main_description | default: 'Scopri il tuo equilibrio energetico attraverso una analisi completa dei 7 chakra principali. Ricevi consigli personalizzati per migliorare il tuo benessere spirituale.' }}
+      </p>
+
+      <!-- Introduction Cards -->
+      <div class="intro-cards mb-8">
+        <div class="intro-card">
+          <div class="intro-card-icon">🧘</div>
+          <h3 class="card-title mb-4">{{ section.settings.card1_title | default: 'Analisi Profonda' }}</h3>
+          <p class="card-text">{{ section.settings.card1_text | default: 'Percorso guidato per esplorare il tuo equilibrio energetico' }}</p>
+        </div>
+        
+        <div class="intro-card">
+          <div class="intro-card-icon">🎯</div>
+          <h3 class="card-title mb-4">{{ section.settings.card2_title | default: 'Consigli Personalizzati' }}</h3>
+          <p class="card-text">{{ section.settings.card2_text | default: 'Suggerimenti specifici basati sul tuo profilo energetico unico' }}</p>
+        </div>
+        
+        <div class="intro-card">
+          <div class="intro-card-icon">🛍️</div>
+          <h3 class="card-title mb-4">{{ section.settings.card3_title | default: 'Prodotti Raccomandati' }}</h3>
+          <p class="card-text">{{ section.settings.card3_text | default: 'Selezione curata di prodotti per potenziare il tuo benessere' }}</p>
+        </div>
+      </div>
+
+      <div class="mt-8">
+        <button onclick="startZenQuiz()" class="btn-primary" style="font-size: 1.125rem; padding: 1rem 2rem;">
+          {{ section.settings.start_button_text | default: 'Inizia il Test Energetico' }}
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quiz Section - Rituale Finder Framework -->
+  <section id="quiz-section-{{ section.id }}" class="zen-quiz-section hidden" data-section-id="{{ section.id }}">
+    <!-- Particelle rimosse per sfondo uniforme -->
+    
+    <div class="zen-quiz-container">
+      <header class="zen-quiz-header">
+        <div class="zen-header-content">
+          <div class="zen-section-header">
+            <h1 class="zen-title">La Tua Mappa Energetica Personale</h1>
+            <div class="zen-muladhara-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="12" r="2" fill="currentColor"/>
+                <path d="M12 2L14.5 8.5L21 9L16 14L17.5 21L12 18L6.5 21L8 14L3 9L9.5 8.5L12 2Z" fill="currentColor" opacity="0.6"/>
+                <circle cx="12" cy="12" r="6" fill="none" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+              </svg>
+            </div>
+            <div class="zen-divider"></div>
+          </div>
+          
+          <!-- Users online indicator -->
+          <div class="zen-live-users" data-aos="fade-up" data-aos-delay="200">
+            <span class="zen-live-dot"></span>
+            <span class="zen-live-text"><strong class="js-users">12</strong> persone stanno completando il quiz ora</span>
+          </div>
+        </div>
+        
+        <!-- Progress bar attiva -->
+        <div class="zen-quiz-progress" aria-label="Progresso del quiz">
+          <div class="zen-quiz-progress-bar">
+            <span class="zen-quiz-progress-fill" id="progress-bar-{{ section.id }}" style="width: 8.33%;"></span>
+            <span class="zen-quiz-progress-glow"></span>
+          </div>
+          <div class="zen-quiz-progress-text">
+            Passo <span class="js-step" id="progress-text-step-{{ section.id }}">1</span> di <span class="js-total">12</span>
+            <span class="zen-progress-emoji" aria-hidden="true">✨</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- STEPS -->
+      <div class="zen-quiz-steps" role="region" aria-live="polite">
+        <!-- Dynamic Quiz Step -->
+        <div class="zen-quiz-step is-active" data-step="dynamic" id="quiz-step-{{ section.id }}">
+          
+          <h3 class="zen-quiz-question" id="question-title-{{ section.id }}">
+            Quando guardi un tramonto, quale emozione prevale?
+          </h3>
+          <p class="zen-question-hint" id="question-subtitle-{{ section.id }}">
+            Scegli l'opzione che rispecchia meglio il tuo sentire
+          </p>
+          
+          <div class="zen-quiz-answers zen-answers--large" id="quiz-options-{{ section.id }}">
+            <!-- Options will be populated by JavaScript -->
+          </div>
+          
+          <div class="zen-quiz-nav" id="quiz-nav-{{ section.id }}">
+            <button onclick="previousZenQuestion()" class="zen-quiz-prev zen-btn--ghost" id="prev-btn-{{ section.id }}" style="display: none;">
+              <span>Precedente</span>
+            </button>
+            <button onclick="nextZenQuestion()" class="zen-quiz-next zen-btn--premium" id="next-btn-{{ section.id }}" disabled>
+              <span>Continua</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Results Section -->
+  <section id="results-section-{{ section.id }}" class="zen-results-section py-20 hidden" style="background: linear-gradient(135deg, var(--zen-bg-red) 0%, var(--zen-white) 100%); position: relative;">
+    <div class="container" style="position: relative; z-index: 1;">
+      <!-- Header -->
+      <div class="text-center mb-16">
+        <div class="zen-section-header">
+          <h1 class="zen-title">La Tua Mappa Energetica Personale</h1>
+          <div class="zen-muladhara-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="12" cy="12" r="2" fill="currentColor"/>
+              <path d="M12 2L14.5 8.5L21 9L16 14L17.5 21L12 18L6.5 21L8 14L3 9L9.5 8.5L12 2Z" fill="currentColor" opacity="0.6"/>
+              <circle cx="12" cy="12" r="6" fill="none" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+            </svg>
+          </div>
+          <div class="zen-divider"></div>
+        </div>
+      </div>
+
+      <!-- Results Grid -->
+      <div class="results-grid">
+        <!-- Chakra Analysis -->
+        <div class="card" style="background: white !important;">
+          <h3 class="card-title text-center mb-6" style="color: var(--zen-primary-red) !important;">I Tuoi 7 Centri Energetici</h3>
+          <div id="chakra-analysis-{{ section.id }}">
+            <!-- Will be populated by JavaScript -->
+          </div>
+        </div>
+
+        <!-- Energy Analysis -->
+        <div class="card" style="background: white !important;">
+          <h3 class="card-title text-center mb-6" style="color: var(--zen-primary-red) !important;">La Tua Analisi Energetica</h3>
+          
+          <!-- Overall Energy Status -->
+          <div style="background: white; border-radius: 12px; padding: 1rem; margin-bottom: 1.5rem; border: 1px solid rgba(239, 68, 68, 0.1);">
+            <div class="text-center">
+              <div class="card-text mb-2">Stato Energetico Generale</div>
+              <div style="font-size: 2rem; font-weight: bold; color: var(--zen-primary-red); margin-bottom: 1rem;" id="overall-energy-{{ section.id }}">
+                81%
+              </div>
+              <div class="progress-container">
+                <div class="progress-bar" id="overall-progress-{{ section.id }}" style="width: 81%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Punti di Forza -->
+          <div class="mb-6">
+            <h4 style="font-size: 1.125rem; font-weight: 600; color: var(--zen-primary-red); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+              ⚡ Punti di Forza
+            </h4>
+            <div id="strengths-{{ section.id }}">
+              <!-- Will be populated by JavaScript -->
+            </div>
+          </div>
+
+          <!-- Focus Consigliato -->
+          <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid var(--zen-accent-red); border-radius: 12px; padding: 1rem;">
+            <h4 style="font-size: 1.125rem; font-weight: 600; color: var(--zen-primary-red); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+              💝 Focus Consigliato
+            </h4>
+            <div class="card-text" style="color: var(--zen-primary-red);" id="focus-text-{{ section.id }}">
+              Concentrati sul rafforzamento del tuo chakra più debole attraverso pratiche specifiche.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Suggerimenti Personalizzati -->
+      <div class="mb-20">
+        <h3 style="font-size: clamp(1.75rem, 4vw, 2.25rem); font-weight: bold; color: var(--zen-primary-red); text-align: center; margin-bottom: 2rem; padding: 0 1rem;">Suggerimenti Personalizzati per Te</h3>
+        
+        <div class="suggestions-grid">
+          <!-- Suggestions will be dynamically populated by JavaScript based on quiz results -->
+          {% for block in section.blocks %}
+            {% if block.type == 'suggestion' %}
+            <div class="suggestion-card" style="display: none;">
+              <!-- Keep original blocks as backup, hidden by default -->
+              <div class="suggestion-icon">{{ block.settings.suggestion_icon | default: '🧘' }}</div>
+              <div>
+                <h4 class="card-title mb-1">{{ block.settings.suggestion_title }}</h4>
+                <p class="card-text">{{ block.settings.suggestion_description }}</p>
+              </div>
+            </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Prodotti Raccomandati -->
+      {% if section.settings.show_products %}
+      <div class="mb-20" style="margin-top: 6rem;">
+        <h3 style="font-size: clamp(1.75rem, 4vw, 2.25rem); font-weight: bold; color: var(--zen-primary-red); text-align: center; margin-bottom: 2rem; padding: 0 1rem;">Prodotti Raccomandati per Te</h3>
+        
+        <!-- Promotional Banners -->
+        <div class="zen-promo-container" style="text-align: center; margin-bottom: 2rem;">
+          <!-- Timer Banner -->
+          <div class="zen-offer-banner-energy">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+              <path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <span>Offerta limitata: <strong><span class="js-offer-pct-energy">15%</span> sull'intero rituale</strong> • <span class="js-timer-label-energy">Scade tra</span> <span class="js-timer-energy">09:59</span></span>
+          </div>
+          
+          <!-- Discount Rule Box -->
+          <div class="zen-offer-rule-energy">
+            <span class="rule-text">Il -15% si attiva solo mantenendo tutti i prodotti del rituale e usando "Aggiungi tutto".</span>
+            <span class="status-energy js-offer-status-energy is-inactive">Non attivo</span>
+          </div>
+        </div>
+        
+        <div class="zen-results-grid-energy products-grid" id="products-grid-{{ section.id }}">
+          <!-- Products will be dynamically populated by JavaScript based on quiz results -->
+          {% for block in section.blocks %}
+            {% if block.type == 'product' %}
+            <div class="product-card" style="display: none;">
+              <!-- Keep original blocks as backup, hidden by default -->
+              <div class="media-wrapper">
+                {% if block.settings.product_image != blank %}
+                  <img src="{{ block.settings.product_image | img_url: '800x450' }}" alt="{{ block.settings.product_name }}">
+                {% endif %}
+              </div>
+              <div class="product-content">
+                <h4 class="card-title mb-4">{{ block.settings.product_name }}</h4>
+                <p class="card-text mb-4">{{ block.settings.product_description }}</p>
+                <div class="product-price">€{{ block.settings.product_price | money_without_currency }}</div>
+                <div class="quantity-controls">
+                  <button class="quantity-btn" onclick="changeZenQuantity('{{ block.settings.product_handle }}', -1)">-</button>
+                  <span id="quantity-{{ block.settings.product_handle }}-{{ section.id }}">1</span>
+                  <button class="quantity-btn" onclick="changeZenQuantity('{{ block.settings.product_handle }}', 1)">+</button>
+                </div>
+                <button class="btn-primary" style="width: 100%; text-align: center;" onclick="addZenToCart('{{ block.settings.product_handle }}')">
+                  Aggiungi al Carrello
+                </button>
+              </div>
+            </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+        
+        <!-- CART FOOTER - EXACT RITUALE FINDER COPY -->
+        <div class="zen-results-footer" style="background: rgba(255,255,255,.98); backdrop-filter: blur(20px); border: 1px solid rgba(0,0,0,.06); border-radius: 20px; padding: 32px; box-shadow: 0 10px 30px rgba(0,0,0,.08); margin-top: 3rem;">
+          
+          <!-- Trust elements - exact copy -->
+          <div class="zen-results-trust" style="display: flex; justify-content: center; gap: 3rem; margin-bottom: 2rem; flex-wrap: wrap;">
+            <div class="zen-trust-item" style="display: flex; align-items: center; gap: 0.5rem;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M20 6L9 17l-5-5" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span style="color: #666; font-size: 14px;">Garanzia 30 giorni soddisfatti o rimborsati</span>
+            </div>
+            <div class="zen-trust-item" style="display: flex; align-items: center; gap: 0.5rem;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <rect x="3" y="11" width="18" height="10" rx="2" stroke="#d4af37" stroke-width="2"/>
+                <path d="M7 11V7a5 5 0 0110 0v4" stroke="#d4af37" stroke-width="2"/>
+              </svg>
+              <span style="color: #666; font-size: 14px;">Pagamento sicuro con SSL</span>
+            </div>
+          </div>
+
+          <!-- Summary section - exact copy -->
+          <div class="zen-results-summary" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px;">
+            <!-- Total with badge -->
+            <div class="zen-results-total" style="display: flex; align-items: center; gap: 16px;">
+              <span class="label" style="color: #666; font-size: 14px;">Totale rituale</span>
+              <strong id="zen-cart-total" style="font-size: 32px; font-weight: 700; color: #1a1a1a;">€0,00</strong>
+              <small class="zen-save-badge" id="zen-savings-badge" style="background: linear-gradient(135deg, var(--zen-primary-red), #ff6b6b); color: white; padding: 4px 12px; border-radius: 100px; font-size: 12px; font-weight: 600; display: none;">Risparmi €0</small>
+            </div>
+            
+            <!-- Shipping info -->
+            <div class="zen-shipping-info" style="display: flex; align-items: center; gap: 8px; color: #666; font-size: 14px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <rect x="1" y="3" width="15" height="13" rx="2" stroke="#d4af37" stroke-width="1.5"/>
+                <path d="M16 8h4l3 3v5h-7V8z" stroke="#d4af37" stroke-width="1.5"/>
+                <circle cx="6.5" cy="19.5" r="2.5" stroke="#d4af37" stroke-width="1.5"/>
+                <circle cx="18.5" cy="19.5" r="2.5" stroke="#d4af37" stroke-width="1.5"/>
+              </svg>
+              <span>Spedizione gratuita sopra €49</span>
+            </div>
+          </div>
+
+          <!-- Action buttons - exact copy -->
+          <div class="zen-results-actions">
+            <button class="zen-quiz-add-all zen-btn--cta" onclick="addAllZenToCart()" style="width: 100%; background: var(--zen-primary-red); color: white; border: none; padding: 16px 32px; border-radius: 50px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 20px rgba(239,68,68,0.25); margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; position: relative; overflow: hidden;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 25px rgba(239,68,68,0.35)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(239,68,68,0.25)'">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              <span>Aggiungi tutto al carrello</span>
+            </button>
+            
+            <button class="zen-quiz-restart zen-btn--text" onclick="restartZenQuiz(); return false;" style="background: transparent; border: none; color: #999; padding: 0.5rem; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin: 0 auto;" onmouseover="this.style.color='var(--zen-primary-red)'" onmouseout="this.style.color='#999'" type="button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M1 4v6h6M23 20v-6h-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M20.49 9A9 9 0 005.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 013.51 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Ricomincia
+            </button>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+    </div>
+  </section>
+</div>
+
+<!-- Image Lightbox -->
+<div id="image-lightbox-{{ section.id }}" class="image-lightbox">
+  <div class="lightbox-content">
+    <button class="lightbox-close" onclick="closeZenImageLightbox()">&times;</button>
+    <img id="lightbox-image-{{ section.id }}" class="lightbox-image" src="" alt="">
+  </div>
+</div>
+
+<script>
+  // Global Zen Quiz Variables
+  let zenCurrentQuestion = 0;
+  let zenAnswers = [];
+  let zenSelectedOption = null;
+  const zenSectionId = '{{ section.id }}';
+
+  // Quiz Data - ORIGINALE con 4 opzioni e logica corretta
+  const zenQuestions = [
+      {
+        id: 1,
+        icon: "❤️",
+        title: "Quando guardi un tramonto, quale emozione prevale?",
+        options: [
+          { text: "Pace profonda e connessione con l'universo", chakraInfluence: [0, 0, 0, 2, 1, 2, 3] },
+          { text: "Nostalgia e riflessione sul passato", chakraInfluence: [1, 1, 0, 3, 1, 1, 0] },
+          { text: "Energia creativa e voglia di nuovi progetti", chakraInfluence: [1, 3, 3, 1, 2, 1, 0] },
+          { text: "Gratitudine per la bellezza della vita", chakraInfluence: [1, 1, 1, 3, 1, 1, 2] }
+        ]
+      },
+      {
+        id: 2,
+        icon: "🌬️",
+        title: "Il tuo respiro si ferma più spesso su...",
+        options: [
+          { text: "Inspirazione - mi piace raccogliere energia", chakraInfluence: [2, 2, 3, 1, 2, 1, 1] },
+          { text: "Espirazione - preferisco lasciare andare", chakraInfluence: [3, 1, 1, 2, 2, 1, 2] },
+          { text: "Pausa naturale - cerco l'equilibrio", chakraInfluence: [1, 1, 1, 2, 1, 2, 3] },
+          { text: "Non ci faccio caso, respiro istintivamente", chakraInfluence: [3, 2, 2, 1, 1, 1, 0] }
+        ]
+      },
+      {
+        id: 3,
+        icon: "🌙",
+        title: "Nei momenti di difficoltà, qual è la tua reazione istintiva?",
+        options: [
+          { text: "Cerco il silenzio e la solitudine per riflettere", chakraInfluence: [1, 0, 1, 1, 1, 3, 3] },
+          { text: "Mi confido con persone di fiducia", chakraInfluence: [1, 1, 1, 3, 3, 1, 1] },
+          { text: "Agisco subito per risolvere il problema", chakraInfluence: [3, 2, 3, 1, 1, 1, 0] },
+          { text: "Lascio che le emozioni fluiscano naturalmente", chakraInfluence: [1, 3, 1, 3, 1, 1, 1] }
+        ]
+      },
+      {
+        id: 4,
+        icon: "🔥",
+        title: "Cosa ti dà più energia durante la giornata?",
+        options: [
+          { text: "Momenti di meditazione e introspezione", chakraInfluence: [1, 0, 0, 1, 0, 3, 3] },
+          { text: "Attività fisica e movimento", chakraInfluence: [3, 3, 2, 1, 1, 0, 0] },
+          { text: "Conversazioni profonde e connessioni umane", chakraInfluence: [0, 1, 1, 3, 3, 1, 1] },
+          { text: "Progetti creativi e espressione artistica", chakraInfluence: [1, 3, 2, 2, 2, 2, 1] }
+        ]
+      },
+      {
+        id: 5,
+        icon: "👁️",
+        title: "Quale colore ti attrae di più in questo momento?",
+        options: [
+          { text: "Viola e indaco - colori mistici e spirituali", chakraInfluence: [0, 0, 0, 0, 1, 3, 3] },
+          { text: "Verde e rosa - colori del cuore e della natura", chakraInfluence: [1, 1, 1, 3, 1, 1, 1] },
+          { text: "Rosso e arancione - colori di passione e vitalità", chakraInfluence: [3, 3, 2, 1, 0, 0, 0] },
+          { text: "Blu e azzurro - colori di calma e comunicazione", chakraInfluence: [1, 1, 1, 1, 3, 2, 1] }
+        ]
+      },
+      {
+        id: 6,
+        icon: "🌳",
+        title: "Come ti senti più radicato e stabile?",
+        options: [
+          { text: "Camminando nella natura a piedi nudi", chakraInfluence: [3, 1, 1, 2, 0, 0, 1] },
+          { text: "Praticando yoga o tai chi", chakraInfluence: [2, 2, 2, 2, 1, 1, 2] },
+          { text: "Cucinando con ingredienti naturali", chakraInfluence: [2, 2, 1, 2, 1, 1, 1] },
+          { text: "Organizzando e sistemando i miei spazi", chakraInfluence: [3, 1, 2, 1, 1, 1, 1] }
+        ]
+      },
+      {
+        id: 7,
+        icon: "🗣️",
+        title: "Come preferisci esprimere le tue idee?",
+        options: [
+          { text: "Parlando apertamente e con passione", chakraInfluence: [1, 2, 2, 1, 3, 1, 0] },
+          { text: "Scrivendo o attraverso l'arte", chakraInfluence: [0, 2, 1, 2, 2, 2, 1] },
+          { text: "Con gesti e linguaggio del corpo", chakraInfluence: [2, 3, 2, 2, 1, 1, 0] },
+          { text: "In silenzio, attraverso l'esempio", chakraInfluence: [2, 0, 1, 2, 1, 2, 3] }
+        ]
+      },
+      {
+        id: 8,
+        icon: "⭐",
+        title: "Quale tipo di saggezza ti attrae di più?",
+        options: [
+          { text: "Saggezza antica di tradizioni spirituali", chakraInfluence: [1, 0, 0, 1, 1, 2, 3] },
+          { text: "Conoscenza pratica della vita quotidiana", chakraInfluence: [3, 2, 3, 1, 1, 1, 0] },
+          { text: "Intuizioni creative e artistiche", chakraInfluence: [1, 3, 1, 2, 2, 3, 1] },
+          { text: "Comprensione emotiva e psicologica", chakraInfluence: [1, 2, 1, 3, 2, 2, 1] }
+        ]
+      },
+      {
+        id: 9,
+        icon: "💧",
+        title: "Come gestisci le emozioni intense?",
+        options: [
+          { text: "Le sento profondamente e le lascio fluire", chakraInfluence: [1, 3, 1, 3, 1, 1, 1] },
+          { text: "Le analizzo razionalmente", chakraInfluence: [1, 0, 2, 1, 2, 3, 2] },
+          { text: "Le trasformo in azione e movimento", chakraInfluence: [3, 2, 3, 1, 1, 0, 0] },
+          { text: "Cerco equilibrio attraverso la meditazione", chakraInfluence: [2, 1, 1, 2, 1, 2, 3] }
+        ]
+      },
+      {
+        id: 10,
+        icon: "☀️",
+        title: "Cosa ti fa sentire più potente e sicuro di te?",
+        options: [
+          { text: "Raggiungere obiettivi personali", chakraInfluence: [2, 1, 3, 1, 1, 1, 1] },
+          { text: "Aiutare gli altri e fare la differenza", chakraInfluence: [1, 1, 1, 3, 2, 1, 2] },
+          { text: "Essere autentico e vero a me stesso", chakraInfluence: [2, 2, 2, 2, 3, 1, 1] },
+          { text: "Connettermi con qualcosa di più grande", chakraInfluence: [1, 0, 0, 2, 1, 2, 3] }
+        ]
+      },
+      {
+        id: 11,
+        icon: "⚡",
+        title: "Quale tipo di energia ti descrive meglio?",
+        options: [
+          { text: "Energia stabile e costante", chakraInfluence: [3, 1, 2, 1, 1, 1, 1] },
+          { text: "Energia creativa e fluida", chakraInfluence: [1, 3, 1, 2, 2, 2, 1] },
+          { text: "Energia intensa e trasformativa", chakraInfluence: [2, 2, 3, 1, 1, 1, 2] },
+          { text: "Energia sottile e spirituale", chakraInfluence: [1, 0, 0, 1, 1, 3, 3] }
+        ]
+      },
+      {
+        id: 12,
+        icon: "🧭",
+        title: "Verso quale direzione ti senti più attratto nella vita?",
+        options: [
+          { text: "Verso la crescita spirituale e l'illuminazione", chakraInfluence: [0, 0, 0, 1, 1, 2, 3] },
+          { text: "Verso relazioni profonde e amore incondizionato", chakraInfluence: [1, 2, 1, 3, 2, 1, 1] },
+          { text: "Verso il successo e la realizzazione personale", chakraInfluence: [2, 1, 3, 1, 2, 1, 1] },
+          { text: "Verso l'equilibrio e l'armonia in tutto", chakraInfluence: [2, 2, 2, 2, 2, 2, 2] }
+        ]
+      }
+    ];
+
+  const zenChakraInfo = {
+    muladhara: { name: "Muladhara", italianName: "Radice", color: "chakra-red", description: "Fondamenta e sicurezza" },
+    svadhisthana: { name: "Svadhisthana", italianName: "Sacrale", color: "chakra-orange", description: "Creatività e sessualità" },
+    manipura: { name: "Manipura", italianName: "Plesso Solare", color: "chakra-yellow", description: "Potere personale" },
+    anahata: { name: "Anahata", italianName: "Cuore", color: "chakra-green", description: "Amore e compassione" },
+    vishuddha: { name: "Vishuddha", italianName: "Gola", color: "chakra-blue", description: "Comunicazione e verità" },
+    ajna: { name: "Ajna", italianName: "Terzo Occhio", color: "chakra-indigo", description: "Intuizione e saggezza" },
+    sahasrara: { name: "Sahasrara", italianName: "Corona", color: "chakra-violet", description: "Connessione spirituale" }
+  };
+
+  // Global Functions
+  function startZenQuiz() {
+    try {
+      document.getElementById('intro-section-' + zenSectionId).classList.add('hidden');
+      document.getElementById('quiz-section-' + zenSectionId).classList.remove('hidden');
+      showZenQuestion();
+    } catch (error) {
+      console.error('Errore in startQuiz:', error);
+      alert('Errore: ' + error.message);
+    }
+  }
+
+  function showZenQuestion() {
+    const question = zenQuestions[zenCurrentQuestion];
+    const totalQuestions = zenQuestions.length;
+    const progress = ((zenCurrentQuestion + 1) / totalQuestions) * 100;
+
+    // Update progress with new framework
+    document.getElementById('progress-text-step-' + zenSectionId).textContent = zenCurrentQuestion + 1;
+    document.getElementById('progress-bar-' + zenSectionId).style.width = `${progress}%`;
+
+    // Update question content
+    document.getElementById('question-title-' + zenSectionId).textContent = question.title;
+    document.getElementById('question-subtitle-' + zenSectionId).textContent = question.subtitle || 'Scegli l\'opzione che rispecchia meglio il tuo sentire';
+
+    // Update options with Rituale Finder styling
+    const optionsContainer = document.getElementById('quiz-options-' + zenSectionId);
+    optionsContainer.innerHTML = '';
+    
+    question.options.forEach((option, index) => {
+      const optionElement = document.createElement('button');
+      optionElement.className = 'zen-quiz-answer';
+      optionElement.textContent = option.text;
+      optionElement.onclick = () => selectZenOption(index);
+      optionsContainer.appendChild(optionElement);
+    });
+
+    // Update navigation buttons with new class handling
+    const prevBtn = document.getElementById('prev-btn-' + zenSectionId);
+    const quizNav = document.getElementById('quiz-nav-' + zenSectionId);
+    
+    if (zenCurrentQuestion > 0) {
+      prevBtn.style.display = 'inline-flex';
+      if (quizNav) quizNav.classList.add('has-prev');
+    } else {
+      prevBtn.style.display = 'none';
+      if (quizNav) quizNav.classList.remove('has-prev');
+    }
+
+    // Reset selection
+    zenSelectedOption = zenAnswers[zenCurrentQuestion] ? zenAnswers[zenCurrentQuestion].selectedOption : null;
+    updateZenSelection();
+  }
+
+  function selectZenOption(optionIndex) {
+    zenSelectedOption = optionIndex;
+    updateZenSelection();
+  }
+
+  function updateZenSelection() {
+    const options = document.querySelectorAll('#quiz-options-' + zenSectionId + ' .zen-quiz-answer');
+    options.forEach((option, index) => {
+      if (index === zenSelectedOption) {
+        option.classList.add('selected');
+      } else {
+        option.classList.remove('selected');
+      }
+    });
+
+    // Enable/disable continue button
+    const nextBtn = document.getElementById('next-btn-' + zenSectionId);
+    
+    if (zenSelectedOption !== null) {
+      nextBtn.disabled = false;
+    } else {
+      nextBtn.disabled = true;
+    }
+  }
+
+  function nextZenQuestion() {
+    if (zenSelectedOption === null) return;
+
+    // Save answer con struttura originale
+    const question = zenQuestions[zenCurrentQuestion];
+    zenAnswers[zenCurrentQuestion] = {
+      questionId: question.id,
+      selectedOption: zenSelectedOption,
+      chakraInfluence: question.options[zenSelectedOption].chakraInfluence
+    };
+
+    if (zenCurrentQuestion < zenQuestions.length - 1) {
+      zenCurrentQuestion++;
+      zenSelectedOption = null;
+      showZenQuestion();
+    } else {
+      completeZenQuiz();
+    }
+  }
+
+  function previousZenQuestion() {
+    if (zenCurrentQuestion > 0) {
+      zenCurrentQuestion--;
+      zenSelectedOption = zenAnswers[zenCurrentQuestion] ? zenAnswers[zenCurrentQuestion].selectedOption : null;
+      showZenQuestion();
+    }
+  }
+
+  function completeZenQuiz() {
+    document.getElementById('quiz-section-' + zenSectionId).classList.add('hidden');
+    document.getElementById('results-section-' + zenSectionId).classList.remove('hidden');
+    showZenResults();
+  }
+
+  function restartZenQuiz() {
+    zenCurrentQuestion = 0;
+    zenAnswers = [];
+    zenSelectedOption = null;
+    
+    document.getElementById('results-section-' + zenSectionId).classList.add('hidden');
+    document.getElementById('intro-section-' + zenSectionId).classList.remove('hidden');
+  }
+
+  function calculateZenChakraScores() {
+    // LOGICA ORIGINALE: root, sacral, solar_plexus, heart, throat, third_eye, crown
+    const chakraTotals = [0, 0, 0, 0, 0, 0, 0];
+    
+    zenAnswers.forEach(answer => {
+      if (answer && answer.chakraInfluence) {
+        answer.chakraInfluence.forEach((influence, index) => {
+          chakraTotals[index] += influence || 0;
+        });
+      }
+    });
+    
+    const maxTotal = Math.max(...chakraTotals);
+    
+    return {
+      muladhara: Math.round((chakraTotals[0] / maxTotal) * 100),
+      svadhisthana: Math.round((chakraTotals[1] / maxTotal) * 100),
+      manipura: Math.round((chakraTotals[2] / maxTotal) * 100),
+      anahata: Math.round((chakraTotals[3] / maxTotal) * 100),
+      vishuddha: Math.round((chakraTotals[4] / maxTotal) * 100),
+      ajna: Math.round((chakraTotals[5] / maxTotal) * 100),
+      sahasrara: Math.round((chakraTotals[6] / maxTotal) * 100)
+    };
+  }
+
+  // Timer and discount functions
+  const DISCOUNT_DURATION_MIN = 10; // 10 minutes for timer
+  const DISCOUNT_PERCENTAGE = 15;
+  let timerInterval;
+
+  function updateEnergyTimer() {
+    const timerEl = document.querySelector('.js-timer-energy');
+    if (!timerEl) return;
+
+    // Check if should reset timer after add to cart
+    if (localStorage.getItem('zen_energy_offer_should_reset') === '1') {
+      const fresh = Date.now() + DISCOUNT_DURATION_MIN * 60 * 1000;
+      localStorage.setItem('zen_energy_offer_end', String(fresh));
+      localStorage.removeItem('zen_energy_offer_should_reset');
+    }
+
+    let endTime = Number(localStorage.getItem('zen_energy_offer_end') || 0);
+    if (!endTime) {
+      endTime = Date.now() + DISCOUNT_DURATION_MIN * 60 * 1000;
+      localStorage.setItem('zen_energy_offer_end', String(endTime));
+    }
+
+    const remaining = Math.max(0, endTime - Date.now());
+    const minutes = Math.floor(remaining / 60000);
+    const seconds = Math.floor((remaining % 60000) / 1000);
+    
+    timerEl.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    
+    if (remaining <= 0) {
+      timerEl.textContent = 'Scaduta';
+      document.querySelector('.js-timer-label-energy').textContent = 'Offerta';
+    }
+  }
+
+  function isEnergyDiscountEligible() {
+    const productsGrid = document.getElementById('products-grid-' + zenSectionId);
+    const productCards = productsGrid.querySelectorAll('.zen-product-card');
+    
+    // Check if all products have quantity >= 1
+    for (const card of productCards) {
+      const qtyInput = card.querySelector('.zen-qty-selector input');
+      if (qtyInput) {
+        const qty = parseInt(qtyInput.value || '1', 10);
+        if (qty < 1) return false;
+      }
+    }
+    return productCards.length > 0;
+  }
+
+  function updateEnergyOfferStatus() {
+    const eligible = isEnergyDiscountEligible();
+    const statusEl = document.querySelector('.js-offer-status-energy');
+    
+    if (statusEl) {
+      statusEl.textContent = eligible ? 'Attivo' : 'Non attivo';
+      statusEl.classList.toggle('is-active', eligible);
+      statusEl.classList.toggle('is-inactive', !eligible);
+    }
+  }
+
+  function startEnergyTimer() {
+    updateEnergyTimer();
+    if (timerInterval) clearInterval(timerInterval);
+    timerInterval = setInterval(updateEnergyTimer, 1000);
+  }
+
+  function showZenResults() {
+    const chakraScores = calculateZenChakraScores();
+    const overallEnergy = getZenOverallEnergyLevel(chakraScores);
+    const topChakras = getZenTopChakras(chakraScores);
+    const weakestChakra = getZenWeakestChakra(chakraScores);
+
+
+    // Update overall energy
+    document.getElementById('overall-energy-' + zenSectionId).textContent = `${overallEnergy}%`;
+    document.getElementById('overall-progress-' + zenSectionId).style.width = `${overallEnergy}%`;
+
+    // Show chakra analysis
+    showZenChakraAnalysis(chakraScores);
+    showZenStrengths(topChakras);
+    showZenFocus(weakestChakra);
+    
+    // Show personalized products and suggestions
+    showZenPersonalizedProducts(topChakras, weakestChakra);
+    showZenPersonalizedSuggestions(topChakras, weakestChakra);
+    
+    // Start promotional timer and update offer status
+    startEnergyTimer();
+    updateEnergyOfferStatus();
+  }
+
+  function showZenChakraAnalysis(chakraScores) {
+    const chakraAnalysis = document.getElementById('chakra-analysis-' + zenSectionId);
+    chakraAnalysis.innerHTML = '';
+    
+    Object.entries(chakraScores).forEach(([chakraKey, percentage]) => {
+      const chakra = zenChakraInfo[chakraKey];
+      const chakraItem = document.createElement('div');
+      chakraItem.className = 'chakra-item';
+      chakraItem.innerHTML = `
+        <div class="chakra-info">
+          <div class="chakra-dot bg-${chakra.color}"></div>
+          <div>
+            <div style="font-weight: 600;">${chakra.name} (${chakra.italianName})</div>
+            <div class="card-text">${getZenStatusLabel(percentage)}</div>
+          </div>
+        </div>
+        <div class="chakra-percentage ${chakra.color}">${percentage}%</div>
+      `;
+      chakraAnalysis.appendChild(chakraItem);
+    });
+  }
+
+  function showZenStrengths(topChakras) {
+    const strengths = document.getElementById('strengths-' + zenSectionId);
+    strengths.innerHTML = '';
+    
+    topChakras.forEach((chakraKey) => {
+      const chakra = zenChakraInfo[chakraKey];
+      const strengthElement = document.createElement('div');
+      strengthElement.className = 'card-text mb-2';
+      strengthElement.innerHTML = `<strong>${chakra.name} (${chakra.italianName})</strong> molto sviluppato - ${getZenChakraDescription(chakraKey)}`;
+      strengths.appendChild(strengthElement);
+    });
+  }
+
+  function showZenFocus(weakestChakra) {
+    const focusElement = document.getElementById('focus-text-' + zenSectionId);
+    const focusTexts = {
+  muladhara: "AZIONE PRATICA: Ogni giorno fai una passeggiata di 10–20 minuti (meglio in un’area verde), cura pasti regolari e mantieni una routine del sonno stabile (7–8 ore).",
+  svadhisthana: "AZIONE PRATICA: Dedica 10 minuti al giorno a un’attività creativa (scrivere, disegnare, cucina). Prova una ricetta nuova a settimana e programma un momento di svago rigenerante.",
+  manipura: "AZIONE PRATICA: Al mattino pratica 3 serie da 10 respirazioni diaframmatiche energizzanti e definisci un micro-obiettivo quotidiano chiaro e raggiungibile.",
+  anahata: "AZIONE PRATICA: Tieni un diario di gratitudine (2–3 voci ogni sera) e offri ogni giorno un piccolo gesto di gentilezza verso te stesso o gli altri.",
+  vishuddha: "AZIONE PRATICA: Allena la voce: leggi ad alta voce per 5 minuti o canta una canzone che ami. Ogni giorno esprimi un’opinione con chiarezza e rispetto.",
+  ajna: "AZIONE PRATICA: 5 minuti di visualizzazione su un obiettivo concreto, annota intuizioni rilevanti in un taccuino e riduci gli schermi 30 minuti prima di dormire.",
+  sahasrara: "AZIONE PRATICA: Medita in silenzio 10 minuti al giorno. Concediti una breve camminata consapevole senza telefono e una pausa digitale di almeno 1 ora quotidiana."
+};
+    
+    focusElement.textContent = focusTexts[weakestChakra] || "Mantieni l'equilibrio energetico attraverso pratiche olistiche";
+  }
+
+  function getZenOverallEnergyLevel(chakraScores) {
+    const values = Object.values(chakraScores);
+    return Math.round(values.reduce((sum, score) => sum + score, 0) / values.length);
+  }
+
+  function getZenStatusLabel(percentage) {
+    if (percentage >= 90) return "Eccellente";
+    if (percentage >= 75) return "Buono";
+    if (percentage >= 60) return "Da Potenziare";
+    return "Critico";
+  }
+
+  function getZenTopChakras(chakraScores) {
+    return Object.entries(chakraScores)
+      .sort(([,a], [,b]) => b - a)
+      .slice(0, 3)
+      .map(([chakra]) => chakra);
+  }
+
+  function getZenWeakestChakra(chakraScores) {
+    return Object.entries(chakraScores)
+      .sort(([,a], [,b]) => a - b)[0][0];
+  }
+
+  function getZenChakraDescription(chakraKey) {
+    const descriptions = {
+      muladhara: "hai solide fondamenta e grande stabilità",
+      svadhisthana: "sei molto creativo e passionale",
+      manipura: "hai un forte potere personale e determinazione",
+      anahata: "sei capace di amore profondo e compassione",
+      vishuddha: "hai una comunicazione chiara e autentica",
+      ajna: "hai grande intuizione e saggezza interiore",
+      sahasrara: "senti una forte connessione spirituale"
+    };
+    return descriptions[chakraKey] || "energia molto sviluppata";
+  }
+
+  // Cart Functions
+  function changeZenQuantity(productId, delta) {
+    const quantityElement = document.getElementById(`quantity-${productId}-${zenSectionId}`);
+    if (quantityElement.tagName === 'INPUT') {
+      // Get max stock from data attribute
+      const maxStock = parseInt(quantityElement.getAttribute('data-stock') || '10');
+      
+      // New layout with input field
+      let quantity = parseInt(quantityElement.value) + delta;
+      quantity = Math.max(1, Math.min(maxStock, quantity));
+      quantityElement.value = quantity;
+      
+      // Update cart total and offer status immediately when quantity changes
+      updateZenCartTotal();
+    } else {
+      // Old layout with span
+      let quantity = parseInt(quantityElement.textContent) + delta;
+      quantity = Math.max(1, quantity);
+      quantityElement.textContent = quantity;
+      updateZenCartTotal();
+    }
+  }
+
+  function removeZenProduct(productId) {
+    const quantityElement = document.getElementById(`quantity-${productId}-${zenSectionId}`);
+    if (quantityElement) {
+      // Reset quantity to 1 instead of removing the card
+      quantityElement.value = 1;
+      // Update cart total and status immediately
+      updateZenCartTotal();
+    }
+  }
+
+  function addZenToCart(productHandle) {
+    // IMPORTANT: Single product additions NEVER get discount
+    const quantityElement = document.querySelector(`[onclick*="${productHandle}"]`)?.closest('.zen-product-card')?.querySelector('.zen-qty-selector input');
+    const quantity = quantityElement ? parseInt(quantityElement.value || 1) : 1;
+    
+    if (quantity === 0) {
+      alert('Seleziona almeno 1 quantità');
+      return;
+    }
+    
+    const form = {
+      items: [{
+        id: productHandle,
+        quantity: quantity
+      }]
+    };
+
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(form)
+    })
+    .then(response => response.json())
+    .then(data => {
+      // NO discount code for single products!
+      alert('Prodotto aggiunto al carrello (senza sconto rituale)');
+      window.location.href = '/cart';
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('Errore nell\'aggiunta al carrello');
+    });
+  }
+
+  async function addAllZenToCart() {
+    const button = event.currentTarget;
+    const oldHTML = button.innerHTML;
+    button.disabled = true;
+    button.innerHTML = '<span>Aggiunta in corso...</span>';
+    
+    try {
+      // Get all products with quantity > 0
+      const productsGrid = document.getElementById('products-grid-' + zenSectionId);
+      const productCards = productsGrid.querySelectorAll('.zen-product-card');
+      const items = [];
+      
+      for (const card of productCards) {
+        const handle = card.querySelector('[onclick*="addZenToCart"]')?.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
+        const qtyInput = card.querySelector('.zen-qty-selector input');
+        
+        if (handle && qtyInput) {
+          const qty = parseInt(qtyInput.value || '0', 10);
+          if (qty > 0) {
+            items.push({ id: handle, quantity: qty });
+          }
+        }
+      }
+      
+      if (items.length === 0) {
+        alert('Seleziona almeno un prodotto prima di aggiungerli al carrello');
+        button.innerHTML = oldHTML;
+        button.disabled = false;
+        return;
+      }
+      
+      // Add all items to cart
+      const formData = { items };
+      await fetch(window.Shopify.routes.root + 'cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      
+      // Reset timer for next visit
+      localStorage.setItem('zen_energy_offer_should_reset', '1');
+      
+      // Check if discount should be applied
+      const eligible = isEnergyDiscountEligible();
+      const discountCode = '{{ section.settings.discount_code | default: "ENERGIA15" }}';
+      
+      if (eligible && discountCode) {
+        // Apply discount code and redirect
+        window.location.href = `/discount/${encodeURIComponent(discountCode)}?redirect=/cart`;
+        return;
+      }
+      
+      // Success feedback
+      button.innerHTML = '<span>Aggiunto tutto ✓</span>';
+      setTimeout(() => {
+        button.innerHTML = oldHTML;
+        button.disabled = false;
+        window.location.href = '/cart';
+      }, 1500);
+      
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      alert('Errore nell\'aggiunta al carrello. Riprova.');
+      button.innerHTML = oldHTML;
+      button.disabled = false;
+    }
+  }
+
+  // Update Cart Total Function - Rituale Finder Style
+  function updateZenCartTotal() {
+    const totalElement = document.getElementById('zen-cart-total');
+    const savingsElement = document.getElementById('zen-savings-badge');
+    
+    let total = 0;
+    let totalItems = 0;
+    
+    // Calculate total from all product cards with quantities
+    document.querySelectorAll('#results-section-' + zenSectionId + ' .zen-product-card').forEach(card => {
+      // Try to get price from .zen-product-price .now first (for dynamic products)
+      let priceText = card.querySelector('.zen-product-price .now')?.textContent || '';
+      // If not found, try .product-price (for static products) 
+      if (!priceText) {
+        priceText = card.querySelector('.product-price')?.textContent || '';
+      }
+      const price = parseFloat(priceText.replace('€', '').replace(',', '.')) || 0;
+      const quantityInput = card.querySelector('.zen-qty-selector input');
+      const quantity = parseInt(quantityInput?.value || 1);
+      
+      if (quantity > 0) {
+        total += price * quantity;
+        totalItems += quantity;
+      }
+    });
+    
+    // Calculate savings and final total with discount if eligible
+    const discountPercentage = isEnergyDiscountEligible() ? 0.15 : 0; 
+    const savings = total * discountPercentage;
+    const finalTotal = total - savings;
+    
+    if (totalElement) {
+      if (finalTotal > 0) {
+        totalElement.textContent = `€${finalTotal.toFixed(2).replace('.', ',')}`;
+      } else {
+        totalElement.textContent = `€0,00`;
+      }
+    }
+    
+    if (savingsElement) {
+      if (savings > 0) {
+        savingsElement.textContent = `Risparmi €${savings.toFixed(2).replace('.', ',')}`;
+        savingsElement.style.display = 'inline-block';
+      } else {
+        savingsElement.style.display = 'none';
+      }
+    }
+    
+    // Update offer status
+    updateEnergyOfferStatus();
+  }
+
+  // Image Lightbox Functions
+  function openZenImageLightbox(imageSrc, imageAlt) {
+    const lightbox = document.getElementById('image-lightbox-' + zenSectionId);
+    const lightboxImage = document.getElementById('lightbox-image-' + zenSectionId);
+    
+    lightboxImage.src = imageSrc;
+    lightboxImage.alt = imageAlt;
+    lightbox.classList.add('active');
+    
+    // Prevent body scroll when lightbox is open
+    document.body.style.overflow = 'hidden';
+    
+    // Close on click outside image
+    lightbox.addEventListener('click', function(e) {
+      if (e.target === lightbox) {
+        closeZenImageLightbox();
+      }
+    });
+    
+    // Close on ESC key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeZenImageLightbox();
+      }
+    });
+  }
+
+  function closeZenImageLightbox() {
+    const lightbox = document.getElementById('image-lightbox-' + zenSectionId);
+    lightbox.classList.remove('active');
+    
+    // Restore body scroll
+    document.body.style.overflow = '';
+  }
+
+  // Show Personalized Products based on chakra results
+  function showZenPersonalizedProducts(topChakras, weakestChakra) {
+    const productsGrid = document.getElementById('products-grid-' + zenSectionId);
+    if (!productsGrid) return;
+
+    // PRODOTTI REALI DAL CATALOGO BENESSEREZEN - Mappatura intelligente e precisa per ogni chakra
+    const zenProducts = {
+      muladhara: [ // RADICE - Stabilità, sicurezza, radicamento
+        { 
+          name: "Lampada di Sale - Albero della Vita", 
+          description: "Cristallo di sale rosa con simbolo dell'Albero, per radicamento e connessione con la terra", 
+          price: "44.90", 
+          handle: "lampada-sale-albero-vita-led",
+          image: "https://benesserezen.shop/cdn/shop/files/21142_0000009640_webp.jpg?v=1744063995&width=800",
+          category: "lampade",
+          stock: 3
+        },
+        { 
+          name: "Braccialetto Diaspro Kambaba e Avventurina", 
+          description: "Pietre naturali per radicamento, protezione e forza interiore", 
+          price: "15.90", 
+          handle: "braccialetto-diaspro-kambaba-avventurina-trifoglio",
+          image: "https://benesserezen.shop/cdn/shop/files/IMG-2077.jpg?v=1756162041&width=800",
+          category: "gioielli",
+          stock: 7
+        },
+        { 
+          name: "Buddha Thailandese Oro e Rosso", 
+          description: "Statua in resina per stabilità spirituale e meditazione profonda", 
+          price: "39.90", 
+          handle: "statua-buddha-thailandese-seduto-su-mano",
+          image: "https://benesserezen.shop/cdn/shop/files/IMG-9015.jpg?v=1744830417&width=800",
+          category: "statuette",
+          stock: 2
+        },
+        { 
+          name: "Diffusore Piantagione di Vaniglia", 
+          description: "Fragranza calda e avvolgente per sicurezza e comfort", 
+          price: "18.90", 
+          handle: "diffusori-120ml-piantagione-vaniglia",
+          image: "https://benesserezen.shop/cdn/shop/files/IMG-9400.jpg?v=1745702839&width=800",
+          category: "diffusori",
+          stock: 5
+        }
+      ],
+      svadhisthana: [ // SACRALE - Creatività, sensualità, emozioni
+        { 
+          name: "Lampada di Sale - Doppio Cuore", 
+          description: "Cristallo rosa a forma di cuore per amore e sensualità", 
+          price: "39.90", 
+          handle: "lampada-sale-doppio-cuore-led",
+          image: "https://benesserezen.shop/cdn/shop/files/21138_0000009612_webp.jpg?v=1744063607&width=800",
+          category: "lampade",
+          stock: 4
+        },
+        { 
+          name: "Cherubini con Cuore Rosso", 
+          description: "Statuetta angelica simbolo di amore puro e protezione", 
+          price: "5.90", 
+          handle: "statuetta-cherubini-bianchi-cuore-rosso-1",
+          image: "https://benesserezen.shop/cdn/shop/files/IMG-9047.jpg?v=1744836233&width=800",
+          category: "statuette",
+          stock: 3
+        },
+        { 
+          name: "Diffusore Ali di Gelsomino", 
+          description: "Fragranza floreale dolce per creatività e sensualità", 
+          price: "18.90", 
+          handle: "diffusori-120ml-ali-di-gelsomino",
+          image: "https://benesserezen.shop/cdn/shop/files/IMG-1041.jpg?v=1752442571&width=800",
+          category: "diffusori"
+        },
+        { 
+          name: "Brucia Essenze Ceramica - Cuore Verde", 
+          description: "Diffusore in ceramica per oli essenziali creativi", 
+          price: "13.90", 
+          handle: "bruciatore-essenze-ceramica-verde",
+          image: "https://benesserezen.shop/cdn/shop/files/IMG-2110.jpg?v=1756244734&width=800",
+          category: "essenze"
+        }
+      ],
+      manipura: [ // PLESSO SOLARE - Potere personale, volontà, autostima
+        { 
+          name: "Buddha Thailandese in Contemplazione", 
+          description: "Statua dorata per forza interiore e saggezza", 
+          price: "49.90", 
+          handle: "statua-buddha-thailandese-oro-rosso-contemplazione",
+          image: "https://benesserezen.shop/cdn/shop/files/IMG-9017.jpg?v=1744830564&width=800",
+          category: "statuette",
+          stock: 3
+        },
+        { 
+          name: "Brucia Incensi - Mano e Sole", 
+          description: "Porta incensi con simboli di protezione ed energia solare", 
+          price: "16.90", 
+          handle: "ciotola-incenso-mano-sole-legno-mango",
+          image: "https://benesserezen.shop/cdn/shop/files/IMG-1036.jpg?v=1752441779&width=800",
+          category: "incensi"
+        },
+        { 
+          name: "Diffusore Uva Spina e Tè Bianco", 
+          description: "Fragranza fresca e fruttata per energia e vitalità", 
+          price: "18.90", 
+          handle: "diffusori-120ml-uva-spina-e-te-bianco",
+          image: "https://benesserezen.shop/cdn/shop/files/IMG-1039.jpg?v=1752442489&width=800",
+          category: "diffusori"
+        },
+        { 
+          name: "Portacandela Mudra Gyan", 
+          description: "Mano simbolica per consapevolezza e potere personale", 
+          price: "19.90", 
+          handle: "portacandela-mudra-gyan",
+          image: "https://benesserezen.shop/cdn/shop/files/IMG-9582.jpg?v=1746100372&width=800",
+          category: "candele"
+        }
+      ],
+      anahata: [ // CUORE - Amore, compassione, perdono
+        { 
+          name: "Lampada di Sale - Fiore di Loto", 
+          description: "Simbolo di trasformazione e amore puro", 
+          price: "44.90", 
+          handle: "lampada-sale-loto-led",
+          image: "https://benesserezen.shop/cdn/shop/files/21141_0000009632_webp.jpg?v=1744063940&width=800",
+          category: "lampade"
+        },
+        { 
+          name: "Braccialetto Diaspro e Avventurina", 
+          description: "Avventurina verde per apertura del cuore e ottimismo", 
+          price: "15.90", 
+          handle: "braccialetto-diaspro-kambaba-avventurina-trifoglio",
+          image: "https://benesserezen.shop/cdn/shop/files/IMG-2077.jpg?v=1756162041&width=800",
+          category: "gioielli"
+        },
+        { 
+          name: "Cherubino Addormentato con Ali", 
+          description: "Angelo protettore simbolo di pace e amore", 
+          price: "8.90", 
+          handle: "statua-cherubino-addormentato-ali-lunghe",
+          image: "https://benesserezen.shop/cdn/shop/files/IMG-9042.jpg?v=1744835802&width=800",
+          category: "statuette",
+          stock: 3
+        },
+        { 
+          name: "Brucia Essenze Albero della Vita", 
+          description: "Ceramica turchese per armonia e connessione spirituale", 
+          price: "15.90", 
+          handle: "brucia-essenze-albero-della-vita-ceramica-turchese",
+          image: "https://benesserezen.shop/cdn/shop/files/IMG-2113.jpg?v=1756246074&width=800",
+          category: "essenze"
+        }
+      ],
+      vishuddha: [ // GOLA - Comunicazione, espressione, verità
+        { 
+          name: "Braccialetto Amazzonite Buddha", 
+          description: "Pietra blu per comunicazione chiara e protezione", 
+          price: "15.90", 
+          handle: "mala-braccialetto-amazzonite-buddha",
+          image: "https://benesserezen.shop/cdn/shop/files/IMG-2080.jpg?v=1756162916&width=800",
+          category: "gioielli"
+        },
+        { 
+          name: "Brucia Incensi Om", 
+          description: "Simbolo sacro per espressione spirituale autentica", 
+          price: "16.90", 
+          handle: "ciotola-incenso-tripla-luna-legno-mango",
+          image: "https://benesserezen.shop/cdn/shop/files/IMG-1032.jpg?v=1752440153&width=800",
+          category: "incensi"
+        },
+        { 
+          name: "Diffusore Campi di Lavanda", 
+          description: "Fragranza calmante per comunicazione serena", 
+          price: "18.90", 
+          handle: "diffusori-120ml-campi-di-lavanda",
+          image: "https://benesserezen.shop/cdn/shop/files/IMG-1043.jpg?v=1752442686&width=800",
+          category: "diffusori"
+        },
+        { 
+          name: "Brucia Essenze Om Metallo", 
+          description: "Diffusore elegante con simbolo Om per armonia", 
+          price: "14.90", 
+          handle: "aromafume-brucia-essenze-ohm",
+          image: "https://benesserezen.shop/cdn/shop/files/IMG-2119.jpg?v=1756246557&width=800",
+          category: "essenze"
+        }
+      ],
+      ajna: [ // TERZO OCCHIO - Intuizione, saggezza, visione
+        { 
+          name: "Braccialetto Ametista con Om", 
+          description: "Ametista per intuizione profonda e consapevolezza", 
+          price: "15.90", 
+          handle: "mala-bracciale-ametista-om",
+          image: "https://benesserezen.shop/cdn/shop/files/IMG-0244.jpg?v=1749162856&width=800",
+          category: "gioielli"
+        },
+        { 
+          name: "Braccialetto Labradorite Om", 
+          description: "Labradorite per chiarezza mentale e protezione energetica", 
+          price: "15.90", 
+          handle: "braccialetto-in-labradorite-ohm",
+          image: "https://benesserezen.shop/cdn/shop/files/IMG-2075.jpg?v=1756162017&width=800",
+          category: "gioielli"
+        },
+        { 
+          name: "Brucia Incensi Tripla Luna", 
+          description: "Simbolo del femminile sacro per intuizione mistica", 
+          price: "16.90", 
+          handle: "ciotola-incenso-tripla-luna-legno-mango",
+          image: "https://benesserezen.shop/cdn/shop/files/IMG-1032.jpg?v=1752440153&width=800",
+          category: "incensi"
+        },
+        { 
+          name: "Diffusore Oro, Incenso e Mirra", 
+          description: "Fragranza mistica per visione profonda", 
+          price: "18.90", 
+          handle: "diffusori-120ml-oro-incenso-mirra",
+          image: "https://benesserezen.shop/cdn/shop/files/IMG-9402.jpg?v=1745703230&width=800",
+          category: "diffusori"
+        }
+      ],
+      sahasrara: [ // CORONA - Connessione spirituale, illuminazione
+        { 
+          name: "Braccialetto Ametista Fiore di Loto", 
+          description: "Ametista e Loto per elevazione spirituale suprema", 
+          price: "15.90", 
+          handle: "mala-braccialetto-ametista-loto",
+          image: "https://benesserezen.shop/cdn/shop/files/IMG-0232.jpg?v=1749161282&width=800",
+          category: "gioielli"
+        },
+        { 
+          name: "Buddha Argento con Portalumino", 
+          description: "Statua argentata per illuminazione e meditazione", 
+          price: "29.90", 
+          handle: "buddha-argento-con-portalumino",
+          image: "https://benesserezen.shop/cdn/shop/files/IMG-0223.jpg?v=1749159930&width=800",
+          category: "candele"
+        },
+        { 
+          name: "Brucia Incensi Mandala", 
+          description: "Mandala spirituale per meditazione profonda", 
+          price: "16.90", 
+          handle: "ciotola-incenso-mandala-legno-mango",
+          image: "https://benesserezen.shop/cdn/shop/files/IMG-1026.jpg?v=1752440153&width=800",
+          category: "incensi"
+        },
+        { 
+          name: "Brucia Essenze Nodo Celtico", 
+          description: "Simbolo di eternità e connessione universale", 
+          price: "19.50", 
+          handle: "brucia-essenze-nodo-celtico-pietra-ollare",
+          image: "https://benesserezen.shop/cdn/shop/files/IMG-9600.jpg?v=1746135491&width=800",
+          category: "essenze"
+        }
+      ]
+    };
+
+    // SMART PRODUCT SELECTION - No duplicate categories, intelligent matching
+    let recommendedProducts = [];
+    let usedCategories = new Set();
+    
+    // All available products from all chakras
+    let allAvailableProducts = [];
+    [topChakras[0], topChakras[1], weakestChakra].forEach(chakra => {
+      if (chakra && zenProducts[chakra]) {
+        zenProducts[chakra].forEach(product => {
+          allAvailableProducts.push({...product, chakraSource: chakra});
+        });
+      }
+    });
+    
+    // STEP 1: Always add 1 Gioiello (jewelry)
+    const jewelry = allAvailableProducts.filter(p => p.category === 'gioielli');
+    if (jewelry.length > 0) {
+      recommendedProducts.push(jewelry[0]);
+      usedCategories.add('gioielli');
+    }
+    
+    // STEP 2: Always add 1 Aromaterapia (diffusers)
+    const aromatherapy = allAvailableProducts.filter(p => p.category === 'diffusori');
+    if (aromatherapy.length > 0) {
+      recommendedProducts.push(aromatherapy[0]);
+      usedCategories.add('diffusori');
+    }
+    
+    // STEP 3: Add 1-2 more from different categories based on chakra priority
+    const remainingProducts = allAvailableProducts.filter(p => !usedCategories.has(p.category));
+    
+    // Prioritize by chakra dominance and category variety
+    remainingProducts.sort((a, b) => {
+      const aIndex = [topChakras[0], topChakras[1], weakestChakra].indexOf(a.chakraSource);
+      const bIndex = [topChakras[0], topChakras[1], weakestChakra].indexOf(b.chakraSource);
+      return aIndex - bIndex;
+    });
+    
+    // Add up to 2 more products from different categories
+    for (let product of remainingProducts) {
+      if (recommendedProducts.length >= 4) break;
+      if (!usedCategories.has(product.category)) {
+        recommendedProducts.push(product);
+        usedCategories.add(product.category);
+      }
+    }
+
+    // Generate HTML for products with Rituale Finder layout
+    let productsHTML = '';
+    recommendedProducts.forEach((product, index) => {
+      // Calculate discount (example: 15% off)
+      const originalPrice = parseFloat(product.price);
+      const discountedPrice = originalPrice;
+      const hasDiscount = false; // Set to true if you want to show discounts
+      
+      productsHTML += `
+        <div class="zen-product-card" style="animation-delay: ${index * 0.05}s">
+          <div class="zen-product-media">
+            ${hasDiscount ? `<span class="zen-discount-badge">-15%</span>` : ''}
+            <img src="${product.image}" alt="${product.name}" loading="lazy">
+          </div>
+          <div class="zen-product-body">
+            <h4 class="zen-product-title">${product.name}</h4>
+            <div class="zen-product-price">
+              <span class="now">€${discountedPrice.toFixed(2)}</span>
+              ${hasDiscount ? `<span class="was">€${originalPrice.toFixed(2)}</span>` : ''}
+            </div>
+            <div class="zen-qty-selector" role="group" aria-label="Quantità">
+              <button type="button" onclick="changeZenQuantity('${product.handle}', -1)" aria-label="Diminuisci">−</button>
+              <input type="number" id="quantity-${product.handle}-${zenSectionId}" min="1" max="${product.stock || 10}" step="1" value="1" inputmode="numeric" readonly data-stock="${product.stock || 10}" />
+              <button type="button" onclick="changeZenQuantity('${product.handle}', 1)" aria-label="Aumenta">+</button>
+            </div>
+            <div class="zen-product-actions">
+              <button class="zen-add-btn" type="button" onclick="addZenToCart('${product.handle}')">
+                Aggiungi
+              </button>
+              <button class="zen-remove-btn" type="button" onclick="removeZenProduct('${product.handle}')" aria-label="Rimuovi">
+                ×
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+
+    productsGrid.innerHTML = productsHTML;
+    
+    // Wait for DOM to update then calculate cart total
+    setTimeout(() => {
+      updateZenCartTotal();
+    }, 100);
+    
+    // Update discount eligibility status
+    setTimeout(updateEnergyOfferStatus, 50);
+  }
+
+  // Show Personalized Suggestions based on chakra results
+  function showZenPersonalizedSuggestions(topChakras, weakestChakra) {
+    const suggestionsContainer = document.querySelector('.suggestions-grid');
+    if (!suggestionsContainer) return;
+
+    // GURU-LEVEL PRACTICAL SUGGESTIONS - Azioni concrete per trasformazione immediata
+    const zenSuggestions = {
+  muladhara: [
+    { icon: "🦶", title: "Stabilità quotidiana", description: "Passeggiata di 10–20 minuti (preferibilmente in natura) per rafforzare senso di radicamento e ritmo." },
+    { icon: "🥗", title: "Routine essenziale", description: "Pasti regolari e idratazione costante; pianifica orari fissi per sonno e risveglio." }
+  ],
+  svadhisthana: [
+    { icon: "🎨", title: "Creatività leggera", description: "10 minuti al giorno di attività creativa a basso sforzo (scarabocchi, foto, appunti visivi)." },
+    { icon: "☕", title: "Piacere consapevole", description: "Concediti un cibo o bevanda che ami, gustandolo con calma e senza distrazioni." }
+  ],
+  manipura: [
+    { icon: "⚡", title: "Energia al mattino", description: "Breve attivazione fisica (stretching o 5–10 minuti di movimento) + respirazione profonda." },
+    { icon: "🎯", title: "Micro-obiettivi", description: "Definisci un compito prioritario al giorno e chiudilo prima di passare al resto." }
+  ],
+  anahata: [
+    { icon: "💚", title: "Gratitudine semplice", description: "Ogni sera annota 2–3 cose positive della giornata; favorisce apertura e fiducia." },
+    { icon: "🌿", title: "Contatto con il verde", description: "Prenditi un momento alla settimana in un luogo naturale per decomprimere." }
+  ],
+  vishuddha: [
+    { icon: "🗣️", title: "Voce presente", description: "Leggi ad alta voce o canta la tua canzone preferita per 5 minuti; migliora espressività." },
+    { icon: "💬", title: "Chiarezza gentile", description: "Allena l’assertività: comunica un bisogno in modo diretto e rispettoso." }
+  ],
+  ajna: [
+    { icon: "👁️", title: "Taccuino idee", description: "Appunta intuizioni e idee appena emergono; rivedile una volta a settimana." },
+    { icon: "🌙", title: "Igiene mentale serale", description: "Riduci stimoli prima del sonno (no schermi 30′) e fai 5 respiri lenti al letto." }
+  ],
+  sahasrara: [
+    { icon: "🧘", title: "Silenzio quotidiano", description: "10 minuti di meditazione semplice (attenzione al respiro) per centrarti." },
+    { icon: "📵", title: "Pausa digitale", description: "Ogni giorno 1 ora senza notifiche; una camminata breve senza telefono se possibile." }
+  ]
+};
+
+    // Get personalized suggestions
+    let personalizedSuggestions = [];
+    
+    // Add suggestions for top 2 chakras
+    if (zenSuggestions[topChakras[0]]) {
+      personalizedSuggestions = personalizedSuggestions.concat(zenSuggestions[topChakras[0]].slice(0, 1));
+    }
+    if (zenSuggestions[topChakras[1]]) {
+      personalizedSuggestions = personalizedSuggestions.concat(zenSuggestions[topChakras[1]].slice(0, 1));
+    }
+    
+    // Add suggestion for weakest chakra for balancing
+    if (zenSuggestions[weakestChakra] && !topChakras.slice(0,2).includes(weakestChakra)) {
+      personalizedSuggestions = personalizedSuggestions.concat(zenSuggestions[weakestChakra].slice(0, 1));
+    }
+
+    // Generate HTML for suggestions
+    let suggestionsHTML = '';
+    personalizedSuggestions.forEach(suggestion => {
+      suggestionsHTML += `
+        <div class="suggestion-card">
+          <div class="suggestion-icon">${suggestion.icon}</div>
+          <div>
+            <h4 class="card-title mb-1">${suggestion.title}</h4>
+            <p class="card-text">${suggestion.description}</p>
+          </div>
+        </div>
+      `;
+    });
+
+    suggestionsContainer.innerHTML = suggestionsHTML;
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Zen Energy Quiz",
+  "settings": [
+    {
+      "type": "text",
+      "id": "main_heading",
+      "label": "Titolo principale",
+      "default": "La Tua Mappa Energetica Personale"
+    },
+    {
+      "type": "textarea",
+      "id": "main_description",
+      "label": "Descrizione principale",
+      "default": "Scopri il tuo equilibrio energetico attraverso un'analisi completa dei 7 chakra principali. Ricevi consigli personalizzati per migliorare il tuo benessere spirituale."
+    },
+    {
+      "type": "text",
+      "id": "start_button_text",
+      "label": "Testo pulsante inizia",
+      "default": "Inizia il Test Energetico"
+    },
+    {
+      "type": "text",
+      "id": "card1_title",
+      "label": "Titolo Card 1",
+      "default": "Analisi Profonda"
+    },
+    {
+      "type": "textarea",
+      "id": "card1_text",
+      "label": "Testo Card 1",
+      "default": "Percorso guidato per esplorare il tuo equilibrio energetico"
+    },
+    {
+      "type": "text",
+      "id": "card2_title",
+      "label": "Titolo Card 2",
+      "default": "Consigli Personalizzati"
+    },
+    {
+      "type": "textarea",
+      "id": "card2_text",
+      "label": "Testo Card 2",
+      "default": "Suggerimenti specifici basati sul tuo profilo energetico unico"
+    },
+    {
+      "type": "text",
+      "id": "card3_title",
+      "label": "Titolo Card 3",
+      "default": "Prodotti Raccomandati"
+    },
+    {
+      "type": "textarea",
+      "id": "card3_text",
+      "label": "Testo Card 3",
+      "default": "Selezione curata di prodotti per potenziare il tuo benessere"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_products",
+      "label": "Mostra prodotti raccomandati",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "discount_code",
+      "label": "Codice sconto",
+      "default": "RITUALE15"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Prodotto Raccomandato",
+      "settings": [
+        {
+          "type": "text",
+          "id": "product_name",
+          "label": "Nome prodotto"
+        },
+        {
+          "type": "textarea",
+          "id": "product_description",
+          "label": "Descrizione prodotto"
+        },
+        {
+          "type": "text",
+          "id": "product_price",
+          "label": "Prezzo (es: 49.90)"
+        },
+        {
+          "type": "text",
+          "id": "product_handle",
+          "label": "Handle prodotto Shopify"
+        },
+        {
+          "type": "image_picker",
+          "id": "product_image",
+          "label": "Immagine prodotto"
+        }
+      ]
+    },
+    {
+      "type": "suggestion",
+      "name": "Suggerimento",
+      "settings": [
+        {
+          "type": "text",
+          "id": "suggestion_title",
+          "label": "Titolo suggerimento"
+        },
+        {
+          "type": "textarea",
+          "id": "suggestion_description",
+          "label": "Descrizione suggerimento"
+        },
+        {
+          "type": "text",
+          "id": "suggestion_icon",
+          "label": "Icona (emoji)",
+          "default": "🧘"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Zen Energy Quiz",
+      "blocks": [
+        {
+          "type": "product",
+          "settings": {
+            "product_name": "Statua Buddha Thailandese – Oro e Rosso",
+            "product_description": "Statua Buddha in contemplazione, resina con finiture oro e rosso. Evoca quiete interiore e concentrazione.",
+            "product_price": "49.90",
+            "product_handle": "statua-buddha-thailandese-oro-rosso-contemplazione"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %} 

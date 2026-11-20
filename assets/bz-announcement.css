@@ -1,0 +1,54 @@
+/* Static announcement bar. No rotator, marquee, or pill. Narrow copy is in bz-announcement-mobile.css. */
+
+:root {
+  --bz-ann-bar: 36px;
+}
+
+.shopify-section.bz-announcement {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  display: contents;
+}
+
+.shopify-section.bz-announcement > .bz {
+  display: contents;
+}
+
+.bz .ann,
+.bz .ann * {
+  box-sizing: border-box;
+}
+
+.bz .ann {
+  position: sticky;
+  top: 0;
+  z-index: 80;
+  height: calc(var(--bz-ann-bar) + env(safe-area-inset-top, 0px));
+  padding: env(safe-area-inset-top, 0px) 16px 0;
+  background: #c9a96e;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  column-gap: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #17130d;
+  border-bottom: 0;
+  font-family: var(--sans);
+}
+
+.bz-ann__half {
+  margin: 0;
+  min-width: 0;
+  text-align: center;
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.bz-ann__short {
+  display: none;
+}

@@ -1,0 +1,61 @@
+{%- assign keys = 'product_1,product_2,product_3' | split: ',' -%}
+{%- capture panels -%}
+  {%- for block in blocks -%}
+    {%- liquid
+      assign panel_id = section.id | append: '-ritual-' | append: forloop.index
+      assign first = forloop.first
+      assign count = 0
+      assign total = 0
+      assign piece_count = 0
+      assign shot = block.settings.image
+      assign asset = block.settings.image_asset
+      assign caption_title = block.settings.caption_title
+      assign caption_accent = block.settings.caption_accent
+      assign bundle = blank
+      if home
+        assign caption_title = 'Il set'
+        assign caption_accent = block.settings.label
+      endif
+      if section.settings.bundle_discount
+        assign bundle = block.settings.bundle_product
+      endif
+    -%}
+    {%- capture rows -%}
+      {%- for key in keys -%}
+        {%- assign rec = block.settings[key] -%}
+        {%- if rec != blank and rec.title != blank -%}
+          {%- liquid
+            assign piece_count = piece_count | plus: 1
+            assign variant = rec.selected_or_first_available_variant
+            if variant.available
+              assign count = count | plus: 1
+              assign total = total | plus: variant.price
+            endif
+            if shot == blank and asset == blank
+              assign shot = rec.featured_image
+            endif
+          -%}
+          {% render 'bz-ritual-row', rec: rec %}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endcapture -%}
+    {%- if home -%}{%- assign piece_count = 3 -%}{%- endif -%}
+    {% render 'bz-ritual-panel', panel_id: panel_id, first: first, rows: rows, count: count, total: total, piece_count: piece_count, bundle: bundle, block: block, shot: shot, asset: asset, shot_alt: block.settings.label, caption_title: caption_title, caption_accent: caption_accent, caption: block.settings.caption %}
+  {%- endfor -%}
+{%- endcapture -%}
+<section class="ritual-section{% if home %} ritual-section--home{% endif %}" id="{% if home %}ritual{% else %}ritual-{{ section.id }}{% endif %}" data-bz-ritual data-bz-warm-images>
+  <div class="bz-sh">
+    <h2>{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h2>
+    {%- if section.settings.intro != blank -%}<p class="bz-sh-sub">{{ section.settings.intro | escape }}</p>{%- endif -%}
+    <div class="bz-pills" role="group" aria-label="Scegli un set">
+      {%- for block in blocks -%}
+        {%- assign panel_id = section.id | append: '-ritual-' | append: forloop.index -%}
+        <button type="button" data-set="{{ panel_id }}" aria-controls="{{ panel_id }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}">{{ block.settings.label | escape }}</button>
+      {%- endfor -%}
+    </div>
+  </div>
+  {{ panels }}
+  {%- if section.settings.link_label != blank and section.settings.link != blank -%}
+    <a class="bz-row-link" href="{{ section.settings.link }}">{% render 'bz-nav-label', label: section.settings.link_label %}</a>
+  {%- endif -%}
+</section>

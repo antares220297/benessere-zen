@@ -1,106 +1,678 @@
 {
   "sections": {
-    "bz_hero_main": {
+    "bz_hero": {
       "type": "bz-hero",
       "settings": {
-        "text_1": "Respira.",
-        "text_2": "Lascia andare.",
-        "text_3": "Trova il tuo equilibrio.",
-        "cta_text_1": "Scopri la collezione",
-        "cta_link_1": "shopify://collections/all",
-        "cta_text_2": "Fai il quiz →",
-        "cta_link_2": ""
-      }
-    },
-    "bz_chakra_portal": {
-      "type": "bz-chakra-portal",
-      "settings": {
-        "color_scheme": "scheme-4",
-        "eyebrow": "Sistema dei 7 chakra",
-        "heading": "Quale energia stai cercando?",
-        "subtext": "I sette centri energetici del corpo sono la nostra mappa. Passa il mouse su un chakra per scoprirlo."
-      }
-    },
-    "bz_collections": {
-      "type": "bz-collections",
+        "heading": "Un rituale",
+        "heading_accent": "da portare addosso",
+        "text": "Mala, bracciali e ciondoli in pietra naturale.",
+        "primary_label": "Vedi i mala →",
+        "primary_link": "/collections/mala-tibetani",
+        "secondary_label": "Tutti i gioielli",
+        "secondary_link": "/collections/gioielli-con-pietre",
+        "featured_product": "mala-diaspro-rosso-108-perle",
+        "rotation_collection": "gioielli-con-pietre",
+        "slide_2_products": [
+          "epidoto-4-varianti",
+          "pietra-di-luna-arcobaleno-4-varianti-1",
+          "giada"
+        ],
+        "slide_2_link": "/collections/all?sort_by=created-descending",
+        "slide_3_link": "/pages/cura-di-se"
+      },
       "blocks": {
-        "col_root": {
-          "type": "collection",
+        "tile-pietre": {
+          "type": "tile",
           "settings": {
-            "chakra_id": 1,
-            "title_override": "Cristalli Radice",
-            "subtitle": "Mūlādhāra · Radicamento",
-            "cta_label": "Scopri"
+            "badge": "Novità",
+            "title": "Pietre",
+            "accent": "da tasca",
+            "text": "Burattate e grezze, da tenere vicino.",
+            "button_label": "Scegli la tua →",
+            "link": "#stones",
+            "collection": "pietre-burattate"
           }
         },
-        "col_heart": {
-          "type": "collection",
+        "tile-regali": {
+          "type": "tile",
           "settings": {
-            "chakra_id": 4,
-            "title_override": "Cristalli Cuore",
-            "subtitle": "Anāhata · Compassione",
-            "cta_label": "Scopri"
-          }
-        },
-        "col_crown": {
-          "type": "collection",
-          "settings": {
-            "chakra_id": 7,
-            "title_override": "Cristalli Corona",
-            "subtitle": "Sahasrāra · Coscienza",
-            "cta_label": "Scopri"
+            "title": "Regali",
+            "accent": "piccoli",
+            "text": "Pietre, ciondoli, scatole in velluto, sotto i 30 €.",
+            "button_label": "Idee regalo →",
+            "link": "/collections/oggettistica-e-idee-regalo",
+            "collection": "oggettistica-e-idee-regalo",
+            "image_asset": "bz-hero-regali.jpg"
           }
         }
       },
-      "block_order": ["col_root", "col_heart", "col_crown"],
+      "block_order": [
+        "tile-pietre",
+        "tile-regali"
+      ]
+    },
+    "bz_spheres": {
+      "type": "bz-spheres",
+      "blocks": {
+        "s0": {
+          "type": "sphere",
+          "settings": {
+            "label": "Mala",
+            "collection": "mala-tibetani"
+          }
+        },
+        "s1": {
+          "type": "sphere",
+          "settings": {
+            "label": "Bracciali",
+            "collection": "collane-e-braccialetti"
+          }
+        },
+        "s2": {
+          "type": "sphere",
+          "settings": {
+            "label": "Ciondoli",
+            "collection": "gioielli-con-pietre"
+          }
+        },
+        "s3": {
+          "type": "sphere",
+          "settings": {
+            "label": "Pietre",
+            "collection": "pietre-burattate"
+          }
+        },
+        "s4": {
+          "type": "sphere",
+          "settings": {
+            "label": "Palo santo",
+            "collection": "smudge-e-paolo-santo"
+          }
+        },
+        "s5": {
+          "type": "sphere",
+          "settings": {
+            "label": "Incensi",
+            "collection": "incensi-e-brucia-incensi"
+          }
+        },
+        "s6": {
+          "type": "sphere",
+          "settings": {
+            "label": "Candele",
+            "collection": "candele-e-brucia-candele"
+          }
+        },
+        "s7": {
+          "type": "sphere",
+          "settings": {
+            "label": "Portagioielli",
+            "collection": "scatole-porta-gioielli"
+          }
+        }
+      },
+      "block_order": [
+        "s0",
+        "s1",
+        "s2",
+        "s3",
+        "s4",
+        "s5",
+        "s6",
+        "s7"
+      ]
+    },
+    "bz_mazzo": {
+      "type": "bz-mazzo",
       "settings": {
-        "color_scheme": "scheme-4",
-        "eyebrow": "Collezioni in evidenza",
-        "heading": "I rituali più amati"
+        "pietre_link": "/pages/pietre-e-rituali",
+        "cura_link": "/pages/cura-di-se",
+        "show_divider": true
+      },
+      "blocks": {
+        "card-0": {
+          "type": "card",
+          "settings": {
+            "world": "pietre",
+            "title": "Gioielli",
+            "collection": "gioielli-con-pietre",
+            "icon": "gi-gem-pendant"
+          }
+        },
+        "card-1": {
+          "type": "card",
+          "settings": {
+            "world": "pietre",
+            "title": "Mala",
+            "collection": "mala-tibetani",
+            "icon": "gi-prayer-beads"
+          }
+        },
+        "card-2": {
+          "type": "card",
+          "settings": {
+            "world": "pietre",
+            "title": "Pietre grezze",
+            "collection": "pietre-grezze",
+            "icon": "gi-crystal-growth"
+          }
+        },
+        "card-3": {
+          "type": "card",
+          "settings": {
+            "world": "pietre",
+            "title": "Burattate",
+            "collection": "pietre-burattate",
+            "icon": "gi-stone-stack"
+          }
+        },
+        "card-4": {
+          "type": "card",
+          "settings": {
+            "world": "pietre",
+            "title": "Pendoli",
+            "collection": "pendoli",
+            "icon": "gi-gem-chain"
+          }
+        },
+        "card-5": {
+          "type": "card",
+          "settings": {
+            "world": "pietre",
+            "title": "Candele",
+            "collection": "candele-e-brucia-candele",
+            "icon": "gi-candle-light"
+          }
+        },
+        "card-6": {
+          "type": "card",
+          "settings": {
+            "world": "cura",
+            "title": "Corpo",
+            "collection": "cosmesi-corpo",
+            "icon": "gi-liquid-soap"
+          }
+        },
+        "card-7": {
+          "type": "card",
+          "settings": {
+            "world": "cura",
+            "title": "Capelli",
+            "collection": "prodotti-per-capelli",
+            "icon": "gi-comb"
+          }
+        },
+        "card-8": {
+          "type": "card",
+          "settings": {
+            "world": "cura",
+            "title": "Ayurveda",
+            "collection": "ayurveda",
+            "icon": "gi-lotus"
+          }
+        },
+        "card-9": {
+          "type": "card",
+          "settings": {
+            "world": "cura",
+            "title": "Tè e tisane",
+            "collection": "te-tisane",
+            "icon": "gi-teapot"
+          }
+        },
+        "card-10": {
+          "type": "card",
+          "settings": {
+            "world": "cura",
+            "title": "Tazze",
+            "collection": "tazze",
+            "icon": "gi-coffee-cup"
+          }
+        },
+        "card-11": {
+          "type": "card",
+          "settings": {
+            "world": "cura",
+            "title": "Oli e profumi",
+            "collection": "essenze-e-brucia-essenze",
+            "icon": "gi-delicate-perfume"
+          }
+        }
+      },
+      "block_order": [
+        "card-0",
+        "card-1",
+        "card-2",
+        "card-3",
+        "card-4",
+        "card-5",
+        "card-6",
+        "card-7",
+        "card-8",
+        "card-9",
+        "card-10",
+        "card-11"
+      ]
+    },
+    "bz_picked": {
+      "type": "bz-picked",
+      "settings": {
+        "heading": "I più",
+        "heading_accent": "scelti",
+        "link_label": "Vedi tutto",
+        "link": "/collections/all",
+        "limit": 5
+      },
+      "blocks": {
+        "tab-scelti": {
+          "type": "list",
+          "settings": {
+            "label": "Più scelti",
+            "products": [
+              "lumini-luna-crescente-set-da-5",
+              "acquamarina",
+              "pietre-burattate-amazzonite",
+              "amazzonite",
+              "pietre-burattate-ametista-1"
+            ]
+          }
+        },
+        "tab-novita": {
+          "type": "list",
+          "settings": {
+            "label": "Novità",
+            "products": [
+              "epidoto-4-varianti",
+              "pietra-di-luna-arcobaleno-4-varianti-1",
+              "giada",
+              "kunzite",
+              "opale-blu"
+            ]
+          }
+        },
+        "tab-ultimi": {
+          "type": "list",
+          "settings": {
+            "label": "Ultimi pezzi",
+            "products": [
+              "ciondolo-quarzo-rosa-cuore",
+              "ciondolo-ala-angelo-cristallo-di-rocca",
+              "ciondolo-ala-angelo-quarzo-rosa",
+              "braccialetto-con-apatite",
+              "braccialetto-con-amazzonite"
+            ]
+          }
+        }
+      },
+      "block_order": [
+        "tab-scelti",
+        "tab-novita",
+        "tab-ultimi"
+      ]
+    },
+    "bz_ritual": {
+      "type": "bz-home-ritual",
+      "settings": {
+        "bundle_discount": false
+      },
+      "blocks": {
+        "set-0": {
+          "type": "set",
+          "settings": {
+            "label": "Serenità",
+            "caption": "Ametista da tenere vicino o portare addosso.",
+            "image_asset": "bz-rituale-serenita.jpg",
+            "bundle_product": "set-rituale-serenita",
+            "product_1": "ametista",
+            "product_2": "braccialetto-ametista-avventurina-cristallo-di-rocca-om",
+            "product_3": "ciondolo-ametista-cuore"
+          }
+        },
+        "set-1": {
+          "type": "set",
+          "settings": {
+            "label": "Coraggio",
+            "caption": "Le venature calde dell’occhio di tigre.",
+            "image_asset": "bz-rituale-coraggio.jpg",
+            "bundle_product": "set-rituale-coraggio",
+            "product_1": "pietre-burattate-corniola",
+            "product_2": "occhio-di-tigre",
+            "product_3": "mala-braccialetto-elastico-con-pietra-occhio-di-tigre-coraggio-iniziativa"
+          }
+        },
+        "set-2": {
+          "type": "set",
+          "settings": {
+            "label": "Protezione",
+            "caption": "Pietre scure, da mettere insieme.",
+            "image_asset": "bz-rituale-protezione.jpg",
+            "bundle_product": "set-rituale-protezione",
+            "product_1": "tormalina-nera-grezza",
+            "product_2": "bracciale-tormalina-nera-elastico",
+            "product_3": "ciondolo-larme-obsideinne-noire"
+          }
+        },
+        "set-3": {
+          "type": "set",
+          "settings": {
+            "label": "Affetti",
+            "caption": "Il quarzo rosa, in tre forme.",
+            "image_asset": "bz-rituale-affetti.jpg",
+            "bundle_product": "set-rituale-affetti",
+            "product_1": "quarzo-rosa",
+            "product_2": "braccialetto-gold-quarzo-rosa-e-rodonite",
+            "product_3": "ciondolo-in-quarzo-rosa-con-gancio"
+          }
+        },
+        "set-4": {
+          "type": "set",
+          "settings": {
+            "label": "Concentrazione",
+            "caption": "Il blu del lapislazzuli, al collo e al polso.",
+            "image_asset": "bz-rituale-concentrazione.jpg",
+            "bundle_product": "set-rituale-concentrazione",
+            "product_1": "lapislazzuli",
+            "product_2": "braccialetto-lapis-lazuli",
+            "product_3": "ciondolo-a-cuore-in-lapislazzuli"
+          }
+        },
+        "set-5": {
+          "type": "set",
+          "settings": {
+            "label": "Sera",
+            "caption": "Ametista e una candela alla lavanda.",
+            "image_asset": "bz-rituale-sera.jpg",
+            "bundle_product": "set-rituale-sera",
+            "product_1": "pietre-burattate-ametista-1",
+            "product_2": "bracciale-ametista-naturale",
+            "product_3": "candela-profumata-in-cera-di-soia-chakra-ajna-lavanda-tierra"
+          }
+        }
+      },
+      "block_order": [
+        "set-0",
+        "set-1",
+        "set-2",
+        "set-3",
+        "set-4",
+        "set-5"
+      ]
+    },
+    "bz_stones": {
+      "type": "bz-stones",
+      "blocks": {
+        "stone-0": {
+          "type": "stone",
+          "settings": {
+            "name": "Quarzo rosa",
+            "intent": "amore",
+            "meaning": "La pietra del cuore e degli affetti",
+            "front": "bz-pietra-macro-quarzo-rosa.jpg",
+            "loose": "quarzo-rosa",
+            "bracelet": "braccialetto-gold-quarzo-rosa-e-rodonite",
+            "back": "bz-negozio-card-pietra-quarzo-rosa.jpg",
+            "pendant": "ciondolo-in-quarzo-rosa-con-gancio"
+          }
+        },
+        "stone-1": {
+          "type": "stone",
+          "settings": {
+            "name": "Ametista",
+            "intent": "meditazione",
+            "meaning": "Legata da sempre alla meditazione",
+            "front": "bz-pietra-macro-ametista.jpg",
+            "loose": "ametista",
+            "bracelet": "braccialetto-ametista-avventurina-cristallo-di-rocca-om",
+            "back": "bz-negozio-card-pietra-ametista.jpg",
+            "pendant": "ciondolo-ametista-cuore"
+          }
+        },
+        "stone-2": {
+          "type": "stone",
+          "settings": {
+            "name": "Ossidiana",
+            "intent": "protezione",
+            "meaning": "Vetro vulcanico, pietra di protezione",
+            "front": "bz-pietra-macro-ossidiana.jpg",
+            "loose": "ossidiana-nera",
+            "bracelet": "braccialetto-obsideinne-neige-perles",
+            "back": "bz-negozio-card-pietra-ossidiana.jpg",
+            "pendant": "ciondolo-larme-obsideinne-noire"
+          }
+        },
+        "stone-3": {
+          "type": "stone",
+          "settings": {
+            "name": "Tormalina nera",
+            "intent": "protezione",
+            "meaning": "Pietra di protezione spirituale",
+            "front": "bz-pietra-macro-tormalina-nera.jpg",
+            "loose": "tormalina-nera-grezza",
+            "bracelet": "bracciale-tormalina-nera-elastico",
+            "back": "bz-negozio-card-pietra-tormalina-nera.jpg"
+          }
+        },
+        "stone-4": {
+          "type": "stone",
+          "settings": {
+            "name": "Lapislazzuli",
+            "intent": "meditazione",
+            "meaning": "Il blu degli antichi Egizi, legato alla verità",
+            "front": "bz-pietra-macro-lapislazzuli.jpg",
+            "loose": "lapislazzuli",
+            "bracelet": "braccialetto-lapis-lazuli",
+            "back": "bz-negozio-card-pietra-lapislazzuli.jpg",
+            "pendant": "ciondolo-a-cuore-in-lapislazzuli"
+          }
+        },
+        "stone-5": {
+          "type": "stone",
+          "settings": {
+            "name": "Pirite",
+            "intent": "abbondanza",
+            "meaning": "L’oro degli sciocchi, simbolo di abbondanza",
+            "front": "bz-pietra-macro-pirite.jpg",
+            "loose": "pirite",
+            "bracelet": "braccialetto-pyrite-perles",
+            "back": "bz-negozio-card-pietra-pirite.jpg",
+            "pendant": "ciondolo-pirite-grezza"
+          }
+        },
+        "stone-6": {
+          "type": "stone",
+          "settings": {
+            "name": "Cristallo di rocca",
+            "intent": "meditazione",
+            "meaning": "Accompagna l’intenzione",
+            "front": "bz-pietra-macro-cristallo-di-rocca.jpg",
+            "loose": "cristallo-di-rocca",
+            "bracelet": "braccialetto-ametista-chevron-cristallo-di-rocca-loto",
+            "pendant": "ciondolo-ala-angelo-cristallo-di-rocca"
+          }
+        },
+        "stone-7": {
+          "type": "stone",
+          "settings": {
+            "name": "Occhio di tigre",
+            "intent": "protezione",
+            "meaning": "Protezione spirituale, nella tradizione",
+            "front": "bz-pietra-macro-occhio-di-tigre.jpg",
+            "loose": "occhio-di-tigre",
+            "bracelet": "mala-braccialetto-elastico-con-pietra-occhio-di-tigre-coraggio-iniziativa",
+            "pendant": "ciondolo-occhio-di-tigre-grezzo"
+          }
+        }
+      },
+      "block_order": [
+        "stone-0",
+        "stone-1",
+        "stone-2",
+        "stone-3",
+        "stone-4",
+        "stone-5",
+        "stone-6",
+        "stone-7"
+      ]
+    },
+    "bz_gifts": {
+      "type": "bz-gifts",
+      "settings": {
+        "link": "/collections/oggettistica-e-idee-regalo",
+        "products": [
+          "portacandela-mano-con-loto-color-oro",
+          "ciondolo-a-goccia-in-corniola",
+          "candele-da-tavola-profumate-chakra-set-da-7-3",
+          "portacandela-in-vetro-smerigliato-interno-metallizzato-mystical-albero-della-vita"
+        ],
+        "heading_accent": "sotto 30 €",
+        "product_labels": "portacandela-mano-con-loto-color-oro|Portacandela mano dorata, fiore di loto\nciondolo-a-goccia-in-corniola|Ciondolo in corniola, goccia\ncandele-da-tavola-profumate-chakra-set-da-7-3|Candele profumate a stelo, 7 Chakra\nportacandela-in-vetro-smerigliato-interno-metallizzato-mystical-albero-della-vita|Portacandela in vetro, Albero della Vita mystical"
       }
     },
-    "bz_brand_story": {
-      "type": "bz-brand-story",
+    "bz_store": {
+      "type": "bz-store",
       "settings": {
-        "color_scheme": "scheme-4",
-        "eyebrow": "La nostra storia",
-        "quote": "Non vendiamo prodotti.\nCuriamo rituali per chi cerca la propria verità.",
-        "body": "<p>BenesserEZen nasce da una trasformazione personale e dal desiderio di condividere il potere dei rituali quotidiani. Ogni cristallo, incenso e oggetto è scelto a mano, con cura, perché diventi parte del tuo percorso.</p>",
-        "cta_text": "La nostra storia →",
-        "cta_link": "/pages/about",
-        "tag": "Est. 2023 · Cento, Italia"
-      }
-    },
-    "bz_quiz_cta": {
-      "type": "bz-quiz-cta",
-      "settings": {
-        "color_scheme": "scheme-4",
-        "badge": "Quiz dell’anima",
-        "heading": "Quale chakra ha bisogno di te oggi?",
-        "subtext": "5 domande. Un rituale su misura. Il tuo bundle personalizzato con il 15% di sconto.",
-        "cta_text": "Inizia il quiz →",
-        "quiz_link": "/pages/quiz"
-      }
+        "button_link": "/pages/il-negozio"
+      },
+      "blocks": {
+        "faq-0": {
+          "type": "faq",
+          "settings": {
+            "tab": "0",
+            "question": "Quanto costa la spedizione?",
+            "answer": "<p>La spedizione Express costa 5,90&nbsp;€, ed è gratuita da 50&nbsp;€ di spesa.</p>"
+          }
+        },
+        "faq-1": {
+          "type": "faq",
+          "settings": {
+            "tab": "0",
+            "question": "Spedite anche all’estero?",
+            "answer": "<p>No, spediamo solo in Italia.</p>"
+          }
+        },
+        "faq-2": {
+          "type": "faq",
+          "settings": {
+            "tab": "0",
+            "question": "In Sicilia e Sardegna costa di più?",
+            "answer": "<p>No, il prezzo è lo stesso in tutta Italia, isole comprese.</p>"
+          }
+        },
+        "faq-3": {
+          "type": "faq",
+          "settings": {
+            "tab": "0",
+            "question": "Posso restituire un acquisto?",
+            "answer": "<p>Sì, entro 14 giorni dalla ricezione, con il pezzo non usato e nel suo imballo originale. Scrivi a <a href=\"mailto:info@benesserezen.shop\">info@benesserezen.shop</a>: se il reso è accettato ti mandiamo noi l’etichetta, e il rimborso arriva entro 10 giorni lavorativi.</p>"
+          }
+        },
+        "faq-4": {
+          "type": "faq",
+          "settings": {
+            "tab": "1",
+            "question": "Come posso pagare?",
+            "answer": "<p>Con carta (Visa, Mastercard, Maestro, American Express), PayPal, Apple Pay, Google Pay e Shop Pay.</p>"
+          }
+        },
+        "faq-5": {
+          "type": "faq",
+          "settings": {
+            "tab": "1",
+            "question": "Devo creare un account per ordinare?",
+            "answer": "<p>No, puoi ordinare anche senza registrarti.</p>"
+          }
+        },
+        "faq-6": {
+          "type": "faq",
+          "settings": {
+            "tab": "1",
+            "question": "C’è uno sconto sul primo ordine?",
+            "answer": "<p>Sì, il 10% sul primo acquisto. Si applica da solo, non serve nessun codice.</p>"
+          }
+        },
+        "faq-7": {
+          "type": "faq",
+          "settings": {
+            "tab": "1",
+            "question": "In cosa posso regalare un gioiello?",
+            "answer": "<p>Nelle nostre <a href=\"/collections/scatole-porta-gioielli\">scatole porta gioielli</a>: in velluto a 18,50&nbsp;€, in legno e pietra a 29,90&nbsp;€.</p>"
+          }
+        },
+        "faq-8": {
+          "type": "faq",
+          "settings": {
+            "tab": "2",
+            "question": "Ricevo la pietra della foto?",
+            "answer": "<p>Ricevi la stessa pietra, nella stessa misura. La natura però non fa copie: forma e venature cambiano da un pezzo all’altro.</p>"
+          }
+        },
+        "faq-9": {
+          "type": "faq",
+          "settings": {
+            "tab": "2",
+            "question": "Le pietre hanno effetti sulla salute?",
+            "answer": "<p>No. I significati che leggi qui vengono dalla tradizione e non sostituiscono il parere di un medico.</p>"
+          }
+        },
+        "faq-10": {
+          "type": "faq",
+          "settings": {
+            "tab": "2",
+            "question": "Che misura hanno i bracciali?",
+            "answer": "<p>Sono elastici, in taglia unica. Il diametro, circa 6 o 7 cm, lo trovi nella scheda del bracciale.</p>"
+          }
+        },
+        "faq-11": {
+          "type": "faq",
+          "settings": {
+            "tab": "2",
+            "question": "Quanti grani ha un mala?",
+            "answer": "<p>I nostri mala hanno tutti 108 grani, come vuole la tradizione.</p>"
+          }
+        },
+        "faq-12": {
+          "type": "faq",
+          "settings": {
+            "tab": "2",
+            "question": "Come pulisco pietre e bracciali?",
+            "answer": "<p>Con un panno morbido e asciutto. Tienili lontani dall’acqua, dal calore e dai prodotti chimici.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq-0",
+        "faq-1",
+        "faq-2",
+        "faq-3",
+        "faq-4",
+        "faq-5",
+        "faq-6",
+        "faq-7",
+        "faq-8",
+        "faq-9",
+        "faq-10",
+        "faq-11",
+        "faq-12"
+      ]
     },
     "bz_newsletter": {
       "type": "bz-newsletter",
       "settings": {
-        "color_scheme": "scheme-4",
-        "eyebrow": "Il Giornale Zen",
-        "heading": "Iscriviti per ricevere i nostri rituali",
-        "subtext": "Guide ai cristalli, rituali lunari, meditazioni guidate. Niente spam — solo bellezza.",
-        "placeholder": "la-tua-anima@dominio.it",
-        "btn_text": "Iscriviti",
-        "fine_print": "Niente spam. Solo bellezza."
+        "heading": "Novità,",
+        "heading_accent": "via email",
+        "note": "Ti scriviamo quando arrivano pietre nuove o tornano quelle finite."
       }
     }
   },
   "order": [
-    "bz_hero_main",
-    "bz_chakra_portal",
-    "bz_collections",
-    "bz_brand_story",
-    "bz_quiz_cta",
+    "bz_hero",
+    "bz_spheres",
+    "bz_mazzo",
+    "bz_picked",
+    "bz_ritual",
+    "bz_stones",
+    "bz_gifts",
+    "bz_store",
     "bz_newsletter"
   ]
 }

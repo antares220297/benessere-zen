@@ -1,0 +1,95 @@
+<footer class="bz-foot">
+  <div class="footer-main">
+    <div>
+      <a class="brand" href="{{ routes.root_url }}">
+        {%- if section.settings.logo != blank -%}
+          {{ section.settings.logo | image_url: width: 160 | image_tag: alt: shop.name, loading: 'lazy', widths: '80, 120, 160', width: 43, height: 43 }}
+        {%- else -%}
+          <img src="{{ 'shop-logo.png' | asset_url }}" alt="{{ shop.name | escape }}" width="43" height="43" loading="lazy">
+        {%- endif -%}
+        <span>{{ section.settings.word_first | escape }} <em>{{ section.settings.word_second | escape }}</em></span>
+      </a>
+      <p>{{ settings.bz_address | default: 'Via Marcello Provenzali 1, 44042 Cento FE' }}</p>
+      <p>Tel {{ settings.bz_phone | default: '+39 347 088 3168' }}<br>{{ settings.bz_email | default: 'info@benesserezen.shop' }}</p>
+      <p>{% render 'bz-hours', part: 'footer' %}</p>
+    </div>
+    {%- for block in section.blocks -%}
+        <details open {{ block.shopify_attributes }}>
+          <summary>{{ block.settings.heading | escape }}</summary>
+          {%- if block.type == 'payments' -%}
+            {%- assign pays = block.settings.methods | split: ',' -%}
+            {%- for pay in pays -%}
+              <a href="{{ section.settings.terms_link | default: shop.terms_of_service.url }}">{{ pay | strip | escape }}</a>
+            {%- endfor -%}
+          {%- elsif block.settings.menu != blank and block.settings.menu.links.size > 0 -%}
+            {%- for link in block.settings.menu.links -%}
+              <a href="{{ link.url }}">{{ link.title | escape }}</a>
+            {%- endfor -%}
+          {%- else -%}
+            {%- for i in (1..4) -%}
+              {%- assign label_key = 'label_' | append: i -%}
+              {%- assign link_key = 'link_' | append: i -%}
+              {%- assign label = block.settings[label_key] -%}
+              {%- assign href = block.settings[link_key] -%}
+              {%- if label != blank and href != blank -%}
+                <a href="{{ href }}">{{ label | escape }}</a>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+        </details>
+    {%- endfor -%}
+  </div>
+  <div class="footer-bottom">
+    <span>© {{ 'now' | date: '%Y' }} {{ shop.name | escape }}{% if section.settings.vat != blank %} · {{ section.settings.vat | escape }}{% endif %}</span>
+    <span>
+      {%- if section.settings.privacy_link != blank -%}<a href="{{ section.settings.privacy_link }}">Privacy</a>{%- else -%}Privacy{%- endif -%}
+      · Cookie ·
+      {%- if section.settings.terms_link != blank -%}<a href="{{ section.settings.terms_link }}">Termini di vendita</a>{%- else -%}Termini di vendita{%- endif -%}
+      <br>
+      <a href="/pages/chi-siamo?view=crediti-immagini">Crediti immagini</a>
+    </span>
+  </div>
+</footer>
+{% schema %}
+{
+  "name": "Piè di pagina",
+  "class": "bz-home",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo" },
+    { "type": "text", "id": "word_first", "label": "Prima parola", "default": "Benessere" },
+    { "type": "text", "id": "word_second", "label": "Seconda parola", "default": "Zen" },
+    { "type": "textarea", "id": "about", "label": "Testo", "default": "Via Marcello Provenzali 1, 44042 Cento FE." },
+    { "type": "text", "id": "vat", "label": "Riga legale", "default": "Benessere Zen di Balboni Simona, P. IVA 02091600383 (REA FE-257570). Sede legale Via Olindo Malagodi 2, 44042 Cento FE." },
+    { "type": "url", "id": "privacy_link", "label": "Privacy" },
+    { "type": "url", "id": "terms_link", "label": "Termini" }
+  ],
+  "blocks": [
+    {
+      "type": "links",
+      "name": "Colonna",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Titolo", "default": "Negozio" },
+        { "type": "link_list", "id": "menu", "label": "Menu", "info": "Se è compilato, sostituisce le voci scritte sotto." },
+        { "type": "text", "id": "label_1", "label": "Voce 1" },
+        { "type": "url", "id": "link_1", "label": "Link 1" },
+        { "type": "text", "id": "label_2", "label": "Voce 2" },
+        { "type": "url", "id": "link_2", "label": "Link 2" },
+        { "type": "text", "id": "label_3", "label": "Voce 3" },
+        { "type": "url", "id": "link_3", "label": "Link 3" },
+        { "type": "text", "id": "label_4", "label": "Voce 4" },
+        { "type": "url", "id": "link_4", "label": "Link 4" }
+      ]
+    },
+    {
+      "type": "payments",
+      "name": "Pagamenti",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Titolo", "default": "Pagamenti" },
+        { "type": "text", "id": "methods", "label": "Metodi, separati da virgola", "default": "American Express, Apple Pay, Google Pay, Maestro, Mastercard, PayPal, Shop Pay, Visa" }
+      ]
+    }
+  ],
+  "max_blocks": 5,
+  "presets": [{ "name": "Piè di pagina" }]
+}
+{% endschema %}

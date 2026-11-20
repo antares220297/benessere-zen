@@ -1,0 +1,130 @@
+{%- if product != blank and product.available -%}
+  {%- liquid
+    assign count = 0
+    assign total = 0
+    assign seen = '|'
+    assign shot = blank
+    assign shot_alt = blank
+    assign type_key = product.type | downcase | strip
+    assign rule_keys = 'collection_1,collection_2' | split: ','
+  -%}
+  {%- capture rows -%}
+    {%- if recommendations.performed -%}
+      {%- for rec in recommendations.products -%}
+        {%- assign variant = rec.selected_or_first_available_variant -%}
+        {%- assign marker = rec.id | prepend: '|' | append: '|' -%}
+        {%- if count < 3 and variant.available and rec.id != product.id -%}
+          {%- unless seen contains marker -%}
+            {%- liquid
+              assign seen = seen | append: marker
+              assign count = count | plus: 1
+              assign total = total | plus: variant.price
+              if shot == blank and rec.featured_image
+                assign shot = rec.featured_image
+                assign shot_alt = rec.title
+              endif
+            -%}
+            {% render 'bz-ritual-row', rec: rec %}
+          {%- endunless -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- else -%}
+      {%- for block in section.blocks -%}
+        {%- assign rule_type = block.settings.product_type | downcase | strip -%}
+        {%- if block.type == 'type_rule' and rule_type != blank and rule_type == type_key -%}
+          {%- for key in rule_keys -%}
+            {%- assign collection = block.settings[key] -%}
+            {%- for rec in collection.products -%}
+              {%- assign variant = rec.selected_or_first_available_variant -%}
+              {%- assign marker = rec.id | prepend: '|' | append: '|' -%}
+              {%- if count < 3 and variant.available and rec.id != product.id -%}
+                {%- unless seen contains marker -%}
+                  {%- liquid
+                    assign seen = seen | append: marker
+                    assign count = count | plus: 1
+                    assign total = total | plus: variant.price
+                    if shot == blank and rec.featured_image
+                      assign shot = rec.featured_image
+                      assign shot_alt = rec.title
+                    endif
+                  -%}
+                  {% render 'bz-ritual-row', rec: rec %}
+                  {%- break -%}
+                {%- endunless -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endfor -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+  {%- endcapture -%}
+  {%- if count > 0 or recommendations.performed == false -%}
+    {%- assign panel_id = section.id | append: '-ritual-product' -%}
+    {%- assign rec_url = routes.product_recommendations_url | append: '?section_id=' | append: section.id | append: '&product_id=' | append: product.id | append: '&limit=3&intent=complementary' -%}
+    <section class="ritual-section ritual-section--product" data-bz-ritual{% unless recommendations.performed %} data-bz-complementary data-url="{{ rec_url | escape }}"{% endunless %}{% if count == 0 %} hidden{% endif %}>
+      {%- if count > 0 -%}
+        <div class="bz-sh">
+          <h2>{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h2>
+          {%- if section.settings.intro != blank -%}<p class="bz-sh-sub">{{ section.settings.intro | escape }}</p>{%- endif -%}
+          <div class="bz-pills">
+            <button type="button" data-select-all aria-pressed="true" aria-controls="{{ panel_id }}">Tutti i pezzi</button>
+          </div>
+        </div>
+        {% render 'bz-ritual-panel', panel_id: panel_id, first: true, rows: rows, count: count, total: total, shot: shot, shot_alt: shot_alt %}
+      {%- endif -%}
+    </section>
+    {%- unless recommendations.performed -%}
+      <script src="{{ 'bz-home.js' | asset_url }}" defer></script>
+    {%- endunless -%}
+  {%- endif -%}
+{%- elsif product == blank -%}
+  {%- assign sets = section.blocks | where: 'type', 'set' -%}
+  {%- if sets.size > 0 -%}
+    {% render 'bz-ritual-sets', blocks: sets %}
+  {%- endif -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Completa il rituale",
+  "class": "bz-home",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Titolo", "default": "Completa" },
+    { "type": "text", "id": "heading_accent", "label": "Titolo in corsivo", "default": "il rituale" },
+    { "type": "text", "id": "link_label", "label": "Link" },
+    { "type": "url", "id": "link", "label": "Destinazione" },
+    { "type": "checkbox", "id": "bundle_discount", "label": "Prezzo del prodotto bundle", "default": false },
+    { "type": "textarea", "id": "intro", "label": "Introduzione", "default": "Due o tre pezzi che stanno bene con questo." }
+  ],
+  "blocks": [
+    {
+      "type": "set",
+      "name": "Set della home",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Nome", "default": "Tutto nero" },
+        { "type": "product", "id": "bundle_product", "label": "Prodotto bundle" },
+        { "type": "product", "id": "product_1", "label": "Primo pezzo" },
+        { "type": "product", "id": "product_2", "label": "Secondo pezzo" },
+        { "type": "product", "id": "product_3", "label": "Terzo pezzo" },
+        { "type": "image_picker", "id": "image", "label": "Foto" },
+        { "type": "text", "id": "caption_title", "label": "Titolo foto", "default": "Pietre scure," },
+        { "type": "text", "id": "caption_accent", "label": "Corsivo", "default": "da portare a strati" },
+        { "type": "textarea", "id": "caption", "label": "Didascalia", "default": "Onice, tormalina e ossidiana: il mala lungo al collo, il bracciale e il ciondolo vicini." }
+      ]
+    },
+    {
+      "type": "type_rule",
+      "name": "Per tipo di prodotto",
+      "settings": [
+        { "type": "text", "id": "product_type", "label": "Tipo prodotto", "info": "Uguale al campo Tipo, per esempio Bracciali. In pagina prodotto, se Search & Discovery non ha complementari, prendiamo un pezzo disponibile da ciascuna collezione." },
+        { "type": "collection", "id": "collection_1", "label": "Prima collezione" },
+        { "type": "collection", "id": "collection_2", "label": "Seconda collezione" }
+      ]
+    }
+  ],
+  "max_blocks": 16,
+  "presets": [
+    { "name": "Completa il rituale" }
+  ]
+}
+{% endschema %}

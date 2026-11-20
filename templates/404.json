@@ -1,10 +1,27 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
-    "main": {
-      "type": "main-404"
+    "bz_404": {
+      "type": "bz-404",
+      "settings": {
+        "title": "Questa pagina non c'è",
+        "text": "Il link non porta a un prodotto o a una collezione.",
+        "button_label": "Vedi i gioielli",
+        "button_link": "/collections/gioielli-con-pietre",
+        "collection": "gioielli-con-pietre",
+        "limit": 3
+      }
     }
   },
   "order": [
-    "main"
+    "bz_404"
   ]
 }

@@ -1,35 +1,11 @@
 {
   "sections": {
-    "hero": {
-      "type": "bz-page-hero",
-      "settings": {
-        "color_scheme": "scheme-4",
-        "eyebrow": "Restiamo in contatto",
-        "heading": "Contatti",
-        "subtext": "Domande, ordini speciali, richieste di consulenza personalizzata. Siamo qui.",
-        "padding_top": 96,
-        "padding_bottom": 24
-      }
-    },
-    "contact": {
-      "type": "bz-contact",
-      "settings": {
-        "color_scheme": "scheme-4",
-        "form_heading": "Scrivici",
-        "form_subtext": "Risposta entro 24 ore lavorative.",
-        "submit_text": "Invia messaggio",
-        "success_text": "Grazie. Ti rispondiamo entro 24 ore.",
-        "info_heading": "Dove siamo",
-        "address": "Benessere Zen di Balboni Simona\nVia M. Provenzali 1\n44042 Cento (FE) — Italia\nP.IVA IT02091600383",
-        "email": "info@benesserezen.shop",
-        "social_heading": "Seguici",
-        "padding_top": 24,
-        "padding_bottom": 96
-      }
+    "page": {
+      "type": "bz-contatti",
+      "settings": {}
     }
   },
   "order": [
-    "hero",
-    "contact"
+    "page"
   ]
 }

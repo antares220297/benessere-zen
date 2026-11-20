@@ -1,0 +1,137 @@
+{%- liquid
+  if collection.handle == 'cosmetica'
+    assign category = 'Viso'
+    assign accent = 'viso'
+    assign intro = section.settings.viso_intro
+    assign groups = 'Detergenti e scrub|latte-detergente;Prodotti viso|tonico,crema-giorno,contorno-occhi;Sieri|siero-viso;Maschere|maschera' | split: ';'
+  else
+    assign category = 'Corpo'
+    assign accent = 'corpo'
+    assign intro = section.settings.corpo_intro
+    assign groups = 'Oli e creme corpo|creme-e-latti-corpo;Scrub corpo|scrub-corpo;Balsami corpo|balsami-corpo;Mani e piedi|creme-mani-e-piedi;Solari|solari' | split: ';'
+  endif
+-%}
+{%- paginate collection.products by 48 -%}
+  {%- assign all_ids = '|' -%}
+  {%- assign page_ids = collection.products | map: 'id' -%}
+  {%- assign group_counts = '' -%}
+  {%- capture product_groups -%}
+    {%- for group in groups -%}
+      {%- liquid
+        assign fields = group | split: '|'
+        assign handles = fields.last | split: ','
+        assign group_ids = '|'
+        assign group_count = 0
+      -%}
+      {%- capture cards -%}
+        {%- for handle in handles -%}
+          {%- assign child = collections[handle] -%}
+          {%- for product in child.products -%}
+            {%- liquid
+              unless product.available
+                continue
+              endunless
+              assign product_key = product.id | append: '|'
+              assign delimiter_key = product_key | prepend: '|'
+              if group_ids contains delimiter_key
+                continue
+              endif
+              if paginate.pages > 1
+                assign parent_handles = product.collections | map: 'handle'
+                if parent_handles contains collection.handle
+                  unless page_ids contains product.id
+                    continue
+                  endunless
+                elsif paginate.current_page > 1
+                  continue
+                endif
+              endif
+              assign group_ids = group_ids | append: product_key
+              assign group_count = group_count | plus: 1
+              unless all_ids contains delimiter_key
+                assign all_ids = all_ids | append: product_key
+              endunless
+            -%}
+            {% render 'bz-product-card', card: product, style: 'grid', sortable: true %}
+          {%- endfor -%}
+        {%- endfor -%}
+      {%- endcapture -%}
+      {%- assign group_counts = group_counts | append: group_count | append: ',' -%}
+      {%- if group_count > 0 -%}
+        {% render 'bz-collection-group', id: forloop.index, title: fields.first, count: group_count, cards: cards %}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- assign other_count = 0 -%}
+    {%- capture other_cards -%}
+      {%- for product in collection.products -%}
+        {%- liquid
+          assign product_key = product.id | append: '|'
+          assign delimiter_key = product_key | prepend: '|'
+          if all_ids contains delimiter_key or product.available == false
+            continue
+          endif
+          assign all_ids = all_ids | append: product_key
+          assign other_count = other_count | plus: 1
+        -%}
+        {% render 'bz-product-card', card: product, style: 'grid', sortable: true %}
+      {%- endfor -%}
+    {%- endcapture -%}
+    {%- if other_count > 0 -%}
+      {% render 'bz-collection-group', id: 'other', title: 'Altri prodotti', count: other_count, cards: other_cards %}
+    {%- endif -%}
+  {%- endcapture -%}
+  {%- liquid
+    assign unique_ids = all_ids | remove_first: '|' | split: '|'
+    assign total = unique_ids.size
+    assign counts = group_counts | split: ','
+  -%}
+  <div class="bz-grouped-plp" data-bz-grouped-plp>
+    <section class="plp-head" aria-labelledby="plp-title">
+      <nav class="crumbs" aria-label="Percorso">
+        <ol>
+          <li><a href="{{ routes.root_url }}">Home</a></li>
+          <li><a href="{{ pages['cura-di-se'].url | default: '/pages/cura-di-se' }}">Cura di sé</a></li>
+          <li><span aria-current="page">{{ category }}</span></li>
+        </ol>
+      </nav>
+      <h1 id="plp-title">Cosmesi <em>{{ accent }}</em></h1>
+      <p class="plp-desc">{{ intro | escape }}</p>
+    </section>
+
+    <div class="plp-bar" data-plp-bar hidden>
+      <div class="chips-scroll">
+        <div class="chips" role="group" aria-label="Sottocategorie di {{ category }}">
+          <button class="chip" type="button" data-bz-chip="all" data-count="{{ total }}" aria-pressed="true">Tutto <small>{{ total }}</small></button>
+          {%- for group in groups -%}
+            {%- assign fields = group | split: '|' -%}
+            {%- assign count = counts[forloop.index0] | plus: 0 -%}
+            {%- if count > 0 -%}
+              <button class="chip" type="button" data-bz-chip="{{ forloop.index }}" data-count="{{ count }}" aria-pressed="false">{{ fields.first }} <small>{{ count }}</small></button>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+    <div class="plp-tools">
+      <p aria-live="polite"><span data-plp-total>{{ total }}</span> <span data-plp-unit>{% if total == 1 %}prodotto{% else %}prodotti{% endif %}</span></p>
+      <label class="sort" data-plp-sort hidden>
+        <span class="sr-only">Ordina per</span>
+        {% render 'bz-icon', name: 'swap_vert' %}
+        <select>
+          <option value="featured">In evidenza</option>
+          <option value="new">Novità</option>
+          <option value="price-up">Prezzo crescente</option>
+          <option value="price-down">Prezzo decrescente</option>
+          <option value="name">Nome A-Z</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="plp-groups">{{ product_groups }}</div>
+    {%- if total == 0 -%}<p class="plp-group-empty">Nessun prodotto disponibile.</p>{%- endif -%}
+    {%- if paginate.pages > 1 -%}
+      <nav class="plp-pagination" aria-label="Pagine della collezione">{{ paginate | default_pagination }}</nav>
+    {%- endif -%}
+  </div>
+  <script src="{{ 'bz-collection-groups.js' | asset_url }}" defer></script>
+{%- endpaginate -%}

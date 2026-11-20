@@ -1,0 +1,86 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.footer.name",
+  "type": "footer",
+  "sections": {
+    "bz_footer": {
+      "type": "bz-footer",
+      "blocks": {
+        "col-shop": {
+          "type": "links",
+          "settings": {
+            "heading": "Negozio",
+            "label_1": "Gioielli con pietre",
+            "link_1": "/collections/gioielli-con-pietre",
+            "label_2": "Mala tibetani",
+            "link_2": "/collections/mala-tibetani",
+            "label_3": "Pietre e cristalli",
+            "link_3": "/collections/pietre-grezze",
+            "label_4": "Incensi e palo santo",
+            "link_4": "/collections/incensi-e-brucia-incensi"
+          }
+        },
+        "col-help": {
+          "type": "links",
+          "settings": {
+            "heading": "Aiuto",
+            "label_1": "Resi",
+            "link_1": "/policies/refund-policy",
+            "label_2": "Contatti",
+            "link_2": "/pages/contact",
+            "label_3": "",
+            "link_3": "",
+            "label_4": "",
+            "link_4": ""
+          }
+        },
+        "col-social": {
+          "type": "links",
+          "settings": {
+            "heading": "Seguici",
+            "label_1": "Instagram",
+            "link_1": "https://www.instagram.com/benesserezen.shop/",
+            "label_2": "Facebook",
+            "link_2": "https://www.facebook.com/profile.php?id=61567917098683",
+            "label_3": "",
+            "link_3": "",
+            "label_4": "",
+            "link_4": ""
+          }
+        },
+        "col-pay": {
+          "type": "payments",
+          "settings": {
+            "heading": "Pagamenti",
+            "methods": "American Express, Apple Pay, Google Pay, Maestro, Mastercard, PayPal, Shop Pay, Visa"
+          }
+        }
+      },
+      "block_order": [
+        "col-shop",
+        "col-help",
+        "col-social",
+        "col-pay"
+      ],
+      "settings": {
+        "word_first": "Benessere",
+        "word_second": "Zen",
+        "about": "Via Marcello Provenzali 1, 44042 Cento FE. Tel +39 347 088 3168. info@benesserezen.shop. Orari: lun, mar, mer, ven, sab 9:30-12:30 e 16:00-19:30, gio 9:00-13:00.",
+        "vat": "Benessere Zen di Balboni Simona, P. IVA 02091600383 (REA FE-257570). Sede legale Via Olindo Malagodi 2, 44042 Cento FE.",
+        "privacy_link": "/policies/privacy-policy",
+        "terms_link": "/policies/terms-of-service"
+      }
+    }
+  },
+  "order": [
+    "bz_footer"
+  ]
+}

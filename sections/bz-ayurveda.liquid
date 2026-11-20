@@ -1,0 +1,61 @@
+<div class="bz-stack ayurveda">
+  <section class="ay-hero" aria-labelledby="ay-h1">
+    <div class="ay-copy">
+      <nav class="ay-bc" aria-label="Percorso">
+        <a href="{{ routes.root_url }}">Home</a><span aria-hidden="true" class="ay-bc-sep">/</span>
+        <a href="{{ pages['cura-di-se'].url | default: '/pages/cura-di-se' }}">Cura di sé</a><span aria-hidden="true" class="ay-bc-sep">/</span>
+        <span aria-current="page">Ayurveda</span>
+      </nav>
+      <h1 id="ay-h1">Che cos'è l'<em>Ayurveda</em></h1>
+      <p class="ay-lead">{{ section.settings.intro | escape }}</p>
+      <a class="ay-soft" href="#prodotti">{% render 'bz-nav-label', label: 'Scopri le categorie' %}</a>
+    </div>
+    <figure class="ay-photo">
+      <img src="{{ 'bz-ayurveda-hero-scaffali.jpg' | asset_url }}" alt="Scaffali di oli, saponi e cosmetici ayurvedici nel negozio Benessere Zen a Cento" width="1400" height="1050" loading="eager" fetchpriority="high">
+    </figure>
+  </section>
+  <section class="ay-cose" id="cose" aria-labelledby="ay-cose-h">
+    <div class="ay-copy">
+      <h2 id="ay-cose-h">{{ section.settings.cose_heading | escape }} <em>{{ section.settings.cose_heading_accent | escape }}</em></h2>
+      {{ section.settings.overview }}
+    </div>
+    <figure class="ay-photo">
+      <img src="{{ 'bz-ayurveda-cose-tisane.jpg' | asset_url }}" alt="Mensole di tisane ayurvediche e Buddha dorato nel negozio a Cento" width="960" height="1200" loading="lazy">
+    </figure>
+  </section>
+</div>
+{% schema %}
+{
+  "name": "Ayurveda",
+  "settings": [
+    { "type": "text", "id": "cose_heading", "label": "Titolo della panoramica", "default": "Il sapere" },
+    { "type": "text", "id": "cose_heading_accent", "label": "Titolo della panoramica in corsivo", "default": "della vita" },
+    { "type": "richtext", "id": "overview", "label": "Che cos’è" },
+    { "type": "textarea", "id": "intro", "label": "Intro", "default": "Una tradizione nata in India. Si porta in casa con un olio, un’infusione, un lavaggio." },
+    { "type": "url", "id": "collection_link", "label": "Link collezione" },
+    { "type": "product_list", "id": "origin_products", "label": "Da dove arriva", "limit": 2 },
+    { "type": "product_list", "id": "picked_products", "label": "I più scelti, Ayurveda", "limit": 4 },
+    { "type": "product_list", "id": "oli_products", "label": "I più scelti, oli", "limit": 4 },
+    { "type": "product_list", "id": "tisane_products", "label": "I più scelti, tisane", "limit": 4 },
+    { "type": "product", "id": "counsel_product", "label": "Prodotto di Simona" },
+    { "type": "textarea", "id": "vata_text", "label": "Vata", "default": "Aria e spazio. Movimento e leggerezza, un ritmo che fa fatica a fermarsi. Nella pratica, routine stabili e oli più caldi." },
+    { "type": "textarea", "id": "pitta_text", "label": "Pitta", "default": "Fuoco e acqua. Trasformazione e determinazione, un fuoco che a volte sale troppo. Nella pratica, pause e cose più fresche." },
+    { "type": "textarea", "id": "kapha_text", "label": "Kapha", "default": "Terra e acqua. Stabilità e costanza, un passo che a volte si fa pesante. Nella pratica, movimento e spezie più vive." }
+  ],
+  "blocks": [
+    { "type": "sphere", "name": "Sfera", "settings": [
+      { "type": "text", "id": "label", "label": "Nome" },
+      { "type": "collection", "id": "collection", "label": "Collezione" },
+      { "type": "text", "id": "image_asset", "label": "Foto in assets" }
+    ] },
+    { "type": "dosha_product", "name": "Prodotto dosha", "settings": [
+      { "type": "select", "id": "dosha", "label": "Dosha", "default": "0", "options": [
+        { "value": "0", "label": "Vata" }, { "value": "1", "label": "Pitta" }, { "value": "2", "label": "Kapha" }
+      ] },
+      { "type": "product", "id": "product", "label": "Prodotto" }
+    ] }
+  ],
+  "max_blocks": 20,
+  "presets": [{ "name": "Ayurveda" }]
+}
+{% endschema %}

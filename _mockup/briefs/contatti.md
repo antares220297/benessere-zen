@@ -1,0 +1,18 @@
+# Brief: contatti.html (modifichi SOLO `contatti.html`)
+Prima leggi per intero `briefs/COMMON.md`, poi `SPEC.md` §0 e §11 (badge «Aperto ora»), e in `input/copy-v2.md` la sezione «# Contatti». Feedback: `input/feedback-michael-1.md` («pagina e card del negozio troppo lunghe: compattare», approvato in v4.11b) e `input/feedback-michael-2.md` («20 Aperto ora: carino ma SVG troppo banale»); il brief di questo giro chiede anche un **grafico orari molto più curato del vecchio SVG**.
+
+Parti dal file attuale (v4.11b): struttura approvata «Contatti in uno schermo» (hero bassa, poi a sinistra il form, a destra tessere 2×2 + card orari). Obiettivo: header + hero + le due colonne entro ~900 px di altezza a 1440, colonne di pari altezza (niente vuoto sotto il form o sotto gli orari).
+
+## Da fare
+1. **Togli tutte le etichette idea** (`.idea-tag` «Contatti in uno schermo», «Orari a grafico», «Aperto ora»).
+2. **Testi** ESATTAMENTE da copy-v2 § Contatti: «Contatta*ci*» (una parola), riga sotto; «Scrivici un *messaggio*»; etichette invariate; pulsante «Invia il messaggio →»; indirizzo «Via Marcello Provenzali 1, 44042 Cento (FE)»; orari con `<mark class="tbc">[DA CONFERMARE: domenica chiuso]</mark>`; nota ritiro «Ritiri un ordine? Al pagamento scegli *Ritiro in negozio*: è gratuito e di solito è pronto in 4 ore.». Al submit: «Grazie, ti rispondiamo appena possibile.» (o il testo già presente se simile).
+3. **Badge**: in cima alla card orari `<span class="open-badge" data-open-badge="full"></span>` (componente condiviso, zero SVG, lo scrive `assets/bz-ideas.js`; non reimplementarlo). Rimuovi il vecchio badge e ogni SVG di stato.
+4. **Grafico orari**: sostituisci tutto il vecchio grafico SVG/markup con il contenitore condiviso `<div class="bz-week" data-week-chart></div>` (lo disegna `assets/bz-ideas.js`: 7 colonne, oggi in oro, linea dell'ora, riga testuale accessibile). Dai al contenitore larghezza piena della card e un'altezza sensata (circa 220-260 px a 1440). Puoi rifinirlo SOLO con CSS di pagina sotto `.contatti .bz-week` se serve all'armonia della card (spaziature, nessun colore nuovo fuori token). Elimina la riga «Ora di Roma · …» e le scritte doppie se il componente le mostra già.
+5. **Card orari curata**: fondo neutro caldo a gradiente leggero (`linear-gradient(135deg,#1b1917,#201e1b)`), raggio `--rl`, bordo `--line`; titolo «I nostri *orari*» a sinistra e badge a destra sulla stessa riga a ≥768; niente pulsanti doppi. Tessere 2×2 compatte (Indirizzo con «Indicazioni →» a Google Maps con icona `directions`, Telefono con icona `call`, Email, Seguici), icone Material da `icons/` inline 18-20 px in oro, testo grande leggibile, ogni tessera interamente cliccabile dove ha un link (tel:, mailto:, maps), target ≥44 px.
+6. Form: etichette visibili sopra i campi, errore specifico accanto al campo (es. «Scrivi un'email valida»), focus oro 2px, campi con bordo ≥3:1 di contrasto (`rgba(238,231,219,.32)` o più), CTA ≥48 px su mobile.
+7. **Mobile 390**: tessere 2×2 → card orari (badge compatto su una riga) → form. Nessun overflow.
+8. Hero bassa: niente foto grande. Se vuoi una striscia, usa `img/negozio/contatti-copertina.jpg` (foto vera del banco) alta max 160 px a tutta larghezza con sfumatura, solo se non allunga la pagina oltre ~900 px a 1440; altrimenti nessuna foto.
+9. Parametri test: `?now=2026-11-19T14:00` e `?now=2026-11-18T19:10` (li gestisce bz-ideas.js; non rompere la lettura del parametro).
+
+## Criteri di riuscita
+Criteri SPEC §11 veri (con `?now=2026-11-19T14:00` punto rosa fermo «Chiuso · riapre venerdì alle 9:30»; con `?now=2026-11-18T19:10` punto oro «Chiude alle 19:30»; a 390 badge compatto su una riga; zero `<svg>` in `.open-badge`). Nessun overflow 390/768/1024/1440. Nessuna etichetta idea.

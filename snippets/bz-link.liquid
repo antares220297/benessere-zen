@@ -1,0 +1,12 @@
+{%- liquid
+  assign href = link.url
+  if link.type == 'collection_link'
+    if link.object == blank or link.object.title == blank
+      assign fallback = collections['pietre-burattate']
+      if fallback.url != blank
+        assign href = fallback.url
+      endif
+    endif
+  endif
+-%}
+{{- href -}}

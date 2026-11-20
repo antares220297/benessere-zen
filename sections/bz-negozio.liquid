@@ -1,0 +1,78 @@
+{%- liquid
+  assign store_address = settings.bz_address | default: 'Via Marcello Provenzali 1, 44042 Cento (FE)'
+  assign store_phone = settings.bz_phone | default: '+39 347 088 3168'
+  assign store_email = settings.bz_email | default: 'info@benesserezen.shop'
+-%}
+<div class="bz-stack">
+  <section class="shop-hero" aria-labelledby="shop-title">
+    <img src="{{ 'bz-negozio-negozio-copertina.jpg' | asset_url }}" alt="La sala del negozio: il banco col logo, l'isola centrale e gli scaffali" width="1600" height="900" loading="eager" fetchpriority="high">
+    <div class="shop-hero-copy">
+      <h1 id="shop-title">Il <em>negozio</em></h1>
+      <p>{{ section.settings.intro | escape }}</p>
+      {% render 'bz-open-badge', variant: 'compact' %}
+    </div>
+  </section>
+  <section class="shop-visit" aria-label="Orari e indirizzo">
+    <div class="shop-visit-col">
+      <h2 id="orari">Orari</h2>
+      {% render 'bz-hours', part: 'table' %}
+    </div>
+    <div class="shop-visit-col">
+      <h2>Dove siamo</h2>
+      <ul class="shop-where">
+        <li>{% render 'bz-icon', name: 'location_on' %}<span>{{ store_address | escape }}</span></li>
+        <li>{% render 'bz-icon', name: 'call' %}<a href="tel:{{ store_phone | remove: ' ' }}">{{ store_phone | escape }}</a></li>
+        <li>{% render 'bz-icon', name: 'mail' %}<a href="mailto:{{ store_email | escape }}">{{ store_email | escape }}</a></li>
+        <li>{% render 'bz-icon', name: 'storefront' %}<span>Ritiro gratuito in negozio.</span></li>
+      </ul>
+      <div class="bz-visit-actions">
+        {% render 'bz-open-badge', variant: 'status' %}
+        <a class="btn gold" href="https://www.google.com/maps/search/?api=1&amp;query=Benessere+Zen+Via+Marcello+Provenzali+1+Cento" rel="noopener" target="_blank">{% render 'bz-nav-label', label: 'Come arrivare' %}</a>
+      </div>
+    </div>
+  </section>
+  <section class="shop-gallery" aria-labelledby="tour-title">
+    <div class="shop-gallery-head">
+      <h2 id="tour-title">Entra, <em>dai un’occhiata</em></h2>
+      <button class="btn gold" type="button" data-tour-open aria-haspopup="dialog" aria-controls="shop-lightbox" aria-expanded="false">{% render 'bz-icon', name: 'photo_library' %} Fai un giro del negozio</button>
+    </div>
+    <div class="shop-gallery-grid">
+      <button class="tour-card" type="button" aria-label="Apri foto: Lampada turca, arazzo del fiore della vita e piatti di selenite">
+        <img src="{{ 'bz-negozio-ventaglio-3-selenite.jpg' | asset_url }}" alt="Lampada turca, arazzo del fiore della vita e piatti di selenite" width="1200" height="1500" loading="lazy">
+      </button>
+      <button class="tour-card" type="button" aria-label="Apri foto: Lo scaffale delle candele">
+        <img src="{{ 'bz-negozio-ventaglio-4-candele.jpg' | asset_url }}" alt="Lo scaffale delle candele" width="1200" height="1500" loading="lazy">
+      </button>
+      <button class="tour-card" type="button" aria-label="Apri foto: Cassetta a scomparti con ciondoli e pietre">
+        <img src="{{ 'bz-negozio-ventaglio-6-ciondoli.jpg' | asset_url }}" alt="Cassetta a scomparti con ciondoli e pietre" width="900" height="1125" loading="lazy">
+      </button>
+      <button class="tour-card" type="button" aria-label="Apri foto: Mala con nappa e portaincensi dipinti">
+        <img src="{{ 'bz-negozio-ventaglio-1-mala-e-portaincensi.jpg' | asset_url }}" alt="Mala con nappa e portaincensi dipinti" width="1200" height="1500" loading="lazy">
+      </button>
+      <button class="tour-card" type="button" aria-label="Apri foto: Espositore dei bracciali in pietra">
+        <img src="{{ 'bz-negozio-ventaglio-2-bracciali.jpg' | asset_url }}" alt="Espositore dei bracciali in pietra" width="1200" height="1500" loading="lazy">
+      </button>
+      <button class="tour-card" type="button" aria-label="Apri foto: Mensole con tè, tazze con infusore e statuine">
+        <img src="{{ 'bz-negozio-ventaglio-5-tisane-e-tazze.jpg' | asset_url }}" alt="Mensole con tè, tazze con infusore e statuine" width="1200" height="1500" loading="lazy">
+      </button>
+    </div>
+  </section>
+</div>
+<dialog class="tour-dialog" id="shop-lightbox" aria-label="Giro del negozio">
+  <button class="tour-arrow tour-prev" type="button" aria-label="Foto precedente">{% render 'bz-icon', name: 'chevron_right' %}</button>
+  <figure class="tour-figure">
+    <img class="tour-large" alt="" width="1200" height="1500">
+    <figcaption class="tour-caption"><h3></h3><p></p></figcaption>
+  </figure>
+  <button class="tour-close" type="button" aria-label="Chiudi">{% render 'bz-icon', name: 'close' %}</button>
+  <button class="tour-arrow tour-next" type="button" aria-label="Foto successiva">{% render 'bz-icon', name: 'chevron_right' %}</button>
+</dialog>
+{% schema %}
+{
+  "name": "Il negozio",
+  "settings": [
+    { "type": "textarea", "id": "intro", "label": "Intro", "default": "Tutto quello che vedi sul sito lo trovi anche in negozio, in Via Marcello Provenzali 1 a Cento." }
+  ],
+  "presets": [{ "name": "Il negozio" }]
+}
+{% endschema %}

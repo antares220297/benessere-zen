@@ -1,0 +1,102 @@
+<div class="bz-mazzo">
+  {%- assign worlds = 'pietre,cura' | split: ',' -%}
+  {%- for world in worlds -%}
+    {%- if world == 'pietre' -%}
+      {%- assign title = section.settings.pietre_title -%}
+      {%- assign accent = section.settings.pietre_accent -%}
+      {%- assign intro = section.settings.pietre_intro -%}
+      {%- assign more = section.settings.pietre_link -%}
+      {%- assign more_label = section.settings.pietre_label -%}
+      {%- assign heading_id = 'pietre-title' -%}
+    {%- else -%}
+      {%- assign title = section.settings.cura_title -%}
+      {%- assign accent = section.settings.cura_accent -%}
+      {%- assign intro = section.settings.cura_intro -%}
+      {%- assign more = section.settings.cura_link -%}
+      {%- assign more_label = section.settings.cura_label -%}
+      {%- assign heading_id = 'cura-title' -%}
+    {%- endif -%}
+    <section class="world" data-world="{{ world }}" aria-labelledby="{{ heading_id }}">
+      <div class="world-head">
+        <h2 id="{{ heading_id }}">{{ title | escape }} <em>{{ accent | escape }}</em></h2>
+        <div class="world-aside">
+          <p class="world-intro">{{ intro | escape }}</p>
+        </div>
+      </div>
+      <div class="fan" aria-label="{{ title | escape }} {{ accent | escape }}">
+        {%- assign index = 0 -%}
+        {%- for block in section.blocks -%}
+          {%- if block.settings.world == world -%}
+            {%- assign coll = block.settings.collection -%}
+            {%- if coll == blank or coll.title == blank -%}
+              {%- assign coll = collections['pietre-burattate'] -%}
+            {%- endif -%}
+            {%- capture min_cents -%}{% render 'bz-min-price', handle: coll.handle %}{%- endcapture -%}
+            {%- assign min_cents = min_cents | strip -%}
+            {%- assign min_amount = min_cents | plus: 0 -%}
+            {%- assign ks = '-2.5,-1.5,-0.5,0.5,1.5,2.5' | split: ',' -%}
+            {%- assign k = ks[index] -%}
+            <a class="tarot-card" href="{{ coll.url }}" aria-label="Vedi la collezione {{ block.settings.title | escape }}, da {% render 'bz-money', cents: min_cents %}" style="--k:{{ k }};--order:{{ index | plus: 1 }}" {{ block.shopify_attributes }}>
+              <span class="card-top" aria-hidden="true"><span class="rule"></span>{% render 'bz-icon', name: 'gi-moon', icon_class: 'moon' %}<span class="moon-diamond"></span>{% render 'bz-icon', name: 'gi-moon', icon_class: 'moon moon-r' %}<span class="rule rule-r"></span></span>
+              <span class="card-icon" aria-hidden="true">{% render 'bz-icon', name: block.settings.icon, icon_class: 'sigil' %}</span>
+              <span class="card-caption" aria-hidden="true"><span class="card-name">{{ block.settings.title | escape }}</span></span>
+              <span class="card-price" aria-hidden="true">{%- if min_cents != blank -%}da {% render 'bz-money', cents: min_amount %}{%- endif -%}<span class="card-arrow">→</span></span>
+            </a>
+            {%- assign index = index | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      {%- if more != blank -%}
+        <a class="bz-row-link" href="{{ more }}">{% render 'bz-nav-label', label: more_label %}</a>
+      {%- endif -%}
+    </section>
+    {%- if world == 'pietre' and section.settings.show_divider -%}
+      <div class="deck-divider" aria-hidden="true"><span class="tone tone-up"></span><span class="tone tone-down"></span><span class="hairline"></span></div>
+    {%- endif -%}
+  {%- endfor -%}
+</div>
+{% schema %}
+{
+  "name": "Mazzo",
+  "class": "bz-home",
+  "settings": [
+    { "type": "text", "id": "pietre_title", "label": "Titolo pietre", "default": "Pietre e" },
+    { "type": "text", "id": "pietre_accent", "label": "Corsivo pietre", "default": "rituali" },
+    { "type": "text", "id": "pietre_intro", "label": "Intro pietre", "default": "Gioielli, mala, pietre e ciò che sta intorno al rito." },
+    { "type": "text", "id": "pietre_label", "label": "Link pietre", "default": "Vedi tutto →" },
+    { "type": "url", "id": "pietre_link", "label": "Destinazione pietre" },
+    { "type": "text", "id": "cura_title", "label": "Titolo cura", "default": "Cura di" },
+    { "type": "text", "id": "cura_accent", "label": "Corsivo cura", "default": "sé" },
+    { "type": "text", "id": "cura_intro", "label": "Intro cura", "default": "Viso, corpo, capelli, tisane e oli, per la giornata." },
+    { "type": "text", "id": "cura_label", "label": "Link cura", "default": "Vedi tutto →" },
+    { "type": "url", "id": "cura_link", "label": "Destinazione cura" },
+    { "type": "checkbox", "id": "show_divider", "label": "Separatore tra i mazzi", "default": true }
+  ],
+  "blocks": [
+    { "type": "card", "name": "Carta", "settings": [
+      { "type": "select", "id": "world", "label": "Mazzo", "default": "pietre", "options": [
+        { "value": "pietre", "label": "Pietre e rituali" },
+        { "value": "cura", "label": "Cura di sé" }
+      ] },
+      { "type": "text", "id": "title", "label": "Nome", "default": "Gioielli" },
+      { "type": "collection", "id": "collection", "label": "Collezione" },
+      { "type": "select", "id": "icon", "label": "Icona", "default": "gi-gem-pendant", "options": [
+        { "value": "gi-gem-pendant", "label": "Gioielli" },
+        { "value": "gi-prayer-beads", "label": "Mala" },
+        { "value": "gi-crystal-growth", "label": "Pietre grezze" },
+        { "value": "gi-stone-stack", "label": "Burattate" },
+        { "value": "gi-gem-chain", "label": "Pendoli" },
+        { "value": "gi-candle-light", "label": "Candele" },
+        { "value": "gi-liquid-soap", "label": "Corpo" },
+        { "value": "gi-comb", "label": "Capelli" },
+        { "value": "gi-lotus", "label": "Ayurveda" },
+        { "value": "gi-teapot", "label": "Tè" },
+        { "value": "gi-coffee-cup", "label": "Tazze" },
+        { "value": "gi-delicate-perfume", "label": "Oli" }
+      ] }
+    ] }
+  ],
+  "max_blocks": 12,
+  "presets": [{ "name": "Mazzo" }]
+}
+{% endschema %}
