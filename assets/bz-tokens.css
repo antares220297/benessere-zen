@@ -200,12 +200,19 @@
   /* Movimento */
   --bz-dur-press:100ms;
   --bz-dur-hover:150ms;
-  --bz-dur-ui:250ms;
+  --bz-dur-toast:220ms;
+  --bz-dur-ui:260ms;
+  --bz-dur-menu:200ms;
   --bz-dur-large:400ms;
+  --bz-dur-image:400ms;
+  --bz-dur-fan:640ms;
+  --bz-dur-flip:760ms;
   --bz-dur-ambient:1200ms;
+  --bz-ease-enter:cubic-bezier(.2,.75,.2,1);
+  --bz-ease-flip:cubic-bezier(.3,.7,.2,1);
   --bz-ease-standard:cubic-bezier(.2,0,0,1);
-  --bz-ease-enter:cubic-bezier(.2,.7,.1,1);
   --bz-ease-exit:cubic-bezier(.3,0,.8,.15);
+  --bz-ease-io:cubic-bezier(.4,0,.2,1);
 }
 @media (min-width:768px){
   :root{--bz-section-gap:72px;--bz-panel-pad:32px;--bz-grid-gap:16px}

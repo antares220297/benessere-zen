@@ -122,136 +122,236 @@
         "s7"
       ]
     },
-    "bz_mazzo": {
-      "type": "bz-mazzo",
-      "settings": {
-        "pietre_link": "/pages/pietre-e-rituali",
-        "cura_link": "/pages/cura-di-se",
-        "show_divider": true
-      },
+    "bz_tarocchi": {
+      "type": "bz-tarocchi",
+      "settings": {},
       "blocks": {
-        "card-0": {
+        "senti-agitazione": {
           "type": "card",
           "settings": {
-            "world": "pietre",
-            "title": "Gioielli",
-            "collection": "gioielli-con-pietre",
-            "icon": "gi-gem-pendant"
+            "deck": "senti",
+            "slug": "agitazione",
+            "title": "Agitazione\ne rabbia",
+            "motto": "Quando tutto corre troppo",
+            "stone_1": "Ametista",
+            "stone_2": "Howlite",
+            "stone_3": "Rodonite",
+            "collection_handle": "senti-agitazione"
           }
         },
-        "card-1": {
+        "senti-tristezza": {
           "type": "card",
           "settings": {
-            "world": "pietre",
-            "title": "Mala",
-            "collection": "mala-tibetani",
-            "icon": "gi-prayer-beads"
+            "deck": "senti",
+            "slug": "tristezza",
+            "title": "Tristezza e\npoco slancio",
+            "motto": "Quando la luce sembra poca",
+            "stone_1": "Citrino",
+            "stone_2": "Ambra",
+            "stone_3": "Calcite arancione",
+            "collection_handle": "senti-tristezza"
           }
         },
-        "card-2": {
+        "senti-paura": {
           "type": "card",
           "settings": {
-            "world": "pietre",
-            "title": "Pietre grezze",
-            "collection": "pietre-grezze",
-            "icon": "gi-crystal-growth"
+            "deck": "senti",
+            "slug": "paura",
+            "title": "Paura",
+            "motto": "Terra sotto i piedi",
+            "stone_1": "Quarzo fumé",
+            "stone_2": "Ematite",
+            "stone_3": "Malachite",
+            "collection_handle": "senti-paura"
           }
         },
-        "card-3": {
+        "senti-confusione": {
           "type": "card",
           "settings": {
-            "world": "pietre",
-            "title": "Burattate",
-            "collection": "pietre-burattate",
-            "icon": "gi-stone-stack"
+            "deck": "senti",
+            "slug": "confusione",
+            "title": "Confusione",
+            "motto": "Pensieri da mettere in fila",
+            "stone_1": "Cristallo di rocca",
+            "stone_2": "Cianite blu",
+            "stone_3": "Calcite blu",
+            "collection_handle": "senti-confusione"
           }
         },
-        "card-4": {
+        "senti-insicurezza": {
           "type": "card",
           "settings": {
-            "world": "pietre",
-            "title": "Pendoli",
-            "collection": "pendoli",
-            "icon": "gi-gem-chain"
+            "deck": "senti",
+            "slug": "insicurezza",
+            "title": "Insicurezza",
+            "motto": "Quando dubiti di te",
+            "stone_1": "Diaspro giallo",
+            "stone_2": "Calcite miele",
+            "stone_3": "Septaria",
+            "collection_handle": "senti-insicurezza"
           }
         },
-        "card-5": {
+        "senti-blocco": {
           "type": "card",
           "settings": {
-            "world": "pietre",
-            "title": "Candele",
-            "collection": "candele-e-brucia-candele",
-            "icon": "gi-candle-light"
+            "deck": "senti",
+            "slug": "blocco",
+            "title": "Senso\ndi blocco",
+            "motto": "Quando tutto sembra fermo",
+            "stone_1": "Ossidiana neve",
+            "stone_2": "Unakite",
+            "stone_3": "Avventurina arancione",
+            "collection_handle": "senti-blocco"
           }
         },
-        "card-6": {
+        "desideri-amore": {
           "type": "card",
           "settings": {
-            "world": "cura",
-            "title": "Corpo",
-            "collection": "cosmesi-corpo",
-            "icon": "gi-liquid-soap"
+            "deck": "desideri",
+            "slug": "amore",
+            "title": "Amore",
+            "motto": "La carta del cuore",
+            "stone_1": "Quarzo rosa",
+            "stone_2": "Kunzite",
+            "stone_3": "Smeraldo",
+            "collection_handle": "desiderio-amore"
           }
         },
-        "card-7": {
+        "desideri-abbondanza": {
           "type": "card",
           "settings": {
-            "world": "cura",
-            "title": "Capelli",
-            "collection": "prodotti-per-capelli",
-            "icon": "gi-comb"
+            "deck": "desideri",
+            "slug": "abbondanza",
+            "title": "Abbondanza",
+            "motto": "Un gesto di buon auspicio",
+            "stone_1": "Pirite",
+            "stone_2": "Avventurina verde",
+            "stone_3": "Giada",
+            "collection_handle": "desiderio-abbondanza"
           }
         },
-        "card-8": {
+        "desideri-gioia": {
           "type": "card",
           "settings": {
-            "world": "cura",
-            "title": "Ayurveda",
-            "collection": "ayurveda",
-            "icon": "gi-lotus"
+            "deck": "desideri",
+            "slug": "gioia",
+            "title": "Gioia",
+            "motto": "Il colore del sole",
+            "stone_1": "Pietra del sole",
+            "stone_2": "Opale giallo",
+            "stone_3": "Calcite gialla",
+            "collection_handle": "desiderio-gioia"
           }
         },
-        "card-9": {
+        "desideri-protezione": {
           "type": "card",
           "settings": {
-            "world": "cura",
-            "title": "Tè e tisane",
-            "collection": "te-tisane",
-            "icon": "gi-teapot"
+            "deck": "desideri",
+            "slug": "protezione",
+            "title": "Protezione",
+            "motto": "Amuleti antichi da portare",
+            "stone_1": "Tormalina nera",
+            "stone_2": "Ossidiana nera",
+            "stone_3": "Onice nero",
+            "collection_handle": "desiderio-protezione"
           }
         },
-        "card-10": {
+        "desideri-serenita": {
           "type": "card",
           "settings": {
-            "world": "cura",
-            "title": "Tazze",
-            "collection": "tazze",
-            "icon": "gi-coffee-cup"
+            "deck": "desideri",
+            "slug": "serenita",
+            "title": "Serenità",
+            "motto": "Un angolo di pace",
+            "stone_1": "Amazzonite",
+            "stone_2": "Angelite",
+            "stone_3": "Crisocolla",
+            "collection_handle": "desiderio-serenita"
           }
         },
-        "card-11": {
+        "desideri-concentrazione": {
           "type": "card",
           "settings": {
-            "world": "cura",
-            "title": "Oli e profumi",
-            "collection": "essenze-e-brucia-essenze",
-            "icon": "gi-delicate-perfume"
+            "deck": "desideri",
+            "slug": "concentrazione",
+            "title": "Concentrazione",
+            "motto": "A mente lucida",
+            "stone_1": "Fluorite",
+            "stone_2": "Sodalite",
+            "stone_3": "Occhio di falco",
+            "collection_handle": "desiderio-concentrazione"
+          }
+        },
+        "desideri-coraggio": {
+          "type": "card",
+          "settings": {
+            "deck": "desideri",
+            "slug": "coraggio",
+            "title": "Coraggio",
+            "motto": "Il passo che rimandi",
+            "stone_1": "Occhio di tigre",
+            "stone_2": "Corniola",
+            "stone_3": "Diaspro rosso",
+            "collection_handle": "desiderio-coraggio"
+          }
+        },
+        "desideri-comunicazione": {
+          "type": "card",
+          "settings": {
+            "deck": "desideri",
+            "slug": "comunicazione",
+            "title": "Comunicazione",
+            "motto": "Le pietre della parola",
+            "stone_1": "Lapislazzuli",
+            "stone_2": "Acquamarina",
+            "stone_3": "Calcedonio",
+            "collection_handle": "desiderio-comunicazione"
+          }
+        },
+        "desideri-intuizione": {
+          "type": "card",
+          "settings": {
+            "deck": "desideri",
+            "slug": "intuizione",
+            "title": "Intuizione",
+            "motto": "La voce dell'anima",
+            "stone_1": "Labradorite",
+            "stone_2": "Pietra di luna",
+            "stone_3": "Ametista",
+            "collection_handle": "desiderio-intuizione"
+          }
+        },
+        "desideri-purificazione": {
+          "type": "card",
+          "settings": {
+            "deck": "desideri",
+            "slug": "purificazione",
+            "title": "Purificazione",
+            "motto": "Per fare spazio in casa",
+            "stone_1": "Selenite",
+            "stone_2": "Cristallo di rocca",
+            "stone_3": "Quarzo latteo",
+            "collection_handle": "desiderio-purificazione"
           }
         }
       },
       "block_order": [
-        "card-0",
-        "card-1",
-        "card-2",
-        "card-3",
-        "card-4",
-        "card-5",
-        "card-6",
-        "card-7",
-        "card-8",
-        "card-9",
-        "card-10",
-        "card-11"
+        "senti-agitazione",
+        "senti-tristezza",
+        "senti-paura",
+        "senti-confusione",
+        "senti-insicurezza",
+        "senti-blocco",
+        "desideri-amore",
+        "desideri-abbondanza",
+        "desideri-gioia",
+        "desideri-protezione",
+        "desideri-serenita",
+        "desideri-concentrazione",
+        "desideri-coraggio",
+        "desideri-comunicazione",
+        "desideri-intuizione",
+        "desideri-purificazione"
       ]
     },
     "bz_picked": {
@@ -667,7 +767,7 @@
   "order": [
     "bz_hero",
     "bz_spheres",
-    "bz_mazzo",
+    "bz_tarocchi",
     "bz_picked",
     "bz_ritual",
     "bz_stones",

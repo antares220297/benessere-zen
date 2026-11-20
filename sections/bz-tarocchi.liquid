@@ -1,0 +1,408 @@
+{{ 'bz-tarocchi.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'bz-tarocchi.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign art_slugs = 'abbondanza,agitazione,amore,comunicazione,concentrazione,confusione,coraggio,gioia,insicurezza,intuizione,paura,protezione,purificazione,senso-di-blocco,serenita,tristezza' | split: ','
+  assign fallback_url = section.settings.fallback_url | default: '/collections/all'
+  assign senti_handle = section.settings.senti_all_handle | default: 'come-ti-senti' | strip
+  assign desideri_handle = section.settings.desideri_all_handle | default: 'cosa-desideri' | strip
+  assign senti_collection = collections[senti_handle]
+  assign desideri_collection = collections[desideri_handle]
+  assign senti_url = fallback_url
+  assign desideri_url = fallback_url
+  if senti_collection.url != blank
+    assign senti_url = senti_collection.url
+  endif
+  if desideri_collection.url != blank
+    assign desideri_url = desideri_collection.url
+  endif
+-%}
+<section class="bz-tarocchi" data-bz-tarocchi aria-label="Le carte di Benessere Zen">
+  <div class="tar-table">
+    <div class="deck deck--senti" data-deck="senti" data-name="Come ti senti">
+      <div class="deck__head">
+        <h2 id="deck-senti-{{ section.id }}-t">Come ti <em>senti</em></h2>
+        <p class="deck__intro">Scegli la carta che somiglia a oggi</p>
+        <p>Ci sono giornate agitate, altre stanche o confuse. Sfoglia le sei carte e fermati su quella più vicina alla tua.</p>
+        <p>Dietro ogni carta trovi le pietre che, nella tradizione, si tengono vicine in quei momenti, con incensi e candele per un piccolo rituale.</p>
+        <a class="deck__more" href="{{ senti_url | escape }}">Vedi tutte le emozioni <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="deck__body">
+        <div class="deck__stage"><ul class="deck__fan" aria-describedby="deck-senti-{{ section.id }}-help"></ul>
+        </div>
+        <p class="sr-only" id="deck-senti-{{ section.id }}-help">Scegli una carta per vedere i prodotti: tocca per sceglierla, tocca di nuovo o «Apri la carta» per aprirla.</p>
+        <div class="deck__actions">
+          <a class="deck__open" href="{{ fallback_url | escape }}" tabindex="-1" aria-hidden="true">Apri la carta</a>
+        </div>
+      </div>
+    </div>
+    <div class="deck deck--des" data-deck="desideri" data-name="Cosa desideri">
+      <div class="deck__head">
+        <h2 id="deck-desideri-{{ section.id }}-t">Cosa <em>desideri</em></h2>
+        <p class="deck__intro">Scegli la carta di ciò che vuoi coltivare</p>
+        <p>Amore, protezione, un po' di fortuna, una casa da purificare: dieci carte, una per ogni intenzione. Gira quella che ti chiama.</p>
+        <p>Dentro trovi le pietre che la tradizione lega a quel desiderio, con gli incensi, le candele e gli amuleti per dargli forma ogni giorno.</p>
+        <a class="deck__more" href="{{ desideri_url | escape }}">Vedi tutte le intenzioni <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="deck__body">
+        <div class="deck__stage"><ul class="deck__fan" aria-describedby="deck-desideri-{{ section.id }}-help"></ul>
+        </div>
+        <p class="sr-only" id="deck-desideri-{{ section.id }}-help">Scegli una carta per vedere i prodotti: tocca per sceglierla, tocca di nuovo o «Apri la carta» per aprirla.</p>
+        <div class="deck__actions">
+          <a class="deck__open" href="{{ fallback_url | escape }}" tabindex="-1" aria-hidden="true">Apri la carta</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <noscript>
+    <p class="tar-credit">Le carte richiedono JavaScript.</p>
+  </noscript>
+
+{%- capture deck_data -%}
+{
+  "showMotti": false,
+  "backs": {
+    "senti": {{ 'bz-tarot-dorso-oro.webp' | asset_url | json }},
+    "desideri": {{ 'bz-tarot-dorso-oro.webp' | asset_url | json }}
+  },
+  "cards": [
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign slug = block.settings.slug | handleize
+        assign art_slug = slug
+        if slug == 'blocco'
+          assign art_slug = 'senso-di-blocco'
+        endif
+        assign art_file = 'bz-tarot-' | append: art_slug | append: '.webp'
+        assign handle = block.settings.collection_handle | strip
+        if handle == blank
+          assign prefix = 'senti-'
+          if block.settings.deck == 'desideri'
+            assign prefix = 'desiderio-'
+          endif
+          assign handle = slug | prepend: prefix
+        endif
+        assign card_collection = collections[handle]
+        assign card_url = fallback_url
+        if card_collection.url != blank
+          assign card_url = card_collection.url
+        endif
+      -%}
+      {
+        "deck": {{ block.settings.deck | json }},
+        "slug": {{ slug | json }},
+        "title": {{ block.settings.title | json }},
+        "stones": [{{ block.settings.stone_1 | json }}, {{ block.settings.stone_2 | json }}, {{ block.settings.stone_3 | json }}],
+        "motto": {{ block.settings.motto | json }},
+        "href": {{ card_url | json }},
+        "art": {% if art_slugs contains art_slug %}{{ art_file | asset_url | json }}{% else %}null{% endif %}
+      }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ]
+}
+{%- endcapture %}
+<script type="application/json" data-deck-data>{{ deck_data | replace: '<', '\u003c' }}</script>
+</section>
+
+{% schema %}
+{
+  "name": "Mazzi delle intenzioni",
+  "max_blocks": 20,
+  "settings": [
+    {
+      "type": "text",
+      "id": "senti_all_handle",
+      "label": "Handle di tutte le emozioni",
+      "default": "come-ti-senti"
+    },
+    {
+      "type": "text",
+      "id": "desideri_all_handle",
+      "label": "Handle di tutte le intenzioni",
+      "default": "cosa-desideri"
+    },
+    {
+      "type": "url",
+      "id": "fallback_url",
+      "label": "Link alternativo",
+      "default": "/collections/all"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Carta",
+      "settings": [
+        {
+          "type": "select",
+          "id": "deck",
+          "label": "Mazzo",
+          "default": "senti",
+          "options": [
+            {
+              "value": "senti",
+              "label": "Come ti senti"
+            },
+            {
+              "value": "desideri",
+              "label": "Cosa desideri"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "slug",
+          "label": "Slug dell’illustrazione"
+        },
+        {
+          "type": "textarea",
+          "id": "title",
+          "label": "Titolo",
+          "info": "Un ritorno a capo crea una nuova riga."
+        },
+        {
+          "type": "text",
+          "id": "stone_1",
+          "label": "Pietra 1"
+        },
+        {
+          "type": "text",
+          "id": "stone_2",
+          "label": "Pietra 2"
+        },
+        {
+          "type": "text",
+          "id": "stone_3",
+          "label": "Pietra 3"
+        },
+        {
+          "type": "text",
+          "id": "motto",
+          "label": "Motto",
+          "info": "Salvato con la carta e nascosto nel disegno approvato."
+        },
+        {
+          "type": "text",
+          "id": "collection_handle",
+          "label": "Handle della collezione"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Mazzi delle intenzioni",
+      "blocks": [
+        {
+          "type": "card",
+          "settings": {
+            "deck": "senti",
+            "slug": "agitazione",
+            "title": "Agitazione\ne rabbia",
+            "motto": "Quando tutto corre troppo",
+            "stone_1": "Ametista",
+            "stone_2": "Howlite",
+            "stone_3": "Rodonite",
+            "collection_handle": "senti-agitazione"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "deck": "senti",
+            "slug": "tristezza",
+            "title": "Tristezza e\npoco slancio",
+            "motto": "Quando la luce sembra poca",
+            "stone_1": "Citrino",
+            "stone_2": "Ambra",
+            "stone_3": "Calcite arancione",
+            "collection_handle": "senti-tristezza"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "deck": "senti",
+            "slug": "paura",
+            "title": "Paura",
+            "motto": "Terra sotto i piedi",
+            "stone_1": "Quarzo fumé",
+            "stone_2": "Ematite",
+            "stone_3": "Malachite",
+            "collection_handle": "senti-paura"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "deck": "senti",
+            "slug": "confusione",
+            "title": "Confusione",
+            "motto": "Pensieri da mettere in fila",
+            "stone_1": "Cristallo di rocca",
+            "stone_2": "Cianite blu",
+            "stone_3": "Calcite blu",
+            "collection_handle": "senti-confusione"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "deck": "senti",
+            "slug": "insicurezza",
+            "title": "Insicurezza",
+            "motto": "Quando dubiti di te",
+            "stone_1": "Diaspro giallo",
+            "stone_2": "Calcite miele",
+            "stone_3": "Septaria",
+            "collection_handle": "senti-insicurezza"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "deck": "senti",
+            "slug": "blocco",
+            "title": "Senso\ndi blocco",
+            "motto": "Quando tutto sembra fermo",
+            "stone_1": "Ossidiana neve",
+            "stone_2": "Unakite",
+            "stone_3": "Avventurina arancione",
+            "collection_handle": "senti-blocco"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "deck": "desideri",
+            "slug": "amore",
+            "title": "Amore",
+            "motto": "La carta del cuore",
+            "stone_1": "Quarzo rosa",
+            "stone_2": "Kunzite",
+            "stone_3": "Smeraldo",
+            "collection_handle": "desiderio-amore"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "deck": "desideri",
+            "slug": "abbondanza",
+            "title": "Abbondanza",
+            "motto": "Un gesto di buon auspicio",
+            "stone_1": "Pirite",
+            "stone_2": "Avventurina verde",
+            "stone_3": "Giada",
+            "collection_handle": "desiderio-abbondanza"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "deck": "desideri",
+            "slug": "gioia",
+            "title": "Gioia",
+            "motto": "Il colore del sole",
+            "stone_1": "Pietra del sole",
+            "stone_2": "Opale giallo",
+            "stone_3": "Calcite gialla",
+            "collection_handle": "desiderio-gioia"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "deck": "desideri",
+            "slug": "protezione",
+            "title": "Protezione",
+            "motto": "Amuleti antichi da portare",
+            "stone_1": "Tormalina nera",
+            "stone_2": "Ossidiana nera",
+            "stone_3": "Onice nero",
+            "collection_handle": "desiderio-protezione"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "deck": "desideri",
+            "slug": "serenita",
+            "title": "Serenità",
+            "motto": "Un angolo di pace",
+            "stone_1": "Amazzonite",
+            "stone_2": "Angelite",
+            "stone_3": "Crisocolla",
+            "collection_handle": "desiderio-serenita"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "deck": "desideri",
+            "slug": "concentrazione",
+            "title": "Concentrazione",
+            "motto": "A mente lucida",
+            "stone_1": "Fluorite",
+            "stone_2": "Sodalite",
+            "stone_3": "Occhio di falco",
+            "collection_handle": "desiderio-concentrazione"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "deck": "desideri",
+            "slug": "coraggio",
+            "title": "Coraggio",
+            "motto": "Il passo che rimandi",
+            "stone_1": "Occhio di tigre",
+            "stone_2": "Corniola",
+            "stone_3": "Diaspro rosso",
+            "collection_handle": "desiderio-coraggio"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "deck": "desideri",
+            "slug": "comunicazione",
+            "title": "Comunicazione",
+            "motto": "Le pietre della parola",
+            "stone_1": "Lapislazzuli",
+            "stone_2": "Acquamarina",
+            "stone_3": "Calcedonio",
+            "collection_handle": "desiderio-comunicazione"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "deck": "desideri",
+            "slug": "intuizione",
+            "title": "Intuizione",
+            "motto": "La voce dell'anima",
+            "stone_1": "Labradorite",
+            "stone_2": "Pietra di luna",
+            "stone_3": "Ametista",
+            "collection_handle": "desiderio-intuizione"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "deck": "desideri",
+            "slug": "purificazione",
+            "title": "Purificazione",
+            "motto": "Per fare spazio in casa",
+            "stone_1": "Selenite",
+            "stone_2": "Cristallo di rocca",
+            "stone_3": "Quarzo latteo",
+            "collection_handle": "desiderio-purificazione"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
