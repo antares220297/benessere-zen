@@ -2,33 +2,40 @@
 {%- assign missing = goal | minus: cart.total_price -%}
 <section class="cart-page" aria-labelledby="cart-title">
   <h1 id="cart-title">Il tuo <em>carrello</em></h1>
+  {%- if cart.item_count == 0 -%}
+    <p class="cart-empty">Il tuo carrello è vuoto.</p>
+    <a class="continue-shopping" href="{{ routes.all_products_collection_url }}">Scopri i prodotti</a>
+  {%- else -%}
   <div class="cart-layout">
     <div class="cart-products">
       <ul class="cart-items">
         {%- for item in cart.items -%}
+          {%- capture item_name -%}{% render 'bz-product-name', product: item.product %}{%- endcapture -%}
           <li class="cart-item" data-key="{{ item.key }}" data-quantity="{{ item.quantity }}" data-price="{{ item.final_price }}">
             <a class="item-photo" href="{{ item.url }}">
               {%- if item.image -%}
-                {{ item.image | image_url: width: 240 | image_tag: alt: item.product.title, width: 120, height: 120, loading: 'lazy' }}
+                {{ item.image | image_url: width: 240 | image_tag: alt: item_name, width: 120, height: 120, loading: 'lazy' }}
               {%- endif -%}
             </a>
             <div class="item-description">
-              <h2><a href="{{ item.url }}">{{ item.product.title | escape }}</a></h2>
+              <h2><a href="{{ item.url }}">{{ item_name | escape }}</a></h2>
+              {%- unless item.product.has_only_default_variant -%}
+                <p>{{ item.variant.title | escape }}</p>
+              {%- endunless -%}
               <p>{% render 'bz-money', cents: item.final_price %}</p>
-              <button type="button" class="remove-item" aria-label="Rimuovi {{ item.product.title | escape }}">Rimuovi</button>
+              <button type="button" class="remove-item" aria-label="Rimuovi {{ item_name | escape }}">Rimuovi</button>
             </div>
             <div class="item-controls">
-              <div class="quantity" role="group" aria-label="Quantità: {{ item.product.title | escape }}">
-                <button type="button" data-delta="-1" aria-label="Diminuisci quantità: {{ item.product.title | escape }}" {% if item.quantity <= 1 %}disabled{% endif %}>−</button>
-                <output aria-label="Quantità: {{ item.product.title | escape }}">{{ item.quantity }}</output>
-                <button type="button" data-delta="1" aria-label="Aumenta quantità: {{ item.product.title | escape }}">+</button>
+              <div class="quantity" role="group" aria-label="Quantità: {{ item_name | escape }}">
+                <button type="button" data-delta="-1" aria-label="Diminuisci quantità: {{ item_name | escape }}" {% if item.quantity <= 1 %}disabled{% endif %}>−</button>
+                <output aria-label="Quantità: {{ item_name | escape }}">{{ item.quantity }}</output>
+                <button type="button" data-delta="1" aria-label="Aumenta quantità: {{ item_name | escape }}">+</button>
               </div>
               <strong class="item-total">{% render 'bz-money', cents: item.final_line_price %}</strong>
             </div>
           </li>
         {%- endfor -%}
       </ul>
-      <p class="cart-empty" {% if cart.item_count > 0 %}hidden{% endif %}>Il tuo carrello è vuoto.</p>
       <a class="continue-shopping" href="{{ routes.all_products_collection_url }}">{% render 'bz-nav-label', label: 'Continua gli acquisti' %}</a>
     </div>
     <aside class="cart-summary" aria-labelledby="summary-title">
@@ -45,7 +52,9 @@
         </div>
       </div>
       <div class="cart-total"><span>Totale</span><strong id="cart-total">{% render 'bz-money', cents: cart.total_price %}</strong></div>
-      <a class="btn gold checkout" href="{{ routes.cart_url }}/checkout">{% render 'bz-nav-label', label: 'Vai al pagamento' %}</a>
+      <form class="cart-checkout-form" action="{{ routes.cart_url }}" method="post">
+        <button class="btn gold checkout" type="submit" name="checkout">{% render 'bz-nav-label', label: 'Vai al pagamento' %}</button>
+      </form>
       <p>Spediamo solo in Italia. Il corriere Express è {{ settings.bz_express_rate | default: '5,90' }}&nbsp;€, gratuito da {{ settings.bz_free_shipping | default: 50 }}&nbsp;€.</p>
       <div class="pickup-note">
         {% render 'bz-icon', name: 'storefront' %}
@@ -57,6 +66,7 @@
       <p>{% render 'bz-hours', part: 'summary' %}</p>
     </aside>
   </div>
+  {%- endif -%}
 </section>
 {% schema %}
 {

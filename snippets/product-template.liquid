@@ -1,3 +1,4 @@
+{%- capture display_name -%}{% render 'bz-product-name', product: product %}{%- endcapture -%}
 {% comment %}
   Renders product detail
 
@@ -113,7 +114,7 @@
       "id": {{ product.id | default: 0 }},
       "selected_variant_id": {{ product.selected_or_first_available_variant.id | default: 0 }},
       "has_only_default_variant": {{ product.has_only_default_variant }},
-      "title": "{{ product.title | escape }}",
+      "title": "{{ display_name | escape }}",
       "variant_title": "{{ product.selected_or_first_available_variant.title | escape }}",
       "sku": "{{ product.selected_or_first_available_variant.sku }}",
       "currencyCode": "{{ cart.currency.iso_code }}",
@@ -190,7 +191,7 @@
               {%- endif -%}
             {%- endif -%}
             {%- if product.title != blank and section.settings.show_product_name -%}
-                <{{ section.settings.heading_tag }} class="w-full {% if show_content_center %}text-center{% endif %} product-title h2 mb-3 leading-tight title-size--{{ section.id }}">{{ product.title | escape }}</{{ section.settings.heading_tag }}>
+                <{{ section.settings.heading_tag }} class="w-full {% if show_content_center %}text-center{% endif %} product-title h2 mb-3 leading-tight title-size--{{ section.id }}">{{ display_name | escape }}</{{ section.settings.heading_tag }}>
             {%- endif -%}
             {%- for block in section.blocks -%}
               {%- case block.type -%}
@@ -323,7 +324,7 @@
                   {% endstyle %}
                   <div class="mb-5 w-full{% if show_content_center %} text-center{% endif %}" {{ block.shopify_attributes }}>
                     <{{ block.settings.heading_tag }} class="product-title h2 title-size--{{ block.id }} mb-3 leading-tight">
-                      {{ product.title | escape }}
+                      {{ display_name | escape }}
                     </{{ block.settings.heading_tag }}>
                   </div>
                 {%- when 'price' -%}
@@ -972,7 +973,7 @@
                 {%- when 'social_sharing' -%}
                   <div class="flex{% if show_content_center %} justify-center{% endif %} w-full mt-2 items-center mb-5"{{ block.shopify_attributes }}>
                     <p class="mr-1">{{ 'products.product.share_social' | t }}</p>
-                    {% render 'social-sharing', share_title: product.title, share_permalink: product.url, share_image: product %}
+                    {% render 'social-sharing', share_title: display_name, share_permalink: product.url, share_image: product %}
                   </div>
                 {% when 'collection_link' %}
                   {% if block.settings.text != blank %}
@@ -1106,7 +1107,7 @@
                     {
                       "id": {{ product.id }},
                       "available": {{ product.selected_or_first_available_variant.available | default: false }},
-                      "title": "{{ product.title | escape }}",
+                      "title": "{{ display_name | escape }}",
                       "compare_at_price": {{ product.selected_or_first_available_variant.compare_at_price | default: 0 }},
                       "price": {{ product.selected_or_first_available_variant.price | default: 0 }},
                       "price_with_currency": "{% if settings.currency_code_enable %}{{ product.selected_or_first_available_variant.price | money_with_currency | escape }}{% else %}{{ product.selected_or_first_available_variant.price | money | escape }}{% endif %}",
@@ -1915,7 +1916,7 @@
                       {% if featured_media %}
                         <img
                           src="{{ featured_media | image_url: width: 150 }}"
-                          alt="{{ featured_media.alt | split: "#" | first | escape }}"
+                          alt="{{ display_name | escape }}"
                           width="{{ featured_media.width }}"
                           loading="lazy" 
                           height="{{ product.featured_media.height }}"
@@ -1928,7 +1929,7 @@
                   </div>
                   <div class="pt-0.5 ml-5 flex-1 pr-8 rtl:pl-8 rtl:lg:pr-0 rtl:pr-0 lg:pr-0 mr-5">
                     <div>
-                      <p class="capitalize p-break-words leading-tight duration-200 transition hover-text-link text-[rgba(var(--colors-heading))]">{{ product.title | escape }}</p> 
+                      <p class="capitalize p-break-words leading-tight duration-200 transition hover-text-link text-[rgba(var(--colors-heading))]">{{ display_name | escape }}</p>
                     </div>
                     <div id="price-sticky-{{ section.id }}" class="price-sticky-{{ section.id }} pricearea" role="status">
                       {%- render 'price',
@@ -2263,7 +2264,7 @@
     {
       "@context": "http://schema.org/",
       "@type": "Product",
-      "name": {{ product.title | json }},
+      "name": {{ display_name | json }},
       "url": {{ request.origin | append: product.url | json }},
       {% if seo_media -%}
         "image": [

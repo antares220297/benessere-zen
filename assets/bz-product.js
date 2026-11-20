@@ -7,6 +7,7 @@
       button.addEventListener("click", function () {
         thumbs.forEach(function (item) {
           item.classList.toggle("is-on", item === button);
+          item.setAttribute("aria-pressed", String(item === button));
         });
         var full = button.getAttribute("data-full");
         if (stage && full) {
@@ -56,12 +57,26 @@
     });
     root.querySelectorAll("[data-bz-variant]").forEach(function (radio) {
       radio.addEventListener("change", function () {
+        var imageId = radio.dataset.imageId || root.dataset.featuredImageId;
+        var thumb = Array.from(thumbs).find(function (button) {
+          return button.dataset.imageId === imageId;
+        });
+        if (thumb) thumb.click();
+        var galleryVariant = root.querySelector("[data-bz-gallery-variant]");
+        if (galleryVariant) galleryVariant.textContent = radio.nextElementSibling.textContent;
         var stickyId = root.querySelector(".bz-sticky input[name='id']");
         var stickyButton = root.querySelector(".bz-sticky button");
         if (stickyId) stickyId.value = radio.value;
+        if (mainAdd) {
+          mainAdd.disabled = radio.disabled;
+          mainAdd.classList.toggle("bz-stock--soldout", radio.disabled);
+          mainAdd.querySelector("[data-bz-add-label]").textContent = radio.disabled ? "Esaurito" : "Aggiungi al carrello";
+          if (!radio.disabled) mainAdd.setAttribute("aria-label", "Aggiungi " + root.querySelector("h1").textContent + " al carrello");
+        }
         if (stickyButton) {
           stickyButton.disabled = radio.disabled;
           stickyButton.textContent = radio.disabled ? "Esaurito" : "Aggiungi";
+          if (!radio.disabled) stickyButton.setAttribute("aria-label", "Aggiungi " + root.querySelector("h1").textContent + " al carrello");
         }
         var cents = Number(radio.getAttribute("data-bz-variant"));
         if (Number.isFinite(cents) && cents >= 0) {

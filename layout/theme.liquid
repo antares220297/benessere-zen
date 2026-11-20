@@ -22,9 +22,14 @@
       <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
     {%- endunless -%}
 
+    {%- if template.name == 'product' -%}
+      {%- capture product_name -%}{% render 'bz-product-name', product: product %}{%- endcapture -%}
+    {%- endif -%}
     <title>
       {%- if template.name == '404' -%}
         Questa pagina non c'è &ndash; {{ shop.name }}
+      {%- elsif template.name == 'product' -%}
+        {{ product_name | escape }} &ndash; {{ shop.name | escape }}
       {%- elsif template.suffix == 'crediti-immagini' -%}
         Crediti immagini &ndash; {{ shop.name }}
       {%- else -%}
@@ -113,7 +118,7 @@
     {%- endunless -%}
     
     {% liquid 
-      render 'meta-tags'
+      render 'meta-tags', product_name: product_name
       render 'font-face'
       echo 'theme.css' | asset_url | stylesheet_tag: preload: true
       render 'css-variables'

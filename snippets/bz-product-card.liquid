@@ -1,15 +1,13 @@
+{%- capture display_name -%}{% render 'bz-product-name', product: card %}{%- endcapture -%}
 {% comment %}
   Product card. card: product. style: home (default), grid, form, plp or gift.
-  Use nome_vetrina for the visible name and keep the Shopify title for image alt.
+  Use the display name for the title and accessible labels.
 {% endcomment %}
 {%- liquid
-  assign card_title = card.title
   assign variant = card.selected_or_first_available_variant
   assign card_style = style | default: 'home'
-  assign display_name = card.metafields.custom.nome_vetrina.value | strip
   assign name_class = 'has-nome-vetrina'
-  if display_name == blank
-    assign display_name = card_title
+  if card.metafields.custom.nome_vetrina.value == blank
     assign name_class = 'is-title-fallback'
   endif
   assign subtitle = card.metafields.custom.variante_vetrina.value | strip
@@ -28,7 +26,7 @@
   <a class="bz-product-tile__link" href="{{ card.url }}">
     <div class="bz-product-tile__media">
       {%- if card.featured_image != blank -%}
-        {{ card.featured_image | image_url: width: 800 | image_tag: decoding: 'async', alt: card_title, loading: 'lazy', widths: '240, 400, 640, 800', sizes: image_sizes, width: card.featured_image.width, height: card.featured_image.height }}
+        {{ card.featured_image | image_url: width: 800 | image_tag: decoding: 'async', alt: display_name, loading: 'lazy', widths: '240, 400, 640, 800', sizes: image_sizes, width: card.featured_image.width, height: card.featured_image.height }}
       {%- endif -%}
       {%- render 'bz-card-stock', available: card.available, variant: variant -%}
     </div>

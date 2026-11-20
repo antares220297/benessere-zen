@@ -273,23 +273,24 @@
   let returnFocus;
   const routes = window.BZ || {};
   async function refreshCart() {
-    if (!drawer || !routes.cart) return;
-    const cart = await fetch(routes.cart, { headers: { Accept: 'application/json' } }).then(r => r.json());
-    const rows = q('[data-cart-rows]', drawer);
-    if (rows) {
-      rows.innerHTML = cart.items.map(item => `<div class="cart-row"><img src="${item.image}" alt="${item.product_title.replace(/"/g, '&quot;')}" width="200" height="200"><div><a href="${item.url}">${item.product_title}</a><p>${item.quantity} × ${euro(item.final_price)}</p></div></div>`).join('') || '<p>Il carrello è vuoto.</p>';
-    }
-    const total = q('[data-cart-total]', drawer);
-    if (total) total.textContent = euro(cart.total_price);
-    paintShipping(q('[data-shipping]', drawer), cart.total_price);
+    const content = q('[data-cart-content]', drawer);
+    if (!content) return;
+    const url = new URL(location.href);
+    url.searchParams.set('section_id', content.dataset.sectionId);
+    const response = await fetch(url, { cache: 'no-store' });
+    if (!response.ok) return;
+    const html = new DOMParser().parseFromString(await response.text(), 'text/html');
+    const updated = q('[data-cart-content]', html);
+    if (!updated) return;
+    content.replaceWith(updated);
+    const itemCount = Number(updated.dataset.itemCount);
     const count = q('[data-cart-count]');
     if (count) {
-      count.textContent = String(cart.item_count);
-      count.hidden = cart.item_count < 1;
+      count.textContent = String(itemCount);
+      count.hidden = itemCount < 1;
     }
     const label = q('[data-bz-header-cart]');
-    if (label) label.setAttribute('aria-label', 'Carrello, ' + cart.item_count + (cart.item_count === 1 ? ' pezzo' : ' pezzi'));
-    return cart;
+    if (label) label.setAttribute('aria-label', 'Carrello, ' + itemCount + (itemCount === 1 ? ' pezzo' : ' pezzi'));
   }
   function paintShipping(box, cents) {
     if (!box) return;

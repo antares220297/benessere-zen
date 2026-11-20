@@ -1,3 +1,4 @@
+{%- capture display_name -%}{% render 'bz-product-name', product: product %}{%- endcapture -%}
 {% doc %}
   Product card for related products, guides and search results.
   @param {product} product - Product to render
@@ -7,12 +8,9 @@
 {%- liquid
   assign variant = product.selected_or_first_available_variant
   assign secondary = product.images[1]
-  assign photo_alt = product.featured_image.alt | default: product.title
   assign category = product.type | strip
-  assign display_name = product.metafields.custom.nome_vetrina.value | strip
   assign name_class = 'has-nome-vetrina'
-  if display_name == blank
-    assign display_name = product.title
+  if product.metafields.custom.nome_vetrina.value == blank
     assign name_class = 'is-title-fallback'
   endif
   assign loading = 'lazy'
@@ -23,9 +21,9 @@
 <article class="bz-card bz-product-tile {{ name_class }}{% unless template.name == 'collection' %} bz-section-product{% endunless %}{% unless product.available %} is-sold{% endunless %}">
   <a class="bz-card__photo bz-product-tile__media" href="{{ product.url }}">
     {%- if product.featured_image != blank -%}
-      {{ product.featured_image | image_url: width: 800 | image_tag: alt: photo_alt, class: 'bz-card__img', widths: '240, 400, 600, 800', sizes: '(min-width: 860px) 18vw, 46vw', loading: loading, width: 400, height: 400 }}
+      {{ product.featured_image | image_url: width: 800 | image_tag: alt: display_name, class: 'bz-card__img', widths: '240, 400, 600, 800', sizes: '(min-width: 860px) 18vw, 46vw', loading: loading, width: 400, height: 400 }}
     {%- else -%}
-      <span class="bz-vh">{{ product.title | escape }}</span>
+      <span class="bz-vh">{{ display_name | escape }}</span>
     {%- endif -%}
     {%- if secondary != blank -%}
       {{ secondary | image_url: width: 800 | image_tag: alt: '', class: 'bz-card__img bz-card__img--alt', widths: '240, 400, 800', sizes: '(min-width: 860px) 18vw, 46vw', loading: 'lazy', width: 400, height: 400 }}

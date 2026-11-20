@@ -1,18 +1,15 @@
+{%- capture display_name -%}{% render 'bz-product-name', product: rec %}{%- endcapture -%}
 {%- liquid
   assign variant = rec.selected_or_first_available_variant
   assign subtitle = rec.metafields.custom.variante_vetrina.value | strip
-  assign display_name = rec.metafields.custom.nome_vetrina.value | strip
-  if display_name == blank
-    assign display_name = rec.title
-  endif
 -%}
 <label class="ritual-row{% unless variant.available %} is-unavailable{% endunless %}">
   <span class="ritual-row-media">
-    <input class="bz-vh" type="checkbox" {% if variant.available %}checked data-variant="{{ variant.id }}" data-price="{{ variant.price }}"{% else %}disabled{% endif %} aria-label="Includi nel set: {{ rec.title | escape }}">
+    <input class="bz-vh" type="checkbox" {% if variant.available %}checked data-variant="{{ variant.id }}" data-price="{{ variant.price }}"{% else %}disabled{% endif %} aria-label="Includi nel set: {{ display_name | escape }}">
     <span class="set-check">{% render 'bz-icon', name: 'check' %}</span>
     <span class="ritual-thumb">
       {%- if rec.featured_image -%}
-        {{ rec.featured_image | image_url: width: 900 | image_tag: alt: rec.title, loading: 'lazy', decoding: 'async', widths: '144, 240, 360, 540, 720, 900', sizes: '(min-width: 1024px) min(30vw, 410px), 72px' }}
+        {{ rec.featured_image | image_url: width: 900 | image_tag: alt: display_name, loading: 'lazy', decoding: 'async', widths: '144, 240, 360, 540, 720, 900', sizes: '(min-width: 1024px) min(30vw, 410px), 72px' }}
       {%- endif -%}
     </span>
     {%- render 'bz-card-stock', available: variant.available, variant: variant -%}

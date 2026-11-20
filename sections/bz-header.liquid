@@ -44,6 +44,11 @@
   <aside class="drawer" role="dialog" aria-modal="true" aria-label="Il tuo carrello" tabindex="-1">
     <button class="close" type="button" data-cart-close aria-label="Chiudi carrello">×</button>
     <h2>Il tuo <em>carrello</em></h2>
+    <div data-cart-content data-section-id="{{ section.id }}" data-item-count="{{ cart.item_count }}">
+    {%- if cart.item_count == 0 -%}
+      <p>Il carrello è vuoto.</p>
+      <a class="btn gold" href="{{ routes.all_products_collection_url }}">Scopri i prodotti</a>
+    {%- else -%}
     <div class="shipping" data-shipping>
       <p data-shipping-text>
         {%- assign goal = settings.bz_free_shipping | default: 50 | times: 100 -%}
@@ -59,22 +64,28 @@
     </div>
     <div data-cart-rows>
       {%- for item in cart.items -%}
+          {%- capture item_name -%}{% render 'bz-product-name', product: item.product %}{%- endcapture -%}
         <div class="cart-row">
           {%- if item.image -%}
-            {{ item.image | image_url: width: 200 | image_tag: alt: item.product.title, loading: 'lazy', width: 90, height: 90 }}
+            {{ item.image | image_url: width: 200 | image_tag: alt: item_name, loading: 'lazy', width: 90, height: 90 }}
           {%- endif -%}
           <div>
-            <a href="{{ item.url }}">{{ item.product.title | escape }}</a>
+            <a href="{{ item.url }}">{{ item_name | escape }}</a>
+            {%- unless item.product.has_only_default_variant -%}
+              <p>{{ item.variant.title | escape }}</p>
+            {%- endunless -%}
             <p>{{ item.quantity }} × {% render 'bz-money', cents: item.final_price %}</p>
           </div>
         </div>
-      {%- else -%}
-        <p>Il carrello è vuoto.</p>
       {%- endfor -%}
     </div>
     <div class="cart-total"><span>Totale</span><strong data-cart-total>{% render 'bz-money', cents: cart.total_price %}</strong></div>
-    <a class="btn gold" href="{{ routes.cart_url }}/checkout">{% render 'bz-nav-label', label: 'Vai al pagamento' %}</a>
+    <form class="cart-checkout-form" action="{{ routes.cart_url }}" method="post">
+      <button class="btn gold" type="submit" name="checkout">{% render 'bz-nav-label', label: 'Vai al pagamento' %}</button>
+    </form>
     <a class="text-link" href="{{ routes.cart_url }}">Modifica il carrello</a>
+    {%- endif -%}
+    </div>
   </aside>
 </div>
 

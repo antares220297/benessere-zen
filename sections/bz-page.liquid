@@ -1,9 +1,11 @@
 {{ 'bz-tokens.css' | asset_url | stylesheet_tag }}
 {{ 'bz-home.css' | asset_url | stylesheet_tag }}
 
-<article class="bz bz-page">
+<article class="bz bz-page{% if page.handle == 'le-nostre-collezioni' %} bz-page--collections{% endif %}">
   <h1>{{ page.title | escape }}</h1>
-  {%- if page.content != blank -%}
+  {%- if page.handle == 'le-nostre-collezioni' -%}
+    {% render 'bz-main-collections' %}
+  {%- elsif page.content != blank -%}
     <div class="bz-page__body rte">{{ page.content }}</div>
   {%- endif -%}
 </article>

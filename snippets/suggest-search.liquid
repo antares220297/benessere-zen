@@ -65,7 +65,8 @@
             {{ 'templates.search.products' | t }}
           </h2> 
           <ul role="listbox" aria-labelledby="predictive-search-products" class="predictive-search-list grid md:!grid grid-cols-1 gap-5 pl-6 pr-6 lg:pl-10 lg:pr-10 pb-2" :class="currentTab == 2 ? 'block' : '!hidden md:grid'">
-            {%- for product in popular_product_search.products limit: settings.product_limit -%} 
+            {%- for product in popular_product_search.products limit: settings.product_limit -%}
+              {%- capture display_name -%}{% render 'bz-product-name', product: product %}{%- endcapture -%}
               <li id="predictive-search-option-{{ forloop.index }}" role="option" aria-selected="false">
                 <a href="{{ product.url }}" class="flex relative disable-effect h-full">
                   <div class="w-24 relative">
@@ -73,7 +74,7 @@
                       {%- if product.featured_media != blank -%}
                         <img
                           src="{{ product.featured_media | image_url: width: 150 }}"
-                          alt="{{ product.featured_media.alt | split: "#" | first | escape }}"
+                          alt="{{ display_name | escape }}"
                           width="{{ product.featured_media.width }}"
                           loading="lazy"
                           height="{{ product.featured_media.height }}"
@@ -89,7 +90,7 @@
                       <div class="leading-tight mb-2 uppercase p-break-words tracking-widest text-xs">{{ product.vendor }}</div>
                     {%- endif -%}
                     <div>
-                      <p class="capitalize p-break-words leading-tight duration-200 transition hover-text-link text-[rgba(var(--colors-heading))]">{{ product.title | escape }}</p> 
+                      <p class="capitalize p-break-words leading-tight duration-200 transition hover-text-link text-[rgba(var(--colors-heading))]">{{ display_name | escape }}</p>
                     </div>
                     {%- if settings.predictive_search_show_price -%}
                       {% render 'price', product: product, use_variant: true, show_badges: false, price_class: "pt-2" %} 

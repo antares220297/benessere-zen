@@ -1,4 +1,9 @@
-{%- if collection.handle == 'cosmetica' or collection.handle == 'cosmesi-corpo' -%}
+{%- if collection.handle == 'le-nostre-collezioni' -%}
+  <section class="plp-head">
+    <h1>Le nostre collezioni</h1>
+    {% render 'bz-main-collections' %}
+  </section>
+{%- elsif collection.handle == 'cosmetica' or collection.handle == 'cosmesi-corpo' -%}
   {% render 'bz-collection-groups' %}
 {%- else -%}
 {%- liquid
@@ -102,10 +107,8 @@
         {%- endif -%}
       {%- endfor -%}
     </div>
-    <div class="filters-overlay" id="filters-{{ section.id }}" hidden>
-      <button class="filters-backdrop" type="button" data-filters-close aria-label="Chiudi filtri"></button>
-      <div class="filters" role="dialog" aria-modal="true" aria-labelledby="filters-title-{{ section.id }}">
-      <div class="filters-top"><h2 id="filters-title-{{ section.id }}">Filtri</h2><button class="icon-btn" type="button" data-filters-close aria-label="Chiudi">×</button></div>
+    <dialog class="filters" id="filters-{{ section.id }}" aria-labelledby="filters-title-{{ section.id }}">
+      <div class="filters-top"><h2 id="filters-title-{{ section.id }}">Filtri</h2><button class="icon-btn" type="button" data-filters-close autofocus aria-label="Chiudi filtri">{% render 'bz-icon', name: 'close' %}</button></div>
       <div class="filters-body">
       {%- for filter in collection.filters -%}
         <fieldset class="fgroup">
@@ -133,22 +136,23 @@
                   endif
                 endif
               -%}
-              <label>Da <input type="number" name="{{ filter.min_value.param_name }}" min="0" step="0.01" {% if filter.min_value.value %}value="{{ price_min }}"{% endif %}></label>
-              <label>A <input type="number" name="{{ filter.max_value.param_name }}" min="0" step="0.01" {% if filter.max_value.value %}value="{{ price_max }}"{% endif %}></label>
+              <label class="filter-price">Da <input type="number" name="{{ filter.min_value.param_name }}" min="0" step="0.01" {% if filter.min_value.value %}value="{{ price_min }}"{% endif %}></label>
+              <label class="filter-price">A <input type="number" name="{{ filter.max_value.param_name }}" min="0" step="0.01" {% if filter.max_value.value %}value="{{ price_max }}"{% endif %}></label>
             {%- else -%}
+              <div class="filter-options">
               {%- for value in filter.values -%}
-                <label>
+                <label class="filter-option">
                   <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" {% if value.active %}checked{% endif %} {% if value.count == 0 and value.active == false %}disabled{% endif %}>
-                  {{ value.label | escape }} <small>{{ value.count }}</small>
+                  <span>{{ value.label | escape }} <small>{{ value.count }}</small></span>
                 </label>
               {%- endfor -%}
+              </div>
           {%- endcase -%}
         </fieldset>
       {%- endfor -%}
-      <button class="btn gold" type="submit">Mostra i pezzi</button>
       </div>
-      </div>
-    </div>
+      <div class="filters-foot"><button class="btn gold" type="submit">Mostra i pezzi</button></div>
+    </dialog>
   </form>
 
   <section class="plp-results" aria-label="Prodotti">
@@ -178,17 +182,23 @@
   (function () {
     var root = document.getElementById('shopify-section-{{ section.id }}');
     if (!root) return;
-    var overlay = root.querySelector('.filters-overlay');
-    var open = root.querySelector('[data-filters-open]');
-    function setOpen(on) {
-      if (!overlay) return;
-      overlay.hidden = !on;
-      overlay.classList.toggle('open', on);
-      if (open) open.setAttribute('aria-expanded', String(on));
-      document.body.classList.toggle('locked', on);
-    }
-    open && open.addEventListener('click', function () { setOpen(true); });
-    root.querySelectorAll('[data-filters-close]').forEach(function (button) { button.addEventListener('click', function () { setOpen(false); }); });
+    var dialog = root.querySelector('.filters');
+    var opener = root.querySelector('[data-filters-open]');
+    if (!dialog || !opener) return;
+    opener.addEventListener('click', function () {
+      dialog.showModal();
+      opener.setAttribute('aria-expanded', 'true');
+      document.body.classList.add('locked');
+    });
+    dialog.addEventListener('close', function () {
+      opener.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('locked');
+      opener.focus();
+    });
+    dialog.querySelector('[data-filters-close]').addEventListener('click', function () { dialog.close(); });
+    dialog.addEventListener('click', function (event) {
+      if (event.target === dialog) dialog.close();
+    });
   })();
 </script>
 {%- endif -%}

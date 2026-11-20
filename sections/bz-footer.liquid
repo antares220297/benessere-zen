@@ -23,6 +23,7 @@
             {%- endfor -%}
           {%- elsif block.settings.menu != blank and block.settings.menu.links.size > 0 -%}
             {%- for link in block.settings.menu.links -%}
+              {%- if link.type == 'blog_link' or link.type == 'article_link' or link.url contains '/blogs/' -%}{%- continue -%}{%- endif -%}
               <a href="{{ link.url }}">{{ link.title | escape }}</a>
             {%- endfor -%}
           {%- else -%}
@@ -32,6 +33,7 @@
               {%- assign label = block.settings[label_key] -%}
               {%- assign href = block.settings[link_key] -%}
               {%- if label != blank and href != blank -%}
+                {%- if href contains '/blogs/' -%}{%- continue -%}{%- endif -%}
                 <a href="{{ href }}">{{ label | escape }}</a>
               {%- endif -%}
             {%- endfor -%}

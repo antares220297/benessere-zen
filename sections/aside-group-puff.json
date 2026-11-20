@@ -339,6 +339,7 @@
     },
     "cookie-banner": {
       "type": "cookie-banner",
+      "disabled": true,
       "settings": {
         "cookie_enabled": true,
         "cookie_notice": "<p>Utilizziamo cookie e tecnologie simili per offrirti la migliore esperienza sul nostro sito web.</p>",
