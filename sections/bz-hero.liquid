@@ -1,6 +1,6 @@
 <section class="home-hero" aria-label="In primo piano">
   <div class="hero-slides" data-bz-hero>
-    <div class="hero-slide hero-slide--featured active" aria-label="1 di 3">
+    <div class="hero-slide hero-slide--featured active" role="group" aria-label="1 di 3">
       <img class="hero-photo" src="{{ 'bz-negozio-home-hero-negozio.jpg' | asset_url }}" srcset="{% render 'bz-cover-srcset', asset: 'bz-negozio-home-hero-negozio.jpg', width: 1600 %}" sizes="(min-width: 1440px) 798px, (min-width: 1024px) 57vw, 95vw" alt="{{ section.settings.image_alt | escape }}" width="1600" height="900" loading="eager" fetchpriority="high">
       <div class="hero-copy">
         <h1>{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h1>
@@ -11,24 +11,24 @@
         </div>
       </div>
     </div>
-    <div class="hero-slide new-slide" hidden aria-hidden="true" inert aria-label="2 di 3">
+    <div class="hero-slide hero-slide--featured" role="group" aria-hidden="true" inert aria-label="2 di 3">
+      <img class="hero-photo" src="{{ 'bz-negozio-home-hero-incensi.jpg' | asset_url }}" srcset="{% render 'bz-cover-srcset', asset: 'bz-negozio-home-hero-incensi.jpg', width: 1600 %}" sizes="(min-width: 1440px) 798px, (min-width: 1024px) 57vw, 95vw" alt="Banco con portaincensi e statuette nel negozio Benessere Zen a Cento" width="1600" height="900" loading="lazy">
       <div class="hero-copy">
         <h2>{{ section.settings.slide_2_heading | escape }} <em>{{ section.settings.slide_2_accent | escape }}</em></h2>
         <p>{{ section.settings.slide_2_text | escape }}</p>
-        <div class="new-products bz-product-group">
-          {%- for product in section.settings.slide_2_products -%}
-            {% render 'bz-product-card', card: product, style: 'home' %}
-          {%- endfor -%}
+        <div class="hero-actions">
+          <a class="btn gold" href="{{ section.settings.slide_2_link }}">{% render 'bz-nav-label', label: 'Vedi i nuovi arrivi' %}</a>
         </div>
-        <a class="bz-row-link" href="{{ section.settings.slide_2_link }}">{% render 'bz-nav-label', label: 'Vedi i nuovi arrivi' %}</a>
       </div>
     </div>
-    <div class="hero-slide" hidden aria-hidden="true" inert aria-label="3 di 3">
+    <div class="hero-slide hero-slide--featured" role="group" aria-hidden="true" inert aria-label="3 di 3">
       <img class="hero-photo" src="{{ 'bz-cover-cura-di-se-v3b.jpg' | asset_url }}" srcset="{% render 'bz-cover-srcset', asset: 'bz-cover-cura-di-se-v3b.jpg', width: 1280 %}" sizes="(min-width: 1440px) 798px, (min-width: 1024px) 57vw, 95vw" alt="{{ section.settings.slide_3_alt | escape }}" width="1280" height="720" loading="lazy">
       <div class="hero-copy">
         <h2>{{ section.settings.slide_3_heading | escape }} <em>{{ section.settings.slide_3_accent | escape }}</em></h2>
         <p>{{ section.settings.slide_3_text | escape }}</p>
-        <a class="btn gold" href="{{ section.settings.slide_3_link }}">{% render 'bz-nav-label', label: section.settings.slide_3_label %}</a>
+        <div class="hero-actions">
+          <a class="btn gold" href="{{ section.settings.slide_3_link }}">{% render 'bz-nav-label', label: section.settings.slide_3_label %}</a>
+        </div>
       </div>
     </div>
     <div class="hero-navigation" role="group" aria-label="Comandi delle slide" hidden>
@@ -75,11 +75,11 @@
   "settings": [
     { "type": "text", "id": "heading", "label": "Titolo", "default": "Un rituale" },
     { "type": "text", "id": "heading_accent", "label": "Corsivo", "default": "da portare addosso" },
-    { "type": "textarea", "id": "text", "label": "Testo", "default": "Mala, bracciali e ciondoli in pietra naturale." },
+    { "type": "textarea", "id": "text", "label": "Testo", "default": "Ciondoli, pietre, candele e creme naturali." },
     { "type": "text", "id": "image_alt", "label": "Testo alternativo", "default": "Scaffali di incensi e cosmesi nel negozio Benessere Zen a Cento" },
-    { "type": "text", "id": "primary_label", "label": "Pulsante principale", "default": "Vedi i mala →" },
+    { "type": "text", "id": "primary_label", "label": "Pulsante principale", "default": "Tutti i gioielli" },
     { "type": "url", "id": "primary_link", "label": "Link principale" },
-    { "type": "text", "id": "secondary_label", "label": "Pulsante secondario", "default": "Tutti i gioielli" },
+    { "type": "text", "id": "secondary_label", "label": "Pulsante secondario", "default": "Ayurveda" },
     { "type": "url", "id": "secondary_link", "label": "Link secondario" },
     { "type": "product", "id": "featured_product", "label": "Mini scheda" },
     { "type": "collection", "id": "rotation_collection", "label": "Collezione per la rotazione" },
@@ -87,7 +87,6 @@
     { "type": "text", "id": "slide_2_accent", "label": "Slide 2 corsivo", "default": "online" },
     { "type": "text", "id": "slide_2_text", "label": "Slide 2 testo", "default": "Le ultime pietre che abbiamo scelto." },
     { "type": "url", "id": "slide_2_link", "label": "Slide 2 link" },
-    { "type": "product_list", "id": "slide_2_products", "label": "Slide 2 prodotti", "limit": 3 },
     { "type": "text", "id": "slide_3_heading", "label": "Slide 3 titolo", "default": "Viso, corpo," },
     { "type": "text", "id": "slide_3_accent", "label": "Slide 3 corsivo", "default": "capelli" },
     { "type": "text", "id": "slide_3_text", "label": "Slide 3 testo", "default": "Parti da quello che usi ogni giorno." },

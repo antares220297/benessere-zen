@@ -66,7 +66,7 @@
       </article>
     {%- endfor -%}
   </div>
-  <button id="stones-toggle" class="btn outline stones-toggle" type="button">Vedile tutte</button>
+  <button id="stones-toggle" class="btn outline stones-toggle" type="button" aria-controls="gem-grid" aria-expanded="false">Vedile tutte</button>
   <p class="disclaimer">{{ section.settings.note | escape }}</p>
 </section>
 {% schema %}

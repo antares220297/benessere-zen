@@ -401,15 +401,21 @@
     const slides = qa('.hero-slide', hero);
     const navigation = q('.hero-navigation', hero);
     const buttons = qa('[data-hero-target]', navigation);
-    navigation.hidden = false;
-    navigation.addEventListener('click', event => {
-      const button = event.target.closest('[data-hero-target]');
-      if (!button) return;
-      const index = Number(button.dataset.heroTarget);
+    let index = 0;
+    let timer;
+    let hovered = matchMedia('(any-hover: hover)').matches && hero.matches(':hover');
+
+    function schedule() {
+      clearTimeout(timer);
+      if (hovered || hero.contains(document.activeElement) || document.hidden || reduced.matches) return;
+      timer = setTimeout(() => showSlide((index + 1) % slides.length), 3000);
+    }
+
+    function showSlide(next) {
+      index = next;
       slides.forEach((slide, i) => {
         const active = i === index;
         slide.classList.toggle('active', active);
-        slide.hidden = !active;
         slide.toggleAttribute('inert', !active);
         slide.setAttribute('aria-hidden', String(!active));
       });
@@ -417,7 +423,29 @@
         if (i === index) control.setAttribute('aria-current', 'true');
         else control.removeAttribute('aria-current');
       });
+      schedule();
+    }
+
+    navigation.hidden = false;
+    navigation.addEventListener('click', event => {
+      const button = event.target.closest('[data-hero-target]');
+      if (button) showSlide(Number(button.dataset.heroTarget));
     });
+    hero.addEventListener('pointerenter', event => {
+      if (event.pointerType === 'touch') return;
+      hovered = true;
+      schedule();
+    });
+    hero.addEventListener('pointerleave', event => {
+      if (event.pointerType === 'touch') return;
+      hovered = false;
+      schedule();
+    });
+    hero.addEventListener('focusin', schedule);
+    hero.addEventListener('focusout', () => queueMicrotask(schedule));
+    document.addEventListener('visibilitychange', schedule);
+    reduced.addEventListener('change', schedule);
+    schedule();
   }
 
   function warmHiddenImages(section) {
@@ -453,9 +481,6 @@
     q('.ritual-sum', panel).textContent = euro(sum);
     qa('.ritual-compare, .ritual-saving', panel).forEach(node => { node.hidden = !bundle; });
     q('[data-bz-add-set]', panel).disabled = count === 0 || panel.hasAttribute('aria-busy');
-    const selectAll = q('[data-select-all]', panel.closest('[data-bz-ritual]'));
-    selectAll?.setAttribute('aria-pressed', String(count === qa('input[data-variant]', panel).length));
-    paintShipping(q('[data-shipping]', panel), sum);
   }
 
   document.addEventListener('change', event => {
@@ -466,7 +491,7 @@
   });
 
   document.addEventListener('click', async event => {
-    const target = event.target.closest('[data-set], [data-select-all], [data-bz-add-set]');
+    const target = event.target.closest('[data-set], [data-bz-add-set]');
     const ritual = target?.closest('[data-bz-ritual]');
     if (!ritual) return;
     if (target.hasAttribute('data-set')) {
@@ -480,12 +505,6 @@
 
     const panel = q('[data-ritual-set]:not([hidden])', ritual);
     ritual.setAttribute('data-ritual-interacted', '');
-    if (target.hasAttribute('data-select-all')) {
-      const select = target.getAttribute('aria-pressed') !== 'true';
-      qa('input[data-variant]', panel).forEach(input => { input.checked = select; });
-      paintRitual(panel);
-      return;
-    }
 
     const { checked, bundle } = ritualSelection(panel);
     if (!checked.length || panel.hasAttribute('aria-busy')) return;
@@ -544,6 +563,7 @@
       const collapsed = showToggle && more.dataset.expanded !== 'true';
       stoneGrid.classList.toggle('is-collapsed', collapsed);
       more.hidden = !showToggle;
+      more.setAttribute('aria-expanded', String(!collapsed));
     };
     more?.addEventListener('click', () => { more.dataset.expanded = more.dataset.expanded === 'true' ? 'false' : 'true'; more.textContent = more.dataset.expanded === 'true' ? 'Mostra meno' : 'Vedile tutte'; syncStones(); });
     syncStones();

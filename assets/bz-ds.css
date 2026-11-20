@@ -535,7 +535,7 @@ html .bz-page-home .hero-slide--featured .hero-photo{
   filter:none;
 }
 html .bz-page-home .hero-slide--featured::after{
-  background:linear-gradient(180deg,rgba(20,19,18,.25) 0%,rgba(20,19,18,.55) 55%,rgba(20,19,18,.72) 100%);
+  background:linear-gradient(180deg,rgba(20,19,18,.26) 0%,rgba(20,19,18,.66) 55%,rgba(20,19,18,.80) 100%);
 }
 html .bz-page-home .hero-slide--featured .hero-copy{
   position:relative;
@@ -573,20 +573,6 @@ html .bz-page-home .home-hero .hero-actions .btn{
   min-height:var(--bz-control-h);
   padding-inline:22px;
 }
-html .bz-page-home .home-hero .new-slide{
-  display:grid;
-  align-items:center;
-  overflow-y:auto;
-  padding:var(--bz-sp-20) clamp(var(--bz-sp-16),3.7vw,var(--bz-sp-40));
-}
-html .bz-page-home .home-hero .new-slide .hero-copy{
-  position:relative;
-  inset:auto;
-  min-width:0;
-}
-html .bz-page-home .home-hero .new-products{margin-block:var(--bz-sp-12)}
-html .bz-page-home .home-hero .new-slide .bz-row-link{margin-top:0}
-
 html .bz-page-home .home-hero>.photo-card{
   aspect-ratio:16/10;
   min-height:220px;
@@ -685,7 +671,7 @@ html .bz-page-home .home-hero>.bz-trust svg{
     max-height:520px;
   }
   html .bz-page-home .hero-slide--featured::after{
-    background:linear-gradient(90deg,rgba(20,19,18,.82) 0%,rgba(20,19,18,.45) 55%,rgba(20,19,18,.15) 100%);
+    background:linear-gradient(90deg,rgba(20,19,18,.84) 0%,rgba(20,19,18,.58) 55%,rgba(20,19,18,.20) 100%);
   }
   html .bz-page-home .hero-slide--featured .hero-copy{padding:var(--bz-sp-40)}
   html .bz-page-home .home-hero>.photo-card{aspect-ratio:1;min-height:0}
@@ -1052,7 +1038,8 @@ html .bz-scope .ritual-section--home .bz-sh>h2{
 html .bz-scope .ritual-section.ritual-section--home{
   position:relative;
   isolation:isolate;
-  padding:var(--bz-sp-16);
+  width:100%;
+  padding:var(--bz-sp-16) var(--bz-margin);
   border-radius:var(--bz-r-panel);
   background:#1b1714;
 }
@@ -1069,6 +1056,7 @@ html .bz-scope .ritual-section--home .ritual-bg{
   transition:opacity .4s cubic-bezier(.4,0,.2,1);
 }
 html .bz-scope .ritual-section--home .ritual-bg.on{opacity:1}
+html .bz-scope .ritual-bg[data-tone="set-0"]{--ritual-tone:#2b2142;--ritual-tone-end:#171420}
 html .bz-scope .ritual-bg[data-tone="set-1"]{--ritual-tone:#3d1e15;--ritual-tone-end:#1d1511}
 html .bz-scope .ritual-bg[data-tone="set-2"]{--ritual-tone:#1c222b;--ritual-tone-end:#111214}
 html .bz-scope .ritual-bg[data-tone="set-3"]{--ritual-tone:#3b1e2b;--ritual-tone-end:#1c1518}
@@ -1231,25 +1219,15 @@ html .bz-scope .ritual-section .ritual-saving{
   color:var(--bz-gold);
   font-size:var(--bz-fs-xs);
 }
-html .bz-scope .ritual-section :is(.ritual-status,.ritual-shipping){
+html .bz-scope .ritual-section .ritual-status{
   flex:1 0 100%;
   margin:0;
   order:3;
 }
 html .bz-scope .ritual-section .ritual-status{font-size:13px}
 html .bz-scope .ritual-section .ritual-status:empty{position:absolute}
-html .bz-scope .ritual-section .ritual-shipping p{
-  max-width:none;
-  margin:0 0 var(--bz-sp-8);
-  color:var(--bz-text-3);
-  font-size:var(--bz-fs-xs);
-}
-html .bz-scope .ritual-section--home :is(.ritual-count,.ritual-compare,.ritual-shipping p){
+html .bz-scope .ritual-section--home :is(.ritual-count,.ritual-compare){
   color:var(--bz-text-2);
-}
-html .bz-scope .ritual-section .ritual-shipping .track{height:4px}
-html .bz-scope .ritual-section .ritual-shipping .track span{
-  transition:transform var(--bz-dur-large) var(--bz-ease-enter);
 }
 html .bz-scope .ritual-section .ritual-visual{
   grid-area:visual;
@@ -1428,11 +1406,127 @@ html .bz-scope .ritual-section--home .ritual-caption{
     margin-inline-start:auto;
     font-size:15px!important;
   }
-  html .bz-scope .ritual-section .ritual-shipping p{font-size:13px}
 }
 @media (min-width:1280px){
   html .bz-scope .ritual-section .ritual-row{padding:var(--bz-sp-20)}
   html .bz-scope .ritual-section .ritual-product{font-size:18px;line-height:24px}
+}
+
+/* Compact panels for the home sets and the product recommendations. */
+html .bz-scope .ritual-section[hidden],
+html .bz-scope .ritual-section .ritual-grid[hidden] {display:none}
+html .bz-scope :is(.ritual-section--home,.ritual-section--product):not([hidden]) {
+  display:block;
+}
+html .bz-scope :is(.ritual-section--home,.ritual-section--product) .bz-sh {
+  display:grid;
+}
+html .bz-scope :is(.ritual-section--home,.ritual-section--product) .bz-sh :is(h2,.bz-pills,.bz-sh-sub) {
+  margin-block:0;
+}
+html .bz-scope :is(.ritual-section--home,.ritual-section--product) .ritual-grid {
+  max-width:none;
+}
+html .bz-scope .ritual-section--home .ritual-grid:not([hidden]),
+html .bz-scope .ritual-section--product .ritual-grid:not([hidden]) {
+  display:grid;
+}
+html .bz-scope .ritual-section--home .ritual-grid:not(.ritual-grid--solo) {
+  grid-template-areas:"visual" "panel";
+}
+html .bz-scope .ritual-section--home .ritual-visual {
+  display:grid;
+  gap:var(--bz-sp-8);
+  align-content:start;
+  margin:0;
+  aspect-ratio:auto;
+  background:transparent;
+}
+html .bz-scope .ritual-section--home .ritual-visual::after,
+html .bz-scope .ritual-section--product .ritual-visual::after {content:none}
+html .bz-scope .ritual-section--home .ritual-shot {
+  position:static;
+  display:block;
+  height:auto;
+  aspect-ratio:4 / 3;
+  object-fit:contain;
+  object-position:center;
+  border-radius:var(--bz-r-card);
+}
+html .bz-scope .ritual-section--home .ritual-caption {
+  position:static;
+  transform:none;
+  max-width:none;
+  background:transparent;
+}
+html .bz-scope .ritual-section--home .ritual-caption h3 {font-size:24px !important}
+html .bz-scope .ritual-section--home .ritual-caption em {display:inline}
+html .bz-scope .ritual-section--home .ritual-caption p {font-size:var(--bz-fs-sm)}
+html .bz-scope :is(.ritual-section--home,.ritual-section--product) .ritual-list {
+  padding:clamp(var(--bz-sp-12),2vw,var(--bz-sp-24));
+  border-radius:var(--bz-r-panel);
+  box-shadow:inset 0 0 0 1px var(--bz-line-divider);
+}
+html .bz-scope .ritual-section--home .ritual-list {background:rgb(255 255 255 / 8%)}
+html .bz-scope .ritual-section--product .ritual-list {
+  background:color-mix(in srgb,var(--bz-ritual-surface),white 7%);
+}
+html .bz-scope .ritual-section--home .ritual-rows {
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(var(--bz-sp-8),1.5vw,var(--bz-sp-20));
+}
+html .bz-scope .ritual-section--home .ritual-row {
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  gap:var(--bz-sp-4);
+  min-width:0;
+  min-height:0;
+  padding:0;
+  background:transparent;
+  box-shadow:none;
+  overflow-wrap:anywhere;
+}
+html .bz-scope .ritual-section--home .ritual-row-media {max-width:160px}
+html .bz-scope .ritual-section--home :is(.ritual-row-media,.ritual-item,.row-price) {
+  align-self:auto;
+}
+html .bz-scope .ritual-section--home .ritual-product {
+  display:block;
+  font-size:var(--bz-fs-sm);
+  line-height:1.35;
+}
+html .bz-scope .ritual-section--home .row-price {
+  margin-top:auto;
+  text-align:start;
+  font-size:var(--bz-fs-body) !important;
+}
+html .bz-scope .ritual-section--product .ritual-grid:not(.ritual-grid--solo) {
+  grid-template-areas:"panel";
+}
+html .bz-scope .ritual-section--product .ritual-visual {display:none}
+@media (min-width:1024px) {
+  html .bz-scope .ritual-section--home .ritual-grid:not(.ritual-grid--solo) {
+    grid-template-columns:minmax(0, 42fr) minmax(0, 58fr);
+    grid-template-areas:"visual panel";
+  }
+  html .bz-scope .ritual-section--product .ritual-grid:not(.ritual-grid--solo) {
+    grid-template-columns:minmax(0,1fr) minmax(0,260px);
+    grid-template-areas:"panel visual";
+  }
+  html .bz-scope .ritual-section--product .ritual-visual {
+    display:block;
+    aspect-ratio:1;
+  }
+  html .bz-scope .ritual-section--product .ritual-row {
+    display:grid;
+    padding:var(--bz-sp-8) 0;
+    min-height:0;
+    background:transparent;
+  }
+  html .bz-scope .ritual-section--product .ritual-rows {grid-template-columns:minmax(0,1fr)}
+  html .bz-scope .ritual-section--product .ritual-item {display:flex}
+  html .bz-scope .ritual-section--product .row-price {text-align:end}
 }
 
 /* Product badges share the same gold pill. */
@@ -1881,109 +1975,40 @@ html .bz-scope .bz-main-collections img {
   }
 }
 
-/* Manual hero navigation and natural slide height for product cards. */
-html .bz-page-home .home-hero .hero-slide[hidden],
-html .bz-page-home .home-hero .hero-navigation[hidden] {
-  display: none;
-}
-
-html .bz-page-home .home-hero > .hero-slides {
-  grid-template-rows: minmax(min-content, 1fr) auto;
-}
-
+/* The card sets the height. All three slides fill its box. */
 html .bz-page-home .home-hero .hero-slide {
-  position: relative;
+  position:absolute;
+  inset:0;
+  z-index:0;
+  visibility:hidden;
+  /* Keep the outgoing image under the incoming one until the fade ends. */
+  transition:opacity 0s linear .9s, visibility 0s linear .9s;
 }
-
-html .bz-page-home .home-hero .hero-slide:not(.new-slide)::after,
+html .bz-page-home .home-hero .hero-slide.active {
+  z-index:1;
+  visibility:visible;
+  transition:opacity .9s cubic-bezier(.4,0,.2,1), visibility 0s;
+}
 html .bz-page-home .home-hero > .photo-card::after {
-  background: var(--bz-veil-badge) !important;
+  background:var(--bz-veil-badge) !important;
 }
-
-html .bz-page-home .home-hero .hero-slide:not(.new-slide) .hero-photo {
-  position: absolute;
-  inset: 0;
+html .bz-page-home .home-hero .hero-copy {
+  padding-block-end:var(--bz-sp-64);
 }
-
-html .bz-page-home .home-hero .hero-slide:not(.new-slide) .hero-copy {
-  position: relative;
-  inset: auto;
-  padding: clamp(var(--bz-sp-24), 4vw, var(--bz-sp-56));
+html .bz-page-home .home-hero .hero-copy h2 {
+  font-size:clamp(36px,5vw,64px) !important;
+  margin:0;
 }
-
-html .bz-page-home .home-hero > .hero-slides:has(.new-slide.active) {
-  height: auto;
-  max-height: none;
-  aspect-ratio: auto;
-}
-
-html .bz-page-home .home-hero .new-slide .hero-copy {
-  width: 100%;
-  max-width: none;
-}
-
-html .bz-page-home .home-hero .new-products {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  grid-auto-columns: auto;
-}
-
-html .bz-page-home .home-hero .new-products .bz-product-tile__title,
-html .bz-page-home .home-hero .new-products .product h3 {
-  display: block;
-  white-space: normal;
-  overflow: visible;
-  overflow-wrap: anywhere;
-  -webkit-line-clamp: unset;
-}
-
-@media (width < 768px) {
-  html .bz-page-home .home-hero .new-slide .new-products {
-    column-gap: var(--bz-grid-gap);
-  }
-  html .bz-page-home .home-hero .new-slide .new-products .bz-product-tile__title {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    overflow: hidden;
-  }
-  html .bz-page-home .home-hero .new-slide .bz-product-tile__bottom {
-    padding-inline: 0;
-    gap: var(--bz-sp-4);
-  }
-  html .bz-page-home .home-hero .new-slide .price {
-    font-size: var(--bz-fs-body) !important;
-  }
-}
-
-@media (width < 480px) {
-  html .bz-page-home .home-hero .new-slide .new-products {
-    grid-template-columns: none;
-    grid-auto-flow: column;
-    grid-auto-columns: minmax(0, 46%);
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    padding: var(--bz-sp-4);
-    margin-inline: calc(-1 * var(--bz-sp-8));
-    scroll-padding-inline: var(--bz-sp-4);
-  }
-  html .bz-page-home .home-hero .new-slide .new-products > .product {
-    scroll-snap-align: start;
-  }
-  @supports (grid-template-rows: subgrid) {
-    html .bz-page-home .home-hero .new-slide .new-products {
-      grid-template-rows: repeat(4, auto);
-      row-gap: 0;
-    }
-  }
-}
-
+html .bz-page-home .hero-navigation[hidden] {display:none}
 html .bz-page-home .hero-navigation {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--bz-sp-8);
-  background: var(--bz-surface-2);
+  position:absolute;
+  z-index:2;
+  inset:auto auto var(--bz-sp-12) 50%;
+  transform:translateX(-50%);
+  display:flex;
+  padding:var(--bz-sp-4) var(--bz-sp-8);
+  border-radius:var(--bz-r-pill);
+  background:rgb(20 19 18 / 65%);
 }
 html .bz-page-home .hero-navigation button {
   display:grid;

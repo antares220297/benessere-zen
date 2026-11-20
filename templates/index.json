@@ -5,18 +5,13 @@
       "settings": {
         "heading": "Un rituale",
         "heading_accent": "da portare addosso",
-        "text": "Mala, bracciali e ciondoli in pietra naturale.",
-        "primary_label": "Vedi i mala →",
-        "primary_link": "/collections/mala-tibetani",
-        "secondary_label": "Tutti i gioielli",
-        "secondary_link": "/collections/gioielli-con-pietre",
+        "text": "Ciondoli, pietre, candele e creme naturali.",
+        "primary_label": "Tutti i gioielli",
+        "primary_link": "/collections/gioielli-con-pietre",
+        "secondary_label": "Ayurveda",
+        "secondary_link": "/collections/ayurveda",
         "featured_product": "mala-diaspro-rosso-108-perle",
         "rotation_collection": "gioielli-con-pietre",
-        "slide_2_products": [
-          "epidoto-4-varianti",
-          "pietra-di-luna-arcobaleno-4-varianti-1",
-          "giada"
-        ],
         "slide_2_link": "/collections/all?sort_by=created-descending",
         "slide_3_link": "/pages/cura-di-se"
       },

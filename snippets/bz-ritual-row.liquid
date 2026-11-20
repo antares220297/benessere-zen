@@ -1,6 +1,10 @@
 {%- capture display_name -%}{% render 'bz-product-name', product: rec %}{%- endcapture -%}
 {%- liquid
   assign variant = rec.selected_or_first_available_variant
+  assign thumbnail_sizes = '72px'
+  if home
+    assign thumbnail_sizes = '(min-width: 1024px) 160px, 28vw'
+  endif
   assign subtitle = rec.metafields.custom.variante_vetrina.value | strip
 -%}
 <label class="ritual-row{% unless variant.available %} is-unavailable{% endunless %}">
@@ -9,7 +13,7 @@
     <span class="set-check">{% render 'bz-icon', name: 'check' %}</span>
     <span class="ritual-thumb">
       {%- if rec.featured_image -%}
-        {{ rec.featured_image | image_url: width: 900 | image_tag: alt: display_name, loading: 'lazy', decoding: 'async', widths: '144, 240, 360, 540, 720, 900', sizes: '(min-width: 1024px) min(30vw, 410px), 72px' }}
+        {{ rec.featured_image | image_url: width: 480 | image_tag: alt: display_name, loading: 'lazy', decoding: 'async', widths: '96, 144, 240, 360, 480', sizes: thumbnail_sizes }}
       {%- endif -%}
     </span>
   </span>
