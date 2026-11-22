@@ -1751,14 +1751,14 @@ main.bz-page-home:has(#newsletter), main.bz-page-ayurveda:has(#newsletter) { pad
   padding-bottom: 12px;
   border-bottom: 1px solid #c9a96e47;
 }
-.plp .bz-grouped-plp .plp-group-head h2 {
+html .bz-scope.plp .bz-grouped-plp .plp-group-head h2 {
   margin: 0;
-  font: italic 400 24px/1.2 "IM Fell English", Georgia, serif;
-  color: #eee7db;
+  font: italic 400 24px/1.2 "IM Fell English", Georgia, serif !important;
+  color: #eee7db !important;
   letter-spacing: 0;
   text-transform: none;
 }
-.plp .bz-grouped-plp .plp-group-head h2::before {
+html .bz-scope.plp .bz-grouped-plp .plp-group-head h2::before {
   content: "✦";
   font-style: normal;
   font-family: Figtree, Arial, sans-serif;
@@ -1768,9 +1768,9 @@ main.bz-page-home:has(#newsletter), main.bz-page-ayurveda:has(#newsletter) { pad
   vertical-align: 0.12em;
   letter-spacing: 0;
 }
-.plp .bz-grouped-plp .plp-group-head h2 em {
-  font: inherit;
-  color: inherit;
+html .bz-scope.plp .bz-grouped-plp .plp-group-head h2 em {
+  font: inherit !important;
+  color: inherit !important;
   letter-spacing: inherit;
   text-transform: inherit;
 }
@@ -1780,7 +1780,7 @@ main.bz-page-home:has(#newsletter), main.bz-page-ayurveda:has(#newsletter) { pad
 @media (min-width: 1024px) {
   .plp .bz-grouped-plp .plp-groups { gap: 64px; }
   .plp .bz-grouped-plp .plp-results { padding-top: 28px; }
-  .plp .bz-grouped-plp .plp-group-head h2 { font-size: 28px; }
+  html .bz-scope.plp .bz-grouped-plp .plp-group-head h2 { font-size: 28px !important; }
 }
 
 /* Il negozio */
