@@ -13,7 +13,7 @@
     endif
   endif
   assign featured = section.settings.featured_product
-  assign ship_euros = settings.bz_free_shipping_threshold | default: section.settings.shipping_amount | default: 50 | plus: 0
+  assign ship_euros = settings.bz_free_shipping_threshold | default: 50 | at_least: 1 | plus: 0
   assign tile_count = 0
   if section.settings.stat_value != blank
     assign tile_count = tile_count | plus: 1
@@ -62,7 +62,7 @@
                 {%- if product.featured_image != blank -%}
                   {{ product.featured_image | image_url: width: 80 | image_tag: alt: '', width: 32, height: 32, loading: 'lazy' }}
                 {%- endif -%}
-                {%- assign chip_name = product.title -%}
+                {%- capture chip_name -%}{% render 'bz-product-name', product: product %}{%- endcapture -%}
                 <span>{{ chip_name | escape }}</span>
                 <b>{% render 'bz-money', cents: product.price %}</b>
               </a>
@@ -88,25 +88,26 @@
     {%- endif -%}
 
     {%- if featured != blank -%}
+      {%- capture featured_name -%}{% render 'bz-product-name', product: featured %}{%- endcapture -%}
       {%- assign feat_variant = featured.selected_or_first_available_variant -%}
       {%- assign feat_cents = featured.price | modulo: 100 -%}
       <div class="bz-bento__product">
         <a href="{{ featured.url }}">
           {%- if featured.featured_image != blank -%}
-            {{ featured.featured_image | image_url: width: 800 | image_tag: alt: featured.title, widths: '400, 800', sizes: '25vw', loading: 'lazy', width: 480, height: 360 }}
+            {{ featured.featured_image | image_url: width: 800 | image_tag: alt: featured_name, widths: '400, 800', sizes: '25vw', loading: 'lazy', width: 480, height: 360 }}
           {%- endif -%}
           {%- if feat_variant.inventory_management != blank and feat_variant.inventory_quantity == 1 and featured.available -%}
             <span class="bz-badge bz-stock--low">Ultimo pezzo</span>
           {%- endif -%}
           <span class="bz-bento__caption">
-            <b>{{ featured.title | escape }}</b>
+            <b>{{ featured_name | escape }}</b>
             <span class="bz-price">{% render 'bz-money', cents: featured.price %}</span>
           </span>
         </a>
         {%- if featured.available -%}
           <form class="bz-card__form bz-bento__add" action="{{ routes.cart_add_url }}" method="post">
             <input type="hidden" name="id" value="{{ feat_variant.id }}">
-            <button class="bz-card__add" type="submit" aria-label="Aggiungi {{ featured.title | escape }}">
+            <button class="bz-card__add" type="submit" aria-label="Aggiungi {{ featured_name | escape }}">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
             </button>
           </form>

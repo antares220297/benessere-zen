@@ -35,7 +35,6 @@
     var cart = Alpine.store("xMiniCart");
     cart.type = "drawer";
     if (typeof cart.openCart === "function") cart.openCart();
-    fillUpsell(document);
   }
 
   function formatEuro(cents) {
@@ -120,49 +119,29 @@
       .then(function (response) { return response.json(); })
       .then(function (cart) {
         updateCount(cart.item_count || 0);
-        fillUpsell(document);
+        fillUpsell();
         return cart;
       });
   }
 
-  function fillUpsell(scope) {
-    (scope || document).querySelectorAll("[data-bz-upsell]").forEach(function (box) {
-      var productId = box.getAttribute("data-product-id");
-      var list = box.querySelector("[data-bz-upsell-list]");
-      if (!productId || !list) return;
-      fetch(root + "recommendations/products.json?product_id=" + productId + "&limit=4&intent=related")
-        .then(function (response) { return response.json(); })
-        .then(function (data) {
-          var products = (data.products || []).filter(function (product) {
-            var image = product.featured_image || (product.images && product.images[0]);
-            var src = typeof image === "string" ? image : (image && (image.src || image.url)) || "";
-            return src;
-          }).slice(0, 2);
-          if (!products.length) return;
-          list.innerHTML = products.map(function (product) {
-            var variant = (product.variants || [])[0] || {};
-            var image = product.featured_image || (product.images && product.images[0]);
-            var src = typeof image === "string" ? image : (image && (image.src || image.url)) || "";
-            if (src.indexOf("//") === 0) src = "https:" + src;
-            var title = String(product.title || "").replace(/[&<>"']/g, function (char) {
-              return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char];
-            });
-            var href = String(product.url || "#").replace(/"/g, "");
-            var safeSrc = String(src).replace(/"/g, "");
-            return '<div class="bz-upsell">' +
-              '<a href="' + href + '">' + (safeSrc ? '<img src="' + safeSrc + '" alt="" width="48" height="48">' : '') + '</a>' +
-              '<a href="' + href + '">' + title + '</a>' +
-              '<span>' + formatEuro(product.price) + '</span>' +
-              '<button type="button" class="bz-drawer__plus" data-bz-upsell-add="' + (variant.id || "") + '" aria-label="Aggiungi">+</button>' +
-              '</div>';
-          }).join("");
-        })
-        .catch(function () {});
-    });
+  function fillUpsell() {
+    var box = document.querySelector("[data-bz-upsell]");
+    if (!box || !box.dataset.productId || box.dataset.loading) return;
+    box.dataset.loading = "true";
+    var url = root + "recommendations/products?section_id=cart-drawer&product_id=" + encodeURIComponent(box.dataset.productId) + "&limit=4&intent=related";
+    fetch(url)
+      .then(function (response) { return response.ok ? response.text() : ""; })
+      .then(function (html) {
+        var doc = new DOMParser().parseFromString(html, "text/html");
+        var list = doc.querySelector("[data-bz-upsell-list]");
+        var current = box.querySelector("[data-bz-upsell-list]");
+        if (current && list && list.children.length) current.replaceWith(list);
+      })
+      .catch(function () { delete box.dataset.loading; });
   }
 
   document.addEventListener("click", function (event) {
-    if (event.target.closest("#cart-icon, [data-bz-cart]")) fillUpsell(document);
+    if (event.target.closest("#cart-icon, [data-bz-cart]")) fillUpsell();
     var closer = event.target.closest("[data-bz-close], [data-bz-cart]");
     if (closer && closer.hasAttribute("data-bz-cart")) {
       event.preventDefault();
@@ -214,7 +193,6 @@
         applySections(payload, sections);
       }
       document.dispatchEvent(new CustomEvent("eurus:cart:items-changed"));
-      fillUpsell(document);
       openDrawer();
       return payload;
     });

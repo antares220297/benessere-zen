@@ -70,7 +70,7 @@
       {%- for item in picked.products -%}
         {%- assign item_type = item.type | downcase | strip -%}
         {%- if shown < related_limit and item.available and item.id != product.id and item_type == type_key -%}
-          {% render 'bz-card', product: item %}
+          {% render 'bz-card', product: item, show_variant: true %}
           {%- assign shown = shown | plus: 1 -%}
         {%- endif -%}
       {%- endfor -%}

@@ -2979,12 +2979,6 @@
         "default": "https://maps.google.com/?q=Via+Marcello+Provenzali+1+44042+Cento"
       },
       {
-        "type": "number",
-        "id": "bz_free_shipping",
-        "label": "Spedizione gratuita da (€)",
-        "default": 50
-      },
-      {
         "type": "text",
         "id": "bz_express_rate",
         "label": "Costo Express",

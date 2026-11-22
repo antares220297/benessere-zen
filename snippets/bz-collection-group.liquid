@@ -1,7 +1,16 @@
 <section class="plp-group" data-bz-group="{{ id }}" aria-labelledby="bz-plp-group-{{ id }}">
   <div class="plp-group-head">
-    <h2 id="bz-plp-group-{{ id }}">{{ title | escape }}</h2>
-    <span>{{ count }} {% if count == 1 %}prodotto{% else %}prodotti{% endif %}</span>
+    {%- assign accent = title | split: ' ' | last -%}
+    {%- case title -%}
+      {%- when 'Creme giorno e notte' -%}
+        {%- assign accent = 'giorno e notte' -%}
+    {%- endcase -%}
+    {%- assign prefix_size = title.size | minus: accent.size -%}
+    <h2 id="bz-plp-group-{{ id }}">{{ title | slice: 0, prefix_size | escape }}<em>{{ accent | escape }}</em></h2>
+    <span>{{ count }} {% if count == 1 %}prodotto{% else %}prodotti{% endif %}{% if shown < count %}, {{ shown }} in anteprima{% endif %}</span>
   </div>
-  <div class="pgrid">{{ cards }}</div>
+  <div class="pgrid bz-catalog-grid">{{ cards }}</div>
+  {%- if child_url != blank -%}
+    <a class="text-link plp-group-link" href="{{ child_url | escape }}" aria-label="Vedi tutto: {{ title | escape }}">Vedi tutto</a>
+  {%- endif -%}
 </section>

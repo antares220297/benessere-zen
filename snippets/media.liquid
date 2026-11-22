@@ -1,3 +1,4 @@
+{%- capture display_name -%}{% render 'bz-product-name', product: product %}{%- endcapture -%}
 {% comment %}
   Renders product media
 
@@ -68,7 +69,7 @@
             {{ media.preview_image | image_url: width: 1780 }} 1780w,
             {{ media.preview_image | image_url }} {{ media.preview_image.width }}w"
           src="{{ media.preview_image | image_url: width: 1780 }}"
-          alt="{{ media.preview_image.alt | split: "#" | first | escape }}"
+          alt="{{ display_name | escape }}"
           sizes="{{ sizes }}"
           {{ loading }}
           width="{{ media.preview_image.width }}"
@@ -91,7 +92,7 @@
               {{ media.preview_image | image_url: width: 1780 }} 1780w,
               {{ media.preview_image | image_url }} {{ media.preview_image.width }}w"
             src="{{ media.preview_image | image_url: width: 1780 }}"
-            alt="{{ media.preview_image.alt | split: "#" | first | escape }}"
+            alt="{{ display_name | escape }}"
             sizes="{{ sizes }}"
             {{ loading }}
             @mouseover="
@@ -142,7 +143,7 @@
                   {{ media.preview_image | image_url: width: 1780 }} 1780w,
                   {{ media.preview_image | image_url }} {{ media.preview_image.width }}w"
                 src="{{ media.preview_image | image_url: width: 1780 }}"
-                alt="{{ media.preview_image.alt | split: "#" | first | escape }}"
+                alt="{{ display_name | escape }}"
                 sizes="{{ sizes }}"
                 {{ loading }}
                 width="{{ media.preview_image.width }}"
@@ -176,7 +177,7 @@
                 <picture class="w-full h-full absolute">
                   <source type="image/webp" srcset="{{ media.external_id | prepend: 'https://i.ytimg.com/vi_webp/' | append: '/sddefault.webp' }}">
                   <source type="image/jpeg" srcset="{{ media.external_id | prepend: 'https://i.ytimg.com/vi/' | append: '/sddefault.jpg' }}">
-                  <img src="{{ media.external_id | prepend: 'https://i.ytimg.com/vi_webp/' | append: '/sddefault.webp' }}" loading="lazy" class="w-full h-full object-cover" alt="{{ media.preview_image | default: product.title | escape }}" width="640" height="480"/>
+                  <img src="{{ media.external_id | prepend: 'https://i.ytimg.com/vi_webp/' | append: '/sddefault.webp' }}" loading="lazy" class="w-full h-full object-cover" alt="{{ display_name | escape }}" width="640" height="480"/>
                 </picture>
                 {% comment %}theme-check-enable RemoteAsset{% endcomment %}
                 <button 
@@ -200,7 +201,7 @@
               {%- else -%}
                 {%- capture options -%}
                   {
-                    'alt': '{{ media.preview_image | default: product.title | escape }}',
+                    'alt': '{{ display_name | escape }}',
                     'width': 640
                   }
                 {%- endcapture -%}
@@ -267,7 +268,7 @@
             width="{{ media.preview_image.width }}"
             sizes="{{ sizes }}"
             height="{{ media.preview_image.width }}"
-            alt="{{ media.preview_image.alt | split: "#" | first | escape }}"
+            alt="{{ display_name | escape }}"
             class="animate_transition_slide__image w-full h-full object-cover"
             x-intersect.once="$el.classList.add('active')"
           >
@@ -282,7 +283,7 @@
           aria-label="{{ 'products.product.xr_button_label' | t }}"
           data-shopify-xr
           data-shopify-model3d-id="{{ media.id }}"
-          data-shopify-title="{{ product.title | escape }}"
+          data-shopify-title="{{ display_name | escape }}"
           data-shopify-xr-hidden
         >
           <span class="w-5 h-5 inline-block mr-2">

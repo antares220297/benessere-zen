@@ -11,7 +11,7 @@
       <a class="ay-soft" href="#prodotti">{% render 'bz-nav-label', label: 'Scopri le categorie' %}</a>
     </div>
     <figure class="ay-photo">
-      <img src="{{ 'bz-ayurveda-hero-scaffali.jpg' | asset_url }}" alt="Scaffali di oli, saponi e cosmetici ayurvedici nel negozio Benessere Zen a Cento" width="1400" height="1050" loading="eager" fetchpriority="high">
+      <img src="{{ 'bz-ayurveda-hero-scaffali.jpg' | asset_url }}" srcset="{% render 'bz-cover-srcset', asset: 'bz-ayurveda-hero-scaffali.jpg', width: 1400 %}" sizes="(min-width: 1024px) 50vw, 95vw" alt="Scaffali di oli, saponi e cosmetici ayurvedici nel negozio Benessere Zen a Cento" width="1400" height="1050" loading="eager" fetchpriority="high">
     </figure>
   </section>
   <section class="ay-cose" id="cose" aria-labelledby="ay-cose-h">

@@ -60,7 +60,7 @@
   <script type="application/json" id="bz-hours">
     {
       "note": {{ note | json }},
-      "free": {{ settings.bz_free_shipping | default: 50 }},
+      "free": {{ settings.bz_free_shipping_threshold | default: 50 | at_least: 1 }},
       "express": {{ settings.bz_express_rate | default: '5,90' | json }},
       "days": [
         {{ sun | json }},

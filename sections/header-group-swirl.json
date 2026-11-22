@@ -17,35 +17,7 @@
         "region_label": "Annunci",
         "free_shipping_threshold": 50,
         "pill_text": "Spedizione gratuita da [soglia] €"
-      },
-      "blocks": {
-        "msg-ritiro": {
-          "type": "message",
-          "settings": {
-            "text": "",
-            "text_mobile": ""
-          }
-        },
-        "msg-reso": {
-          "type": "message",
-          "settings": {
-            "text": "Reso entro 14 giorni",
-            "text_mobile": "Reso entro 14 giorni"
-          }
-        },
-        "msg-negozio": {
-          "type": "message",
-          "settings": {
-            "text": "Ogni pezzo del sito è anche in negozio",
-            "text_mobile": "Ogni pezzo è anche in negozio"
-          }
-        }
-      },
-      "block_order": [
-        "msg-ritiro",
-        "msg-reso",
-        "msg-negozio"
-      ]
+      }
     },
     "bz-header": {
       "type": "bz-header",
@@ -121,7 +93,7 @@
           "type": "link",
           "settings": {
             "label": "Regali sotto 25 €",
-            "link": "/search?q=regalo",
+            "link": "/collections/oggettistica-e-idee-regalo?filter.v.price.lte=24.99",
             "style": "pill"
           }
         },

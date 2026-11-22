@@ -17,14 +17,14 @@
         "col-shop": {
           "type": "links",
           "settings": {
-            "heading": "Negozio",
+            "heading": "Il negozio",
             "label_1": "Gioielli con pietre",
             "link_1": "/collections/gioielli-con-pietre",
             "label_2": "Mala tibetani",
             "link_2": "/collections/mala-tibetani",
             "label_3": "Pietre e cristalli",
-            "link_3": "/collections/pietre-grezze",
-            "label_4": "Incensi e palo santo",
+            "link_3": "/collections/pietre-burattate",
+            "label_4": "Incensi e smudge",
             "link_4": "/collections/incensi-e-brucia-incensi"
           }
         },

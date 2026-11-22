@@ -1,76 +1,108 @@
-{%- if product != blank and product.available -%}
+{%- if product != blank -%}
   {%- liquid
     assign count = 0
     assign total = 0
     assign seen = '|'
-    assign shot = blank
-    assign shot_alt = blank
-    assign type_key = product.type | downcase | strip
+    assign type_key = product.type | handleize
+    assign type_family = type_key | split: '-' | first
+    assign rule_types = type_key
+    case type_family
+      when 'pietra', 'pietre'
+        assign rule_types = 'pietra,pietre'
+      when 'ciondolo', 'ciondoli'
+        assign rule_types = 'ciondolo,ciondoli'
+      when 'bracciale', 'bracciali'
+        assign rule_types = 'bracciale,bracciali'
+      when 'collana', 'collane'
+        assign rule_types = 'collana,collane'
+      when 'candela', 'candele'
+        assign rule_types = 'candela,candele'
+    endcase
+    assign rule_types = rule_types | split: ','
     assign rule_keys = 'collection_1,collection_2' | split: ','
   -%}
   {%- capture rows -%}
     {%- if recommendations.performed -%}
       {%- for rec in recommendations.products -%}
+        {%- if count == 3 -%}{%- break -%}{%- endif -%}
         {%- assign variant = rec.selected_or_first_available_variant -%}
         {%- assign marker = rec.id | prepend: '|' | append: '|' -%}
-        {%- if count < 3 and variant.available and rec.id != product.id -%}
+        {%- if rec.available and variant.available and rec.id != product.id -%}
           {%- unless seen contains marker -%}
             {%- liquid
               assign seen = seen | append: marker
               assign count = count | plus: 1
               assign total = total | plus: variant.price
-              if shot == blank and rec.featured_image
-                assign shot = rec.featured_image
-                assign shot_alt = rec.title
-              endif
+              render 'bz-ritual-row', rec: rec, pdp: true
             -%}
-            {% render 'bz-ritual-row', rec: rec %}
           {%- endunless -%}
         {%- endif -%}
       {%- endfor -%}
-    {%- else -%}
-      {%- for block in section.blocks -%}
-        {%- assign rule_type = block.settings.product_type | downcase | strip -%}
-        {%- if block.type == 'type_rule' and rule_type != blank and rule_type == type_key -%}
-          {%- for key in rule_keys -%}
-            {%- assign collection = block.settings[key] -%}
-            {%- for rec in collection.products -%}
-              {%- assign variant = rec.selected_or_first_available_variant -%}
-              {%- assign marker = rec.id | prepend: '|' | append: '|' -%}
-              {%- if count < 3 and variant.available and rec.id != product.id -%}
-                {%- unless seen contains marker -%}
-                  {%- liquid
-                    assign seen = seen | append: marker
-                    assign count = count | plus: 1
-                    assign total = total | plus: variant.price
-                    if shot == blank and rec.featured_image
-                      assign shot = rec.featured_image
-                      assign shot_alt = rec.title
-                    endif
-                  -%}
-                  {% render 'bz-ritual-row', rec: rec %}
-                  {%- break -%}
-                {%- endunless -%}
-              {%- endif -%}
-            {%- endfor -%}
+    {%- endif -%}
+    {%- if count < 3 -%}
+      {%- capture fallback_handles -%}{% render 'bz-ritual-collections', product: product %}{%- endcapture -%}
+      {%- assign fallback_handles = fallback_handles | strip -%}
+      {%- capture rule_handles -%}
+        {%- for block in section.blocks -%}
+          {%- assign rule_type = block.settings.product_type | handleize -%}
+          {%- if block.type == 'type_rule' and rule_type != blank -%}
+            {%- if rule_types contains rule_type or rule_type == type_key -%}
+              {%- for key in rule_keys -%}
+                {%- assign handle = block.settings[key].handle -%}
+                {%- case handle -%}
+                  {%- when 'incensi-e-brucia-incensi-2' -%}
+                    {%- assign handle = 'incensi-e-brucia-incensi-1' -%}
+                  {%- when 'cosmetica' -%}
+                    {%- if type_key == 'oli-e-profumi' -%}
+                      {%- assign handle = 'candele-e-brucia-candele' -%}
+                    {%- endif -%}
+                  {%- when 'latte-detergente', 'tonico' -%}
+                    {%- if fallback_handles contains 'balsami-corpo' -%}{%- continue -%}{%- endif -%}
+                {%- endcase -%}
+                {%- if handle != blank -%}{{ handle }},{%- endif -%}
+              {%- endfor -%}
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endcapture -%}
+      {%- assign handles = rule_handles | append: fallback_handles | split: ',' | uniq -%}
+      {%- comment -%}Prima un pezzo per collezione, poi riempi gli eventuali posti rimasti.{%- endcomment -%}
+      {%- for pass in (1..2) -%}
+        {%- if count == 3 -%}{%- break -%}{%- endif -%}
+        {%- for handle in handles -%}
+          {%- if count == 3 -%}{%- break -%}{%- endif -%}
+          {%- for rec in collections[handle].products -%}
+            {%- assign variant = rec.selected_or_first_available_variant -%}
+            {%- assign marker = rec.id | prepend: '|' | append: '|' -%}
+            {%- if rec.available and variant.available and rec.id != product.id -%}
+              {%- unless seen contains marker -%}
+                {%- liquid
+                  assign seen = seen | append: marker
+                  assign count = count | plus: 1
+                  assign total = total | plus: variant.price
+                  render 'bz-ritual-row', rec: rec, pdp: true
+                -%}
+                {%- if pass == 1 or count == 3 -%}{%- break -%}{%- endif -%}
+              {%- endunless -%}
+            {%- endif -%}
           {%- endfor -%}
-        {%- endif -%}
+        {%- endfor -%}
       {%- endfor -%}
     {%- endif -%}
   {%- endcapture -%}
   {%- if count > 0 or recommendations.performed == false -%}
+    {%- capture veil -%}{% render 'bz-ritual-veil', product: product %}{%- endcapture -%}
+    {%- assign veil = veil | split: '|' -%}
     {%- assign panel_id = section.id | append: '-ritual-product' -%}
-    {%- assign rec_url = routes.product_recommendations_url | append: '?section_id=' | append: section.id | append: '&product_id=' | append: product.id | append: '&limit=3&intent=complementary' -%}
-    <section class="ritual-section ritual-section--product" data-bz-ritual{% unless recommendations.performed %} data-bz-complementary data-url="{{ rec_url | escape }}"{% endunless %}{% if count == 0 %} hidden{% endif %}>
+    {%- assign rec_url = routes.product_recommendations_url | append: '?section_id=' | append: section.id | append: '&product_id=' | append: product.id | append: '&limit=10&intent=complementary' -%}
+    <section class="ritual-section ritual-section--product" data-bz-ritual data-veil-source="{{ veil[1] }}:{{ veil[0] }}"{% unless recommendations.performed %} data-bz-complementary data-url="{{ rec_url | escape }}"{% endunless %}{% if count == 0 %} hidden{% endif %}>
+      <div class="ritual-bg on" style="--ritual-tone:{{ veil[0] }};--ritual-tone-end:#1b1714" aria-hidden="true"></div>
       {%- if count > 0 -%}
+        {%- capture caption_title -%}{% render 'bz-product-name', product: product %}{%- endcapture -%}
         <div class="bz-sh">
           <h2>{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h2>
-          {%- if section.settings.intro != blank -%}<p class="bz-sh-sub">{{ section.settings.intro | escape }}</p>{%- endif -%}
-          <div class="bz-pills">
-            <button type="button" data-select-all aria-pressed="true" aria-controls="{{ panel_id }}">Tutti i pezzi</button>
-          </div>
         </div>
-        {% render 'bz-ritual-panel', panel_id: panel_id, first: true, rows: rows, count: count, total: total, shot: shot, shot_alt: shot_alt %}
+        {% render 'bz-ritual-panel', panel_id: panel_id, first: true, rows: rows, count: count, total: total, shot: product.featured_image, caption_title: caption_title %}
       {%- endif -%}
     </section>
     {%- unless recommendations.performed -%}
