@@ -1,0 +1,21 @@
+{%- liquid
+  assign type_key = product.type | handleize
+  assign handles = product.collections | map: 'handle'
+  assign context = handles | join: '|' | append: '|' | append: type_key | append: '|' | append: product.handle
+
+  if type_key == 'oli-e-profumi' or handles contains 'profumi-in-olio'
+    echo 'profumi-in-olio,candele-e-brucia-candele'
+  elsif type_key == 'candele' or type_key == 'candela' or handles contains 'candele-e-brucia-candele'
+    echo 'incensi-e-brucia-incensi-1,pietre-burattate,candele-e-brucia-candele'
+  elsif context contains 'capelli' or context contains 'shampoo'
+    echo 'prodotti-per-capelli,cura-della-persona'
+  elsif context contains 'tisane' or context contains 'tisana' or type_key == 'te'
+    echo 'te-e-tisane-ayurvediche'
+  elsif context contains 'corpo' or context contains 'bagnoschiuma' or context contains 'sapon'
+    echo 'balsami-corpo,bagnoschiuma,saponi-naturali-ayurvedici'
+  elsif type_key contains 'cosmetic' or context contains 'viso' or context contains 'latte-detergente' or context contains 'tonico' or context contains 'crema-giorno'
+    echo 'latte-detergente,tonico,crema-giorno,siero-viso'
+  elsif context contains 'pietr' or context contains 'gioiell' or context contains 'braccial' or context contains 'ciondol' or context contains 'collan' or type_key == 'mala' or context contains 'incens' or context contains 'smudge'
+    echo 'candele-e-brucia-candele,incensi-e-brucia-incensi-1,pietre-burattate,collane-e-braccialetti'
+  endif
+-%}

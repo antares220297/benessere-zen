@@ -1982,3 +1982,128 @@ html .bz-scope.plp .bz-grouped-plp .plp-group-head h2 em {
 .bz-news__privacy { display: inline-flex; min-height: 44px; align-items: center; text-decoration: underline; }
 .bz-cart-error { color: var(--bz-text); font-size: 14px; overflow-wrap: anywhere; }
 .bz-ajax-error { width: 100%; margin-block: 8px; }
+
+/* Rituale PDP */
+html .bz-scope .ritual-section.ritual-section--product {
+  position:relative;
+  isolation:isolate;
+  width:100%;
+  padding:var(--bz-sp-16) var(--bz-margin);
+  border-radius:var(--bz-r-panel);
+  background:#2a2725;
+}
+html .bz-scope .ritual-section.ritual-section--product > .ritual-bg.on {
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  border-radius:inherit;
+  pointer-events:none;
+  background:
+    radial-gradient(ellipse 70% 90% at 78% 30%,var(--ritual-tone),transparent 70%),
+    linear-gradient(125deg,var(--ritual-tone),var(--ritual-tone-end) 75%);
+}
+html .bz-scope .ritual-section.ritual-section--product .bz-sh > h2 {
+  font-size:clamp(32px,4vw,48px)!important;
+  line-height:1.05!important;
+  letter-spacing:normal;
+}
+html .bz-scope .ritual-section.ritual-section--product .ritual-grid:not(.ritual-grid--solo) {
+  grid-template-columns:minmax(0,1fr);
+  grid-template-areas:"visual" "panel";
+  align-items:stretch;
+}
+html .bz-scope .ritual-section.ritual-section--product .ritual-visual {
+  display:grid;
+  gap:var(--bz-sp-8);
+  align-content:start;
+  margin:0;
+  aspect-ratio:auto;
+  background:transparent;
+}
+html .bz-scope .ritual-section.ritual-section--product .ritual-shot {
+  position:static;
+  display:block;
+  height:auto;
+  aspect-ratio:4 / 3;
+  object-fit:contain;
+  object-position:center;
+  border-radius:var(--bz-r-card);
+}
+html .bz-scope .ritual-section.ritual-section--product .ritual-caption {
+  position:static;
+  transform:none;
+  max-width:none;
+  padding:var(--bz-sp-8) var(--bz-sp-12);
+  background:transparent;
+}
+html .bz-scope .ritual-section.ritual-section--product .ritual-caption h3 {
+  font-size:24px!important;
+}
+html .bz-scope .ritual-section.ritual-section--product .ritual-list {
+  display:flex;
+  flex-direction:column;
+  background:rgb(255 255 255 / 8%);
+}
+html .bz-scope .ritual-section.ritual-section--product .ritual-rows {
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(var(--bz-sp-8),1.5vw,var(--bz-sp-20));
+}
+html .bz-scope .ritual-section.ritual-section--product .ritual-row {
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  gap:var(--bz-sp-4);
+  min-width:0;
+  min-height:0;
+  padding:0;
+  background:transparent;
+  box-shadow:none;
+  overflow-wrap:anywhere;
+}
+html .bz-scope .ritual-section.ritual-section--product :is(.ritual-row-media,.ritual-item,.row-price) {
+  align-self:auto;
+}
+html .bz-scope .ritual-section.ritual-section--product .ritual-row-media {
+  max-width:160px;
+}
+html .bz-scope .ritual-section.ritual-section--product .ritual-product {
+  display:block;
+  font-size:var(--bz-fs-sm);
+  line-height:1.35;
+}
+html .bz-scope .ritual-section.ritual-section--product .row-price {
+  margin-top:auto;
+  text-align:start;
+  font-size:var(--bz-fs-body)!important;
+}
+@media (max-width:767px) {
+  html .bz-scope .ritual-section.ritual-section--product .ritual-product {
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:3;
+    overflow:hidden;
+  }
+}
+@media (min-width:1024px) {
+  html .bz-scope .ritual-section.ritual-section--product .ritual-grid:not(.ritual-grid--solo) {
+    grid-template-columns:minmax(0,42fr) minmax(0,58fr);
+    grid-template-areas:"visual panel";
+  }
+  html .bz-scope .ritual-section.ritual-section--product .ritual-rows {
+    flex:1;
+    align-content:center;
+    gap:var(--bz-grid-gap);
+  }
+  html .bz-scope .ritual-section.ritual-section--product .ritual-total {
+    margin-top:auto;
+  }
+  html .bz-scope .ritual-section.ritual-section--product .ritual-row-media {
+    max-width:none;
+  }
+  html .bz-scope .ritual-section.ritual-section--product .ritual-product {
+    font-size:16px;
+  }
+  html .bz-scope .ritual-section.ritual-section--product .row-price {
+    font-size:18px!important;
+  }
+}

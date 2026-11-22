@@ -2,7 +2,7 @@
 {%- liquid
   assign variant = rec.selected_or_first_available_variant
   assign thumbnail_sizes = '72px'
-  if home
+  if home or pdp
     assign thumbnail_sizes = '(min-width: 1024px) min(16vw, 260px), 28vw'
   endif
   assign subtitle = rec.metafields.custom.variante_vetrina.value | strip
