@@ -494,120 +494,100 @@
         "set-5"
       ]
     },
-    "bz_stones": {
-      "type": "bz-stones",
+    "bz_officina": {
+      "type": "bz-officina",
+      "settings": {
+        "heading": "L'officina del",
+        "heading_accent": "corpo"
+      },
       "blocks": {
-        "stone-0": {
-          "type": "stone",
+        "olio": {
+          "type": "chapter",
           "settings": {
-            "name": "Quarzo rosa",
-            "intent": "amore",
-            "meaning": "La pietra del cuore e degli affetti",
-            "front": "bz-pietra-macro-quarzo-rosa.jpg",
-            "loose": "quarzo-rosa",
-            "bracelet": "braccialetto-gold-quarzo-rosa-e-rodonite",
-            "back": "bz-negozio-card-pietra-quarzo-rosa.jpg",
-            "pendant": "ciondolo-in-quarzo-rosa-con-gancio"
+            "label": "Olio",
+            "collection": "profumi-in-olio",
+            "products": [
+              "olio-profumato-ayurveda-ambra",
+              "olio-profumato-ayurveda-vaniglia",
+              "olio-profumato-naturale-sandalwood-10-ml"
+            ],
+            "veil": "#3a281c",
+            "caption": "Si lascia sui polsi, e resta sulla pelle per tutta la sera.",
+            "alt": "Un contagocce lascia cadere una goccia d'olio sul palmo di una mano",
+            "scene": "officina-scena-olio.webp"
           }
         },
-        "stone-1": {
-          "type": "stone",
+        "bagno": {
+          "type": "chapter",
           "settings": {
-            "name": "Ametista",
-            "intent": "intuizione",
-            "meaning": "Nella tradizione, una delle pietre dell’intuizione.",
-            "front": "bz-pietra-macro-ametista.jpg",
-            "loose": "ametista",
-            "bracelet": "braccialetto-ametista-avventurina-cristallo-di-rocca-om",
-            "back": "bz-negozio-card-pietra-ametista.jpg",
-            "pendant": "ciondolo-ametista-cuore"
+            "label": "Bagno",
+            "collection": "sali-da-bagno",
+            "products": [
+              "mix-sali-himalayani-500g-relax",
+              "mix-sali-himalayani-500g-detox",
+              "sali-da-bagno-raffreddore-influenza-350g"
+            ],
+            "veil": "#1e272c",
+            "caption": "I sali si sciolgono nell'acqua calda, quando si chiude la porta.",
+            "alt": "Una mano versa i sali da una ciotola nell'acqua di una vasca di pietra",
+            "scene": "officina-scena-bagno.webp"
           }
         },
-        "stone-2": {
-          "type": "stone",
+        "candela": {
+          "type": "chapter",
           "settings": {
-            "name": "Ossidiana",
-            "intent": "protezione",
-            "meaning": "Vetro vulcanico, pietra di protezione",
-            "front": "bz-pietra-macro-ossidiana.jpg",
-            "loose": "ossidiana-nera",
-            "bracelet": "braccialetto-obsideinne-neige-perles",
-            "back": "bz-negozio-card-pietra-ossidiana.jpg",
-            "pendant": "ciondolo-larme-obsideinne-noire"
+            "label": "Candela",
+            "collection": "candele-e-brucia-candele",
+            "products": [
+              "candela-di-soia-profumata-song-of-india-sleep-in-vetro-1",
+              "candela-organic-goodness-rosa-geranio",
+              "candela-profumata-in-cera-di-soia-chakra-sahasrara-oud-e-ambra"
+            ],
+            "veil": "#3d2a16",
+            "caption": "Si accende e la stanza cambia odore.",
+            "alt": "Candela accesa in un bicchiere scuro accanto a due pietre viola",
+            "scene": "officina-scena-candela.webp"
           }
         },
-        "stone-3": {
-          "type": "stone",
+        "sapone": {
+          "type": "chapter",
           "settings": {
-            "name": "Tormalina nera",
-            "intent": "protezione",
-            "meaning": "Pietra di protezione spirituale",
-            "front": "bz-pietra-macro-tormalina-nera.jpg",
-            "loose": "tormalina-nera-grezza",
-            "bracelet": "bracciale-tormalina-nera-elastico",
-            "back": "bz-negozio-card-pietra-tormalina-nera.jpg"
+            "label": "Sapone",
+            "collection": "saponi-naturali-ayurvedici",
+            "products": [
+              "sapone-curcuma-holy-lama",
+              "sapone-yogi-di-holy-lama-alla-rosa",
+              "sapone-yogi-di-holy-lama-alla-lavanda"
+            ],
+            "veil": "#332415",
+            "caption": "Il gesto di ogni mattina, con oli e spezie.",
+            "alt": "Una saponetta bagnata su un portasapone in un lavabo di pietra",
+            "scene": "officina-scena-sapone.webp"
           }
         },
-        "stone-4": {
-          "type": "stone",
+        "tisana": {
+          "type": "chapter",
           "settings": {
-            "name": "Lapislazzuli",
-            "intent": "comunicazione",
-            "meaning": "Nella tradizione, una delle pietre della comunicazione.",
-            "front": "bz-pietra-macro-lapislazzuli.jpg",
-            "loose": "lapislazzuli",
-            "bracelet": "braccialetto-lapis-lazuli",
-            "back": "bz-negozio-card-pietra-lapislazzuli.jpg",
-            "pendant": "ciondolo-a-cuore-in-lapislazzuli"
-          }
-        },
-        "stone-5": {
-          "type": "stone",
-          "settings": {
-            "name": "Pirite",
-            "intent": "abbondanza",
-            "meaning": "L’oro degli sciocchi, simbolo di abbondanza",
-            "front": "bz-pietra-macro-pirite.jpg",
-            "loose": "pirite",
-            "bracelet": "braccialetto-pyrite-perles",
-            "back": "bz-negozio-card-pietra-pirite.jpg",
-            "pendant": "ciondolo-pirite-grezza"
-          }
-        },
-        "stone-6": {
-          "type": "stone",
-          "settings": {
-            "name": "Cristallo di rocca",
-            "intent": "purificazione",
-            "meaning": "Nella tradizione, una delle pietre della purificazione.",
-            "front": "bz-pietra-macro-cristallo-di-rocca.jpg",
-            "loose": "cristallo-di-rocca",
-            "bracelet": "braccialetto-ametista-chevron-cristallo-di-rocca-loto",
-            "pendant": "ciondolo-ala-angelo-cristallo-di-rocca"
-          }
-        },
-        "stone-7": {
-          "type": "stone",
-          "settings": {
-            "name": "Occhio di tigre",
-            "intent": "coraggio",
-            "meaning": "Nella tradizione, una delle pietre del coraggio.",
-            "front": "bz-pietra-macro-occhio-di-tigre.jpg",
-            "loose": "occhio-di-tigre",
-            "bracelet": "mala-braccialetto-elastico-con-pietra-occhio-di-tigre-coraggio-iniziativa",
-            "pendant": "ciondolo-occhio-di-tigre-grezzo"
+            "label": "Tisana",
+            "collection": "te-e-tisane-ayurvediche",
+            "products": [
+              "te-yogi-speziato",
+              "te-verde-marrakech-e-petali-50gr",
+              "te-nero-pakistano-supremo-50gr"
+            ],
+            "veil": "#2e3121",
+            "caption": "Una tazza calda, quando si ha un momento solo per sé.",
+            "alt": "Tazza fumante accanto a bastoncini di cannella",
+            "scene": "officina-scena-tisana.webp"
           }
         }
       },
       "block_order": [
-        "stone-0",
-        "stone-1",
-        "stone-2",
-        "stone-3",
-        "stone-4",
-        "stone-5",
-        "stone-6",
-        "stone-7"
+        "olio",
+        "bagno",
+        "candela",
+        "sapone",
+        "tisana"
       ]
     },
     "bz_store": {
@@ -752,7 +732,7 @@
     "bz_tarocchi",
     "bz_picked",
     "bz_ritual",
-    "bz_stones",
+    "bz_officina",
     "bz_store",
     "bz_newsletter"
   ]

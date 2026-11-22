@@ -1,0 +1,183 @@
+.bz-officina {
+  --officina-veil: #3a281c;
+  position: relative;
+  isolation: isolate;
+  background: var(--bz-bg);
+  color: var(--bz-text);
+}
+
+.bz-officina-veil {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  background-color: var(--officina-veil);
+  mask-image: radial-gradient(ellipse at 50% 48%, #000 22%, transparent 75%);
+  transition: background-color 240ms;
+}
+
+.bz-officina > .bz-sh > h2 em {
+  color: var(--bz-gold);
+}
+
+html .bz-scope .bz-officina .bz-pills {
+  display: flex;
+  flex-wrap: wrap;
+  overflow: visible;
+  margin-block: 0 var(--bz-sp-20, 20px);
+}
+
+html .bz-scope .bz-officina .bz-pills > button {
+  padding-inline: clamp(8px, 2.4vw, 18px);
+}
+
+.bz-officina-stage {
+  position: relative;
+  height: clamp(320px, 110vw, 520px);
+  margin: 0;
+  overflow: hidden;
+  border-radius: var(--bz-r-card);
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.bz-officina-scene {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bz-officina-scene--outgoing {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.bz-officina-cap {
+  position: absolute;
+  inset: auto 0 0;
+  padding: 52px 20px 20px;
+  background: linear-gradient(to top, rgba(20, 16, 13, .94), rgba(20, 16, 13, .65) 50%, transparent);
+}
+
+html .bz-scope .bz-officina-cap h3 {
+  margin: 0 0 6px;
+  color: var(--bz-text);
+  font-family: var(--bz-font-serif) !important;
+  font-size: 30px !important;
+  font-weight: 400 !important;
+  line-height: 1.15 !important;
+  letter-spacing: 0;
+}
+
+html .bz-scope .bz-officina-cap p {
+  margin: 0;
+  color: var(--bz-text-2);
+  font: 400 15px / 1.4 var(--bz-font-sans);
+  hyphens: manual;
+}
+
+.bz-officina-prods {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  margin-top: var(--bz-sp-20, 20px);
+}
+
+@media (width < 1024px) {
+  .bz-officina-prods {
+    margin-inline: -4px calc(-1 * var(--bz-margin));
+    padding: 4px var(--bz-margin) 4px 4px;
+    scroll-padding-inline: 4px var(--bz-margin);
+  }
+
+  .bz-officina-prods > .bz-product-tile {
+    flex: 0 0 44%;
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+
+  .bz-officina-prods > .bz-product-tile:last-child {
+    scroll-snap-align: end;
+  }
+}
+
+@media (min-width: 1024px) {
+  .bz-officina-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 46fr) minmax(0, 54fr);
+    gap: var(--bz-sp-24) var(--bz-sp-32);
+  }
+
+  /* Share the grid while keeping the tablist outside its tabpanel. */
+  .bz-officina-layout > [role="tabpanel"] {
+    display: grid;
+    grid-area: 1 / 1 / 4 / 3;
+    grid-template-columns: subgrid;
+    grid-template-rows: subgrid;
+  }
+
+  .bz-officina-stage {
+    grid-area: 1 / 1 / 4 / 2;
+    height: auto;
+  }
+
+  .bz-officina-stage > .bz-officina-scene {
+    position: absolute;
+    inset: 0;
+  }
+
+  html .bz-scope .bz-officina .bz-pills {
+    grid-area: 1 / 2;
+    z-index: 1;
+    margin-block: 0;
+  }
+
+  html .bz-scope .bz-officina .bz-pills > button {
+    padding-inline: clamp(8px, 1vw, 18px);
+  }
+
+  .bz-officina-prods {
+    display: grid;
+    grid-area: 2 / 2;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--bz-grid-gap, 12px);
+    margin: 0;
+    overflow: visible;
+  }
+
+  html .bz-scope .bz-officina .bz-row-link {
+    grid-area: 3 / 2;
+    z-index: 1;
+    margin: 0;
+  }
+}
+
+html .bz-scope .bz-officina .bz-product-tile .bz-product-tile__bottom {
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 4px;
+  padding-inline: 0;
+}
+
+html .bz-scope .bz-officina :focus-visible {
+  outline: 2px solid var(--bz-gold);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bz-officina-veil {
+    transition: none;
+  }
+
+  .bz-officina-scene--outgoing {
+    display: none;
+  }
+}
+
+html .bz-scope .bz-officina-cap h3 a {
+  color: inherit;
+  text-decoration: none;
+}
