@@ -223,7 +223,34 @@ body.locked{overflow:hidden}
 .plp .filter-price{display:grid;grid-template-columns:2em minmax(0,1fr);align-items:center;gap:var(--bz-sp-8);margin-block-end:var(--bz-sp-8)}
 .plp .filter-price input{width:100%;min-width:0}
 .plp .filter-option{display:grid;grid-template-columns:20px minmax(0,1fr);align-items:center;gap:var(--bz-sp-12);min-height:var(--bz-control-h);cursor:pointer}
-.plp .filter-option input[type=checkbox]{position:static;appearance:auto;-webkit-appearance:checkbox;width:20px;height:20px;margin:0;accent-color:var(--bz-gold)}
+.plp .filter-option input[type=checkbox] {
+  position: static;
+  -webkit-appearance: none;
+  appearance: none;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--line2);
+  border-radius: 4px;
+  background: var(--bg);
+  color: var(--gold);
+}
+.plp .filter-option input[type=checkbox]:checked::before {
+  content: "";
+  width: 6px;
+  height: 10px;
+  border: solid currentColor;
+  border-width: 0 2px 2px 0;
+  transform: translateY(-1px) rotate(45deg);
+}
+.plp .filter-option input[type=checkbox]:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+.plp .filter-option input[type=checkbox]:disabled { opacity: 0.5; }
 .plp .filter-option small{color:var(--bz-text-3)}
 .plp .filter-group-option{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:var(--bz-control-h);padding:0 10px;border-radius:4px;text-align:start;color:inherit}
 .plp .filter-group-option small{color:var(--bz-text-3)}
@@ -1707,6 +1734,14 @@ main.bz-page-home:has(#newsletter), main.bz-page-ayurveda:has(#newsletter) { pad
 }
 
 /* Collection groups */
+@font-face {
+  font-family: "IM Fell English";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("im-fell-english-italic.woff2") format("woff2");
+}
+.plp .bz-grouped-plp .plp-results { padding-top: 26px; }
 .plp .bz-grouped-plp .plp-groups { display: flex; flex-direction: column; gap: 48px; }
 .plp .bz-grouped-plp .plp-group-head {
   display: flex;
@@ -1716,13 +1751,36 @@ main.bz-page-home:has(#newsletter), main.bz-page-ayurveda:has(#newsletter) { pad
   padding-bottom: 12px;
   border-bottom: 1px solid #c9a96e47;
 }
-.plp .bz-grouped-plp .plp-group-head h2 { margin: 0; font: 400 22px/1.2 var(--serif); }
-.plp .bz-grouped-plp .plp-group-head span { color: var(--mute); font-size: 13px; white-space: nowrap; }
+.plp .bz-grouped-plp .plp-group-head h2 {
+  margin: 0;
+  font: italic 400 24px/1.2 "IM Fell English", Georgia, serif;
+  color: #eee7db;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.plp .bz-grouped-plp .plp-group-head h2::before {
+  content: "✦";
+  font-style: normal;
+  font-family: Figtree, Arial, sans-serif;
+  font-size: 0.55em;
+  color: #c9a96e;
+  margin-right: 0.45em;
+  vertical-align: 0.12em;
+  letter-spacing: 0;
+}
+.plp .bz-grouped-plp .plp-group-head h2 em {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+}
+.plp .bz-grouped-plp .plp-group-head span { color: #958d7f; font-size: 13px; white-space: nowrap; }
 .plp .bz-grouped-plp .plp-group-link { display: inline-flex; align-items: center; min-height: 44px; margin-top: 12px; }
 .plp .bz-grouped-plp .plp-pagination { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 12px; }
 @media (min-width: 1024px) {
   .plp .bz-grouped-plp .plp-groups { gap: 64px; }
-  .plp .bz-grouped-plp .plp-group-head h2 { font-size: 24px; }
+  .plp .bz-grouped-plp .plp-results { padding-top: 28px; }
+  .plp .bz-grouped-plp .plp-group-head h2 { font-size: 28px; }
 }
 
 /* Il negozio */

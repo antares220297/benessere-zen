@@ -118,6 +118,9 @@
 
 {%- paginate collection.products by per_page -%}
   <form method="get" action="{{ collection.url }}">
+    {%- if grouped -%}
+      <input type="hidden" name="tipo" disabled>
+    {%- endif -%}
     <section class="plp-controls" aria-label="Filtra e ordina">
       <div class="toolbar">
         <button class="tool-btn" type="button" data-filters-open aria-haspopup="dialog" aria-controls="filters-{{ section.id }}" aria-expanded="false">
