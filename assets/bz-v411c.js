@@ -512,7 +512,9 @@
       return { checked, bundleVariant, sum: discount ? Math.round(full * 0.9) : full, full, discount };
     }
     const bundleVariant = checked.length > 0 && checked.length === inputs.length ? Number(panel.dataset.bundleVariant) : null;
-    return { checked, bundleVariant, sum: bundleVariant ? Number(panel.dataset.bundlePrice) : full };
+    const discount = !bundleVariant && checked.length === 3 && !!panel.closest('.ritual-section--product[data-ritual-discount]');
+    const sum = bundleVariant ? Number(panel.dataset.bundlePrice) : discount ? Math.round(full * 0.9) : full;
+    return { checked, bundleVariant, sum, full, discount };
   }
 
   function paintRitual(panel) {
@@ -522,15 +524,14 @@
     const price = q('.ritual-sum', panel);
     q('.ritual-count', panel).textContent = count + (count === 1 ? ' pezzo scelto' : ' pezzi scelti');
     price.textContent = euro(sum);
-    if (homeSetVariants.has(panel)) {
-      button.textContent = discount ? 'Aggiungi il set · −10%' : 'Aggiungi al carrello';
-      if (discount) {
-        const original = document.createElement('s');
-        original.className = 'ritual-set-original';
-        original.textContent = euro(full);
-        price.prepend(original);
-      }
-    } else {
+    button.textContent = discount ? 'Aggiungi il set · −10%' : 'Aggiungi al carrello';
+    if (discount) {
+      const original = document.createElement('s');
+      original.className = 'ritual-set-original';
+      original.textContent = euro(full);
+      price.prepend(original);
+    }
+    if (!homeSetVariants.has(panel)) {
       qa('.ritual-compare, .ritual-saving', panel).forEach(node => { node.hidden = !bundleVariant; });
     }
     button.disabled = count === 0 || panel.hasAttribute('aria-busy');
@@ -608,6 +609,10 @@
     if (!checked.length || panel.hasAttribute('aria-busy')) return;
     const items = bundleVariant ? [{ id: bundleVariant, quantity: 1 }] :
       checked.map(input => ({ id: Number(input.dataset.variant), quantity: 1 }));
+    if (!bundleVariant && items.length === 3 && ritual.classList.contains('ritual-section--product')) {
+      const setId = 'r-' + items.map(item => item.id).sort((a, b) => a - b).join('-');
+      items.forEach(item => { item.properties = { _bz_rituale: setId, _bz_rituale_n: '3' }; });
+    }
     panel.setAttribute('aria-busy', 'true');
     target.disabled = true;
     const status = q('[data-ritual-status]', panel);

@@ -2131,7 +2131,8 @@ html .bz-scope .ritual-section.ritual-section--product .row-price {
   }
 }
 
-.ritual-section--home .ritual-set-original {
+.ritual-section--home .ritual-set-original,
+.ritual-section--product .ritual-set-original {
   margin-inline-end: .5em;
   color: var(--bz-text-2);
   font-size: var(--bz-fs-sm);

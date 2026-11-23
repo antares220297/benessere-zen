@@ -101,13 +101,13 @@
   {%- assign veil = veil | split: '|' -%}
   {%- assign panel_id = section.id | append: '-ritual-product' -%}
   {%- assign rec_url = routes.product_recommendations_url | append: '?section_id=' | append: section.id | append: '&product_id=' | append: product.id | append: '&limit=10&intent=complementary' -%}
-  <section class="ritual-section ritual-section--product" data-bz-ritual data-ritual-product="{{ product.id }}" data-veil-source="{{ veil[1] }}:{{ veil[0] }}"{% unless recommendations.performed %} data-bz-complementary data-url="{{ rec_url | escape }}"{% endunless %}>
+  <section class="ritual-section ritual-section--product" data-bz-ritual data-ritual-product="{{ product.id }}" data-veil-source="{{ veil[1] }}:{{ veil[0] }}"{% if section.settings.mostra_sconto_insieme %} data-ritual-discount{% endif %}{% unless recommendations.performed %} data-bz-complementary data-url="{{ rec_url | escape }}"{% endunless %}>
     <div class="ritual-bg on" style="--ritual-tone:{{ veil[0] }};--ritual-tone-end:#1b1714" aria-hidden="true"></div>
     {%- capture caption_title -%}{% render 'bz-product-name', product: product %}{%- endcapture -%}
     <div class="bz-sh">
       <h2>{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h2>
     </div>
-    {% render 'bz-ritual-panel', panel_id: panel_id, first: true, rows: rows, count: selected_count, total: total, shot: product.featured_image, caption_title: caption_title, pdp: true %}
+    {% render 'bz-ritual-panel', panel_id: panel_id, first: true, rows: rows, count: selected_count, total: total, shot: product.featured_image, caption_title: caption_title, pdp: true, mostra_sconto_insieme: section.settings.mostra_sconto_insieme %}
   </section>
   {%- unless recommendations.performed -%}
     <script src="{{ 'bz-home.js' | asset_url }}" defer></script>
@@ -129,6 +129,7 @@
     { "type": "text", "id": "link_label", "label": "Link" },
     { "type": "url", "id": "link", "label": "Destinazione" },
     { "type": "checkbox", "id": "bundle_discount", "label": "Prezzo del prodotto bundle", "default": false },
+    { "type": "checkbox", "id": "mostra_sconto_insieme", "label": "Mostra il −10% sul rituale", "info": "Accendilo solo dopo aver attivato lo sconto automatico nel negozio. Fino ad allora il totale resta la somma dei pezzi, senza prezzo barrato.", "default": false },
     { "type": "textarea", "id": "intro", "label": "Introduzione", "default": "Due o tre pezzi che stanno bene con questo." }
   ],
   "blocks": [

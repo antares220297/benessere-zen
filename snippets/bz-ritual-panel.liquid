@@ -3,10 +3,14 @@
   assign use_bundle = false
   assign display_total = total
   assign savings = 0
+  assign ritual_discount = false
   if bundle.available and bundle_variant.available and count > 0 and count == piece_count
     assign use_bundle = true
     assign display_total = bundle_variant.price
     assign savings = bundle_variant.compare_at_price | minus: bundle_variant.price
+  elsif pdp and mostra_sconto_insieme and count == 3
+    assign ritual_discount = true
+    assign display_total = total | times: 0.9 | round
   endif
 -%}
 <div class="ritual-grid{% if shot == blank and asset == blank %} ritual-grid--solo{% endif %}" id="{{ panel_id }}" data-ritual-set="{{ panel_id }}"{% unless first %} hidden{% endunless %}{% if use_bundle %} data-bundle-variant="{{ bundle_variant.id }}" data-bundle-price="{{ bundle_variant.price }}"{% endif %} {{ block.shopify_attributes }}>
@@ -16,10 +20,10 @@
       <div{% if pdp %} aria-live="polite" aria-atomic="true"{% endif %}>
         <small class="ritual-count">{{ count }} {% if count == 1 %}pezzo scelto{% else %}pezzi scelti{% endif %}</small>
         {%- if savings > 0 -%}<s class="ritual-compare">{% render 'bz-money', cents: bundle_variant.compare_at_price %}</s>{%- endif -%}
-        <div class="ritual-sum price">{% render 'bz-money', cents: display_total %}</div>
+        <div class="ritual-sum price">{% if ritual_discount %}<s class="ritual-set-original">{% render 'bz-money', cents: total %}</s>{% endif %}{% render 'bz-money', cents: display_total %}</div>
         {%- if savings > 0 -%}<span class="ritual-saving">Risparmi {% render 'bz-money', cents: savings %}</span>{%- endif -%}
       </div>
-      <button class="btn gold" type="button" data-bz-add-set{% if count == 0 %} disabled{% endif %}>Aggiungi al carrello</button>
+      <button class="btn gold" type="button" data-bz-add-set{% if count == 0 %} disabled{% endif %}>{% if ritual_discount %}Aggiungi il set · −10%{% else %}Aggiungi al carrello{% endif %}</button>
       <p class="ritual-status" role="status" data-ritual-status></p>
     </div>
   </div>
