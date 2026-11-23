@@ -20,7 +20,7 @@
 /* un filetto interno (carte uniformate: niente rombi agli angoli, niente secondo filetto) */
 .bz-tarocchi .tc__front::before{content:"";position:absolute;inset:3.6cqw;border:1px solid rgba(201,169,110,.42);border-radius:2.6cqw;pointer-events:none}
 .bz-tarocchi .tc__num{position:relative;display:flex;align-items:center;justify-content:center;gap:3cqw;margin-top:1cqw;
-  font:400 9.5cqw/1 var(--serif,Baskervville,Georgia,serif);letter-spacing:.12em;color:var(--goldl)}
+  font:400 9.5cqw/1 var(--serif,Baskervville,"Baskervville Fallback",Georgia,serif);letter-spacing:.12em;color:var(--goldl)}
 .bz-tarocchi .tc__num::before,.bz-tarocchi .tc__num::after{content:"";width:9cqw;height:1px;background:linear-gradient(90deg,transparent,rgba(201,169,110,.8))}
 .bz-tarocchi .tc__num::after{transform:scaleX(-1)}
 /* marchio BZ (ensō e figura dal logo ufficiale, ricolorato con l'oro della carta via maschera) al posto del numero.
@@ -51,9 +51,9 @@
    - mai più grande di prima (11,2cqw). Niente sillabazione, niente parole spezzate. */
 /* nome: almeno 9,5px quando il cartiglio lo consente (carte piccole a 360) */
 .bz-tarocchi .tc__title{--tfit:calc((90cqw - 2 * var(--cpad)) / 7.2);display:flex;align-items:center;justify-content:center;min-height:2.32em;
-  font:400 max(min(9.5px,var(--tfit)),min(11.2cqw,var(--tfit)))/1.16 var(--serif,Baskervville,Georgia,serif);color:#f3ead8;text-wrap:balance;white-space:pre-line;hyphens:none;overflow-wrap:normal;word-break:normal}
+  font:400 max(min(9.5px,var(--tfit)),min(11.2cqw,var(--tfit)))/1.16 var(--serif,Baskervville,"Baskervville Fallback",Georgia,serif);color:#f3ead8;text-wrap:balance;white-space:pre-line;hyphens:none;overflow-wrap:normal;word-break:normal}
 @media (min-width:768px){.bz-tarocchi .tc__title{font-size:min(11.2cqw,var(--tfit),calc((74cqw - 4px - var(--cpad)) / 7.2))}}
-.bz-tarocchi .tc__motto{display:block;margin-top:1.6cqw;font:italic 400 7.4cqw/1.2 var(--serif,Baskervville,Georgia,serif);color:rgba(227,203,149,.82)}
+.bz-tarocchi .tc__motto{display:block;margin-top:1.6cqw;font:italic 400 7.4cqw/1.2 var(--serif,Baskervville,"Baskervville Fallback",Georgia,serif);color:rgba(227,203,149,.82)}
 .bz-tarocchi.no-motti .tc__motto{display:none}
 /* pietre: 10px; su carte sotto i ~72px scenderebbero fino a 7cqw per restare dentro la carta (oggi la carta più piccola è 79,5px: sempre 10px) */
 /* ---------- RETRO v3 (19/11 23:30, ultimo giro): griglia vera ----------
@@ -78,19 +78,19 @@
 .bz-tarocchi .tc__back .tc__seal img{display:block;width:100%;height:auto}
 .bz-tarocchi .tc__bgroup{flex:1 1 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--g);width:100%;min-height:0}
 .bz-tarocchi .tc__bname{display:block;white-space:pre-line;text-wrap:balance;
-  font:500 max(calc(10.5px / var(--sa,1)),min(11.7cqw,calc(86cqw / 6.75)))/1.1 var(--serif,Baskervville,Georgia,serif);letter-spacing:.01em;color:var(--goldl)}
+  font:500 max(calc(10.5px / var(--sa,1)),min(11.7cqw,calc(86cqw / 6.75)))/1.1 var(--serif,Baskervville,"Baskervville Fallback",Georgia,serif);letter-spacing:.01em;color:var(--goldl)}
 .bz-tarocchi .tc__brule{display:block;position:relative;flex:0 0 auto;width:calc(var(--u) * 11);height:1px;background:linear-gradient(90deg,transparent,rgba(227,203,149,.85),transparent)}
 .bz-tarocchi .tc__brule::after{content:"";position:absolute;left:50%;top:50%;width:calc(var(--u) * .6);height:calc(var(--u) * .6);background:var(--goldl);transform:translate(-50%,-50%) rotate(45deg)}
 .bz-tarocchi .tc__brule--plain{width:calc(var(--u) * 7);background:linear-gradient(90deg,transparent,rgba(227,203,149,.6),transparent)}
 .bz-tarocchi .tc__brule--plain::after{content:none}
 .bz-tarocchi .tc__stones{display:flex;flex-direction:column;align-items:center;
-  font:500 max(calc(10px / var(--sa,1)),7cqw)/1.18 var(--sans,Figtree,Arial,sans-serif);letter-spacing:.01em;color:#eee7db;text-wrap:balance;hyphens:none;overflow-wrap:normal}
+  font:500 max(calc(10px / var(--sa,1)),7cqw)/1.18 var(--sans,Figtree,"Figtree Fallback",Arial,sans-serif);letter-spacing:.01em;color:#eee7db;text-wrap:balance;hyphens:none;overflow-wrap:normal}
 .bz-tarocchi .tc__stones{opacity:0;transition:opacity var(--bz-dur-menu) ease}
 .bz-tarocchi .tc.is-active .tc__stones{opacity:1;transition-delay:calc(var(--fd,0ms) + var(--face-swap))}
 .bz-tarocchi .tc__stones > span{display:block}
 .bz-tarocchi .tc__stones > span + span::before{content:"";display:block;width:calc(var(--u) * .45);height:calc(var(--u) * .45);margin:calc(var(--u) * .4) auto;background:rgba(227,203,149,.8);transform:rotate(45deg)}
-.bz-tarocchi .tc__bmotto{display:block;font:italic 400 max(calc(9.5px / var(--sa,1)),6.4cqw)/1.18 var(--serif,Baskervville,Georgia,serif);color:rgba(227,203,149,.85);text-wrap:balance}
-.bz-tarocchi .tc__brand{display:block;font:400 max(calc(6.5px / var(--sa,1)),4.4cqw)/1 var(--serif,Baskervville,Georgia,serif);letter-spacing:.3em;padding-left:.3em;white-space:nowrap;text-transform:uppercase;color:rgba(227,203,149,.62)}
+.bz-tarocchi .tc__bmotto{display:block;font:italic 400 max(calc(9.5px / var(--sa,1)),6.4cqw)/1.18 var(--serif,Baskervville,"Baskervville Fallback",Georgia,serif);color:rgba(227,203,149,.85);text-wrap:balance}
+.bz-tarocchi .tc__brand{display:block;font:400 max(calc(6.5px / var(--sa,1)),4.4cqw)/1 var(--serif,Baskervville,"Baskervville Fallback",Georgia,serif);letter-spacing:.3em;padding-left:.3em;white-space:nowrap;text-transform:uppercase;color:rgba(227,203,149,.62)}
 @media (max-width:767.98px){
   .bz-tarocchi .tc__back{--m:calc(var(--u) * 2);--g:calc(var(--u) * .85)}
   .bz-tarocchi .tc__back .tc__seal{width:20cqw}
@@ -231,13 +231,13 @@
 .bz-tarocchi .tc__back::after{content:none}
 .bz-tarocchi .tc__back .tc__seal{width:24cqw;filter:drop-shadow(0 0 2cqw rgba(227,203,149,.18))}
 .bz-tarocchi .tc__bgroup{gap:var(--g);width:100%;margin:0}
-.bz-tarocchi .tc__bname{margin:0;font:400 calc(20px / var(--sa,1))/1.06 var(--serif,Baskervville,Georgia,serif);letter-spacing:0;color:var(--goldl);white-space:pre;text-wrap:balance}
+.bz-tarocchi .tc__bname{margin:0;font:400 calc(20px / var(--sa,1))/1.06 var(--serif,Baskervville,"Baskervville Fallback",Georgia,serif);letter-spacing:0;color:var(--goldl);white-space:pre;text-wrap:balance}
 .bz-tarocchi .tc__brule{width:calc(var(--u) * 7);height:1px;margin:0}
 .bz-tarocchi .tc__brule::after{width:calc(var(--u) * .5);height:calc(var(--u) * .5)}
 .bz-tarocchi .tc__brule--plain{width:calc(var(--u) * 4.5)}
-.bz-tarocchi .tc__stones{font:500 calc(12px / var(--sa,1))/1.18 var(--sans,Figtree,Arial,sans-serif);letter-spacing:0}
+.bz-tarocchi .tc__stones{font:500 calc(12px / var(--sa,1))/1.18 var(--sans,Figtree,"Figtree Fallback",Arial,sans-serif);letter-spacing:0}
 .bz-tarocchi .tc__stones > span + span::before{width:calc(var(--u) * .35);height:calc(var(--u) * .35);margin:calc(var(--u) * .3) auto}
-.bz-tarocchi .tc__bmotto{margin:0;font:italic 400 calc(11px * var(--mk,1) / var(--sa,1))/1.18 var(--serif,Baskervville,Georgia,serif)}
+.bz-tarocchi .tc__bmotto{margin:0;font:italic 400 calc(11px * var(--mk,1) / var(--sa,1))/1.18 var(--serif,Baskervville,"Baskervville Fallback",Georgia,serif)}
 .bz-tarocchi .tc__brand{font-size:calc(7px / var(--sa,1))}
 @media (max-width:767.98px){
   .bz-tarocchi .tc__back{--g:calc(var(--u) * .75)}
@@ -262,8 +262,8 @@
 /* margini laterali: quelli della home (var(--side), 20/28px), così i pannelli stanno in colonna con hero, «I più scelti», FAQ.
    (Chi siamo usa 1,7vw: in home darebbe 14/17/24px e i pannelli uscirebbero dalla colonna di 6–11px.) */
 .bz-tarocchi{
-  --serif:var(--bz-font-serif,Baskervville,Georgia,serif);
-  --sans:var(--bz-font-sans,Figtree,Arial,sans-serif);
+  --serif:var(--bz-font-serif,Baskervville,"Baskervville Fallback",Georgia,serif);
+  --sans:var(--bz-font-sans,Figtree,"Figtree Fallback",Arial,sans-serif);
   --title-duration:calc(var(--bz-dur-large) + 20ms);
   --glow-duration:calc(var(--bz-dur-hover) * 2);
   --face-swap:calc(var(--bz-dur-flip) * .193);
@@ -281,12 +281,12 @@
 .bz-tarocchi .deck__head{grid-column:1;grid-row:1;align-self:stretch;display:flex;flex-direction:column;justify-content:center;min-width:0;
   padding:32px 4vw;text-align:left;background:linear-gradient(90deg,transparent 60%,var(--tint-end)),var(--tint)}
 .bz-tarocchi .deck--des .deck__head{grid-column:2;background:linear-gradient(270deg,transparent 60%,var(--tint-end)),var(--tint)}
-.bz-tarocchi .deck__head h2{margin:0;font:400 clamp(30px,3vw,44px)/1.1 var(--serif,Baskervville,Georgia,serif);color:var(--ivory,#eee7db)}
+.bz-tarocchi .deck__head h2{margin:0;font:400 clamp(30px,3vw,44px)/1.1 var(--serif,Baskervville,"Baskervville Fallback",Georgia,serif);color:var(--ivory,#eee7db)}
 .bz-tarocchi .deck__head h2 em{color:var(--gold,#c9a96e);font-style:italic}
-.bz-tarocchi .deck__head p{margin:16px 0 0;max-width:48em;font:400 clamp(16px,1.25vw,18px)/1.55 var(--sans,Figtree,Arial,sans-serif);color:var(--ivory2,#cdc4b4)}
+.bz-tarocchi .deck__head p{margin:16px 0 0;max-width:48em;font:400 clamp(16px,1.25vw,18px)/1.55 var(--sans,Figtree,"Figtree Fallback",Arial,sans-serif);color:var(--ivory2,#cdc4b4)}
 /* link come «Vedi tutto →» della home (.bz-sh-more) */
 .bz-tarocchi .deck__more{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;min-height:44px;margin-top:10px;color:var(--goldl,#e3cb95);
-  font:500 14px var(--sans,Figtree,Arial,sans-serif);text-decoration:none;white-space:nowrap}
+  font:500 14px var(--sans,Figtree,"Figtree Fallback",Arial,sans-serif);text-decoration:none;white-space:nowrap}
 .bz-tarocchi .deck__more:hover{color:var(--ivory,#eee7db)}
 .bz-tarocchi .deck__more:focus-visible{outline:2px solid #f3e2b6;outline-offset:4px;border-radius:4px}
 /* mazzo: il cielo a puntini prende il posto della foto */

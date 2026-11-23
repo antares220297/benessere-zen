@@ -7,14 +7,14 @@
 
 .bz-product {
   color: #eee7db;
-  font-family: Figtree, system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", system-ui, sans-serif;
   background: #141312;
 }
 
 .bz-product h1,
 .bz-product h2,
 .bz-product h3 {
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
   font-weight: 400;
   color: #eee7db;
 }
@@ -197,7 +197,7 @@
 }
 
 .bz-buy__price strong {
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
   font-weight: 400;
   font-size: 42px;
   line-height: 1;
@@ -250,7 +250,7 @@
 }
 
 .bz-facts b {
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
   font-weight: 400;
   font-size: 17px;
   color: #e3cb95;
@@ -421,7 +421,7 @@
 .bz-acc li {
   color: #cdc4b4;
   font-size: 14.5px;
-  font-family: Figtree, system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", system-ui, sans-serif;
 }
 
 .bz-acc table {
@@ -504,7 +504,7 @@
 }
 
 .bz-dbento .bz-figure {
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
   font-size: 64px;
   line-height: 1;
   margin: 0;
@@ -528,7 +528,7 @@
 
 .bz-sticky {
   display: none;
-  font-family: Figtree, system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", system-ui, sans-serif;
 }
 
 @media (max-width: 860px) {
@@ -659,7 +659,7 @@
   .bz-sticky span {
     flex: 1;
     min-width: 0;
-    font-family: Figtree, system-ui, sans-serif;
+    font-family: Figtree, "Figtree Fallback", system-ui, sans-serif;
     font-size: 13px;
     color: #eee7db;
   }
@@ -672,7 +672,7 @@
 
   .bz-sticky b {
     display: block;
-    font-family: Baskervville, Georgia, serif;
+    font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
     font-weight: 400;
     font-size: 18px;
   }

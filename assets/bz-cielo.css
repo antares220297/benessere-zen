@@ -1,14 +1,14 @@
 #cielo{--gold:#c9a96e;--goldl:#e8d09a;--iv:#eee7db;--iv2:rgba(238,231,219,.7);--ink:#2e1d12;--ink2:#6a4a2e;--ox:#6e1c1c;--D:min(390px,calc(100vw - 40px));
- position:relative;isolation:isolate;overflow:hidden;overflow:clip;border-radius:28px;padding:32px 20px 28px;color:var(--iv);font-family:Figtree,Arial,sans-serif;
+ position:relative;isolation:isolate;overflow:hidden;overflow:clip;border-radius:28px;padding:32px 20px 28px;color:var(--iv);font-family:Figtree,"Figtree Fallback",Arial,sans-serif;
  background:radial-gradient(circle at 6% 9%,rgba(255,244,214,0.7) 0 1.2px,transparent 2.2px),radial-gradient(circle at 18% 4%,rgba(255,244,214,0.5) 0 1px,transparent 2.0px),radial-gradient(circle at 31% 12%,rgba(255,244,214,0.8) 0 1.4px,transparent 2.4px),radial-gradient(circle at 47% 6%,rgba(255,244,214,0.45) 0 1px,transparent 2.0px),radial-gradient(circle at 63% 10%,rgba(255,244,214,0.6) 0 1.2px,transparent 2.2px),radial-gradient(circle at 79% 5%,rgba(255,244,214,0.85) 0 1.5px,transparent 2.5px),radial-gradient(circle at 93% 13%,rgba(255,244,214,0.5) 0 1px,transparent 2.0px),radial-gradient(circle at 4% 38%,rgba(255,244,214,0.45) 0 1px,transparent 2.0px),radial-gradient(circle at 96% 33%,rgba(255,244,214,0.65) 0 1.3px,transparent 2.3px),radial-gradient(circle at 9% 61%,rgba(255,244,214,0.55) 0 1.2px,transparent 2.2px),radial-gradient(circle at 91% 58%,rgba(255,244,214,0.45) 0 1px,transparent 2.0px),radial-gradient(circle at 5% 84%,rgba(255,244,214,0.6) 0 1.4px,transparent 2.4px),radial-gradient(circle at 95% 82%,rgba(255,244,214,0.5) 0 1.1px,transparent 2.1px),radial-gradient(circle at 50% 97%,rgba(255,244,214,0.4) 0 1px,transparent 2.0px),radial-gradient(circle at 24% 93%,rgba(255,244,214,0.5) 0 1.2px,transparent 2.2px),radial-gradient(circle at 74% 95%,rgba(255,244,214,0.45) 0 1px,transparent 2.0px),radial-gradient(ellipse 70% 38% at var(--gx,50%) var(--gy,34%),rgba(64,86,140,.32),transparent 70%),linear-gradient(180deg,#0a1020 0%,#0d1529 45%,#0a0f1d 100%)}
 #cielo *{box-sizing:border-box}
 #cielo .ci{width:20px;height:20px;flex:none}
 /* intestazione centrata */
 #cielo .c3-head{display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center}
-#cielo h2{margin:0;font:400 32px/1.05 Baskervville,Georgia,serif!important;letter-spacing:normal;color:#fff}
+#cielo h2{margin:0;font:400 32px/1.05 Baskervville,"Baskervville Fallback",Georgia,serif!important;letter-spacing:normal;color:#fff}
 #cielo h2 em{font-style:italic;color:var(--gold)}
 #cielo .c2-pills{display:flex;justify-content:center;gap:8px}
-#cielo .c2-pills button{position:relative;display:flex;align-items:center;gap:6px;height:40px;padding:0 16px;border-radius:999px;border:1px solid rgba(232,208,154,.35);background:transparent;color:var(--iv);font:500 13px Figtree,Arial,sans-serif;cursor:pointer}
+#cielo .c2-pills button{position:relative;display:flex;align-items:center;gap:6px;height:40px;padding:0 16px;border-radius:999px;border:1px solid rgba(232,208,154,.35);background:transparent;color:var(--iv);font:500 13px Figtree,"Figtree Fallback",Arial,sans-serif;cursor:pointer}
 #cielo .c2-pills button::after{content:"";position:absolute;inset:-2px 0}
 #cielo .c2-pills button[aria-pressed=true]{background:var(--iv);border-color:var(--iv);color:#141312}
 #cielo .c2-pills .ci{width:18px;height:18px}
@@ -39,9 +39,9 @@
 #cielo .vv-dy{width:44px;height:44px;margin:-22px 0 0 -22px}
 #cielo .vv-a .vv-dy{transform:rotate(var(--a)) translateY(calc(var(--D)*-.355))}
 #cielo .vv-b .vv-dy{transform:rotate(var(--a)) translateY(calc(var(--D)*-.268))}
-#cielo .vv-mo span{font:italic calc(var(--D)*.042)/1 Baskervville,Georgia,serif;color:var(--goldl);letter-spacing:.01em;text-shadow:0 1px 0 rgba(0,0,0,.6);transition:opacity .2s,color .3s}
+#cielo .vv-mo span{font:italic calc(var(--D)*.042)/1 Baskervville,"Baskervville Fallback",Georgia,serif;color:var(--goldl);letter-spacing:.01em;text-shadow:0 1px 0 rgba(0,0,0,.6);transition:opacity .2s,color .3s}
 /* giorni: Baskervville 500 a ~17 px (D 390), avorio pieno, ombra scura per il contrasto */
-#cielo .vv-dy span{display:grid;place-items:center;width:calc(var(--D)*.084);height:calc(var(--D)*.084);border-radius:50%;font:500 calc(var(--D)*.044)/1 Baskervville,Georgia,serif;font-variant-numeric:lining-nums;color:#fbf5e8;text-shadow:0 1px 2px rgba(0,0,0,.85);transition:opacity .2s,background-color .3s,color .3s}
+#cielo .vv-dy span{display:grid;place-items:center;width:calc(var(--D)*.084);height:calc(var(--D)*.084);border-radius:50%;font:500 calc(var(--D)*.044)/1 Baskervville,"Baskervville Fallback",Georgia,serif;font-variant-numeric:lining-nums;color:#fbf5e8;text-shadow:0 1px 2px rgba(0,0,0,.85);transition:opacity .2s,background-color .3s,color .3s}
 #cielo .vv-flip span{transform:rotate(180deg)}
 #cielo .vv-mo[aria-checked=true] span{color:#fff6e2;text-shadow:0 0 10px rgba(232,208,154,.75),0 1px 0 rgba(0,0,0,.6)}
 #cielo .vv-dy[aria-checked=true] span{background:radial-gradient(circle at 35% 30%,#f3e2b0,#c9a96e 60%,#94733c);color:#1a120c;text-shadow:none;box-shadow:0 0 12px rgba(232,208,154,.55)}
@@ -69,13 +69,13 @@
 #cielo .vv.is-intro .vv-rot{transition:none}
 /* ---------- almanacco centrato ---------- */
 #cielo .c2-alm{margin:26px auto 0;max-width:520px;text-align:center}
-#cielo .c2-alm h3{margin:0!important;font-family:Baskervville,Georgia,serif!important;font-size:31px!important;line-height:1.1!important;font-weight:400!important;color:#fff}
+#cielo .c2-alm h3{margin:0!important;font-family:Baskervville,"Baskervville Fallback",Georgia,serif!important;font-size:31px!important;line-height:1.1!important;font-weight:400!important;color:#fff}
 #cielo .c2-alm h3 em{font-style:italic;color:var(--gold)}
 #cielo .c2-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:14px 0 0;padding:0}
 #cielo .c2-facts div{min-width:0;padding:2px 8px}
 #cielo .c2-facts div+div{border-left:1px solid rgba(201,169,110,.3)}
-#cielo .c2-facts dt{font:italic 13px/1.2 Baskervville,Georgia,serif;color:var(--gold)}
-#cielo .c2-facts dd{margin:5px 0 0;font:16px/1.25 Baskervville,Georgia,serif;color:var(--iv)}
+#cielo .c2-facts dt{font:italic 13px/1.2 Baskervville,"Baskervville Fallback",Georgia,serif;color:var(--gold)}
+#cielo .c2-facts dd{margin:5px 0 0;font:16px/1.25 Baskervville,"Baskervville Fallback",Georgia,serif;color:var(--iv)}
 #cielo .c2-facts .g{font-family:"BZ Segni",serif;color:var(--goldl);margin-right:4px}
 #cielo .c2-note{margin:14px auto 0;max-width:44ch;font-size:14px;line-height:1.5;color:var(--iv2)}
 /* ---------- il cartiglio di carta antica ---------- */
@@ -84,8 +84,8 @@
  box-shadow:inset 0 0 0 6px rgba(233,220,192,.0),inset 0 0 0 7px rgba(110,72,36,.42),inset 0 0 0 10px rgba(233,220,192,0),inset 0 0 0 10.6px rgba(110,72,36,.25),inset 0 0 40px rgba(110,72,36,.28),0 24px 50px rgba(0,0,0,.5);
  transition:opacity .8s ease,transform .9s cubic-bezier(.2,.85,.22,1)}
 #cielo .c3-cart.is-wait{opacity:0;transform:translateY(18px) scale(.985)}
-#cielo .c3-cart h3{margin:0!important;font-family:Baskervville,Georgia,serif!important;font-size:24px!important;line-height:1!important;font-weight:400!important;color:var(--ox)}
-#cielo .c3-per{display:block;margin-top:4px;font:italic 15px/1.3 Baskervville,Georgia,serif;color:var(--ink2)}
+#cielo .c3-cart h3{margin:0!important;font-family:Baskervville,"Baskervville Fallback",Georgia,serif!important;font-size:24px!important;line-height:1!important;font-weight:400!important;color:var(--ox)}
+#cielo .c3-per{display:block;margin-top:4px;font:italic 15px/1.3 Baskervville,"Baskervville Fallback",Georgia,serif;color:var(--ink2)}
 #cielo .c3-rule{display:block;width:120px;height:1px;margin:12px auto 0;background:linear-gradient(90deg,transparent,rgba(110,28,28,.6),transparent)}
 /* medaglioni ad arco: il centrale più alto */
 #cielo .c2-rows{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:18px;align-items:start}
@@ -94,16 +94,16 @@
 #cielo .c3-med.is-out{opacity:0;transform:translateY(8px) scale(.96)}
 #cielo .c3-ring{display:block;width:min(100%,104px);aspect-ratio:1;border-radius:50%;overflow:hidden;background:#d8c7a4;box-shadow:0 0 0 2px #b08d4f,0 0 0 5px #efe3c8,0 0 0 6px rgba(110,72,36,.5),0 8px 16px rgba(60,35,15,.3)}
 #cielo .c3-ring img{display:block;width:100%;height:100%;object-fit:cover}
-#cielo .c3-med .c2-sub{margin-top:12px;font:italic 13px/1.2 Baskervville,Georgia,serif;color:var(--ox)}
-#cielo .c3-med .c2-name{display:block;overflow:visible;font:15px/1.25 Baskervville,Georgia,serif;color:var(--ink)}
-#cielo .c3-med .c2-price{font:17px/1.3 Baskervville,Georgia,serif;color:var(--ink)}
+#cielo .c3-med .c2-sub{margin-top:12px;font:italic 13px/1.2 Baskervville,"Baskervville Fallback",Georgia,serif;color:var(--ox)}
+#cielo .c3-med .c2-name{display:block;overflow:visible;font:15px/1.25 Baskervville,"Baskervville Fallback",Georgia,serif;color:var(--ink)}
+#cielo .c3-med .c2-price{font:17px/1.3 Baskervville,"Baskervville Fallback",Georgia,serif;color:var(--ink)}
 /* biglietto: apertura morbida con grid-template-rows 0fr→1fr (eccezione chiesta) */
 #cielo .c3-fold{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .55s cubic-bezier(.2,.8,.2,1),opacity .4s ease}
 #cielo .c3-fold.is-open{grid-template-rows:1fr;opacity:1}
 #cielo .c3-fold>div{min-height:0;overflow:hidden}
 #cielo .c3-gift .c3-in{padding-top:16px}
 #cielo .c3-gift .c3-line{display:block;width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(110,72,36,.4),transparent);margin-bottom:6px}
-#cielo .c2-check{position:relative;display:inline-flex;align-items:center;gap:12px;min-height:44px;font:italic 16px Baskervville,Georgia,serif;color:var(--ink);cursor:pointer}
+#cielo .c2-check{position:relative;display:inline-flex;align-items:center;gap:12px;min-height:44px;font:italic 16px Baskervville,"Baskervville Fallback",Georgia,serif;color:var(--ink);cursor:pointer}
 #cielo .c2-check input{position:absolute;opacity:0;width:1px;height:1px}
 #cielo .c2-box{display:grid;place-items:center;width:22px;height:22px;flex:none;border-radius:5px;border:1px solid rgba(110,72,36,.7);color:#211b11;background:rgba(255,250,238,.5)}
 #cielo .c2-box svg{width:16px;height:16px;opacity:0}
@@ -111,31 +111,31 @@
 #cielo .c2-check input:checked+.c2-box svg{opacity:1}
 #cielo .c2-check input:focus-visible+.c2-box{outline:2px solid var(--ox);outline-offset:3px}
 #cielo .c3-msgw .c3-in{padding:4px 2px 2px}
-#cielo .c2-msg{display:block;width:100%;min-height:76px;padding:10px 14px;border-radius:6px;border:1px solid rgba(110,72,36,.4);background:rgba(255,250,238,.55);color:var(--ink);font:italic 16px/1.4 Baskervville,Georgia,serif;resize:vertical}
+#cielo .c2-msg{display:block;width:100%;min-height:76px;padding:10px 14px;border-radius:6px;border:1px solid rgba(110,72,36,.4);background:rgba(255,250,238,.55);color:var(--ink);font:italic 16px/1.4 Baskervville,"Baskervville Fallback",Georgia,serif;resize:vertical}
 #cielo .c2-msg::placeholder{color:rgba(80,55,30,.55)}
 #cielo .c2-total{display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:20px}
 #cielo .c3-sumline{display:flex;align-items:baseline;justify-content:center;gap:10px}
-#cielo .c2-count{font:italic 15px Baskervville,Georgia,serif;color:var(--ink2)}
-#cielo .c2-sum{font:28px/32px Baskervville,Georgia,serif;color:var(--ink)}
-#cielo .c2-cta{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;max-width:340px;min-height:48px;padding:14px 24px;border:1px solid #a88446;border-radius:999px;background:#c9a96e;color:#17140f;font:600 14px Figtree,Arial,sans-serif;cursor:pointer;box-shadow:0 6px 14px rgba(90,60,20,.25)}
-#cielo .c2-again{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;color:var(--ink2);font:italic 15px Baskervville,Georgia,serif;text-decoration:underline;text-underline-offset:4px;text-decoration-color:rgba(110,72,36,.35)}
+#cielo .c2-count{font:italic 15px Baskervville,"Baskervville Fallback",Georgia,serif;color:var(--ink2)}
+#cielo .c2-sum{font:28px/32px Baskervville,"Baskervville Fallback",Georgia,serif;color:var(--ink)}
+#cielo .c2-cta{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;max-width:340px;min-height:48px;padding:14px 24px;border:1px solid #a88446;border-radius:999px;background:#c9a96e;color:#17140f;font:600 14px Figtree,"Figtree Fallback",Arial,sans-serif;cursor:pointer;box-shadow:0 6px 14px rgba(90,60,20,.25)}
+#cielo .c2-again{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;color:var(--ink2);font:italic 15px Baskervville,"Baskervville Fallback",Georgia,serif;text-decoration:underline;text-underline-offset:4px;text-decoration-color:rgba(110,72,36,.35)}
 #cielo .c2-again .ci{width:18px;height:18px}
-#cielo .c2-foot{margin:4px 0 0;font:italic 12.5px/1.4 Baskervville,Georgia,serif;color:rgba(70,45,25,.7)}
+#cielo .c2-foot{margin:4px 0 0;font:italic 12.5px/1.4 Baskervville,"Baskervville Fallback",Georgia,serif;color:rgba(70,45,25,.7)}
 #cielo .bz-vh{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0 0 0 0)!important;white-space:nowrap!important}
 
 /* A4: etichette e corpo in Figtree come nella home */
-#cielo .c2-facts dt{font:500 12px/1.2 Figtree,Arial,sans-serif;letter-spacing:.02em;color:var(--gold)}
+#cielo .c2-facts dt{font:500 12px/1.2 Figtree,"Figtree Fallback",Arial,sans-serif;letter-spacing:.02em;color:var(--gold)}
 #cielo .c3-cart h3 em{font-style:italic;color:#8a6420}
-#cielo .c3-per{font:13px/1.3 Figtree,Arial,sans-serif;color:var(--ink2)}
-#cielo .c3-med .c2-sub{font:500 12px/1.2 Figtree,Arial,sans-serif;color:var(--ox)}
-#cielo .c3-med .c2-name{font:500 14px/1.3 Figtree,Arial,sans-serif;color:var(--ink)}
-#cielo .c3-med .c2-price{font:17px/1.3 Baskervville,Georgia,serif;font-variant-numeric:lining-nums;color:var(--ink)}
-#cielo .c2-check{font:14px Figtree,Arial,sans-serif}
-#cielo .c2-msg{font:14px/1.45 Figtree,Arial,sans-serif}
-#cielo .c2-count{font:13px Figtree,Arial,sans-serif;color:var(--ink2)}
+#cielo .c3-per{font:13px/1.3 Figtree,"Figtree Fallback",Arial,sans-serif;color:var(--ink2)}
+#cielo .c3-med .c2-sub{font:500 12px/1.2 Figtree,"Figtree Fallback",Arial,sans-serif;color:var(--ox)}
+#cielo .c3-med .c2-name{font:500 14px/1.3 Figtree,"Figtree Fallback",Arial,sans-serif;color:var(--ink)}
+#cielo .c3-med .c2-price{font:17px/1.3 Baskervville,"Baskervville Fallback",Georgia,serif;font-variant-numeric:lining-nums;color:var(--ink)}
+#cielo .c2-check{font:14px Figtree,"Figtree Fallback",Arial,sans-serif}
+#cielo .c2-msg{font:14px/1.45 Figtree,"Figtree Fallback",Arial,sans-serif}
+#cielo .c2-count{font:13px Figtree,"Figtree Fallback",Arial,sans-serif;color:var(--ink2)}
 #cielo .c2-sum{font-variant-numeric:lining-nums}
-#cielo .c2-again{font:13px Figtree,Arial,sans-serif}
-#cielo .c2-foot{font:11.5px/1.45 Figtree,Arial,sans-serif;color:rgba(70,45,25,.72)}
+#cielo .c2-again{font:13px Figtree,"Figtree Fallback",Arial,sans-serif}
+#cielo .c2-foot{font:11.5px/1.45 Figtree,"Figtree Fallback",Arial,sans-serif;color:rgba(70,45,25,.72)}
 /* A4: selezione per pezzo, come la spunta dorata del rituale, adattata ai medaglioni */
 #cielo [hidden]{display:none!important}
 #cielo .c3-med{position:relative;cursor:pointer;min-height:44px}
@@ -147,11 +147,11 @@
 #cielo .c3-check svg{width:18px;height:18px;opacity:0;transition:opacity .2s}
 #cielo .c3-med.is-off .c3-ring img{opacity:.42;filter:grayscale(.7)}
 #cielo .c3-med.is-off .c2-price,#cielo .c3-med.is-off .c2-name{opacity:.6}
-#cielo .c3-deal:not([hidden]){display:inline-block!important}#cielo .c3-deal{position:relative;margin:0;border:0;cursor:default;padding:5px 12px;border-radius:999px;background:rgba(110,28,28,.09);font:600 12.5px/1.3 Figtree,Arial,sans-serif;color:var(--ox)}
+#cielo .c3-deal:not([hidden]){display:inline-block!important}#cielo .c3-deal{position:relative;margin:0;border:0;cursor:default;padding:5px 12px;border-radius:999px;background:rgba(110,28,28,.09);font:600 12.5px/1.3 Figtree,"Figtree Fallback",Arial,sans-serif;color:var(--ox)}
 #cielo .c3-deal.is-hint{background:transparent;font-weight:500;color:var(--ink2);cursor:pointer;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(110,72,36,.35)}
 #cielo .c3-deal::after{content:"";position:absolute;inset:-6px -4px}#cielo .c3-hint::after{inset:-9px -6px}#cielo span.c3-deal{cursor:default}
 #cielo .c3-deal:focus-visible{outline:2px solid var(--ox);outline-offset:2px}
-#cielo .c3-was{font:14px Figtree,Arial,sans-serif;color:rgba(46,29,18,.8);text-decoration:line-through}
+#cielo .c3-was{font:14px Figtree,"Figtree Fallback",Arial,sans-serif;color:rgba(46,29,18,.8);text-decoration:line-through}
 #cielo .c2-cta:disabled{opacity:.55;cursor:default}
 
 /* A5: ruota dello stesso colore dello sfondo: solo bordi e incisioni dorate */
@@ -176,12 +176,12 @@
 /* A5: «per il…» solo come dedica nel regalo */
 #cielo:not(.is-gift) .c3-per{display:none}
 /* A5: nota di tradizione sotto l'almanacco */
-#cielo .c2-alm .c2-foot{margin:8px 0 0;font:italic 13px/1.4 Baskervville,Georgia,serif;color:rgba(238,231,219,.72)}
+#cielo .c2-alm .c2-foot{margin:8px 0 0;font:italic 13px/1.4 Baskervville,"Baskervville Fallback",Georgia,serif;color:rgba(238,231,219,.72)}
 /* A5: «Cambia data» */
-#cielo .c2-again{font:500 13px Figtree,Arial,sans-serif;text-decoration:none;gap:4px;padding:0 10px}
+#cielo .c2-again{font:500 13px Figtree,"Figtree Fallback",Arial,sans-serif;text-decoration:none;gap:4px;padding:0 10px}
 #cielo .c2-again span,#cielo .c2-again{text-underline-offset:4px}
 /* A5: invito a toccare la ruota */
-#cielo .vv>.c5-inv{position:absolute;left:50%;top:-30px;z-index:3;display:flex;align-items:center;gap:5px;margin:0;padding:0;width:max-content;max-width:100%;height:22px;border-radius:0;transform:translateX(-50%);font:500 13px/1 Figtree,Arial,sans-serif;letter-spacing:.01em;color:var(--goldl);opacity:0;transition:opacity .6s ease;pointer-events:none;white-space:nowrap}
+#cielo .vv>.c5-inv{position:absolute;left:50%;top:-30px;z-index:3;display:flex;align-items:center;gap:5px;margin:0;padding:0;width:max-content;max-width:100%;height:22px;border-radius:0;transform:translateX(-50%);font:500 13px/1 Figtree,"Figtree Fallback",Arial,sans-serif;letter-spacing:.01em;color:var(--goldl);opacity:0;transition:opacity .6s ease;pointer-events:none;white-space:nowrap}
 #cielo .vv>.c5-inv .ci{width:17px;height:17px;flex:none}
 #cielo .vv>.c5-inv.is-on{opacity:.92}
 #cielo .vv>.c5-inv.is-gone{opacity:0;transition-duration:.4s}
@@ -223,7 +223,7 @@
 }
 
 /* A6: invito ben visibile, pillola dorata sopra la finestra + impulso */
-#cielo .vv>.c5-inv{top:calc(var(--D)*.03 - 46px);height:34px;padding:0 15px 0 11px;gap:6px;border-radius:999px;background:linear-gradient(120deg,#f3e2b4,#d3b276);color:#17140f;font:600 14px/1 Figtree,Arial,sans-serif;letter-spacing:0;box-shadow:0 0 0 1px rgba(255,240,205,.6),0 0 0 5px rgba(232,208,154,.16),0 8px 20px rgba(0,0,0,.45),0 0 26px rgba(232,208,154,.35);transform:translate(-50%,-6px);transition:opacity .45s ease,transform .55s cubic-bezier(.2,.85,.22,1)}
+#cielo .vv>.c5-inv{top:calc(var(--D)*.03 - 46px);height:34px;padding:0 15px 0 11px;gap:6px;border-radius:999px;background:linear-gradient(120deg,#f3e2b4,#d3b276);color:#17140f;font:600 14px/1 Figtree,"Figtree Fallback",Arial,sans-serif;letter-spacing:0;box-shadow:0 0 0 1px rgba(255,240,205,.6),0 0 0 5px rgba(232,208,154,.16),0 8px 20px rgba(0,0,0,.45),0 0 26px rgba(232,208,154,.35);transform:translate(-50%,-6px);transition:opacity .45s ease,transform .55s cubic-bezier(.2,.85,.22,1)}
 #cielo .vv>.c5-inv::after{content:"";position:absolute;left:50%;bottom:-6px;width:12px;height:12px;margin-left:-6px;background:#dcbd84;transform:rotate(45deg);border-radius:0 0 3px 0;z-index:-1}
 #cielo .vv>.c5-inv .ci{width:18px;height:18px}
 #cielo .vv>.c5-inv.is-on{opacity:1;transform:translate(-50%,0)}
@@ -240,15 +240,15 @@
 
 /* A6 corredo: niente cartiglio di carta, tutto sul blu notte */
 #cielo .c3-cart{background:radial-gradient(ellipse 70% 60% at 50% 45%,rgba(232,208,154,.07),transparent 72%);box-shadow:none;border-radius:0;padding:4px 0 0;max-width:600px;color:var(--iv);margin-top:34px}
-#cielo .c3-cart h3{display:flex;align-items:center;justify-content:center;gap:14px;font:600 12.5px/1 Figtree,Arial,sans-serif!important;font-size:12.5px!important;letter-spacing:.16em!important;text-transform:uppercase;color:var(--goldl)}
+#cielo .c3-cart h3{display:flex;align-items:center;justify-content:center;gap:14px;font:600 12.5px/1 Figtree,"Figtree Fallback",Arial,sans-serif!important;font-size:12.5px!important;letter-spacing:.16em!important;text-transform:uppercase;color:var(--goldl)}
 #cielo .c3-cart h3 em{font-style:normal;color:inherit;margin-left:-9px}
 #cielo .c3-cart h3::before,#cielo .c3-cart h3::after{content:"";flex:1;max-width:96px;height:1px;background:linear-gradient(90deg,transparent,rgba(232,208,154,.55))}
 #cielo .c3-cart h3::after{background:linear-gradient(90deg,rgba(232,208,154,.55),transparent)}
 #cielo .c3-rule{display:none}
-#cielo .c3-per{margin-top:8px;font:italic 16px/1.3 Baskervville,Georgia,serif;color:var(--iv2)}
-#cielo .c3-med .c2-sub{font:600 11px/1.2 Figtree,Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--goldl)}
-#cielo .c3-med .c2-name{font:17px/1.25 Baskervville,Georgia,serif;color:var(--iv)}
-#cielo .c3-med .c2-price{font:17px/1.3 Baskervville,Georgia,serif;font-variant-numeric:lining-nums;color:var(--iv)}
+#cielo .c3-per{margin-top:8px;font:italic 16px/1.3 Baskervville,"Baskervville Fallback",Georgia,serif;color:var(--iv2)}
+#cielo .c3-med .c2-sub{font:600 11px/1.2 Figtree,"Figtree Fallback",Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--goldl)}
+#cielo .c3-med .c2-name{font:17px/1.25 Baskervville,"Baskervville Fallback",Georgia,serif;color:var(--iv)}
+#cielo .c3-med .c2-price{font:17px/1.3 Baskervville,"Baskervville Fallback",Georgia,serif;font-variant-numeric:lining-nums;color:var(--iv)}
 #cielo .c3-med.is-off .c2-price,#cielo .c3-med.is-off .c2-name{opacity:.62}
 #cielo .c3-ring{background:#1b2440}
 #cielo .c3-check{border-color:rgba(232,208,154,.7);background:rgba(13,21,41,.85);color:#17140f;box-shadow:0 2px 8px rgba(0,0,0,.5)}
@@ -294,7 +294,7 @@
 #cielo .c3-pick:checked + .c3-check{background:linear-gradient(120deg,#e8d09a,#c9a96e);border-color:#a88446}
 #cielo .c3-pick:checked + .c3-check svg{opacity:1}
 #cielo .c3-pick:focus-visible + .c3-check{outline:2px solid var(--goldl);outline-offset:3px}
-#cielo .c3-add{position:absolute;right:-6px;bottom:8px;width:30px;height:30px;display:grid;place-items:center;padding:0;border:1px solid #a88446;border-radius:50%;background:#c9a96e;color:#17140f;font:600 19px/1 Figtree,sans-serif;cursor:pointer}
+#cielo .c3-add{position:absolute;right:-6px;bottom:8px;width:30px;height:30px;display:grid;place-items:center;padding:0;border:1px solid #a88446;border-radius:50%;background:#c9a96e;color:#17140f;font:600 19px/1 Figtree,"Figtree Fallback",sans-serif;cursor:pointer}
 #cielo .c3-add::after{content:"";position:absolute;inset:-7px}
 #cielo .c3-add:disabled{opacity:.55;cursor:default}
 #cielo .c2-name a{color:inherit;text-decoration:none;overflow-wrap:anywhere}

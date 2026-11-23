@@ -2,7 +2,7 @@
 
 .bz-mid {
   color: #eee7db;
-  font-family: Figtree, var(--sans), system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", var(--sans), system-ui, sans-serif;
   background: #141312;
 }
 
@@ -13,7 +13,7 @@
 
 .bz-mid h2,
 .bz-mid h3 {
-  font-family: Baskervville, var(--serif), Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", var(--serif), Georgia, serif;
   font-weight: 400;
   color: #eee7db;
 }
@@ -91,7 +91,7 @@
 }
 
 .bz-bento__visit strong {
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
   font-weight: 400;
   font-size: 28px;
   line-height: 1.05;
@@ -99,7 +99,7 @@
 }
 
 .bz-bento__visit em {
-  font-family: Figtree, var(--sans), system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", var(--sans), system-ui, sans-serif;
   font-style: normal;
   font-size: 14.5px;
   line-height: 1.4;
@@ -192,7 +192,7 @@
 .bz-mchips b {
   flex: none;
   white-space: nowrap;
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
   font-weight: 400;
   font-size: 15px;
   color: #e3cb95;
@@ -218,7 +218,7 @@
 
 .bz-bento__stat p.bz-figure,
 .bz-figure {
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
   font-size: 84px;
   line-height: 1;
   margin: 0 0 10px;
@@ -299,7 +299,7 @@
 .bz-bento__caption .bz-price {
   display: block;
   margin-top: 2px;
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
   font-size: 22px;
   line-height: 1;
   white-space: nowrap;
@@ -554,7 +554,7 @@
 }
 
 .bz-intent__body strong {
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
   font-weight: 400;
   font-size: 26px;
   line-height: 1.05;
@@ -562,7 +562,7 @@
 }
 
 .bz-intent__body em {
-  font-family: Figtree, var(--sans), system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", var(--sans), system-ui, sans-serif;
   font-style: normal;
   font-size: 14px;
   line-height: 1.4;
@@ -703,7 +703,7 @@
 }
 
 .bz-set__row .bz-price {
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
   font-size: 18px;
   white-space: nowrap;
 }
@@ -717,7 +717,7 @@
 }
 
 .bz-set__sum {
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
   font-size: 32px;
 }
 

@@ -1,0 +1,121 @@
+{%- comment -%}
+  Build the collapsed description in a detached fragment. The inline script runs
+  where the description appears, before the parser reaches the purchase controls.
+{%- endcomment -%}
+<div class="bz-description" data-bz-description>
+  <template>
+    <div class="bz-buy__open rte" data-bz-intro hidden></div>
+    <div class="bz-brief" data-bz-brief hidden>
+      <h2>In breve</h2>
+      <ul role="list"></ul>
+    </div>
+    <button class="bz-description__toggle" type="button" aria-expanded="false" aria-controls="BzDescription-{{ section_id }}" hidden>Leggi tutto</button>
+    <div class="bz-description__body rte" id="BzDescription-{{ section_id }}">{{ description }}</div>
+  </template>
+  <script>
+    (function () {
+      var script = document.currentScript;
+      var source = script.previousElementSibling;
+      var content = source.content.cloneNode(true);
+
+      try {
+        initDescription(content);
+      } catch (error) {
+        source.replaceWith(source.content);
+        throw error;
+      }
+      source.replaceWith(content);
+
+      function initDescription(description) {
+        var intro = description.querySelector("[data-bz-intro]");
+        var brief = description.querySelector("[data-bz-brief]");
+        var toggle = description.querySelector(".bz-description__toggle");
+        var body = description.querySelector(".bz-description__body");
+        var list = brief.querySelector("ul");
+        var extracted = [];
+
+        function isBriefHeading(text) {
+          return /^in breve\s*:?$/i.test(text.trim());
+        }
+
+        body.querySelectorAll("p, li, div").forEach(function (paragraph) {
+          if (paragraph.closest("table") || paragraph.querySelector("p, li, div, ul, ol, table, h2, h3, h4")) return;
+          var breaks = Array.from(paragraph.querySelectorAll("br"));
+          if (!paragraph.textContent.includes("✅") && !intro.hasChildNodes() && paragraph.tagName === "P") {
+            // A paragraph with ordinary line breaks is still a single opening paragraph.
+            breaks = [];
+          }
+
+          // Keep the original paragraph markup and split only at actual line breaks.
+          for (var i = 0; i <= breaks.length; i++) {
+            var line = document.createRange();
+            line.selectNodeContents(paragraph);
+            if (i > 0) line.setStartAfter(breaks[i - 1]);
+            if (i < breaks.length) line.setEndBefore(breaks[i]);
+            var content = line.toString().trim();
+            if (!content) continue;
+
+            if (!content.startsWith("✅") && !intro.hasChildNodes() &&
+                paragraph.tagName !== "LI" && !isBriefHeading(content)) {
+              var opening = document.createElement("p");
+              opening.append(line.cloneContents());
+              intro.append(opening);
+              intro.hidden = false;
+            } else if (content.startsWith("✅") && list.children.length < 3) {
+              var item = document.createElement("li");
+              var text = document.createElement("span");
+              var value = content.replace(/^✅\uFE0F?\s*/, "");
+              var colon = value.indexOf(":");
+              if (colon > 0) {
+                var label = document.createElement("strong");
+                label.textContent = value.slice(0, colon + 1);
+                text.append(label, value.slice(colon + 1));
+              } else {
+                text.textContent = value;
+              }
+              item.append(text);
+              list.append(item);
+              brief.hidden = false;
+            } else {
+              continue;
+            }
+
+            if (i < breaks.length) line.setEndAfter(breaks[i]);
+            extracted.push({ line: line, paragraph: paragraph });
+          }
+        });
+
+        extracted.reverse().forEach(function (entry) {
+          entry.line.deleteContents();
+          if (!entry.paragraph.textContent.trim() && !entry.paragraph.querySelector("img, video, iframe, svg")) {
+            entry.paragraph.remove();
+          }
+        });
+        body.querySelectorAll("h2, h3, h4, p").forEach(function (heading) {
+          if (!isBriefHeading(heading.textContent)) return;
+          var next = heading.nextElementSibling;
+          if (!next || !next.textContent.trim() && !next.matches("table, img, video, iframe, svg") &&
+              !next.querySelector("table, img, video, iframe, svg")) heading.remove();
+        });
+
+        if (!body.textContent.trim() && !body.querySelector("table, img, video, iframe, svg")) {
+          body.hidden = true;
+          return;
+        }
+        if (!extracted.length) return;
+
+        body.hidden = true;
+        toggle.hidden = false;
+        toggle.addEventListener("click", function () {
+          var expanded = toggle.getAttribute("aria-expanded") === "true";
+          body.hidden = expanded;
+          toggle.setAttribute("aria-expanded", String(!expanded));
+          toggle.textContent = expanded ? "Leggi tutto" : "Mostra meno";
+        });
+      }
+    })();
+  </script>
+  <noscript>
+    <div class="bz-description__body rte">{{ description }}</div>
+  </noscript>
+</div>

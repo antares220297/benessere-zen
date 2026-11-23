@@ -3,7 +3,7 @@
 #CartDrawer,
 .bz-drawer {
   color: #eee7db;
-  font-family: Figtree, system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", system-ui, sans-serif;
 }
 
 #CartDrawer-Overlay,
@@ -29,13 +29,13 @@
   background: #201e1b !important;
   color: #eee7db !important;
   border: 1px solid rgba(238, 231, 219, 0.24);
-  font-family: Figtree, system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", system-ui, sans-serif;
   box-shadow: none;
 }
 
 #update-cart h2,
 .bz-drawer__panel h3 {
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
   font-weight: 400;
   font-size: 28px;
   color: #eee7db;
@@ -46,7 +46,7 @@
 #update-cart button,
 #update-cart input,
 #update-cart td {
-  font-family: Figtree, system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", system-ui, sans-serif;
   color: #eee7db;
 }
 
@@ -75,7 +75,7 @@
   align-items: flex-end;
   justify-self: end;
   margin: 0;
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
   font-size: 19px;
   white-space: nowrap;
 }
@@ -83,7 +83,7 @@
 .bz-line-price__each {
   margin-top: 2px;
   color: #958d7f;
-  font-family: Figtree, system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", system-ui, sans-serif;
   font-size: 12px;
   font-weight: 400;
 }
@@ -104,7 +104,7 @@
   border-radius: 999px;
   background: linear-gradient(180deg, #e3cb95, #c9a96e) !important;
   color: #17130d !important;
-  font-family: Figtree, system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", system-ui, sans-serif;
   font-weight: 600;
 }
 
@@ -160,7 +160,7 @@
 .theme-template-cart {
   background: #141312;
   color: #eee7db;
-  font-family: Figtree, system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", system-ui, sans-serif;
 }
 
 .theme-template-cart #main-cart-items,
@@ -186,13 +186,13 @@
 .theme-template-cart #main-cart-footer p,
 .theme-template-cart #main-cart-items {
   color: #eee7db;
-  font-family: Figtree, system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", system-ui, sans-serif;
 }
 
 .theme-template-cart #total-price,
 .theme-template-cart .price,
 .theme-template-cart .h4 {
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
 }
 
 .theme-template-cart #x-estimate-delivery-cart,
@@ -202,7 +202,7 @@
 
 #total-price,
 .bz-drawer__sum {
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
   font-size: 26px;
   color: #eee7db;
 }
@@ -435,7 +435,7 @@ input.bz-drawer__qty-input {
 
 .bz-drawer__upsell h4 {
   margin: 0 0 8px;
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
   font-weight: 400;
   font-size: 18px;
   color: #eee7db;
@@ -481,7 +481,7 @@ input.bz-drawer__qty-input {
   background: #201e1b;
   color: #eee7db;
   border-radius: 28px;
-  font-family: Figtree, system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", system-ui, sans-serif;
 }
 
 .bz-cartpage__head {
@@ -494,7 +494,7 @@ input.bz-drawer__qty-input {
 
 .bz-cartpage h1 {
   margin: 0;
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
   font-weight: 400;
   font-size: 40px;
 }
@@ -525,7 +525,7 @@ input.bz-drawer__qty-input {
 }
 
 .bz-cartpage__summary strong {
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
   font-size: 32px;
   font-weight: 400;
 }
@@ -573,7 +573,7 @@ input.bz-drawer__qty-input {
 }
 
 .bz-drawer__foot strong {
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
   font-size: 28px;
   font-weight: 400;
 }
@@ -661,7 +661,7 @@ a.bz-drawer__go.bz-drawer__shop {
   border-radius: 999px;
   background: linear-gradient(180deg, #e3cb95, #c9a96e);
   color: #17130d;
-  font-family: Figtree, system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", system-ui, sans-serif;
   font-weight: 600;
   text-decoration: none;
 }

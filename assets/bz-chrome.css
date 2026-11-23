@@ -849,7 +849,7 @@
 
   .bz-nav__panel-title {
     margin: 0 8px 12px;
-    font-family: Baskervville, Georgia, serif;
+    font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
     font-size: 28px;
     color: #eee7db;
   }

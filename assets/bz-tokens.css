@@ -68,6 +68,84 @@
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
+/* Fallback misurati su Quarzo rosa. Metodo e tabelle in G-report.md. */
+@font-face {
+  font-family: "Figtree Fallback";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("LiberationSans-Regular");
+  size-adjust: 99.8470%;
+  ascent-override: 95.1456%;
+  descent-override: 25.0383%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Figtree Fallback";
+  font-style: normal;
+  font-weight: 500;
+  src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("LiberationSans-Regular");
+  size-adjust: 100.5936%;
+  ascent-override: 94.4394%;
+  descent-override: 24.8525%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Figtree Fallback";
+  font-style: normal;
+  font-weight: 600;
+  src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"), local("LiberationSans-Bold");
+  size-adjust: 94.7481%;
+  ascent-override: 100.2658%;
+  descent-override: 26.3857%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Figtree Fallback";
+  font-style: normal;
+  font-weight: 700;
+  src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"), local("LiberationSans-Bold");
+  size-adjust: 95.8101%;
+  ascent-override: 99.1544%;
+  descent-override: 26.0933%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Baskervville Fallback";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Times New Roman"), local("TimesNewRomanMT"), local("Liberation Serif"), local("LiberationSerif-Regular");
+  size-adjust: 109.3267%;
+  ascent-override: 91.2860%;
+  descent-override: 26.9833%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Baskervville Fallback";
+  font-style: normal;
+  font-weight: 500;
+  src: local("Times New Roman"), local("TimesNewRomanMT"), local("Liberation Serif"), local("LiberationSerif-Regular");
+  size-adjust: 109.9848%;
+  ascent-override: 90.7398%;
+  descent-override: 26.8219%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Baskervville Fallback";
+  font-style: italic;
+  font-weight: 400;
+  src: local("Times New Roman Italic"), local("TimesNewRoman-ItalicMT"), local("Liberation Serif Italic"), local("LiberationSerif-Italic");
+  size-adjust: 103.2791%;
+  ascent-override: 96.6314%;
+  descent-override: 28.5634%;
+  line-gap-override: 0%;
+}
+
 /* Subset: space, B, Z, e, n, r, s — the glyphs in "Benessere Zen". */
 @font-face {
   font-family: "Zen Old Mincho";
@@ -145,8 +223,8 @@
   --bz-focus-offset:3px;
 
   /* Font */
-  --bz-font-serif:Baskervville,Georgia,serif;
-  --bz-font-sans:Figtree,Arial,sans-serif;
+  --bz-font-serif:Baskervville,"Baskervville Fallback",Georgia,serif;
+  --bz-font-sans:Figtree,"Figtree Fallback",Arial,sans-serif;
 
   /* Scala dei tipi (390 -> 1440) */
   --bz-fs-h1:clamp(40px,31.09px + 2.286vw,64px);

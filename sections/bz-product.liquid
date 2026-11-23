@@ -86,15 +86,7 @@
         <small>IVA inclusa</small>
       </div>
       {%- if product.description != blank -%}
-        <div class="bz-description" data-bz-description>
-          <div class="bz-buy__open rte" data-bz-intro hidden></div>
-          <div class="bz-brief" data-bz-brief hidden>
-            <h2>In breve</h2>
-            <ul role="list"></ul>
-          </div>
-          <button class="bz-description__toggle" type="button" aria-expanded="false" aria-controls="BzDescription-{{ section.id }}" hidden>Leggi tutto</button>
-          <div class="bz-description__body rte" id="BzDescription-{{ section.id }}">{{ product.description }}</div>
-        </div>
+        {%- render 'bz-product-description', description: product.description, section_id: section.id -%}
       {%- endif -%}
       <p class="bz-buy__disclaimer">I significati appartengono alla tradizione e non sostituiscono il parere di un medico.</p>
       {%- assign main_form_id = 'BzProductForm-' | append: section.id -%}

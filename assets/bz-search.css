@@ -13,7 +13,7 @@ section.bz-404 {
   padding: 20px 24px 40px;
   background: #141312;
   color: #eee7db;
-  font-family: Figtree, system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", system-ui, sans-serif;
 }
 
 section.bz-search *,
@@ -24,7 +24,7 @@ section.bz-404 * {
 section.bz-search h1,
 section.bz-404 h1 {
   margin: 0;
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
   font-style: normal;
   font-weight: 400;
   letter-spacing: -0.005em;
@@ -94,7 +94,7 @@ section.bz-search h1 em {
 section.bz-search h1.bz-search__none {
   margin: 0;
   max-width: 36ch;
-  font-family: Figtree, system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", system-ui, sans-serif;
   font-size: 18px;
   font-weight: 400;
   line-height: 1.45;
