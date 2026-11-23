@@ -1,6 +1,6 @@
 {%- assign goal = settings.bz_free_shipping_threshold | default: 50 | at_least: 1 | times: 100 -%}
 {%- assign missing = goal | minus: cart.total_price -%}
-<section class="cart-page" aria-labelledby="cart-title">
+<section class="cart-page" aria-labelledby="cart-title" data-cart-section-id="{{ section.id }}">
   <h1 id="cart-title">Il tuo <em>carrello</em></h1>
   {%- if cart.item_count == 0 -%}
     <p class="cart-empty">Il tuo carrello è vuoto.</p>
@@ -8,11 +8,10 @@
   {%- else -%}
   <div class="cart-layout">
     <div class="cart-products">
-      <p class="bz-cart-error" data-cart-error role="alert" hidden></p>
       <ul class="cart-items">
         {%- for item in cart.items -%}
           {%- capture item_name -%}{% render 'bz-product-name', product: item.product %}{%- endcapture -%}
-          <li class="cart-item" data-key="{{ item.key }}" data-quantity="{{ item.quantity }}" data-price="{{ item.final_price }}">
+          <li class="cart-item" data-cart-line data-key="{{ item.key | escape }}" data-quantity="{{ item.quantity }}">
             <a class="item-photo" href="{{ item.url }}">
               {%- if item.image -%}
                 {{ item.image | image_url: width: 240 | image_tag: alt: item_name, width: 120, height: 120, loading: 'lazy' }}
@@ -24,14 +23,9 @@
                 <p>{{ item.variant.title | escape }}</p>
               {%- endunless -%}
               <p>{% render 'bz-money', cents: item.final_price %}</p>
-              <button type="button" class="remove-item" aria-label="Rimuovi {{ item_name | escape }}">Rimuovi</button>
+              {% render 'bz-cart-line-controls', item: item, item_name: item_name %}
             </div>
             <div class="item-controls">
-              <div class="quantity" role="group" aria-label="Quantità: {{ item_name | escape }}">
-                <button type="button" data-delta="-1" aria-label="Diminuisci quantità: {{ item_name | escape }}" {% if item.quantity <= 1 %}disabled{% endif %}>−</button>
-                <output aria-label="Quantità: {{ item_name | escape }}">{{ item.quantity }}</output>
-                <button type="button" data-delta="1" aria-label="Aumenta quantità: {{ item_name | escape }}">+</button>
-              </div>
               <strong class="item-total">{% render 'bz-money', cents: item.final_line_price %}</strong>
             </div>
           </li>
@@ -46,7 +40,7 @@
           {%- if cart.total_price >= goal -%}Spedizione gratuita{%- else -%}Ti mancano <strong>{% render 'bz-money', cents: missing %}</strong> per la spedizione gratuita{%- endif -%}
         </p>
         <div class="shipping-line">
-          <div class="track" role="progressbar" aria-label="Avanzamento verso la spedizione gratuita" aria-valuemin="0" aria-valuemax="{{ goal }}" aria-valuenow="{{ cart.total_price }}">
+          <div class="track" role="progressbar" aria-label="Avanzamento verso la spedizione gratuita" aria-valuemin="0" aria-valuemax="{{ goal }}" aria-valuenow="{{ cart.total_price | at_most: goal }}">
             <span style="transform:scaleX({{ cart.total_price | times: 1.0 | divided_by: goal | at_most: 1 }})"></span>
           </div>
           <span>{{ settings.bz_free_shipping_threshold | default: 50 | at_least: 1 }}&nbsp;€</span>

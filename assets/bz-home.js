@@ -88,16 +88,14 @@
           if (node.hasAttribute("data-ritual-interacted") || node.matches(":focus-within")) return;
           var doc = new DOMParser().parseFromString(html, "text/html");
           var nextSet = doc.querySelector("[data-bz-ritual]");
-          if (nextSet && nextSet.querySelector("input[data-variant]")) {
+          if (nextSet && nextSet.dataset.ritualProduct === node.dataset.ritualProduct &&
+              nextSet.querySelector(".ritual-row--current")) {
             nextSet.removeAttribute("data-bz-complementary");
             node.replaceWith(nextSet);
-          } else if (!node.querySelector("input[data-variant]")) {
-            node.remove();
+            nextSet.dispatchEvent(new CustomEvent("bz:ritual-rendered", { bubbles: true }));
           }
         })
-        .catch(function () {
-          if (!node.querySelector("input[data-variant]")) node.remove();
-        });
+        .catch(function () {});
     });
   }
 

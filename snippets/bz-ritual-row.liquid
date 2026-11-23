@@ -6,20 +6,29 @@
     assign thumbnail_sizes = '(min-width: 1024px) min(16vw, 260px), 28vw'
   endif
   assign subtitle = rec.metafields.custom.variante_vetrina.value | strip
+  if current_product and rec.has_only_default_variant == false
+    assign subtitle = variant.title
+  endif
 -%}
-<label class="ritual-row{% unless variant.available %} is-unavailable{% endunless %}">
+<label class="ritual-row{% if current_product %} ritual-row--current{% endif %}{% unless variant.available %} is-unavailable{% endunless %}">
   <span class="ritual-row-media">
-    <input class="bz-vh" type="checkbox" {% if variant.available %}checked data-variant="{{ variant.id }}" data-price="{{ variant.price }}"{% else %}disabled{% endif %} aria-label="Includi nel set: {{ display_name | escape }}">
+    <input class="bz-vh" type="checkbox"{% if variant.available %} checked{% else %} disabled{% endif %}{% if variant.available or current_product %} data-variant="{{ variant.id }}" data-price="{{ variant.price }}"{% endif %} aria-label="Includi nel set: {{ display_name | escape }}{% if current_product %} (questo prodotto){% endif %}">
     <span class="set-check">{% render 'bz-icon', name: 'check' %}</span>
     <span class="ritual-thumb">
       {%- if rec.featured_image -%}
         {{ rec.featured_image | image_url: width: 480 | image_tag: alt: display_name, loading: 'lazy', decoding: 'async', widths: '96, 144, 240, 360, 480', sizes: thumbnail_sizes }}
       {%- endif -%}
     </span>
+    {%- if current_product -%}
+      <span class="ritual-row__stock"{% if variant.available %} hidden{% endif %}>Esaurito</span>
+    {%- endif -%}
   </span>
   <span class="ritual-item">
+    {%- if current_product -%}
+      <span class="ritual-row__current">Questo prodotto</span>
+    {%- endif -%}
     <span class="ritual-product">{{ display_name | escape }}</span>
-    {%- if subtitle != blank -%}
+    {%- if subtitle != blank or current_product -%}
       <span class="ritual-row__sub">{{ subtitle | escape }}</span>
     {%- endif -%}
   </span>

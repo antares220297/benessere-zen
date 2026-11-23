@@ -1,7 +1,11 @@
 {%- if product != blank -%}
   {%- liquid
-    assign count = 0
+    assign current = product.selected_or_first_available_variant
+    assign count = 1
     assign total = 0
+    if current.available
+      assign total = current.price
+    endif
     assign seen = '|'
     assign type_key = product.type | handleize
     assign type_family = type_key | split: '-' | first
@@ -22,6 +26,7 @@
     assign rule_keys = 'collection_1,collection_2' | split: ','
   -%}
   {%- capture rows -%}
+    {% render 'bz-ritual-row', rec: product, pdp: true, current_product: true %}
     {%- if recommendations.performed -%}
       {%- for rec in recommendations.products -%}
         {%- if count == 3 -%}{%- break -%}{%- endif -%}
@@ -90,25 +95,23 @@
       {%- endfor -%}
     {%- endif -%}
   {%- endcapture -%}
-  {%- if count > 0 or recommendations.performed == false -%}
-    {%- capture veil -%}{% render 'bz-ritual-veil', product: product %}{%- endcapture -%}
-    {%- assign veil = veil | split: '|' -%}
-    {%- assign panel_id = section.id | append: '-ritual-product' -%}
-    {%- assign rec_url = routes.product_recommendations_url | append: '?section_id=' | append: section.id | append: '&product_id=' | append: product.id | append: '&limit=10&intent=complementary' -%}
-    <section class="ritual-section ritual-section--product" data-bz-ritual data-veil-source="{{ veil[1] }}:{{ veil[0] }}"{% unless recommendations.performed %} data-bz-complementary data-url="{{ rec_url | escape }}"{% endunless %}{% if count == 0 %} hidden{% endif %}>
-      <div class="ritual-bg on" style="--ritual-tone:{{ veil[0] }};--ritual-tone-end:#1b1714" aria-hidden="true"></div>
-      {%- if count > 0 -%}
-        {%- capture caption_title -%}{% render 'bz-product-name', product: product %}{%- endcapture -%}
-        <div class="bz-sh">
-          <h2>{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h2>
-        </div>
-        {% render 'bz-ritual-panel', panel_id: panel_id, first: true, rows: rows, count: count, total: total, shot: product.featured_image, caption_title: caption_title %}
-      {%- endif -%}
-    </section>
-    {%- unless recommendations.performed -%}
-      <script src="{{ 'bz-home.js' | asset_url }}" defer></script>
-    {%- endunless -%}
-  {%- endif -%}
+  {%- assign selected_count = count -%}
+  {%- unless current.available -%}{%- assign selected_count = count | minus: 1 -%}{%- endunless -%}
+  {%- capture veil -%}{% render 'bz-ritual-veil', product: product %}{%- endcapture -%}
+  {%- assign veil = veil | split: '|' -%}
+  {%- assign panel_id = section.id | append: '-ritual-product' -%}
+  {%- assign rec_url = routes.product_recommendations_url | append: '?section_id=' | append: section.id | append: '&product_id=' | append: product.id | append: '&limit=10&intent=complementary' -%}
+  <section class="ritual-section ritual-section--product" data-bz-ritual data-ritual-product="{{ product.id }}" data-veil-source="{{ veil[1] }}:{{ veil[0] }}"{% unless recommendations.performed %} data-bz-complementary data-url="{{ rec_url | escape }}"{% endunless %}>
+    <div class="ritual-bg on" style="--ritual-tone:{{ veil[0] }};--ritual-tone-end:#1b1714" aria-hidden="true"></div>
+    {%- capture caption_title -%}{% render 'bz-product-name', product: product %}{%- endcapture -%}
+    <div class="bz-sh">
+      <h2>{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h2>
+    </div>
+    {% render 'bz-ritual-panel', panel_id: panel_id, first: true, rows: rows, count: selected_count, total: total, shot: product.featured_image, caption_title: caption_title, pdp: true %}
+  </section>
+  {%- unless recommendations.performed -%}
+    <script src="{{ 'bz-home.js' | asset_url }}" defer></script>
+  {%- endunless -%}
 {%- elsif product == blank -%}
   {%- assign sets = section.blocks | where: 'type', 'set' -%}
   {%- if sets.size > 0 -%}

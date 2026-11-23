@@ -1210,13 +1210,7 @@ html .bz-page-contact .contact-tile h2{
 .bz-page-cart .item-description h2{font:500 clamp(15px,1.3vw,19px)/1.4 var(--sans);overflow-wrap:anywhere}
 .bz-page-cart .item-description h2 a:hover{text-decoration:underline;text-underline-offset:4px}
 .bz-page-cart .item-description p{font-size:14px;margin-top:8px;color:var(--ivory2)}
-.bz-page-cart .remove-item{min-width:64px;min-height:44px;padding:8px 0;text-align:left;text-decoration:underline;text-underline-offset:4px;font-size:12px;color:var(--ivory2)}
 .bz-page-cart .item-controls{display:grid;justify-items:end;gap:14px}
-.bz-page-cart .quantity{display:flex;align-items:center;gap:8px;border:1px solid var(--line2);border-radius:100px;padding:2px}
-.bz-page-cart .quantity button{width:44px;height:44px;border-radius:50%;font-size:21px;transition:opacity 160ms var(--ease)}
-.bz-page-cart .quantity button:hover:not(:disabled){background:var(--card2)}
-.bz-page-cart .quantity button:disabled{opacity:.35;cursor:default}
-.bz-page-cart .quantity output{font-size:16px;min-width:1.92em;text-align:center;font-variant-numeric:tabular-nums}
 .bz-page-cart .item-total{font-size:16px;font-weight:500;font-variant-numeric:tabular-nums}
 .bz-page-cart .continue-shopping{display:inline-flex;align-items:center;min-height:48px;margin-top:20px;font-size:14px;color:var(--ivory2)}
 .bz-page-cart .continue-shopping:hover{text-decoration:underline;text-underline-offset:4px}
@@ -1249,7 +1243,7 @@ html .bz-page-contact .contact-tile h2{
 .bz-page-cart .close{width:44px;height:44px;display:grid;place-items:center}
 
 
-@media(max-width:1100px){.bz-page-cart .cart-layout{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:24px}.bz-page-cart .cart-item{grid-template-columns:88px minmax(0,1fr);gap:12px 18px}.bz-page-cart .item-controls{grid-column:2;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center}.bz-page-cart .item-photo{grid-row:span 2;align-self:start}.bz-page-cart .item-description .remove-item{margin-bottom:-8px}.bz-page-cart .cart-summary{padding:24px}}
+@media(max-width:1100px){.bz-page-cart .cart-layout{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:24px}.bz-page-cart .cart-item{grid-template-columns:88px minmax(0,1fr);gap:12px 18px}.bz-page-cart .item-controls{grid-column:2;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center}.bz-page-cart .item-photo{grid-row:span 2;align-self:start}.bz-page-cart .cart-summary{padding:24px}}
 @media(max-width:767px){.bz-page-cart .cart-layout{grid-template-columns:minmax(0,1fr);gap:28px}.bz-page-cart .cart-item{padding:20px 0}.bz-page-cart .cart-summary{padding:24px}.bz-page-cart .cart-summary .checkout{min-height:52px}.bz-page-cart .cart-page h1{font-size:clamp(40px,7vw,56px)}.bz-page-cart .header-actions>a,.bz-page-cart .header-actions>button{min-width:44px}.bz-page-cart .header-actions{gap:0}.bz-page-cart .brand{gap:6px}.bz-page-cart .brand>span{font-size:19px}.bz-page-cart .brand img{width:30px;height:30px}.bz-page-cart header{gap:4px}}
 @media(prefers-reduced-motion:reduce){.bz-page-cart #shipping-fill,.bz-page-cart .open-badge:not(.closed) i:after{animation:none}.bz-page-cart .btn:hover{transform:none}}
 
@@ -1982,6 +1976,7 @@ html .bz-scope.plp .bz-grouped-plp .plp-group-head h2 em {
 .bz-news__privacy { display: inline-flex; min-height: 44px; align-items: center; text-decoration: underline; }
 .bz-cart-error { color: var(--bz-text); font-size: 14px; overflow-wrap: anywhere; }
 .bz-ajax-error { width: 100%; margin-block: 8px; }
+.bz-scope .bz-cart-row-photo { flex: none; }
 
 /* Rituale PDP */
 html .bz-scope .ritual-section.ritual-section--product {
@@ -2055,10 +2050,40 @@ html .bz-scope .ritual-section.ritual-section--product .ritual-row {
   gap:var(--bz-sp-4);
   min-width:0;
   min-height:0;
-  padding:0;
+  padding:var(--bz-sp-8);
+  border:1px solid transparent;
   background:transparent;
   box-shadow:none;
   overflow-wrap:anywhere;
+}
+html .bz-scope .ritual-section.ritual-section--product .ritual-row--current {
+  z-index:1;
+  border-color:color-mix(in srgb,var(--bz-gold) 80%,transparent);
+  border-radius:var(--bz-r-card);
+  background:color-mix(in srgb,var(--bz-surface-2) 92%,var(--bz-gold));
+  box-shadow:0 0 16px color-mix(in srgb,var(--bz-gold) 20%,transparent);
+}
+html .bz-scope .ritual-section.ritual-section--product .ritual-item {
+  /* Keep the panel height stable when recommendations replace the fallback. */
+  min-block-size:calc(30px + 3 * 1.35em + 32px + 2 * var(--bz-sp-4));
+  justify-content:start;
+  font-size:var(--bz-fs-sm);
+}
+.ritual-row--current :is(.ritual-row__current,.ritual-row__stock) {
+  color:var(--bz-gold);
+  font:600 12px/15px var(--bz-font-sans);
+}
+.ritual-row--current .ritual-row__current {
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+.ritual-row--current .ritual-row__stock {
+  position:absolute;
+  inset: auto var(--bz-sp-8) var(--bz-sp-8) auto;
+  padding:0 var(--bz-sp-4);
+  border-radius:var(--bz-r-pill);
+  background:var(--bz-surface);
+  text-align:end;
 }
 html .bz-scope .ritual-section.ritual-section--product :is(.ritual-row-media,.ritual-item,.row-price) {
   align-self:auto;
@@ -2067,22 +2092,17 @@ html .bz-scope .ritual-section.ritual-section--product .ritual-row-media {
   max-width:160px;
 }
 html .bz-scope .ritual-section.ritual-section--product .ritual-product {
-  display:block;
-  font-size:var(--bz-fs-sm);
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:3;
+  overflow:hidden;
+  font-size:inherit;
   line-height:1.35;
 }
 html .bz-scope .ritual-section.ritual-section--product .row-price {
   margin-top:auto;
   text-align:start;
   font-size:var(--bz-fs-body)!important;
-}
-@media (max-width:767px) {
-  html .bz-scope .ritual-section.ritual-section--product .ritual-product {
-    display:-webkit-box;
-    -webkit-box-orient:vertical;
-    -webkit-line-clamp:3;
-    overflow:hidden;
-  }
 }
 @media (min-width:1024px) {
   html .bz-scope .ritual-section.ritual-section--product .ritual-grid:not(.ritual-grid--solo) {
@@ -2097,10 +2117,13 @@ html .bz-scope .ritual-section.ritual-section--product .row-price {
   html .bz-scope .ritual-section.ritual-section--product .ritual-total {
     margin-top:auto;
   }
+  html .bz-scope .ritual-section.ritual-section--product .ritual-count {
+    min-inline-size:9em;
+  }
   html .bz-scope .ritual-section.ritual-section--product .ritual-row-media {
     max-width:none;
   }
-  html .bz-scope .ritual-section.ritual-section--product .ritual-product {
+  html .bz-scope .ritual-section.ritual-section--product .ritual-item {
     font-size:16px;
   }
   html .bz-scope .ritual-section.ritual-section--product .row-price {

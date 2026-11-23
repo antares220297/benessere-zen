@@ -51,12 +51,18 @@
     var shipping = root.querySelector("[data-bz-shipping]");
     var quantity = root.querySelector("[data-bz-atc] input[name='quantity']");
     var currency = new Intl.NumberFormat("it-IT", { style: "currency", currency: "EUR" });
-    var cartTotal = Number(document.querySelector("[data-cart-content]")?.dataset.totalPrice || 0);
+    var cartTotal = Number(root.dataset.bzCartTotal || 0);
     var variantPrice = Number(shipping.dataset.price);
     var threshold = Number(shipping.dataset.threshold);
+    var decrease = root.querySelector("[data-bz-atc] [data-bz-qty='-1']");
+
+    function quantityValue() {
+      return Math.max(1, Math.floor(quantity.valueAsNumber || 1));
+    }
 
     function updateShipping() {
-      var count = Math.max(1, Math.floor(Number(quantity.value) || 1));
+      var count = quantityValue();
+      decrease.disabled = count <= 1;
       var projected = cartTotal + variantPrice * count;
       var missing = Math.max(0, threshold - projected);
       var text = shipping.querySelector("p");
@@ -71,31 +77,36 @@
     }
 
     quantity.addEventListener("input", updateShipping);
+    quantity.addEventListener("change", function () {
+      quantity.value = String(quantityValue());
+      updateShipping();
+    });
     document.addEventListener("bz:cart-updated", function (event) {
       cartTotal = event.detail.totalPrice;
       updateShipping();
     });
 
-    root.querySelectorAll("[data-bz-variant]").forEach(function (radio) {
+    root.querySelectorAll("input[type='radio'][data-bz-variant]").forEach(function (radio) {
       radio.addEventListener("change", function () {
+        var unavailable = radio.dataset.available === "false";
         var imageId = radio.dataset.imageId || root.dataset.featuredImageId;
         var thumb = Array.from(thumbs).find(function (button) {
           return button.dataset.imageId === imageId;
         });
         if (thumb) thumb.click();
         var galleryVariant = root.querySelector("[data-bz-gallery-variant]");
-        if (galleryVariant) galleryVariant.textContent = radio.nextElementSibling.textContent;
+        if (galleryVariant) galleryVariant.textContent = radio.dataset.variantTitle;
         var stickyButton = root.querySelector(".bz-sticky button");
         if (mainAdd) {
-          mainAdd.disabled = radio.disabled;
-          mainAdd.classList.toggle("bz-stock--soldout", radio.disabled);
-          mainAdd.querySelector("[data-bz-add-label]").textContent = radio.disabled ? "Esaurito" : "Aggiungi al carrello";
-          if (!radio.disabled) mainAdd.setAttribute("aria-label", "Aggiungi al carrello: " + root.querySelector("h1").textContent);
+          mainAdd.disabled = unavailable;
+          mainAdd.classList.toggle("bz-stock--soldout", unavailable);
+          mainAdd.querySelector("[data-bz-add-label]").textContent = unavailable ? "Esaurito" : "Aggiungi al carrello";
+          mainAdd.setAttribute("aria-label", (unavailable ? "Esaurito: " : "Aggiungi al carrello: ") + root.querySelector("h1").textContent);
         }
         if (stickyButton) {
-          stickyButton.disabled = radio.disabled;
-          stickyButton.textContent = radio.disabled ? "Esaurito" : "Aggiungi";
-          if (!radio.disabled) stickyButton.setAttribute("aria-label", "Aggiungi al carrello: " + root.querySelector("h1").textContent);
+          stickyButton.disabled = unavailable;
+          stickyButton.textContent = unavailable ? "Esaurito" : "Aggiungi";
+          stickyButton.setAttribute("aria-label", (unavailable ? "Esaurito: " : "Aggiungi al carrello: ") + root.querySelector("h1").textContent);
         }
         var cents = Number(radio.getAttribute("data-bz-variant"));
         if (Number.isFinite(cents) && cents >= 0) {
@@ -110,14 +121,13 @@
         }
       });
     });
-    root.querySelectorAll("[data-bz-qty]").forEach(function (button) {
+    root.querySelectorAll("[data-bz-atc] [data-bz-qty]").forEach(function (button) {
       button.addEventListener("click", function () {
-        var input = root.querySelector("input[name='quantity']");
-        if (!input) return;
-        var next = Math.max(1, Number(input.value || 1) + Number(button.getAttribute("data-bz-qty")));
-        input.value = String(next);
+        var next = Math.max(1, quantityValue() + Number(button.dataset.bzQty));
+        quantity.value = String(next);
         updateShipping();
       });
     });
+    updateShipping();
   });
 })();

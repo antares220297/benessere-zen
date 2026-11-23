@@ -283,17 +283,57 @@
   const drawer = q('.drawer');
   let returnFocus;
   const routes = window.BZ || {};
+  function findCartLine(surface, key) {
+    return q('[data-cart-line][data-key="' + CSS.escape(key) + '"]', surface);
+  }
+
   async function refreshCart() {
-    const content = q('[data-cart-content]', drawer);
-    if (!content) return;
+    const surfaces = qa('[data-cart-section-id]');
+    if (!surfaces.length) return;
     const url = new URL(location.href);
-    url.searchParams.set('section_id', content.dataset.sectionId);
+    url.searchParams.delete('section_id');
+    url.searchParams.set('sections', surfaces.map(surface => surface.dataset.cartSectionId).join(','));
     const response = await fetch(url, { cache: 'no-store' });
-    if (!response.ok) return;
-    const html = new DOMParser().parseFromString(await response.text(), 'text/html');
-    const updated = q('[data-cart-content]', html);
+    if (!response.ok) throw new Error('Cart sections unavailable');
+    const sections = await response.json();
+    const updates = surfaces.map(surface => {
+      const id = surface.dataset.cartSectionId;
+      const html = new DOMParser().parseFromString(sections[id] || '', 'text/html');
+      return q('[data-cart-section-id="' + CSS.escape(id) + '"]', html);
+    });
+    if (updates.some(update => !update)) throw new Error('Cart section missing');
+
+    surfaces.forEach((surface, i) => {
+      const update = updates[i];
+      const active = document.activeElement;
+      const row = active?.closest('[data-cart-line]');
+      const restoreFocus = row && surface.contains(row);
+      const oldRows = restoreFocus ? qa('[data-cart-line]', surface) : [];
+      const scroll = surface.closest('.drawer') || q('.bz-drawer__scroll', surface);
+      const top = scroll?.scrollTop;
+      surface.replaceChildren(...update.childNodes);
+      if (surface.matches('#CartDrawer')) {
+        const nextScroll = q('.bz-drawer__scroll', surface);
+        if (nextScroll && top != null) nextScroll.scrollTop = top;
+      } else if (scroll) {
+        scroll.scrollTop = top;
+      }
+      if (restoreFocus) {
+        const rows = qa('[data-cart-line]', surface);
+        const nextRow = findCartLine(surface, row.dataset.key) || rows[Math.min(oldRows.indexOf(row), rows.length - 1)];
+        const selector = active.hasAttribute('data-cart-remove') ? '[data-cart-remove]' :
+          '[data-cart-delta="' + CSS.escape(active.dataset.cartDelta || '') + '"]:not(:disabled)';
+        const next = nextRow ? q(selector, nextRow) || q('[data-cart-delta="1"]', nextRow) : q('a', surface);
+        next?.focus({ preventScroll: true });
+      }
+    });
+
+    const updated = updates.find(update => update.matches('[data-cart-content]'));
     if (!updated) return;
-    content.replaceWith(updated);
+    paintBadges(romeNow());
+    const live = q('[data-cart-content]');
+    live.dataset.itemCount = updated.dataset.itemCount;
+    live.dataset.totalPrice = updated.dataset.totalPrice;
     const itemCount = Number(updated.dataset.itemCount);
     const count = q('[data-cart-count]');
     if (count) {
@@ -303,17 +343,6 @@
     const label = q('[data-bz-header-cart]');
     if (label) label.setAttribute('aria-label', label.dataset.bzHeaderCart + (itemCount ? ', ' + itemCount + (itemCount === 1 ? ' pezzo' : ' pezzi') : ''));
     document.dispatchEvent(new CustomEvent('bz:cart-updated', { detail: { totalPrice: Number(updated.dataset.totalPrice) } }));
-  }
-  function paintShipping(box, cents) {
-    if (!box) return;
-    const goal = (hours.free || 50) * 100;
-    const missing = Math.max(0, goal - cents);
-    const text = q('[data-shipping-text]', box) || q('p', box);
-    if (text) text.innerHTML = missing === 0 ? 'Spedizione gratuita' : 'Ti mancano <strong>' + euro(missing) + '</strong> per la spedizione gratuita';
-    const bar = q('.track span', box);
-    if (bar) bar.style.transform = 'scaleX(' + Math.min(cents / goal, 1) + ')';
-    const track = q('.track', box);
-    if (track) track.setAttribute('aria-valuenow', String(Math.min(cents, goal)));
   }
   function openCart() {
     if (!overlay) return;
@@ -388,8 +417,11 @@
     event.preventDefault();
     const data = new FormData(form);
     const id = Number(data.get('id'));
-    const quantity = Math.max(1, Number(data.get('quantity') || 1));
-    if (id) submitItems(form, event.submitter?.closest('.bz-sticky') ? event.submitter : form, [{ id, quantity }]);
+    const quantity = Math.max(1, Math.floor(Number(data.get('quantity')) || 1));
+    const variant = q('[name="id"][data-bz-variant]:checked, [type="hidden"][name="id"][data-bz-variant]', form);
+    if (id && variant?.dataset.available !== 'false') {
+      submitItems(form, event.submitter?.closest('.bz-sticky') ? event.submitter : form, [{ id, quantity }]);
+    }
   });
   document.addEventListener('click', event => {
     const button = event.target.closest('[data-bz-add]');
@@ -471,7 +503,7 @@
   const homeSetVariants = new WeakMap();
 
   function ritualSelection(panel) {
-    const inputs = qa('input[data-variant]', panel);
+    const inputs = qa('input[data-variant]:not(:disabled)', panel);
     const checked = inputs.filter(input => input.checked);
     const full = checked.reduce((total, input) => total + Number(input.dataset.price), 0);
     if (homeSetVariants.has(panel)) {
@@ -518,9 +550,40 @@
   initHomeSets(document);
   document.addEventListener('shopify:section:load', event => initHomeSets(event.target));
 
+  function syncRitualVariant(ritual, variant) {
+    const row = q('.ritual-row--current', ritual);
+    if (!row || !variant?.value) return;
+    const input = q('input', row);
+    const available = variant.dataset.available !== 'false';
+    input.dataset.variant = variant.value;
+    input.dataset.price = variant.dataset.bzVariant;
+    input.disabled = !available;
+    input.checked = available && !input.hasAttribute('data-ritual-excluded');
+    row.classList.toggle('is-unavailable', !available);
+    q('.row-price', row).textContent = euro(Number(variant.dataset.bzVariant));
+    q('.ritual-row__stock', row).hidden = available;
+    if (variant.dataset.variantTitle) q('.ritual-row__sub', row).textContent = variant.dataset.variantTitle;
+    paintRitual(row.closest('[data-ritual-set]'));
+  }
+
+  function syncProductRitual(ritual) {
+    const product = q('[data-bz-product="' + ritual.dataset.ritualProduct + '"]');
+    if (!product) return;
+    syncRitualVariant(ritual, q('[data-bz-variant]:checked, input[type="hidden"][data-bz-variant]', product));
+  }
+
+  qa('[data-ritual-product]').forEach(syncProductRitual);
+  document.addEventListener('bz:ritual-rendered', event => syncProductRitual(event.target));
   document.addEventListener('change', event => {
+    if (event.target.matches('[data-bz-variant]:checked')) {
+      const product = event.target.closest('[data-bz-product]');
+      if (!product) return;
+      qa('[data-ritual-product="' + product.dataset.bzProduct + '"]').forEach(ritual => syncRitualVariant(ritual, event.target));
+      return;
+    }
     if (!event.target.matches('.ritual-row input[data-variant]')) return;
     const panel = event.target.closest('[data-ritual-set]');
+    if (event.target.closest('.ritual-row--current')) event.target.toggleAttribute('data-ritual-excluded', !event.target.checked);
     panel.closest('[data-bz-ritual]').setAttribute('data-ritual-interacted', '');
     paintRitual(panel);
   });
@@ -791,52 +854,56 @@
 
   qa('[data-sort]').forEach(select => select.addEventListener('change', () => select.form?.requestSubmit()));
 
-  let pendingLines = 0;
-  let cartChanged = false;
-  let cartFailed = false;
+  let cartLinePending = false;
+  document.addEventListener('submit', event => {
+    if (cartLinePending && event.target.closest('[data-cart-section-id]')) event.preventDefault();
+  });
   document.addEventListener('click', event => {
-    const button = event.target.closest('.cart-page [data-delta], .cart-page .remove-item');
-    if (!button) return;
-    const item = button.closest('.cart-item');
-    const status = q('[data-cart-error]');
-    if (pendingLines === 0) {
-      status.hidden = true;
-      cartFailed = false;
-    }
-    pendingLines++;
+    const button = event.target.closest('[data-cart-delta], [data-cart-remove]');
+    if (!button || button.disabled || cartLinePending) return;
+    const row = button.closest('[data-cart-line]');
+    const surface = row.closest('[data-cart-section-id]');
+    const key = row.dataset.key;
+    const removing = button.hasAttribute('data-cart-remove');
+    const delta = Number(button.dataset.cartDelta);
+    const stockError = 'Quantità non disponibile per questo prodotto.';
+    const updateError = 'Impossibile aggiornare il carrello. Riprova.';
+    cartLinePending = true;
+    qa('[data-cart-section-id]').forEach(node => node.setAttribute('data-cart-mutating', ''));
     queueCart(async () => {
-      const current = Number(item.dataset.quantity);
+      const current = findCartLine(surface, key);
       if (!current) return;
-      const quantity = button.matches('.remove-item') ? 0 : Math.max(0, current + Number(button.dataset.delta));
-      const response = await fetch(routes.change, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ id: item.dataset.key, quantity })
-      });
-      if (!response.ok) throw new Error('Modifica rifiutata');
-      const cart = await response.json();
-      const line = cart.items.find(entry => entry.key === item.dataset.key);
-      item.dataset.quantity = line?.quantity || 0;
-      if (line) {
-        q('output', item).textContent = line.quantity;
-        q('[data-delta="-1"]', item).disabled = line.quantity <= 1;
-        q('.item-total', item).textContent = euro(line.final_line_price);
-      } else {
-        item.remove();
+      const quantity = removing ? 0 : Number(current.dataset.quantity) + delta;
+      if (!removing && quantity < 1) return;
+      let message = '';
+      try {
+        const response = await fetch(routes.change, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ id: key, quantity })
+        });
+        if (!response.ok) {
+          message = response.status === 422 && !removing ? stockError : updateError;
+        } else {
+          const cart = await response.json();
+          const line = cart.items.find(entry => entry.key === key);
+          if (!removing && line && line.quantity !== quantity) message = stockError;
+        }
+      } catch {
+        message = updateError;
       }
-      q('#cart-total').textContent = euro(cart.total_price);
-      paintShipping(q('.cart-page [data-shipping]'), cart.total_price);
-      cartChanged = true;
-    }).catch(() => {
-      cartFailed = true;
-      status.textContent = 'Impossibile aggiornare la quantità. Riprova.';
-      status.hidden = false;
+      // Shopify can adjust the line even when it rejects the requested quantity.
+      await refreshCart().catch(() => { message ||= updateError; });
+      if (message) {
+        qa('[data-cart-section-id]').forEach(node => {
+          const item = findCartLine(node, key);
+          const status = item && q('[data-cart-line-error]', item);
+          if (status) status.textContent = message;
+        });
+      }
     }).finally(() => {
-      pendingLines--;
-      if (pendingLines || !cartChanged) return;
-      cartChanged = false;
-      if (cartFailed) refreshCart().catch(() => {});
-      else location.reload();
+      cartLinePending = false;
+      qa('[data-cart-mutating]').forEach(node => node.removeAttribute('data-cart-mutating'));
     });
   });
 

@@ -27,7 +27,7 @@
 
 {%- capture display_name -%}{% render 'bz-product-name', product: product %}{%- endcapture -%}
 {%- assign stage_image = current.featured_image | default: product.featured_image -%}
-<div class="bz bz-product" data-bz-product data-featured-image-id="{{ product.featured_image.id }}">
+<div class="bz bz-product" data-bz-product="{{ product.id }}" data-featured-image-id="{{ product.featured_image.id }}" data-bz-cart-total="{{ cart.total_price }}">
   <nav class="bz-crumb" aria-label="Percorso">
     <a href="{{ routes.root_url }}">Home</a>
     <span aria-hidden="true">›</span>
@@ -92,22 +92,22 @@
       {%- assign main_form_id = 'BzProductForm-' | append: section.id -%}
       {%- form 'product', product, id: main_form_id, class: 'bz-ajax-cart' -%}
         {%- if product.has_only_default_variant -%}
-          <input type="hidden" name="id" value="{{ current.id }}">
+          <input type="hidden" name="id" value="{{ current.id }}" data-bz-variant="{{ current.price }}" data-available="{{ current.available }}">
         {%- else -%}
           <div class="bz-variants" role="group" aria-label="Variante">
             {%- for variant in product.variants -%}
               <label>
-                <input type="radio" name="id" value="{{ variant.id }}" {% if variant.id == current.id %}checked{% endif %} {% unless variant.available %}disabled{% endunless %} data-bz-variant="{{ variant.price }}" data-image-id="{{ variant.featured_image.id }}">
+                <input type="radio" name="id" value="{{ variant.id }}"{% if variant.id == current.id %} checked{% endif %} data-bz-variant="{{ variant.price }}" data-available="{{ variant.available }}" data-variant-title="{{ variant.title | escape }}" data-image-id="{{ variant.featured_image.id }}">
                 <span>{{ variant.title | escape }}</span>
               </label>
             {%- endfor -%}
           </div>
         {%- endif -%}
         <div class="bz-atc" data-bz-atc>
-          <div class="bz-qty">
-            <button type="button" data-bz-qty="-1" aria-label="Meno">−</button>
-            <input type="number" name="quantity" value="1" min="1" aria-label="Quantità">
-            <button type="button" data-bz-qty="1" aria-label="Più">+</button>
+          <div class="bz-qty" role="group" aria-label="Quantità">
+            <button type="button" data-bz-qty="-1" aria-label="Diminuisci quantità" disabled>−</button>
+            <input type="number" name="quantity" value="1" min="1" step="1" inputmode="numeric" aria-label="Quantità">
+            <button type="button" data-bz-qty="1" aria-label="Aumenta quantità">+</button>
           </div>
           <button class="bz-btn bz-btn--gold{% unless current.available %} bz-stock--soldout{% endunless %}" type="submit" name="add" {% if current.available %}aria-label="Aggiungi al carrello: {{ display_name | escape }}"{% endif %} {% unless current.available %}disabled{% endunless %}>
             {% render 'bz-icon', name: 'shopping_bag', icon_class: 'bz-ico' %}

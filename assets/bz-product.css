@@ -317,15 +317,14 @@
   outline-offset: 3px;
 }
 
-.bz-variants input:disabled + span {
+.bz-variants input[data-available="false"] + span {
   opacity: .55;
   border-style: dashed;
-  cursor: not-allowed;
 }
 
 .bz-atc {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: max-content minmax(0, 1fr);
   gap: 10px;
   align-items: center;
   margin-bottom: 10px;
@@ -334,10 +333,11 @@
 .bz-qty {
   display: inline-flex;
   align-items: center;
+  justify-self: start;
   height: 52px;
-  padding: 0 4px;
-  border: 1px solid rgba(238, 231, 219, 0.24);
-  border-radius: 999px;
+  border: 1px solid var(--bz-line-field);
+  border-radius: var(--bz-r-pill);
+  background: var(--bz-surface-2);
 }
 
 .bz-qty button {
@@ -347,8 +347,16 @@
   height: 44px;
   border: 0;
   background: transparent;
-  color: #eee7db;
+  color: var(--bz-gold);
+  padding: 0;
+  border-radius: var(--bz-r-pill);
   font-size: 18px;
+}
+
+.bz-qty button:disabled {
+  color: var(--bz-text-3);
+  opacity: .65;
+  cursor: default;
 }
 
 .bz-atc .bz-btn {
@@ -620,10 +628,6 @@
     grid-column: span 2;
   }
 
-  .bz-atc {
-    grid-template-columns: auto 1fr;
-  }
-
   .bz-sticky {
     position: fixed;
     inset-inline: var(--side);
@@ -818,17 +822,8 @@ html .bz-scope .bz-brief h2 {
 
 @media (width < 400px) {
   .bz-atc {
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--bz-sp-8);
-  }
-
-  .bz-qty button {
-    min-width: 32px;
-    width: 32px;
-  }
-
-  html .bz-scope .bz-qty input[type="number"] {
-    min-width: 32px;
-    width: 32px;
   }
 }
 
