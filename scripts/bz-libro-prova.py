@@ -109,7 +109,7 @@ def verify(browser, slug, width, mode):
     assert (page.locator('dialog img').count() > 0) == (slug == 'ametista')
     page.keyboard.press('Escape')
     assert page.locator('dialog[open]').count() == 0
-    assert bool([url for url in requests if 'libro-3d.js' in url]) == (mode == '3d'), (slug, width, mode)
+    assert bool([url for url in requests if 'libro-3d.min.js' in url]) == (mode == '3d'), (slug, width, mode)
     assert not errors and not failed, (errors, failed)
     page.close()
     print(slug, width, mode, 'OK', flush=True)

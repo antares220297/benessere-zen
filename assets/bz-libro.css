@@ -1,4 +1,4 @@
-/* «Il libro» · prototipo WebGL 20/11/2026. Il libro vero è disegnato da three.js (assets/libro-3d.js, caricato solo vicino alla sezione).
+/* «Il libro» · prototipo WebGL 20/11/2026. Il libro vero è disegnato da three.js (assets/libro-3d.min.js, caricato solo vicino alla sezione).
    Qui: poster del libro chiuso, nastro fotografico, linguette, pagine HTML (SEO, riduzione del movimento, niente WebGL), testo intero.
    Le nostre animazioni DOM usano solo transform e opacity. Nessun SVG decorativo. */
 @font-face{font-family:"IM Fell English";src:url(libro-im-fell-english-latin-400.woff2?v=1) format("woff2");font-weight:400;font-style:normal;font-display:swap}
@@ -33,7 +33,7 @@
 .lb:not([data-state="closed"]) .lb-ribbon{visibility:hidden}
 .lb:not([data-state="closed"]) .lb-open{display:none}
 .lb-open{border:0;padding:0;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.lb-open:focus-visible{outline:2px solid var(--bz-gold);outline-offset:4px;border-radius:6px}
+.lb .lb-open:focus-visible{outline:2px solid var(--bz-gold);outline-offset:4px;border-radius:6px}
 
 /* linguette: nastri di seta fotografici, bottoni veri; con il libro chiuso seguono la copertina */
 .lb-tabs{position:absolute;left:var(--tx);top:var(--ty);width:var(--pw);height:var(--ph);z-index:3;pointer-events:none;transition:transform 1150ms cubic-bezier(.65,0,.35,1),opacity 300ms linear}
@@ -68,7 +68,7 @@ html section.lb :where(.lb-stage, .lb-dlg-b) p{color:inherit;margin-top:0;max-wi
 .lb-nav:disabled{opacity:.35;cursor:default}
 .lb-all{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 6px;border:0;background:none;color:var(--bz-gold);font:500 14px/1 var(--bz-font-sans);cursor:pointer}
 .lb-all .ic{width:20px;height:20px}
-.lb-nav:focus-visible,.lb-all:focus-visible{outline:2px solid var(--bz-gold);outline-offset:2px}
+.lb .lb-nav:focus-visible,.lb .lb-all:focus-visible{outline:2px solid var(--bz-gold);outline-offset:2px}
 @media (hover:hover){.lb-nav:not(:disabled):hover{border-color:var(--bz-gold)}.lb-all:hover span{text-decoration:underline;text-underline-offset:3px}}
 
 /* testo intero */
@@ -142,10 +142,17 @@ html section.lb :where(.lb-stage, .lb-dlg-b) p{color:inherit;margin-top:0;max-wi
 .lb:not(.is-enhanced) .lb-stage .pg--blank,.lb:not(.is-enhanced) .lb-chap,.lb:not(.is-enhanced) .lb-lead{display:none}
 .lb.is-3d .lb-flip .pg--text{visibility:visible;white-space:normal}
 .lb.is-plain .lb-tabs{z-index:5}
-.lb .lb-open:focus-visible,.lb .lb-x:focus-visible{outline:2px solid var(--bz-gold);outline-offset:2px}
+.lb .lb-x:focus-visible{outline:2px solid var(--bz-gold);outline-offset:2px}
 @media (prefers-reduced-motion:reduce){.lb .rb-rot{transform:rotate(-60deg)!important}}
 .lb.is-reduced .rb-rot{transform:rotate(-60deg)!important}
 .lb.is-reduced .lb-ribbon>*,.lb.is-reduced .rb-band,.lb.is-reduced .rb-knot img{transition:opacity 220ms linear!important}
 .lb.is-reduced.is-untying .rb-band,.lb.is-reduced.is-untying .rb-nodo{transform:none;transition-delay:0s}
+
+/* Mantiene le dissolvenze del libro con movimento ridotto anche sopra il reset globale di bz-ds.css. */
+@media (prefers-reduced-motion:reduce){
+  .lb .lb-poster{transition-duration:500ms!important}
+  .lb .lb-flip .pg{transition-duration:220ms,0s!important}
+  .lb .lb-flip .pg.is-on{transition-duration:220ms!important}
+}
 
 #libro{scroll-margin-top:calc(var(--bz-sticky-h,120px) + var(--bz-sp-8,8px))}

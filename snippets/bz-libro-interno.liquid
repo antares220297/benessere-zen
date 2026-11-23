@@ -6,7 +6,7 @@
 -%}
 {{ 'bz-libro.css' | asset_url | stylesheet_tag }}
 <section class="lb" id="libro" tabindex="-1" aria-labelledby="lb-h" lang="it" data-state="closed"
-  data-engine="{{ 'libro-3d.js' | asset_url }}"
+  data-engine="{{ 'libro-3d.min.js' | asset_url }}"
   data-paper="{{ 'libro-carta-antica.webp' | asset_url }}"
   data-cover="{{ copertina | asset_url }}"
   data-endpaper="{{ 'libro-sguardia.webp' | asset_url }}"
@@ -47,4 +47,4 @@
   <p class="lb-live" aria-live="polite" id="lb-live"></p>
   <dialog class="lb-dlg" aria-labelledby="lb-dlg-h"><div class="lb-dlg-in"><div class="lb-dlg-top"><h2 id="lb-dlg-h">Il libro {{ genitivo | escape }}</h2><button class="lb-x" type="button" aria-label="Chiudi">×</button></div><div class="lb-dlg-b"></div></div></dialog>
 </section>
-<script src="{{ 'bz-libro.js' | asset_url }}" defer></script>
+<script src="{{ 'bz-libro.min.js' | asset_url }}" defer></script>

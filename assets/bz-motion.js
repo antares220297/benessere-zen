@@ -1,7 +1,7 @@
 (() => {
   const main = document.querySelector('#MainContent');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  const special = '#cielo,[data-bz-tarocchi],#libro';
+  const special = '#cielo,[data-bz-tarocchi]';
   const heads = '.bz-sh>h2,.bz-related__head,.store-bleed-copy>h2,.bz-news__heading,' +
     '.categories>h2,.split-copy>:is(h1,h2),.cura-hero-copy,.cura-quote-text,' +
     '.ay-copy>:is(h1,h2),.ayt-head-row,#tre-energie>h2,#ay-prod-title,#ay-faq-title,' +
@@ -26,7 +26,7 @@
   }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
 
   function prepare(element) {
-    if (groups.has(element) || !element.getClientRects().length) return;
+    if (element.closest('#libro,section.lb') || groups.has(element) || !element.getClientRects().length) return;
     const section = element.matches(special);
     if (!section && element.closest(special)) return;
 
