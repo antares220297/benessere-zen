@@ -158,6 +158,10 @@
         "det-4"
       ]
     },
+    "bz_libro": {
+      "type": "bz-libro",
+      "settings": {}
+    },
     "bz_ritual": {
       "type": "bz-ritual",
       "blocks": {
@@ -302,6 +306,7 @@
   },
   "order": [
     "bz_product",
+    "bz_libro",
     "bz_ritual",
     "bz_related"
   ]
