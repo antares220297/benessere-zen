@@ -1,0 +1,184 @@
+:root {
+  --bz-dur-reveal: 600ms;
+  --bz-stagger: 70ms;
+}
+
+.bz-scope .bz-book-entry {
+  display: flex;
+  align-items: center;
+  gap: var(--bz-sp-12, 12px);
+  min-height: 44px;
+  margin-block: 12px;
+  padding: 8px 12px;
+  border: 1px solid color-mix(in srgb, var(--bz-gold) 38%, transparent);
+  border-radius: var(--bz-r-card);
+  background: var(--bz-surface);
+  color: var(--bz-text);
+  font-family: var(--bz-font-sans);
+}
+
+.bz-book-entry img {
+  flex: none;
+  width: 42px;
+  height: 56px;
+  border-radius: 4px;
+}
+
+.bz-book-entry__kicker,
+.bz-book-entry__title,
+.bz-book-entry__action {
+  display: block;
+}
+
+.bz-book-entry__kicker,
+.bz-book-entry__action {
+  color: var(--bz-gold);
+  font-size: 12px;
+}
+
+.bz-book-entry__title {
+  font: 400 19px/1.15 var(--bz-font-serif);
+}
+
+/* Neutralizza il reveal preesistente, compresi i titoli interni a cielo, carte e libro. */
+html .bz-scope .bz-ds-reveal.bz-ds-reveal {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+html .bz-scope .btn:hover { transform: none; }
+html .bz-page-il-negozio .tour-card:is(:hover, :focus-visible) { transform: rotate(var(--tilt)); }
+
+.bz-add-confirmed.bz-add-confirmed {
+  position: relative;
+}
+
+.bz-add-confirmed::after {
+  content: "✓" / "Aggiunto";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 1;
+  border-radius: inherit;
+  background: var(--bz-gold);
+  color: var(--bz-bg);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html:has(.bz-book-entry) { scroll-behavior: smooth; }
+
+  html.bz-motion [data-bz-motion] {
+    --bz-motion-duration: var(--bz-dur-reveal);
+    --bz-motion-delay: 0ms;
+    transition: opacity var(--bz-motion-duration) var(--bz-ease-enter) var(--bz-motion-delay),
+      translate var(--bz-motion-duration) var(--bz-ease-enter) var(--bz-motion-delay),
+      scale var(--bz-motion-duration) var(--bz-ease-enter) var(--bz-motion-delay),
+      transform var(--bz-dur-large) var(--bz-ease-standard);
+  }
+
+  html.bz-motion [data-bz-motion]:focus-within { transition: none; }
+
+  html.bz-motion [data-bz-motion="card"] {
+    --bz-motion-duration: 550ms;
+    --bz-motion-delay: calc(var(--bz-motion-step, 0) * var(--bz-stagger));
+  }
+
+  html.bz-motion [data-bz-motion="section"] { --bz-motion-duration: var(--bz-dur-large); }
+
+  html.bz-motion [data-bz-motion]:is([data-bz-motion="image"], [data-bz-motion="zoom"]) {
+    --bz-motion-duration: 700ms;
+    --bz-motion-delay: calc(var(--bz-motion-step, 0) * var(--bz-stagger));
+  }
+
+  html.bz-motion [data-bz-motion]:not(.bz-motion-in, :target, :focus-within) { opacity: 0; }
+  html.bz-motion [data-bz-motion="head"]:not(.bz-motion-in, :target, :focus-within) { translate: 0 14px; }
+  html.bz-motion [data-bz-motion="card"]:not(.bz-motion-in, :target, :focus-within) { translate: 0 18px; }
+  html.bz-motion [data-bz-motion="section"]:not(.bz-motion-in, :target, :focus-within) { translate: 0 16px; }
+  html.bz-motion [data-bz-motion="zoom"]:not(.bz-motion-in, :target, :focus-within) { scale: 1.04; }
+
+  html.bz-motion .bz-cart-pulse {
+    animation: bz-cart-pulse 450ms var(--bz-ease-standard);
+  }
+
+  .bz-cart-pulse :is(.bz-cart-count, [data-cart-count]) {
+    animation: bz-cart-pulse 450ms var(--bz-ease-standard);
+  }
+
+  .bz-cart-pulse::after {
+    content: "";
+    position: absolute;
+    inset: 4px;
+    border-radius: var(--bz-r-pill);
+    box-shadow: 0 0 10px 2px var(--bz-gold);
+    pointer-events: none;
+    animation: bz-cart-glow 450ms var(--bz-ease-exit) both;
+  }
+
+  @keyframes bz-cart-pulse {
+    0%, 100% { scale: 1; }
+    45% { scale: 1.18; }
+  }
+
+  @keyframes bz-cart-glow {
+    0%, 100% { opacity: 0; }
+    40% { opacity: .65; }
+  }
+
+  html .bz-scope :is(.btn, .bz-btn, .add, .bz-card__add, .tool-btn, .bz-pills button, .bz-variants button, .filter-group-option):active {
+    transform: scale(.97);
+    transition: transform var(--bz-dur-press) var(--bz-ease-standard);
+  }
+}
+
+@media (hover: hover) {
+  html .bz-scope :is(.bz-product-tile, .compare-card) {
+    position: relative;
+  }
+
+  html .bz-scope :is(.bz-product-tile, .compare-card)::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 1px var(--bz-gold), 0 0 14px #c9a96e38;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--bz-dur-large) var(--bz-ease-standard);
+  }
+
+  html .bz-scope :is(.bz-product-tile, .compare-card):hover {
+    border-color: var(--bz-line);
+    box-shadow: none;
+    transform: none;
+  }
+
+  html .bz-scope :is(.bz-product-tile, .compare-card):hover::after { opacity: .7; }
+
+  html .bz-scope :is(.btn, .bz-btn, .add, .bz-card__add, .bz-book-entry, .afchip, .tool-btn,
+    .filter-option, .filter-group-option, .bz-pills button, .bz-variants button, [role="tab"]) {
+    transition: color var(--bz-dur-hover) var(--bz-ease-standard),
+      border-color var(--bz-dur-hover) var(--bz-ease-standard),
+      background-color var(--bz-dur-hover) var(--bz-ease-standard);
+  }
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  html .bz-scope :is(.bz-product-tile__media, .compare-photo) img {
+    transition-property: opacity, scale, transform;
+    transition-duration: 700ms, 700ms, var(--bz-dur-large);
+    transition-timing-function: var(--bz-ease-enter), var(--bz-ease-enter), var(--bz-ease-standard);
+    transition-delay: var(--bz-motion-delay, 0ms), var(--bz-motion-delay, 0ms), 0ms;
+  }
+
+  html .bz-scope :is(.bz-product-tile:hover .bz-product-tile__media, .compare-card:hover .compare-photo) img {
+    transform: scale(1.03);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  html .bz-scope :is(.bz-product-tile__media, .compare-photo) img { transform: none !important; }
+}

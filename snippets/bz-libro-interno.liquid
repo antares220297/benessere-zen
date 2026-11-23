@@ -5,7 +5,7 @@
   assign inizi = '3,6,9,12' | split: ','
 -%}
 {{ 'bz-libro.css' | asset_url | stylesheet_tag }}
-<section class="lb" id="libro" aria-labelledby="lb-h" lang="it" data-state="closed"
+<section class="lb" id="libro" tabindex="-1" aria-labelledby="lb-h" lang="it" data-state="closed"
   data-engine="{{ 'libro-3d.js' | asset_url }}"
   data-paper="{{ 'libro-carta-antica.webp' | asset_url }}"
   data-cover="{{ copertina | asset_url }}"

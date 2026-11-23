@@ -5,6 +5,9 @@ import json
 from pathlib import Path
 import re
 
+from PIL import Image
+import pyphen
+
 ROOT = Path(__file__).resolve().parents[1]
 SHARED = Path('/home/box/shared/benessere-zen')
 MOCK = SHARED / 'approfondimenti/mockup-grimorio/libro'
@@ -13,11 +16,24 @@ FAMILIES = ('ametista', 'quarzo-rosa', 'selenite', 'cristallo-di-rocca',
             'lapislazzuli', 'occhio-di-tigre', 'ossidiana', 'tormalina-nera')
 CHAPTERS = ('primo', 'secondo', 'terzo', 'quarto')
 KEYS = ('origine', 'tradizione', 'uso', 'credenze')
+HYPHENATOR = pyphen.Pyphen(lang='it_IT')
+WORDS_AND_TAGS = re.compile(r"</?i>|[^\W\d_]+(?:[’'][^\W\d_]+)*", re.UNICODE)
+
+
+def lot_figure(slug, page, alt, *, small=False):
+    file = f'ill-{slug}-{page}'
+    path = ROOT / 'assets' / f'libro-{file}.webp'
+    if not path.is_file():
+        return None
+    with Image.open(path) as image:
+        width, height = image.size
+    return dict(file=file, alt=alt, w=width, h=height, piccola=small)
 
 
 def parse_lot(text):
     books = {}
-    for slug, block in zip(FAMILIES[1:], re.split(r'^## [2-8]\. .+$', text, flags=re.M)[1:], strict=True):
+    stones = re.split(r'^## [2-8]\. (.+)$', text, flags=re.M)
+    for slug, stone, block in zip(FAMILIES[1:], stones[1::2], stones[2::2], strict=True):
         block = block.split('#### Fonti')[0]
         fields = dict(re.findall(r'^- (Titolo di copertina|Occhiello|Titolo|Sottotitolo): (.+)$', block, re.M))
         cover = fields['Titolo di copertina'].strip('*')
@@ -36,9 +52,13 @@ def parse_lot(text):
                 if heading and pages:
                     page['titolo'] = heading
                 paragraphs = []
+                figure_alt = None
                 for line in body.splitlines():
                     line = re.sub(r'\s*\*\((?:note: )?\d+ parole, \d+ caratteri\)\*\s*$', '', line).strip()
-                    if not line or line.startswith('> Figura:'):
+                    if not line:
+                        continue
+                    if line.startswith('> Figura:'):
+                        figure_alt = line.removeprefix('> Figura:').strip()
                         continue
                     if line.startswith('|'):
                         cells = [cell.strip() for cell in line.strip('|').split('|')]
@@ -58,6 +78,14 @@ def parse_lot(text):
                         paragraphs.append(line)
                 if paragraphs:
                     page['testo_dopo' if 'scheda' in page else 'testo'] = paragraphs
+                if figure_alt:
+                    # Come nell'ametista, schede ed elenchi hanno la figura in fondo.
+                    compact = 'scheda' in page or 'elenco' in page or 'nota' in page
+                    illustration = lot_figure(slug, f'p{number}', figure_alt, small=compact)
+                    if illustration:
+                        page['illustrazione'] = illustration
+                        if not compact:
+                            page['illustrazione_dopo'] = 0
                 if number == 5:
                     assert len(page['scheda']) == 5 and len(page['testo_dopo']) == 2
                 assert page, (slug, number)
@@ -67,9 +95,12 @@ def parse_lot(text):
             assert len(pages) == 3
             chapters.append(dict(chiave=KEYS[index], linguetta=label, titolo=title, pagine=pages))
         assert len(chapters) == 4
-        books[slug] = dict(titolo_copertina=cover, testata=cover,
-                          frontespizio=dict(sopratitolo=fields['Occhiello'], titolo=fields['Titolo'],
-                                           sottotitolo=fields['Sottotitolo']), capitoli=chapters)
+        front = dict(sopratitolo=fields['Occhiello'], titolo=fields['Titolo'],
+                     sottotitolo=fields['Sottotitolo'])
+        illustration = lot_figure(slug, 'front', f'Illustrazione in stile manoscritto di {stone.lower()}')
+        if illustration:
+            front['illustrazione'] = illustration
+        books[slug] = dict(titolo_copertina=cover, testata=cover, frontespizio=front, capitoli=chapters)
     return books
 
 
@@ -77,13 +108,28 @@ def asset(name):
     return "{{ '" + name + "' | asset_url }}"
 
 
-def rich(text):
-    return escape(text).replace('&lt;i&gt;', '<i>').replace('&lt;/i&gt;', '</i>')
+def rich(text, *, drop_cap=False):
+    first_word = True
+    parts = []
+    end = 0
+    for match in WORDS_AND_TAGS.finditer(text):
+        parts.append(escape(text[end:match.start()]))
+        word = match.group()
+        if word in ('<i>', '</i>'):
+            parts.append(word)
+        else:
+            if len(word) >= 7 and not (drop_cap and first_word):
+                word = re.sub(r'[^\W\d_]{7,}', lambda part: HYPHENATOR.inserted(part.group(), hyphen='\u00ad'), word)
+            parts.append(escape(word).replace('\u00ad', '&shy;'))
+            first_word = False
+        end = match.end()
+    parts.append(escape(text[end:]))
+    return ''.join(parts)
 
 
 def figure(data, cls=''):
-    if data.get('piccola'):
-        cls += ' fig--sm'
+    if data.get('piccola') and cls != 'fig--sm':
+        cls = f'{cls} fig--sm'.strip()
     return (f'<figure class="pg-fig {cls}"><img src="{asset("libro-" + data["file"] + ".webp")}" '
             f'alt="{escape(data["alt"])}" width="{data["w"]}" height="{data["h"]}" loading="lazy" decoding="async"></figure>')
 
@@ -118,12 +164,12 @@ def render_book(slug, book):
             illustration = page.get('illustrazione')
             for k, par in enumerate(page.get('testo', [])):
                 cls = ' class="dc"' if pi == 0 and k == 0 else ''
-                body.append(f'<p{cls}>{rich(par)}</p>')
-                if illustration and k == page.get('illustrazione_dopo', 0):
+                body.append(f'<p{cls}>{rich(par, drop_cap=bool(cls))}</p>')
+                if illustration and k == page.get('illustrazione_dopo', 0 if slug == 'ametista' else None):
                     body.append(figure(illustration))
                     illustration = None
             if page.get('scheda'):
-                body.append('<dl class="pg-dl">' + ''.join(f'<div><dt>{escape(a)}</dt><dd>{escape(b)}</dd></div>' for a, b in page['scheda']) + '</dl>')
+                body.append('<dl class="pg-dl">' + ''.join(f'<div><dt>{escape(a)}</dt><dd>{rich(b)}</dd></div>' for a, b in page['scheda']) + '</dl>')
                 body.extend(f'<p>{rich(par)}</p>' for par in page['testo_dopo'])
             if page.get('elenco'):
                 body.append('<ul class="pg-ul">' + ''.join(f'<li>{rich(item)}</li>' for item in page['elenco']) + '</ul>')
@@ -196,7 +242,11 @@ def main():
         for start in range(0, len(handles), 5):
             lines.extend(('    when ' + ', '.join(f"'{handle}'" for handle in handles[start:start+5]),
                           f"      assign famiglia = '{family}'"))
-    lines.extend(('  endcase', '  echo famiglia', '-%}'))
+    lines.extend(('  endcase', "  if dato == 'titolo'", '    case famiglia'))
+    for family in FAMILIES:
+        title = books[family]['titolo_copertina'].lower()
+        lines.extend((f"      when '{family}'", f'        echo "Il libro {title}"'))
+    lines.extend(('    endcase', '  else', '    echo famiglia', '  endif', '-%}'))
     (ROOT / 'snippets/bz-libro-famiglia.liquid').write_text('\n'.join(lines) + '\n')
     update_templates()
     print(f'{len(mapped)} handle')

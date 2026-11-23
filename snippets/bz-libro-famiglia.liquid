@@ -40,5 +40,26 @@
     when 'tormalina-nera-grezza'
       assign famiglia = 'tormalina-nera'
   endcase
-  echo famiglia
+  if dato == 'titolo'
+    case famiglia
+      when 'ametista'
+        echo "Il libro dell’ametista"
+      when 'quarzo-rosa'
+        echo "Il libro del quarzo rosa"
+      when 'selenite'
+        echo "Il libro della selenite"
+      when 'cristallo-di-rocca'
+        echo "Il libro del cristallo di rocca"
+      when 'lapislazzuli'
+        echo "Il libro del lapislazzuli"
+      when 'occhio-di-tigre'
+        echo "Il libro dell’occhio di tigre"
+      when 'ossidiana'
+        echo "Il libro dell’ossidiana"
+      when 'tormalina-nera'
+        echo "Il libro della tormalina nera"
+    endcase
+  else
+    echo famiglia
+  endif
 -%}

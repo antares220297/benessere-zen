@@ -123,6 +123,24 @@
           </button>
         </div>
       {%- endform -%}
+      {%- capture famiglia_libro -%}{%- render 'bz-libro-famiglia', product: product -%}{%- endcapture -%}
+      {%- if famiglia_libro != blank -%}
+        {%- capture titolo_libro -%}{%- render 'bz-libro-famiglia', product: product, dato: 'titolo' -%}{%- endcapture -%}
+        {%- liquid
+          assign copertina_libro = 'libro-copertina-comune.webp'
+          if famiglia_libro == 'ametista'
+            assign copertina_libro = 'libro-copertina.webp'
+          endif
+        -%}
+        <a class="bz-book-entry" href="#libro">
+          <img src="{{ copertina_libro | asset_url }}" alt="" width="768" height="1024" loading="lazy" decoding="async">
+          <span>
+            <span class="bz-book-entry__kicker">Dal grimorio</span>
+            <span class="bz-book-entry__title">{{ titolo_libro | escape }}</span>
+            <span class="bz-book-entry__action">Sfoglia il libro <span aria-hidden="true">↓</span></span>
+          </span>
+        </a>
+      {%- endif -%}
       <p class="bz-buy__return">
         <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 6 4 11l5 5M4 11h10a5 5 0 0 1 0 10"/></svg>
         Reso entro 14 giorni dalla ricezione
