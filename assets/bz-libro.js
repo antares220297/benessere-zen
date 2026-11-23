@@ -1,0 +1,283 @@
+/* «Il libro» · prototipo WebGL. Questo file (piccolo, senza dipendenze) impagina il palco, mostra il poster del libro chiuso
+   e carica assets/libro-3d.js (three.js + motore) solo quando la sezione si avvicina o al primo tocco.
+   Con «riduci movimento» o senza WebGL il libro resta in HTML: stesse pagine, dissolvenze al posto dello sfoglio. */
+(function () {
+  var script = document.currentScript;
+  var root = script && script.previousElementSibling;
+  if (!root || !root.matches('.lb') || root.classList.contains('is-enhanced')) return;
+  var RM = matchMedia('(prefers-reduced-motion: reduce)').matches || new URLSearchParams(location.search).get('rm') === '1';
+  root.classList.toggle('is-reduced', RM);
+  var stage = root.querySelector('.lb-stage'), gl = root.querySelector('.lb-gl'), flip = root.querySelector('.lb-flip');
+  var openB = root.querySelector('.lb-open'), live = root.querySelector('#lb-live');
+  var prevB = root.querySelector('.lb-prev'), nextB = root.querySelector('.lb-next');
+  var tabs = [].slice.call(root.querySelectorAll('.tab')), chaps = [].slice.call(root.querySelectorAll('.lb-ch'));
+  var all = [].slice.call(flip.querySelectorAll('.pg'));
+  function webgl() {
+    try {
+      if (!window.WebGL2RenderingContext) return false;
+      var context = document.createElement('canvas').getContext('webgl2');
+      if (!context) return false;
+      var extension = context.getExtension('WEBGL_lose_context');
+      if (extension) extension.loseContext();
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+  var plain = RM || !webgl();
+  root.classList.add('is-enhanced');
+  root.classList.toggle('is-plain', plain);
+  var state = 'closed', C = null, loading = false, pendingGo = null, desk = false, Lw = 0, lay = null, sheet = 0;
+
+  // ---- geometria: la stessa della camera WebGL (unità libro: pagina larga 1, alta 1.4; dorso in x = 0)
+  var OV = .018, HALF = .7, ZTOP = .135;
+  var DIST = 2.99 * Math.tan(20 * Math.PI / 180) / Math.tan(13 * Math.PI / 180);
+  function layout() {
+    var vw = root.clientWidth, vh = Math.max(window.innerHeight, 650), pw;
+    desk = vw >= 1024;
+    pw = desk ? Math.min(560, (vw - 176) / 2, (vh - 190) / 1.4) : Math.min((vw - 10) / 1.19, (vh - 300) / 1.4);
+    pw = Math.floor(pw); var ph = Math.floor(pw * 1.4), fs = pw / 22;
+    var sw = desk ? Math.min(vw, Math.round(2 * pw + 300)) : vw, top = 12 + Math.round(OV * pw * 1.5);
+    var sh = Math.round(top + ph + OV * pw + 2.6 * fs);
+    var pageL = desk ? sw / 2 : Math.round(.07 * pw + .085 * .4 * pw + 4);   // a sinistra il filo della metà letta, con i suoi segnapagina
+    var vy = (top + ph / 2 - sh / 2) / pw;
+    var vxOpen = desk ? 0 : (sw / 2 - pageL) / pw, vxClosed = desk ? .5 : vxOpen;
+    function P(x, y, z, vx) { var k = DIST / (DIST - z); return { x: sw / 2 + (x - vx) * pw * k, y: sh / 2 - (y - vy) * pw * k }; }
+    var c0 = P(0, HALF + OV, ZTOP, vxClosed), c1 = P(1 + OV, -(HALF + OV), ZTOP, vxClosed);
+    var t0 = P(0, HALF, .05, vxOpen), t1 = P(1, -HALF, .05, vxOpen), tc = P(0, HALF, ZTOP, vxClosed);
+    lay = { P: P, DIST: DIST, desk: desk, pw: pw, ph: ph, fs: fs, sw: sw, sh: sh, view: { x: state === 'closed' ? vxClosed : vxOpen, y: vy, s: pw }, vxOpen: vxOpen, vxClosed: vxClosed };
+    var S = root.style, px = function (v) { return v.toFixed(1) + 'px'; };
+    S.setProperty('--pw', pw + 'px'); S.setProperty('--ph', ph + 'px'); S.setProperty('--fs', fs.toFixed(3) + 'px');
+    S.setProperty('--sw', sw + 'px'); S.setProperty('--sh', sh + 'px');
+    S.setProperty('--cx', px(c0.x)); S.setProperty('--cy', px(c0.y)); S.setProperty('--cw', px(c1.x - c0.x)); S.setProperty('--ch', px(c1.y - c0.y));
+    S.setProperty('--tx', px(t0.x)); S.setProperty('--ty', px(t0.y)); S.setProperty('--pw', px(t1.x - t0.x)); S.setProperty('--ph', px(t1.y - t0.y));
+    S.setProperty('--tdx', px(tc.x - t0.x));
+    root.classList.toggle('is-portrait', !desk);
+    return lay;
+  }
+  layout(); Lw = root.clientWidth;
+
+  // [D1] titolo del frontespizio: se non sta su una riga si stringe (fino all'82%), come sul canvas; i titoli corti non cambiano
+  var frB = root.querySelector('.pg--front .pg-body');
+  function fitTitle() {
+    var t = frB && frB.querySelector('.fr-t'); if (!t) return; t.style.fontSize = ''; t.style.whiteSpace = 'nowrap';
+    var cw = t.clientWidth, sw = t.scrollWidth; t.style.whiteSpace = '';
+    if (cw && sw > cw) t.style.fontSize = (2.6 * Math.max(.82, cw * .97 / sw)).toFixed(3) + 'em';
+  }
+  if (frB) { fitTitle(); if (document.fonts) document.fonts.ready.then(fitTitle); }
+
+  // ---- stato, linguette, regione live
+  function visibleNs() {
+    if (C) return C.visible(sheet).filter(Boolean).map(function (f) { return f.el && f.el.classList.contains('pg--text') ? +f.el.dataset.n : -1; });
+    return plainNs();
+  }
+  function mark() {
+    var ns = state === 'closed' ? [] : visibleNs(), top = Math.max.apply(null, ns.concat([-1])), act = -1;
+    tabs.forEach(function (t, i) { if (top >= +t.dataset.to) act = i; });
+    tabs.concat(chaps).forEach(function (t, i) { if (i % tabs.length === act) t.setAttribute('aria-current', 'true'); else t.removeAttribute('aria-current'); });
+    var max = C ? C.book.sheetCount : plainMax();
+    prevB.disabled = state === 'closed' || sheet <= 0;
+    nextB.disabled = sheet >= max;
+    var lab = act >= 0 ? 'Capitolo «' + tabs[act].textContent + '»' : (sheet === 0 ? 'Copertina' : '');
+    live.textContent = state === 'closed' ? 'Libro chiuso' : (lab ? lab + ', ' : '') + (top > 0 ? 'pagina ' + top : '');
+  }
+  function sheetFor(n) {
+    if (C) return C.sheetForPage(n);
+    return plainSheetFor(n);
+  }
+
+  // ---- WebGL
+  function load() {
+    if (plain || C || loading) return;
+    loading = true;
+    var single = !desk;
+    import(new URL(root.dataset.engine, document.baseURI).href).then(function (m) {
+      return m.init(root, {
+        host: gl, single: single, pw: lay.pw, view: lay.view, maxDpr: 2,
+        paperUrl: root.dataset.paper, coverUrl: root.dataset.cover,
+        endpaperUrl: root.dataset.endpaper, tabUrls: root.dataset.tabs.split(','),
+        shadowMap: single ? 1024 : 2048,
+        onSpread: function (t) { sheet = t; mark(); },
+        onIdle: function () { syncTabs(); }
+      });
+    }).then(function (c) {
+      loading = false;
+      if (!root.isConnected) { c.book.destroy(); return; }
+      if (single === desk) { c.book.destroy(); usePlain(); return; }
+      C = c;
+      root.classList.add('is-3d');
+      syncTabs();
+      if (want) { want = false; open3d(); }
+      mark();
+    }).catch(function () {
+      loading = false;
+      usePlain();
+    });
+  }
+
+  function usePlain(page) {
+    if (C) C.book.destroy();
+    C = null;
+    plain = true;
+    want = false;
+    root.classList.remove('is-3d', 'is-untying');
+    root.classList.add('is-plain');
+    tabs.forEach(function (tab) { tab.removeAttribute('style'); });
+    if (state !== 'closed') {
+      state = 'open';
+      root.dataset.state = 'open';
+      plainGo(plainSheetFor(page || 2));
+      flush();
+    }
+    mark();
+  }
+
+  var want = false, untie0 = 0;
+  function flush() { var f = pendingGo; pendingGo = null; if (f) setTimeout(f, 40); }
+  function open(then) {
+    if (then) pendingGo = then;
+    if (state === 'open') { flush(); return; }
+    if (state === 'opening') return;
+    state = 'opening'; untie0 = performance.now(); root.classList.add('is-untying');   // il nastro si scioglie (resta data-state=closed)
+    if (plain) { setTimeout(function () { state = 'open'; root.dataset.state = 'open'; root.classList.remove('is-untying'); plainGo(1); flush(); }, RM ? 260 : 620); return; }
+    if (!C) { want = true; load(); return; }   // si apre appena il motore è pronto
+    open3d();
+  }
+  function open3d() {
+    setTimeout(function () {
+      if (!C) return;
+      root.dataset.state = 'open';
+      C.book.set('flip.flipTime', 1.15); C.book.set('book.interactive', true);
+      C.book.next();
+      if (desk) C.book.setView({ x: lay.vxOpen }, 1150);
+      setTimeout(function () { if (!C) return; C.book.set('flip.flipTime', .9); state = 'open'; root.classList.remove('is-untying'); mark(); flush(); }, 1180);
+    }, Math.max(0, 600 - (performance.now() - untie0)));
+  }
+  function go(n) {
+    if (state !== 'open') { open(function () { go(n); }); return; }
+    var t = sheetFor(n); if (t === sheet && !(C && C.book.busy)) { mark(); return; }
+    if (plain) { plainGo(t); return; }
+    C.book.jumpTo(t);
+  }
+  function step(d) {
+    if (state === 'closed') { if (d > 0) open(); return; }
+    if (state !== 'open') return;
+    if (plain) {
+      if (sheet + d === 0) {
+        state = 'closed';
+        root.dataset.state = 'closed';
+        plainGo(0);
+        openB.focus({ preventScroll: true });
+      } else plainGo(sheet + d);
+      return;
+    }
+    if (d > 0) C.book.next(); else C.book.prev();
+  }
+
+  // ---- HTML semplice (riduci movimento / niente WebGL): stesse pagine, una o due alla volta, in dissolvenza
+  var text = all.filter(function (p) { return p.classList.contains('pg--text'); });
+  function plainSheets() { // ogni "foglio" è ciò che si vede insieme
+    if (!desk) return [[all[0]]].concat(text.map(function (p) { return [p]; }));
+    var out = [[null, all[0]]], rest = all.slice(1, -1);
+    for (var i = 0; i < rest.length; i += 2) out.push([rest[i], rest[i + 1] || null]);
+    return out;
+  }
+  function plainMax() { return plainSheets().length - 1; }
+  function plainNs() { var s = plainSheets()[sheet] || []; return s.map(function (p) { return p && p.classList.contains('pg--text') ? +p.dataset.n : -1; }); }
+  function plainSheetFor(n) { var S = plainSheets(); for (var i = 0; i < S.length; i++) if (S[i].some(function (p) { return p && +p.dataset.n === n; })) return i; return 0; }
+  function plainShow() {
+    var s = plainSheets()[sheet] || [];
+    all.forEach(function (p) { p.classList.remove('is-on', 'at-l'); });
+    if (state === 'closed') return;
+    s.forEach(function (p, i) { if (!p) return; p.classList.add('is-on'); if (desk && i === 0) p.classList.add('at-l'); });
+  }
+  function plainGo(t) { t = Math.max(0, Math.min(plainMax(), t)); if (t === sheet && state === 'open' && flip.querySelector('.is-on')) return; sheet = t; plainShow(); mark(); }
+
+  // ---- eventi
+  openB.addEventListener('click', function () { load(); open(); });
+  tabs.concat(chaps).forEach(function (t) { t.addEventListener('click', function () { load(); go(+t.dataset.to); }); });
+  prevB.addEventListener('click', function () { step(-1); });
+  nextB.addEventListener('click', function () { load(); step(1); });
+  stage.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); load(); step(1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1); }
+  });
+  var x0 = null;
+    stage.addEventListener('pointerdown', function (e) { if (plain) x0 = e.clientX; });
+    stage.addEventListener('pointerup', function (e) { if (x0 === null) return; var dx = e.clientX - x0; x0 = null; if (Math.abs(dx) > 40) step(dx < 0 ? 1 : -1); });
+  var previousHeight = innerHeight;
+  function resize() {
+    if (root.clientWidth === Lw && innerHeight === previousHeight) return;
+    Lw = root.clientWidth;
+    previousHeight = innerHeight;
+    var was = desk, page = Math.max.apply(null, visibleNs().concat([2]));
+    layout();
+    fitTitle();
+    if (C && was !== desk) { usePlain(page); return; }
+    if (C) {
+      C.book.setView({ x: state === 'closed' ? lay.vxClosed : lay.vxOpen, y: lay.view.y, s: lay.pw });
+    }
+    syncTabs();
+    if (plain && state === 'open') {
+      if (was !== desk) sheet = plainSheetFor(page);
+      plainShow();
+      mark();
+    }
+  }
+  window.addEventListener('resize', resize);
+
+  // «Leggi tutto il testo»: lo stesso testo delle pagine, in colonna
+  var dlg = root.querySelector('.lb-dlg'), dlgB = root.querySelector('.lb-dlg-b');
+  root.querySelector('.lb-all').addEventListener('click', function () {
+    if (!dlgB.childElementCount) all.forEach(function (p) {
+      var b = p.querySelector('.pg-body'); if (!b || !b.textContent.trim()) return;
+      var s = document.createElement('section'), c = b.cloneNode(true);
+      c.querySelectorAll('[id]').forEach(function (x) { x.removeAttribute('id'); });
+      c.querySelectorAll('img').forEach(function (i) { i.loading = 'lazy'; });
+      s.appendChild(c); dlgB.appendChild(s);
+    });
+    if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', '');
+  });
+  root.querySelector('.lb-x').addEventListener('click', function () { dlg.close(); });
+  dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+
+  // ---- segnapagina: disegnati in WebGL sul foglio del loro capitolo; qui solo bottoni invisibili (≥44 px) che li seguono a ogni frame
+  var TW = .085, TH = Math.min(.19, (.9 - (tabs.length - 1) * .045) / Math.max(1, tabs.length));
+  function syncTabs() {
+    if (plain) return;
+    var v = C ? C.book.view : lay.view, sw = lay.sw, sh = lay.sh;
+    function pr(x, y, z) { var k = DIST / (DIST - z); return { x: sw / 2 + (x - v.x) * v.s * k, y: sh / 2 - (y - v.y) * v.s * k }; }
+    tabs.forEach(function (b, i) {
+      var inf = C ? C.tabs[i] : { y1: 1 - .05 - i * (TH + .045), y0: 1 - .05 - i * (TH + .045) - TH, sheet: -1 };
+      var left = C ? C.book.progress(inf.sheet) > .5 : false, x0, x1;
+      if (!left) { x0 = 1; x1 = 1 + TW; } else if (!desk) { x0 = -(.07 + TW * .4); x1 = -.07; } else { x0 = -1 - TW; x1 = -1; }
+      var a = pr(x0, (inf.y1 - .5) * 1.4, .06), c = pr(x1, (inf.y0 - .5) * 1.4, .06);
+      var w = Math.max(44, Math.abs(c.x - a.x) + 14), h = Math.max(44, Math.abs(c.y - a.y)), cx = (a.x + c.x) / 2, cy = (a.y + c.y) / 2;
+      var st = b.style; st.left = Math.max(0, Math.min(sw - w, cx - w / 2)).toFixed(1) + 'px'; st.top = (cy - h / 2).toFixed(1) + 'px'; st.width = w.toFixed(1) + 'px'; st.height = h.toFixed(1) + 'px';
+      b.dataset.lato = left ? 'sinistra' : 'destra';
+    });
+  }
+  function trackTabs() {
+    if (!root.isConnected) {
+      window.removeEventListener('resize', resize);
+      if (io) io.disconnect();
+      if (C) C.book.destroy();
+      C = null;
+      return;
+    }
+    if (!document.hidden && C && C.book.busy) syncTabs();
+    requestAnimationFrame(trackTabs);
+  }
+  syncTabs();
+  requestAnimationFrame(trackTabs);
+
+  // il motore si scarica solo vicino alla sezione o al primo tocco
+  if (!plain) {
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) { if (es.some(function (e) { return e.isIntersecting; })) { io.disconnect(); load(); } }, { rootMargin: '600px 0px' });
+      io.observe(root);
+    }
+    stage.addEventListener('pointerdown', load, { once: true });
+  }
+  mark();
+})();

@@ -1,0 +1,49 @@
+{%- liquid
+  assign genitivo = titolo | downcase
+  assign capitoli = capitolo_1 | append: '|' | append: capitolo_2 | append: '|' | append: capitolo_3 | append: '|' | append: capitolo_4 | split: '|'
+  assign inizi = '3,6,9,12' | split: ','
+-%}
+{{ 'bz-libro.css' | asset_url | stylesheet_tag }}
+<section class="lb" id="libro" aria-labelledby="lb-h" lang="it" data-state="closed"
+  data-engine="{{ 'libro-3d.js' | asset_url }}"
+  data-paper="{{ 'libro-carta-antica.webp' | asset_url }}"
+  data-cover="{{ 'libro-copertina.webp' | asset_url }}"
+  data-endpaper="{{ 'libro-sguardia.webp' | asset_url }}"
+  data-tabs="{{ 'libro-linguetta-0.webp' | asset_url }},{{ 'libro-linguetta-1.webp' | asset_url }},{{ 'libro-linguetta-2.webp' | asset_url }},{{ 'libro-linguetta-3.webp' | asset_url }}">
+  <div class="lb-wrap">
+    <header class="lb-head">
+      <p class="lb-kick">Dal grimorio</p>
+      <h2 id="lb-h">Il libro <em>{{ genitivo | escape }}</em></h2>
+      <p class="lb-lead"><span class="lb-hint-c">Sciogli il nastro per aprirlo, poi tocca una linguetta.</span><span class="lb-hint-o">Scegli un capitolo o sfoglia le pagine.</span></p>
+    </header>
+    <nav class="lb-chap" aria-label="Indice dei capitoli">
+      {%- for capitolo in capitoli -%}
+        {%- if forloop.index == 3 -%}<span class="lb-br" aria-hidden="true"></span>{%- endif -%}
+        <button class="lb-ch" type="button" data-to="{{ inizi[forloop.index0] }}" aria-controls="lb-stage">{{ capitolo | escape }}</button>
+      {%- endfor -%}
+    </nav>
+  </div>
+  <div class="lb-stage" id="lb-stage" tabindex="0" role="region" aria-roledescription="libro" aria-label="Libro {{ genitivo | escape }}: usa le frecce per sfogliare">
+    <div class="lb-gl" aria-hidden="true"></div>
+    <div class="lb-poster">
+      <img src="{{ 'libro-copertina.webp' | asset_url }}" alt="Il libro {{ genitivo | escape }}, chiuso: copertina di velluto viola ricamata in oro, legata da un nastro" width="768" height="1024" loading="lazy" decoding="async">
+      <p class="cv-t" aria-hidden="true"><span>{{ titolo | escape }}</span></p>
+    </div>
+    <div class="lb-flip">{{ pagine }}</div>
+    <div class="lb-ribbon" aria-hidden="true"><div class="rb-rot"><i class="rb-band rb-band--l"></i><i class="rb-band rb-band--r"></i></div><div class="rb-knot"><img class="rb-nodo" src="{{ 'libro-nastro-nodo.webp' | asset_url }}" alt="" width="360" height="354" loading="lazy"></div></div>
+    <button class="lb-open" type="button" aria-label="Sciogli il nastro e apri il libro"></button>
+    <nav class="lb-tabs" aria-label="Capitoli del libro"><div class="lb-tabs--v">
+      {%- for capitolo in capitoli -%}
+        <button class="tab tab--v tab-{{ forloop.index0 }}" type="button" data-to="{{ inizi[forloop.index0] }}" aria-label="Vai al capitolo «{{ capitolo | escape }}»" aria-controls="lb-stage"><span>{{ capitolo | escape }}</span></button>
+      {%- endfor -%}
+    </div></nav>
+  </div>
+  <div class="lb-ctrl">
+    <button class="lb-nav lb-prev" type="button" aria-label="Pagina precedente" aria-controls="lb-stage" disabled>←</button>
+    <button class="lb-all" type="button" aria-haspopup="dialog">Leggi tutto il testo</button>
+    <button class="lb-nav lb-next" type="button" aria-label="Pagina successiva" aria-controls="lb-stage">→</button>
+  </div>
+  <p class="lb-live" aria-live="polite" id="lb-live"></p>
+  <dialog class="lb-dlg" aria-labelledby="lb-dlg-h"><div class="lb-dlg-in"><div class="lb-dlg-top"><h2 id="lb-dlg-h">Il libro {{ genitivo | escape }}</h2><button class="lb-x" type="button" aria-label="Chiudi">×</button></div><div class="lb-dlg-b"></div></div></dialog>
+</section>
+<script src="{{ 'bz-libro.js' | asset_url }}" defer></script>
