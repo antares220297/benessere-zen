@@ -25,13 +25,20 @@
     var sticky = root.querySelector(".bz-sticky");
     if (mainAdd && sticky && "IntersectionObserver" in window) {
       var mobile = window.matchMedia("(max-width: 860px)");
+      var book = document.querySelector("section.lb#libro");
       function updateSticky() {
         var show = mobile.matches && mainAdd.getBoundingClientRect().bottom <= 0;
+        if (show && book) {
+          var bookRect = book.getBoundingClientRect();
+          show = !(bookRect.height > 0 && bookRect.bottom >= 0 && bookRect.top <= window.innerHeight);
+        }
         sticky.classList.toggle("is-on", show);
         sticky.toggleAttribute("inert", !show);
       }
 
-      new IntersectionObserver(updateSticky).observe(mainAdd);
+      var stickyObserver = new IntersectionObserver(updateSticky, { threshold: 0 });
+      stickyObserver.observe(mainAdd);
+      if (book) stickyObserver.observe(book);
       var stickyFrame;
       window.addEventListener("scroll", function () {
         if (!mobile.matches) return;
