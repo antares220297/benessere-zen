@@ -354,6 +354,8 @@
     });
   }
 
+  window.bzAddRitualItems = addItems;
+
   const adding = new WeakSet();
   async function submitItems(owner, anchor, items) {
     if (adding.has(owner)) return;
@@ -466,22 +468,55 @@
     observer.observe(section);
   });
 
+  const homeSetVariants = new WeakMap();
+
   function ritualSelection(panel) {
     const inputs = qa('input[data-variant]', panel);
     const checked = inputs.filter(input => input.checked);
-    const bundle = panel.dataset.bundleVariant && checked.length > 0 && checked.length === inputs.length;
-    const sum = bundle ? Number(panel.dataset.bundlePrice) : checked.reduce((total, input) => total + Number(input.dataset.price), 0);
-    return { checked, bundle, sum };
+    const full = checked.reduce((total, input) => total + Number(input.dataset.price), 0);
+    if (homeSetVariants.has(panel)) {
+      const discount = checked.length === 3;
+      const bundleVariant = discount ? homeSetVariants.get(panel) : null;
+      return { checked, bundleVariant, sum: discount ? Math.round(full * 0.9) : full, full, discount };
+    }
+    const bundleVariant = checked.length > 0 && checked.length === inputs.length ? Number(panel.dataset.bundleVariant) : null;
+    return { checked, bundleVariant, sum: bundleVariant ? Number(panel.dataset.bundlePrice) : full };
   }
 
   function paintRitual(panel) {
-    const { checked, bundle, sum } = ritualSelection(panel);
+    const { checked, bundleVariant, sum, full, discount } = ritualSelection(panel);
     const count = checked.length;
+    const button = q('[data-bz-add-set]', panel);
+    const price = q('.ritual-sum', panel);
     q('.ritual-count', panel).textContent = count + (count === 1 ? ' pezzo scelto' : ' pezzi scelti');
-    q('.ritual-sum', panel).textContent = euro(sum);
-    qa('.ritual-compare, .ritual-saving', panel).forEach(node => { node.hidden = !bundle; });
-    q('[data-bz-add-set]', panel).disabled = count === 0 || panel.hasAttribute('aria-busy');
+    price.textContent = euro(sum);
+    if (homeSetVariants.has(panel)) {
+      button.textContent = discount ? 'Aggiungi il set · −10%' : 'Aggiungi al carrello';
+      if (discount) {
+        const original = document.createElement('s');
+        original.className = 'ritual-set-original';
+        original.textContent = euro(full);
+        price.prepend(original);
+      }
+    } else {
+      qa('.ritual-compare, .ritual-saving', panel).forEach(node => { node.hidden = !bundleVariant; });
+    }
+    button.disabled = count === 0 || panel.hasAttribute('aria-busy');
   }
+
+  function initHomeSets(root) {
+    qa('[data-bz-home-sets]', root).forEach(config => {
+      const variants = JSON.parse(config.textContent);
+      qa('[data-ritual-set]', config.nextElementSibling).forEach(panel => {
+        homeSetVariants.set(panel, variants[panel.id]);
+        qa('.ritual-compare, .ritual-saving', panel).forEach(node => node.remove());
+        paintRitual(panel);
+      });
+    });
+  }
+
+  initHomeSets(document);
+  document.addEventListener('shopify:section:load', event => initHomeSets(event.target));
 
   document.addEventListener('change', event => {
     if (!event.target.matches('.ritual-row input[data-variant]')) return;
@@ -506,11 +541,12 @@
     const panel = q('[data-ritual-set]:not([hidden])', ritual);
     ritual.setAttribute('data-ritual-interacted', '');
 
-    const { checked, bundle } = ritualSelection(panel);
+    const { checked, bundleVariant } = ritualSelection(panel);
     if (!checked.length || panel.hasAttribute('aria-busy')) return;
-    const items = bundle ? [{ id: Number(panel.dataset.bundleVariant), quantity: 1 }] :
+    const items = bundleVariant ? [{ id: bundleVariant, quantity: 1 }] :
       checked.map(input => ({ id: Number(input.dataset.variant), quantity: 1 }));
     panel.setAttribute('aria-busy', 'true');
+    target.disabled = true;
     const status = q('[data-ritual-status]', panel);
     status.textContent = '';
     try {

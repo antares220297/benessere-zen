@@ -1,0 +1,266 @@
+{% comment %}
+  Il −10% è solo visivo finché non esistono i bundle del corredo.
+  Shopify riceve i singoli pezzi a prezzo pieno con la proprietà _corredo.
+{% endcomment %}
+{{ 'bz-cielo.css' | asset_url | stylesheet_tag }}
+<style>
+  @font-face { font-family: "BZ Segni"; src: url("{{ 'cielo-font-segni.woff2' | asset_url }}") format("woff2"); font-display: block; }
+</style>
+<section id="cielo" data-bz-cielo aria-labelledby="c2-t-{{ section.id }}">
+<div class="c3-stage">
+<div class="c3-head"><h2 id="c2-t-{{ section.id }}">Il tuo cielo <em>di nascita</em></h2>
+<div class="c2-pills" role="group" aria-label="Per chi è il corredo"><button type="button" data-per="me" aria-pressed="true"><svg aria-hidden="true" focusable="false" class="ci" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M480-492.31q-57.75 0-98.87-41.12Q340-574.56 340-632.31q0-57.75 41.13-98.87 41.12-41.13 98.87-41.13 57.75 0 98.87 41.13Q620-690.06 620-632.31q0 57.75-41.13 98.88-41.12 41.12-98.87 41.12ZM180-187.69v-88.93q0-29.38 15.96-54.42 15.96-25.04 42.66-38.5 59.3-29.07 119.65-43.61 60.35-14.54 121.73-14.54t121.73 14.54q60.35 14.54 119.65 43.61 26.7 13.46 42.66 38.5Q780-306 780-276.62v88.93H180Zm60-60h480v-28.93q0-12.15-7.04-22.5-7.04-10.34-19.11-16.88-51.7-25.46-105.42-38.58Q534.7-367.69 480-367.69q-54.7 0-108.43 13.11-53.72 13.12-105.42 38.58-12.07 6.54-19.11 16.88-7.04 10.35-7.04 22.5v28.93Zm240-304.62q33 0 56.5-23.5t23.5-56.5q0-33-23.5-56.5t-56.5-23.5q-33 0-56.5 23.5t-23.5 56.5q0 33 23.5 56.5t56.5 23.5Zm0-80Zm0 384.62Z"/></svg>Per me</button><button type="button" data-per="regalo" aria-pressed="false"><svg aria-hidden="true" focusable="false" class="ci" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M160-288.46v76.15q0 4.62 3.85 8.46 3.84 3.85 8.46 3.85h615.38q4.62 0 8.46-3.85 3.85-3.84 3.85-8.46v-76.15H160Zm12.31-410.77H283q-5-9-7.46-19t-2.46-21q0-41.92 29.04-70.96 29.04-29.04 70.96-29.04 25.15 0 46.53 13.07 21.38 13.07 37.31 32.47l22.31 29.85 22.31-29.85q15.31-20.15 37.06-32.85 21.76-12.69 46.87-12.69 41.84 0 70.87 29.04 29.04 29.04 29.04 70.96 0 11-2.27 21t-7.65 19h112.23q30.31 0 51.31 21 21 21 21 51.31v414.61Q860-182 839-161q-21 21-51.31 21H172.31Q142-140 121-161q-21-21-21-51.31v-414.61q0-30.31 21-51.31 21-21 51.31-21ZM160-391.54h640v-235.38q0-4.62-3.85-8.46-3.84-3.85-8.46-3.85H569.07l81.7 111.69-47.85 34.46-123.69-167.84-123.69 167.84-47.85-34.46 80.47-111.69H172.31q-4.62 0-8.46 3.85-3.85 3.84-3.85 8.46v235.38Zm213.08-307.69q17 0 28.5-11.5t11.5-28.5q0-17-11.5-28.5t-28.5-11.5q-17 0-28.5 11.5t-11.5 28.5q0 17 11.5 28.5t28.5 11.5Zm212.3 0q17 0 28.5-11.5t11.5-28.5q0-17-11.5-28.5t-28.5-11.5q-17 0-28.5 11.5t-11.5 28.5q0 17 11.5 28.5t28.5 11.5Z"/></svg>È un regalo</button></div></div>
+<div class="vv">
+<p class="c5-inv" aria-hidden="true"><svg aria-hidden="true" focusable="false" class="ci" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M432.85-100q-30.31 0-57.31-12.77-27-12.77-45.15-36.69L126.62-413.39l14.77-15.76q15-16 35.88-19.23 20.88-3.24 39.11 7.92l97.47 52.31v-316.46q0-12.75 8.63-21.38 8.62-8.62 21.38-8.62t21.68 8.62q8.92 8.63 8.92 21.38v422.38l-120.08-65.39L379.15-185q9.85 12.38 24 18.69 14.16 6.31 29.7 6.31h196.76q37.62 0 64.01-26.19Q720-212.39 720-250v-150.77q0-20.6-13.93-34.53-13.94-13.93-34.53-13.93H469.85v-60h201.69q45.19 0 76.82 31.63Q780-445.96 780-400.77v150.74q0 62.18-44.18 106.11Q691.65-100 629.61-100H432.85ZM188.16-614.61q-11.85-20.08-18.08-42.94-6.23-22.86-6.23-47.06 0-74.93 52.54-127.46 52.53-52.54 127.46-52.54 74.92 0 127.46 52.54 52.53 52.53 52.53 127.41 0 24.35-6.23 47.16-6.23 22.81-18.07 42.89l-51.69-30q8-14 12-28.5t4-31.5q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 17 4 31.5t12 28.5l-51.69 30Zm299.22 280Z"/></svg><span>Tocca il tuo mese, poi il giorno</span></p>
+<div class="vv-plate"></div>
+<div class="vv-rot vv-m vv-gm" role="radiogroup" aria-label="Mese di nascita" style="transform:rotate(-30deg)"><div class="vv-tick"></div><button type="button" class="vv-mo" role="radio" aria-checked="false" tabindex="-1" data-m="1" style="--a:0deg"><span>gennaio</span></button><button type="button" class="vv-mo" role="radio" aria-checked="true" tabindex="0" data-m="2" style="--a:30deg"><span>febbraio</span></button><button type="button" class="vv-mo" role="radio" aria-checked="false" tabindex="-1" data-m="3" style="--a:60deg"><span>marzo</span></button><button type="button" class="vv-mo" role="radio" aria-checked="false" tabindex="-1" data-m="4" style="--a:90deg"><span>aprile</span></button><button type="button" class="vv-mo" role="radio" aria-checked="false" tabindex="-1" data-m="5" style="--a:120deg"><span>maggio</span></button><button type="button" class="vv-mo" role="radio" aria-checked="false" tabindex="-1" data-m="6" style="--a:150deg"><span>giugno</span></button><button type="button" class="vv-mo" role="radio" aria-checked="false" tabindex="-1" data-m="7" style="--a:180deg"><span>luglio</span></button><button type="button" class="vv-mo" role="radio" aria-checked="false" tabindex="-1" data-m="8" style="--a:210deg"><span>agosto</span></button><button type="button" class="vv-mo" role="radio" aria-checked="false" tabindex="-1" data-m="9" style="--a:240deg"><span>settembre</span></button><button type="button" class="vv-mo" role="radio" aria-checked="false" tabindex="-1" data-m="10" style="--a:270deg"><span>ottobre</span></button><button type="button" class="vv-mo" role="radio" aria-checked="false" tabindex="-1" data-m="11" style="--a:300deg"><span>novembre</span></button><button type="button" class="vv-mo" role="radio" aria-checked="false" tabindex="-1" data-m="12" style="--a:330deg"><span>dicembre</span></button></div>
+<div class="vv-gd" role="radiogroup" aria-label="Giorno di nascita">
+<div class="vv-rot vv-a" style="transform:rotate(-292.5deg)"><div class="vv-band"></div><div class="vv-tick"></div><button type="button" class="vv-dy" role="radio" aria-checked="false" tabindex="-1" data-d="1" style="--a:0.00deg" aria-label="1"><span>1</span></button><button type="button" class="vv-dy" role="radio" aria-checked="false" tabindex="-1" data-d="2" style="--a:22.50deg" aria-label="2"><span>2</span></button><button type="button" class="vv-dy" role="radio" aria-checked="false" tabindex="-1" data-d="3" style="--a:45.00deg" aria-label="3"><span>3</span></button><button type="button" class="vv-dy" role="radio" aria-checked="false" tabindex="-1" data-d="4" style="--a:67.50deg" aria-label="4"><span>4</span></button><button type="button" class="vv-dy" role="radio" aria-checked="false" tabindex="-1" data-d="5" style="--a:90.00deg" aria-label="5"><span>5</span></button><button type="button" class="vv-dy" role="radio" aria-checked="false" tabindex="-1" data-d="6" style="--a:112.50deg" aria-label="6"><span>6</span></button><button type="button" class="vv-dy" role="radio" aria-checked="false" tabindex="-1" data-d="7" style="--a:135.00deg" aria-label="7"><span>7</span></button><button type="button" class="vv-dy" role="radio" aria-checked="false" tabindex="-1" data-d="8" style="--a:157.50deg" aria-label="8"><span>8</span></button><button type="button" class="vv-dy" role="radio" aria-checked="false" tabindex="-1" data-d="9" style="--a:180.00deg" aria-label="9"><span>9</span></button><button type="button" class="vv-dy" role="radio" aria-checked="false" tabindex="-1" data-d="10" style="--a:202.50deg" aria-label="10"><span>10</span></button><button type="button" class="vv-dy" role="radio" aria-checked="false" tabindex="-1" data-d="11" style="--a:225.00deg" aria-label="11"><span>11</span></button><button type="button" class="vv-dy" role="radio" aria-checked="false" tabindex="-1" data-d="12" style="--a:247.50deg" aria-label="12"><span>12</span></button><button type="button" class="vv-dy" role="radio" aria-checked="false" tabindex="-1" data-d="13" style="--a:270.00deg" aria-label="13"><span>13</span></button><button type="button" class="vv-dy" role="radio" aria-checked="true" tabindex="0" data-d="14" style="--a:292.50deg" aria-label="14"><span>14</span></button><button type="button" class="vv-dy" role="radio" aria-checked="false" tabindex="-1" data-d="15" style="--a:315.00deg" aria-label="15"><span>15</span></button><button type="button" class="vv-dy" role="radio" aria-checked="false" tabindex="-1" data-d="16" style="--a:337.50deg" aria-label="16"><span>16</span></button></div>
+<div class="vv-rot vv-b is-idle" style="transform:rotate(0deg)"><div class="vv-band"></div><div class="vv-tick"></div><button type="button" class="vv-dy" role="radio" aria-checked="false" tabindex="-1" data-d="17" style="--a:0.00deg" aria-label="17"><span>17</span></button><button type="button" class="vv-dy" role="radio" aria-checked="false" tabindex="-1" data-d="18" style="--a:24.00deg" aria-label="18"><span>18</span></button><button type="button" class="vv-dy" role="radio" aria-checked="false" tabindex="-1" data-d="19" style="--a:48.00deg" aria-label="19"><span>19</span></button><button type="button" class="vv-dy" role="radio" aria-checked="false" tabindex="-1" data-d="20" style="--a:72.00deg" aria-label="20"><span>20</span></button><button type="button" class="vv-dy" role="radio" aria-checked="false" tabindex="-1" data-d="21" style="--a:96.00deg" aria-label="21"><span>21</span></button><button type="button" class="vv-dy" role="radio" aria-checked="false" tabindex="-1" data-d="22" style="--a:120.00deg" aria-label="22"><span>22</span></button><button type="button" class="vv-dy" role="radio" aria-checked="false" tabindex="-1" data-d="23" style="--a:144.00deg" aria-label="23"><span>23</span></button><button type="button" class="vv-dy" role="radio" aria-checked="false" tabindex="-1" data-d="24" style="--a:168.00deg" aria-label="24"><span>24</span></button><button type="button" class="vv-dy" role="radio" aria-checked="false" tabindex="-1" data-d="25" style="--a:192.00deg" aria-label="25"><span>25</span></button><button type="button" class="vv-dy" role="radio" aria-checked="false" tabindex="-1" data-d="26" style="--a:216.00deg" aria-label="26"><span>26</span></button><button type="button" class="vv-dy" role="radio" aria-checked="false" tabindex="-1" data-d="27" style="--a:240.00deg" aria-label="27"><span>27</span></button><button type="button" class="vv-dy" role="radio" aria-checked="false" tabindex="-1" data-d="28" style="--a:264.00deg" aria-label="28"><span>28</span></button><button type="button" class="vv-dy" role="radio" aria-checked="false" tabindex="-1" data-d="29" style="--a:288.00deg" aria-label="29"><span>29</span></button><button type="button" class="vv-dy" role="radio" aria-checked="false" tabindex="-1" data-d="30" style="--a:312.00deg" aria-label="30"><span>30</span></button><button type="button" class="vv-dy" role="radio" aria-checked="false" tabindex="-1" data-d="31" style="--a:336.00deg" aria-label="31"><span>31</span></button></div>
+</div>
+<div class="vv-rimg" aria-hidden="true"></div><div class="vv-bezel" aria-hidden="true"></div>
+<div class="vv-core" aria-hidden="true"><img class="c5-fig is-on" data-n="Acquario" src="{{ 'cielo-segno-acquario.webp' | asset_url }}" alt="" width="720" height="720" decoding="async"><img class="c5-fig" alt="" width="720" height="720" decoding="async"><svg class="c6-ln" viewBox="0 0 720 720" aria-hidden="true" focusable="false"></svg></div>
+<div class="vv-sweep" aria-hidden="true"></div>
+<div class="vv-win" aria-hidden="true"></div>
+<i class="vv-gl" style="--x:14%;--y:22%;--s:1;--t:0s"></i><i class="vv-gl" style="--x:86%;--y:30%;--s:0.7;--t:1.6s"></i><i class="vv-gl" style="--x:8%;--y:64%;--s:0.6;--t:3.1s"></i><i class="vv-gl" style="--x:91%;--y:72%;--s:0.9;--t:2.2s"></i><i class="vv-gl" style="--x:30%;--y:93%;--s:0.6;--t:4s"></i><i class="vv-gl" style="--x:72%;--y:8%;--s:0.8;--t:0.8s"></i>
+</div>
+<div class="c2-alm"><h3><span data-k="data">14 febbraio</span>, <em data-k="segno">Acquario</em><span class="vv-glyph" data-s="Acquario" aria-hidden="true">♒︎</span></h3>
+<dl class="c2-facts"><div><dt>Pietra del mese</dt><dd data-k="pietra">Ametista</dd></div><div><dt>Pietre del segno</dt><dd data-k="pietre">Ametista e granato</dd></div><div><dt>Elemento</dt><dd><span class="g" data-k="elg">🜁︎</span><span data-k="el">Aria</span></dd></div></dl>
+<p class="c2-note" data-k="note">Si dice che l’Acquario sia l’aria che guarda lontano. Per lui, la lavanda con una nota di palo santo.</p>
+<p class="bz-vh bz-live" aria-live="polite"></p>
+</div>
+<div class="c3-cart">
+<h3 data-k="tit">Il tuo <em>corredo</em></h3><span class="c3-per" data-k="per">per il 14 febbraio</span><span class="c3-rule" aria-hidden="true"></span>
+<div class="c2-rows" role="group" aria-label="Pezzi del corredo">
+  {% for i in (1..3) %}
+    <div class="c2-row c3-med">
+      <span class="c3-ringw">
+        <label class="c3-ring" for="cielo-pick-{{ section.id }}-{{ i }}"><img alt="" width="480" height="480" loading="lazy" decoding="async" hidden></label>
+        <span class="c3-choice" hidden>
+          <input id="cielo-pick-{{ section.id }}-{{ i }}" class="bz-vh c3-pick" type="checkbox" disabled>
+          <label class="c3-check" for="cielo-pick-{{ section.id }}-{{ i }}"><svg viewBox="0 -960 960 960" aria-hidden="true" focusable="false" fill="currentColor"><path d="M382-253.85 168.62-467.23 211.38-510 382-339.38 748.62-706l42.76 42.77L382-253.85Z"></path></svg></label>
+        </span>
+        <button type="button" class="c3-add" hidden>+</button>
+      </span>
+      <span class="c2-sub"></span>
+      <span class="c2-name"><a hidden></a><span></span></span>
+      <span class="c2-price">Esaurito</span>
+    </div>
+  {% endfor %}
+</div>
+<div class="c3-fold c3-gift" inert aria-hidden="true"><div><div class="c3-in"><span class="c3-line" aria-hidden="true"></span>
+<label class="c2-check"><input type="checkbox"><span class="c2-box"><svg viewBox="0 -960 960 960" aria-hidden="true" focusable="false" fill="currentColor"><path d="M382-253.85 168.62-467.23 211.38-510 382-339.38 748.62-706l42.76 42.77L382-253.85Z"></path></svg></span>Aggiungi un biglietto con il tuo messaggio</label>
+<div class="c3-fold c3-msgw" inert><div><div class="c3-in"><textarea class="c2-msg" rows="3" placeholder="Scrivi qui il messaggio per il biglietto" aria-label="Messaggio del biglietto" maxlength="250"></textarea></div></div></div>
+</div></div></div>
+<div class="c2-total"><span class="c3-deal" hidden>−10% se li prendi tutti e tre</span><button type="button" class="c3-deal is-hint c3-hint" hidden>Aggiungi il terzo: −10% su tutto</button><div class="c3-sumline"><small class="c2-count"></small><s class="c3-was" hidden></s><span class="c2-sum"></span></div>
+<button type="button" class="c2-cta" disabled><svg aria-hidden="true" focusable="false" class="ci" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M450-610v-120H330v-60h120v-120h60v120h120v60H510v120h-60ZM286.15-97.69q-29.15 0-49.57-20.43-20.42-20.42-20.42-49.57 0-29.16 20.42-49.58 20.42-20.42 49.57-20.42 29.16 0 49.58 20.42 20.42 20.42 20.42 49.58 0 29.15-20.42 49.57-20.42 20.43-49.58 20.43Zm387.7 0q-29.16 0-49.58-20.43-20.42-20.42-20.42-49.57 0-29.16 20.42-49.58 20.42-20.42 49.58-20.42 29.15 0 49.57 20.42t20.42 49.58q0 29.15-20.42 49.57Q703-97.69 673.85-97.69ZM60-810v-60h114.46l166.92 352.31h272.7q3.46 0 6.15-1.73 2.69-1.73 4.62-4.81L772.77-790h68.3L677.38-494.31q-9.84 17.31-26.05 26.96-16.21 9.66-35.48 9.66H324l-46.31 84.61q-3.08 4.62-.19 10 2.88 5.39 8.65 5.39h457.69v60H286.15q-40 0-60.42-34.2-20.42-34.19-1.11-69.19l57.07-102.61L136.16-810H60Z"/></svg><span class="c3-lbl">Aggiungi il corredo al carrello</span></button><p class="bz-vh c3-status" aria-live="polite"></p>
+<p class="c3-cart-error" role="alert" hidden></p>
+<a class="c2-again" href="#cielo"><svg aria-hidden="true" focusable="false" class="ci" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M450-180v-485.08L222.15-437.23 180-480l300-300 300 300-42.15 42.77L510-665.08V-180h-60Z"/></svg>Cambia data</a></div>
+</div>
+</div>
+{% capture cielo_catalog %}
+{
+  "months": {
+    {% assign months = section.blocks | where: 'type', 'month' %}
+    {% for block in months %}
+      {{ block.settings.month | json }}: {
+        "s": {{ block.settings.stone | json }},
+        "note": {{ block.settings.note | json }},
+        "early": {{ block.settings.early | json }},
+        "late": {{ block.settings.late | json }},
+        "st": {% render 'bz-cielo-piece', product: block.settings.st, short_name: block.settings.st_name %},
+        "j": {% render 'bz-cielo-piece', product: block.settings.j, short_name: block.settings.j_name %}
+      }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  },
+  "elements": {
+    {% assign elements = section.blocks | where: 'type', 'element' %}
+    {% for block in elements %}
+      {{ block.settings.element | json }}: {% render 'bz-cielo-piece', product: block.settings.product, short_name: block.settings.short_name %}{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  },
+  "signs": {{ section.settings.signs | json }},
+  "currency": {{ cart.currency.iso_code | default: shop.currency | json }},
+  "figures": {
+    "Capricorno": {{ 'cielo-segno-capricorno.webp' | asset_url | json }},
+    "Acquario": {{ 'cielo-segno-acquario.webp' | asset_url | json }},
+    "Pesci": {{ 'cielo-segno-pesci.webp' | asset_url | json }},
+    "Ariete": {{ 'cielo-segno-ariete.webp' | asset_url | json }},
+    "Toro": {{ 'cielo-segno-toro.webp' | asset_url | json }},
+    "Gemelli": {{ 'cielo-segno-gemelli.webp' | asset_url | json }},
+    "Cancro": {{ 'cielo-segno-cancro.webp' | asset_url | json }},
+    "Leone": {{ 'cielo-segno-leone.webp' | asset_url | json }},
+    "Vergine": {{ 'cielo-segno-vergine.webp' | asset_url | json }},
+    "Bilancia": {{ 'cielo-segno-bilancia.webp' | asset_url | json }},
+    "Scorpione": {{ 'cielo-segno-scorpione.webp' | asset_url | json }},
+    "Sagittario": {{ 'cielo-segno-sagittario.webp' | asset_url | json }}
+  },
+  "lines": {"Ariete":{"l":[[[70.2,349.0],[456.7,371.4]],[[456.7,371.4],[592.1,424.7]],[[592.1,424.7],[621.8,473.3]]],"s":[[621.8,473.3,1],[592.1,424.7,2],[456.7,371.4,2],[70.2,349.0,1]]},"Toro":{"l":[[[160.6,127.8],[302.6,261.1]],[[302.6,261.1],[342.8,331.7]],[[307.0,369.8],[83.5,238.8]],[[367.2,394.9],[360.1,361.9]],[[367.2,394.9],[435.5,458.0]],[[435.5,458.0],[579.4,537.1]],[[307.0,369.8],[342.8,331.7]],[[307.0,369.8],[333.4,385.2]],[[333.4,385.2],[367.2,394.9]],[[342.8,331.7],[351.4,354.0]],[[351.4,354.0],[360.1,361.9]],[[360.1,361.9],[504.7,273.1]]],"s":[[579.4,537.1,1],[504.7,273.1,1],[435.5,458.0,1],[367.2,394.9,1],[360.1,361.9,1],[351.4,354.0,1],[342.8,331.7,1],[333.4,385.2,1],[307.0,369.8,3],[302.6,261.1,1],[160.6,127.8,3],[83.5,238.8,2]]},"Gemelli":{"l":[[[389.9,408.5],[325.4,323.2]],[[325.4,323.2],[283.3,285.6]],[[283.3,285.6],[260.9,360.0]],[[260.9,360.0],[349.3,448.4]],[[283.3,285.6],[263.0,201.6]],[[263.0,201.6],[223.2,222.7]],[[263.0,201.6],[242.2,174.2]],[[263.0,201.6],[297.8,202.6]],[[297.8,202.6],[352.7,187.3]],[[352.7,187.3],[295.3,137.6]],[[352.7,187.3],[422.9,156.2]],[[352.7,187.3],[408.5,284.0]],[[408.5,284.0],[434.3,365.4]],[[408.5,284.0],[462.8,339.7]],[[462.8,339.7],[488.8,347.3]],[[488.8,347.3],[526.7,346.1]]],"s":[[526.7,346.1,1],[488.8,347.3,1],[462.8,339.7,2],[434.3,365.4,1],[389.9,408.5,2],[408.5,284.0,2],[349.3,448.4,1],[422.9,156.2,1],[325.4,323.2,1],[352.7,187.3,1],[260.9,360.0,1],[283.3,285.6,1],[297.8,202.6,1],[295.3,137.6,3],[263.0,201.6,1],[223.2,222.7,1],[242.2,174.2,3]]},"Cancro":{"l":[[[259.8,115.0],[300.1,306.0]],[[300.1,306.0],[420.2,136.9]],[[300.1,306.0],[300.6,393.7]],[[300.6,393.7],[510.4,609.5]],[[300.6,393.7],[228.4,568.8]]],"s":[[510.4,609.5,1],[420.2,136.9,1],[300.1,306.0,1],[300.6,393.7,1],[259.8,115.0,1],[228.4,568.8,1]]},"Leone":{"l":[[[135.0,367.8],[270.4,370.7]],[[270.4,370.7],[508.8,438.6]],[[508.8,438.6],[514.0,365.9]],[[514.0,365.9],[469.9,318.4]],[[469.9,318.4],[279.7,293.8]],[[279.7,293.8],[135.0,367.8]],[[469.9,318.4],[483.1,265.1]],[[483.1,265.1],[566.4,226.0]],[[566.4,226.0],[591.1,259.6]],[[279.7,293.8],[270.4,370.7]]],"s":[[591.1,259.6,2],[566.4,226.0,1],[514.0,365.9,1],[508.8,438.6,3],[483.1,265.1,1],[469.9,318.4,2],[279.7,293.8,2],[270.4,370.7,1],[135.0,367.8,2]]},"Vergine":{"l":[[[658.3,229.1],[551.9,339.6]],[[551.9,339.6],[483.6,357.7]],[[483.6,357.7],[366.4,491.3]],[[366.4,491.3],[221.6,500.8]],[[221.6,500.8],[205.2,449.4]],[[205.2,449.4],[118.2,458.4]],[[366.4,491.3],[322.0,367.3]],[[322.0,367.3],[237.5,351.8]],[[237.5,351.8],[95.0,364.3]],[[322.0,367.3],[433.4,304.3]],[[433.4,304.3],[401.9,214.0]],[[433.4,304.3],[483.6,357.7]]],"s":[[658.3,229.1,1],[551.9,339.6,1],[483.6,357.7,2],[433.4,304.3,1],[401.9,214.0,2],[366.4,491.3,3],[322.0,367.3,1],[237.5,351.8,1],[221.6,500.8,1],[205.2,449.4,1],[118.2,458.4,1],[95.0,364.3,1]]},"Bilancia":{"l":[[[143.9,305.5],[261.5,254.5]],[[261.5,254.5],[385.3,114.1]],[[385.3,114.1],[545.0,299.8]],[[545.0,299.8],[447.5,540.5]],[[447.5,540.5],[261.5,254.5]]],"s":[[545.0,299.8,2],[447.5,540.5,1],[385.3,114.1,2],[261.5,254.5,1],[143.9,305.5,1]]},"Scorpione":{"l":[[[115.3,495.2],[72.8,543.7]],[[72.8,543.7],[49.2,572.2]],[[49.2,572.2],[99.6,641.0]],[[99.6,641.0],[213.2,646.4]],[[213.2,646.4],[295.9,629.9]],[[295.9,629.9],[315.5,526.0]],[[315.5,526.0],[332.5,436.6]],[[332.5,436.6],[422.9,298.9]],[[422.9,298.9],[463.9,260.3]],[[463.9,260.3],[644.4,193.1]],[[463.9,260.3],[633.0,281.2]],[[463.9,260.3],[630.1,116.4]]],"s":[[633.0,281.2,2],[644.4,193.1,2],[630.1,116.4,2],[463.9,260.3,3],[422.9,298.9,2],[332.5,436.6,2],[315.5,526.0,2],[295.9,629.9,1],[213.2,646.4,1],[115.3,495.2,3],[99.6,641.0,2],[72.8,543.7,2],[49.2,572.2,2]]},"Sagittario":{"l":[[[561.7,244.8],[527.9,197.0]],[[593.4,326.9],[568.9,302.2]],[[568.9,302.2],[604.3,241.6]],[[604.3,241.6],[648.2,197.8]],[[604.3,241.6],[561.7,244.8]],[[561.7,244.8],[568.9,302.2]],[[568.9,302.2],[454.8,280.2]],[[454.8,280.2],[486.5,230.9]],[[486.5,230.9],[561.7,244.8]],[[486.5,230.9],[527.9,197.0]],[[527.9,197.0],[553.1,131.9]],[[454.8,280.2],[434.0,258.7]],[[434.0,258.7],[458.4,231.5]],[[458.4,231.5],[486.5,230.9]],[[458.4,231.5],[429.7,172.6]],[[429.7,172.6],[413.4,187.1]],[[413.4,187.1],[364.7,167.9]],[[364.7,167.9],[347.8,159.2]],[[434.0,258.7],[344.0,256.1]],[[344.0,256.1],[291.4,323.6]],[[291.4,323.6],[343.9,405.4]],[[343.9,405.4],[393.5,475.9]],[[393.5,475.9],[454.9,426.2]],[[393.5,475.9],[478.0,476.3]]],"s":[[648.2,197.8,1],[604.3,241.6,2],[553.1,131.9,1],[593.4,326.9,2],[561.7,244.8,2],[568.9,302.2,2],[527.9,197.0,2],[486.5,230.9,1],[458.4,231.5,2],[429.7,172.6,1],[454.8,280.2,2],[413.4,187.1,1],[434.0,258.7,1],[364.7,167.9,1],[347.8,159.2,1],[478.0,476.3,1],[454.9,426.2,1],[344.0,256.1,1],[393.5,475.9,1],[343.9,405.4,1],[291.4,323.6,1]]},"Capricorno":{"l":[[[621.5,219.0],[619.9,275.5]],[[619.9,275.5],[396.6,411.5]],[[396.6,411.5],[308.2,435.0]],[[308.2,435.0],[212.9,469.0]],[[212.9,469.0],[171.1,472.7]],[[308.2,435.0],[333.6,565.4]],[[333.6,565.4],[396.6,411.5]],[[619.9,275.5],[561.0,553.4]],[[396.6,411.5],[544.7,600.0]]],"s":[[621.5,219.0,1],[619.9,275.5,2],[561.0,553.4,1],[544.7,600.0,1],[396.6,411.5,1],[308.2,435.0,1],[333.6,565.4,1],[212.9,469.0,1],[171.1,472.7,2]]},"Acquario":{"l":[[[477.8,286.2],[335.9,237.5]],[[335.9,237.5],[282.2,266.4]],[[282.2,266.4],[251.9,252.7]],[[251.9,252.7],[228.8,259.6]],[[228.8,259.6],[193.7,381.2]],[[193.7,381.2],[116.2,424.4]],[[116.2,424.4],[134.9,592.1]],[[335.9,237.5],[320.3,354.0]],[[320.3,354.0],[376.2,432.8]],[[320.3,354.0],[281.5,406.3]],[[281.5,406.3],[225.8,464.0]],[[225.8,464.0],[216.5,500.5]],[[216.5,500.5],[186.0,593.4]],[[664.2,313.1],[477.8,286.2]]],"s":[[664.2,313.1,1],[477.8,286.2,2],[335.9,237.5,2],[376.2,432.8,1],[320.3,354.0,1],[282.2,266.4,1],[251.9,252.7,1],[281.5,406.3,1],[228.8,259.6,1],[225.8,464.0,1],[193.7,381.2,1],[216.5,500.5,1],[186.0,593.4,1],[116.2,424.4,1],[134.9,592.1,1]]},"Pesci":{"l":[[[271.6,139.7],[235.0,252.1]],[[271.6,139.7],[216.1,209.9]],[[216.1,209.9],[235.0,252.1]],[[235.0,252.1],[171.7,386.2]],[[171.7,386.2],[118.7,474.4]],[[118.7,474.4],[50.9,568.3]],[[50.9,568.3],[84.5,562.1]],[[84.5,562.1],[131.9,528.2]],[[131.9,528.2],[173.6,519.1]],[[173.6,519.1],[271.3,494.4]],[[271.3,494.4],[322.8,502.3]],[[322.8,502.3],[419.9,487.7]],[[419.9,487.7],[497.0,504.1]],[[497.0,504.1],[570.2,519.4]],[[570.2,519.4],[565.8,576.7]],[[565.8,576.7],[625.8,583.3]],[[625.8,583.3],[663.1,551.0]],[[663.1,551.0],[615.8,505.9]],[[615.8,505.9],[570.2,519.4]]],"s":[[419.9,487.7,1],[322.8,502.3,1],[271.6,139.7,1],[271.3,494.4,1],[235.0,252.1,1],[216.1,209.9,1],[173.6,519.1,1],[171.7,386.2,1],[131.9,528.2,1],[118.7,474.4,1],[84.5,562.1,1],[50.9,568.3,1],[663.1,551.0,1],[625.8,583.3,1],[615.8,505.9,1],[570.2,519.4,1],[565.8,576.7,1],[497.0,504.1,1]]}}
+}
+{% endcapture %}
+<script type="application/json" data-cielo-catalog>{{ cielo_catalog | replace: '<', '\u003c' }}</script>
+</section>
+<script src="{{ 'bz-cielo.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Il tuo cielo di nascita",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "signs",
+      "label": "Dati dei segni (JSON)",
+      "default": "[{\"n\":\"Capricorno\",\"m\":12,\"d\":22,\"el\":\"terra\",\"pietre\":\"granato e rubino\",\"g\":\"♑\",\"fr\":\"Per la tradizione il Capricorno è la terra di montagna, tenace. Nel suo corredo c’è il patchouli.\"},{\"n\":\"Acquario\",\"m\":1,\"d\":20,\"el\":\"aria\",\"pietre\":\"ametista e granato\",\"g\":\"♒\",\"fr\":\"Si dice che l’Acquario sia l’aria che guarda lontano. Per lui, la lavanda con una nota di palo santo.\"},{\"n\":\"Pesci\",\"m\":2,\"d\":19,\"el\":\"acqua\",\"pietre\":\"acquamarina e ametista\",\"g\":\"♓\",\"fr\":\"I Pesci chiudono il giro dei segni e, si dice, sono l’acqua che sogna. Per loro, gelsomino e oud.\"},{\"n\":\"Ariete\",\"m\":3,\"d\":21,\"el\":\"fuoco\",\"pietre\":\"diamante ed eliotropio\",\"g\":\"♈\",\"fr\":\"Nella tradizione l’Ariete apre il giro dei segni: è il fuoco che parte. Per lui, incenso e mirra.\"},{\"n\":\"Toro\",\"m\":4,\"d\":20,\"el\":\"terra\",\"pietre\":\"smeraldo e zaffiro\",\"g\":\"♉\",\"fr\":\"Si dice che il Toro sia la terra che ama le cose buone e lente. Il patchouli, intenso, gli somiglia.\"},{\"n\":\"Gemelli\",\"m\":5,\"d\":21,\"el\":\"aria\",\"pietre\":\"perla e agata\",\"g\":\"♊\",\"fr\":\"Nella tradizione i Gemelli sono l’aria che si muove e chiacchiera: per loro, lavanda e palo santo.\"},{\"n\":\"Cancro\",\"m\":6,\"d\":21,\"el\":\"acqua\",\"pietre\":\"rubino e smeraldo\",\"g\":\"♋\",\"fr\":\"Per la tradizione il Cancro è il segno della Luna e della casa. Accanto a lui, gelsomino e oud.\"},{\"n\":\"Leone\",\"m\":7,\"d\":23,\"el\":\"fuoco\",\"pietre\":\"peridoto e onice\",\"g\":\"♌\",\"fr\":\"Nella tradizione il Leone è il segno del Sole. Al suo fuoco si dà la resina calda di incenso e mirra.\"},{\"n\":\"Vergine\",\"m\":8,\"d\":23,\"el\":\"terra\",\"pietre\":\"zaffiro e corniola\",\"g\":\"♍\",\"fr\":\"Si dice che la Vergine sia la terra del raccolto, paziente e precisa. Per lei, un profumo di patchouli.\"},{\"n\":\"Bilancia\",\"m\":9,\"d\":23,\"el\":\"aria\",\"pietre\":\"opale e crisolito\",\"g\":\"♎\",\"fr\":\"C’è chi vede nella Bilancia l’aria che cerca equilibrio. Per lei, la candela a lavanda e palo santo.\"},{\"n\":\"Scorpione\",\"m\":10,\"d\":23,\"el\":\"acqua\",\"pietre\":\"topazio e berillo\",\"g\":\"♏\",\"fr\":\"Si dice che lo Scorpione sia l’acqua profonda, quella che non si vede. Per lui, l’oud con il gelsomino.\"},{\"n\":\"Sagittario\",\"m\":11,\"d\":22,\"el\":\"fuoco\",\"pietre\":\"turchese e topazio\",\"g\":\"♐\",\"fr\":\"Nella tradizione il Sagittario è il fuoco che viaggia lontano. Con lui, incenso e mirra.\"}]"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "month",
+      "name": "Mese",
+      "settings": [
+        {
+          "type": "select",
+          "id": "month",
+          "label": "Mese",
+          "options": [
+            {
+              "value": "1",
+              "label": "Gennaio"
+            },
+            {
+              "value": "2",
+              "label": "Febbraio"
+            },
+            {
+              "value": "3",
+              "label": "Marzo"
+            },
+            {
+              "value": "4",
+              "label": "Aprile"
+            },
+            {
+              "value": "5",
+              "label": "Maggio"
+            },
+            {
+              "value": "6",
+              "label": "Giugno"
+            },
+            {
+              "value": "7",
+              "label": "Luglio"
+            },
+            {
+              "value": "8",
+              "label": "Agosto"
+            },
+            {
+              "value": "9",
+              "label": "Settembre"
+            },
+            {
+              "value": "10",
+              "label": "Ottobre"
+            },
+            {
+              "value": "11",
+              "label": "Novembre"
+            },
+            {
+              "value": "12",
+              "label": "Dicembre"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "stone",
+          "label": "Pietra del mese"
+        },
+        {
+          "type": "textarea",
+          "id": "note",
+          "label": "Nota sulla pietra"
+        },
+        {
+          "type": "textarea",
+          "id": "early",
+          "label": "Testo del primo segno del mese"
+        },
+        {
+          "type": "textarea",
+          "id": "late",
+          "label": "Testo del secondo segno del mese"
+        },
+        {
+          "type": "product",
+          "id": "st",
+          "label": "Pietra"
+        },
+        {
+          "type": "text",
+          "id": "st_name",
+          "label": "Nome breve · Pietra"
+        },
+        {
+          "type": "product",
+          "id": "j",
+          "label": "Gioiello"
+        },
+        {
+          "type": "text",
+          "id": "j_name",
+          "label": "Nome breve · Gioiello"
+        }
+      ]
+    },
+    {
+      "type": "element",
+      "name": "Elemento",
+      "settings": [
+        {
+          "type": "select",
+          "id": "element",
+          "label": "Elemento",
+          "options": [
+            {
+              "value": "fuoco",
+              "label": "Fuoco"
+            },
+            {
+              "value": "terra",
+              "label": "Terra"
+            },
+            {
+              "value": "aria",
+              "label": "Aria"
+            },
+            {
+              "value": "acqua",
+              "label": "Acqua"
+            }
+          ]
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Prodotto"
+        },
+        {
+          "type": "text",
+          "id": "short_name",
+          "label": "Nome breve"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 16,
+  "presets": [
+    {
+      "name": "Il tuo cielo di nascita"
+    }
+  ]
+}
+{% endschema %}

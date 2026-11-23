@@ -1,3 +1,15 @@
+{% if section.settings.bundle_discount %}
+  <script type="application/json" data-bz-home-sets>
+    {
+      {% for block in section.blocks %}
+        {% assign bundle = block.settings.bundle_product %}
+        {% assign bundle_variant = bundle.variants.first %}
+        "{{ section.id }}-ritual-{{ forloop.index }}":
+          {% if bundle.available and bundle_variant != blank %}{{ bundle_variant.id | json }}{% else %}null{% endif %}{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    }
+  </script>
+{% endif %}
 {% render 'bz-ritual-sets', blocks: section.blocks, home: true %}
 {% schema %}
 {
@@ -5,7 +17,7 @@
   "settings": [
     { "type": "text", "id": "heading", "label": "Titolo", "default": "Completa" },
     { "type": "text", "id": "heading_accent", "label": "Corsivo", "default": "il rituale" },
-    { "type": "checkbox", "id": "bundle_discount", "label": "Prezzo del prodotto bundle", "info": "Usa il prodotto bundle quando è disponibile e tutti i pezzi sono selezionati.", "default": false }
+    { "type": "checkbox", "id": "bundle_discount", "label": "Offerta set −10%", "info": "Mostra il prezzo del set quando tutti e tre i pezzi sono selezionati e usa il prodotto bundle se disponibile.", "default": false }
   ],
   "blocks": [
     { "type": "set", "name": "Set", "settings": [
