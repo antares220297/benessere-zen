@@ -66,6 +66,9 @@ html .bz-scope h1{
   text-wrap:balance;
   hyphens:manual;
 }
+html .bz-scope section:where(.bz-404) h1{
+  letter-spacing:var(--bz-ls-h1);
+}
 html .bz-scope :is(.bz-pdp,.bz-page-cart,.bz-search) h1,
 html .bz-scope section.bz-search h1,
 html .bz-scope.theme-template-product h1,
@@ -110,6 +113,11 @@ html .bz-scope .ay-prod-intro{
   text-wrap:pretty;
   hyphens:manual;
   overflow-wrap:break-word;
+}
+html .bz-scope section:where(.bz-404) p{
+  font-size:var(--bz-fs-lead);
+  line-height:var(--bz-lh-body);
+  color:var(--bz-text-2);
 }
 html .bz-scope :is(small,.footer-bottom,.announcement,.shipping-line){
   font-size:var(--bz-fs-xs);
@@ -1659,9 +1667,11 @@ html .bz-scope :is(.bz-qty,.filter-price) input[type=number]::-webkit-outer-spin
   appearance:none;
   margin:0;
 }
-html .bz-scope .bz-qty input[type=number] {
+html .bz-scope .bz-qty input[type=number][type] {
   width:44px;
   min-width:44px;
+}
+html .bz-scope .bz-qty input[type=number] {
   padding:0;
   border:0;
   background:transparent;
