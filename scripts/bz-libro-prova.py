@@ -20,6 +20,9 @@ def fixture(slug):
     chapters = re.findall(r'capitolo_\d: "([^"]+)"', book)
     shell = (ROOT / 'snippets/bz-libro-interno.liquid').read_text()
     shell = shell.split('-%}', 1)[1]
+    cover = re.search(r'copertina: "([^"]+)"', book)
+    cover_name = cover[1] if cover else 'libro-copertina-comune.webp'
+    shell = shell.replace('{{ copertina | asset_url }}', f'./assets/{cover_name}')
     def chapter_buttons(match):
         inner = match[1]
         break_at = r'{%- if forloop.index == 3 -%}(.*?){%- endif -%}'

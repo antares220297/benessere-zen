@@ -95,7 +95,8 @@ def fleuron():
 def render_book(slug, book):
     title = book['titolo_copertina']
     front = book['frontespizio']
-    cover = asset('libro-copertina.webp')
+    cover_name = 'libro-copertina.webp' if slug == 'ametista' else 'libro-copertina-comune.webp'
+    cover = asset(cover_name)
     end = '<div class="pg pg--hard pg--end pg--{}" data-n="{}" aria-hidden="true"><div class="end"></div></div>'
     front_cls = '' if front.get('illustrazione') else ' pg--unillustrated'
     pages = [
@@ -150,6 +151,8 @@ def render_book(slug, book):
     pages.append(end.format('r', n))
     pages.append(f'<div class="pg pg--cover pg--back pg--hard" data-n="{n+1}" aria-hidden="true"><div class="cv"><img class="cv-img" src="{cover}" alt="" width="768" height="1024" loading="lazy"></div></div>')
     args = [f'titolo: "{title}"']
+    if slug == 'ametista':
+        args.append(f'copertina: "{cover_name}"')
     args.extend(f'capitolo_{i}: "{chapter["linguetta"]}"' for i, chapter in enumerate(book['capitoli'], 1))
     return '{% capture pagine %}\n' + '\n'.join(pages) + '\n{% endcapture %}\n' + (
         "{% render 'bz-libro-interno', pagine: pagine, " + ', '.join(args) + ' %}\n'

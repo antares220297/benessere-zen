@@ -10,10 +10,10 @@
 .lb{--pw:367px;--ph:514px;--fs:16.7px;--sw:430px;--sh:580px;--cx:21px;--cy:12px;--cw:374px;--ch:521px;--tx:21px;--ty:12px;--tdx:0px;position:relative;padding:var(--bz-section-gap) 0 0;overflow-x:hidden;overflow-x:clip}
 .lb::before{content:"";position:absolute;left:50%;top:calc(var(--bz-section-gap) + 60px);width:min(1500px,180vw);height:calc(var(--sh) + 120px);transform:translateX(-50%);background:radial-gradient(closest-side,rgba(201,169,110,.12),rgba(201,169,110,.045) 55%,transparent);pointer-events:none}
 .lb-wrap{position:relative}
-.lb-kick{margin:0 0 6px;color:var(--bz-gold);font:600 11px/1.4 var(--bz-font-sans);letter-spacing:.22em;text-transform:uppercase}
-.lb-head h2{margin:0;font:400 var(--bz-fs-h2)/var(--bz-lh-h2) var(--bz-font-serif)}
-.lb-head h2 em{color:var(--bz-gold)}
-.lb-lead{margin:8px 0 0;color:var(--bz-text-2);font-size:15px;line-height:1.45}
+#libro .lb-kick{margin:0 0 6px;color:var(--bz-gold);font:600 11px/1.4 var(--bz-font-sans);letter-spacing:.22em;text-transform:uppercase}
+#libro .lb-head h2{margin:0;font:400 var(--bz-fs-h2)/var(--bz-lh-h2) var(--bz-font-serif)}
+#libro .lb-head h2 em{color:var(--bz-gold)}
+#libro .lb-lead{margin:8px 0 0;color:var(--bz-text-2);font-size:15px;line-height:1.45}
 .lb-hint-o{display:none}.lb:not([data-state="closed"]) .lb-hint-c{display:none}.lb:not([data-state="closed"]) .lb-hint-o{display:inline}
 
 /* palco: largo quanto la pagina (a pieno schermo su mobile), alto quanto serve */
@@ -101,17 +101,17 @@
 /* [g9d] selettore leggero: pillole a misura di testo, centrate; bordo oro sottile e tenue, IM Fell corsivo avorio smorzato;
    altezza visiva 33px, area di tocco 45px con un ::before invisibile; attiva piena avorio con testo scuro */
 .lb-chap{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 8px;margin:14px 0 0}
-.lb-ch{position:relative;display:inline-flex;align-items:center;height:33px;margin:0;padding:0 14px;border:1px solid rgba(201,169,110,.28);border-radius:999px;background:transparent;font:italic 400 15px/1 "IM Fell English",var(--bz-font-serif,Georgia),serif;color:rgba(238,231,219,.72);white-space:nowrap;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background-color .18s ease,color .18s ease,border-color .18s ease}
-.lb-ch::before{content:"";position:absolute;left:0;right:0;top:50%;height:46px;margin-top:-23px}
-@media (min-resolution:2dppx){.lb-ch{border-width:.5px}}
-.lb-ch[aria-current]{background:var(--bz-text,#eee7db);border-color:var(--bz-text,#eee7db);color:var(--bz-bg,#141312)}
-.lb-ch:active{background:rgba(201,169,110,.14)}.lb-ch[aria-current]:active{background:#d9d1c3}
-.lb-ch:focus-visible{outline:2px solid var(--bz-gold,#c9a96e);outline-offset:2px}
-@media (hover:hover){.lb-ch:not([aria-current]):hover{border-color:rgba(201,169,110,.6);color:var(--bz-text,#eee7db)}}
+#libro .lb-ch{position:relative;display:inline-flex;align-items:center;height:33px;margin:0;padding:0 14px;border:1px solid rgba(201,169,110,.28);border-radius:999px;background:transparent;font:italic 400 15px/1 "IM Fell English",var(--bz-font-serif,Georgia),serif;color:rgba(238,231,219,.72);white-space:nowrap;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background-color .18s ease,color .18s ease,border-color .18s ease}
+#libro .lb-ch::before{content:"";position:absolute;left:0;right:0;top:50%;height:46px;margin-top:-23px}
+@media (min-resolution:2dppx){#libro .lb-ch{border-width:.5px}}
+#libro .lb-ch[aria-current]{background:var(--bz-text,#eee7db);border-color:var(--bz-text,#eee7db);color:var(--bz-bg,#141312)}
+#libro .lb-ch:active{background:rgba(201,169,110,.14)}#libro .lb-ch[aria-current]:active{background:#d9d1c3}
+#libro .lb-ch:focus-visible{outline:2px solid var(--bz-gold,#c9a96e);outline-offset:2px}
+@media (hover:hover){#libro .lb-ch:not([aria-current]):hover{border-color:rgba(201,169,110,.6);color:var(--bz-text,#eee7db)}}
 .lb-br{display:none}
 @media (max-width:409px){.lb-br{display:block;flex-basis:100%;height:0}}   /* sotto i 410px si va a capo 2+2, mai 3+1 */
-@media (min-width:768px){.lb-ch{padding:0 18px}}
-@media (prefers-reduced-motion:reduce){.lb-ch{transition:none}}
+@media (min-width:768px){#libro .lb-ch{padding:0 18px}}
+@media (prefers-reduced-motion:reduce){#libro .lb-ch{transition:none}}
 
 /* [g9d] a 430 la sezione resta in uno schermo: aria sopra la sezione 50px (tema 56) */
 @media (max-width:767px){.lb{padding-top:50px}.lb::before{top:110px}}
