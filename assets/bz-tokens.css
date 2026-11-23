@@ -263,7 +263,7 @@
 
   /* Contenitore */
   --bz-container-max:1440px;
-  --bz-measure:62ch;
+  --bz-measure:39.74em;
 
   /* Raggi */
   --bz-r-img:10px;
@@ -348,3 +348,4 @@
   overflow:hidden;clip:rect(0,0,0,0);
   white-space:nowrap;border:0;
 }
+/* ch → em: larghezze indipendenti dal font di ripiego (giro G2) */

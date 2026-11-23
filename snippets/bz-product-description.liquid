@@ -33,6 +33,7 @@
         var body = description.querySelector(".bz-description__body");
         var list = brief.querySelector("ul");
         var extracted = [];
+        var mediaSelector = "table, img, picture, video, iframe, svg, hr";
 
         function isBriefHeading(text) {
           return /^in breve\s*:?$/i.test(text.trim());
@@ -87,18 +88,23 @@
 
         extracted.reverse().forEach(function (entry) {
           entry.line.deleteContents();
-          if (!entry.paragraph.textContent.trim() && !entry.paragraph.querySelector("img, video, iframe, svg")) {
+          if (!entry.paragraph.textContent.trim() && !entry.paragraph.querySelector(mediaSelector)) {
             entry.paragraph.remove();
           }
         });
         body.querySelectorAll("h2, h3, h4, p").forEach(function (heading) {
           if (!isBriefHeading(heading.textContent)) return;
           var next = heading.nextElementSibling;
-          if (!next || !next.textContent.trim() && !next.matches("table, img, video, iframe, svg") &&
-              !next.querySelector("table, img, video, iframe, svg")) heading.remove();
+          if (!next || !next.textContent.trim() && !next.matches(mediaSelector) &&
+              !next.querySelector(mediaSelector)) heading.remove();
         });
 
-        if (!body.textContent.trim() && !body.querySelector("table, img, video, iframe, svg")) {
+        Array.from(body.querySelectorAll("div, p, section, span, blockquote, figure, li, ul, ol"))
+          .reverse().forEach(function (element) {
+            if (!element.textContent.trim() && !element.querySelector(mediaSelector)) element.remove();
+          });
+
+        if (!body.textContent.trim() && !body.querySelector(mediaSelector)) {
           body.hidden = true;
           return;
         }

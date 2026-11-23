@@ -93,7 +93,7 @@ section.bz-search h1 em {
 
 section.bz-search h1.bz-search__none {
   margin: 0;
-  max-width: 36ch;
+  max-width: 23.08em;
   font-family: Figtree, "Figtree Fallback", system-ui, sans-serif;
   font-size: 18px;
   font-weight: 400;
@@ -104,7 +104,7 @@ section.bz-search h1.bz-search__none {
 
 section.bz-404 p {
   margin: 12px 0 0;
-  max-width: 46ch;
+  max-width: 29.49em;
   color: #cdc4b4;
   font-size: 16px;
   line-height: 1.45;
@@ -154,3 +154,4 @@ section.bz-404 :focus-visible {
 section.bz-search {
   padding-inline: 0;
 }
+/* ch → em: larghezze indipendenti dal font di ripiego (giro G2) */

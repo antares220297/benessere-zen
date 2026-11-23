@@ -80,7 +80,7 @@
 }
 
 .bz-visit__lead {
-  max-width: 38ch;
+  max-width: 24.36em;
   font-size: 15.5px;
   line-height: 1.45;
 }
@@ -357,7 +357,7 @@ body:has(.bz-foot) {
 }
 
 .bz-foot__brand + p {
-  max-width: 32ch;
+  max-width: 20.51em;
   margin: 14px 0 0;
   color: #958d7f;
   font-family: Figtree, "Figtree Fallback", system-ui, sans-serif;
@@ -486,3 +486,4 @@ body:has(.bz-foot) {
     height: 38px;
   }
 }
+/* ch → em: larghezze indipendenti dal font di ripiego (giro G2) */

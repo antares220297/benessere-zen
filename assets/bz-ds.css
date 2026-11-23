@@ -566,7 +566,7 @@ html .bz-page-home .hero-slide--featured :is(h1,p){
 }
 html .bz-page-home .home-hero :is(h1,h2) em{color:var(--bz-gold)}
 html .bz-page-home .hero-slide--featured .hero-copy p{
-  max-width:36ch;
+  max-width:23.08em;
   margin:var(--bz-sp-16) 0 0;
   color:var(--bz-text-2);
   font:400 16px/24px var(--bz-font-sans);
@@ -2123,3 +2123,4 @@ html .bz-scope .picked [role="tab"] {
 html .bz-scope .picked [role="tabpanel"][hidden] {
   display: none;
 }
+/* ch → em: larghezze indipendenti dal font di ripiego (giro G2) */

@@ -77,7 +77,7 @@
 #cielo .c2-facts dt{font:italic 13px/1.2 Baskervville,"Baskervville Fallback",Georgia,serif;color:var(--gold)}
 #cielo .c2-facts dd{margin:5px 0 0;font:16px/1.25 Baskervville,"Baskervville Fallback",Georgia,serif;color:var(--iv)}
 #cielo .c2-facts .g{font-family:"BZ Segni",serif;color:var(--goldl);margin-right:4px}
-#cielo .c2-note{margin:14px auto 0;max-width:44ch;font-size:14px;line-height:1.5;color:var(--iv2)}
+#cielo .c2-note{margin:14px auto 0;max-width:28.20em;font-size:14px;line-height:1.5;color:var(--iv2)}
 /* ---------- il cartiglio di carta antica ---------- */
 #cielo .c3-cart{position:relative;margin:28px auto 0;max-width:560px;padding:26px 18px 20px;border-radius:4px;color:var(--ink);text-align:center;
  background:linear-gradient(180deg,rgba(255,248,230,.25),rgba(120,80,40,.10)),#e9dcc0;
@@ -313,3 +313,4 @@
   #cielo .c2-facts div{min-width:0}
   #cielo .c2-cta{white-space:normal}
 }
+/* ch → em: larghezze indipendenti dal font di ripiego (giro G2) */

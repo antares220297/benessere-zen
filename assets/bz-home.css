@@ -132,7 +132,7 @@ body:has(.bz-hero) {
   font-size: 17px;
   line-height: 1.45;
   color: var(--ivory2);
-  max-width: 44ch;
+  max-width: 28.20em;
   margin: 0 0 28px;
 }
 
@@ -280,7 +280,7 @@ body:has(.bz-hero) {
   font-size: 14px;
   color: var(--ivory2);
   margin: 0 0 14px;
-  max-width: 22ch;
+  max-width: 14.10em;
 }
 
 .bz-tile p.bz-tile__figure {
@@ -1030,3 +1030,4 @@ body:has(.bz-hero) {
     transition: none;
   }
 }
+/* ch → em: larghezze indipendenti dal font di ripiego (giro G2) */

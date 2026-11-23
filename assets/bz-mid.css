@@ -148,7 +148,7 @@
 }
 
 .bz-bento__copy p {
-  max-width: 40ch;
+  max-width: 25.64em;
   font-size: 15px;
   color: #cdc4b4;
   margin: 0 0 16px;
@@ -761,7 +761,7 @@
 .bz-set__visual p {
   margin: 0;
   color: #cdc4b4;
-  max-width: 42ch;
+  max-width: 26.92em;
 }
 
 .bz-pane {
@@ -1032,7 +1032,7 @@
 
 .bz-doors__body p {
   margin: 0;
-  max-width: 36ch;
+  max-width: 23.08em;
   color: #cdc4b4;
   font-size: 15px;
   line-height: 1.45;
@@ -1141,3 +1141,4 @@
     grid-template-columns: 1fr;
   }
 }
+/* ch → em: larghezze indipendenti dal font di ripiego (giro G2) */

@@ -44,7 +44,7 @@
 }
 .bz-chead__copy { position: relative; z-index: 1; padding: 36px 40px; display: flex; flex-direction: column; justify-content: flex-end; }
 .bz-chead h1 { margin: 0; font-size: clamp(42px, 4.4vw, 66px); line-height: 1; }
-.bz-chead p { margin: 12px 0 0; color: #cdc4b4; max-width: 46ch; }
+.bz-chead p { margin: 12px 0 0; color: #cdc4b4; max-width: 29.49em; }
 .bz-chips-row {
   position: relative; z-index: 1;
   display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: flex-start;
@@ -322,3 +322,4 @@ html.bz-sheet-open { overflow: hidden; }
   .bz-cgrid { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .bz-promo { grid-column: 1 / -1; grid-row: auto; aspect-ratio: 4 / 3; }
 }
+/* ch → em: larghezze indipendenti dal font di ripiego (giro G2) */
