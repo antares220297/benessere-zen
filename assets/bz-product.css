@@ -168,21 +168,6 @@
   color: var(--bz-text);
 }
 
-.bz-buy .rte table th {
-  background: var(--bz-surface-2) !important;
-  color: var(--bz-text) !important;
-  word-break: normal;
-  overflow-wrap: normal;
-}
-
-@media (max-width: 480px) {
-  .bz-buy .rte table :is(th, td) {
-    padding-inline: var(--bz-sp-8);
-    word-break: normal;
-    overflow-wrap: normal;
-  }
-}
-
 .bz-buy__sub {
   margin: 8px 0 16px;
   font: italic var(--bz-fs-h4)/1.3 var(--bz-font-serif);
@@ -779,7 +764,52 @@ html .bz-scope .bz-brief h2 {
 }
 
 .bz-description__body {
-  overflow-x: auto;
+  color: var(--bz-text);
+  font-family: var(--bz-font-sans);
+  font-size: var(--bz-fs-body);
+  overflow-wrap: anywhere;
+}
+
+.bz-description__body :is([style], table, thead, tbody, tfoot, tr, th, td) {
+  background: transparent !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  text-align: left !important;
+  color: inherit !important;
+  font-family: inherit !important;
+  font-size: inherit !important;
+}
+
+.bz-description__body :is(div[style], section[style]) + * {
+  margin-block-start: var(--bz-sp-16);
+}
+
+html .bz-scope .bz-description__body :is(h2, h3, h4, h5, h6) {
+  font: 600 1rem/1.4 var(--bz-font-sans) !important;
+  letter-spacing: normal;
+}
+
+.bz-description__body :is(table, tbody, tfoot, tr, th, td) {
+  display: block;
+  width: auto !important;
+  min-width: 0 !important;
+}
+
+.bz-description__body thead {
+  position: absolute;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.bz-description__body tr + tr {
+  margin-block-start: var(--bz-sp-8);
+}
+
+.bz-description__body tr > :is(th, td):first-child {
+  font-weight: 600;
 }
 
 .bz-buy__disclaimer {
