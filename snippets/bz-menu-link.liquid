@@ -10,7 +10,9 @@
         assign label = 'Regali sotto 25 €'
       endif
     when 'pietre-grezze', 'pietre-burattate'
-      assign label = 'Pietre e cristalli'
+      unless keep_label
+        assign label = 'Pietre e cristalli'
+      endunless
       assign url = collections['pietre-burattate'].url | default: '/collections/pietre-burattate'
     when 'incensi-e-brucia-incensi'
       assign label = 'Incensi e smudge'

@@ -34,7 +34,7 @@
               {%- assign href = block.settings[link_key] -%}
               {%- if label != blank and href != blank -%}
                 {%- if href contains '/blogs/' -%}{%- continue -%}{%- endif -%}
-                {% render 'bz-menu-link', url: href, label: label %}
+                {% render 'bz-menu-link', url: href, label: label, keep_label: true %}
               {%- endif -%}
             {%- endfor -%}
           {%- endif -%}
