@@ -6,7 +6,20 @@
         {%- capture children -%}
           {%- for child in link.links -%}
             {%- if child.type == 'blog_link' or child.type == 'article_link' or child.url contains '/blogs' -%}{%- continue -%}{%- endif -%}
-            <li>{% render 'bz-menu-link', url: child.url, label: child.title %}</li>
+            <li>
+              {% render 'bz-menu-link', url: child.url, label: child.title %}
+              {%- if child.links.size > 0 -%}
+                {%- capture grandchildren -%}
+                  {%- for grandchild in child.links -%}
+                    {%- if grandchild.type == 'blog_link' or grandchild.type == 'article_link' or grandchild.url contains '/blogs' -%}{%- continue -%}{%- endif -%}
+                    <li>{% render 'bz-menu-link', url: grandchild.url, label: grandchild.title %}</li>
+                  {%- endfor -%}
+                {%- endcapture -%}
+                {%- if grandchildren != blank -%}
+                  <ul class="bz-menu-sub3">{{ grandchildren }}</ul>
+                {%- endif -%}
+              {%- endif -%}
+            </li>
           {%- endfor -%}
         {%- endcapture -%}
         {%- if children != blank -%}
