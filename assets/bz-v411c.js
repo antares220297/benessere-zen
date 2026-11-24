@@ -287,13 +287,152 @@
     return q('[data-cart-line][data-key="' + CSS.escape(key) + '"]', surface);
   }
 
+  async function cartFetch(url, options) {
+    for (let attempt = 0; ; attempt++) {
+      const response = await fetch(url, options);
+      if (response.status !== 429 || attempt === 2) return response;
+      const retryAfter = response.headers.get('Retry-After');
+      const wait = retryAfter && (/^\d+$/.test(retryAfter) ? Number(retryAfter) * 1000 : Date.parse(retryAfter) - Date.now());
+      const delay = Math.max(350 * 2 ** attempt, wait || 0);
+      if (delay > 3000) return response;
+      await new Promise(resolve => setTimeout(resolve, delay));
+    }
+  }
+
+  function postCart(url, payload) {
+    return cartFetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  }
+
+  async function readCart() {
+    const response = await cartFetch(routes.cart, { cache: 'no-store', headers: { Accept: 'application/json' } });
+    if (!response.ok) throw new Error('Cart unavailable', { cause: response.status });
+    return response.json();
+  }
+
+  async function cartAfterChange(response) {
+    if (response?.ok) {
+      const cart = await response.json().catch(() => null);
+      if (Array.isArray(cart?.items)) return cart;
+    }
+    return readCart();
+  }
+
+  function invalidRitualIds(items) {
+    const groups = new Map();
+    for (const item of items) {
+      const id = item.properties?._bz_rituale;
+      if (!id) continue;
+      if (!groups.has(id)) groups.set(id, []);
+      groups.get(id).push(item);
+    }
+    const invalid = new Set();
+    for (const [id, lines] of groups) {
+      const quantity = lines[0].quantity;
+      const valid = lines.length === 3 && new Set(lines.map(line => line.key)).size === 3 &&
+        quantity >= 1 && lines.every(line => line.quantity === quantity);
+      if (!valid) invalid.add(id);
+    }
+    return invalid;
+  }
+
+  function withoutRitual(line) {
+    const { _bz_rituale, _bz_rituale_n, ...properties } = line.properties || {};
+    return properties;
+  }
+
+  async function clearRitualLine(cart, line) {
+    const { key, quantity, variant_id: variantId } = line;
+    const ritual = line.properties._bz_rituale;
+    const sellingPlan = line.selling_plan_allocation?.selling_plan?.id;
+    const properties = withoutRitual(line);
+    const entries = Object.entries(properties);
+    const matches = item => {
+      if (item.variant_id !== variantId || item.selling_plan_allocation?.selling_plan?.id !== sellingPlan) return false;
+      const other = withoutRitual(item);
+      return Object.keys(other).length === entries.length && entries.every(([name, value]) => other[name] === value);
+    };
+    const cleanLines = state => state.items.filter(item => matches(item) &&
+      (item.properties?._bz_rituale ?? '') === '' && (item.properties?._bz_rituale_n ?? '') === '');
+    const originalLines = state => state.items.filter(item => matches(item) && (
+      item.properties?._bz_rituale === ritual ||
+      (!item.properties?._bz_rituale && item.properties?._bz_rituale_n &&
+        (item.key === key || !cart.items.some(previous => previous.key === item.key)))
+    ));
+    const sum = lines => lines.reduce((total, item) => total + item.quantity, 0);
+    const before = cleanLines(cart);
+    const cleanQuantity = sum(before);
+    const originalQuantity = sum(originalLines(cart));
+    const replaced = state => sum(cleanLines(state)) === cleanQuantity + quantity &&
+      sum(originalLines(state)) === originalQuantity - quantity;
+    const findOriginal = state => {
+      const candidates = originalLines(state).filter(item => item.quantity === quantity);
+      return candidates.find(item => item.key === key) || (candidates.length === 1 ? candidates[0] : null);
+    };
+
+    // Shopify can't replace an existing properties object with an empty object.
+    const response = await postCart(routes.change, {
+      id: key, quantity, properties: entries.length ? properties : { _bz_rituale: '', _bz_rituale_n: '' }
+    }).catch(() => null);
+    if (response?.status === 429) throw new Error('Cart rate limited', { cause: 429 });
+    let updated = await cartAfterChange(response);
+    if (replaced(updated)) return updated;
+    if (!findOriginal(updated)) throw new Error('Ritual line unavailable');
+
+    // Verify the replacement was added in full before removing the tagged line.
+    const replacement = { id: variantId, quantity, properties };
+    if (sellingPlan) replacement.selling_plan = sellingPlan;
+    const added = await postCart(routes.add, { items: [replacement] }).catch(() => null);
+    if (added?.status === 429) throw new Error('Cart rate limited', { cause: 429 });
+    updated = await readCart();
+    const original = findOriginal(updated);
+    let removed;
+    if (original && sum(cleanLines(updated)) === cleanQuantity + quantity) {
+      removed = await postCart(routes.change, { id: original.key, quantity: 0 }).catch(() => null);
+      updated = await cartAfterChange(removed);
+      if (replaced(updated)) return updated;
+    }
+
+    // An add can be partial. Undo the extra units if the tagged line is still present.
+    const after = cleanLines(updated);
+    const extra = sum(after) - cleanQuantity;
+    if (extra > 0 && extra <= quantity && sum(originalLines(updated)) === originalQuantity) {
+      const changed = after.filter(item => item.quantity - (before.find(previous => previous.key === item.key)?.quantity || 0) === extra);
+      const rollback = after.length === 1 ? after[0] : changed.length === 1 ? changed[0] : null;
+      if (rollback) await postCart(routes.change, { id: rollback.key, quantity: rollback.quantity - extra }).catch(() => {});
+    }
+    throw new Error('Ritual line cleanup failed', { cause: removed?.status });
+  }
+
+  async function clearInvalidRituals(cart) {
+    const invalid = invalidRitualIds(cart.items);
+    const isInvalid = item => invalid.has(item.properties?._bz_rituale);
+    const failed = new Set();
+    const attempts = cart.items.filter(isInvalid).length;
+    for (let attempt = 0; attempt < attempts; attempt++) {
+      const line = cart.items.find(item => isInvalid(item) && !failed.has(item.key));
+      if (!line) break;
+      try {
+        cart = await clearRitualLine(cart, line);
+      } catch (error) {
+        if (error.cause === 429) throw error;
+        failed.add(line.key);
+        cart = await readCart();
+      }
+    }
+    if (failed.size || cart.items.some(isInvalid)) throw new Error('Ritual cart cleanup failed');
+  }
+
   async function refreshCart() {
     const surfaces = qa('[data-cart-section-id]');
     if (!surfaces.length) return;
     const url = new URL(location.href);
     url.searchParams.delete('section_id');
     url.searchParams.set('sections', surfaces.map(surface => surface.dataset.cartSectionId).join(','));
-    const response = await fetch(url, { cache: 'no-store' });
+    const response = await cartFetch(url, { cache: 'no-store' });
     if (!response.ok) throw new Error('Cart sections unavailable');
     const sections = await response.json();
     const updates = surfaces.map(surface => {
@@ -369,15 +508,32 @@
     return operation;
   }
 
+  let cartLinePending = 0;
+  function queueCartLine(task) {
+    cartLinePending++;
+    qa('[data-cart-section-id]').forEach(node => node.setAttribute('data-cart-mutating', ''));
+    return queueCart(task).finally(() => {
+      cartLinePending--;
+      if (!cartLinePending) qa('[data-cart-mutating]').forEach(node => node.removeAttribute('data-cart-mutating'));
+    });
+  }
+
   function addItems(items) {
-    return queueCart(async () => {
-      const response = await fetch(routes.add, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ items })
-      });
+    const ritual = items.some(item => item.properties?._bz_rituale);
+    const enqueue = ritual ? queueCartLine : queueCart;
+    return enqueue(async () => {
+      let response;
+      try {
+        response = await postCart(routes.add, { items });
+      } finally {
+        if (ritual) {
+          // A rejected multi-item add can still leave some pieces in the cart.
+          try { await clearInvalidRituals(await readCart()); }
+          finally { await refreshCart(); }
+        }
+      }
       if (!response.ok) return false;
-      await refreshCart().catch(() => {});
+      if (!ritual) await refreshCart().catch(() => {});
       openCart();
       return true;
     });
@@ -859,7 +1015,6 @@
 
   qa('[data-sort]').forEach(select => select.addEventListener('change', () => select.form?.requestSubmit()));
 
-  let cartLinePending = false;
   document.addEventListener('submit', event => {
     if (cartLinePending && event.target.closest('[data-cart-section-id]')) event.preventDefault();
   });
@@ -873,42 +1028,32 @@
     const delta = Number(button.dataset.cartDelta);
     const stockError = 'Quantità non disponibile per questo prodotto.';
     const updateError = 'Impossibile aggiornare il carrello. Riprova.';
-    cartLinePending = true;
-    qa('[data-cart-section-id]').forEach(node => node.setAttribute('data-cart-mutating', ''));
-    queueCart(async () => {
+    queueCartLine(async () => {
       const current = findCartLine(surface, key);
       if (!current) return;
       const quantity = removing ? 0 : Number(current.dataset.quantity) + delta;
       if (!removing && quantity < 1) return;
-      let message = '';
+      const rowIndex = qa('[data-cart-line]', surface).indexOf(current);
+      const response = await postCart(routes.change, { id: key, quantity }).catch(() => null);
+      let message = response?.ok ? '' : (response?.status === 422 && !removing ? stockError : updateError);
       try {
-        const response = await fetch(routes.change, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify({ id: key, quantity })
-        });
-        if (!response.ok) {
-          message = response.status === 422 && !removing ? stockError : updateError;
-        } else {
-          const cart = await response.json();
-          const line = cart.items.find(entry => entry.key === key);
-          if (!removing && line && line.quantity !== quantity) message = stockError;
-        }
+        // Shopify can adjust the line even when it rejects the requested quantity.
+        const cart = await cartAfterChange(response);
+        const line = cart.items.find(entry => entry.key === key);
+        if (response?.ok && !removing && line && line.quantity !== quantity) message = stockError;
+        await clearInvalidRituals(cart);
       } catch {
         message = updateError;
       }
-      // Shopify can adjust the line even when it rejects the requested quantity.
       await refreshCart().catch(() => { message ||= updateError; });
       if (message) {
         qa('[data-cart-section-id]').forEach(node => {
-          const item = findCartLine(node, key);
-          const status = item && q('[data-cart-line-error]', item);
+          const rows = qa('[data-cart-line]', node);
+          const item = findCartLine(node, key) || rows[Math.min(rowIndex, rows.length - 1)];
+          const status = item ? q('[data-cart-line-error]', item) : q('.cart-empty, .bz-drawer__empty, [data-cart-content] > p', node);
           if (status) status.textContent = message;
         });
       }
-    }).finally(() => {
-      cartLinePending = false;
-      qa('[data-cart-mutating]').forEach(node => node.removeAttribute('data-cart-mutating'));
     });
   });
 
