@@ -12,8 +12,9 @@ ROOT = Path(__file__).resolve().parents[1]
 SHARED = Path('/home/box/shared/benessere-zen')
 MOCK = SHARED / 'approfondimenti/mockup-grimorio/libro'
 GRIMOIRE = SHARED / 'grimorio'
-FAMILIES = ('ametista', 'quarzo-rosa', 'selenite', 'cristallo-di-rocca',
-            'lapislazzuli', 'occhio-di-tigre', 'ossidiana', 'tormalina-nera')
+STONE_FAMILIES = ('ametista', 'quarzo-rosa', 'selenite', 'cristallo-di-rocca',
+                  'lapislazzuli', 'occhio-di-tigre', 'ossidiana', 'tormalina-nera')
+BOOK_FAMILIES = (*STONE_FAMILIES, 'incensi')
 CHAPTERS = ('primo', 'secondo', 'terzo', 'quarto')
 KEYS = ('origine', 'tradizione', 'uso', 'credenze')
 HYPHENATOR = pyphen.Pyphen(lang='it_IT')
@@ -30,12 +31,15 @@ def lot_figure(slug, page, alt, *, small=False):
     return dict(file=file, alt=alt, w=width, h=height, piccola=small)
 
 
-def parse_lot(text):
+def parse_lot(text, families, *, front_alt_from_text=False):
     books = {}
-    stones = re.split(r'^## [2-8]\. (.+)$', text, flags=re.M)
-    for slug, stone, block in zip(FAMILIES[1:], stones[1::2], stones[2::2], strict=True):
+    sections = re.split(r'^## (?:[2-9]|[1-9]\d+)\. (.+)$', text, flags=re.M)
+    for slug, name, block in zip(families, sections[1::2], sections[2::2], strict=True):
         block = block.split('#### Fonti')[0]
-        fields = dict(re.findall(r'^- (Titolo di copertina|Occhiello|Titolo|Sottotitolo): (.+)$', block, re.M))
+        fields = dict(re.findall(
+            r'^- (Titolo di copertina|Occhiello|Titolo|Sottotitolo|Testo alternativo della figura): (.+)$',
+            block, re.M,
+        ))
         cover = fields['Titolo di copertina'].strip('*')
         chapters = []
         for index, chapter in enumerate(re.split(r'^### Capitolo \w+ · ', block, flags=re.M)[1:]):
@@ -97,7 +101,9 @@ def parse_lot(text):
         assert len(chapters) == 4
         front = dict(sopratitolo=fields['Occhiello'], titolo=fields['Titolo'],
                      sottotitolo=fields['Sottotitolo'])
-        illustration = lot_figure(slug, 'front', f'Illustrazione in stile manoscritto di {stone.lower()}')
+        front_alt = (fields['Testo alternativo della figura'] if front_alt_from_text
+                     else f'Illustrazione in stile manoscritto di {name.lower()}')
+        illustration = lot_figure(slug, 'front', front_alt)
         if illustration:
             front['illustrazione'] = illustration
         books[slug] = dict(titolo_copertina=cover, testata=cover, frontespizio=front, capitoli=chapters)
@@ -228,12 +234,14 @@ def update_templates():
 
 def main():
     books = {'ametista': json.loads((MOCK / 'build/dati-ametista.json').read_text())}
-    books.update(parse_lot((GRIMOIRE / 'testi/lotto1-v3.1.md').read_text()))
+    books.update(parse_lot((GRIMOIRE / 'testi/lotto1-v3.1.md').read_text(), STONE_FAMILIES[1:]))
+    books.update(parse_lot((GRIMOIRE / 'testi/incensi-v2.md').read_text(), ('incensi',),
+                           front_alt_from_text=True))
     for slug, data in books.items():
         (ROOT / 'snippets' / f'bz-libro-{slug}.liquid').write_text(render_book(slug, data))
     with (GRIMOIRE / 'famiglie-mappa.csv').open(newline='') as source:
         rows = list(csv.DictReader(source))
-    families = ', '.join(f"'{family}'" for family in FAMILIES)
+    stone_families = ', '.join(f"'{family}'" for family in STONE_FAMILIES)
     lines = [
         '{%- liquid',
         "  assign famiglia = ''",
@@ -243,14 +251,14 @@ def main():
         '  endif',
         '  assign handle_pietra = principale.system.handle | default: principale.handle',
         '  case handle_pietra',
-        f'    when {families}',
+        f'    when {stone_families}',
         '      assign famiglia = handle_pietra',
         '  endcase',
         '  if famiglia == blank',
         '    case product.handle',
     ]
     mapped = set()
-    for family in FAMILIES:
+    for family in BOOK_FAMILIES:
         handles = sorted({row['handle'] for row in rows if row['family_slug'] == family})
         assert handles and mapped.isdisjoint(handles)
         mapped.update(handles)
@@ -258,7 +266,7 @@ def main():
             lines.extend(('      when ' + ', '.join(f"'{handle}'" for handle in handles[start:start+5]),
                           f"        assign famiglia = '{family}'"))
     lines.extend(('    endcase', '  endif', "  if dato == 'titolo'", '    case famiglia'))
-    for family in FAMILIES:
+    for family in BOOK_FAMILIES:
         title = books[family]['titolo_copertina'].lower()
         lines.extend((f"      when '{family}'", f'        echo "Il libro {title}"'))
     lines.extend(('    endcase', '  else', '    echo famiglia', '  endif', '-%}'))
