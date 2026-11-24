@@ -237,7 +237,10 @@ def main():
     lines = [
         '{%- liquid',
         "  assign famiglia = ''",
-        '  assign principale = product.metafields.custom.pietre.value.first',
+        '  assign pietre_libro = product.metafields.custom.pietre.value',
+        '  if pietre_libro != blank',
+        '    assign principale = pietre_libro | first',
+        '  endif',
         '  assign handle_pietra = principale.system.handle | default: principale.handle',
         '  case handle_pietra',
         f'    when {families}',
