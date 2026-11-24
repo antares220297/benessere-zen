@@ -100,13 +100,13 @@
       </div>
       {%- if contenute != blank %}
         <p class="bz-buy__contained">Contiene: {% for stone in contenute -%}
-          {%- assign stone_name = stone.nome.value | default: stone.nome | downcase | escape -%}
+          {%- assign stone_name = stone.nome.value | default: stone.nome | strip | downcase | escape -%}
           {%- assign stone_handle = stone.system.handle -%}
           {%- assign stone_collection = collections[stone_handle] -%}
           {%- if stone_collection.url != blank and stone_collection.products_count > 0 -%}
-            <a href="{{ stone_collection.url | escape }}">{{ stone_name }}</a>
+            <a href="{{ stone_collection.url | escape }}">{{- stone_name -}}</a>
           {%- else -%}
-            {{ stone_name }}
+            {{- stone_name -}}
           {%- endif -%}
           {%- unless forloop.last %}, {% endunless -%}
         {%- endfor %}</p>
