@@ -879,3 +879,20 @@ html .bz-scope .bz-description__body :is(h2, h3, h4, h5, h6) {
 .bz-description__toggle[aria-expanded="true"]::after {
   transform: rotate(225deg);
 }
+
+.bz-buy__contained {
+  margin: 0 0 16px;
+  color: #cdc4b4;
+  font: 400 14px/1.5 var(--bz-font-sans);
+}
+
+.bz-buy__contained a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.bz-acc .bz-acc__stone {
+  margin: 16px 0 4px;
+  font: italic 400 17px/1.3 var(--bz-font-serif);
+}

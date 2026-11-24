@@ -3,7 +3,8 @@
   custom.grani — single line text
   custom.diametro — single line text
   custom.peso — single line text
-  custom.pietra — single line text
+  custom.pietre, custom.pietre_contenute — lists of pietra metaobjects
+  custom.pietra — legacy pietra reference
   custom.bento_title — single line text
   custom.pairs_with — product reference
 {%- endcomment -%}
@@ -23,6 +24,18 @@
   if show_mala_facts or type_key contains 'pietr' or type_key contains 'braccial' or type_key contains 'ciondol' or type_key contains 'collan' or type_key contains 'pendol'
     assign show_stone_facts = true
   endif
+  assign pietre = product.metafields.custom.pietre.value
+  assign stone_count = 0
+  if pietre != blank
+    assign pietra = pietre | first
+    assign stone_count = pietre.count | default: pietre.size | default: 0
+  else
+    assign pietra = product.metafields.custom.pietra.value
+    if pietra != blank
+      assign stone_count = 1
+    endif
+  endif
+  assign contenute = product.metafields.custom.pietre_contenute.value
 -%}
 
 {%- capture display_name -%}{% render 'bz-product-name', product: product %}{%- endcapture -%}
@@ -85,6 +98,19 @@
         <strong data-bz-price>{% render 'bz-money', cents: current.price %}</strong>
         <small>IVA inclusa</small>
       </div>
+      {%- if contenute != blank %}
+        <p class="bz-buy__contained">Contiene: {% for stone in contenute -%}
+          {%- assign stone_name = stone.nome.value | default: stone.nome | downcase | escape -%}
+          {%- assign stone_handle = stone.system.handle -%}
+          {%- assign stone_collection = collections[stone_handle] -%}
+          {%- if stone_collection.url != blank and stone_collection.products_count > 0 -%}
+            <a href="{{ stone_collection.url | escape }}">{{ stone_name }}</a>
+          {%- else -%}
+            {{ stone_name }}
+          {%- endif -%}
+          {%- unless forloop.last %}, {% endunless -%}
+        {%- endfor %}</p>
+      {%- endif -%}
       {%- if product.description != blank -%}
         {%- render 'bz-product-description', description: product.description, section_id: section.id -%}
       {%- endif -%}
@@ -176,12 +202,6 @@
                 assign show_fact = false
                 if fact_key != blank
                   assign fact_value = product.metafields.custom[fact_key].value
-                  if fact_key == 'pietra' and fact_value != blank
-                    assign fact_name = fact_value.nome.value | default: fact_value.nome
-                    if fact_name != blank
-                      assign fact_value = fact_name
-                    endif
-                  endif
                   assign fact_text = fact_value | append: ''
                   if fact_text contains 'Metaobject' or fact_text contains 'Drop'
                     assign fact_value = blank
@@ -192,7 +212,7 @@
                       assign fact_allowed = false
                     endunless
                   endif
-                  if fact_key == 'peso' or fact_key == 'pietra'
+                  if fact_key == 'peso'
                     unless show_stone_facts
                       assign fact_allowed = false
                     endunless
@@ -204,7 +224,17 @@
                   assign show_fact = true
                 endif
               -%}
-              {%- if show_fact -%}
+              {%- if fact_key == 'pietra' or fact_key == 'pietre' -%}
+                {%- if show_stone_facts or stone_count > 1 -%}
+                  {%- if pietre != blank -%}
+                    {%- for stone in pietre -%}
+                      {%- render 'bz-product-stone-pill', stone: stone, block: block, fact_label: fact_label, show_block_attributes: forloop.first -%}
+                    {%- endfor -%}
+                  {%- elsif pietra != blank -%}
+                    {%- render 'bz-product-stone-pill', stone: pietra, block: block, fact_label: fact_label, show_block_attributes: true -%}
+                  {%- endif -%}
+                {%- endif -%}
+              {%- elsif show_fact -%}
                 <span class="bz-fact" {{ block.shopify_attributes }}>{%- if block.settings.swatch != blank -%}<i style="background: {{ block.settings.swatch }}"></i>{%- endif -%}{%- if fact_value != blank -%}<b>{{ fact_value | escape }}</b>{%- endif -%}{%- if fact_label != blank -%} {{ fact_label | escape }}{%- endif -%}</span>
               {%- endif -%}
             {%- endif -%}
@@ -233,10 +263,9 @@
         {%- endif -%}
 
         {%- liquid
-          assign pietra = product.metafields.custom.pietra.value
           assign pietra_tradizione = blank
           assign pietra_cura = blank
-          if show_stone_facts and pietra != blank
+          if show_stone_facts or stone_count > 1
             assign pietra_tradizione = pietra.tradizione.value | default: pietra.tradizione
             assign pietra_cura = pietra.cura.value | default: pietra.cura
           endif
@@ -258,10 +287,18 @@
                     {%- for spec in section.blocks -%}
                       {%- if spec.type == 'spec' -%}
                         {%- assign spec_value = product.metafields.custom[spec.settings.metafield].value -%}
-                        {%- if spec.settings.metafield == 'pietra' and spec_value != blank -%}
-                          {%- assign spec_name = spec_value.nome.value | default: spec_value.nome -%}
-                          {%- if spec_name != blank -%}
-                            {%- assign spec_value = spec_name -%}
+                        {%- if spec.settings.metafield == 'pietra' or spec.settings.metafield == 'pietre' -%}
+                          {%- if pietre != blank -%}
+                            {%- capture spec_value -%}
+                              {%- for stone in pietre -%}
+                                {{- stone.nome.value | default: stone.nome | default: stone -}}
+                                {%- unless forloop.last %}, {% endunless -%}
+                              {%- endfor -%}
+                            {%- endcapture -%}
+                          {%- elsif pietra != blank -%}
+                            {%- assign spec_value = pietra.nome.value | default: pietra.nome | default: pietra -%}
+                          {%- else -%}
+                            {%- assign spec_value = blank -%}
                           {%- endif -%}
                         {%- endif -%}
                         {%- assign spec_text = spec_value | append: '' -%}
@@ -281,10 +318,15 @@
                   {%- if pietra_tradizione != blank -%}
                     <p>{{ pietra_tradizione | escape }}</p>
                   {%- endif -%}
+                  {%- for stone in pietre offset: 1 -%}
+                    {%- assign tradition = stone.tradizione.value | default: stone.tradizione -%}
+                    {%- if tradition != blank -%}
+                      <h3 class="bz-acc__stone">{{ stone.nome.value | default: stone.nome | escape }}</h3>
+                      <p>{{ tradition | escape | newline_to_br }}</p>
+                    {%- endif -%}
+                  {%- endfor -%}
                 {%- elsif block.id == 'det-3' -%}
-                  {%- if pietra_cura != blank -%}
-                    <p>{{ pietra_cura | escape }}</p>
-                  {%- endif -%}
+                  {%- render 'bz-product-stone-care', pietre: pietre, pietra_cura: pietra_cura -%}
                 {%- elsif block.settings.text != blank -%}
                   {{ block.settings.text }}
                 {%- endif -%}
