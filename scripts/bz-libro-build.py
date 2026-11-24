@@ -228,21 +228,33 @@ def update_templates():
 
 def main():
     books = {'ametista': json.loads((MOCK / 'build/dati-ametista.json').read_text())}
-    books.update(parse_lot((GRIMOIRE / 'testi/lotto1-v3.md').read_text()))
+    books.update(parse_lot((GRIMOIRE / 'testi/lotto1-v3.1.md').read_text()))
     for slug, data in books.items():
         (ROOT / 'snippets' / f'bz-libro-{slug}.liquid').write_text(render_book(slug, data))
     with (GRIMOIRE / 'famiglie-mappa.csv').open(newline='') as source:
         rows = list(csv.DictReader(source))
-    lines = ['{%- liquid', "  assign famiglia = ''", '  case product.handle']
+    families = ', '.join(f"'{family}'" for family in FAMILIES)
+    lines = [
+        '{%- liquid',
+        "  assign famiglia = ''",
+        '  assign principale = product.metafields.custom.pietre.value.first',
+        '  assign handle_pietra = principale.system.handle | default: principale.handle',
+        '  case handle_pietra',
+        f'    when {families}',
+        '      assign famiglia = handle_pietra',
+        '  endcase',
+        '  if famiglia == blank',
+        '    case product.handle',
+    ]
     mapped = set()
     for family in FAMILIES:
         handles = sorted({row['handle'] for row in rows if row['family_slug'] == family})
         assert handles and mapped.isdisjoint(handles)
         mapped.update(handles)
         for start in range(0, len(handles), 5):
-            lines.extend(('    when ' + ', '.join(f"'{handle}'" for handle in handles[start:start+5]),
-                          f"      assign famiglia = '{family}'"))
-    lines.extend(('  endcase', "  if dato == 'titolo'", '    case famiglia'))
+            lines.extend(('      when ' + ', '.join(f"'{handle}'" for handle in handles[start:start+5]),
+                          f"        assign famiglia = '{family}'"))
+    lines.extend(('    endcase', '  endif', "  if dato == 'titolo'", '    case famiglia'))
     for family in FAMILIES:
         title = books[family]['titolo_copertina'].lower()
         lines.extend((f"      when '{family}'", f'        echo "Il libro {title}"'))
