@@ -9,6 +9,14 @@
  */
 {
   "current": {
+    "bz_hours_mon": "",
+    "bz_hours_tue": "09:30-12:30,16:00-19:30",
+    "bz_hours_wed": "09:30-12:30,16:00-19:30",
+    "bz_hours_thu": "09:30-12:30,16:00-19:30",
+    "bz_hours_fri": "09:30-12:30,16:00-19:30",
+    "bz_hours_sat": "09:30-12:30,16:00-19:30",
+    "bz_hours_sun": "",
+    "bz_sunday_note": "Dal 1 al 24 dicembre aperti tutti i giorni, domenica e lunedì compresi",
     "theme_mode_enabled": false,
     "theme_mode_mode": "switch",
     "theme_mode_default": "dark",

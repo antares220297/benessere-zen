@@ -4,8 +4,8 @@
       "type": "bz-hero",
       "settings": {
         "heading": "Un rituale",
-        "heading_accent": "da portare addosso",
-        "text": "Ciondoli, pietre, candele e creme naturali.",
+        "heading_accent": "per il tuo benessere quotidiano",
+        "text": "Bracciali, ciondoli, pietre, candele e creme naturali.",
         "primary_label": "Tutti i gioielli",
         "primary_link": "/collections/gioielli-con-pietre",
         "secondary_label": "Ayurveda",
@@ -21,30 +21,17 @@
           "settings": {
             "badge": "Novità",
             "title": "Pietre",
-            "accent": "da tasca",
+            "accent": "tascabili",
             "text": "Burattate e grezze, da tenere vicino.",
             "button_label": "Vedi le pietre",
             "link": "#stones",
             "collection": "pietre-burattate",
             "image_alt": "Pietre burattate in una vaschetta, viste da vicino"
           }
-        },
-        "tile-regali": {
-          "type": "tile",
-          "settings": {
-            "title": "Regali",
-            "accent": "piccoli",
-            "text": "Pietre, ciondoli e scatole in velluto sotto 25 €.",
-            "button_label": "Idee regalo →",
-            "link": "/collections/oggettistica-e-idee-regalo?filter.v.price.lte=24.99",
-            "collection": "oggettistica-e-idee-regalo",
-            "image_asset": "bz-hero-regali.jpg"
-          }
         }
       },
       "block_order": [
-        "tile-pietre",
-        "tile-regali"
+        "tile-pietre"
       ]
     },
     "bz_spheres": {
@@ -61,14 +48,16 @@
           "type": "sphere",
           "settings": {
             "label": "Bracciali",
-            "collection": "collane-e-braccialetti"
+            "collection": "collane-e-braccialetti",
+            "image_collection": "gioielli-con-pietre"
           }
         },
         "s2": {
           "type": "sphere",
           "settings": {
             "label": "Ciondoli",
-            "collection": "gioielli-con-pietre"
+            "collection": "gioielli-con-pietre",
+            "image_collection": "collane-e-braccialetti"
           }
         },
         "s3": {

@@ -556,7 +556,7 @@ html .bz-page-home .hero-slide--featured .hero-copy{
   padding:var(--bz-sp-28) var(--bz-sp-24);
 }
 html .bz-page-home .hero-slide--featured h1{
-  font-size:clamp(40px,10vw,52px)!important;
+  font-size:clamp(32px,9.3vw,52px)!important;
   letter-spacing:normal;
   text-wrap:wrap;
 }

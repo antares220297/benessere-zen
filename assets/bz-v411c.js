@@ -50,6 +50,7 @@
     return startHour < 24 && end <= 1440 && start < end ? [[start, end]] : [];
   }).sort((a, b) => a[0] - b[0]);
   const H = hours.days.map(parseRanges);
+  const decemberRanges = parseRanges('09:30-12:30,16:00-19:30');
   const exceptions = String(hours.exceptions || '').split('\n').map(line => line.trim()).filter(Boolean);
   const DAYS = ['domenica', 'lunedì', 'martedì', 'mercoledì', 'giovedì', 'venerdì', 'sabato'];
   const SHORT = ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'];
@@ -86,15 +87,13 @@
       if (!rest || rest === 'closed' || rest === 'chiuso') return [];
       return parseRanges(rest);
     }
-    return H[now.day] || [];
+    const ranges = H[now.day] || [];
+    if (!ranges.length && now.mo === 12 && now.d >= 1 && now.d <= 24) return decemberRanges;
+    return ranges;
   }
   function status(now = romeNow()) {
     const ranges = rangesFor(now);
     const { day, min } = now;
-    const sundayPending = day === 0 && !(H[0] || []).length && !ranges.length;
-    if (sundayPending) {
-      return { open: false, closing: false, state: hours.note, more: '', text: hours.note, key: 'sunday', day, min, ranges, sundayPending: true };
-    }
     for (const [start, end] of ranges) {
       if (min >= start && min < end) {
         const closing = end - min <= 30;
@@ -112,7 +111,7 @@
         if (nextRanges.length) { next = nextRanges[0]; when = DAYS[date.day]; break; }
       }
     }
-    if (!next) return { open: false, closing: false, state: hours.note || 'Orari in arrivo', more: '', text: hours.note, key: 'none', day, min, ranges };
+    if (!next) return { open: false, closing: false, state: 'Chiuso', more: '', text: 'Chiuso', key: 'none', day, min, ranges };
     const more = ' · riapre ' + when + ' alle ' + fmt(next[0]);
     return { open: false, closing: false, state: 'Chiuso', more, text: 'Chiuso' + more, key: 'closed-' + when, day, min, ranges };
   }
@@ -123,13 +122,13 @@
     qa('[data-open-badge]').forEach(el => {
       const full = el.dataset.openBadge === 'full';
       const showDetails = el.dataset.openBadge !== 'status';
-      const hoursLabel = s.ranges.length ? s.ranges.map(([start, end]) => {
+      const hoursLabel = s.ranges.map(([start, end]) => {
         const text = fmt(start) + '–' + fmt(end);
         return s.min >= start && s.min < end ? '<b>' + text + '</b>' : text;
-      }).join(' · ') : (s.sundayPending ? hours.note : '');
+      }).join(' · ');
       const html = '<span class="ob-dot" aria-hidden="true"></span><span class="ob-state">' + s.state + '</span>' +
         (showDetails && s.more ? '<span class="ob-more' + (s.open ? '' : ' ob-next') + '">' + s.more.replace(/^ /, '\u00a0') + '</span>' : '') +
-        (full && hoursLabel && !s.sundayPending ? '<span class="ob-sep" aria-hidden="true"></span><span class="ob-hours">Oggi ' + hoursLabel + '</span>' : '');
+        (full && hoursLabel ? '<span class="ob-sep" aria-hidden="true"></span><span class="ob-hours">Oggi ' + hoursLabel + '</span>' : '');
       const previous = badgeStates.get(el);
       if (!previous || previous.html !== html) el.innerHTML = html;
       el.classList.toggle('closed', !s.open);
@@ -152,7 +151,7 @@
         const label = fmt(start) + '–' + fmt(end);
         return '<div class="bw-slot" tabindex="0" aria-label="' + DAYS[day] + ': ' + label + '" style="--bw-top:' + ((start - 540) / 660 * 100) + '%;--bw-size:' + ((end - start) / 660 * 100) + '%;--bw-delay:' + ((index * 2 + slot) * 40) + 'ms"><span class="bw-bar"></span><span class="bw-time">' + label + '</span></div>';
       }).join('');
-      const empty = ranges.length ? '' : (day === 0 ? '<span class="bw-note">in arrivo</span>' : '<span class="bw-closed">chiuso</span>');
+      const empty = ranges.length ? '' : '<span class="bw-closed">chiuso</span>';
       return '<div class="bw-day' + (today ? ' bw-today' : '') + '"><span class="bw-name">' + SHORT[day] + '</span><div class="bw-track">' + bars + empty + (today ? '<span class="bw-now" hidden><span></span></span>' : '') + '</div></div>';
     }).join('');
     el.innerHTML = '<p class="bw-heading">Questa settimana</p><div class="bw-plot" role="img" aria-label="Orari settimanali. ' + (q('[data-hours-summary]')?.textContent || hours.note) + '"><div class="bw-guides" aria-hidden="true">' + [540, 780, 1020, 1200].map(m => '<span style="--bw-guide:' + ((m - 540) / 660 * 100) + '%"><i>' + fmt(m) + '</i></span>').join('') + '</div><div class="bw-days">' + columns + '</div></div>';

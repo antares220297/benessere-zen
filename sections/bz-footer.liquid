@@ -27,7 +27,7 @@
               {% render 'bz-menu-link', url: link.url, label: link.title %}
             {%- endfor -%}
           {%- else -%}
-            {%- for i in (1..4) -%}
+            {%- for i in (1..10) -%}
               {%- assign label_key = 'label_' | append: i -%}
               {%- assign link_key = 'link_' | append: i -%}
               {%- assign label = block.settings[label_key] -%}
@@ -79,7 +79,19 @@
         { "type": "text", "id": "label_3", "label": "Voce 3" },
         { "type": "url", "id": "link_3", "label": "Link 3" },
         { "type": "text", "id": "label_4", "label": "Voce 4" },
-        { "type": "url", "id": "link_4", "label": "Link 4" }
+        { "type": "url", "id": "link_4", "label": "Link 4" },
+        { "type": "text", "id": "label_5", "label": "Voce 5" },
+        { "type": "url", "id": "link_5", "label": "Link 5" },
+        { "type": "text", "id": "label_6", "label": "Voce 6" },
+        { "type": "url", "id": "link_6", "label": "Link 6" },
+        { "type": "text", "id": "label_7", "label": "Voce 7" },
+        { "type": "url", "id": "link_7", "label": "Link 7" },
+        { "type": "text", "id": "label_8", "label": "Voce 8" },
+        { "type": "url", "id": "link_8", "label": "Link 8" },
+        { "type": "text", "id": "label_9", "label": "Voce 9" },
+        { "type": "url", "id": "link_9", "label": "Link 9" },
+        { "type": "text", "id": "label_10", "label": "Voce 10" },
+        { "type": "url", "id": "link_10", "label": "Link 10" }
       ]
     },
     {

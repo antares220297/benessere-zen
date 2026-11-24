@@ -17,15 +17,27 @@
         "col-shop": {
           "type": "links",
           "settings": {
-            "heading": "Il negozio",
+            "heading": "Negozio",
             "label_1": "Gioielli con pietre",
             "link_1": "/collections/gioielli-con-pietre",
             "label_2": "Mala tibetani",
             "link_2": "/collections/mala-tibetani",
-            "label_3": "Pietre e cristalli",
+            "label_3": "Pietre naturali",
             "link_3": "/collections/pietre-burattate",
             "label_4": "Incensi e smudge",
-            "link_4": "/collections/incensi-e-brucia-incensi"
+            "link_4": "/collections/incensi-e-brucia-incensi",
+            "label_5": "Candele",
+            "link_5": "/collections/candele-e-brucia-candele",
+            "label_6": "Aromaterapia",
+            "link_6": "/collections/essenze-e-brucia-essenze",
+            "label_7": "Profumi in olio",
+            "link_7": "/collections/profumi-in-olio",
+            "label_8": "Cosmesi viso, corpo e capelli",
+            "link_8": "/pages/cura-di-se",
+            "label_9": "Tè e tisane",
+            "link_9": "/collections/te-tisane",
+            "label_10": "E tanto altro",
+            "link_10": "/collections/all"
           }
         },
         "col-help": {
