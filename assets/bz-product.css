@@ -1011,8 +1011,7 @@ html .bz-scope .bz-description__body :is(h2, h3, h4, h5, h6) {
 .bz-product .bz-upsell__add svg { width: 14px; height: 14px; }
 .bz-product .bz-upsell__add .bz-upsell__icon-check,
 .bz-product .bz-upsell__add[aria-pressed="true"] .bz-upsell__icon-plus { display: none; }
-.bz-product .bz-upsell__add[aria-pressed="true"] { color: #17140f; cursor: default; }
-.bz-product .bz-upsell__add[aria-pressed="true"]::before { opacity: 1; }
+.bz-product .bz-upsell__add[aria-pressed="true"] { cursor: default; }
 .bz-product .bz-upsell__add[aria-pressed="true"] .bz-upsell__icon-check { display: block; }
 .bz-product .bz-upsell__add:disabled { opacity: .55; }
 .bz-product .bz-upsell__row,
