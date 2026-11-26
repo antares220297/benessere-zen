@@ -169,7 +169,7 @@
             <div class="bz-upsell__text">
               <span class="bz-upsell__name">{{ name | escape }}</span>
               {% if forloop.first %}
-                <span class="bz-upsell__sub"><span{% if product.variants.size > 1 %} data-bz-upsell-variant{% endif %}>{% if subtitle != blank %}{{ subtitle | escape }} · {% endif %}</span>questo prodotto</span>
+                <span class="bz-upsell__sub"><span{% if product.variants.size > 1 %} data-bz-upsell-variant{% endif %}>{% if subtitle != blank %}{{ subtitle | escape }} · {% endif %}</span><span class="bz-upsell__current">questo prodotto</span></span>
               {% elsif subtitle != blank %}
                 <span class="bz-upsell__sub">{{ subtitle | escape }}</span>
               {% endif %}
