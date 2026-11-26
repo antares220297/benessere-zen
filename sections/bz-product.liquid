@@ -8,6 +8,11 @@
   custom.bento_title — single line text
   custom.pairs_with — product reference
 {%- endcomment -%}
+{%- if recommendations.performed -%}
+  {%- capture famiglia_libro -%}{%- render 'bz-libro-famiglia', product: product -%}{%- endcapture -%}
+  {%- assign current = product.selected_or_first_available_variant -%}
+  {%- render 'bz-product-upsell', product: product, current: current, family: famiglia_libro -%}
+{%- else -%}
 {{ 'bz-tokens.css' | asset_url | stylesheet_tag }}
 {{ 'bz-home.css' | asset_url | stylesheet_tag }}
 {{ 'bz-product.css' | asset_url | stylesheet_tag }}
@@ -142,6 +147,7 @@
         </div>
       {%- endform -%}
       {%- capture famiglia_libro -%}{%- render 'bz-libro-famiglia', product: product -%}{%- endcapture -%}
+      {%- render 'bz-product-upsell', product: product, current: current, family: famiglia_libro -%}
       {%- if famiglia_libro != blank -%}
         {%- capture titolo_libro -%}{%- render 'bz-libro-famiglia', product: product, dato: 'titolo' -%}{%- endcapture -%}
         {%- liquid
@@ -472,11 +478,14 @@
 </script>
 <script src="{{ 'bz-product.js' | asset_url }}" defer></script>
 
+{%- endif -%}
+
 {% schema %}
 {
   "name": "Scheda prodotto",
   "class": "bz-home",
   "settings": [
+    { "type": "checkbox", "id": "mostra_sconto_insieme", "label": "Mostra il prezzo scontato −10% (accendere solo con lo sconto automatico attivo)", "default": false },
     { "type": "text", "id": "bento_title", "label": "Titolo grande", "info": "Non stampato. Il titolo in pagina è il metafield custom.bento_title.", "default": "La nappa" },
     { "type": "text", "id": "bento_accent", "label": "Corsivo", "info": "Non stampato. Il titolo in pagina è il metafield custom.bento_title.", "default": "chiude il giro" },
     { "type": "textarea", "id": "bento_text", "label": "Testo", "default": "Annodata a mano, con l'anello che separa il grano guru." },

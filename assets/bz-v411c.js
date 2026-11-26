@@ -667,9 +667,8 @@
       return { checked, bundleVariant, sum: discount ? Math.round(full * 0.9) : full, full, discount };
     }
     const bundleVariant = checked.length > 0 && checked.length === inputs.length ? Number(panel.dataset.bundleVariant) : null;
-    const discount = !bundleVariant && checked.length === 3 && !!panel.closest('.ritual-section--product[data-ritual-discount]');
-    const sum = bundleVariant ? Number(panel.dataset.bundlePrice) : discount ? Math.round(full * 0.9) : full;
-    return { checked, bundleVariant, sum, full, discount };
+    const sum = bundleVariant ? Number(panel.dataset.bundlePrice) : full;
+    return { checked, bundleVariant, sum, full, discount: false };
   }
 
   function paintRitual(panel) {
@@ -706,42 +705,92 @@
   initHomeSets(document);
   document.addEventListener('shopify:section:load', event => initHomeSets(event.target));
 
-  function syncRitualVariant(ritual, variant) {
-    const row = q('.ritual-row--current', ritual);
-    if (!row || !variant?.value) return;
-    const input = q('input', row);
-    const available = variant.dataset.available !== 'false';
-    input.dataset.variant = variant.value;
-    input.dataset.price = variant.dataset.bzVariant;
-    input.disabled = !available;
-    input.checked = available && !input.hasAttribute('data-ritual-excluded');
-    row.classList.toggle('is-unavailable', !available);
-    q('.row-price', row).textContent = euro(Number(variant.dataset.bzVariant));
-    q('.ritual-row__stock', row).hidden = available;
-    if (variant.dataset.variantTitle) q('.ritual-row__sub', row).textContent = variant.dataset.variantTitle;
-    paintRitual(row.closest('[data-ritual-set]'));
+  function upsellVariant(product) {
+    return q('[data-bz-variant]:checked, input[type="hidden"][data-bz-variant]', product);
   }
 
-  function syncProductRitual(ritual) {
-    const product = q('[data-bz-product="' + ritual.dataset.ritualProduct + '"]');
-    if (!product) return;
-    syncRitualVariant(ritual, q('[data-bz-variant]:checked, input[type="hidden"][data-bz-variant]', product));
+  function syncUpsell(product) {
+    const upsell = q('.bz-upsell', product);
+    const variant = upsellVariant(product);
+    if (!upsell || !variant) return;
+    upsell.hidden = variant.dataset.available !== 'true';
+    const total = Number(variant.dataset.bzVariant) + Number(upsell.dataset.pairedPrice);
+    q('[data-bz-upsell-full]', upsell).textContent = euro(total);
+    const reduced = q('[data-bz-upsell-reduced]', upsell);
+    if (reduced) reduced.textContent = euro(Math.round(total * 0.9));
   }
 
-  qa('[data-ritual-product]').forEach(syncProductRitual);
-  document.addEventListener('bz:ritual-rendered', event => syncProductRitual(event.target));
+  async function loadUpsell(marker) {
+    const product = marker.closest('[data-bz-product]');
+    const url = new URL(marker.dataset.bzUpsellUrl, location.origin);
+    const preview = new URL(location.href).searchParams.get('preview_theme_id');
+    if (preview) url.searchParams.set('preview_theme_id', preview);
+    try {
+      const response = await fetch(url);
+      if (!response.ok) return;
+      const html = new DOMParser().parseFromString(await response.text(), 'text/html');
+      const upsell = q('.bz-upsell', html);
+      if (upsell) {
+        marker.replaceWith(upsell);
+        syncUpsell(product);
+      }
+    } catch {
+      // Complementary products are optional.
+    }
+  }
+
+  function initUpsells(root) {
+    qa('[data-bz-upsell-url]', root).forEach(loadUpsell);
+  }
+
+  initUpsells(document);
+  document.addEventListener('shopify:section:load', event => initUpsells(event.target));
   document.addEventListener('change', event => {
     if (event.target.matches('[data-bz-variant]:checked')) {
       const product = event.target.closest('[data-bz-product]');
-      if (!product) return;
-      qa('[data-ritual-product="' + product.dataset.bzProduct + '"]').forEach(ritual => syncRitualVariant(ritual, event.target));
+      if (product) syncUpsell(product);
       return;
     }
     if (!event.target.matches('.ritual-row input[data-variant]')) return;
     const panel = event.target.closest('[data-ritual-set]');
-    if (event.target.closest('.ritual-row--current')) event.target.toggleAttribute('data-ritual-excluded', !event.target.checked);
     panel.closest('[data-bz-ritual]').setAttribute('data-ritual-interacted', '');
     paintRitual(panel);
+  });
+
+  document.addEventListener('click', async event => {
+    const button = event.target.closest('.bz-upsell__cta');
+    if (!button || button.disabled) return;
+    const upsell = button.closest('.bz-upsell');
+    const product = upsell.closest('[data-bz-product]');
+    const variant = upsellVariant(product);
+    if (variant?.dataset.available !== 'true') return;
+
+    const ids = [variant.value, upsell.dataset.firstVariant, upsell.dataset.secondVariant].map(Number);
+    const setId = 'r-' + ids.slice().sort((a, b) => a - b).join('-');
+    const quantity = Number(variant.form.elements.quantity.value);
+    const items = ids.map((id, index) => ({
+      id,
+      quantity: index === 0 && Number.isInteger(quantity) && quantity > 0 ? quantity : 1,
+      properties: { _bz_rituale: setId, _bz_rituale_n: '3' }
+    }));
+    const status = q('.bz-upsell__status', upsell);
+    status.hidden = true;
+    button.disabled = true;
+    button.setAttribute('aria-busy', 'true');
+    button.textContent = 'Aggiunta in corso…';
+    try {
+      if (!await addItems(items)) throw new Error('cart/add');
+      button.removeAttribute('aria-busy');
+      button.textContent = 'Aggiunti';
+      await new Promise(resolve => setTimeout(resolve, 900));
+    } catch {
+      status.textContent = 'Non è stato possibile aggiungere il rituale al carrello.';
+      status.hidden = false;
+    } finally {
+      button.removeAttribute('aria-busy');
+      button.textContent = 'Aggiungi tutti e tre';
+      button.disabled = false;
+    }
   });
 
   document.addEventListener('click', async event => {
@@ -764,10 +813,6 @@
     if (!checked.length || panel.hasAttribute('aria-busy')) return;
     const items = bundleVariant ? [{ id: bundleVariant, quantity: 1 }] :
       checked.map(input => ({ id: Number(input.dataset.variant), quantity: 1 }));
-    if (!bundleVariant && items.length === 3 && ritual.classList.contains('ritual-section--product')) {
-      const setId = 'r-' + items.map(item => item.id).sort((a, b) => a - b).join('-');
-      items.forEach(item => { item.properties = { _bz_rituale: setId, _bz_rituale_n: '3' }; });
-    }
     panel.setAttribute('aria-busy', 'true');
     target.disabled = true;
     const status = q('[data-ritual-status]', panel);
