@@ -992,7 +992,7 @@ html .bz-scope .bz-description__body :is(h2, h3, h4, h5, h6) {
 .bz-product .bz-upsell__add::after {
   content: "";
   position: absolute;
-  inset: 6px;
+  inset: 7px;
   z-index: -1;
   border: 1px solid var(--bz-gold);
   border-radius: 50%;
@@ -1011,7 +1011,6 @@ html .bz-scope .bz-description__body :is(h2, h3, h4, h5, h6) {
 .bz-product .bz-upsell__add svg { width: 14px; height: 14px; }
 .bz-product .bz-upsell__add svg,
 .bz-product .bz-upsell__add svg path { fill: none; }
-.bz-product .bz-upsell__add .bz-upsell__icon-check { width: 18px; height: 18px; }
 .bz-product .bz-upsell__add .bz-upsell__icon-check,
 .bz-product .bz-upsell__add[aria-pressed="true"] .bz-upsell__icon-plus { display: none; }
 .bz-product .bz-upsell__add[aria-pressed="true"] { cursor: default; }
