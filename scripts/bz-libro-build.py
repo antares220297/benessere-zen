@@ -14,7 +14,10 @@ MOCK = SHARED / 'approfondimenti/mockup-grimorio/libro'
 GRIMOIRE = SHARED / 'grimorio'
 STONE_FAMILIES = ('ametista', 'quarzo-rosa', 'selenite', 'cristallo-di-rocca',
                   'lapislazzuli', 'occhio-di-tigre', 'ossidiana', 'tormalina-nera')
-BOOK_FAMILIES = (*STONE_FAMILIES, 'incensi')
+LOTTO2_FAMILIES = ('amuleti', 'brucia-incensi', 'saponi', 'palo-santo',
+                   'salvia-e-smudge', 'oli-e-profumi', 'candele')
+BOOK_FAMILIES = (*STONE_FAMILIES, 'incensi', *LOTTO2_FAMILIES)
+CATALOG_FAMILIES = (*BOOK_FAMILIES, 'carta-eritrea')
 CHAPTERS = ('primo', 'secondo', 'terzo', 'quarto')
 KEYS = ('origine', 'tradizione', 'uso', 'credenze')
 HYPHENATOR = pyphen.Pyphen(lang='it_IT')
@@ -91,7 +94,7 @@ def parse_lot(text, families, *, front_alt_from_text=False):
                         if not compact:
                             page['illustrazione_dopo'] = 0
                 if number == 5:
-                    assert len(page['scheda']) == 5 and len(page['testo_dopo']) == 2
+                    assert len(page['scheda']) in (4, 5), (slug, number)
                 assert page, (slug, number)
                 pages.append(page)
             if index == 3:
@@ -176,7 +179,7 @@ def render_book(slug, book):
                     illustration = None
             if page.get('scheda'):
                 body.append('<dl class="pg-dl">' + ''.join(f'<div><dt>{escape(a)}</dt><dd>{rich(b)}</dd></div>' for a, b in page['scheda']) + '</dl>')
-                body.extend(f'<p>{rich(par)}</p>' for par in page['testo_dopo'])
+                body.extend(f'<p>{rich(par)}</p>' for par in page.get('testo_dopo', []))
             if page.get('elenco'):
                 body.append('<ul class="pg-ul">' + ''.join(f'<li>{rich(item)}</li>' for item in page['elenco']) + '</ul>')
             if illustration:
@@ -237,6 +240,9 @@ def main():
     books.update(parse_lot((GRIMOIRE / 'testi/lotto1-v3.1.md').read_text(), STONE_FAMILIES[1:]))
     books.update(parse_lot((GRIMOIRE / 'testi/incensi-v2.md').read_text(), ('incensi',),
                            front_alt_from_text=True))
+    for slug in LOTTO2_FAMILIES:
+        source = GRIMOIRE / 'testi' / f'lotto2-{slug}-v2.md'
+        books.update(parse_lot(source.read_text(), (slug,), front_alt_from_text=True))
     for slug, data in books.items():
         (ROOT / 'snippets' / f'bz-libro-{slug}.liquid').write_text(render_book(slug, data))
     with (GRIMOIRE / 'famiglie-mappa.csv').open(newline='') as source:
@@ -258,7 +264,7 @@ def main():
         '    case product.handle',
     ]
     mapped = set()
-    for family in BOOK_FAMILIES:
+    for family in CATALOG_FAMILIES:
         handles = sorted({row['handle'] for row in rows if row['family_slug'] == family})
         assert handles and mapped.isdisjoint(handles)
         mapped.update(handles)
@@ -269,7 +275,9 @@ def main():
     for family in BOOK_FAMILIES:
         title = books[family]['titolo_copertina'].lower()
         lines.extend((f"      when '{family}'", f'        echo "Il libro {title}"'))
-    lines.extend(('    endcase', '  else', '    echo famiglia', '  endif', '-%}'))
+    lines.extend(('    endcase',
+                  "  elsif famiglia != 'carta-eritrea' or dato == 'catalogo'",
+                  '    echo famiglia', '  endif', '-%}'))
     (ROOT / 'snippets/bz-libro-famiglia.liquid').write_text('\n'.join(lines) + '\n')
     update_templates()
     print(f'{len(mapped)} handle')
