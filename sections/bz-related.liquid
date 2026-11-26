@@ -140,7 +140,7 @@
         {%- assign shown = shown | plus: 1 -%}
       {%- endfor -%}
     </div>
-    <a class="bz-row-link" href="{{ preferred.url | default: picked.url }}">{% render 'bz-nav-label', label: 'Vedi la collezione' %}</a>
+    <a class="bz-row-link" href="{{ preferred.url | default: picked.url }}{% if family == 'incensi' and preferred != blank %}#gruppo-incensi{% endif %}">{% render 'bz-nav-label', label: 'Vedi la collezione' %}</a>
   </div>
 </section>
 {%- endif -%}

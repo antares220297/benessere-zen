@@ -1,4 +1,4 @@
-<section class="plp-group" data-bz-group="{{ id }}" aria-labelledby="bz-plp-group-{{ id }}">
+<section{% if anchor != blank %} id="{{ anchor | escape }}"{% endif %} class="plp-group" data-bz-group="{{ id }}" aria-labelledby="bz-plp-group-{{ id }}">
   <div class="plp-group-head">
     {%- assign accent = title | split: ' ' | last -%}
     {%- case title -%}

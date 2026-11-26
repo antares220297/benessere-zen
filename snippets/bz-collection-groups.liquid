@@ -1,9 +1,12 @@
 {%- comment -%}
-  Map rows are label | child handles | Italian title fragments.
+  Map rows are label | child handles | Italian title fragments, or label | family for incense collections.
   Output is group count, visible card count, chips and sections, in that order.
 {%- endcomment -%}
 {%- liquid
   case collection.handle
+    when 'incensi-e-brucia-incensi', 'incensi-e-brucia-incensi-1', 'brucia-incensi-a-riflusso-e-coni-a-riflusso', 'brucia-incensi-e-incensi-a-mattoncino'
+      assign by_family = true
+      assign map = 'Incensi|incensi;Brucia incensi|brucia-incensi;Palo santo|palo-santo;Salvia e smudge|salvia-e-smudge;Oli e profumi|oli-e-profumi'
     when 'cosmetica'
       assign map = 'Detergenti e scrub|latte-detergente|detergent,struc,acqua micellare,scrub;Tonici|tonico|tonic;Sieri|siero-viso|siero,sieri;Creme giorno e notte|crema-giorno|crema,creme;Contorno occhi|contorno-occhi|contorno occhi,borse e occhiaie;Maschere|maschera|mascher'
       assign keyword_priority = '1,2,3,5,6,4'
@@ -38,7 +41,7 @@
     endif
   endfor
   assign by_type = false
-  if generic and distinct_types >= 2
+  if generic and distinct_types >= 2 and by_family != true
     assign by_type = true
     assign map = ''
   endif
@@ -83,10 +86,24 @@
 {%- for product in products -%}
   {%- liquid
     assign key = 0
-    if family_priority and row_count > 0
+    if by_family or family_priority and row_count > 0
       capture family
         render 'bz-libro-famiglia', product: product, dato: 'catalogo'
       endcapture
+    endif
+    if by_family
+      # A burner can have a mineral as its book family.
+      if product.tags contains 'brucia-incenso'
+        assign family = 'brucia-incensi'
+      endif
+      for row in rows
+        assign fields = row | split: '|'
+        if fields[1] == family
+          assign key = forloop.index
+          break
+        endif
+      endfor
+    elsif family_priority and row_count > 0
       case family
         when 'incensi', 'brucia-incensi', 'palo-santo', 'salvia-e-smudge', 'carta-eritrea'
           for row in rows
@@ -98,7 +115,7 @@
           endfor
       endcase
     endif
-    if key == 0 and row_count > 0
+    if key == 0 and row_count > 0 and by_family != true
       assign memberships = product.collections | map: 'handle'
       for row in rows
         assign position = forloop.index
@@ -189,12 +206,16 @@
       {%- liquid
         assign visible_count = visible_count | plus: shown
         assign child_url = nil
+        assign anchor = nil
         if position == other_key
           assign label = 'Altro'
         elsif position <= row_count
           assign index = position | minus: 1
           assign fields = rows[index] | split: '|'
           assign label = fields.first
+          if by_family and fields[1] == 'incensi'
+            assign anchor = 'gruppo-incensi'
+          endif
           if departments
             assign child_url = department_urls[index]
           endif
@@ -207,7 +228,7 @@
         <button class="filter-group-option" type="button" data-bz-chip="{{ key }}" data-count="{{ shown }}" aria-pressed="false">{{ label | escape }} <small>{{ count }}</small></button>
       {%- endcapture -%}
       {%- assign chips = chips | append: chip -%}
-      {% render 'bz-collection-group', id: key, title: label, count: count, shown: shown, cards: cards, child_url: child_url %}
+      {% render 'bz-collection-group', id: key, title: label, count: count, shown: shown, cards: cards, child_url: child_url, anchor: anchor %}
     {%- endif -%}
   {%- endfor -%}
 {%- endcapture -%}

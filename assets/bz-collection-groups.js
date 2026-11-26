@@ -35,7 +35,19 @@
           // Storage may be unavailable in restricted browsing contexts.
         }
       }
-      applySelection(buttons.find(button => button.dataset.bzChip === initialType) || allButton);
+      const anchor = root.querySelector('#gruppo-incensi');
+      const targetsIncense = () => anchor && window.location.hash === '#gruppo-incensi';
+      const initialButton = buttons.find(button => button.dataset.bzChip === initialType) || allButton;
+      const hidesIncense = button => button !== allButton && button.dataset.bzChip !== anchor.dataset.bzGroup;
+      applySelection(targetsIncense() && hidesIncense(initialButton) ? allButton : initialButton);
+
+      if (anchor) {
+        window.addEventListener('hashchange', () => {
+          if (!targetsIncense() || !anchor.hidden || !anchor.isConnected) return;
+          applySelection(allButton);
+          anchor.scrollIntoView();
+        });
+      }
 
       options.addEventListener('click', event => {
         const button = event.target.closest('[data-bz-chip]');
@@ -48,6 +60,7 @@
           // The URL and form still preserve the selection.
         }
         const url = new URL(window.location.href);
+        if (targetsIncense() && hidesIncense(button)) url.hash = '';
         if (selected === 'all') url.searchParams.delete('tipo');
         else url.searchParams.set('tipo', selected);
         window.history.replaceState(window.history.state, '', url);
