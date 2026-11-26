@@ -132,39 +132,61 @@
       assign rec_url = routes.product_recommendations_url | append: '?section_id=' | append: section.id | append: '&product_id=' | append: product.id | append: '&limit=10&intent=complementary'
     endif
   -%}
-  {%- if first != blank and second != blank and product.featured_image -%}
+  {%- if first.id and second.id and product.featured_image -%}
     {%- liquid
       assign first_variant = first.first_available_variant
       assign second_variant = second.first_available_variant
       assign paired_price = first_variant.price | plus: second_variant.price
       assign total = paired_price | plus: current.price
       assign reduced = total | times: 0.9 | round
-      assign first_name = first.metafields.custom.bento_title.value | default: first.title | truncatewords: 8
-      assign second_name = second.metafields.custom.bento_title.value | default: second.title | truncatewords: 8
-      if first.handle == 'ciotola-incenso-tripla-luna-legno-mango'
-        assign first_name = 'Brucia incensi, triplice luna'
-      endif
-      if second.handle contains 'sagrada-madre-incenso-naturale-cosmos-'
-        assign planet = second.handle | split: '-' | last | capitalize
-        assign second_name = 'Incensi Cosmos ' | append: planet
-      endif
     -%}
-    <aside class="bz-upsell" aria-label="Completa il rituale" data-paired-price="{{ paired_price }}" data-first-variant="{{ first_variant.id }}" data-second-variant="{{ second_variant.id }}"{% unless current.available %} hidden{% endunless %}>
+    <aside class="bz-upsell bz-upsell--colonna" aria-label="Completa il rituale" data-paired-price="{{ paired_price }}"{% unless current.available %} hidden{% endunless %}>
       <p class="bz-upsell__label">Completa <em>il rituale</em></p>
-      <div class="bz-upsell__thumbs" aria-hidden="true">
-        <figure class="bz-upsell__thumb">{{ product.featured_image | image_url: width: 104, height: 104, crop: 'center' | image_tag: width: 52, height: 52, alt: '', loading: 'lazy' }}</figure>
-        {% render 'bz-icon', name: 'plus', icon_class: 'bz-upsell__plus' %}
-        <figure class="bz-upsell__thumb">{{ first.featured_image | image_url: width: 104, height: 104, crop: 'center' | image_tag: width: 52, height: 52, alt: '', loading: 'lazy' }}</figure>
-        {% render 'bz-icon', name: 'plus', icon_class: 'bz-upsell__plus' %}
-        <figure class="bz-upsell__thumb">{{ second.featured_image | image_url: width: 104, height: 104, crop: 'center' | image_tag: width: 52, height: 52, alt: '', loading: 'lazy' }}</figure>
-      </div>
-      <ul class="bz-upsell__names" role="list">
-        <li>{{ first_name | escape }}</li>
-        <li>{{ second_name | escape }}</li>
+      <ul class="bz-upsell__list" role="list">
+        {%- for row in (1..3) -%}
+          {%- liquid
+            if forloop.first
+              assign item = product
+              assign variant = current
+            elsif row == 2
+              assign item = first
+              assign variant = first_variant
+            else
+              assign item = second
+              assign variant = second_variant
+            endif
+            capture name
+              render 'bz-product-name', product: item
+            endcapture
+            assign storefront_name = item.metafields.custom.nome_vetrina.value | strip
+            assign subtitle = item.metafields.custom.variante_vetrina.value | strip
+            if forloop.first and product.variants.size > 1
+              assign subtitle = variant.title
+            endif
+          -%}
+          <li class="bz-upsell__item" data-upsell-handle="{{ item.handle }}"{% if storefront_name == blank %} data-upsell-title-fallback{% endif %}>
+            <figure class="bz-upsell__thumb">{{ item.featured_image | image_url: width: 96, height: 96, crop: 'center' | image_tag: width: 48, height: 48, alt: '', loading: 'lazy' }}</figure>
+            <div class="bz-upsell__text">
+              <span class="bz-upsell__name">{{ name | escape }}</span>
+              {% if forloop.first %}
+                <span class="bz-upsell__sub"><span{% if product.variants.size > 1 %} data-bz-upsell-variant{% endif %}>{% if subtitle != blank %}{{ subtitle | escape }} · {% endif %}</span>questo prodotto</span>
+              {% elsif subtitle != blank %}
+                <span class="bz-upsell__sub">{{ subtitle | escape }}</span>
+              {% endif %}
+            </div>
+            <span class="bz-upsell__price"{% if forloop.first %} data-bz-upsell-price{% endif %}>{% render 'bz-money', cents: variant.price %}</span>
+            {% if forloop.first == false and variant.available %}
+              <button class="bz-upsell__add" type="button" data-upsell-variant="{{ variant.id }}" aria-pressed="false" aria-label="Aggiungi al carrello: {{ name | escape }}{% if subtitle != blank %} {{ subtitle | escape }}{% endif %}">
+                <svg class="bz-upsell__icon-plus" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M5 12h14m-7-7v14"/></svg>
+                <svg class="bz-upsell__icon-check" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              </button>
+            {% endif %}
+          </li>
+        {%- endfor -%}
       </ul>
       <div class="bz-upsell__row">
+        <span class="bz-upsell__caption">i tre insieme</span>
         <p class="bz-upsell__prices">
-          <span class="bz-upsell__caption">i tre insieme</span>
           {% if section.settings.mostra_sconto_insieme %}
             <s data-bz-upsell-full>{% render 'bz-money', cents: total %}</s>
             <span data-bz-upsell-reduced>{% render 'bz-money', cents: reduced %}</span>
@@ -172,8 +194,8 @@
             <span data-bz-upsell-full>{% render 'bz-money', cents: total %}</span>
           {% endif %}
         </p>
-        <button class="bz-upsell__cta" type="button">Aggiungi tutti e tre</button>
       </div>
+      <button class="bz-upsell__cta" type="button">Aggiungi tutti e tre</button>
       <p class="bz-upsell__status" role="alert" hidden></p>
     </aside>
   {%- elsif rec_url != blank -%}

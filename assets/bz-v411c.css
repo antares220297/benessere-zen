@@ -1758,6 +1758,9 @@ main.bz-page-home:has(#newsletter), main.bz-page-ayurveda:has(#newsletter) { pad
 }
 .plp .bz-grouped-plp .plp-results { padding-top: 26px; }
 .plp .bz-grouped-plp .plp-groups { display: flex; flex-direction: column; gap: 48px; }
+.plp .bz-grouped-plp #gruppo-incensi {
+  scroll-margin-top: calc(var(--bz-sticky-h, 120px) + var(--bz-sp-8));
+}
 .plp .bz-grouped-plp .plp-group-head {
   display: flex;
   align-items: baseline;

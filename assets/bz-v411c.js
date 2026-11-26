@@ -517,25 +517,32 @@
     });
   }
 
+  async function addQueuedItems(items) {
+    if (!items.length) {
+      openCart();
+      return true;
+    }
+    const ritual = items.some(item => item.properties?._bz_rituale);
+    let response;
+    try {
+      response = await postCart(routes.add, { items });
+    } finally {
+      if (ritual) {
+        // A rejected multi-item add can still leave some pieces in the cart.
+        try { await clearInvalidRituals(await readCart()); }
+        finally { await refreshCart(); }
+      }
+    }
+    if (!response.ok) return false;
+    if (!ritual) await refreshCart().catch(() => {});
+    openCart();
+    return true;
+  }
+
   function addItems(items) {
     const ritual = items.some(item => item.properties?._bz_rituale);
     const enqueue = ritual ? queueCartLine : queueCart;
-    return enqueue(async () => {
-      let response;
-      try {
-        response = await postCart(routes.add, { items });
-      } finally {
-        if (ritual) {
-          // A rejected multi-item add can still leave some pieces in the cart.
-          try { await clearInvalidRituals(await readCart()); }
-          finally { await refreshCart(); }
-        }
-      }
-      if (!response.ok) return false;
-      if (!ritual) await refreshCart().catch(() => {});
-      openCart();
-      return true;
-    });
+    return enqueue(() => addQueuedItems(items));
   }
 
   window.bzAddRitualItems = addItems;
@@ -714,7 +721,11 @@
     const variant = upsellVariant(product);
     if (!upsell || !variant) return;
     upsell.hidden = variant.dataset.available !== 'true';
-    const total = Number(variant.dataset.bzVariant) + Number(upsell.dataset.pairedPrice);
+    const price = Number(variant.dataset.bzVariant);
+    q('[data-bz-upsell-price]', upsell).textContent = euro(price);
+    const subtitle = q('[data-bz-upsell-variant]', upsell);
+    if (subtitle) subtitle.textContent = variant.dataset.variantTitle + ' · ';
+    const total = price + Number(upsell.dataset.pairedPrice);
     q('[data-bz-upsell-full]', upsell).textContent = euro(total);
     const reduced = q('[data-bz-upsell-reduced]', upsell);
     if (reduced) reduced.textContent = euro(Math.round(total * 0.9));
@@ -733,17 +744,37 @@
       if (upsell) {
         marker.replaceWith(upsell);
         syncUpsell(product);
+        syncUpsellCart();
       }
     } catch {
       // Complementary products are optional.
     }
   }
 
+  function paintUpsellCart(cart) {
+    const ids = new Set(cart.items.map(item => item.variant_id));
+    qa('.bz-upsell__add').forEach(button => {
+      const added = ids.has(Number(button.dataset.upsellVariant));
+      button.setAttribute('aria-pressed', String(added));
+    });
+    return ids;
+  }
+
+  function syncUpsellCart() {
+    if (!q('.bz-upsell__add')) return;
+    queueCart(async () => paintUpsellCart(await readCart())).catch(() => {});
+  }
+
   function initUpsells(root) {
     qa('[data-bz-upsell-url]', root).forEach(loadUpsell);
+    syncUpsellCart();
   }
 
   initUpsells(document);
+  document.addEventListener('bz:cart-updated', syncUpsellCart);
+  window.addEventListener('pageshow', event => {
+    if (event.persisted) syncUpsellCart();
+  });
   document.addEventListener('shopify:section:load', event => initUpsells(event.target));
   document.addEventListener('change', event => {
     if (event.target.matches('[data-bz-variant]:checked')) {
@@ -758,37 +789,57 @@
   });
 
   document.addEventListener('click', async event => {
-    const button = event.target.closest('.bz-upsell__cta');
-    if (!button || button.disabled) return;
+    const button = event.target.closest('.bz-upsell__cta, .bz-upsell__add');
+    if (!button || button.disabled || button.getAttribute('aria-pressed') === 'true') return;
     const upsell = button.closest('.bz-upsell');
     const product = upsell.closest('[data-bz-product]');
     const variant = upsellVariant(product);
-    if (variant?.dataset.available !== 'true') return;
+    if (variant?.dataset.available !== 'true' || upsell.hasAttribute('aria-busy')) return;
 
-    const ids = [variant.value, upsell.dataset.firstVariant, upsell.dataset.secondVariant].map(Number);
-    const setId = 'r-' + ids.slice().sort((a, b) => a - b).join('-');
-    const quantity = Number(variant.form.elements.quantity.value);
-    const items = ids.map((id, index) => ({
-      id,
-      quantity: index === 0 && Number.isInteger(quantity) && quantity > 0 ? quantity : 1,
-      properties: { _bz_rituale: setId, _bz_rituale_n: '3' }
-    }));
+    const single = button.matches('.bz-upsell__add');
+    const companions = qa('.bz-upsell__add', upsell);
+    const ids = single ? [Number(button.dataset.upsellVariant)] :
+      [Number(variant.value), ...companions.map(row => Number(row.dataset.upsellVariant))];
+    const quantity = Math.max(1, Math.floor(Number(variant.form.elements.quantity.value)) || 1);
     const status = q('.bz-upsell__status', upsell);
     status.hidden = true;
+    upsell.setAttribute('aria-busy', 'true');
     button.disabled = true;
     button.setAttribute('aria-busy', 'true');
-    button.textContent = 'Aggiunta in corso…';
+    if (!single) button.textContent = 'Aggiunta in corso…';
     try {
-      if (!await addItems(items)) throw new Error('cart/add');
-      button.removeAttribute('aria-busy');
-      button.textContent = 'Aggiunti';
-      await new Promise(resolve => setTimeout(resolve, 900));
+      const enqueue = single ? queueCart : queueCartLine;
+      const success = await enqueue(async () => {
+        const inCart = paintUpsellCart(await readCart());
+        const items = ids.filter(id => !inCart.has(id)).map(id => ({
+          id, quantity: !single && id === Number(variant.value) ? quantity : 1
+        }));
+        // The existing cleanup requires three marked lines with equal quantities.
+        if (!single && items.length === 3 && quantity === 1) {
+          const setId = 'r-' + ids.slice().sort((a, b) => a - b).join('-');
+          items.forEach(item => { item.properties = { _bz_rituale: setId, _bz_rituale_n: '3' }; });
+        }
+        try {
+          return await addQueuedItems(items);
+        } finally {
+          // Refresh the real state even if rendering the drawer or adding failed.
+          if (items.length) await readCart().then(paintUpsellCart).catch(() => {});
+        }
+      });
+      if (!success) throw new Error('cart/add');
+      if (!single) {
+        button.removeAttribute('aria-busy');
+        button.textContent = 'Aggiunti';
+        await new Promise(resolve => setTimeout(resolve, 900));
+      }
     } catch {
-      status.textContent = 'Non è stato possibile aggiungere il rituale al carrello.';
+      status.textContent = single ? 'Non è stato possibile aggiungere il prodotto al carrello.' :
+        'Non è stato possibile aggiungere il rituale al carrello.';
       status.hidden = false;
     } finally {
+      upsell.removeAttribute('aria-busy');
       button.removeAttribute('aria-busy');
-      button.textContent = 'Aggiungi tutti e tre';
+      if (!single) button.textContent = 'Aggiungi tutti e tre';
       button.disabled = false;
     }
   });
