@@ -476,7 +476,7 @@
   gap: 8px;
 }
 
-.bz-upsell {
+:where(.bz-drawer__upsell) .bz-upsell {
   display: grid;
   grid-template-columns: 48px minmax(0, 1fr) auto 44px;
   gap: 12px;
@@ -486,14 +486,14 @@
   font-size: 13.5px;
 }
 
-.bz-upsell a:nth-child(2) {
+:where(.bz-drawer__upsell) .bz-upsell a:nth-child(2) {
   min-width: 0;
   hyphens: manual;
   word-break: normal;
   overflow-wrap: normal;
 }
 
-.bz-upsell img,
+:where(.bz-drawer__upsell) .bz-upsell img,
 .bz-drawer__upsell img {
   width: 48px;
   height: 48px;
