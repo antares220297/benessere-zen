@@ -26,6 +26,7 @@
     when 'oggettistica-e-idee-regalo'
       assign map = 'Statuette|statuette|statuett,statua;Lampade di sale|lampade-di-sale|lampada di sale,lampada al sale;Scatole portagioielli|scatole-porta-gioielli|scatola,portagioielli,porta gioielli;Cuscini per il benessere|cuscini-per-il-benessere|cuscin;Diffusori per ambienti|diffusori-per-ambienti,diffusori|diffusor,brucia essenz;Candele e bruciacandele|candele-e-brucia-candele|candela,candele;Incensi e smudge|incensi-e-brucia-incensi|incens,smudge,palo santo;Gioielli con pietre|gioielli-con-pietre|collana,bracciale,orecchin,ciondol;Pietre|pietre-burattate,pietre-grezze|burattat,pietra grezza,pietre grezze;Cosmesi viso|cosmetica|siero viso,crema viso,contorno occhi;Cosmesi corpo|cosmesi-corpo|crema corpo,scrub corpo,olio corpo;Tè e tisane|te-tisane|tè,tisan,infuso'
     else
+      assign family_priority = true
       assign map = 'Contorno occhi||contorno occhi;Detergenti||detergent,struc;Tonici||tonic;Sieri||siero,sieri;Maschere||mascher;Scrub||scrub,esfoliant;Balsami||balsam;Saponi||sapon;Creme||crema,creme;Oli||olio,oli ;Candele||candela,candele;Incensi e smudge||incens,smudge,palo santo;Tazze||tazza,tazze;Tè e tisane||tè,tisan,infuso'
   endcase
 
@@ -82,7 +83,22 @@
 {%- for product in products -%}
   {%- liquid
     assign key = 0
-    if row_count > 0
+    if family_priority and row_count > 0
+      capture family
+        render 'bz-libro-famiglia', product: product, dato: 'catalogo'
+      endcapture
+      case family
+        when 'incensi', 'brucia-incensi', 'palo-santo', 'salvia-e-smudge', 'carta-eritrea'
+          for row in rows
+            assign fields = row | split: '|'
+            if fields.first == 'Incensi e smudge'
+              assign key = forloop.index
+              break
+            endif
+          endfor
+      endcase
+    endif
+    if key == 0 and row_count > 0
       assign memberships = product.collections | map: 'handle'
       for row in rows
         assign position = forloop.index
