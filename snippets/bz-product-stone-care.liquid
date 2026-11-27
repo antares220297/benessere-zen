@@ -20,6 +20,13 @@
     {%- if care_shown -%}{%- continue -%}{%- endif -%}
   {%- endunless -%}
 
+  {%- if inline -%}
+    {%- if care_shown_inline -%}<br>{%- endif -%}
+    {{- care | escape_once | newline_to_br -}}
+    {%- assign care_shown_inline = true -%}
+    {%- continue -%}
+  {%- endif -%}
+
   {%- assign next_index = stone_index | plus: 1 -%}
   {%- assign group_names = stone.nome.value | default: stone.nome -%}
   {%- assign group_count = 1 -%}
@@ -46,5 +53,7 @@
     <p>{{ care | escape_once | newline_to_br }}</p>
   {%- endif -%}
 {%- else -%}
-  {%- if pietra_cura != blank -%}<p>{{ pietra_cura | escape }}</p>{%- endif -%}
+  {%- if pietra_cura != blank -%}
+    {%- if inline -%}{{ pietra_cura | escape_once | newline_to_br }}{%- else -%}<p>{{ pietra_cura | escape }}</p>{%- endif -%}
+  {%- endif -%}
 {%- endfor -%}

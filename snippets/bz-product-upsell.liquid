@@ -157,7 +157,7 @@
             assign subtitle = item.metafields.custom.variante_vetrina.value | strip
             assign row_id = 'bbRitName-' | append: section_id | append: '-' | append: row
           -%}
-          <li class="bb-rit__row" data-pair data-cents="{{ variant.price }}" data-variant="{{ variant.id }}" data-name="{{ name | escape }}" data-available="{{ variant.available }}" data-q="0">
+          <li class="bb-rit__row" data-pair data-bz-pair-handle="{{ item.handle | escape }}" data-cents="{{ variant.price }}" data-variant="{{ variant.id }}" data-name="{{ name | escape }}" data-available="{{ variant.available }}" data-q="0">
             {{ item.featured_image | image_url: width: 128, height: 128, crop: 'center' | image_tag: class: 'bb-rit__img', width: 64, height: 64, alt: '', loading: 'lazy' }}
             <div class="bb-rit__tx">
               <span class="bb-rit__nm" id="{{ row_id }}">{{ name | escape }}</span>

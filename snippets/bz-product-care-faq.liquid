@@ -1,65 +1,342 @@
+{%- capture family -%}{%- render 'bz-product-care-family', product: product -%}{%- endcapture -%}
+{%- capture line_break %}
+{% endcapture -%}
 {%- liquid
   assign custom = product.metafields.custom
-  assign pietre = custom.pietre.value
-  assign pietra = pietre | first | default: custom.pietra.value
-  assign custom_care = ''
-  if custom.cura != blank
-    assign custom_care = custom.cura | metafield_text | strip
-  endif
-  assign pietra_cura = pietra.cura.value | default: pietra.cura | default: custom_care
+  assign specs = custom.dettagli_bz.value
+  assign size_labels = 'misura bracciale|misura|misure|taglia|lunghezza|lunghezza collana|circonferenza|dimensioni|dimensione' | split: '|'
+  assign duration_labels = 'durata|tempo di combustione|durata media|durata combustione|durata di combustione' | split: '|'
+  assign content_labels = 'contenuto|dotazione|incluso|lampadina' | split: '|'
+  assign care_labels = 'cura|pulizia|manutenzione' | split: '|'
+  assign warning_labels = 'attenzione|avvertenze' | split: '|'
+  assign warning_headings = 'avvertenze|note importanti|note di sicurezza' | split: '|'
+  assign has_ingredients = false
+  assign warnings = ''
+  assign size = ''
+  assign duration = ''
+  assign pao = ''
+  assign contents = ''
+  assign wooden_base = ''
   assign use_text = ''
-  if custom.come_si_usa != blank
-    assign use_text = custom.come_si_usa | metafield_text | strip
-  endif
-  assign preview = 'Spedizione · Reso'
+  assign care_text = ''
+  assign tags = product.tags | join: '|' | downcase | split: '|'
+
+  for spec in specs
+    unless spec contains ':'
+      continue
+    endunless
+    assign raw_label = spec | split: ':' | first
+    assign label = raw_label | strip | downcase
+    assign prefix = raw_label | append: ':'
+    assign value = spec | remove_first: prefix | strip
+    if value == blank
+      continue
+    endif
+    assign ingredient_prefix = label | slice: 0, 11
+    if label == 'inci' or ingredient_prefix == 'ingredienti' or label == 'altri ingredienti'
+      assign has_ingredients = true
+    endif
+    if size == blank and size_labels contains label
+      assign size = value
+    endif
+    if duration == blank and duration_labels contains label
+      assign duration = spec
+    endif
+    if contents == blank and content_labels contains label
+      assign contents = value
+    endif
+    if family == '7b' and value contains 'base in legno'
+      assign before_base = value | split: 'base in legno' | first
+      assign base_start = value | slice: 0, 13
+      if base_start == 'base in legno'
+        assign wooden_base = value
+      else
+        assign wooden_base = value | remove_first: before_base
+      endif
+    endif
+    if pao == blank and label == 'pao'
+      assign pao = value
+    endif
+    assign base_label = label | remove: ' (segue)'
+    assign first_character = value | slice: 0, 1
+    if first_character == ':'
+      assign value = value | remove_first: ':' | strip
+    endif
+    if family == '7e' and care_labels contains base_label
+      assign care_text = care_text | append: line_break | append: value
+    endif
+    if warning_labels contains base_label
+      assign warnings = warnings | append: line_break | append: value
+    elsif family == '8' and base_label == 'conservazione'
+      assign warnings = warnings | append: line_break | append: value
+    endif
+  endfor
 -%}
-{%- capture care -%}
-  {%- render 'bz-product-stone-care', pietre: pietre, pietra_cura: pietra_cura -%}
-{%- endcapture -%}
-{%- if care != blank -%}
-  {%- assign preview = preview | prepend: 'Come averne cura · ' -%}
-{%- endif -%}
-{%- if use_text != blank -%}
-  {%- assign preview = preview | append: ' · Come si usa' -%}
-{%- endif -%}
-{%- capture faq -%}
-  {%- for index in (1..3) -%}
-    {%- liquid
-      assign question_key = 'faq_' | append: index | append: '_domanda'
-      assign answer_key = 'faq_' | append: index | append: '_risposta'
-      if custom[question_key] == blank or custom[answer_key] == blank
+
+{%- liquid
+  if custom.note_bz != blank
+    assign notes_html = custom.note_bz | metafield_tag
+    assign heading_levels = '1 2 4 5 6' | split: ' '
+    for level in heading_levels
+      assign opening = '<h' | append: level
+      assign closing = '</h' | append: level | append: '>'
+      assign notes_html = notes_html | replace: opening, '<h3' | replace: closing, '</h3>'
+    endfor
+    assign note_sections = notes_html | split: '<h3'
+    for note_section in note_sections offset: 1
+      assign heading_html = note_section | split: '</h3>' | first
+      assign heading = heading_html | prepend: '<h3' | append: '</h3>' | strip_html | strip | downcase | replace: '’', "'"
+      assign heading = heading | replace: '&#39;', "'" | replace: '&apos;', "'"
+      assign heading_end = heading_html | append: '</h3>'
+      assign body = note_section | remove_first: heading_end | replace: '</p>', line_break | replace: '</li>', line_break | replace: '<br />', line_break | replace: '<br>', line_break | strip_html | strip
+      if body == blank
         continue
       endif
-      assign question = custom[question_key] | metafield_text | strip
-      assign answer = custom[answer_key] | metafield_text | strip
-      if question == blank or answer == blank
-        continue
-      endif
-      assign preview = preview | append: ' · ' | append: question
-    -%}
-    <h3>{{ question | escape_once }}</h3>
-    <p>{{ answer | escape_once | newline_to_br }}</p>
-  {%- endfor -%}
+      case heading
+        when "modalità d'uso", 'utilizzo'
+          if product.handle == 'cuscino-termico-lusso-acchiappa-sogni'
+            assign body = body | remove: ' Applicare sulla zona interessata per un sollievo immediato.'
+          endif
+          assign use_text = use_text | append: line_break | append: body
+        when 'inci', 'ingredienti'
+          assign has_ingredients = true
+        when 'cura', 'pulizia', 'manutenzione'
+          assign care_text = care_text | append: line_break | append: body
+        else
+          if warning_headings contains heading
+            assign warnings = warnings | append: line_break | append: body
+          elsif family == '8' and heading == 'conservazione'
+            assign warnings = warnings | append: line_break | append: body
+          endif
+      endcase
+    endfor
+  endif
+  assign warnings = warnings | strip
+  assign use_text = use_text | strip
+  assign care_text = care_text | strip
+  assign care_question = 'Come averne cura?'
+  assign photo_question = 'Sarà come in foto?'
+  assign use_question = 'Come si usa?'
+  assign tradition_question = 'Come si usa, nella tradizione?'
+  assign care_preview = 'Come averne cura'
+  assign use_preview = 'Come si usa'
+  assign photo_preview = 'Sarà come in foto'
+  assign sentence_endings = '.|!|?|…|:' | split: '|'
+  assign complete_ingredients = 'Gli ingredienti completi sono nei Dettagli.'
+-%}
+
+{%- capture answer_one -%}
+  {%- case family -%}
+    {%- when '1' -%}
+      {%- liquid
+        assign question_one = care_question
+        assign preview_one = care_preview
+        assign stones = custom.pietre.value
+        assign stone = stones | first | default: custom.pietra.value
+        assign stone_care = stone.cura.value | default: stone.cura
+      -%}
+      {%- capture care -%}
+        {%- render 'bz-product-stone-care', pietre: stones, pietra_cura: stone_care, inline: true -%}
+      {%- endcapture -%}
+      {%- if care != blank -%}
+        {{- care -}}
+      {%- else -%}
+        Basta un panno morbido e asciutto. Alcune pietre temono l'acqua o perdono colore al sole: nel dubbio, niente ammollo e niente luce diretta. Nella tradizione, per ricaricarla, la si lascia su un {% render 'bz-product-care-reference', phrase: 'piatto di selenite', handle: 'piatto-di-ricarica-in-selenite-10-cm-albero-della-vita', product: product, ritual: ritual %} o alla luce della luna.
+      {%- endif -%}
+    {%- when '2' -%}
+      {%- assign question_one = care_question -%}
+      {%- assign preview_one = care_preview -%}
+      Toglilo quando ti lavi. Se puoi, toglilo anche per la piscina e il mare, e metti profumo e crema prima di indossarlo.
+      {%- if custom.pietre.value != blank or custom.pietra.value != blank %} Le pietre cambiano un po' da un pezzo all'altro.{% endif -%}
+    {%- when '3' -%}
+      {%- assign question_one = use_question -%}
+      {%- assign preview_one = use_preview -%}
+      Solo per uso esterno. La prima volta provalo su un punto piccolo della pelle ed evita occhi e mucose.
+      {%- if use_text != blank %}
+        {{ use_text | escape_once | newline_to_br -}}
+        {%- assign last_character = use_text | slice: -1, 1 -%}
+        {%- unless sentence_endings contains last_character %}.{% endunless %}
+      {%- endif %}
+      Tienilo ben chiuso, al fresco e lontano dalla luce.
+      {%- if has_ingredients %} {{ complete_ingredients }}{% endif -%}
+    {%- when '4' -%}
+      {%- assign question_one = 'Come si accende in sicurezza?' -%}
+      {%- assign preview_one = 'Come si accende' -%}
+      Su una superficie stabile che regge il calore, lontano da tende, carta e correnti d'aria. Non lasciarlo acceso in una stanza vuota, tienilo lontano da bambini e animali e poi arieggia.
+      {%- if duration != blank %}
+        {{ duration | escape -}}
+        {%- if product.type == 'Candele' -%}
+          {%- assign last_character = duration | strip | slice: -1, 1 -%}
+          {%- unless sentence_endings contains last_character %}.{% endunless -%}
+        {%- endif -%}
+      {%- endif -%}
+      {%- if product.type == 'Candele' %} La prima volta lasciala accesa finché la cera si scioglie su tutta la superficie: poi brucia in modo uniforme.{% endif -%}
+    {%- when '4b' -%}
+      {%- assign question_one = care_question -%}
+      {%- assign preview_one = care_preview -%}
+      Legno, pietra ollare e ceramica si spolverano, e basta.
+    {%- when '5', '5a', '7c', '8' -%}
+      {%- liquid
+        assign question_one = use_question
+        assign preview_one = use_preview
+        if family == '7c'
+          assign question_one = 'Come si scalda?'
+          assign preview_one = 'Come si scalda'
+        elsif family == '8'
+          assign question_one = 'Come si prepara?'
+          assign preview_one = 'Come si prepara'
+        endif
+      -%}
+      {%- capture follow_up -%}
+        {%- if has_ingredients -%}
+          {%- case family -%}
+            {%- when '5', '5a' %} {{ complete_ingredients }}
+            {%- when '8' %} Gli ingredienti sono nei Dettagli.
+          {%- endcase -%}
+        {%- endif -%}
+        {%- if family == '5' -%}
+          {%- unless tags contains 'dentifrici' or tags contains 'cura-orale' or tags contains 'oil-pulling' or tags contains 'shampoo' %} Se hai la pelle delicata, provalo prima su un punto piccolo.{% endunless -%}
+        {%- endif -%}
+      {%- endcapture -%}
+      {%- assign answer_warnings = warnings -%}
+      {%- if family == '5a' -%}
+        {%- assign answer_warnings = '' -%}
+      {%- endif -%}
+      {{- use_text | escape_once | newline_to_br -}}
+      {%- if use_text != blank -%}
+        {%- if answer_warnings != blank or follow_up != blank -%}
+          {%- assign last_character = use_text | slice: -1, 1 -%}
+          {%- unless sentence_endings contains last_character %}.{% endunless -%}
+        {%- endif -%}
+      {%- endif -%}
+      {%- if answer_warnings != blank %}
+        {{ answer_warnings | escape_once | newline_to_br -}}
+        {%- if follow_up != blank -%}
+          {%- assign last_character = answer_warnings | slice: -1, 1 -%}
+          {%- unless sentence_endings contains last_character %}.{% endunless -%}
+        {%- endif -%}
+      {%- endif -%}
+      {{- follow_up -}}
+    {%- when '5b' -%}
+      {%- assign question_one = care_question -%}
+      {%- assign preview_one = care_preview -%}
+      {%- case product.handle -%}
+        {%- when 'benessere-portasapone-in-legno', 'porta-sapone-bambu-rotondo' -%}
+          Mettilo in un punto ventilato o un po' inclinato, così l'acqua scola.
+        {%- when 'najel-pietra-lavica-con-cordoncino' -%}
+          Sciacquala dopo l'uso e lasciala asciugare appesa al cordoncino.
+        {%- when 'netta-lingua-rame' -%}
+          Sciacqualo dopo l'uso e asciugalo bene. Col tempo il rame si scurisce: è normale.
+      {%- endcase -%}
+    {%- when '6' -%}
+      {%- assign question_one = care_question -%}
+      {%- assign preview_one = care_preview -%}
+      Evita gli urti e tienilo lontano da acqua, detergenti e prodotti chimici.
+    {%- when '7a' -%}
+      {%- assign question_one = care_question -%}
+      {%- assign preview_one = care_preview -%}
+      Non lavarla: con l'acqua la selenite si rovina. Spolverala con un panno asciutto e tienila lontana dal sole.
+    {%- when '7b' -%}
+      {%- assign question_one = "Cosa c'è nella confezione?" -%}
+      {%- assign preview_one = "Cosa c'è nella confezione" -%}
+      {%- if contents != blank -%}
+        {%- if wooden_base != blank -%}
+          {%- unless contents contains wooden_base -%}
+            {%- assign contents = contents | append: ', ' | append: wooden_base -%}
+          {%- endunless -%}
+        {%- endif -%}
+        {{- contents | escape -}}
+        {%- assign last_character = contents | slice: -1, 1 -%}
+        {%- unless sentence_endings contains last_character %}.{% endunless -%}
+        {{- ' ' -}}
+      {%- endif -%}
+      La {% render 'bz-product-care-reference', phrase: 'lampadina di ricambio', handle: 'lampadine-ricambio-per-lampade-di-sale', product: product, ritual: ritual %} si trova a parte.
+    {%- when '7d' -%}
+      {%- assign question_one = use_question -%}
+      {%- assign preview_one = use_preview -%}
+      Con una candelina tealight, su una superficie stabile che regge il calore. Non lasciare la candela accesa senza nessuno nella stanza.
+    {%- when '7e' -%}
+      {%- assign question_one = care_question -%}
+      {%- assign preview_one = care_preview -%}
+      {%- if product.handle contains 'telo-divinatorio' -%}
+        Si lava a bassa temperatura.
+      {%- else -%}
+        {{- care_text | escape_once | newline_to_br -}}
+      {%- endif -%}
+    {%- when '8b' -%}
+      {%- assign question_one = 'Come si lava?' -%}
+      {%- assign preview_one = 'Come si lava' -%}
+      A mano. Non va in lavastoviglie né nel microonde.
+  {%- endcase -%}
 {%- endcapture -%}
+
+{%- capture answer_two -%}
+  {%- case family -%}
+    {%- when '1' -%}
+      {%- assign question_two = photo_question -%}
+      {%- assign preview_two = 'Sarà come in foto?' -%}
+      La foto mostra il tipo di pietra. Forma, venature e colore cambiano da un pezzo all'altro, quindi il tuo non sarà identico. Le misure sono indicative, come nei Dettagli.
+    {%- when '2' -%}
+      {%- if size != blank -%}
+        {%- assign question_two = 'Che misura ha?' -%}
+        {%- assign preview_two = 'Che misura ha' -%}
+        La misura è nei Dettagli: {{ size | escape }}{% assign last_character = size | slice: -1, 1 %}{% unless sentence_endings contains last_character %}.{% endunless %}
+      {%- endif -%}
+    {%- when '5', '5a' -%}
+      {%- assign question_two = "Quanto dura dopo l'apertura?" -%}
+      {%- assign preview_two = "Dopo l'apertura" -%}
+      {{- pao | escape -}}
+    {%- when '6' -%}
+      {%- assign question_two = tradition_question -%}
+      {%- assign preview_two = use_preview -%}
+      Nella tradizione della radiestesia si tiene la catenina tra due dita, con il braccio fermo, e si guarda come oscilla il pendolo.
+    {%- when '7a' -%}
+      {%- assign question_two = tradition_question -%}
+      {%- assign preview_two = use_preview -%}
+      Nella tradizione ci si appoggiano sopra pietre e bracciali e li si lascia lì qualche ora, anche per tutta la notte.
+    {%- when '7b' -%}
+      {%- assign question_two = photo_question -%}
+      {%- assign preview_two = photo_preview -%}
+      Il sale cambia da una lampada all'altra, quindi forma, colore e venature possono essere un po' diversi dalla foto.
+    {%- when '7e' -%}
+      {%- assign description = custom.descrizione_bz | metafield_text -%}
+      {%- assign detail_text = specs | join: ' ' -%}
+      {%- assign craft_text = notes_html | strip_html | append: ' ' | append: description | append: ' ' | append: detail_text | downcase -%}
+      {%- if craft_text contains 'fatto a mano' or craft_text contains 'fatta a mano' or craft_text contains 'fatti a mano' or craft_text contains 'fatte a mano' or craft_text contains 'artigianal' or craft_text contains 'handmade' -%}
+        {%- assign question_two = photo_question -%}
+        {%- assign preview_two = photo_preview -%}
+        È fatto a mano, quindi può avere piccole differenze rispetto alla foto.
+      {%- endif -%}
+  {%- endcase -%}
+{%- endcapture -%}
+
+{%- liquid
+  assign preview = 'Spedizione · Reso'
+  if answer_two != blank
+    assign preview = preview_two | append: ' · ' | append: preview
+  endif
+  if answer_one != blank
+    assign preview = preview_one | append: ' · ' | append: preview
+  endif
+-%}
 <details class="bzs-item bb-care">
   <summary class="bzs-head">
     <h2 class="bzs-hd">Cura e domande</h2>
     {% render 'bb-icon', name: 'expand_more', icon_class: 'bzs-ch' %}
-    <span class="bzs-pv" aria-hidden="true">{{ preview | escape_once }}</span>
+    <span class="bzs-pv" aria-hidden="true">{{ preview | escape }}</span>
   </summary>
   <div class="bzs-prose bb-faq">
-    {%- if care != blank -%}
-      <h3>Come averne cura</h3>
-      {{ care }}
+    {%- if answer_one != blank -%}
+      <h3>{{ question_one | escape }}</h3>
+      <p>{{ answer_one | strip }}</p>
+    {%- endif -%}
+    {%- if answer_two != blank -%}
+      <h3>{{ question_two | escape }}</h3>
+      <p>{{ answer_two | strip }}</p>
     {%- endif -%}
     <h3>Quanto costa la spedizione?</h3>
-    <p>Spedizione Express {{ settings.bz_express_rate | default: '5,90' | escape }}&nbsp;€, gratuita da {{ ship_euros }}&nbsp;€ di ordine.</p>
+    <p>Spediamo solo in Italia, con la spedizione Express. Costa {{ settings.bz_express_rate | default: '5,90' | escape }} € ed è gratuita per ordini da {{ ship_euros }} €. Gli ordini vengono preparati entro 24 ore e partono in 1-3 giorni lavorativi.</p>
     <h3>Posso fare il reso?</h3>
-    <p>Puoi chiedere un reso entro 14 giorni dalla ricezione. Il prodotto va restituito non indossato, con cartellini e confezione. La spedizione del reso è a tuo carico. Se il reso è accettato, il rimborso arriva entro 10 giorni lavorativi. <a href="{{ shop.refund_policy.url | default: '/policies/refund-policy' | escape }}">Informativa sui rimborsi</a></p>
-    {%- if use_text != blank -%}
-      <h3>Come si usa</h3>
-      <p>{{ use_text | escape_once | newline_to_br }}</p>
-    {%- endif -%}
-    {{ faq }}
+    <p>Hai 14 giorni dalla ricezione per chiedere il reso. Il prodotto deve essere com'era quando l'hai ricevuto: non usato né indossato, con i cartellini e la confezione originale. Se il reso è accettato, ti mandiamo l'etichetta per spedirlo e le istruzioni. Il rimborso arriva entro 10 giorni lavorativi sul metodo di pagamento che hai usato. <a href="{{ shop.refund_policy.url | default: '/policies/refund-policy' | escape }}">Informativa sui rimborsi</a></p>
   </div>
 </details>
