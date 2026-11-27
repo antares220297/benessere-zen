@@ -3,61 +3,223 @@
   assign benefits = product.metafields.custom.benefici_bz.value
   assign specs = product.metafields.custom.dettagli_bz.value
   assign notes = product.metafields.custom.note_bz
+  assign roman = 'I II III IV V VI VII VIII IX X' | split: ' '
+  assign skip_words = 'gestione supporto aiuto fonte senso stato momenti della delle del dei di e la il lo le in per con' | split: ' '
+  assign keyword_punctuation = ".,;:'’"
+  assign keyword_separator = ' <i aria-hidden="true">·</i> '
+  assign keywords = ''
+  assign tradition_preview = ''
+  assign all_titled = true
 -%}
-<div class="bz-description bz-description--fields">
-  {%- if description != blank -%}
-    <div class="bz-buy__open rte">{{ description | metafield_tag }}</div>
-  {%- endif -%}
+{%- capture chevron -%}
+  <span class="bzs-ch" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" aria-hidden="true" focusable="false" fill="currentColor" viewBox="0 -960 960 960"><path d="M480-357.85 253.85-584l32.61-32.61L480-423.08l193.54-193.53L706.15-584 480-357.85Z"/></svg></span>
+{%- endcapture -%}
 
-  {%- if benefits.size > 0 -%}
-    <div class="bz-brief">
-      <h2>In breve</h2>
-      <ul role="list">
-        {%- for benefit in benefits -%}
-          <li><span>
-            {%- if benefit contains ':' -%}
-              {%- assign title = benefit | split: ':' | first -%}
-              {%- assign prefix = title | append: ':' -%}
-              <strong>{{ title | strip | escape }}:</strong> {{ benefit | remove_first: prefix | strip | escape }}
-            {%- else -%}
-              {{ benefit | escape }}
-            {%- endif -%}
-          </span></li>
-        {%- endfor -%}
-      </ul>
+{%- capture tradition_rows -%}
+  {%- for benefit in benefits -%}
+    {%- liquid
+      assign title = ''
+      assign sentence = benefit
+      if benefit contains ': '
+        assign candidate = benefit | split: ': ' | first
+        if candidate != blank and candidate.size <= 60
+          assign title = candidate | strip
+          assign prefix = candidate | append: ': '
+          assign sentence = benefit | remove_first: prefix | strip
+        endif
+      endif
+
+      if forloop.first
+        assign first_benefit = benefit
+      endif
+      if title == blank
+        assign all_titled = false
+      else
+        unless tradition_preview == blank
+          assign tradition_preview = tradition_preview | append: ' · '
+        endunless
+        assign tradition_preview = tradition_preview | append: title
+        if forloop.index <= 3 and description != blank
+          assign words = title | split: ' '
+          for word in words
+            assign characters = word | split: ''
+            assign start = 0
+            for character in characters
+              unless keyword_punctuation contains character
+                break
+              endunless
+              assign start = forloop.index
+            endfor
+            assign length = word.size | minus: start
+            for character in characters reversed
+              if length == 0
+                break
+              endif
+              unless keyword_punctuation contains character
+                break
+              endunless
+              assign length = length | minus: 1
+            endfor
+            assign keyword = word | slice: start, length
+            assign lower_keyword = keyword | downcase
+            if keyword != blank
+              unless skip_words contains lower_keyword
+                unless keywords == blank
+                  assign keywords = keywords | append: keyword_separator
+                endunless
+                assign keyword = keyword | escape
+                assign keywords = keywords | append: keyword
+                break
+              endunless
+            endif
+          endfor
+        endif
+      endif
+    -%}
+    <li{% if title == blank %} class="no-t"{% endif %}>
+      <span class="n" aria-hidden="true">{{ roman[forloop.index0] | default: forloop.index }}</span>
+      {%- if title != blank -%}<span class="t">{{ title | escape }}</span>{%- endif -%}
+      <span class="s">{{ sentence | escape }}</span>
+    </li>
+  {%- endfor -%}
+{%- endcapture -%}
+
+{%- assign details_preview = '' -%}
+{%- assign preview_count = 0 -%}
+{%- assign next_row = 0 -%}
+{%- capture detail_rows -%}
+  {%- for spec in specs -%}
+    {%- liquid
+      if forloop.index0 < next_row
+        continue
+      endif
+      assign raw_label = spec | split: ':' | first
+      assign label = raw_label | strip
+      assign value = ''
+      if spec contains ':'
+        assign prefix = raw_label | append: ':'
+        assign value = spec | remove_first: prefix | strip
+      endif
+
+      assign next_row = forloop.index
+      assign continuation_label = label | append: ' (segue)'
+      for continuation in specs offset: next_row
+        assign raw_following_label = continuation | split: ':' | first
+        assign following_label = raw_following_label | strip
+        if following_label != continuation_label
+          break
+        endif
+        assign prefix = raw_following_label | append: ':'
+        assign piece = continuation | remove_first: prefix | strip
+        assign first_character = piece | slice: 0, 1
+        if first_character == ','
+          assign piece = piece | remove_first: ',' | strip
+        endif
+        if piece != blank
+          assign last_character = value | slice: -1, 1
+          if last_character == ','
+            assign length = value.size | minus: 1
+            assign value = value | slice: 0, length | strip
+          endif
+          unless value == blank
+            assign value = value | append: ', '
+          endunless
+          assign value = value | append: piece
+        endif
+        assign next_row = next_row | plus: 1
+      endfor
+
+      if value != blank and preview_count < 2
+        unless details_preview == blank
+          assign details_preview = details_preview | append: ' · '
+        endunless
+        assign details_preview = details_preview | append: value
+        assign preview_count = preview_count | plus: 1
+      endif
+    -%}
+    <div{% if value.size > 34 %} class="is-long"{% endif %}>
+      <dt>{{ label | remove: ' (segue)' | escape }}</dt>
+      <dd>{{ value | escape }}</dd>
     </div>
-  {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
 
-  {%- if specs.size > 0 or notes != blank -%}
-    <details class="bz-description__more">
-      <summary class="bz-description__toggle" aria-controls="BzDescription-{{ section_id }}">
-        <span>Leggi tutto</span>
-        <span>Mostra meno</span>
-      </summary>
-      <div id="BzDescription-{{ section_id }}">
-        {%- if specs.size > 0 -%}
-          <table class="bz-specs">
-            <tbody>
-              {%- for spec in specs -%}
-                {%- assign label = spec | split: ':' | first -%}
-                {%- assign value = '' -%}
-                {%- if spec contains ':' -%}
-                  {%- assign prefix = label | append: ':' -%}
-                  {%- assign value = spec | remove_first: prefix | strip -%}
-                {%- endif -%}
-                <tr>
-                  <th scope="row">{{ label | strip | escape }}</th>
-                  <td>{{ value | escape }}</td>
-                </tr>
-              {%- endfor -%}
-            </tbody>
-          </table>
-        {%- endif -%}
+<div class="bzs bz-description bz-description--fields">
+  <div class="bzs-list">
+    {%- if description != blank -%}
+      {%- liquid
+        assign description_preview = description | metafield_text | strip
+        assign sentence_length = description_preview.size
+        assign punctuation = '.!?' | split: ''
+        for mark in punctuation
+          if description_preview contains mark
+            assign head = description_preview | prepend: ' ' | split: mark | first
+            if head.size < sentence_length
+              assign sentence_length = head.size
+            endif
+          endif
+        endfor
+      -%}
+      <details class="bzs-item" open>
+        <summary class="bzs-head">
+          <h2 class="bzs-hd"><span class="bzs-lb">Cos’è</span></h2>
+          {{ chevron }}
+          <span class="bzs-pv" aria-hidden="true">{{ description_preview | slice: 0, sentence_length | escape }}</span>
+        </summary>
+        <div class="bzs-body">
+          {%- if all_titled and keywords != blank -%}
+            <p class="bzs-kw">{{ keywords }}</p>
+          {%- endif -%}
+          <div class="bzs-prose">{{ description | metafield_tag }}</div>
+        </div>
+      </details>
+    {%- endif -%}
 
-        {%- if notes != blank -%}
-          <div class="bz-description__body rte">{{ notes | metafield_tag }}</div>
-        {%- endif -%}
-      </div>
-    </details>
-  {%- endif -%}
+    {%- if tradition_rows != blank -%}
+      {%- unless all_titled -%}
+        {%- assign tradition_preview = first_benefit -%}
+      {%- endunless -%}
+      <details class="bzs-item">
+        <summary class="bzs-head">
+          <h2 class="bzs-hd"><span class="bzs-lb">Nella tradizione</span></h2>
+          {{ chevron }}
+          <span class="bzs-pv" aria-hidden="true">{{ tradition_preview | escape }}</span>
+        </summary>
+        <div class="bzs-body">
+          <ul class="bzs-tr" role="list">{{ tradition_rows }}</ul>
+        </div>
+      </details>
+    {%- endif -%}
+
+    {%- if detail_rows != blank or notes != blank -%}
+      {%- if details_preview == blank and notes != blank -%}
+        {%- assign details_preview = notes | metafield_text | strip | slice: 0, 80 -%}
+      {%- endif -%}
+      <details class="bzs-item">
+        <summary class="bzs-head">
+          <h2 class="bzs-hd"><span class="bzs-lb">Dettagli</span></h2>
+          {{ chevron }}
+          <span class="bzs-pv" aria-hidden="true">{{ details_preview | escape }}</span>
+        </summary>
+        <div class="bzs-body">
+          {%- if detail_rows != blank -%}
+            <dl class="bzs-dl">{{ detail_rows }}</dl>
+          {%- endif -%}
+          {%- if notes != blank -%}
+            {%- liquid
+              assign notes_html = notes | metafield_tag
+              assign heading_levels = '1 2 4 5 6' | split: ' '
+              for level in heading_levels
+                assign heading = 'h' | append: level
+                assign opening = '<' | append: heading
+                assign closing = '</' | append: heading | append: '>'
+                assign notes_html = notes_html | replace: opening, '<h3' | replace: closing, '</h3>'
+              endfor
+            -%}
+            <div class="bzs-note">{{ notes_html }}</div>
+          {%- endif -%}
+        </div>
+      </details>
+    {%- endif -%}
+  </div>
 </div>

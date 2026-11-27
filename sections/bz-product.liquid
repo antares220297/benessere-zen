@@ -116,7 +116,7 @@
           {%- unless forloop.last %}, {% endunless -%}
         {%- endfor %}</p>
       {%- endif -%}
-      {%- if product.metafields.custom.descrizione_bz != blank or product.metafields.custom.benefici_bz.value.size > 0 or product.metafields.custom.dettagli_bz.value.size > 0 -%}
+      {%- if product.metafields.custom.descrizione_bz != blank or product.metafields.custom.benefici_bz.value.size > 0 or product.metafields.custom.dettagli_bz.value.size > 0 or product.metafields.custom.note_bz != blank -%}
         {%- render 'bz-product-description-fields', product: product, section_id: section.id -%}
       {%- elsif product.description != blank -%}
         {%- render 'bz-product-description', description: product.description, section_id: section.id -%}
