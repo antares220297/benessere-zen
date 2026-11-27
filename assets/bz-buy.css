@@ -56,7 +56,7 @@ output.bb-qty__n{display:grid!important;place-items:center}
 .bb-ship.is-free .bb-ship__bar{display:none}
 
 /* ===== Voci descrizione: icone nei benefici, chevron 300 ===== */
-.bzs .bb-ben{display:grid;grid-template-columns:20px minmax(0,1fr);column-gap:var(--bz-sp-12);align-items:start}
+.bzs .bb-ben{display:grid;grid-template-columns:24px minmax(0,1fr);column-gap:var(--bz-sp-12);align-items:start}
 .bb-ben__ic{color:var(--bz-gold);padding-top:2px}
 .bb-ben__tx>p:first-child{margin-top:0}
 .bzs svg.bzs-ch{width:20px;height:20px;color:var(--bz-gold)}

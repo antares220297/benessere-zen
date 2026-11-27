@@ -110,7 +110,7 @@
 {%- endcapture -%}
 {%- assign tradition_icon_rows = tradition_icons | split: ';' -%}
 {%- assign use_reserve_icon = false -%}
-{%- if tradition_icon_rows contains 'riserva|spa' -%}
+{%- if tradition_icon_rows contains 'riserva|check-circle' -%}
   {%- assign use_reserve_icon = true -%}
 {%- endif -%}
 {%- assign icon_index = 0 -%}
@@ -135,12 +135,12 @@
       assign category_icon = tradition_icon_rows[icon_index]
       assign icon_index = icon_index | plus: 1
       if use_reserve_icon
-        assign category_icon = 'riserva|spa'
+        assign category_icon = 'riserva|check-circle'
       endif
       assign icon_fields = category_icon | split: '|'
     -%}
     <li class="bb-ben" data-cat="{{ icon_fields[0] }}">
-      <span class="bb-ben__ic">{% render 'bb-icon', name: icon_fields[1] %}</span>
+      <span class="bb-ben__ic">{% render 'bb-phosphor-icon', name: icon_fields[1] %}</span>
       <div class="bb-ben__tx">
       {%- if title != blank -%}<p class="bzs-benefit-title">{{ title | escape }}</p>{%- endif -%}
       <p>{{ sentence | escape }}</p>
