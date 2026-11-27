@@ -1,24 +1,15 @@
 {%- capture family -%}{%- render 'bz-product-care-family', product: product -%}{%- endcapture -%}
-{%- capture line_break %}
-{% endcapture -%}
 {%- liquid
   assign custom = product.metafields.custom
   assign specs = custom.dettagli_bz.value
   assign size_labels = 'misura bracciale|misura|misure|taglia|lunghezza|lunghezza collana|circonferenza|dimensioni|dimensione' | split: '|'
-  assign duration_labels = 'durata|tempo di combustione|durata media|durata combustione|durata di combustione' | split: '|'
-  assign content_labels = 'contenuto|dotazione|incluso|lampadina' | split: '|'
-  assign care_labels = 'cura|pulizia|manutenzione' | split: '|'
-  assign warning_labels = 'attenzione|avvertenze' | split: '|'
-  assign warning_headings = 'avvertenze|note importanti|note di sicurezza' | split: '|'
+  assign use_labels = "modo d'uso|modalità d'uso|utilizzo" | split: '|'
+  assign warning_labels = 'attenzione|avvertenze|note importanti|note di sicurezza' | split: '|'
   assign has_ingredients = false
-  assign warnings = ''
+  assign has_warnings = false
+  assign has_use = false
   assign size = ''
-  assign duration = ''
   assign pao = ''
-  assign contents = ''
-  assign wooden_base = ''
-  assign use_text = ''
-  assign care_text = ''
   assign tags = product.tags | join: '|' | downcase | split: '|'
 
   for spec in specs
@@ -26,7 +17,7 @@
       continue
     endunless
     assign raw_label = spec | split: ':' | first
-    assign label = raw_label | strip | downcase
+    assign label = raw_label | strip | downcase | replace: '’', "'"
     assign prefix = raw_label | append: ':'
     assign value = spec | remove_first: prefix | strip
     if value == blank
@@ -39,36 +30,14 @@
     if size == blank and size_labels contains label
       assign size = value
     endif
-    if duration == blank and duration_labels contains label
-      assign duration = spec
-    endif
-    if contents == blank and content_labels contains label
-      assign contents = value
-    endif
-    if family == '7b' and value contains 'base in legno'
-      assign before_base = value | split: 'base in legno' | first
-      assign base_start = value | slice: 0, 13
-      if base_start == 'base in legno'
-        assign wooden_base = value
-      else
-        assign wooden_base = value | remove_first: before_base
-      endif
-    endif
     if pao == blank and label == 'pao'
       assign pao = value
     endif
     assign base_label = label | remove: ' (segue)'
-    assign first_character = value | slice: 0, 1
-    if first_character == ':'
-      assign value = value | remove_first: ':' | strip
-    endif
-    if family == '7e' and care_labels contains base_label
-      assign care_text = care_text | append: line_break | append: value
-    endif
-    if warning_labels contains base_label
-      assign warnings = warnings | append: line_break | append: value
-    elsif family == '8' and base_label == 'conservazione'
-      assign warnings = warnings | append: line_break | append: value
+    if use_labels contains base_label
+      assign has_use = true
+    elsif warning_labels contains base_label
+      assign has_warnings = true
     endif
   endfor
 -%}
@@ -88,32 +57,38 @@
       assign heading = heading_html | prepend: '<h3' | append: '</h3>' | strip_html | strip | downcase | replace: '’', "'"
       assign heading = heading | replace: '&#39;', "'" | replace: '&apos;', "'"
       assign heading_end = heading_html | append: '</h3>'
-      assign body = note_section | remove_first: heading_end | replace: '</p>', line_break | replace: '</li>', line_break | replace: '<br />', line_break | replace: '<br>', line_break | strip_html | strip
+      assign body = note_section | remove_first: heading_end | strip_html | strip
       if body == blank
         continue
       endif
-      case heading
-        when "modalità d'uso", 'utilizzo'
-          if product.handle == 'cuscino-termico-lusso-acchiappa-sogni'
-            assign body = body | remove: ' Applicare sulla zona interessata per un sollievo immediato.'
-          endif
-          assign use_text = use_text | append: line_break | append: body
-        when 'inci', 'ingredienti'
-          assign has_ingredients = true
-        when 'cura', 'pulizia', 'manutenzione'
-          assign care_text = care_text | append: line_break | append: body
-        else
-          if warning_headings contains heading
-            assign warnings = warnings | append: line_break | append: body
-          elsif family == '8' and heading == 'conservazione'
-            assign warnings = warnings | append: line_break | append: body
-          endif
-      endcase
+      if use_labels contains heading
+        assign has_use = true
+      elsif warning_labels contains heading
+        assign has_warnings = true
+      elsif heading == 'inci' or heading == 'ingredienti'
+        assign has_ingredients = true
+      endif
     endfor
   endif
-  assign warnings = warnings | strip
-  assign use_text = use_text | strip
-  assign care_text = care_text | strip
+  assign detail_items = '' | split: '|'
+  if has_use and family != '8'
+    assign use_item = "il modo d'uso" | split: '|'
+    assign detail_items = detail_items | concat: use_item
+  endif
+  if has_warnings
+    assign warning_item = 'le avvertenze' | split: '|'
+    assign detail_items = detail_items | concat: warning_item
+  endif
+  if has_ingredients
+    assign ingredient_item = 'gli ingredienti' | split: '|'
+    assign detail_items = detail_items | concat: ingredient_item
+  endif
+  assign detail_list = detail_items | first
+  if detail_items.size == 2
+    assign detail_list = detail_items | join: ' e '
+  elsif detail_items.size == 3
+    assign detail_list = "il modo d'uso, le avvertenze e gli ingredienti"
+  endif
   assign care_question = 'Come averne cura?'
   assign photo_question = 'Sarà come in foto?'
   assign use_question = 'Come si usa?'
@@ -122,7 +97,6 @@
   assign use_preview = 'Come si usa'
   assign photo_preview = 'Sarà come in foto'
   assign sentence_endings = '.|!|?|…|:' | split: '|'
-  assign complete_ingredients = 'Gli ingredienti completi sono nei Dettagli.'
 -%}
 
 {%- capture answer_one -%}
@@ -151,83 +125,35 @@
     {%- when '3' -%}
       {%- assign question_one = use_question -%}
       {%- assign preview_one = use_preview -%}
-      Solo per uso esterno. La prima volta provalo su un punto piccolo della pelle ed evita occhi e mucose.
-      {%- if use_text != blank %}
-        {{ use_text | escape_once | newline_to_br -}}
-        {%- assign last_character = use_text | slice: -1, 1 -%}
-        {%- unless sentence_endings contains last_character %}.{% endunless %}
-      {%- endif %}
-      Tienilo ben chiuso, al fresco e lontano dalla luce.
-      {%- if has_ingredients %} {{ complete_ingredients }}{% endif -%}
+      Solo per uso esterno. La prima volta provalo su un punto piccolo della pelle ed evita occhi e mucose. Tienilo ben chiuso, al fresco e lontano dalla luce.
+      {%- if detail_list != blank %} Nei Dettagli trovi {{ detail_list }}.{% endif -%}
     {%- when '4' -%}
       {%- assign question_one = 'Come si accende in sicurezza?' -%}
       {%- assign preview_one = 'Come si accende' -%}
       Su una superficie stabile che regge il calore, lontano da tende, carta e correnti d'aria. Non lasciarlo acceso in una stanza vuota, tienilo lontano da bambini e animali e poi arieggia.
-      {%- if duration != blank %}
-        {{ duration | escape -}}
-        {%- if product.type == 'Candele' -%}
-          {%- assign last_character = duration | strip | slice: -1, 1 -%}
-          {%- unless sentence_endings contains last_character %}.{% endunless -%}
-        {%- endif -%}
-      {%- endif -%}
       {%- if product.type == 'Candele' %} La prima volta lasciala accesa finché la cera si scioglie su tutta la superficie: poi brucia in modo uniforme.{% endif -%}
     {%- when '4b' -%}
       {%- assign question_one = care_question -%}
       {%- assign preview_one = care_preview -%}
       Legno, pietra ollare e ceramica si spolverano, e basta.
-    {%- when '5', '5a', '7c', '8' -%}
-      {%- liquid
-        assign question_one = use_question
-        assign preview_one = use_preview
-        if family == '7c'
-          assign question_one = 'Come si scalda?'
-          assign preview_one = 'Come si scalda'
-        elsif family == '8'
-          assign question_one = 'Come si prepara?'
-          assign preview_one = 'Come si prepara'
-        endif
-      -%}
-      {%- capture follow_up -%}
-        {%- if has_ingredients -%}
-          {%- case family -%}
-            {%- when '5', '5a' %} {{ complete_ingredients }}
-            {%- when '8' %} Gli ingredienti sono nei Dettagli.
-          {%- endcase -%}
-        {%- endif -%}
-        {%- if family == '5' -%}
-          {%- unless tags contains 'dentifrici' or tags contains 'cura-orale' or tags contains 'oil-pulling' or tags contains 'shampoo' %} Se hai la pelle delicata, provalo prima su un punto piccolo.{% endunless -%}
-        {%- endif -%}
-      {%- endcapture -%}
-      {%- assign answer_warnings = warnings -%}
-      {%- if family == '5a' -%}
-        {%- assign answer_warnings = '' -%}
+    {%- when '5', '5a' -%}
+      {%- assign question_one = use_question -%}
+      {%- assign preview_one = use_preview -%}
+      {%- if detail_list != blank -%}
+        Nei Dettagli trovi {{ detail_list }}.
       {%- endif -%}
-      {{- use_text | escape_once | newline_to_br -}}
-      {%- if use_text != blank -%}
-        {%- if answer_warnings != blank or follow_up != blank -%}
-          {%- assign last_character = use_text | slice: -1, 1 -%}
-          {%- unless sentence_endings contains last_character %}.{% endunless -%}
-        {%- endif -%}
+      {%- unless tags contains 'dentifrici' or tags contains 'cura-orale' or tags contains 'oil-pulling' or tags contains 'shampoo' %} Se hai la pelle delicata, provalo prima su un punto piccolo.{% endunless -%}
+    {%- when '7c' -%}
+      {%- if has_use -%}
+        {%- assign question_one = 'Come si scalda?' -%}
+        {%- assign preview_one = 'Come si scalda' -%}
+        Tempo e potenza del microonde sono nei Dettagli: non superarli. Prima di usarlo controlla che non sia troppo caldo, e non lasciarlo nel microonde senza controllarlo.
       {%- endif -%}
-      {%- if answer_warnings != blank %}
-        {{ answer_warnings | escape_once | newline_to_br -}}
-        {%- if follow_up != blank -%}
-          {%- assign last_character = answer_warnings | slice: -1, 1 -%}
-          {%- unless sentence_endings contains last_character %}.{% endunless -%}
-        {%- endif -%}
-      {%- endif -%}
-      {{- follow_up -}}
-    {%- when '5b' -%}
-      {%- assign question_one = care_question -%}
-      {%- assign preview_one = care_preview -%}
-      {%- case product.handle -%}
-        {%- when 'benessere-portasapone-in-legno', 'porta-sapone-bambu-rotondo' -%}
-          Mettilo in un punto ventilato o un po' inclinato, così l'acqua scola.
-        {%- when 'najel-pietra-lavica-con-cordoncino' -%}
-          Sciacquala dopo l'uso e lasciala asciugare appesa al cordoncino.
-        {%- when 'netta-lingua-rame' -%}
-          Sciacqualo dopo l'uso e asciugalo bene. Col tempo il rame si scurisce: è normale.
-      {%- endcase -%}
+    {%- when '8' -%}
+      {%- assign question_one = 'Come si prepara?' -%}
+      {%- assign preview_one = 'Come si prepara' -%}
+      Dose, temperatura e tempo d'infusione sono nei Dettagli.
+      {%- if detail_list != blank %} Lì trovi anche {{ detail_list }}.{% endif -%}
     {%- when '6' -%}
       {%- assign question_one = care_question -%}
       {%- assign preview_one = care_preview -%}
@@ -236,37 +162,27 @@
       {%- assign question_one = care_question -%}
       {%- assign preview_one = care_preview -%}
       Non lavarla: con l'acqua la selenite si rovina. Spolverala con un panno asciutto e tienila lontana dal sole.
-    {%- when '7b' -%}
-      {%- assign question_one = "Cosa c'è nella confezione?" -%}
-      {%- assign preview_one = "Cosa c'è nella confezione" -%}
-      {%- if contents != blank -%}
-        {%- if wooden_base != blank -%}
-          {%- unless contents contains wooden_base -%}
-            {%- assign contents = contents | append: ', ' | append: wooden_base -%}
-          {%- endunless -%}
-        {%- endif -%}
-        {{- contents | escape -}}
-        {%- assign last_character = contents | slice: -1, 1 -%}
-        {%- unless sentence_endings contains last_character %}.{% endunless -%}
-        {{- ' ' -}}
-      {%- endif -%}
-      La {% render 'bz-product-care-reference', phrase: 'lampadina di ricambio', handle: 'lampadine-ricambio-per-lampade-di-sale', product: product, ritual: ritual %} si trova a parte.
     {%- when '7d' -%}
       {%- assign question_one = use_question -%}
       {%- assign preview_one = use_preview -%}
       Con una candelina tealight, su una superficie stabile che regge il calore. Non lasciare la candela accesa senza nessuno nella stanza.
-    {%- when '7e' -%}
-      {%- assign question_one = care_question -%}
-      {%- assign preview_one = care_preview -%}
-      {%- if product.handle contains 'telo-divinatorio' -%}
-        Si lava a bassa temperatura.
-      {%- else -%}
-        {{- care_text | escape_once | newline_to_br -}}
-      {%- endif -%}
     {%- when '8b' -%}
       {%- assign question_one = 'Come si lava?' -%}
       {%- assign preview_one = 'Come si lava' -%}
       A mano. Non va in lavastoviglie né nel microonde.
+    {%- when '9a', '9b', '9c', '9d' -%}
+      {%- assign question_one = use_question -%}
+      {%- assign preview_one = use_preview -%}
+      {%- case family -%}
+        {%- when '9a' -%}
+          Qualche goccia in un diffusore di essenze. Non si ingerisce e non va mai puro sulla pelle: se si può usare diluito, lo dicono i Dettagli. Tienilo lontano da occhi e bambini.
+        {%- when '9b' -%}
+          Spruzza nell'aria con un movimento ampio, mai verso occhi e viso. Usalo in una stanza ben aerata e tienilo lontano dai bambini.
+        {%- when '9c' -%}
+          Non si ingerisce e non va su pelle e occhi. Tienilo lontano da bambini, animali e fiamme.
+        {%- when '9d' -%}
+          Sono sali per il bagno: si sciolgono nell'acqua della vasca e non si ingeriscono.
+      {%- endcase -%}
   {%- endcase -%}
 {%- endcapture -%}
 
@@ -282,10 +198,25 @@
         {%- assign preview_two = 'Che misura ha' -%}
         La misura è nei Dettagli: {{ size | escape }}{% assign last_character = size | slice: -1, 1 %}{% unless sentence_endings contains last_character %}.{% endunless %}
       {%- endif -%}
+    {%- when '4' -%}
+      {%- unless product.handle == 'carta-aromatica-d-eritrea-con-scatola-serigrafata-in-metallo' -%}
+        {%- assign question_two = 'A cosa serve, nella tradizione?' -%}
+        {%- assign preview_two = 'Nella tradizione' -%}
+        {%- case product.type -%}
+          {%- when 'Candele' -%}
+            Nella tradizione si accende una candela per accompagnare una preghiera o un desiderio.
+          {%- when 'Incensi e smudge' -%}
+            Nella tradizione il fumo profumato accompagna la preghiera e la meditazione, e si usa per purificare la casa.
+        {%- endcase -%}
+      {%- endunless -%}
     {%- when '5', '5a' -%}
-      {%- assign question_two = "Quanto dura dopo l'apertura?" -%}
-      {%- assign preview_two = "Dopo l'apertura" -%}
-      {{- pao | escape -}}
+      {%- if pao != blank -%}
+        {%- assign question_two = "Quanto dura dopo l'apertura?" -%}
+        {%- assign preview_two = "Dopo l'apertura" -%}
+        {{- pao | escape -}}
+        {%- assign last_character = pao | slice: -1, 1 -%}
+        {%- unless sentence_endings contains last_character %}.{% endunless -%}
+      {%- endif -%}
     {%- when '6' -%}
       {%- assign question_two = tradition_question -%}
       {%- assign preview_two = use_preview -%}
@@ -335,7 +266,7 @@
       <p>{{ answer_two | strip }}</p>
     {%- endif -%}
     <h3>Quanto costa la spedizione?</h3>
-    <p>Spediamo solo in Italia, con la spedizione Express. Costa {{ settings.bz_express_rate | default: '5,90' | escape }} € ed è gratuita per ordini da {{ ship_euros }} €. Gli ordini vengono preparati entro 24 ore e partono in 1-3 giorni lavorativi.</p>
+    <p>Spediamo solo in Italia, con la spedizione Express. Costa 5,90 € ed è gratuita per ordini da 50 €. Gli ordini vengono preparati entro 24 ore e partono in 1-3 giorni lavorativi.</p>
     <h3>Posso fare il reso?</h3>
     <p>Hai 14 giorni dalla ricezione per chiedere il reso. Il prodotto deve essere com'era quando l'hai ricevuto: non usato né indossato, con i cartellini e la confezione originale. Se il reso è accettato, ti mandiamo l'etichetta per spedirlo e le istruzioni. Il rimborso arriva entro 10 giorni lavorativi sul metodo di pagamento che hai usato. <a href="{{ shop.refund_policy.url | default: '/policies/refund-policy' | escape }}">Informativa sui rimborsi</a></p>
   </div>

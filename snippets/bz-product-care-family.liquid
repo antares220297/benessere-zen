@@ -2,16 +2,13 @@
   assign kind = product.type | downcase | strip
   assign tags = product.tags | join: '|' | downcase | split: '|'
   assign handle = product.handle
+  assign unclassified = false
 
   assign selenite_dish = false
   if handle contains 'selenite'
     if handle contains 'piatto' or handle contains 'ciotola' or handle contains 'piastra'
       assign selenite_dish = true
     endif
-  endif
-  assign smudge_spray = false
-  if handle contains 'spray' and tags contains 'smudge'
-    assign smudge_spray = true
   endif
   assign accessory = false
   assign soap = false
@@ -26,8 +23,12 @@
 
   if selenite_dish
     echo '7a'
-  elsif smudge_spray or handle contains 'spray-per-ambienti' or handle contains 'diffusore-botanico' or handle contains 'diffusore-per-ambiente' or handle contains 'profumo-vapo-per-ambienti' or handle contains 'busta-profuma-armadio' or handle contains 'sali-da-bagno' or tags contains 'sali' or tags contains 'diffusori' or handle == 'lampadine-ricambio-per-lampade-di-sale'
-    echo 'ripiego'
+  elsif handle contains 'busta-profuma-armadio' or handle == 'lampadine-ricambio-per-lampade-di-sale'
+    echo '9e'
+  elsif handle contains 'spray' and tags contains 'smudge'
+    echo '9b'
+  elsif handle contains 'spray-per-ambienti' or handle contains 'diffusore-botanico' or handle contains 'diffusore-per-ambiente' or handle contains 'profumo-vapo-per-ambienti' or handle contains 'sali-da-bagno' or tags contains 'sali' or tags contains 'diffusori'
+    assign unclassified = true
   elsif tags contains 'portacandela' or handle contains 'porta-candela' or handle contains 'portacandela'
     echo '7d'
   elsif handle == 'carta-aromatica-d-eritrea-con-scatola-serigrafata-in-metallo'
@@ -58,7 +59,7 @@
         if tags contains 'oli-massaggio' or handle contains 'roll-on' or handle contains 'profumo-in-olio-' or handle contains 'oli-profumati-corpo-' or handle contains 'olio-profumato-ayurveda-' or handle contains 'olio-profumato-naturale-'
           echo '3'
         else
-          echo 'ripiego'
+          assign unclassified = true
         endif
       when 'cosmetici'
         echo '5'
@@ -69,7 +70,20 @@
       when 'tè e tisane'
         echo '8'
       else
-        echo 'ripiego'
+        assign unclassified = true
     endcase
+  endif
+  if unclassified
+    if handle contains 'olio-essenziale' or handle contains 'olio-aromatic' or handle contains 'olio-profumato' or handle contains 'fragranza-' or handle contains 'set-oli-essenziali'
+      echo '9a'
+    elsif handle contains 'spray' or handle contains 'profumo-vapo'
+      echo '9b'
+    elsif handle contains 'diffusore' or handle contains 'diffusori'
+      echo '9c'
+    elsif handle contains 'sali'
+      echo '9d'
+    else
+      echo 'ripiego'
+    endif
   endif
 -%}
