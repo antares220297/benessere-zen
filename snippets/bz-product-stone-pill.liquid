@@ -1,5 +1,0 @@
-{%- assign stone_name = stone.nome.value | default: stone.nome | default: stone -%}
-{%- assign stone_text = stone_name | append: '' -%}
-{%- unless stone_text == blank or stone_text contains 'Metaobject' or stone_text contains 'Drop' -%}
-  <span class="bz-fact"{% if show_block_attributes %} {{ block.shopify_attributes }}{% endif %}>{%- if block.settings.swatch != blank -%}<i style="background: {{ block.settings.swatch }}"></i>{%- endif -%}<b>{{ stone_name | escape }}</b>{%- if fact_label != blank -%} {{ fact_label | escape }}{%- endif -%}</span>
-{%- endunless -%}

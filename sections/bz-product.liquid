@@ -6,7 +6,6 @@
   custom.pietre, custom.pietre_contenute — lists of pietra metaobjects
   custom.pietra — legacy pietra reference
   custom.bento_title — single line text
-  custom.pairs_with — product reference
 {%- endcomment -%}
 {%- if recommendations.performed -%}
   {%- capture famiglia_libro -%}{%- render 'bz-libro-famiglia', product: product -%}{%- endcapture -%}
@@ -24,21 +23,6 @@
   assign show_mala_facts = false
   if type_key contains 'mala'
     assign show_mala_facts = true
-  endif
-  assign show_stone_facts = false
-  if show_mala_facts or type_key contains 'pietr' or type_key contains 'braccial' or type_key contains 'ciondol' or type_key contains 'collan' or type_key contains 'pendol'
-    assign show_stone_facts = true
-  endif
-  assign pietre = product.metafields.custom.pietre.value
-  assign stone_count = 0
-  if pietre != blank
-    assign pietra = pietre | first
-    assign stone_count = pietre.count | default: pietre.size | default: 0
-  else
-    assign pietra = product.metafields.custom.pietra.value
-    if pietra != blank
-      assign stone_count = 1
-    endif
   endif
   assign contenute = product.metafields.custom.pietre_contenute.value
 -%}
@@ -116,10 +100,16 @@
           {%- unless forloop.last %}, {% endunless -%}
         {%- endfor %}</p>
       {%- endif -%}
+      {%- capture care_faq -%}{%- render 'bz-product-care-faq', product: product -%}{%- endcapture -%}
       {%- if product.metafields.custom.descrizione_bz != blank or product.metafields.custom.benefici_bz.value.size > 0 or product.metafields.custom.dettagli_bz.value.size > 0 or product.metafields.custom.note_bz != blank -%}
-        {%- render 'bz-product-description-fields', product: product, section_id: section.id -%}
-      {%- elsif product.description != blank -%}
-        {%- render 'bz-product-description', description: product.description, section_id: section.id -%}
+        {%- render 'bz-product-description-fields', product: product, section_id: section.id, care_faq: care_faq -%}
+      {%- else -%}
+        {%- if product.description != blank -%}
+          {%- render 'bz-product-description', description: product.description, section_id: section.id -%}
+        {%- endif -%}
+        {%- if care_faq != blank -%}
+          <div class="bzs bz-description bz-description--fields">{{ care_faq }}</div>
+        {%- endif -%}
       {%- endif -%}
       <p class="bz-buy__disclaimer">I significati appartengono alla tradizione e non sostituiscono il parere di un medico.</p>
       {%- assign main_form_id = 'BzProductForm-' | append: section.id -%}
@@ -142,12 +132,13 @@
             <input type="number" name="quantity" value="1" min="1" step="1" inputmode="numeric" aria-label="Quantità">
             <button type="button" data-bz-qty="1" aria-label="Aumenta quantità">+</button>
           </div>
-          <button class="bz-btn bz-btn--gold{% unless current.available %} bz-stock--soldout{% endunless %}" type="submit" name="add" {% if current.available %}aria-label="Aggiungi al carrello: {{ display_name | escape }}"{% endif %} {% unless current.available %}disabled{% endunless %}>
+          <button class="bz-btn bz-btn--gold{% unless current.available %} bz-stock--soldout{% endunless %}" type="submit" name="add" data-bz-buy-submit {% if current.available %}aria-label="Aggiungi al carrello: {{ display_name | escape }}"{% endif %} {% unless current.available %}disabled{% endunless %}>
             {% render 'bz-icon', name: 'shopping_bag', icon_class: 'bz-ico' %}
-            <span data-bz-add-label>{% if current.available %}Aggiungi al carrello{% else %}Esaurito{% endif %}</span>
+            <span data-bz-add-label data-bz-buy-label>{% if current.available %}Aggiungi al carrello{% else %}Esaurito{% endif %}</span>
           </button>
         </div>
       {%- endform -%}
+      <p class="bz-upsell__status" data-bz-buy-status role="alert" hidden></p>
       {%- capture famiglia_libro -%}{%- render 'bz-libro-famiglia', product: product -%}{%- endcapture -%}
       {%- render 'bz-product-upsell', product: product, current: current, family: famiglia_libro -%}
       {%- if famiglia_libro != blank -%}
@@ -198,178 +189,6 @@
             <p>Puoi chiedere un reso entro 14 giorni dalla ricezione. Il prodotto va restituito non indossato, con cartellini e confezione. La spedizione del reso è a tuo carico. Il pacco va a Via Olindo Malagodi 2, Cento. Se il reso è accettato, il rimborso arriva entro 10 giorni lavorativi. <a href="{{ shop.refund_policy.url | default: '/policies/refund-policy' }}">Informativa sui rimborsi</a></p>
           </div>
         </details>
-      </div>
-      <div class="bz-buy__details">
-        {%- capture fact_pills -%}
-          {%- for block in section.blocks -%}
-            {%- if block.type == 'fact' -%}
-              {%- liquid
-                assign fact_key = block.settings.metafield
-                assign fact_value = block.settings.value
-                assign fact_label = block.settings.label
-                assign show_fact = false
-                if fact_key != blank
-                  assign fact_value = product.metafields.custom[fact_key].value
-                  assign fact_text = fact_value | append: ''
-                  if fact_text contains 'Metaobject' or fact_text contains 'Drop'
-                    assign fact_value = blank
-                  endif
-                  assign fact_allowed = true
-                  if fact_key == 'grani' or fact_key == 'diametro'
-                    unless show_mala_facts
-                      assign fact_allowed = false
-                    endunless
-                  endif
-                  if fact_key == 'peso'
-                    unless show_stone_facts
-                      assign fact_allowed = false
-                    endunless
-                  endif
-                  if fact_allowed and fact_value != blank
-                    assign show_fact = true
-                  endif
-                elsif fact_value != blank or fact_label != blank
-                  assign show_fact = true
-                endif
-              -%}
-              {%- if fact_key == 'pietra' or fact_key == 'pietre' -%}
-                {%- if show_stone_facts or stone_count > 1 -%}
-                  {%- if pietre != blank -%}
-                    {%- for stone in pietre -%}
-                      {%- render 'bz-product-stone-pill', stone: stone, block: block, fact_label: fact_label, show_block_attributes: forloop.first -%}
-                    {%- endfor -%}
-                  {%- elsif pietra != blank -%}
-                    {%- render 'bz-product-stone-pill', stone: pietra, block: block, fact_label: fact_label, show_block_attributes: true -%}
-                  {%- endif -%}
-                {%- endif -%}
-              {%- elsif show_fact -%}
-                <span class="bz-fact" {{ block.shopify_attributes }}>{%- if block.settings.swatch != blank -%}<i style="background: {{ block.settings.swatch }}"></i>{%- endif -%}{%- if fact_value != blank -%}<b>{{ fact_value | escape }}</b>{%- endif -%}{%- if fact_label != blank -%} {{ fact_label | escape }}{%- endif -%}</span>
-              {%- endif -%}
-            {%- endif -%}
-          {%- endfor -%}
-        {%- endcapture -%}
-        {%- if fact_pills contains 'class="bz-fact"' -%}
-          <div class="bz-facts">{{ fact_pills }}</div>
-        {%- endif -%}
-
-        {%- assign pair = product.metafields.custom.pairs_with.value -%}
-        {%- if pair != blank and pair.id != blank -%}
-          {%- assign pair_variant = pair.first_available_variant | default: pair.selected_or_first_available_variant -%}
-          {%- capture pair_name -%}{% render 'bz-product-name', product: pair %}{%- endcapture -%}
-          <div class="bz-pair{% if pair.metafields.custom.nome_vetrina.value != blank %} has-nome-vetrina{% else %} is-title-fallback{% endif %}">
-            {%- if pair.featured_image -%}
-              {{ pair.featured_image | image_url: width: 120 | image_tag: alt: pair_name, loading: 'lazy', width: 52, height: 52 }}
-            {%- endif -%}
-            <div>Si abbina a <span class="bz-pair__name">{{ pair_name | escape }}</span><small>{% render 'bz-money', cents: pair_variant.price %}</small></div>
-            {%- if pair_variant.available -%}
-            <form class="bz-ajax-cart" action="{{ routes.cart_add_url }}" method="post">
-              <input type="hidden" name="id" value="{{ pair_variant.id }}">
-              <button class="add bz-card__add" type="submit" aria-label="Aggiungi al carrello: {{ pair_name | escape }}">{% render 'bz-icon', name: 'add' %}</button>
-            </form>
-            {%- endif -%}
-          </div>
-        {%- endif -%}
-
-        {%- liquid
-          assign pietra_tradizione = blank
-          assign pietra_cura = blank
-          if show_stone_facts or stone_count > 1
-            assign pietra_tradizione = pietra.tradizione.value | default: pietra.tradizione
-            assign pietra_cura = pietra.cura.value | default: pietra.cura
-          endif
-          assign meta_trad = product.metafields.custom.tradizione.value | default: product.metafields.custom.tradizione
-          assign meta_cura = product.metafields.custom.cura.value | default: product.metafields.custom.cura
-          if meta_trad != blank
-            assign pietra_tradizione = meta_trad
-          endif
-          if meta_cura != blank
-            assign pietra_cura = meta_cura
-          endif
-        -%}
-        <div class="bz-acc">
-          {%- for block in section.blocks -%}
-            {%- if block.type == 'detail' and block.id != 'det-4' -%}
-              {%- capture acc_body -%}
-                {%- if block.id == 'det-1' -%}
-                  {%- capture spec_table -%}
-                    {%- for spec in section.blocks -%}
-                      {%- if spec.type == 'spec' -%}
-                        {%- assign spec_value = product.metafields.custom[spec.settings.metafield].value -%}
-                        {%- if spec.settings.metafield == 'pietra' or spec.settings.metafield == 'pietre' -%}
-                          {%- if pietre != blank -%}
-                            {%- capture spec_value -%}
-                              {%- for stone in pietre -%}
-                                {{- stone.nome.value | default: stone.nome | default: stone -}}
-                                {%- unless forloop.last %}, {% endunless -%}
-                              {%- endfor -%}
-                            {%- endcapture -%}
-                          {%- elsif pietra != blank -%}
-                            {%- assign spec_value = pietra.nome.value | default: pietra.nome | default: pietra -%}
-                          {%- else -%}
-                            {%- assign spec_value = blank -%}
-                          {%- endif -%}
-                        {%- endif -%}
-                        {%- assign spec_text = spec_value | append: '' -%}
-                        {%- if spec_text contains 'Metaobject' or spec_text contains 'Drop' -%}
-                          {%- assign spec_value = blank -%}
-                        {%- endif -%}
-                        {%- if spec_value != blank -%}
-                          <tr><td>{{ spec.settings.label | escape }}</td><td>{{ spec_value | escape }}</td></tr>
-                        {%- endif -%}
-                      {%- endif -%}
-                    {%- endfor -%}
-                  {%- endcapture -%}
-                  {%- if spec_table contains '<tr>' -%}
-                    <table>{{ spec_table }}</table>
-                  {%- endif -%}
-                {%- elsif block.id == 'det-2' -%}
-                  {%- if pietra_tradizione != blank -%}
-                    <p>{{ pietra_tradizione | escape }}</p>
-                  {%- endif -%}
-                  {%- for stone in pietre offset: 1 -%}
-                    {%- assign tradition = stone.tradizione.value | default: stone.tradizione -%}
-                    {%- if tradition != blank -%}
-                      <h3 class="bz-acc__stone">{{ stone.nome.value | default: stone.nome | escape }}</h3>
-                      <p>{{ tradition | escape | newline_to_br }}</p>
-                    {%- endif -%}
-                  {%- endfor -%}
-                {%- elsif block.id == 'det-3' -%}
-                  {%- render 'bz-product-stone-care', pietre: pietre, pietra_cura: pietra_cura -%}
-                {%- elsif block.settings.text != blank -%}
-                  {{ block.settings.text }}
-                {%- endif -%}
-              {%- endcapture -%}
-              {%- assign acc_body = acc_body | strip -%}
-              {%- if acc_body != blank -%}
-                <details {% if block.settings.open %}open{% endif %} {{ block.shopify_attributes }}>
-                  <summary>{{ block.settings.title | escape }}<i aria-hidden="true"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></i></summary>
-                  <div class="bz-acc__body">{{ acc_body }}</div>
-                </details>
-              {%- endif -%}
-            {%- endif -%}
-          {%- endfor -%}
-          {%- assign uso_meta = product.metafields.custom.come_si_usa.value | default: product.metafields.custom.come_si_usa -%}
-          {%- if uso_meta != blank -%}
-            <details>
-              <summary>Come si usa<i aria-hidden="true"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></i></summary>
-              <div class="bz-acc__body"><p>{{ uso_meta | escape }}</p></div>
-            </details>
-          {%- endif -%}
-          {%- for faq_i in (1..3) -%}
-            {%- liquid
-              assign faq_q_key = 'faq_' | append: faq_i | append: '_domanda'
-              assign faq_a_key = 'faq_' | append: faq_i | append: '_risposta'
-              assign faq_q = product.metafields.custom[faq_q_key].value | default: product.metafields.custom[faq_q_key]
-              assign faq_a = product.metafields.custom[faq_a_key].value | default: product.metafields.custom[faq_a_key]
-            -%}
-            {%- if faq_q != blank and faq_a != blank -%}
-              <details>
-                <summary>{{ faq_q | escape }}<i aria-hidden="true"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></i></summary>
-                <div class="bz-acc__body"><p>{{ faq_a | escape }}</p></div>
-              </details>
-            {%- endif -%}
-          {%- endfor -%}
-        </div>
       </div>
     </div>
   </section>
@@ -432,19 +251,6 @@
   </div>
   {%- endif -%}
 
-  <div class="bz-sticky" inert>
-    <div class="bz-sticky__controls">
-      <div class="bz-qty" role="group" aria-label="Quantità">
-        <button type="button" data-bz-qty="-1" aria-label="Diminuisci quantità" disabled>−</button>
-        <input type="number" value="1" min="1" step="1" inputmode="numeric" aria-label="Quantità">
-        <button type="button" data-bz-qty="1" aria-label="Aumenta quantità">+</button>
-      </div>
-      <button class="bz-btn bz-btn--gold" type="submit" form="{{ main_form_id }}" aria-label="{% if current.available %}Aggiungi al carrello{% else %}Esaurito{% endif %}: {{ display_name | escape }}"{% unless current.available %} disabled{% endunless %}>
-        {% render 'bz-icon', name: 'shopping_bag', icon_class: 'bz-ico' %}
-        <span data-bz-add-label>{% if current.available %}Aggiungi al carrello{% else %}Esaurito{% endif %}</span>
-      </button>
-    </div>
-  </div>
 </div>
 <script type="application/ld+json">
   {
@@ -484,6 +290,7 @@
     }
   }
 </script>
+<script src="{{ 'bz-chrome.js' | asset_url }}" data-bz-cart-api-only defer></script>
 <script src="{{ 'bz-product.js' | asset_url }}" defer></script>
 
 {%- endif -%}
@@ -503,7 +310,7 @@
     { "type": "text", "id": "stat_2_text", "label": "Testo diametro", "info": "Il numero è custom.diametro. Il riquadro compare solo se quel metafield ha un valore.", "default": "ogni perla, lucida e liscia al tatto" },
     { "type": "text", "id": "stat_3", "label": "Peso", "info": "Legacy dei template. In pagina il numero è custom.peso." },
     { "type": "text", "id": "stat_3_text", "label": "Testo peso", "info": "Il numero è custom.peso. Il riquadro compare solo se quel metafield ha un valore.", "default": "leggero da portare tutto il giorno" },
-    { "type": "product", "id": "pair", "label": "Si abbina a", "info": "Legacy dei template. In pagina si usa custom.pairs_with." },
+    { "type": "product", "id": "pair", "label": "Si abbina a", "info": "Impostazione legacy dei template." },
     { "type": "text", "id": "wide_title", "label": "Titolo largo", "default": "Al collo" },
     { "type": "text", "id": "wide_accent", "label": "Corsivo largo", "default": "o al polso" },
     { "type": "textarea", "id": "wide_text", "label": "Testo largo", "default": "Lungo, cade sotto il petto. Avvolto tre o quattro volte, diventa un bracciale a strati." },

@@ -177,7 +177,7 @@
   {%- endfor -%}
 {%- endcapture -%}
 
-{%- if description != blank or tradition_rows != blank or detail_rows != blank or notes != blank -%}
+{%- if description != blank or tradition_rows != blank or detail_rows != blank or notes != blank or care_faq != blank -%}
   <div class="bzs bz-description bz-description--fields">
     {%- if description != blank -%}
       <details class="bzs-item" open>
@@ -228,5 +228,6 @@
         </div>
       </details>
     {%- endif -%}
+    {{ care_faq }}
   </div>
 {%- endif -%}

@@ -46,6 +46,12 @@
   }
   window.bzMoney = formatEuro;
 
+  if (document.currentScript && document.currentScript.hasAttribute("data-bz-cart-api-only")) {
+    // The active theme owns the cart queue and drawer.
+    window.bzAddItems = function (items) { return window.bzAddProductItems(items); };
+    return;
+  }
+
   function replaceSection(selector, html) {
     if (!html) return;
     var parsed = new DOMParser().parseFromString(html, "text/html");

@@ -298,8 +298,8 @@
     }
   }
 
-  function postCart(url, payload) {
-    return cartFetch(url, {
+  function postCart(url, payload, request = cartFetch) {
+    return request(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify(payload)
@@ -517,7 +517,7 @@
     });
   }
 
-  async function addQueuedItems(items) {
+  async function addQueuedItems(items, returnPayload) {
     if (!items.length) {
       openCart();
       return true;
@@ -525,27 +525,33 @@
     const ritual = items.some(item => item.properties?._bz_rituale);
     let response;
     try {
-      response = await postCart(routes.add, { items });
+      response = await postCart(routes.add, { items }, returnPayload ? fetch : cartFetch);
     } finally {
       if (ritual) {
         // A rejected multi-item add can still leave some pieces in the cart.
         try { await clearInvalidRituals(await readCart()); }
-        finally { await refreshCart(); }
+        catch (error) { if (!returnPayload) throw error; }
+        finally {
+          await refreshCart().catch(error => { if (!returnPayload) throw error; });
+        }
       }
     }
-    if (!response.ok) return false;
-    if (!ritual) await refreshCart().catch(() => {});
+    const payload = returnPayload ? await response.json() : null;
+    if (returnPayload && !response.ok && !payload.status) payload.status = response.status;
+    if (!ritual && (response.ok || returnPayload)) await refreshCart().catch(() => {});
+    if (!response.ok || payload?.status || payload?.description) return returnPayload ? payload : false;
     openCart();
-    return true;
+    return returnPayload ? payload : true;
   }
 
-  function addItems(items) {
+  function addItems(items, returnPayload = false) {
     const ritual = items.some(item => item.properties?._bz_rituale);
     const enqueue = ritual ? queueCartLine : queueCart;
-    return enqueue(() => addQueuedItems(items));
+    return enqueue(() => addQueuedItems(items, returnPayload));
   }
 
   window.bzAddRitualItems = addItems;
+  window.bzAddProductItems = items => addItems(items, true);
 
   const adding = new WeakSet();
   async function submitItems(owner, anchor, items) {
@@ -582,7 +588,7 @@
     const quantity = Math.max(1, Math.floor(Number(data.get('quantity')) || 1));
     const variant = q('[name="id"][data-bz-variant]:checked, [type="hidden"][name="id"][data-bz-variant]', form);
     if (id && variant?.dataset.available !== 'false') {
-      submitItems(form, event.submitter?.closest('.bz-sticky') ? event.submitter : form, [{ id, quantity }]);
+      submitItems(form, form, [{ id, quantity }]);
     }
   });
   document.addEventListener('click', event => {

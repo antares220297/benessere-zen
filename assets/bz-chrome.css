@@ -41,10 +41,6 @@
   body {
     padding-bottom: var(--bz-cookie, 0px);
   }
-
-  .bz-sticky.is-on {
-    bottom: var(--bz-cookie, 0px);
-  }
 }
 
 .bz-chrome {

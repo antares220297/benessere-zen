@@ -1,3 +1,143 @@
+window.bzBuy = {
+  init(root, quantity, quantityValue, currency) {
+    const form = quantity.form;
+    const status = root.querySelector('[data-bz-buy-status]');
+    const productName = root.querySelector('h1').textContent;
+    const variantSelector = '[name="id"][data-bz-variant]:checked, input[type="hidden"][name="id"][data-bz-variant]';
+    const pickSelector = '[data-bz-pick]';
+    const disabledCheckboxes = new WeakSet();
+    let pending = false;
+    let previousSummary;
+
+    function read() {
+      const variant = form.querySelector(variantSelector);
+      const available = Boolean(variant && variant.dataset.available !== 'false');
+      const main = { id: Number(variant?.value), quantity: quantityValue(quantity) };
+      const picks = Array.from(root.querySelectorAll(pickSelector)).flatMap(row => {
+        const unavailable = row.dataset.available === 'false';
+        const checkbox = row.querySelector('input[type="checkbox"]');
+        if (unavailable) {
+          if (checkbox) {
+            checkbox.checked = false;
+            if (!checkbox.disabled) {
+              checkbox.disabled = true;
+              disabledCheckboxes.add(checkbox);
+            }
+          }
+          if (row.getAttribute('aria-checked') === 'true') row.setAttribute('aria-checked', 'false');
+          return [];
+        }
+        if (checkbox && disabledCheckboxes.delete(checkbox)) checkbox.disabled = false;
+        if (row.getAttribute('aria-checked') !== 'true' && !checkbox?.checked) return [];
+
+        const id = Number(row.dataset.variantId);
+        const price = Number(row.dataset.price);
+        if (!Number.isSafeInteger(id) || id < 1 || !Number.isSafeInteger(price) || price < 0) return [];
+        const input = row.querySelector('input[data-bz-pick-qty]');
+        const count = input ? Math.min(99, quantityValue(input)) : 1;
+        return [{ item: { id, quantity: count }, price }];
+      });
+      const items = variant ? [main, ...picks.map(pick => pick.item)] : [];
+      const pieces = items.reduce((sum, item) => sum + item.quantity, 0);
+      const total = (variant ? Number(variant.dataset.bzVariant) * main.quantity : 0) +
+        picks.reduce((sum, pick) => sum + pick.price * pick.item.quantity, 0);
+      return { available, picks, summary: { pieces, total, items } };
+    }
+
+    function refresh() {
+      const { available, picks, summary } = read();
+      let label = available ? 'Aggiungi al carrello' : 'Esaurito';
+      if (available && picks.length) {
+        const money = window.bzMoney ? window.bzMoney(summary.total) : currency.format(summary.total / 100);
+        label = 'Aggiungi ' + summary.pieces + ' · ' + money;
+      }
+
+      root.querySelectorAll('[data-bz-buy-submit]').forEach(button => {
+        button.disabled = pending || !available;
+        if (pending) button.setAttribute('aria-busy', 'true');
+        else button.removeAttribute('aria-busy');
+        button.classList.toggle('bz-stock--soldout', !available);
+        const caption = button.querySelector('[data-bz-buy-label]');
+        if (caption && caption.textContent !== label) caption.textContent = label;
+        button.setAttribute('aria-label', label + ': ' + productName);
+      });
+
+      const signature = JSON.stringify({ available, summary });
+      if (signature !== previousSummary) {
+        previousSummary = signature;
+        document.dispatchEvent(new CustomEvent('bz:buy-summary', { detail: summary }));
+      }
+    }
+
+    function update(event) {
+      const target = event.target;
+      if (target === quantity || target.matches('[data-bz-variant]') || target.closest(pickSelector)) refresh();
+    }
+
+    root.addEventListener('input', update);
+    root.addEventListener('change', update);
+    // ARIA-based controls can change state without emitting a native input event.
+    new MutationObserver(records => {
+      if (records.some(record => record.target.matches?.(pickSelector + ', [data-bz-variant]') ||
+        Array.from(record.addedNodes).concat(Array.from(record.removedNodes)).some(node =>
+          node.matches?.(pickSelector) || node.querySelector?.(pickSelector)))) refresh();
+    }).observe(root, {
+      subtree: true,
+      childList: true,
+      attributes: true,
+      attributeFilter: ['aria-checked', 'data-available', 'data-variant-id', 'data-price', 'data-bz-variant']
+    });
+
+    form.addEventListener('submit', async event => {
+      const { available, picks, summary } = read();
+      if (!pending && available) {
+        status.hidden = true;
+        if (!picks.length) return;
+      }
+
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      if (pending || !available) return;
+
+      const items = summary.items;
+      const companions = Array.from(root.querySelectorAll('.bz-upsell [data-upsell-variant]'),
+        row => Number(row.dataset.upsellVariant));
+      if (picks.length === 2 && companions.length === 2 &&
+          new Set([items[0].id, ...companions]).size === 3 &&
+          companions.every(id => picks.some(pick => pick.item.id === id))) {
+        const ids = items.map(item => item.id).sort((a, b) => a - b);
+        const properties = { _bz_rituale: 'r-' + ids.join('-'), _bz_rituale_n: '3' };
+        items.forEach(item => { item.properties = properties; });
+      }
+
+      pending = true;
+      refresh();
+      function errorMessage(error) {
+        const availabilityError = /quantity|available|stock|sold out/i;
+        return Number(error?.status) === 422 ||
+          availabilityError.test(error?.description) || availabilityError.test(error?.message)
+          ? 'Alcuni pezzi non sono disponibili nella quantità scelta. Controlla le quantità e riprova.'
+          : 'Non è stato possibile aggiungere al carrello. Riprova.';
+      }
+      try {
+        const result = await window.bzAddItems(items);
+        if (!result || result.status || result.description || result.message) {
+          status.textContent = errorMessage(result);
+          status.hidden = false;
+        }
+      } catch (error) {
+        status.textContent = errorMessage(error);
+        status.hidden = false;
+      } finally {
+        pending = false;
+        refresh();
+      }
+    }, true);
+
+    return refresh;
+  }
+};
+
 (function () {
   document.querySelectorAll("[data-bz-product]").forEach(function (root) {
     var stage = root.querySelector("#BzStage");
@@ -21,46 +161,14 @@
         }
       });
     });
-    var mainAdd = root.querySelector("[data-bz-atc] button[type='submit']");
-    var sticky = root.querySelector(".bz-sticky");
-    var stickyButton = sticky && sticky.querySelector("button[type='submit']");
-    if (mainAdd && sticky && "IntersectionObserver" in window) {
-      var book = document.querySelector("section.lb#libro");
-      var footers = Array.from(document.querySelectorAll(".shopify-section-group-footer-group, #shopify-section-footer"));
-      if (!footers.length) {
-        var footer = document.querySelector("footer.bz-foot") || document.querySelector("footer");
-        if (footer) footers.push(footer);
-      }
-      var blockers = book ? footers.concat(book) : footers;
-
-      function updateSticky() {
-        var show = mainAdd.getBoundingClientRect().bottom <= 0 && !blockers.some(function (element) {
-          var rect = element.getBoundingClientRect();
-          return rect.height > 0 && rect.bottom >= 0 && rect.top <= window.innerHeight;
-        });
-        sticky.classList.toggle("is-on", show);
-        sticky.toggleAttribute("inert", !show);
-      }
-
-      var stickyObserver = new IntersectionObserver(updateSticky, { threshold: 0 });
-      stickyObserver.observe(mainAdd);
-      blockers.forEach(function (element) { stickyObserver.observe(element); });
-      var stickyFrame;
-      window.addEventListener("scroll", function () {
-        cancelAnimationFrame(stickyFrame);
-        stickyFrame = requestAnimationFrame(updateSticky);
-      }, { passive: true });
-      updateSticky();
-    }
     var shipping = root.querySelector("[data-bz-shipping]");
     var quantity = root.querySelector("[data-bz-atc] input[name='quantity']");
     var currency = new Intl.NumberFormat("it-IT", { style: "currency", currency: "EUR" });
     var cartTotal = Number(root.dataset.bzCartTotal || 0);
     var variantPrice = Number(shipping.dataset.price);
     var threshold = Number(shipping.dataset.threshold);
-    var stickyQuantity = sticky && sticky.querySelector(".bz-qty input");
-    var quantityInputs = stickyQuantity ? [quantity, stickyQuantity] : [quantity];
-    var decreaseButtons = root.querySelectorAll("[data-bz-atc] [data-bz-qty='-1'], .bz-sticky [data-bz-qty='-1']");
+    var decreaseButtons = root.querySelectorAll("[data-bz-atc] [data-bz-qty='-1']");
+    var refreshBuy = window.bzBuy.init(root, quantity, quantityValue, currency);
 
     function quantityValue(input) {
       return Math.max(1, Math.floor(input.valueAsNumber || 1));
@@ -83,27 +191,15 @@
     }
 
     function syncQuantity(value) {
-      quantityInputs.forEach(function (input) {
-        if (input.value !== value) input.value = value;
-      });
+      if (quantity.value !== value) quantity.value = value;
       updateShipping();
+      refreshBuy();
     }
 
-    quantityInputs.forEach(function (input) {
-      input.addEventListener("input", function () { syncQuantity(input.value); });
-      input.addEventListener("change", function () {
-        syncQuantity(String(quantityValue(input)));
-      });
+    quantity.addEventListener("input", updateShipping);
+    quantity.addEventListener("change", function () {
+      syncQuantity(String(quantityValue(quantity)));
     });
-    if (stickyButton && stickyQuantity) {
-      function copyStickyQuantity() {
-        syncQuantity(String(quantityValue(stickyQuantity)));
-      }
-      stickyButton.addEventListener("click", copyStickyQuantity);
-      quantity.form.addEventListener("submit", function (event) {
-        if (event.submitter === stickyButton) copyStickyQuantity();
-      });
-    }
     document.addEventListener("bz:cart-updated", function (event) {
       cartTotal = event.detail.totalPrice;
       updateShipping();
@@ -111,7 +207,6 @@
 
     root.querySelectorAll("input[type='radio'][data-bz-variant]").forEach(function (radio) {
       radio.addEventListener("change", function () {
-        var unavailable = radio.dataset.available === "false";
         var imageId = radio.dataset.imageId || root.dataset.featuredImageId;
         var thumb = Array.from(thumbs).find(function (button) {
           return button.dataset.imageId === imageId;
@@ -119,15 +214,6 @@
         if (thumb) thumb.click();
         var galleryVariant = root.querySelector("[data-bz-gallery-variant]");
         if (galleryVariant) galleryVariant.textContent = radio.dataset.variantTitle;
-        var addLabel = unavailable ? "Esaurito" : "Aggiungi al carrello";
-        var addAriaLabel = addLabel + ": " + root.querySelector("h1").textContent;
-        [mainAdd, stickyButton].forEach(function (button) {
-          if (!button) return;
-          button.disabled = unavailable;
-          button.querySelector("[data-bz-add-label]").textContent = addLabel;
-          button.setAttribute("aria-label", addAriaLabel);
-        });
-        if (mainAdd) mainAdd.classList.toggle("bz-stock--soldout", unavailable);
         var cents = Number(radio.getAttribute("data-bz-variant"));
         if (Number.isFinite(cents) && cents >= 0) {
           variantPrice = cents;
@@ -141,7 +227,7 @@
         }
       });
     });
-    root.querySelectorAll("[data-bz-atc] [data-bz-qty], .bz-sticky [data-bz-qty]").forEach(function (button) {
+    root.querySelectorAll("[data-bz-atc] [data-bz-qty]").forEach(function (button) {
       button.addEventListener("click", function () {
         var next = Math.max(1, quantityValue(quantity) + Number(button.dataset.bzQty));
         syncQuantity(String(next));
