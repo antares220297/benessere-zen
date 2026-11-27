@@ -11,12 +11,15 @@
     const row = form.querySelector('#bbRow');
     const ship = form.querySelector('[data-ship]');
     const status = form.querySelector('#bbStatus');
-    const sticky = root.querySelector('#bbSticky');
-    const stickyLabel = sticky.querySelector('.bb-btn__lb');
-    const stickyDefaultLabel = stickyLabel.innerHTML;
+    const bottom = root.querySelector('#bbBottom');
+    const bottomAction = bottom?.querySelector('.bb-bottom__action');
+    const bottomState = bottom?.querySelector('[data-bottom-state]');
+    const bottomPrefix = bottom?.querySelector('[data-bottom-prefix]');
+    const bottomQuantity = bottom?.querySelector('[data-bottom-quantity]');
+    const bottomFull = bottom?.querySelector('[data-bottom-full]');
+    const bottomTotal = bottom?.querySelector('[data-bottom-total]');
+    const bottomDiscount = bottom?.querySelector('[data-bottom-discount]');
     const buttons = [...root.querySelectorAll('[data-atc]')];
-    const mirror = sticky.querySelector('[data-main-qty-mirror]');
-    const stickyTotal = sticky.querySelector('[data-sticky-total]');
     const errors = root.querySelectorAll('[data-bz-buy-status]');
     const thumbs = [...root.querySelectorAll('[data-bz-thumb]')];
     const stage = root.querySelector('#BzStage');
@@ -26,10 +29,8 @@
     const productName = form.dataset.name;
     const threshold = Number(ship.dataset.threshold);
     const header = document.querySelector('.bz-chrome');
-    const footer = document.querySelector('.bz-foot');
     let cartTotal = Number(root.dataset.bzCartTotal);
     let state = '';
-    let stickyShown = false;
 
     function money(cents) {
       return window.bzMoney(cents);
@@ -51,18 +52,47 @@
       announce(message);
     }
 
-    function updateSticky() {
-      const top = Math.round(header?.getBoundingClientRect().bottom ?? 0);
-      document.documentElement.style.setProperty('--bb-top', top + 'px');
-      const ritual = root.querySelector('.bb-rit:not([hidden])');
-      const cutoff = ritual?.getBoundingClientRect().bottom ??
-        footer?.getBoundingClientRect().top ?? Infinity;
-      const show = row.getBoundingClientRect().bottom < top && cutoff > top + 65;
-      if (show === stickyShown) return;
-      stickyShown = show;
-      sticky.classList.toggle('is-on', show);
-      sticky.setAttribute('aria-hidden', String(!show));
-      sticky.toggleAttribute('inert', !show);
+    function observeBottom() {
+      if (!bottom || !row) return;
+
+      const footer = document.querySelector('.bz-foot');
+      const cart = document.querySelector('.cart-overlay');
+      const menu = document.querySelector('.bz-header-section');
+      const desktopMenu = menu?.querySelector('.main-nav');
+      const viewport = window.visualViewport;
+      let shown = false;
+
+      function updateVisibility() {
+        const height = document.documentElement.clientHeight;
+        const active = document.activeElement;
+        const fieldFocused = active?.matches('input, textarea, select') && !bottom.contains(active);
+        const viewportReduced = viewport && height - viewport.height * viewport.scale > 100;
+        const menuOpen = menu?.classList.contains('is-menu-open') ||
+          desktopMenu?.querySelector('.bz-menu-group[open]');
+        const cartOpen = cart && !cart.hidden;
+        const rowAbove = row.getBoundingClientRect().bottom <= 0;
+        const footerReached = footer && footer.getBoundingClientRect().top <= height;
+        const show = rowAbove && !footerReached && !cartOpen && !menuOpen && !fieldFocused && !viewportReduced;
+        if (show === shown) return;
+        shown = show;
+        bottom.classList.toggle('is-on', show);
+        bottom.setAttribute('aria-hidden', String(!show));
+        bottom.toggleAttribute('inert', !show);
+      }
+
+      const intersections = new IntersectionObserver(updateVisibility);
+      intersections.observe(row);
+      if (footer) intersections.observe(footer);
+
+      const overlays = new MutationObserver(updateVisibility);
+      if (cart) overlays.observe(cart, { attributeFilter: ['hidden'] });
+      if (menu) overlays.observe(menu, { attributeFilter: ['class'] });
+      if (desktopMenu) overlays.observe(desktopMenu, { subtree: true, attributeFilter: ['open'] });
+
+      document.addEventListener('focusin', updateVisibility);
+      document.addEventListener('focusout', () => requestAnimationFrame(updateVisibility));
+      viewport?.addEventListener('resize', updateVisibility);
+      window.addEventListener('resize', updateVisibility);
     }
 
     function render() {
@@ -108,7 +138,6 @@
         const limitReached = step.dataset.step === '-1' ? quantity === 1 : quantity === 99;
         step.setAttribute('aria-disabled', String(limitReached));
       });
-      mirror.textContent = quantity;
       price.textContent = money(unit);
 
       const label = state === 'done' ? 'Aggiunto' : !available ? 'Esaurito' :
@@ -117,10 +146,19 @@
         'Aggiungi ' + pieces + (pieces === 1 ? ' pezzo' : ' pezzi') + ' di ' + productName +
         ' al carrello, totale ' + money(total) + (discounted ? ', sconto del 10% incluso' : '');
       form.querySelector('[data-atc-label]').textContent = label;
-      if (state === 'done' || !available) {
-        stickyLabel.textContent = label;
-      } else if (stickyLabel.innerHTML !== stickyDefaultLabel) {
-        stickyLabel.innerHTML = stickyDefaultLabel;
+      if (bottom) {
+        const paired = pieces - quantity;
+        const stateLabel = state === 'done' || !available ? label : '';
+        const totalLabel = money(total);
+        bottomAction.hidden = Boolean(stateLabel);
+        bottomState.hidden = !stateLabel;
+        bottomState.textContent = stateLabel;
+        bottomPrefix.hidden = paired > 0;
+        bottomQuantity.textContent = quantity + ' pz' + (paired ? ' · +' + paired + ' dal rituale' : '');
+        bottomFull.hidden = !discounted;
+        bottomFull.textContent = discounted ? money(full) : '';
+        bottomDiscount.hidden = !discounted;
+        if (bottomTotal.textContent !== totalLabel) bottomTotal.textContent = totalLabel;
       }
       buttons.forEach(button => {
         button.disabled = !available || Boolean(state);
@@ -132,8 +170,6 @@
         else button.setAttribute('aria-disabled', 'true');
         button.setAttribute('aria-label', ariaLabel);
       });
-      stickyTotal.innerHTML = (pieces > 1 ? '<span class="bb-lg">' + pieces + ' pezzi · </span>' : '') +
-        money(total) + (discounted ? ' · −10%' : '');
 
       const offer = ritual?.querySelector('.bb-set');
       if (offer) {
@@ -158,7 +194,6 @@
         'Ti mancano <b>' + money(left) + '</b> per la spedizione gratuita' : 'Spedizione gratuita inclusa';
       ship.querySelector('[data-ship-bar]').style.transform =
         'scaleX(' + Math.min(1, Math.max(0.02, projected / threshold)).toFixed(3) + ')';
-      updateSticky();
       return { available, items, complete, discounted };
     }
 
@@ -256,9 +291,15 @@
       }
     }, true);
 
-    window.addEventListener('scroll', updateSticky, { passive: true });
-    window.addEventListener('resize', updateSticky);
-    if (header && 'ResizeObserver' in window) new ResizeObserver(updateSticky).observe(header);
+    if (header) {
+      const updateHeaderHeight = () => {
+        root.style.setProperty('--bb-top', Math.round(header.getBoundingClientRect().height) + 'px');
+      };
+      updateHeaderHeight();
+      if ('ResizeObserver' in window) new ResizeObserver(updateHeaderHeight).observe(header);
+      else window.addEventListener('resize', updateHeaderHeight);
+    }
+    observeBottom();
     render();
   }
 

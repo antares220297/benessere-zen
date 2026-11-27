@@ -238,19 +238,23 @@
   </div>
   {%- endif -%}
 
-  <div class="bb-sticky" id="bbSticky" aria-hidden="true" inert>
-    <div class="bb-sticky__in">
+  <div class="bb-bottom" id="bbBottom" role="region" aria-label="Riepilogo acquisto" aria-hidden="true" inert>
+    <div class="bb-bottom__in">
       {%- if stage_image -%}
-        {{ stage_image | image_url: width: 96, height: 96, crop: 'center' | image_tag: class: 'bb-sticky__img', width: 48, height: 48, alt: '' }}
+        {{ stage_image | image_url: width: 96, height: 96, crop: 'center' | image_tag: class: 'bb-bottom__img', width: 48, height: 48, alt: '' }}
       {%- endif -%}
-      <div class="bb-sticky__tx">
-        <span class="bb-sticky__nm">{{ display_name | escape }}</span>
-        <span class="bb-sticky__tot" data-sticky-total>{% render 'bz-money', cents: current.price %}</span>
+      <div class="bb-bottom__text">
+        <span class="bb-bottom__name">{{ display_name | escape }}</span>
+        <span class="bb-bottom__summary"><span data-bottom-prefix>{{ display_name | escape }} · </span><span data-bottom-quantity>1 pz</span></span>
       </div>
-      {% render 'bb-stepper', kind: 'mirror' %}
+      <div class="bb-bottom__prices">
+        <s class="bb-was" data-bottom-full hidden></s>
+        <span class="bb-price" data-bottom-total aria-live="polite">{% render 'bz-money', cents: current.price %}</span>
+        <span class="bb-badge" data-bottom-discount hidden>−10%</span>
+      </div>
       {% render 'bb-atc', available: current.available, form_id: main_form_id %}
     </div>
-    <p class="bz-upsell__status" data-bz-buy-status hidden></p>
+    <p class="bz-upsell__status bb-bottom__error" data-bz-buy-status hidden></p>
   </div>
 </div>
 <script type="application/ld+json">

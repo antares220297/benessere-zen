@@ -754,12 +754,6 @@ html .bzs .bzs-note ol {
   color: var(--bz-text-2);
 }
 
-.bb-sticky > .bz-upsell__status {
-  max-width: var(--bz-container-max);
-  margin: 0 auto var(--bz-sp-8);
-  padding-inline: var(--bz-margin);
-}
-
 .bb-rit .bb-qty .bb-qty__b[data-pstep="1"][aria-disabled="true"] {
   color: var(--bz-text-3) !important;
 }
