@@ -330,9 +330,8 @@
     }
     const invalid = new Set();
     for (const [id, lines] of groups) {
-      const quantity = lines[0].quantity;
-      const valid = lines.length === 3 && new Set(lines.map(line => line.key)).size === 3 &&
-        quantity >= 1 && lines.every(line => line.quantity === quantity);
+      const valid = lines.length === 3 && new Set(lines.map(line => line.variant_id)).size === 3 &&
+        lines.every(line => line.quantity >= 1);
       if (!valid) invalid.add(id);
     }
     return invalid;
@@ -718,25 +717,6 @@
   initHomeSets(document);
   document.addEventListener('shopify:section:load', event => initHomeSets(event.target));
 
-  function upsellVariant(product) {
-    return q('[data-bz-variant]:checked, input[type="hidden"][data-bz-variant]', product);
-  }
-
-  function syncUpsell(product) {
-    const upsell = q('.bz-upsell', product);
-    const variant = upsellVariant(product);
-    if (!upsell || !variant) return;
-    upsell.hidden = variant.dataset.available !== 'true';
-    const price = Number(variant.dataset.bzVariant);
-    q('[data-bz-upsell-price]', upsell).textContent = euro(price);
-    const subtitle = q('[data-bz-upsell-variant]', upsell);
-    if (subtitle) subtitle.textContent = variant.dataset.variantTitle + ' · ';
-    const total = price + Number(upsell.dataset.pairedPrice);
-    q('[data-bz-upsell-full]', upsell).textContent = euro(total);
-    const reduced = q('[data-bz-upsell-reduced]', upsell);
-    if (reduced) reduced.textContent = euro(Math.round(total * 0.9));
-  }
-
   async function loadUpsell(marker) {
     const product = marker.closest('[data-bz-product]');
     const url = new URL(marker.dataset.bzUpsellUrl, location.origin);
@@ -746,149 +726,27 @@
       const response = await fetch(url);
       if (!response.ok) return;
       const html = new DOMParser().parseFromString(await response.text(), 'text/html');
-      const upsell = q('.bz-upsell', html);
+      const upsell = q('.bb-rit', html);
       if (upsell) {
         marker.replaceWith(upsell);
-        syncUpsell(product);
-        syncUpsellCart();
+        product?.dispatchEvent(new Event('bz:ritual-loaded'));
       }
     } catch {
       // Complementary products are optional.
     }
   }
 
-  function paintUpsellCart(cart) {
-    const ids = new Set(cart.items.map(item => item.variant_id));
-    qa('.bz-upsell__add').forEach(button => {
-      const added = ids.has(Number(button.dataset.upsellVariant));
-      button.setAttribute('aria-pressed', String(added));
-    });
-  }
-
-  function completeUpsellLines(lines, ritualIds) {
-    const matches = lines.filter(line => ritualIds.includes(line.variant_id));
-    const quantity = matches[0]?.quantity;
-    return new Set(ritualIds).size === 3 && matches.length === 3 &&
-      ritualIds.every(id => matches.some(line => line.variant_id === id)) &&
-      quantity > 0 && matches.every(line => line.quantity === quantity) ? matches : null;
-  }
-
-  async function addUpsellItems(ritualIds, requestedIds, quantity) {
-    const initialCart = await readCart();
-    const inCart = new Set(initialCart.items.map(line => line.variant_id));
-    const items = requestedIds.filter((id, index) => !inCart.has(id) && requestedIds.indexOf(id) === index)
-      .map(id => ({ id, quantity: id === ritualIds[0] ? quantity : 1 }));
-    const projectedLines = [...initialCart.items, ...items.map(item => ({
-      variant_id: item.id, quantity: item.quantity
-    }))];
-    const complete = completeUpsellLines(projectedLines, ritualIds);
-    const properties = {
-      _bz_rituale: 'r-' + ritualIds.slice().sort((a, b) => a - b).join('-'),
-      _bz_rituale_n: '3'
-    };
-    const hasProperties = line => line.properties?._bz_rituale === properties._bz_rituale &&
-      line.properties?._bz_rituale_n === properties._bz_rituale_n;
-    if (complete) items.forEach(item => { item.properties = properties; });
-
-    // Keep add and change in the same cart operation so cleanup sees the finished trio.
-    let cart = initialCart;
-    try {
-      if (items.length) {
-        const response = await postCart(routes.add, { items });
-        if (!response.ok) throw new Error('cart/add');
-        cart = await readCart();
-      }
-      if (complete) {
-        for (const id of ritualIds) {
-          const line = completeUpsellLines(cart.items, ritualIds)?.find(entry => entry.variant_id === id);
-          if (!line) throw new Error('Incomplete upsell ritual');
-          if (hasProperties(line)) continue;
-          const response = await postCart(routes.change, {
-            id: line.key, quantity: line.quantity, properties: { ...line.properties, ...properties }
-          });
-          if (!response.ok) throw new Error('cart/change');
-          cart = await cartAfterChange(response);
-        }
-        if (!completeUpsellLines(cart.items, ritualIds)?.every(hasProperties) ||
-            invalidRitualIds(cart.items).has(properties._bz_rituale)) {
-          throw new Error('Incomplete upsell ritual');
-        }
-      }
-    } finally {
-      try {
-        // A failed add or change may still have applied some of the properties.
-        if (complete) await clearInvalidRituals(await readCart());
-      } finally {
-        await refreshCart().finally(() => readCart().then(paintUpsellCart).catch(() => {}));
-      }
-    }
-    openCart();
-  }
-
-  function syncUpsellCart() {
-    if (!q('.bz-upsell__add')) return;
-    queueCart(async () => paintUpsellCart(await readCart())).catch(() => {});
-  }
-
   function initUpsells(root) {
     qa('[data-bz-upsell-url]', root).forEach(loadUpsell);
-    syncUpsellCart();
   }
 
   initUpsells(document);
-  document.addEventListener('bz:cart-updated', syncUpsellCart);
-  window.addEventListener('pageshow', event => {
-    if (event.persisted) syncUpsellCart();
-  });
   document.addEventListener('shopify:section:load', event => initUpsells(event.target));
   document.addEventListener('change', event => {
-    if (event.target.matches('[data-bz-variant]:checked')) {
-      const product = event.target.closest('[data-bz-product]');
-      if (product) syncUpsell(product);
-      return;
-    }
     if (!event.target.matches('.ritual-row input[data-variant]')) return;
     const panel = event.target.closest('[data-ritual-set]');
     panel.closest('[data-bz-ritual]').setAttribute('data-ritual-interacted', '');
     paintRitual(panel);
-  });
-
-  document.addEventListener('click', async event => {
-    const button = event.target.closest('.bz-upsell__cta, .bz-upsell__add');
-    if (!button || button.disabled) return;
-    const upsell = button.closest('.bz-upsell');
-    const product = upsell.closest('[data-bz-product]');
-    const variant = upsellVariant(product);
-    if (variant?.dataset.available !== 'true' || upsell.hasAttribute('aria-busy')) return;
-
-    const single = button.matches('.bz-upsell__add');
-    const companions = qa('[data-upsell-variant]', upsell);
-    const ritualIds = [Number(variant.value), ...companions.map(row => Number(row.dataset.upsellVariant))];
-    const ids = single ? [Number(button.dataset.upsellVariant)] : ritualIds;
-    const quantity = Math.max(1, Math.floor(Number(variant.form.elements.quantity.value)) || 1);
-    const status = q('.bz-upsell__status', upsell);
-    status.hidden = true;
-    upsell.setAttribute('aria-busy', 'true');
-    button.disabled = true;
-    button.setAttribute('aria-busy', 'true');
-    if (!single) button.textContent = 'Aggiunta in corso…';
-    try {
-      await queueCartLine(() => addUpsellItems(ritualIds, ids, single ? 1 : quantity));
-      if (!single) {
-        button.removeAttribute('aria-busy');
-        button.textContent = 'Aggiunti';
-        await new Promise(resolve => setTimeout(resolve, 900));
-      }
-    } catch {
-      status.textContent = single ? 'Non è stato possibile aggiungere il prodotto al carrello.' :
-        'Non è stato possibile aggiungere il rituale al carrello.';
-      status.hidden = false;
-    } finally {
-      upsell.removeAttribute('aria-busy');
-      button.removeAttribute('aria-busy');
-      if (!single) button.textContent = 'Aggiungi tutti e tre';
-      button.disabled = false;
-    }
   });
 
   document.addEventListener('click', async event => {

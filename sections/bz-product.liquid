@@ -10,15 +10,22 @@
 {%- if recommendations.performed -%}
   {%- capture famiglia_libro -%}{%- render 'bz-libro-famiglia', product: product -%}{%- endcapture -%}
   {%- assign current = product.selected_or_first_available_variant -%}
-  {%- render 'bz-product-upsell', product: product, current: current, family: famiglia_libro -%}
+  {%- capture display_name -%}{%- render 'bz-product-name', product: product -%}{%- endcapture -%}
+  {%- render 'bz-product-upsell', product: product, current: current, family: famiglia_libro, section_id: section.id, show_offer: section.settings.mostra_sconto_insieme, main_name: display_name -%}
 {%- else -%}
 {{ 'bz-tokens.css' | asset_url | stylesheet_tag }}
 {{ 'bz-home.css' | asset_url | stylesheet_tag }}
 {{ 'bz-product.css' | asset_url | stylesheet_tag }}
+{{ 'bz-buy.css' | asset_url | stylesheet_tag }}
 {{ 'bz-cart.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
   assign current = product.selected_or_first_available_variant
+  assign main_form_id = 'BzProductForm-' | append: section.id
+  assign ship_euros = settings.bz_free_shipping_threshold | default: 50 | at_least: 1
+  assign threshold = ship_euros | times: 100
+  assign projected_total = cart.total_price | plus: current.price
+  assign ship_scale = projected_total | times: 1.0 | divided_by: threshold | at_least: 0.02 | at_most: 1
   assign type_key = product.type | downcase | strip
   assign show_mala_facts = false
   if type_key contains 'mala'
@@ -42,6 +49,7 @@
 
   <section class="bz-pdp">
     <div class="bz-gal">
+      {%- if product.images.size > 1 -%}
       <div class="bz-thumbs">
         <div class="bz-thumbs__scroll">
           {%- for image in product.images -%}
@@ -52,6 +60,7 @@
           {%- endfor -%}
         </div>
       </div>
+      {%- endif -%}
       <div class="bz-stage">
         {%- if stage_image -%}
           {%- assign stage_position = stage_image.position | default: 1 -%}
@@ -87,6 +96,31 @@
         <strong data-bz-price>{% render 'bz-money', cents: current.price %}</strong>
         <small>IVA inclusa</small>
       </div>
+      {%- form 'product', product, id: main_form_id, class: 'bb-buy', data-name: display_name, data-unit: current.price -%}
+        {%- if product.variants.size == 1 -%}
+          <input type="hidden" name="id" value="{{ current.id }}" data-bz-variant="{{ current.price }}" data-available="{{ current.available }}">
+        {%- endif -%}
+        <div class="bb-row" id="bbRow">
+          {% render 'bb-stepper', kind: 'main' %}
+          {% render 'bb-atc', available: current.available %}
+        </div>
+        <p class="bz-upsell__status" data-bz-buy-status hidden></p>
+        <div class="bb-ship{% if projected_total >= threshold %} is-free{% endif %}" data-ship data-threshold="{{ threshold }}">
+          <p class="bb-ship__t">
+            {% render 'bb-icon', name: 'local_shipping' %}
+            <span data-ship-text>
+              {%- if projected_total >= threshold -%}
+                Spedizione gratuita inclusa
+              {%- else -%}
+                {%- assign missing = threshold | minus: projected_total -%}
+                Ti mancano <b>{% render 'bz-money', cents: missing %}</b> per la spedizione gratuita
+              {%- endif -%}
+            </span>
+          </p>
+          <div class="bb-ship__bar" aria-hidden="true"><i data-ship-bar style="transform:scaleX({{ ship_scale }})"></i></div>
+        </div>
+        <p class="bb-sr" id="bbStatus" role="status" aria-live="polite"></p>
+      {%- endform -%}
       {%- if contenute != blank %}
         <p class="bz-buy__contained">Contiene: {% for stone in contenute -%}
           {%- assign stone_name = stone.nome.value | default: stone.nome | strip | downcase | escape -%}
@@ -100,7 +134,7 @@
           {%- unless forloop.last %}, {% endunless -%}
         {%- endfor %}</p>
       {%- endif -%}
-      {%- capture care_faq -%}{%- render 'bz-product-care-faq', product: product -%}{%- endcapture -%}
+      {%- capture care_faq -%}{%- render 'bz-product-care-faq', product: product, ship_euros: ship_euros -%}{%- endcapture -%}
       {%- if product.metafields.custom.descrizione_bz != blank or product.metafields.custom.benefici_bz.value.size > 0 or product.metafields.custom.dettagli_bz.value.size > 0 or product.metafields.custom.note_bz != blank -%}
         {%- render 'bz-product-description-fields', product: product, section_id: section.id, care_faq: care_faq -%}
       {%- else -%}
@@ -112,35 +146,18 @@
         {%- endif -%}
       {%- endif -%}
       <p class="bz-buy__disclaimer">I significati appartengono alla tradizione e non sostituiscono il parere di un medico.</p>
-      {%- assign main_form_id = 'BzProductForm-' | append: section.id -%}
-      {%- form 'product', product, id: main_form_id, class: 'bz-ajax-cart' -%}
-        {%- if product.has_only_default_variant -%}
-          <input type="hidden" name="id" value="{{ current.id }}" data-bz-variant="{{ current.price }}" data-available="{{ current.available }}">
-        {%- else -%}
-          <div class="bz-variants" role="group" aria-label="Variante">
-            {%- for variant in product.variants -%}
-              <label>
-                <input type="radio" name="id" value="{{ variant.id }}"{% if variant.id == current.id %} checked{% endif %} data-bz-variant="{{ variant.price }}" data-available="{{ variant.available }}" data-variant-title="{{ variant.title | escape }}" data-image-id="{{ variant.featured_image.id }}">
-                <span>{{ variant.title | escape }}</span>
-              </label>
-            {%- endfor -%}
-          </div>
-        {%- endif -%}
-        <div class="bz-atc" data-bz-atc>
-          <div class="bz-qty" role="group" aria-label="Quantità">
-            <button type="button" data-bz-qty="-1" aria-label="Diminuisci quantità" disabled>−</button>
-            <input type="number" name="quantity" value="1" min="1" step="1" inputmode="numeric" aria-label="Quantità">
-            <button type="button" data-bz-qty="1" aria-label="Aumenta quantità">+</button>
-          </div>
-          <button class="bz-btn bz-btn--gold{% unless current.available %} bz-stock--soldout{% endunless %}" type="submit" name="add" data-bz-buy-submit {% if current.available %}aria-label="Aggiungi al carrello: {{ display_name | escape }}"{% endif %} {% unless current.available %}disabled{% endunless %}>
-            {% render 'bz-icon', name: 'shopping_bag', icon_class: 'bz-ico' %}
-            <span data-bz-add-label data-bz-buy-label>{% if current.available %}Aggiungi al carrello{% else %}Esaurito{% endif %}</span>
-          </button>
+      {%- if product.variants.size > 1 -%}
+        <div class="bz-variants" role="group" aria-label="Variante">
+          {%- for variant in product.variants -%}
+            <label>
+              <input type="radio" name="id" form="{{ main_form_id }}" value="{{ variant.id }}"{% if variant.id == current.id %} checked{% endif %} data-bz-variant="{{ variant.price }}" data-available="{{ variant.available }}" data-variant-title="{{ variant.title | escape }}" data-image-id="{{ variant.featured_image.id }}">
+              <span>{{ variant.title | escape }}</span>
+            </label>
+          {%- endfor -%}
         </div>
-      {%- endform -%}
-      <p class="bz-upsell__status" data-bz-buy-status role="alert" hidden></p>
+      {%- endif -%}
       {%- capture famiglia_libro -%}{%- render 'bz-libro-famiglia', product: product -%}{%- endcapture -%}
-      {%- render 'bz-product-upsell', product: product, current: current, family: famiglia_libro -%}
+      {%- render 'bz-product-upsell', product: product, current: current, family: famiglia_libro, section_id: section.id, show_offer: section.settings.mostra_sconto_insieme, main_name: display_name -%}
       {%- if famiglia_libro != blank -%}
         {%- capture titolo_libro -%}{%- render 'bz-libro-famiglia', product: product, dato: 'titolo' -%}{%- endcapture -%}
         {%- liquid
@@ -158,38 +175,6 @@
           </span>
         </a>
       {%- endif -%}
-      <p class="bz-buy__return">
-        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 6 4 11l5 5M4 11h10a5 5 0 0 1 0 10"/></svg>
-        Reso entro 14 giorni dalla ricezione
-      </p>
-
-      {%- assign ship_euros = settings.bz_free_shipping_threshold | default: 50 | at_least: 1 -%}
-      {%- assign threshold = ship_euros | times: 100 -%}
-      {%- assign projected_total = cart.total_price | plus: current.price -%}
-      <div class="bz-shipbox" data-bz-shipping data-threshold="{{ threshold }}" data-price="{{ current.price }}">
-        {%- if projected_total >= threshold -%}
-          <p aria-live="polite"><b>Spedizione gratuita</b></p>
-          {%- assign ship_width = 100 -%}
-        {%- else -%}
-          {%- assign short = threshold | minus: projected_total -%}
-          <p aria-live="polite">Ti mancano <b>{% render 'bz-money', cents: short %}</b> per la spedizione gratuita</p>
-          {%- assign ship_width = projected_total | times: 100 | divided_by: threshold -%}
-        {%- endif -%}
-        <div class="bz-ship__track" aria-hidden="true">
-          <i style="width: {{ ship_width }}%"></i>
-        </div>
-      </div>
-
-      {%- assign shipping_block = section.blocks | where: 'type', 'detail' | where: 'id', 'det-4' | first -%}
-      <div class="bz-acc bz-acc--shipping">
-        <details {{ shipping_block.shopify_attributes }}>
-          <summary>Spedizione e reso<i aria-hidden="true"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></i></summary>
-          <div class="bz-acc__body">
-            <p>Spedizione Express {{ settings.bz_express_rate | default: '5,90' | escape }}&nbsp;€ quando la soglia indicata sopra non è raggiunta.</p>
-            <p>Puoi chiedere un reso entro 14 giorni dalla ricezione. Il prodotto va restituito non indossato, con cartellini e confezione. La spedizione del reso è a tuo carico. Il pacco va a Via Olindo Malagodi 2, Cento. Se il reso è accettato, il rimborso arriva entro 10 giorni lavorativi. <a href="{{ shop.refund_policy.url | default: '/policies/refund-policy' }}">Informativa sui rimborsi</a></p>
-          </div>
-        </details>
-      </div>
     </div>
   </section>
 
@@ -251,6 +236,20 @@
   </div>
   {%- endif -%}
 
+  <div class="bb-sticky" id="bbSticky" aria-hidden="true" inert>
+    <div class="bb-sticky__in">
+      {%- if stage_image -%}
+        {{ stage_image | image_url: width: 96, height: 96, crop: 'center' | image_tag: class: 'bb-sticky__img', width: 48, height: 48, alt: '' }}
+      {%- endif -%}
+      <div class="bb-sticky__tx">
+        <span class="bb-sticky__nm">{{ display_name | escape }}</span>
+        <span class="bb-sticky__tot" data-sticky-total>{% render 'bz-money', cents: current.price %}</span>
+      </div>
+      {% render 'bb-stepper', kind: 'mirror' %}
+      {% render 'bb-atc', available: current.available, form_id: main_form_id %}
+    </div>
+    <p class="bz-upsell__status" data-bz-buy-status hidden></p>
+  </div>
 </div>
 <script type="application/ld+json">
   {

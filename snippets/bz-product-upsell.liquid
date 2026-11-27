@@ -60,8 +60,8 @@
       assign tools = 'piatto-di-ricarica-in-selenite-10-cm-albero-della-vita,ciotola-di-ricarica-in-selenite-10-cm-cuore,piatto-di-ricarica-in-selenite-10-cm-mandala'
     endif
 
-    assign first = blank
-    assign second = blank
+    assign first = nil
+    assign second = nil
     if tools != blank
       assign tool_handles = tools | split: ','
       for candidate in tool_handles
@@ -71,7 +71,7 @@
           break
         endif
       endfor
-      if first != blank
+      if first.id
         assign complement_handles = complements | split: ','
         for candidate in complement_handles
           assign item = all_products[candidate]
@@ -81,7 +81,7 @@
           endif
         endfor
 
-        if second == blank and complements == blank
+        if second == nil and complements == blank
           for col in product.collections
             unless col.handle == 'all' or col.handle == 'frontpage'
               for item in col.products
@@ -106,12 +106,12 @@
                     endif
                   endif
                 endif
-                if second != blank
+                if second.id
                   break
                 endif
               endfor
             endunless
-            if second != blank
+            if second.id
               break
             endif
           endfor
@@ -120,7 +120,7 @@
     elsif recommendations.performed
       for item in recommendations.products
         if item.available and item.id != product.id and item.featured_image
-          if first == blank
+          if first == nil
             assign first = item
           elsif item.id != first.id
             assign second = item
@@ -129,75 +129,59 @@
         endif
       endfor
     else
-      assign rec_url = routes.product_recommendations_url | append: '?section_id=' | append: section.id | append: '&product_id=' | append: product.id | append: '&limit=10&intent=complementary'
+      assign rec_url = routes.product_recommendations_url | append: '?section_id=' | append: section_id | append: '&product_id=' | append: product.id | append: '&limit=10&intent=complementary'
     endif
   -%}
   {%- if first.id and second.id and product.featured_image -%}
     {%- liquid
       assign first_variant = first.first_available_variant
       assign second_variant = second.first_available_variant
-      assign paired_price = first_variant.price | plus: second_variant.price
-      assign total = paired_price | plus: current.price
+      assign total = first_variant.price | plus: second_variant.price | plus: current.price
       assign reduced = total | times: 0.9 | round
+      assign saved = total | minus: reduced
     -%}
-    <aside class="bz-upsell bz-upsell--colonna" aria-label="Completa il rituale" data-paired-price="{{ paired_price }}"{% unless current.available %} hidden{% endunless %}>
-      <p class="bz-upsell__label">Completa <em>il rituale</em></p>
-      <ul class="bz-upsell__list" role="list">
-        {%- for row in (1..3) -%}
+    <section class="bb-rit" aria-labelledby="bbRitT-{{ section_id }}" data-offer="{% if show_offer %}on{% else %}off{% endif %}"{% unless current.available %} hidden{% endunless %}>
+      <h2 class="bb-rit__t" id="bbRitT-{{ section_id }}">Completa <em>il rituale</em></h2>
+      <ul class="bb-rit__list" role="list">
+        {%- for row in (1..2) -%}
           {%- liquid
-            if forloop.first
-              assign item = product
-              assign variant = current
-            elsif row == 2
-              assign item = first
-              assign variant = first_variant
-            else
+            assign item = first
+            assign variant = first_variant
+            unless forloop.first
               assign item = second
               assign variant = second_variant
-            endif
+            endunless
             capture name
               render 'bz-product-name', product: item
             endcapture
-            assign storefront_name = item.metafields.custom.nome_vetrina.value | strip
             assign subtitle = item.metafields.custom.variante_vetrina.value | strip
-            if forloop.first and product.variants.size > 1
-              assign subtitle = variant.title
-            endif
+            assign row_id = 'bbRitName-' | append: section_id | append: '-' | append: row
           -%}
-          <li class="bz-upsell__item" data-upsell-handle="{{ item.handle }}"{% if storefront_name == blank %} data-upsell-title-fallback{% endif %}>
-            <figure class="bz-upsell__thumb">{{ item.featured_image | image_url: width: 96, height: 96, crop: 'center' | image_tag: width: 48, height: 48, alt: '', loading: 'lazy' }}</figure>
-            <div class="bz-upsell__text">
-              <span class="bz-upsell__name">{{ name | escape }}</span>
-              {% if forloop.first %}
-                <span class="bz-upsell__sub"><span{% if product.variants.size > 1 %} data-bz-upsell-variant{% endif %}>{% if subtitle != blank %}{{ subtitle | escape }} · {% endif %}</span><span class="bz-upsell__current">questo prodotto</span></span>
-              {% elsif subtitle != blank %}
-                <span class="bz-upsell__sub">{{ subtitle | escape }}</span>
-              {% endif %}
+          <li class="bb-rit__row" data-pair data-cents="{{ variant.price }}" data-variant="{{ variant.id }}" data-name="{{ name | escape }}" data-available="{{ variant.available }}" data-q="0">
+            {{ item.featured_image | image_url: width: 128, height: 128, crop: 'center' | image_tag: class: 'bb-rit__img', width: 64, height: 64, alt: '', loading: 'lazy' }}
+            <div class="bb-rit__tx">
+              <span class="bb-rit__nm" id="{{ row_id }}">{{ name | escape }}</span>
+              {%- if subtitle != blank -%}<span class="bb-rit__sb">{{ subtitle | escape }}</span>{%- endif -%}
             </div>
-            <span class="bz-upsell__price"{% if forloop.first %} data-bz-upsell-price{% endif %}>{% render 'bz-money', cents: variant.price %}</span>
-            {% if forloop.first == false and variant.available %}
-              <button class="bz-upsell__add" type="button" data-upsell-variant="{{ variant.id }}" aria-pressed="false" aria-label="Aggiungi al carrello: {{ name | escape }}{% if subtitle != blank %} {{ subtitle | escape }}{% endif %}">
-                <svg class="bz-upsell__icon-plus" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M5 12h14m-7-7v14"/></svg>
-                <svg class="bz-upsell__icon-check" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" d="M5 12.5l4.5 4.5L19 7.5"/></svg>
-              </button>
-            {% endif %}
+            <div class="bb-rit__act">
+              <span class="bb-price">{% render 'bz-money', cents: variant.price %}</span>
+              {% render 'bb-stepper', kind: 'pair', labelledby: row_id, available: variant.available %}
+            </div>
           </li>
         {%- endfor -%}
       </ul>
-      <div class="bz-upsell__row">
-        <span class="bz-upsell__caption">i tre insieme</span>
-        <p class="bz-upsell__prices">
-          {% if section.settings.mostra_sconto_insieme %}
-            <s data-bz-upsell-full>{% render 'bz-money', cents: total %}</s>
-            <span data-bz-upsell-reduced>{% render 'bz-money', cents: reduced %}</span>
-          {% else %}
-            <span data-bz-upsell-full>{% render 'bz-money', cents: total %}</span>
-          {% endif %}
-        </p>
-      </div>
-      <button class="bz-upsell__cta" type="button">Aggiungi tutti e tre</button>
-      <p class="bz-upsell__status" role="alert" hidden></p>
-    </aside>
+      {%- if show_offer -%}
+        <div class="bb-set" data-set>
+          <div class="bb-set__tx">
+            <p class="bb-set__k"><span data-set-title>Tutti e tre insieme</span> <span class="bb-badge">−10%</span></p>
+            <p class="bb-set__p"><s class="bb-was" data-set-full>{% render 'bz-money', cents: total %}</s> <span class="bb-price" data-set-disc>{% render 'bz-money', cents: reduced %}</span> <span class="bb-save" data-set-save>Risparmi {% render 'bz-money', cents: saved %}</span></p>
+            <p class="bb-set__hint" data-set-hint>Con {{ main_name | escape }} e i due abbinati, almeno un pezzo ciascuno</p>
+          </div>
+          <button type="button" class="bb-btn bb-btn--secondary" data-set-all>{% render 'bb-icon', name: 'add' %}<span>Scegli tutti e tre</span></button>
+          <p class="bb-set__ok" data-set-ok hidden>{% render 'bb-icon', name: 'check' %}<span>Sconto del 10% applicato</span></p>
+        </div>
+      {%- endif -%}
+    </section>
   {%- elsif rec_url != blank -%}
     <div hidden data-bz-upsell-url="{{ rec_url | escape }}"></div>
   {%- endif -%}
