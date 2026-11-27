@@ -170,8 +170,8 @@
           </li>
         {%- endfor -%}
       </ul>
-      {%- if show_offer -%}
-        <div class="bb-set" data-set>
+      {%- if show_offer or include_demo_footer -%}
+        <div class="bb-set" data-set{% unless show_offer %} hidden{% endunless %}>
           <div class="bb-set__tx">
             <p class="bb-set__k"><span data-set-title>Tutti e tre insieme</span> <span class="bb-badge">−10%</span></p>
             <p class="bb-set__p"><s class="bb-was" data-set-full>{% render 'bz-money', cents: total %}</s> <span class="bb-price" data-set-disc>{% render 'bz-money', cents: reduced %}</span> <span class="bb-save" data-set-save>Risparmi {% render 'bz-money', cents: saved %}</span></p>

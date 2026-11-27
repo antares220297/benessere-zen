@@ -2,6 +2,11 @@
   const variantSelector = '[data-bz-variant]:checked, input[type="hidden"][data-bz-variant]';
   const unavailable = 'Alcuni pezzi non sono disponibili nella quantità scelta. Controlla le quantità e riprova.';
   const addError = 'Non è stato possibile aggiungere al carrello. Riprova.';
+  const discountRate = 0.10;
+
+  function discountedTotal(full) {
+    return Math.round(full * (1 - discountRate));
+  }
 
   function init(root) {
     const form = root.querySelector('form.bb-buy');
@@ -20,6 +25,9 @@
     const bottomTotal = bottom?.querySelector('[data-bottom-total]');
     const bottomDiscount = bottom?.querySelector('[data-bottom-discount]');
     const buttons = [...root.querySelectorAll('[data-atc]')];
+    const mainButton = form.querySelector('[data-atc]');
+    const demoOffer = root.dataset.demoOffer === '1' &&
+      new URLSearchParams(window.location.search).get('bz_demo_sconto') === '1';
     const errors = root.querySelectorAll('[data-bz-buy-status]');
     const thumbs = [...root.querySelectorAll('[data-bz-thumb]')];
     const stage = root.querySelector('#BzStage');
@@ -31,6 +39,7 @@
     const header = document.querySelector('.bz-chrome');
     let cartTotal = Number(root.dataset.bzCartTotal);
     let state = '';
+    let cartOpener;
 
     function money(cents) {
       return window.bzMoney(cents);
@@ -61,6 +70,7 @@
       const desktopMenu = menu?.querySelector('.main-nav');
       const viewport = window.visualViewport;
       let shown = false;
+      let cartWasOpen = cart && !cart.hidden;
 
       function updateVisibility() {
         const height = document.documentElement.clientHeight;
@@ -85,7 +95,18 @@
       if (footer) intersections.observe(footer);
 
       const overlays = new MutationObserver(updateVisibility);
-      if (cart) overlays.observe(cart, { attributeFilter: ['hidden'] });
+      if (cart) {
+        const cartVisibility = new MutationObserver(() => {
+          updateVisibility();
+          if (cartWasOpen && cart.hidden && cartOpener) {
+            const target = bottom.contains(cartOpener) && !shown ? mainButton : cartOpener;
+            cartOpener = null;
+            target?.focus({ preventScroll: true });
+          }
+          cartWasOpen = !cart.hidden;
+        });
+        cartVisibility.observe(cart, { attributeFilter: ['hidden'] });
+      }
       if (menu) overlays.observe(menu, { attributeFilter: ['class'] });
       if (desktopMenu) overlays.observe(desktopMenu, { subtree: true, attributeFilter: ['open'] });
 
@@ -93,6 +114,30 @@
       document.addEventListener('focusout', () => requestAnimationFrame(updateVisibility));
       viewport?.addEventListener('resize', updateVisibility);
       window.addEventListener('resize', updateVisibility);
+      updateVisibility();
+    }
+
+    function resolveCareLinks() {
+      const references = root.querySelectorAll('span[data-bz-care-handle][data-bz-care-url]');
+      if (!references.length) return;
+
+      function linkReferences() {
+        clearTimeout(timeout);
+        root.removeEventListener('bz:ritual-loaded', linkReferences);
+        const handles = new Set([...root.querySelectorAll('[data-bz-pair-handle]')]
+          .map(pair => pair.dataset.bzPairHandle));
+        references.forEach(reference => {
+          if (handles.has(reference.dataset.bzCareHandle)) return;
+          const link = document.createElement('a');
+          link.setAttribute('href', reference.dataset.bzCareUrl);
+          link.textContent = reference.textContent;
+          reference.replaceWith(link);
+        });
+      }
+
+      const timeout = setTimeout(linkReferences, 5000);
+      root.addEventListener('bz:ritual-loaded', linkReferences);
+      if (!root.querySelector('[data-bz-upsell-url]')) linkReferences();
     }
 
     function render() {
@@ -101,7 +146,7 @@
       const quantity = mainQuantity();
       const unit = Number(variant?.dataset.bzVariant ?? form.dataset.unit);
       const ritual = root.querySelector('.bb-rit');
-      const discount = ritual?.dataset.offer === 'on' ? 0.10 : 0;
+      const offerEnabled = ritual?.dataset.offer === 'on';
       if (ritual) ritual.hidden = !available;
 
       const pairs = [...(ritual?.querySelectorAll('[data-pair]') ?? [])];
@@ -132,38 +177,48 @@
       });
 
       const complete = items.length === 3 && new Set(items.map(item => item.id)).size === 3;
-      const discounted = complete && discount > 0;
-      const total = discounted ? Math.round(full * (1 - discount)) : full;
+      const discounted = complete && offerEnabled;
+      const total = discounted ? discountedTotal(full) : full;
+      const previewSet = demoOffer && available && pairs.length === 2 &&
+        pairs.every(pair => pair.dataset.available === 'true') &&
+        new Set([variant.value, ...pairs.map(pair => pair.dataset.variant)]).size === 3;
+      const displayDiscounted = discounted || previewSet;
+      const displayFull = previewSet ? setFull : full;
+      const displayTotal = previewSet ? discountedTotal(displayFull) : total;
+      const displayPieces = previewSet ? pieces + missing.length : pieces;
       root.querySelectorAll('[data-step]').forEach(step => {
         const limitReached = step.dataset.step === '-1' ? quantity === 1 : quantity === 99;
         step.setAttribute('aria-disabled', String(limitReached));
       });
       price.textContent = money(unit);
 
-      const label = state === 'done' ? 'Aggiunto' : !available ? 'Esaurito' :
+      const label = !available ? 'Esaurito' : state === 'done' ? 'Aggiunto' :
         pieces > quantity ? 'Aggiungi · ' + money(total) : 'Aggiungi al carrello';
       const ariaLabel = state === 'done' || !available ? label :
         'Aggiungi ' + pieces + (pieces === 1 ? ' pezzo' : ' pezzi') + ' di ' + productName +
         ' al carrello, totale ' + money(total) + (discounted ? ', sconto del 10% incluso' : '');
       form.querySelector('[data-atc-label]').textContent = label;
       if (bottom) {
-        const paired = pieces - quantity;
+        const paired = displayPieces - quantity;
         const stateLabel = state === 'done' || !available ? label : '';
-        const totalLabel = money(total);
+        const totalLabel = money(displayTotal);
         bottomAction.hidden = Boolean(stateLabel);
         bottomState.hidden = !stateLabel;
         bottomState.textContent = stateLabel;
         bottomPrefix.hidden = paired > 0;
         bottomQuantity.textContent = quantity + ' pz' + (paired ? ' · +' + paired + ' dal rituale' : '');
-        bottomFull.hidden = !discounted;
-        bottomFull.textContent = discounted ? money(full) : '';
-        bottomDiscount.hidden = !discounted;
+        bottomFull.hidden = !displayDiscounted;
+        bottomFull.textContent = displayDiscounted ? money(displayFull) : '';
+        bottomDiscount.hidden = !displayDiscounted;
         if (bottomTotal.textContent !== totalLabel) bottomTotal.textContent = totalLabel;
       }
       buttons.forEach(button => {
-        button.disabled = !available || Boolean(state);
-        button.classList.toggle('is-loading', state === 'loading');
-        button.classList.toggle('is-done', state === 'done');
+        // The confirmation state stays focusable for the drawer's return focus.
+        button.disabled = !available || state === 'loading';
+        button.classList.toggle('bb-btn--primary', available);
+        button.classList.toggle('bb-btn--secondary', !available);
+        button.classList.toggle('is-loading', available && state === 'loading');
+        button.classList.toggle('is-done', available && state === 'done');
         if (state === 'loading') button.setAttribute('aria-busy', 'true');
         else button.removeAttribute('aria-busy');
         if (available) button.removeAttribute('aria-disabled');
@@ -172,19 +227,20 @@
       });
 
       const offer = ritual?.querySelector('.bb-set');
-      if (offer) {
-        const setDiscounted = Math.round(setFull * (1 - discount));
-        offer.querySelector('[data-set-full]').textContent = money(discounted ? full : setFull);
-        offer.querySelector('[data-set-disc]').textContent = money(discounted ? total : setDiscounted);
-        offer.querySelector('[data-set-save]').textContent = 'Risparmi ' + money(discounted ? full - total : setFull - setDiscounted);
-        offer.querySelector('[data-set-hint]').textContent = discounted ? 'Su tutti i ' + pieces + ' pezzi dei tre prodotti' :
+      if (offer) offer.hidden = !offerEnabled && !previewSet;
+      if (offer && !offer.hidden) {
+        const setDiscounted = discountedTotal(setFull);
+        offer.querySelector('[data-set-full]').textContent = money(displayDiscounted ? displayFull : setFull);
+        offer.querySelector('[data-set-disc]').textContent = money(displayDiscounted ? displayTotal : setDiscounted);
+        offer.querySelector('[data-set-save]').textContent = 'Risparmi ' + money(displayDiscounted ? displayFull - displayTotal : setFull - setDiscounted);
+        offer.querySelector('[data-set-hint]').textContent = displayDiscounted ? 'Su tutti i ' + displayPieces + ' pezzi dei tre prodotti' :
           missing.length === 1 ? 'Manca solo ' + missing[0] + ' per lo sconto' :
             'Con ' + productName + ' e i due abbinati, almeno un pezzo ciascuno';
         const chooseAll = offer.querySelector('[data-set-all]');
-        chooseAll.hidden = discounted;
+        chooseAll.hidden = displayDiscounted;
         chooseAll.disabled = pairs.some(pair => pair.dataset.available !== 'true');
         chooseAll.setAttribute('aria-disabled', String(chooseAll.disabled));
-        offer.querySelector('[data-set-ok]').hidden = !discounted;
+        offer.querySelector('[data-set-ok]').hidden = !displayDiscounted;
       }
 
       const projected = cartTotal + total;
@@ -269,6 +325,7 @@
       }
 
       showError('');
+      cartOpener = buttons.includes(event.submitter) ? event.submitter : mainButton;
       state = 'loading';
       render();
       try {
@@ -282,6 +339,7 @@
           render();
         }, 2000);
       } catch (error) {
+        cartOpener = null;
         const availabilityError = /quantity|available|stock|sold out/i;
         const isUnavailable = Number(error?.status) === 422 ||
           availabilityError.test(error?.description) || availabilityError.test(error?.message);
@@ -300,6 +358,7 @@
       else window.addEventListener('resize', updateHeaderHeight);
     }
     observeBottom();
+    resolveCareLinks();
     render();
   }
 

@@ -101,6 +101,18 @@
   {%- render 'bb-icon', name: 'expand_more', icon_class: 'bzs-ch' -%}
 {%- endcapture -%}
 
+{%- capture tradition_icons -%}
+  {%- for benefit in benefits -%}
+    {%- if benefit == blank -%}{%- continue -%}{%- endif -%}
+    {%- render 'bb-benefit-icon', benefit: benefit -%};
+  {%- endfor -%}
+{%- endcapture -%}
+{%- assign tradition_icon_rows = tradition_icons | split: ';' -%}
+{%- assign use_reserve_icon = false -%}
+{%- if tradition_icon_rows contains 'riserva|spa' -%}
+  {%- assign use_reserve_icon = true -%}
+{%- endif -%}
+{%- assign icon_index = 0 -%}
 {%- capture tradition_rows -%}
   {%- for benefit in benefits -%}
     {%- liquid
@@ -118,8 +130,14 @@
         endif
       endif
     -%}
-    {%- capture category_icon -%}{%- render 'bb-benefit-icon', title: title, phrase: sentence -%}{%- endcapture -%}
-    {%- assign icon_fields = category_icon | split: '|' -%}
+    {%- liquid
+      assign category_icon = tradition_icon_rows[icon_index]
+      assign icon_index = icon_index | plus: 1
+      if use_reserve_icon
+        assign category_icon = 'riserva|spa'
+      endif
+      assign icon_fields = category_icon | split: '|'
+    -%}
     <li class="bb-ben" data-cat="{{ icon_fields[0] }}">
       <span class="bb-ben__ic">{% render 'bb-icon', name: icon_fields[1] %}</span>
       <div class="bb-ben__tx">
