@@ -1,18 +1,18 @@
+{%- capture display_name -%}{% render 'bz-product-name', product: product %}{%- endcapture -%}
 {% doc %}
   Product card for related products, guides and search results.
   @param {product} product - Product to render
   @param {boolean} [eager] - Load the photo immediately
+  @param {boolean} [show_variant] - Show the display variant when present
 {% enddoc %}
 
 {%- liquid
-  assign variant = product.selected_or_first_available_variant
+  assign variant = product.first_available_variant | default: product.selected_or_first_available_variant
   assign secondary = product.images[1]
-  assign photo_alt = product.featured_image.alt | default: product.title
   assign category = product.type | strip
-  assign display_name = product.metafields.custom.nome_vetrina.value | strip
+  assign display_variant = product.metafields.custom.variante_vetrina.value | strip
   assign name_class = 'has-nome-vetrina'
-  if display_name == blank
-    assign display_name = product.title
+  if product.metafields.custom.nome_vetrina.value == blank
     assign name_class = 'is-title-fallback'
   endif
   assign loading = 'lazy'
@@ -23,9 +23,9 @@
 <article class="bz-card bz-product-tile {{ name_class }}{% unless template.name == 'collection' %} bz-section-product{% endunless %}{% unless product.available %} is-sold{% endunless %}">
   <a class="bz-card__photo bz-product-tile__media" href="{{ product.url }}">
     {%- if product.featured_image != blank -%}
-      {{ product.featured_image | image_url: width: 800 | image_tag: alt: photo_alt, class: 'bz-card__img', widths: '240, 400, 600, 800', sizes: '(min-width: 860px) 18vw, 46vw', loading: loading, width: 400, height: 400 }}
+      {{ product.featured_image | image_url: width: 800 | image_tag: alt: display_name, class: 'bz-card__img', widths: '240, 400, 600, 800', sizes: '(min-width: 860px) 18vw, 46vw', loading: loading, width: 400, height: 400 }}
     {%- else -%}
-      <span class="bz-vh">{{ product.title | escape }}</span>
+      <span class="bz-vh">{{ display_name | escape }}</span>
     {%- endif -%}
     {%- if secondary != blank -%}
       {{ secondary | image_url: width: 800 | image_tag: alt: '', class: 'bz-card__img bz-card__img--alt', widths: '240, 400, 800', sizes: '(min-width: 860px) 18vw, 46vw', loading: 'lazy', width: 400, height: 400 }}
@@ -33,14 +33,20 @@
     {%- render 'bz-card-stock', available: product.available, variant: variant -%}
   </a>
   <h3 class="bz-product-tile__title"><a class="bz-card__name" href="{{ product.url }}">{{ display_name | escape }}</a></h3>
-  <small class="bz-product-tile__meta bz-category-label" style="--bz-category-dot:{% render 'bz-category-dot', type: category %}">{{ category | escape }}</small>
+  {%- if show_variant and display_variant != blank -%}
+    <small class="bz-product-tile__meta bz-card__variant">{{ display_variant | escape }}</small>
+  {%- else -%}
+    <small class="bz-product-tile__meta bz-category-label" style="--bz-category-dot:{% render 'bz-category-dot', type: category %}">{{ category | escape }}</small>
+  {%- endif -%}
   <div class="bz-card__bottom bz-product-tile__bottom">
-    <p class="bz-card__price bz-price">{% render 'bz-money', cents: product.price %}</p>
-    <form class="bz-card__form" action="{{ routes.cart_add_url }}" method="post">
-      {%- if product.available -%}<input type="hidden" name="id" value="{{ variant.id }}">{%- endif -%}
-      <button class="bz-card__add" type="submit"{% unless product.available %} disabled{% endunless %} aria-label="{% if product.available %}Aggiungi {{ display_name | escape }}{% else %}{{ display_name | escape }}: esaurito{% endif %}">
-        {% render 'bz-icon', name: 'add' %}
-      </button>
-    </form>
+    <p class="bz-card__price bz-price">{% render 'bz-money', cents: variant.price %}</p>
+    {%- if variant.available -%}
+      <form class="bz-card__form bz-ajax-cart" action="{{ routes.cart_add_url }}" method="post">
+        {%- if product.available -%}<input type="hidden" name="id" value="{{ variant.id }}">{%- endif -%}
+        <button class="bz-card__add" type="submit"{% unless product.available %} disabled{% endunless %} aria-label="{% if product.available %}Aggiungi {{ display_name | escape }}{% else %}{{ display_name | escape }}: esaurito{% endif %}">
+          {% render 'bz-icon', name: 'add' %}
+        </button>
+      </form>
+    {%- endif -%}
   </div>
 </article>

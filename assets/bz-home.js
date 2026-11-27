@@ -65,43 +65,6 @@
   });
 
   if (window.fetch) {
-    document.querySelectorAll("[data-bz-complementary]").forEach(function (node) {
-      var raw = node.getAttribute("data-url");
-      if (!raw) return;
-      var url = raw;
-      try {
-        var preview = new URL(window.location.href).searchParams.get("preview_theme_id") || "";
-        if (preview) {
-          var next = new URL(raw, window.location.origin);
-          next.searchParams.set("preview_theme_id", preview);
-          url = next.pathname + next.search;
-        }
-      } catch (error) {
-        url = raw;
-      }
-      fetch(url)
-        .then(function (response) {
-          if (!response.ok) throw new Error("recommendations");
-          return response.text();
-        })
-        .then(function (html) {
-          if (node.hasAttribute("data-ritual-interacted") || node.matches(":focus-within")) return;
-          var doc = new DOMParser().parseFromString(html, "text/html");
-          var nextSet = doc.querySelector("[data-bz-ritual]");
-          if (nextSet && nextSet.querySelector("input[data-variant]")) {
-            nextSet.removeAttribute("data-bz-complementary");
-            node.replaceWith(nextSet);
-          } else if (!node.querySelector("input[data-variant]")) {
-            node.remove();
-          }
-        })
-        .catch(function () {
-          if (!node.querySelector("input[data-variant]")) node.remove();
-        });
-    });
-  }
-
-  if (window.fetch) {
     document.querySelectorAll("[data-bz-handle]").forEach(function (node) {
       var handle = node.getAttribute("data-bz-handle");
       if (!handle) return;

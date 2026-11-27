@@ -3,41 +3,40 @@
   assign use_bundle = false
   assign display_total = total
   assign savings = 0
+  assign ritual_discount = false
   if bundle.available and bundle_variant.available and count > 0 and count == piece_count
     assign use_bundle = true
     assign display_total = bundle_variant.price
     assign savings = bundle_variant.compare_at_price | minus: bundle_variant.price
+  elsif pdp and mostra_sconto_insieme and count == 3
+    assign ritual_discount = true
+    assign display_total = total | times: 0.9 | round
   endif
-  assign goal = settings.bz_free_shipping | default: 50 | times: 100
-  assign progress = display_total | at_most: goal
-  assign missing = goal | minus: progress
 -%}
 <div class="ritual-grid{% if shot == blank and asset == blank %} ritual-grid--solo{% endif %}" id="{{ panel_id }}" data-ritual-set="{{ panel_id }}"{% unless first %} hidden{% endunless %}{% if use_bundle %} data-bundle-variant="{{ bundle_variant.id }}" data-bundle-price="{{ bundle_variant.price }}"{% endif %} {{ block.shopify_attributes }}>
   <div class="ritual-list">
     <div class="ritual-rows">{{ rows }}</div>
     <div class="ritual-total">
-      <div>
+      <div{% if pdp %} aria-live="polite" aria-atomic="true"{% endif %}>
         <small class="ritual-count">{{ count }} {% if count == 1 %}pezzo scelto{% else %}pezzi scelti{% endif %}</small>
         {%- if savings > 0 -%}<s class="ritual-compare">{% render 'bz-money', cents: bundle_variant.compare_at_price %}</s>{%- endif -%}
-        <div class="ritual-sum price">{% render 'bz-money', cents: display_total %}</div>
+        <div class="ritual-sum price">{% if ritual_discount %}<s class="ritual-set-original">{% render 'bz-money', cents: total %}</s>{% endif %}{% render 'bz-money', cents: display_total %}</div>
         {%- if savings > 0 -%}<span class="ritual-saving">Risparmi {% render 'bz-money', cents: savings %}</span>{%- endif -%}
       </div>
-      <button class="btn gold" type="button" data-bz-add-set{% if count == 0 %} disabled{% endif %}>Aggiungi al carrello</button>
+      <button class="btn gold" type="button" data-bz-add-set{% if count == 0 %} disabled{% endif %}>{% if ritual_discount %}Aggiungi il set · −10%{% else %}Aggiungi al carrello{% endif %}</button>
       <p class="ritual-status" role="status" data-ritual-status></p>
-      <div class="ritual-shipping" data-shipping>
-        <p data-shipping-text>{% if missing == 0 %}Spedizione gratuita{% else %}Ti mancano <strong>{% render 'bz-money', cents: missing %}</strong> per la spedizione gratuita{% endif %}</p>
-        <div class="track" role="progressbar" aria-label="Verso la spedizione gratuita" aria-valuemin="0" aria-valuemax="{{ goal }}" aria-valuenow="{{ progress }}">
-          <span style="transform:scaleX({{ progress | times: 1.0 | divided_by: goal }})"></span>
-        </div>
-      </div>
     </div>
   </div>
   {%- if shot != blank or asset != blank -%}
     <div class="ritual-visual">
       {%- if shot != blank -%}
-        {{ shot | image_url: width: 1600 | image_tag: alt: shot_alt, class: 'ritual-shot', loading: 'lazy', decoding: 'async', widths: '400, 600, 1000, 1600', sizes: '(min-width: 1024px) min(calc(100vw - 56px), 1384px), calc(100vw - 40px)', width: shot.width, height: shot.height }}
+        {%- if product_panel -%}
+          {{ shot | image_url: width: 520 | image_tag: alt: '', class: 'ritual-shot', loading: 'lazy', decoding: 'async', widths: '260, 520', sizes: '(min-width: 1024px) 260px, 1px' }}
+        {%- else -%}
+          {{ shot | image_url: width: 1600 | image_tag: alt: '', class: 'ritual-shot', loading: 'lazy', decoding: 'async', widths: '400, 600, 1000, 1600', sizes: '(min-width: 1024px) min(42vw, 580px), calc(100vw - 40px)', width: shot.width, height: shot.height }}
+        {%- endif -%}
       {%- else -%}
-        <img class="ritual-shot" src="{{ asset | asset_url }}" alt="{{ shot_alt | escape }}" width="1600" height="1200" loading="lazy" decoding="async">
+        <img class="ritual-shot" src="{{ asset | asset_url }}" alt="" width="1600" height="1200" loading="lazy" decoding="async">
       {%- endif -%}
       {%- if caption_title != blank or caption_accent != blank or caption != blank -%}
         <div class="ritual-caption">

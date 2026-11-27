@@ -1,0 +1,188 @@
+{%- if product.available -%}
+  {%- liquid
+    assign handle = product.handle
+    assign title_key = product.title | downcase
+    assign tools = ''
+    assign complements = ''
+    assign line = ''
+    assign stone = product.metafields.custom.pietre.value | first
+    assign stone = stone | default: product.metafields.custom.pietra.value
+    assign mineral = stone.system.handle | default: stone.handle
+    case family
+      when 'incensi'
+        if title_key contains 'riflusso'
+          assign tools = 'brucia-incenso-a-riflusso-bamboo-spezzato,brucia-incensi-a-riflusso-serine-cascata-ovale,brucia-incenso-riflusso-pietre'
+          assign complements = 'incensi-masala-riflusso-legno-di-sandalo-e-vaniglia,incensi-masala-riflusso-oudh,aromatica-incensi-masala-riflusso-patchouli'
+        elsif title_key contains 'coni' or handle contains 'in-coni'
+          assign tools = 'brucia-incenso-loto-bastoncini-coni-10-cm,brucia-incenso-motivo-fiore-di-loto'
+          assign complements = 'incenso-in-coni-sandalo,incenso-in-coni-ambra,incenso-in-coni-patchouli,incenso-in-coni-sangue-di-drago'
+        elsif title_key contains 'mattoncin' or handle contains 'aromafume'
+          assign tools = 'aromafume-exotic-incense-diffusore-rainbow-100-g-6-5x7-cm,aromafume-exotic-incense-diffusore-albero-della-vita'
+          assign complements = 'mattoncini-dincenso-aromafume-franchincenso,mattoncini-dincenso-aromafume-royal-sandal,aromafume-mattoncini-di-incenso-nag-champa'
+        else
+          assign tools = 'ciotola-incenso-tripla-luna-legno-mango,portaincensi-hamsa-in-steatite-7-chakra,brucia-incenso-loto-bastoncini-coni-10-cm'
+          if handle contains 'cosmos'
+            assign complements = 'sagrada-madre-incenso-naturale-cosmos-venere,sagrada-madre-incenso-naturale-cosmos-giove,sagrada-madre-incenso-naturale-cosmos-sole'
+          else
+            assign line = product.title | split: '|' | first | split: ' - ' | first | downcase | strip
+          endif
+        endif
+      when 'salvia-e-smudge'
+        assign tools = 'trippiede-cobra-piccolo-con-conchiglia-abalone-halitois-multicolore,supporto-per-palo-santo-smudge-e-incensi-grigio-fiore-di-loto,supporto-per-palo-santo-e-incensi-mandala-sabbia-e-grigio'
+        assign complements = 'smudge-salvia-bianca-con-cedro,smudge-di-salvia-bianca-con-yerba-santa-s-per-24-in-espositore,smudge-stick-salvia-bianca'
+      when 'palo-santo'
+        assign tools = 'porta-incenso-ceramica-bianco-palo-santo,bruciatore-palo-santo-loto-multicolore'
+        assign complements = 'palo-santo-naturale-in-stick-purificazione-e-aromaterapia'
+      when 'oli-e-profumi'
+        assign tools = 'brucia-essenze-rosa-in-ceramica-cuore,brucia-essenze-albero-della-vita-ceramica-turchese,brucia-essenze-pietra-ollare-buddha'
+        if handle contains 'banjara'
+          assign complements = 'fragranza-banjara-10ml-legno-di-sandalo,fragranza-banjara-10ml-patchouli,fragranza-banjara-10ml-palo-santo,fragranza-banjara-nag-champa'
+        elsif handle contains 'song-of-india'
+          assign complements = 'olio-essenziale-bergamotto-song-of-india-10ml,olio-essenziale-neroli-song-of-india-10-ml,olio-essenziale-vaniglia-song-of-india-10-ml'
+        elsif handle contains 'esoteric-collection'
+          assign complements = 'olio-aromatico-esoteric-collection-boho-dreams,olio-aromatico-esoteric-collection-buona-fortuna,olio-aromatico-esoteric-collection-occhio-della-provvidenza'
+        else
+          assign line = product.title | split: '|' | first | split: ' - ' | first | downcase | strip
+        endif
+      when 'candele'
+        if handle contains 'da-tavola'
+          assign tools = 'portacandela-in-vetro-per-candela-da-tavola'
+        else
+          assign tools = 'portacandele-vetro-loto-smerigliato,portacandela-in-vetro-smerigliato-interno-metallizzato-albero-della-vita'
+        endif
+        if handle contains 'celestial-magic'
+          assign complements = 'celestial-magic-candela-profumata-incantesimo-polvere-di-luna,celestial-magic-candela-profumata-vibrazioni-magiche'
+        endif
+    endcase
+    assign use_mineral = false
+    if tools == blank and mineral != blank and family != 'amuleti'
+      assign use_mineral = true
+      assign tools = 'piatto-di-ricarica-in-selenite-10-cm-albero-della-vita,ciotola-di-ricarica-in-selenite-10-cm-cuore,piatto-di-ricarica-in-selenite-10-cm-mandala'
+    endif
+
+    assign first = nil
+    assign second = nil
+    if tools != blank
+      assign tool_handles = tools | split: ','
+      for candidate in tool_handles
+        assign item = all_products[candidate]
+        if item.available and item.id != product.id and item.featured_image
+          assign first = item
+          break
+        endif
+      endfor
+      if first.id
+        assign complement_handles = complements | split: ','
+        for candidate in complement_handles
+          assign item = all_products[candidate]
+          if item.available and item.id != product.id and item.id != first.id and item.featured_image
+            assign second = item
+            break
+          endif
+        endfor
+
+        if second == nil and complements == blank
+          for col in product.collections
+            unless col.handle == 'all' or col.handle == 'frontpage'
+              for item in col.products
+                unless item.available and item.id != product.id and item.id != first.id and item.featured_image
+                  continue
+                endunless
+                if use_mineral
+                  assign item_stone = item.metafields.custom.pietre.value | first
+                  assign item_stone = item_stone | default: item.metafields.custom.pietra.value
+                  assign item_mineral = item_stone.system.handle | default: item_stone.handle
+                  if item_mineral == mineral
+                    assign second = item
+                  endif
+                else
+                  capture item_family
+                    render 'bz-libro-famiglia', product: item
+                  endcapture
+                  assign item_line = item.title | split: '|' | first | split: ' - ' | first | downcase | strip
+                  if item_family == family
+                    if item_line == line or family == 'candele'
+                      assign second = item
+                    endif
+                  endif
+                endif
+                if second.id
+                  break
+                endif
+              endfor
+            endunless
+            if second.id
+              break
+            endif
+          endfor
+        endif
+      endif
+    elsif recommendations.performed
+      for item in recommendations.products
+        if item.available and item.id != product.id and item.featured_image
+          if first == nil
+            assign first = item
+          elsif item.id != first.id
+            assign second = item
+            break
+          endif
+        endif
+      endfor
+    else
+      assign rec_url = routes.product_recommendations_url | append: '?section_id=' | append: section_id | append: '&product_id=' | append: product.id | append: '&limit=10&intent=complementary'
+    endif
+  -%}
+  {%- if first.id and second.id and product.featured_image -%}
+    {%- liquid
+      assign first_variant = first.first_available_variant
+      assign second_variant = second.first_available_variant
+      assign total = first_variant.price | plus: second_variant.price | plus: current.price
+      assign reduced = total | times: 0.9 | round
+      assign saved = total | minus: reduced
+    -%}
+    <section class="bb-rit" aria-labelledby="bbRitT-{{ section_id }}" data-offer="{% if show_offer %}on{% else %}off{% endif %}"{% unless current.available %} hidden{% endunless %}>
+      <h2 class="bb-rit__t" id="bbRitT-{{ section_id }}">Completa <em>il rituale</em></h2>
+      <ul class="bb-rit__list" role="list">
+        {%- for row in (1..2) -%}
+          {%- liquid
+            assign item = first
+            assign variant = first_variant
+            unless forloop.first
+              assign item = second
+              assign variant = second_variant
+            endunless
+            capture name
+              render 'bz-product-name', product: item
+            endcapture
+            assign subtitle = item.metafields.custom.variante_vetrina.value | strip
+            assign row_id = 'bbRitName-' | append: section_id | append: '-' | append: row
+          -%}
+          <li class="bb-rit__row" data-pair data-bz-pair-handle="{{ item.handle | escape }}" data-cents="{{ variant.price }}" data-variant="{{ variant.id }}" data-name="{{ name | escape }}" data-available="{{ variant.available }}" data-q="0">
+            {{ item.featured_image | image_url: width: 128, height: 128, crop: 'center' | image_tag: class: 'bb-rit__img', width: 64, height: 64, alt: '', loading: 'lazy' }}
+            <div class="bb-rit__tx">
+              <span class="bb-rit__nm" id="{{ row_id }}">{{ name | escape }}</span>
+              {%- if subtitle != blank -%}<span class="bb-rit__sb">{{ subtitle | escape }}</span>{%- endif -%}
+            </div>
+            <div class="bb-rit__act">
+              <span class="bb-price">{% render 'bz-money', cents: variant.price %}</span>
+              {% render 'bb-stepper', kind: 'pair', labelledby: row_id, available: variant.available %}
+            </div>
+          </li>
+        {%- endfor -%}
+      </ul>
+      {%- if show_offer or include_demo_footer -%}
+        <div class="bb-set" data-set{% unless show_offer %} hidden{% endunless %}>
+          <div class="bb-set__tx">
+            <p class="bb-set__k"><span data-set-title>Tutti e tre insieme</span> <span class="bb-badge">−10%</span></p>
+            <p class="bb-set__p"><s class="bb-was" data-set-full>{% render 'bz-money', cents: total %}</s> <span class="bb-price" data-set-disc>{% render 'bz-money', cents: reduced %}</span> <span class="bb-save" data-set-save>Risparmi {% render 'bz-money', cents: saved %}</span></p>
+            <p class="bb-set__hint" data-set-hint>Con {{ main_name | escape }} e i due abbinati, almeno un pezzo ciascuno</p>
+          </div>
+          <button type="button" class="bb-btn bb-btn--secondary" data-set-all>{% render 'bb-icon', name: 'add' %}<span>Scegli tutti e tre</span></button>
+          <p class="bb-set__ok" data-set-ok hidden>{% render 'bb-icon', name: 'check' %}<span>Sconto del 10% applicato</span></p>
+        </div>
+      {%- endif -%}
+    </section>
+  {%- elsif rec_url != blank -%}
+    <div hidden data-bz-upsell-url="{{ rec_url | escape }}"></div>
+  {%- endif -%}
+{%- endif -%}

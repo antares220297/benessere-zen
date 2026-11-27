@@ -1,6 +1,20 @@
-<ul class="bz-trust" role="list">
-  <li>{% render 'bz-icon', name: 'diamond' %}<span>Pietre naturali</span></li>
-  <li>{% render 'bz-icon', name: 'local_shipping' %}<span>Spedizione gratis da {{ settings.bz_free_shipping | default: 50 }}&nbsp;€</span></li>
+{%- liquid
+  assign show_stone_badge = false
+  if item == blank
+    assign show_stone_badge = true
+  else
+    assign type_key = item.type | strip | handleize
+    case type_key
+      when 'pietre-burattate', 'pietra-burattata', 'pietre-grezze', 'pietra-grezza'
+        assign show_stone_badge = true
+    endcase
+  endif
+-%}
+<ul class="bz-trust{% unless show_stone_badge %} bz-trust--three{% endunless %}" role="list">
+  {%- if show_stone_badge -%}
+    <li>{% render 'bz-icon', name: 'diamond' %}<span>Pietre naturali</span></li>
+  {%- endif -%}
+  <li>{% render 'bz-icon', name: 'local_shipping' %}<span>Spedizione gratis da {{ settings.bz_free_shipping_threshold | default: 50 | at_least: 1 }}&nbsp;€</span></li>
   <li>{% render 'bz-icon', name: 'currency_exchange' %}<span>Reso entro 14 giorni</span></li>
   <li>{% render 'bz-icon', name: 'verified_user' %}<span>Pagamenti sicuri</span></li>
 </ul>

@@ -9,7 +9,7 @@
   assign fri = settings.bz_hours_fri
   assign sat = settings.bz_hours_sat
   assign sun = settings.bz_hours_sun
-  assign note = settings.bz_sunday_note | default: 'Dal 1 dicembre aperti anche la domenica'
+  assign note = settings.bz_sunday_note | default: 'Dal 1 al 24 dicembre aperti tutti i giorni, domenica e lunedì compresi'
 
   assign pretty_mon = mon | replace: ',', ' e ' | replace: '-', '–' | replace: '09:', '9:' | replace: '08:', '8:'
   assign pretty_thu = thu | replace: ',', ' e ' | replace: '-', '–' | replace: '09:', '9:' | replace: '08:', '8:'
@@ -44,23 +44,27 @@
       assign footer_line = footer_line | append: names | append: ' ' | append: prev_pretty
     endif
   endif
-  if sun == blank
-    assign summary = summary | append: ' ' | append: note | append: '.'
-    unless note contains '.'
-      assign summary = summary
-    endunless
-    assign footer_line = footer_line | append: '. ' | append: note
-  else
+  if sun != blank
     assign pretty_sun = sun | replace: ',', ' e ' | replace: '-', '–' | replace: '09:', '9:'
     assign summary = summary | append: ' Domenica: ' | append: pretty_sun | append: '.'
     assign footer_line = footer_line | append: ', dom ' | append: pretty_sun
   endif
+
+  if footer_line != blank
+    assign footer_line = footer_line | strip | append: '. '
+  endif
+  if mon == blank
+    assign summary = summary | strip | append: ' Lunedì chiuso.'
+    assign footer_line = footer_line | append: 'Lunedì chiuso. '
+  endif
+  assign summary = summary | strip | append: ' ' | append: note | append: '.'
+  assign footer_line = footer_line | append: note
 -%}
 {%- if part == 'boot' -%}
   <script type="application/json" id="bz-hours">
     {
       "note": {{ note | json }},
-      "free": {{ settings.bz_free_shipping | default: 50 }},
+      "free": {{ settings.bz_free_shipping_threshold | default: 50 | at_least: 1 }},
       "express": {{ settings.bz_express_rate | default: '5,90' | json }},
       "days": [
         {{ sun | json }},
@@ -88,7 +92,7 @@
         -%}
         <tr data-shop-day="{{ day }}">
           <th scope="row">{{ fields.last }}</th>
-          <td>{% if day == 0 and intervals == blank %}{{ note | escape }}{% else %}{{ intervals | default: 'Chiuso' | escape }}{% endif %}</td>
+          <td>{{ intervals | default: 'Chiuso' | escape }}</td>
         </tr>
       {%- endfor -%}
     </tbody>

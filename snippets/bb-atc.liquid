@@ -1,0 +1,17 @@
+<button class="bb-btn {% if available %}bb-btn--primary{% else %}bb-btn--secondary{% endif %} bb-atc{% if form_id %} bb-bottom__btn{% endif %}" type="submit"{% if form_id %} form="{{ form_id }}"{% endif %} data-atc aria-describedby="bbStatus"{% unless available %} disabled aria-disabled="true"{% endunless %}>
+  <span class="bb-btn__ic">
+    {% render 'bb-icon', name: 'shopping_bag', icon_class: 'i-bag' %}
+    {% render 'bb-icon', name: 'progress_activity', icon_class: 'i-load' %}
+    {% render 'bb-icon', name: 'check', icon_class: 'i-ok' %}
+  </span>
+  <span class="bb-btn__lb"{% unless form_id %} data-atc-label{% endunless %}>
+    {%- if form_id -%}
+      <span class="bb-bottom__action"{% unless available %} hidden{% endunless %}><span class="bb-lg">Aggiungi al carrello</span><span class="bb-sm">Aggiungi</span></span>
+      <span data-bottom-state{% if available %} hidden{% endif %}>{% unless available %}Esaurito{% endunless %}</span>
+    {%- elsif available -%}
+      Aggiungi al carrello
+    {%- else -%}
+      Esaurito
+    {%- endif -%}
+  </span>
+</button>

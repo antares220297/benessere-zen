@@ -1,0 +1,233 @@
+{
+  "sections": {
+    "bz_cielo": {
+      "type": "bz-cielo",
+      "blocks": {
+        "gennaio": {
+          "type": "month",
+          "settings": {
+            "month": "1",
+            "stone": "Granato",
+            "note": "Il granato è nel bracciale; accanto, il diaspro rosso, dello stesso colore.",
+            "early": "Il granato è nel bracciale, insieme al diaspro rosso dello stesso colore. Per la tradizione il Capricorno è la terra di montagna, tenace: a lui il patchouli.",
+            "late": "Il granato è nel bracciale, insieme al diaspro rosso dello stesso colore. Si dice che l’Acquario sia l’aria che guarda lontano: per lui lavanda e palo santo.",
+            "st": "pietre-burattate-diaspro-rosso",
+            "st_name": "Diaspro rosso burattato",
+            "j": "bracciale-granato-quarzo-rosa-cuore",
+            "j_name": "Bracciale con granato"
+          }
+        },
+        "febbraio": {
+          "type": "month",
+          "settings": {
+            "month": "2",
+            "stone": "Ametista",
+            "note": "",
+            "early": "Si dice che l’Acquario sia l’aria che guarda lontano. Per lui, la lavanda con una nota di palo santo.",
+            "late": "I Pesci chiudono il giro dei segni e, si dice, sono l’acqua che sogna. Per loro, gelsomino e oud.",
+            "st": "pietre-burattate-ametista-1",
+            "st_name": "Ametista burattata",
+            "j": "bracciale-ametista-naturale",
+            "j_name": "Bracciale con ametista"
+          }
+        },
+        "marzo": {
+          "type": "month",
+          "settings": {
+            "month": "3",
+            "stone": "Acquamarina",
+            "note": "",
+            "early": "I Pesci chiudono il giro dei segni e, si dice, sono l’acqua che sogna. Per loro, gelsomino e oud.",
+            "late": "Nella tradizione l’Ariete apre il giro dei segni: è il fuoco che parte. Per lui, incenso e mirra.",
+            "st": "acquamarina",
+            "st_name": "Acquamarina grezza",
+            "j": "ciondolo-in-acquamarina-grezza",
+            "j_name": "Ciondolo acquamarina"
+          }
+        },
+        "aprile": {
+          "type": "month",
+          "settings": {
+            "month": "4",
+            "stone": "Diamante",
+            "note": "Ad aprile la tradizione affianca al diamante il cristallo di rocca.",
+            "early": "Ad aprile la tradizione affianca al diamante il cristallo di rocca, e all’Ariete, fuoco che apre il giro dei segni, incenso e mirra.",
+            "late": "Ad aprile la tradizione affianca al diamante il cristallo di rocca, e al Toro, terra che ama le cose buone e lente, il patchouli.",
+            "st": "pietre-burattate-cristallo-di-rocca",
+            "st_name": "Cristallo burattato",
+            "j": "ciondolo-cristallo-di-rocca-grezzo",
+            "j_name": "Ciondolo cristallo grezzo"
+          }
+        },
+        "maggio": {
+          "type": "month",
+          "settings": {
+            "month": "5",
+            "stone": "Smeraldo",
+            "note": "Lo smeraldo è nel ciondolo; accanto, l’avventurina verde.",
+            "early": "Lo smeraldo è nel ciondolo, insieme all’avventurina verde. Si dice che il Toro sia la terra che ama le cose buone e lente: il patchouli, intenso, gli somiglia.",
+            "late": "Lo smeraldo è nel ciondolo, insieme all’avventurina verde. Nella tradizione i Gemelli sono l’aria che si muove e chiacchiera: per loro, lavanda e palo santo.",
+            "st": "pietre-burattate-avventurina",
+            "st_name": "Avventurina burattata",
+            "j": "ciondolo-di-smeraldo-forato",
+            "j_name": "Ciondolo con smeraldo"
+          }
+        },
+        "giugno": {
+          "type": "month",
+          "settings": {
+            "month": "6",
+            "stone": "Perla",
+            "note": "A giugno la tradizione affianca alla perla la pietra di luna.",
+            "early": "A giugno la tradizione affianca alla perla la pietra di luna, e ai Gemelli, aria che si muove e chiacchiera, lavanda e palo santo.",
+            "late": "A giugno la tradizione affianca alla perla la pietra di luna, e al Cancro, segno della Luna e della casa, gelsomino e oud.",
+            "st": "pietra-di-luna-arcobaleno-4-varianti-1",
+            "st_name": "Pietra di luna arcobaleno",
+            "j": "braccialetto-pierre-de-lune-blanche",
+            "j_name": "Bracciale pietra di luna"
+          }
+        },
+        "luglio": {
+          "type": "month",
+          "settings": {
+            "month": "7",
+            "stone": "Rubino",
+            "note": "A luglio la tradizione affianca al rubino la corniola.",
+            "early": "A luglio la tradizione affianca al rubino la corniola, e al Cancro, segno della Luna e della casa, gelsomino e oud.",
+            "late": "A luglio la tradizione affianca al rubino la corniola, e al Leone, segno del Sole, la resina calda di incenso e mirra.",
+            "st": "pietre-burattate-corniola",
+            "st_name": "Corniola burattata",
+            "j": "braccialetto-con-perle-di-rubino-zoisite",
+            "j_name": "Bracciale rubino zoisite"
+          }
+        },
+        "agosto": {
+          "type": "month",
+          "settings": {
+            "month": "8",
+            "stone": "Peridoto",
+            "note": "Nel corredo giada e prehnite, scelte per il verde del peridoto.",
+            "early": "Nel corredo giada e prehnite, scelte per il verde del peridoto. Nella tradizione il Leone è il segno del Sole: al suo fuoco si dà la resina calda di incenso e mirra.",
+            "late": "Nel corredo giada e prehnite, scelte per il verde del peridoto. Si dice che la Vergine sia la terra del raccolto, paziente e precisa: per lei, il patchouli.",
+            "st": "giada",
+            "st_name": "Giada grezza",
+            "j": "braccialetto-prehnite",
+            "j_name": "Bracciale con prehnite"
+          }
+        },
+        "settembre": {
+          "type": "month",
+          "settings": {
+            "month": "9",
+            "stone": "Zaffiro",
+            "note": "Accanto allo zaffiro, settembre ha anche il lapislazzuli.",
+            "early": "Accanto allo zaffiro, settembre ha anche il lapislazzuli. Si dice che la Vergine sia la terra del raccolto, paziente e precisa: per lei, il patchouli.",
+            "late": "Accanto allo zaffiro, settembre ha anche il lapislazzuli. C’è chi vede nella Bilancia l’aria che cerca equilibrio: per lei, la candela a lavanda e palo santo.",
+            "st": "lapislazzuli",
+            "st_name": "Lapislazzuli grezzo",
+            "j": "ciondolo-in-lapis-lazuli",
+            "j_name": "Ciondolo in lapislazzuli"
+          }
+        },
+        "ottobre": {
+          "type": "month",
+          "settings": {
+            "month": "10",
+            "stone": "Opale",
+            "note": "",
+            "early": "C’è chi vede nella Bilancia l’aria che cerca equilibrio. Per lei, la candela a lavanda e palo santo.",
+            "late": "Si dice che lo Scorpione sia l’acqua profonda, quella che non si vede. Per lui, l’oud con il gelsomino.",
+            "st": "opale-blu",
+            "st_name": "Opale blu grezzo",
+            "j": "braccialetto-oplae-jaune",
+            "j_name": "Bracciale opale giallo"
+          }
+        },
+        "novembre": {
+          "type": "month",
+          "settings": {
+            "month": "11",
+            "stone": "Topazio",
+            "note": "A novembre la tradizione affianca al topazio il citrino.",
+            "early": "A novembre la tradizione affianca al topazio il citrino, e allo Scorpione, acqua profonda che non si vede, l’oud con il gelsomino.",
+            "late": "A novembre la tradizione affianca al topazio il citrino, e al Sagittario, fuoco che viaggia lontano, incenso e mirra.",
+            "st": "pietre-burattate-quarzo-citrino",
+            "st_name": "Citrino burattato",
+            "j": "braccialetto-citrine-naturelle",
+            "j_name": "Bracciale con citrino"
+          }
+        },
+        "dicembre": {
+          "type": "month",
+          "settings": {
+            "month": "12",
+            "stone": "Turchese",
+            "note": "A dicembre la tradizione affianca al turchese il lapislazzuli.",
+            "early": "A dicembre la tradizione affianca al turchese il lapislazzuli, e al Sagittario, fuoco che viaggia lontano, incenso e mirra.",
+            "late": "A dicembre la tradizione affianca al turchese il lapislazzuli, e al Capricorno, terra di montagna e tenace, il patchouli.",
+            "st": "pietre-burattate-lapislazzuli",
+            "st_name": "Lapislazzuli burattato",
+            "j": "ciondolo-a-cuore-in-lapislazzuli",
+            "j_name": "Cuore in lapislazzuli"
+          }
+        },
+        "fuoco": {
+          "type": "element",
+          "settings": {
+            "element": "fuoco",
+            "product": "stamford-premium-bastoncini-di-incenso-incenso-e-mirra",
+            "short_name": "Incenso e mirra"
+          }
+        },
+        "terra": {
+          "type": "element",
+          "settings": {
+            "element": "terra",
+            "product": "bastoncini-incenso-stamford-premium-patchouli",
+            "short_name": "Incenso al patchouli"
+          }
+        },
+        "aria": {
+          "type": "element",
+          "settings": {
+            "element": "aria",
+            "product": "candela-intenti-purifying-moon",
+            "short_name": "Candela Purifying Moon"
+          }
+        },
+        "acqua": {
+          "type": "element",
+          "settings": {
+            "element": "acqua",
+            "product": "candela-intenti-divine-goddess",
+            "short_name": "Candela Divine Goddess"
+          }
+        }
+      },
+      "block_order": [
+        "gennaio",
+        "febbraio",
+        "marzo",
+        "aprile",
+        "maggio",
+        "giugno",
+        "luglio",
+        "agosto",
+        "settembre",
+        "ottobre",
+        "novembre",
+        "dicembre",
+        "fuoco",
+        "terra",
+        "aria",
+        "acqua"
+      ],
+      "settings": {
+        "signs": "[{\"n\":\"Capricorno\",\"m\":12,\"d\":22,\"el\":\"terra\",\"pietre\":\"granato e rubino\",\"g\":\"♑\",\"fr\":\"Per la tradizione il Capricorno è la terra di montagna, tenace. Nel suo corredo c’è il patchouli.\"},{\"n\":\"Acquario\",\"m\":1,\"d\":20,\"el\":\"aria\",\"pietre\":\"ametista e granato\",\"g\":\"♒\",\"fr\":\"Si dice che l’Acquario sia l’aria che guarda lontano. Per lui, la lavanda con una nota di palo santo.\"},{\"n\":\"Pesci\",\"m\":2,\"d\":19,\"el\":\"acqua\",\"pietre\":\"acquamarina e ametista\",\"g\":\"♓\",\"fr\":\"I Pesci chiudono il giro dei segni e, si dice, sono l’acqua che sogna. Per loro, gelsomino e oud.\"},{\"n\":\"Ariete\",\"m\":3,\"d\":21,\"el\":\"fuoco\",\"pietre\":\"diamante ed eliotropio\",\"g\":\"♈\",\"fr\":\"Nella tradizione l’Ariete apre il giro dei segni: è il fuoco che parte. Per lui, incenso e mirra.\"},{\"n\":\"Toro\",\"m\":4,\"d\":20,\"el\":\"terra\",\"pietre\":\"smeraldo e zaffiro\",\"g\":\"♉\",\"fr\":\"Si dice che il Toro sia la terra che ama le cose buone e lente. Il patchouli, intenso, gli somiglia.\"},{\"n\":\"Gemelli\",\"m\":5,\"d\":21,\"el\":\"aria\",\"pietre\":\"perla e agata\",\"g\":\"♊\",\"fr\":\"Nella tradizione i Gemelli sono l’aria che si muove e chiacchiera: per loro, lavanda e palo santo.\"},{\"n\":\"Cancro\",\"m\":6,\"d\":21,\"el\":\"acqua\",\"pietre\":\"rubino e smeraldo\",\"g\":\"♋\",\"fr\":\"Per la tradizione il Cancro è il segno della Luna e della casa. Accanto a lui, gelsomino e oud.\"},{\"n\":\"Leone\",\"m\":7,\"d\":23,\"el\":\"fuoco\",\"pietre\":\"peridoto e onice\",\"g\":\"♌\",\"fr\":\"Nella tradizione il Leone è il segno del Sole. Al suo fuoco si dà la resina calda di incenso e mirra.\"},{\"n\":\"Vergine\",\"m\":8,\"d\":23,\"el\":\"terra\",\"pietre\":\"zaffiro e corniola\",\"g\":\"♍\",\"fr\":\"Si dice che la Vergine sia la terra del raccolto, paziente e precisa. Per lei, un profumo di patchouli.\"},{\"n\":\"Bilancia\",\"m\":9,\"d\":23,\"el\":\"aria\",\"pietre\":\"opale e crisolito\",\"g\":\"♎\",\"fr\":\"C’è chi vede nella Bilancia l’aria che cerca equilibrio. Per lei, la candela a lavanda e palo santo.\"},{\"n\":\"Scorpione\",\"m\":10,\"d\":23,\"el\":\"acqua\",\"pietre\":\"topazio e berillo\",\"g\":\"♏\",\"fr\":\"Si dice che lo Scorpione sia l’acqua profonda, quella che non si vede. Per lui, l’oud con il gelsomino.\"},{\"n\":\"Sagittario\",\"m\":11,\"d\":22,\"el\":\"fuoco\",\"pietre\":\"turchese e topazio\",\"g\":\"♐\",\"fr\":\"Nella tradizione il Sagittario è il fuoco che viaggia lontano. Con lui, incenso e mirra.\"}]"
+      }
+    }
+  },
+  "order": [
+    "bz_cielo"
+  ]
+}

@@ -1,0 +1,10 @@
+{%- comment -%}Keep the phrase plain until the ritual's product handles are known.{%- endcomment -%}
+{%- assign reference = all_products[handle] -%}
+{%- assign pair_marker = handle | prepend: 'data-bz-pair-handle="' | append: '"' -%}
+{%- if reference.url == blank or product.handle == handle or ritual contains pair_marker -%}
+  {{- phrase -}}
+{%- elsif ritual contains 'data-bz-upsell-url=' -%}
+  <span data-bz-care-handle="{{ handle | escape }}" data-bz-care-url="{{ reference.url | escape }}">{{ phrase }}</span>
+{%- else -%}
+  <a href="{{ reference.url | escape }}">{{ phrase }}</a>
+{%- endif -%}

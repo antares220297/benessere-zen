@@ -18,14 +18,14 @@ body:has(.bz-hero) {
 
 .bz-home {
   color: #eee7db;
-  font-family: Figtree, var(--sans), system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", var(--sans), system-ui, sans-serif;
   background: #141312;
 }
 
 .bz-home h1,
 .bz-home h2,
 .bz-home h3 {
-  font-family: Baskervville, var(--serif), Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", var(--serif), Georgia, serif;
   font-weight: 400;
   letter-spacing: -0.005em;
   color: #eee7db;
@@ -132,7 +132,7 @@ body:has(.bz-hero) {
   font-size: 17px;
   line-height: 1.45;
   color: var(--ivory2);
-  max-width: 44ch;
+  max-width: 28.20em;
   margin: 0 0 28px;
 }
 
@@ -280,7 +280,7 @@ body:has(.bz-hero) {
   font-size: 14px;
   color: var(--ivory2);
   margin: 0 0 14px;
-  max-width: 22ch;
+  max-width: 14.10em;
 }
 
 .bz-tile p.bz-tile__figure {
@@ -335,7 +335,7 @@ body:has(.bz-hero) {
   width: 118px;
   text-align: center;
   color: #eee7db;
-  font-family: Figtree, var(--sans), system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", var(--sans), system-ui, sans-serif;
   text-decoration: none;
   font-size: 14px;
   font-weight: 500;
@@ -379,7 +379,7 @@ body:has(.bz-hero) {
   display: block;
   min-height: 1.2em;
   color: #958d7f;
-  font-family: Figtree, var(--sans), system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", var(--sans), system-ui, sans-serif;
   font-weight: 400;
   font-size: 12px;
 }
@@ -406,7 +406,7 @@ body:has(.bz-hero) {
   height: 100%;
   background: #2a2420;
   color: #e3cb95;
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
   font-size: 32px;
 }
 
@@ -422,7 +422,7 @@ body:has(.bz-hero) {
   padding: 36px 24px 28px;
   background: #141312;
   color: #eee7db;
-  font-family: Figtree, var(--sans), system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", var(--sans), system-ui, sans-serif;
 }
 
 .bz-picked__head {
@@ -494,7 +494,7 @@ body:has(.bz-hero) {
   border-radius: 999px;
   background: transparent;
   color: #cdc4b4;
-  font-family: Figtree, var(--sans), system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", var(--sans), system-ui, sans-serif;
   font-size: 14px;
   font-weight: 500;
   line-height: 1;
@@ -565,7 +565,7 @@ body:has(.bz-hero) {
   align-items: center;
   gap: 8px;
   color: #e3cb95;
-  font-family: Figtree, var(--sans), system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", var(--sans), system-ui, sans-serif;
   font-size: 14px;
   font-weight: 600;
   text-decoration: none;
@@ -643,7 +643,7 @@ body:has(.bz-hero) {
   border-radius: 18px;
   padding: 8px 8px 14px;
   color: #eee7db;
-  font-family: Figtree, var(--sans), system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", var(--sans), system-ui, sans-serif;
 }
 
 .bz-card:hover {
@@ -692,7 +692,7 @@ body:has(.bz-hero) {
   border-radius: 999px;
   background: #c9a96e;
   color: #17130d;
-  font-family: Figtree, var(--sans), system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", var(--sans), system-ui, sans-serif;
   font-size: 12px;
   font-weight: 600;
 }
@@ -783,7 +783,7 @@ body:has(.bz-hero) {
 .bz-card__price {
   margin: 8px 6px 0;
   margin-top: auto;
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
   font-size: 22px;
   line-height: 1;
 }
@@ -1030,3 +1030,4 @@ body:has(.bz-hero) {
     transition: none;
   }
 }
+/* ch → em: larghezze indipendenti dal font di ripiego (giro G2) */

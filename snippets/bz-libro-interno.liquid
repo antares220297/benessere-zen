@@ -1,0 +1,50 @@
+{%- liquid
+  assign copertina = copertina | default: 'libro-copertina-comune.webp'
+  assign genitivo = titolo | downcase
+  assign capitoli = capitolo_1 | append: '|' | append: capitolo_2 | append: '|' | append: capitolo_3 | append: '|' | append: capitolo_4 | split: '|'
+  assign inizi = '3,6,9,12' | split: ','
+-%}
+{{ 'bz-libro.css' | asset_url | stylesheet_tag }}
+<section class="lb" id="libro" tabindex="-1" aria-labelledby="lb-h" lang="it" data-state="closed"
+  data-engine="{{ 'libro-3d.min.js' | asset_url }}"
+  data-paper="{{ 'libro-carta-antica.webp' | asset_url }}"
+  data-cover="{{ copertina | asset_url }}"
+  data-endpaper="{{ 'libro-sguardia.webp' | asset_url }}"
+  data-tabs="{{ 'libro-linguetta-0.webp' | asset_url }},{{ 'libro-linguetta-1.webp' | asset_url }},{{ 'libro-linguetta-2.webp' | asset_url }},{{ 'libro-linguetta-3.webp' | asset_url }}">
+  <div class="lb-wrap">
+    <div class="lb-head">
+      <p class="lb-kick">Dal grimorio</p>
+      <h2 id="lb-h">Il libro <em>{{ genitivo | escape }}</em></h2>
+      <p class="lb-lead"><span class="lb-hint-c">Sciogli il nastro per aprirlo, poi tocca una linguetta.</span><span class="lb-hint-o">Scegli un capitolo o sfoglia le pagine.</span></p>
+    </div>
+    <nav class="lb-chap" aria-label="Indice dei capitoli">
+      {%- for capitolo in capitoli -%}
+        {%- if forloop.index == 3 -%}<span class="lb-br" aria-hidden="true"></span>{%- endif -%}
+        <button class="lb-ch" type="button" data-to="{{ inizi[forloop.index0] }}" aria-controls="lb-stage">{{ capitolo | escape }}</button>
+      {%- endfor -%}
+    </nav>
+  </div>
+  <div class="lb-stage" id="lb-stage" tabindex="0" role="region" aria-roledescription="libro" aria-label="Libro {{ genitivo | escape }}: usa le frecce per sfogliare">
+    <div class="lb-gl" aria-hidden="true"></div>
+    <div class="lb-poster">
+      <img src="{{ copertina | asset_url }}" alt="Il libro {{ genitivo | escape }}, chiuso: copertina di velluto viola ricamata in oro, legata da un nastro" width="768" height="1024" loading="lazy" decoding="async">
+      <p class="cv-t" aria-hidden="true"><span>{{ titolo | escape }}</span></p>
+    </div>
+    <div class="lb-flip">{{ pagine }}</div>
+    <div class="lb-ribbon" aria-hidden="true"><div class="rb-rot"><i class="rb-band rb-band--l"></i><i class="rb-band rb-band--r"></i></div><div class="rb-knot"><img class="rb-nodo" src="{{ 'libro-nastro-nodo.webp' | asset_url }}" alt="" width="360" height="354" loading="lazy"></div></div>
+    <button class="lb-open" type="button" aria-label="Sciogli il nastro e apri il libro"></button>
+    <nav class="lb-tabs" aria-label="Capitoli del libro"><div class="lb-tabs--v">
+      {%- for capitolo in capitoli -%}
+        <button class="tab tab--v tab-{{ forloop.index0 }}" type="button" data-to="{{ inizi[forloop.index0] }}" aria-label="Vai al capitolo «{{ capitolo | escape }}»" aria-controls="lb-stage"><span>{{ capitolo | escape }}</span></button>
+      {%- endfor -%}
+    </div></nav>
+  </div>
+  <div class="lb-ctrl">
+    <button class="lb-nav lb-prev" type="button" aria-label="Pagina precedente" aria-controls="lb-stage" disabled><svg class="ic" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M266.31-457.31 512-212l-32 32-300-300 300-300 32 32-245.69 245.31H780v45.38H266.31Z"/></svg></button>
+    <button class="lb-all" type="button" aria-haspopup="dialog"><svg class="ic" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M557.69-577.46v-38q32.62-15.15 68.27-22.73 35.66-7.58 74.04-7.58 24.08 0 46.77 3.42 22.69 3.43 45.54 9.04v35.54q-22.46-7.85-44.66-11.38-22.19-3.54-47.65-3.54-38.38 0-74.35 9.11-35.96 9.12-67.96 26.12Zm0 219.23v-39.38q31.85-14.85 68.08-22.27 36.23-7.43 74.23-7.43 24.08 0 46.77 3.43 22.69 3.42 45.54 9.03v35.54q-22.46-7.84-44.66-11.38-22.19-3.54-47.65-3.54-38.38 0-74.35 9.19-35.96 9.19-67.96 26.81Zm0-109.23v-38.77q32.62-15.15 68.27-22.73 35.66-7.58 74.04-7.58 24.08 0 46.77 3.42 22.69 3.43 45.54 9.04v35.54q-22.46-7.85-44.66-11.38-22.19-3.54-47.65-3.54-38.38 0-74.35 9.5-35.96 9.5-67.96 26.5ZM251.08-304.62q54.53 0 106.11 12.89 51.58 12.88 101.73 39.42v-417.38q-45-31.92-99.04-48.81-54.04-16.88-108.8-16.88-37.61 0-69.5 7.38t-67.73 20.23q-4.62 1.54-6.54 4.42-1.92 2.89-1.92 6.35v406.31q0 5 3.84 7.5 3.85 2.5 8.46.96 25.62-11.31 60.7-16.85 35.07-5.54 72.69-5.54Zm253.23 52.31q50.38-26.54 99.92-39.42 49.54-12.89 104.69-12.89 37.62 0 73.5 5.23 35.89 5.24 59.89 13.31 4.61 1.93 8.46-.57 3.84-2.5 3.84-7.89V-697q0-3.46-1.92-6.15-1.92-2.7-6.54-4.62-33.61-14.69-66.43-21.15-32.83-6.46-70.8-6.46-55.15 0-107.57 16.88-52.43 16.89-97.04 48.81v417.38Zm-22.89 67.69q-50.8-35.69-109.65-54.84-58.85-19.16-120.69-19.16-32.47 0-63.77 6.7-31.31 6.69-62.85 17.38-23.1 10.23-43.78-4.34T60-279.46v-420.31q0-15.77 7.77-29t22.54-19.92q37.77-16.54 78.34-24.31t82.43-7.77q62.19 0 120.75 17.39Q430.38-746 481.62-711q50.23-35 108.15-52.38 57.92-17.39 119.15-17.39 41.65 0 82.02 7.77t78.14 24.31q14.76 6.61 22.84 19.88t8.08 29.04v420.31q0 27.12-22.31 41.67-22.31 14.56-45.08 2.48-30.15-10.92-61.15-17.11-31-6.2-62.54-6.2-61.94 0-119.32 19.46-57.37 19.47-108.18 54.54ZM282.15-493.23Z"/></svg><span>Leggi tutto il testo</span></button>
+    <button class="lb-nav lb-next" type="button" aria-label="Pagina successiva" aria-controls="lb-stage"><svg class="ic" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M693.69-457.31H180v-45.38h513.69L448.39-748 480-780l300 300-300 300-31.61-32 245.3-245.31Z"/></svg></button>
+  </div>
+  <p class="lb-live" aria-live="polite" id="lb-live"></p>
+  <dialog class="lb-dlg" aria-labelledby="lb-dlg-h"><div class="lb-dlg-in"><div class="lb-dlg-top"><h2 id="lb-dlg-h">Il libro {{ genitivo | escape }}</h2><button class="lb-x" type="button" aria-label="Chiudi"><svg class="ic" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="m250.92-218.92-32-32L448-480 218.92-709.08l32-32L480-512l229.08-229.08 32 32L512-480l229.08 229.08-32 32L480-448 250.92-218.92Z"/></svg></button></div><div class="lb-dlg-b"></div></div></dialog>
+</section>
+<script src="{{ 'bz-libro.min.js' | asset_url }}" defer></script>

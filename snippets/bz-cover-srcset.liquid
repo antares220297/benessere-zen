@@ -1,0 +1,4 @@
+{%- assign stem = asset | remove: '.jpg' -%}
+{{- stem | append: '-480.webp' | asset_url }} 480w,
+{{ stem | append: '-800.webp' | asset_url }} 800w,
+{{ asset | asset_url }} {{ width }}w

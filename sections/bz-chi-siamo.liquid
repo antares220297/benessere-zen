@@ -2,16 +2,16 @@
   <section class="split hero">
     <div class="split-copy">
       <h1>Benessere Zen, a <em>Cento</em></h1>
-      <p>In Via Marcello Provenzali 1 le pietre sono in vetrina e gli oli dietro il banco. Sul sito trovi lo stesso catalogo: puoi farti spedire il pezzo, ritirarlo in negozio o venire a sceglierlo qui.</p>
+      <p>In Via Marcello Provenzali 1 le pietre sono in vetrina e gli oli dietro il banco. Sul sito puoi ordinare pietre, gioielli e prodotti per la cura di sé.</p>
     </div>
-    <div class="split-photo"><img src="{{ 'bz-negozio-chi-siamo-apertura.jpg' | asset_url }}" alt="Benessere Zen a Cento" width="1400" height="900" loading="eager" fetchpriority="high"></div>
+    <div class="split-photo"><img src="{{ 'bz-negozio-chi-siamo-apertura.jpg' | asset_url }}" srcset="{% render 'bz-cover-srcset', asset: 'bz-negozio-chi-siamo-apertura.jpg', width: 1200 %}" sizes="(min-width: 1024px) 50vw, 95vw" alt="La vetrina illuminata del negozio a Cento" width="1200" height="1500" loading="eager" fetchpriority="high"></div>
   </section>
   <section class="split story flip history">
-    <div class="split-photo"><img src="{{ 'bz-negozio-chi-siamo-la-storia.jpg' | asset_url }}" alt="" width="1200" height="900" loading="lazy"></div>
+    <div class="split-photo"><img src="{{ 'bz-negozio-chi-siamo-la-storia.jpg' | asset_url }}" alt="Scaffali in legno con tazze e confezioni sotto le bandierine colorate" width="1200" height="1500" loading="lazy"></div>
     <div class="split-copy">
       <h2>La <em>storia</em></h2>
       <p>Mi chiamo Simona. Per oltre trent’anni ho fatto massaggi ayurvedici e Reiki. Oggi in negozio consiglio su dosha e chakra.</p>
-      <p>È una bottega di famiglia: l’ho aperta con mio figlio Michael e il mio compagno Roberto. Dentro trovi pietre, mala, incensi e i prodotti per la cura di sé che vedi in vetrina.</p>
+      <p>Il negozio l’ho aperto con il mio compagno Roberto. Dentro trovi pietre, mala, incensi e i prodotti per la cura di sé che vedi in vetrina.</p>
     </div>
   </section>
   <section class="split story stones">
@@ -20,10 +20,10 @@
       <p>C’è chi entra per un bracciale in ametista, chi per un incenso, chi per uno shampoo. Un’intenzione, un mala da 108 grani, una pietra sul piatto.</p>
       <p>In negozio si può chiedere un consiglio su dosha e chakra. Niente diagnosi e niente promesse di cura.</p>
     </div>
-    <div class="split-photo"><img src="{{ 'bz-negozio-chi-siamo-le-pietre-e-il-resto.jpg' | asset_url }}" alt="" width="1200" height="900" loading="lazy"></div>
+    <div class="split-photo"><img src="{{ 'bz-negozio-chi-siamo-le-pietre-e-il-resto.jpg' | asset_url }}" alt="Scaffali di incensi con pietre e statuette in primo piano" width="1200" height="1500" loading="lazy"></div>
   </section>
   <section class="split story flip plants">
-    <div class="split-photo"><img src="{{ 'bz-negozio-chi-siamo-piante-e-materie.jpg' | asset_url }}" alt="" width="1200" height="900" loading="lazy"></div>
+    <div class="split-photo"><img src="{{ 'bz-negozio-chi-siamo-piante-e-materie.jpg' | asset_url }}" alt="Scaffale di tisane con una statuetta dorata del Buddha" width="1200" height="1500" loading="lazy"></div>
     <div class="split-copy">
       <h2>Piante e <em>materie</em></h2>
       <p>Scegliamo oli, piante e marche attente a chi le produce e, dove ci sta, al commercio equo e solidale.</p>
@@ -32,8 +32,7 @@
   <section>
     <h2>In concreto</h2>
     <div class="cards">
-      <article class="info-card"><h3>Il banco a <em>Cento</em></h3><p>Via Marcello Provenzali 1, 44042 Cento (FE).</p></article>
-      <article class="info-card"><h3>Nessun <em>gemello</em></h3><p>Stessa pietra e stessa misura della foto. Forma e venature le decide la natura, e cambiano a ogni pezzo.</p></article>
+      <article class="info-card"><h3>Nessun <em>gemello</em></h3><p>La foto mostra la pietra che ricevi, nella misura indicata in scheda. Forma e venature le decide la natura, e cambiano a ogni pezzo.</p></article>
       <article class="info-card"><h3>Si può <em>ritirare</em></h3><p>Al pagamento scegli Ritiro gratuito in negozio. Altrimenti spediamo in Italia.</p></article>
     </div>
     <p class="tradition-note">I significati appartengono alla tradizione e non sostituiscono il parere di un medico.</p>
@@ -48,17 +47,16 @@
       </div>
     </div>
     <div>
-      <div class="bz-week" data-week-chart></div>
       <p class="hours-summary" data-hours-summary>{% render 'bz-hours', part: 'summary' %}</p>
     </div>
   </section>
   <section class="categories">
     <h2>Dal catalogo</h2>
     <div class="spheres">
-      <a href="/collections/gioielli-con-pietre"><img src="{{ 'bz-catalogo-gioielli.jpg' | asset_url }}" alt="Gioielli" width="106" height="106" loading="lazy"><span>Gioielli</span></a>
-      <a href="/collections/mala-tibetani"><img src="{{ 'bz-catalogo-mala.jpg' | asset_url }}" alt="Mala" width="106" height="106" loading="lazy"><span>Mala</span></a>
-      <a href="/collections/ayurveda"><img src="{{ 'bz-catalogo-ayurveda.jpg' | asset_url }}" alt="Ayurveda" width="106" height="106" loading="lazy"><span>Ayurveda</span></a>
-      <a href="/collections/incensi-e-brucia-incensi-2"><img src="{{ 'bz-catalogo-incensi.jpg' | asset_url }}" alt="Incensi" width="106" height="106" loading="lazy"><span>Incensi</span></a>
+      <a href="/collections/gioielli-con-pietre"><img src="{{ 'bz-catalogo-gioielli.jpg' | asset_url }}" alt="" width="106" height="106" loading="lazy"><span>Gioielli</span></a>
+      <a href="/collections/mala-tibetani"><img src="{{ 'bz-catalogo-mala.jpg' | asset_url }}" alt="" width="106" height="106" loading="lazy"><span>Mala</span></a>
+      <a href="/collections/ayurveda"><img src="{{ 'bz-catalogo-ayurveda.jpg' | asset_url }}" alt="" width="106" height="106" loading="lazy"><span>Ayurveda</span></a>
+      <a href="/collections/incensi-e-brucia-incensi"><img src="{{ 'bz-catalogo-incensi.jpg' | asset_url }}" alt="" width="106" height="106" loading="lazy"><span>Incensi</span></a>
     </div>
   </section>
 </div>

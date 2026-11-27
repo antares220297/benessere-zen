@@ -12,7 +12,6 @@
     "bz_search": {
       "type": "bz-search",
       "settings": {
-        "heading": "Pezzi per",
         "empty_text": "Nessun pezzo con questo nome.",
         "idle_text": "Cerca un mala, una pietra, un ciondolo.",
         "next_label": "Pagina successiva",

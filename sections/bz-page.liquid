@@ -1,9 +1,23 @@
 {{ 'bz-tokens.css' | asset_url | stylesheet_tag }}
 {{ 'bz-home.css' | asset_url | stylesheet_tag }}
 
-<article class="bz bz-page">
+<article class="bz bz-page{% if page.handle == 'le-nostre-collezioni' %} bz-page--collections{% elsif page.handle == 'spedizioni' %} bz-page--shipping{% endif %}">
   <h1>{{ page.title | escape }}</h1>
-  {%- if page.content != blank -%}
+  {%- if page.handle == 'le-nostre-collezioni' -%}
+    {% render 'bz-main-collections' %}
+  {%- elsif page.handle == 'spedizioni' -%}
+    <div class="bz-page__body rte">
+      <p>Spediamo da Cento (Ferrara). In Italia la spedizione è gratuita per ordini da {{ settings.bz_free_shipping_threshold | default: 50 | at_least: 1 }}&nbsp;€. Sotto quella cifra c'è la spedizione Express a {{ settings.bz_express_rate | default: '5,90' | escape }}&nbsp;€.</p>
+      <p>Il costo esatto lo vedi sempre al pagamento, prima di confermare.</p>
+      <h2>Ritiro in negozio</h2>
+      <p>Se preferisci, paghi sul sito e ritiri in negozio, in Via Marcello Provenzali 1 a Cento (Ferrara). Orari e contatti sono nella pagina <a href="{{ routes.root_url }}{% unless routes.root_url == '/' %}/{% endunless %}pages/il-negozio">Il negozio</a>.</p>
+      {%- if shop.refund_policy.url != blank -%}
+        <p>Per i resi consulta l’<a href="{{ shop.refund_policy.url }}">informativa sui rimborsi</a>.</p>
+      {%- endif -%}
+      <h2>Chi spedisce</h2>
+      <p>Benessere Zen di Balboni Simona, P. IVA 02091600383. Sede legale in Via Olindo Malagodi 2, 44042 Cento FE.</p>
+    </div>
+  {%- elsif page.content != blank -%}
     <div class="bz-page__body rte">{{ page.content }}</div>
   {%- endif -%}
 </article>
@@ -18,20 +32,30 @@
 }
 .bz-page h1 {
   margin: 0 0 20px;
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
   font-weight: 400;
   font-size: clamp(36px, 5vw, 56px);
   line-height: 1.05;
   color: #eee7db;
 }
 .bz-page__body {
-  font-family: Figtree, system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", system-ui, sans-serif;
   font-size: 16px;
   line-height: 1.55;
   color: #eee7db;
 }
 .bz-page__body p { margin: 0 0 14px; }
 .bz-page__body a { color: #e3cb95; }
+.bz-page--shipping {
+  width: 100%;
+  padding-inline: 0;
+}
+.bz-page--shipping h2 {
+  margin-block: var(--bz-sp-28) var(--bz-sp-12);
+}
+.bz-page--shipping a {
+  text-decoration: underline;
+}
 {% endstyle %}
 
 {% schema %}

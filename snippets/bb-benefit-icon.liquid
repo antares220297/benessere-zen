@@ -1,0 +1,71 @@
+{%- comment -%}
+  Output category|glyph. Search the title, then the sentence if needed.
+  The earliest match wins, with map order breaking ties.
+{%- endcomment -%}
+{%- liquid
+  assign generic_titles = 'nella tradizione|tradizione|benefici|proprietà' | split: '|'
+  assign category = 'riserva'
+  assign glyph = 'check-circle'
+  assign categories = 'calma:waves:pace,calm,relax,rilass,seren,tranquill,quiet,pausa,riposo,sonno,distens,stress,pazien,sera,fine giornata,dolce attesa,sonn,notte|emozioni:heart:emozion,emotiv,cuore,amor,empati,affett,romantic,dolcezz,gentilezz,compassion,autostima,amicizi,sensual,tenerezz,passion|spirito:flower-lotus:spiritual,meditaz,consapevol,elevaz,connession,chakra,sacr,divinit,devozion,yoga,mantra,raccogli,om ,buddha,mandala,loto,zen,rituale,ritual,intenzion,presenz|protezione:shield:protez,protett,scudo,difes,negativ,malocchio,schermo|purificazione:wind:purific,pulizi,purezz,puro ,pura ,sgombr,smudg,cleans,fumo,incens,sale al cielo,preghier|energia:lightning:energ,vital,carica,ricaric,forza,risvegl,spinta,coraggi,dinam,slancio,motivaz,ottimism,gioia,sole,solar,sicurezz,fiducia,determinaz,calore,amplific,luce,coraggio|equilibrio:scales:equilibr,armon,bilanc,centr,yin,yang,maschile e femminile,unione,dualit|radicamento:tree:radic,stabil,terra,ancor,grounding,stabilità,albero della vita,radici|chiarezza:lightbulb:chiarezz,mental,focus,concentraz,lucid,mente,memori,studio,attenzion|intuizione:sparkle:intuiz,ispiraz,creativ,sogn,divinat,magia,magic,mistic,rinascit,rinnov,trasform,crescit,luna,lunar,percez,infinit,nodo celtico,simbol,occhio della provvidenza,occhio di horus,terzo occhio,sblocc,cambiament|comunicazione:chat-circle:comunica,dialog,eloquen,sincer,espressione di s,espressione sincer,espressione autentic,verit|prosperita:clover:prosper,abbondanz,fortun,attraz,success,ricchezz,opportunit,manifest,sorte,abbondan,fortuna|profumo:flower:atmosfer,fragranz,profum,aroma,essenz,olio,oli ,diffusion,combust,ambient,fresc,profumaz,sandalo,palo santo,salvia,spezie,resin,legno di,roll-on|natura:leaf:natural,artigian,ecolog,organic,biolog,certificat,vegan,estratt,karit,sesamo,curcuma,burro,pianta,erbe,idrat,nutri,pelle,delicat,morbid,ingredient,lavanda,arnica,vitamin,sebo,resina,botanic,camomill,aloe|qualita:medal:design,elegan,finitur,stile,versatil,formato,pratic,durat,qualit,material,resistent,precision,dettagli,estetic,compatibil,robust,capient,ottone,rame,infusor,argento,acciaio,legno,vetro,formula,legger,artigianal' | split: '|'
+  assign ascii_separators = '!"#$%&()*+,-./:;<=>?@[]^`{}~' | append: "'" | split: ''
+  assign unicode_separators = '«|»|‹|›|‘|’|“|”|„|‚|‐|‑|‒|–|—|―|…|·|•|°|©|®|™|×|÷|€| | |⚓|⚙|️|🌊|🌺|🛡|🧘' | split: '|'
+  assign backslash = '%5C' | url_decode
+  assign tab = '%09' | url_decode
+  assign title_key = ''
+  assign sentence = benefit
+  if benefit contains ': '
+    assign title = benefit | split: ': ' | first | default: ''
+    assign prefix = title | append: ': '
+    assign sentence = benefit | remove_first: prefix
+    assign title_key = title | downcase | strip
+  endif
+  assign title_prefix = title_key | slice: 0, 16
+
+  for pass in (1..2)
+    if pass == 1
+      if title_key == blank or generic_titles contains title_key or title_prefix == 'nella tradizione'
+        continue
+      endif
+      assign candidate = title_key
+    else
+      assign candidate = sentence | downcase | strip
+    endif
+
+    assign candidate = candidate | newline_to_br | replace: '<br />', ' ' | strip_newlines | replace: '|', ' ' | replace: backslash, ' ' | replace: tab, ' '
+    for separator in ascii_separators
+      assign candidate = candidate | replace: separator, ' '
+    endfor
+    for separator in unicode_separators
+      assign candidate = candidate | replace: separator, ' '
+    endfor
+    assign candidate = candidate | prepend: ' ' | append: ' '
+    assign best = candidate.size
+    for entry in categories
+      assign fields = entry | split: ':'
+      assign roots = fields[2] | split: ','
+      for root in roots
+        assign needle = root | prepend: ' '
+        unless candidate contains needle
+          continue
+        endunless
+        assign start = candidate | split: needle | first | size
+        assign prefix = candidate | slice: 0, needle.size
+        if prefix == needle
+          assign start = 0
+        endif
+        if start < best
+          assign best = start
+          assign category = fields[0]
+          assign glyph = fields[1]
+        endif
+      endfor
+      if best == 0
+        break
+      endif
+    endfor
+    if category != 'riserva'
+      break
+    endif
+  endfor
+-%}
+{{- category -}}|{{- glyph -}}

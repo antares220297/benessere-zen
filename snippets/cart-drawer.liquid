@@ -4,7 +4,7 @@
   replaces #CartDrawer inner HTML from the same response. This markup is both paths.
 {% endcomment %}
 {%- liquid
-  assign threshold_euros = settings.bz_free_shipping_threshold | default: 50 | plus: 0
+  assign threshold_euros = settings.bz_free_shipping_threshold | default: 50 | at_least: 1
   if threshold_euros <= 0
     assign threshold_euros = 50
   endif
@@ -20,6 +20,7 @@
 <div
   id="CartDrawer"
   class="bz-drawer"
+  data-cart-section-id="{{ section.id }}"
   x-data="xCart"
   x-init="$store.xMiniCart.type = 'drawer'"
   x-show="$store.xMiniCart.open"
@@ -35,7 +36,7 @@
 
     {%- if cart == empty -%}
       <p class="bz-drawer__empty">Il carrello è vuoto.</p>
-      <a class="bz-drawer__go bz-drawer__shop" href="/collections/all">Continua lo shopping</a>
+      <a class="bz-drawer__go bz-drawer__shop" href="{{ routes.all_products_collection_url }}">Scopri i prodotti</a>
     {%- else -%}
       <div class="bz-drawer__ship bz-ship">
         {%- if remaining > 0 -%}
@@ -54,23 +55,19 @@
       <div class="bz-drawer__scroll">
       <div class="bz-drawer__items">
         {%- for item in cart.items -%}
-          <article class="cart-item bz-drawer__item" data-key="{{ item.key }}">
+          {%- capture item_name -%}{% render 'bz-product-name', product: item.product %}{%- endcapture -%}
+          <article class="cart-item bz-drawer__item" data-cart-line data-key="{{ item.key | escape }}" data-quantity="{{ item.quantity }}">
             <a href="{{ item.url }}">
               {%- if item.image -%}
-                <img src="{{ item.image | image_url: width: 200 }}" alt="{{ item.product.title | escape }}" width="76" height="76">
+                <img src="{{ item.image | image_url: width: 200 }}" alt="{{ item_name | escape }}" width="76" height="76">
               {%- endif -%}
             </a>
             <div class="bz-drawer__copy">
-              <a href="{{ item.url }}">{{ item.product.title | escape }}</a>
-              {%- if item.variant.title != blank and item.variant.title != 'Default Title' -%}
+              <a href="{{ item.url }}">{{ item_name | escape }}</a>
+              {%- unless item.product.has_only_default_variant -%}
                 <small class="bz-drawer__variant">{{ item.variant.title | escape }}</small>
-              {%- endif -%}
-              <div class="bz-drawer__qty">
-                <button type="button" data-bz-qty="-1" aria-label="Meno">−</button>
-                <input class="bz-drawer__qty-input" id="cart-qty-{{ item.key }}" type="text" inputmode="numeric" value="{{ item.quantity }}" aria-label="Quantità">
-                <button type="button" data-bz-qty="1" aria-label="Più">+</button>
-                <button type="button" data-bz-remove hidden>Rimuovi</button>
-              </div>
+              {%- endunless -%}
+              {% render 'bz-cart-line-controls', item: item, item_name: item_name %}
             </div>
             <span class="bz-line-price">
               {% render 'bz-money', cents: item.final_line_price %}
@@ -93,15 +90,17 @@
               {%- unless cart_ids contains pid -%}
                 {%- if upsell_count < 2 and product.available -%}
                   {%- assign upsell_count = upsell_count | plus: 1 -%}
+                  {%- assign upsell_variant = product.first_available_variant -%}
+                  {%- capture upsell_name -%}{% render 'bz-product-name', product: product %}{%- endcapture -%}
                   <div class="bz-upsell">
                     <a href="{{ product.url }}">
                       {%- if product.featured_image -%}
-                        <img src="{{ product.featured_image | image_url: width: 120 }}" alt="{{ product.title | escape }}" width="48" height="48">
+                        <img src="{{ product.featured_image | image_url: width: 120 }}" alt="{{ upsell_name | escape }}" width="48" height="48">
                       {%- endif -%}
                     </a>
-                    <a href="{{ product.url }}">{{ product.title | escape }}</a>
-                    <span>{% render 'bz-money', cents: product.price %}</span>
-                    <button type="button" class="bz-drawer__plus" data-bz-upsell-add="{{ product.selected_or_first_available_variant.id }}" aria-label="Aggiungi {{ product.title | escape }}">+</button>
+                    <a href="{{ product.url }}">{{ upsell_name | escape }}</a>
+                    <span>{% render 'bz-money', cents: upsell_variant.price %}</span>
+                    <button type="button" class="bz-drawer__plus" data-bz-upsell-add="{{ upsell_variant.id }}" aria-label="Aggiungi {{ upsell_name | escape }}">+</button>
                   </div>
                 {%- endif -%}
               {%- endunless -%}
@@ -113,15 +112,17 @@
               {%- unless cart_ids contains pid -%}
                 {%- if upsell_count < 2 and product.available -%}
                   {%- assign upsell_count = upsell_count | plus: 1 -%}
+                  {%- assign upsell_variant = product.first_available_variant -%}
+                  {%- capture upsell_name -%}{% render 'bz-product-name', product: product %}{%- endcapture -%}
                   <div class="bz-upsell">
                     <a href="{{ product.url }}">
                       {%- if product.featured_image -%}
-                        <img src="{{ product.featured_image | image_url: width: 120 }}" alt="{{ product.title | escape }}" width="48" height="48">
+                        <img src="{{ product.featured_image | image_url: width: 120 }}" alt="{{ upsell_name | escape }}" width="48" height="48">
                       {%- endif -%}
                     </a>
-                    <a href="{{ product.url }}">{{ product.title | escape }}</a>
-                    <span>{% render 'bz-money', cents: product.price %}</span>
-                    <button type="button" class="bz-drawer__plus" data-bz-upsell-add="{{ product.selected_or_first_available_variant.id }}" aria-label="Aggiungi {{ product.title | escape }}">+</button>
+                    <a href="{{ product.url }}">{{ upsell_name | escape }}</a>
+                    <span>{% render 'bz-money', cents: upsell_variant.price %}</span>
+                    <button type="button" class="bz-drawer__plus" data-bz-upsell-add="{{ upsell_variant.id }}" aria-label="Aggiungi {{ upsell_name | escape }}">+</button>
                   </div>
                 {%- endif -%}
               {%- endunless -%}
@@ -134,15 +135,17 @@
                 {%- unless cart_ids contains pid -%}
                 {%- if upsell_count < 2 and product.id != seed.id and product.available -%}
                   {%- assign upsell_count = upsell_count | plus: 1 -%}
+                  {%- assign upsell_variant = product.first_available_variant -%}
+                  {%- capture upsell_name -%}{% render 'bz-product-name', product: product %}{%- endcapture -%}
                   <div class="bz-upsell">
                     <a href="{{ product.url }}">
                       {%- if product.featured_image -%}
-                        <img src="{{ product.featured_image | image_url: width: 120 }}" alt="{{ product.title | escape }}" width="48" height="48">
+                        <img src="{{ product.featured_image | image_url: width: 120 }}" alt="{{ upsell_name | escape }}" width="48" height="48">
                       {%- endif -%}
                     </a>
-                    <a href="{{ product.url }}">{{ product.title | escape }}</a>
-                    <span>{% render 'bz-money', cents: product.price %}</span>
-                    <button type="button" class="bz-drawer__plus" data-bz-upsell-add="{{ product.selected_or_first_available_variant.id }}" aria-label="Aggiungi {{ product.title | escape }}">+</button>
+                    <a href="{{ product.url }}">{{ upsell_name | escape }}</a>
+                    <span>{% render 'bz-money', cents: upsell_variant.price %}</span>
+                    <button type="button" class="bz-drawer__plus" data-bz-upsell-add="{{ upsell_variant.id }}" aria-label="Aggiungi {{ upsell_name | escape }}">+</button>
                   </div>
                 {%- endif -%}
                 {%- endunless -%}

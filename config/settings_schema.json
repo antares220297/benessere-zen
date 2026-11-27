@@ -2979,12 +2979,6 @@
         "default": "https://maps.google.com/?q=Via+Marcello+Provenzali+1+44042+Cento"
       },
       {
-        "type": "number",
-        "id": "bz_free_shipping",
-        "label": "Spedizione gratuita da (€)",
-        "default": 50
-      },
-      {
         "type": "text",
         "id": "bz_express_rate",
         "label": "Costo Express",
@@ -2993,8 +2987,7 @@
       {
         "type": "text",
         "id": "bz_hours_mon",
-        "label": "Lunedì",
-        "default": "09:30-12:30,16:00-19:30"
+        "label": "Lunedì"
       },
       {
         "type": "text",
@@ -3012,7 +3005,7 @@
         "type": "text",
         "id": "bz_hours_thu",
         "label": "Giovedì",
-        "default": "09:00-13:00"
+        "default": "09:30-12:30,16:00-19:30"
       },
       {
         "type": "text",
@@ -3030,13 +3023,13 @@
         "type": "text",
         "id": "bz_hours_sun",
         "label": "Domenica",
-        "info": "Vuoto finché non arrivano gli orari. Non scrivere «chiuso»."
+        "info": "Lascia vuoto per indicare che il negozio è chiuso."
       },
       {
         "type": "text",
         "id": "bz_sunday_note",
-        "label": "Testo domenica senza orari",
-        "default": "Dal 1 dicembre aperti anche la domenica"
+        "label": "Nota orari di dicembre",
+        "default": "Dal 1 al 24 dicembre aperti tutti i giorni, domenica e lunedì compresi"
       },
       {
         "type": "textarea",

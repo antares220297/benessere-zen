@@ -69,7 +69,8 @@
               >{{ collection.title | escape }}</a>
               <span class="breadcrumb__divider border-[rgba(var(--colors-text))]{% if iconBreadcrumbs == "—" %} w-2.5 border-b{% endif %} inline-block bottom-1 ml-1 mr-1" aria-hidden="true">{% if iconBreadcrumbs != "—" %}{{ iconBreadcrumbs  }}{% endif %}</span>
             {% endif %}
-            <span>{{ product.title | escape }}</span>
+            {%- capture display_name -%}{% render 'bz-product-name', product: product %}{%- endcapture -%}
+            <span>{{ display_name | escape }}</span>
           {% elsif template contains 'collection' and collection.handle %}
             {% if current_tags %}
               <a 

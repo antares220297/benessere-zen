@@ -1,11 +1,12 @@
+{%- capture display_name -%}{% render 'bz-product-name', product: item %}{%- endcapture -%}
 {%- assign variant = item.selected_or_first_available_variant -%}
 <div class="hero-mini-item{% if first %} is-active{% endif %}" data-hero-product{% unless first %} inert aria-hidden="true"{% endunless %}>
   <a href="{{ item.url }}">
     {%- if item.featured_image -%}
       {{ item.featured_image | image_url: width: 160 | image_tag: alt: '', loading: 'lazy', decoding: 'async', widths: '80, 160', sizes: '72px', width: 72, height: 72 }}
     {%- endif -%}
-    <span class="hero-mini-title">{{ item.title | escape }}</span>
+    <span class="hero-mini-title">{{ display_name | escape }}</span>
     <b>{% render 'bz-money', cents: variant.price %}</b>
   </a>
-  <button class="add" type="button" data-bz-add="{{ variant.id }}" aria-label="Aggiungi al carrello: {{ item.title | escape }}">{% render 'bz-icon', name: 'add' %}</button>
+  <button class="add" type="button" data-bz-add="{{ variant.id }}" aria-label="Aggiungi al carrello: {{ display_name | escape }}">{% render 'bz-icon', name: 'add' %}</button>
 </div>

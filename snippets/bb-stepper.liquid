@@ -1,0 +1,18 @@
+{%- liquid
+  assign minus_label = 'Diminuisci quantità'
+  assign plus_label = 'Aumenta quantità'
+  if kind == 'pair'
+    assign minus_label = 'Togli un pezzo'
+    assign plus_label = 'Aggiungi un pezzo'
+  endif
+-%}
+<div class="bb-qty" role="group" {% if labelledby %}aria-labelledby="{{ labelledby }}"{% else %}aria-label="Quantità"{% endif %}>
+  <button type="button" class="bb-qty__b" {% if kind == 'pair' %}data-pstep="-1"{% else %}data-step="-1"{% endif %} aria-label="{{ minus_label }}" aria-disabled="true">{% render 'bb-icon', name: 'remove' %}</button>
+  {%- case kind -%}
+    {%- when 'main' -%}
+      <input class="bb-qty__n" type="number" name="quantity" value="1" min="1" max="99" inputmode="numeric" aria-label="Quantità" data-main-qty>
+    {%- when 'pair' -%}
+      <output class="bb-qty__n" data-pair-qty aria-live="polite">0</output>
+  {%- endcase -%}
+  <button type="button" class="bb-qty__b" {% if kind == 'pair' %}data-pstep="1"{% else %}data-step="1"{% endif %} aria-label="{{ plus_label }}"{% if available == false %} disabled aria-disabled="true"{% endif %}>{% render 'bb-icon', name: 'add' %}</button>
+</div>

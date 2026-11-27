@@ -1,0 +1,91 @@
+{%- comment -%}
+  Restituisce tono|fonte per il rituale PDP.
+  Palette: neutro #2a2725, viola #33264a, giallo #39301a, arancio #3e2617,
+  blu notte #19223a, nero #26252a, rosso #3c1b1e, Ayurveda #2e3121,
+  profumi a olio #3a281c, candele ambra #3d2a16.
+{%- endcomment -%}
+{%- liquid
+  assign keys = 'neutro|viola|giallo|arancio|blu notte|nero|rosso|ayurveda|profumi a olio|candele ambra' | split: '|'
+  assign colors = '#2a2725|#33264a|#39301a|#3e2617|#19223a|#26252a|#3c1b1e|#2e3121|#3a281c|#3d2a16' | split: '|'
+  assign metafield = product.metafields.custom.velatura
+  assign value = metafield.value | default: metafield | downcase | strip
+  assign tone = blank
+  assign source = 'metafield'
+
+  for key in keys
+    assign color = colors[forloop.index0]
+    if value == key or value == color
+      assign tone = color
+      break
+    endif
+  endfor
+
+  if tone == blank
+    assign prefix = value | slice: 0
+    assign digits = value | remove_first: '#'
+    assign remainder = digits | remove: '0' | remove: '1' | remove: '2' | remove: '3' | remove: '4' | remove: '5' | remove: '6' | remove: '7' | remove: '8' | remove: '9' | remove: 'a' | remove: 'b' | remove: 'c' | remove: 'd' | remove: 'e' | remove: 'f'
+    if prefix == '#' and remainder == empty
+      if digits.size == 3 or digits.size == 6
+        assign lightness = value | color_extract: 'lightness'
+        assign brightness = value | color_brightness
+        if lightness < 30 and brightness < 96
+          assign tone = value
+        endif
+      endif
+    endif
+  endif
+
+  if tone == blank
+    assign source = 'keyword'
+    assign tags = product.tags | join: '|'
+    assign name = product.title | append: '|' | append: product.handle | downcase
+    assign terms = name | append: '|' | append: tags | append: '|' | append: product.type | downcase | replace: '-', ' '
+    if terms contains 'ametista' or terms contains 'amethyst' or terms contains 'lepidolite'
+      assign tone = '#33264a'
+    elsif name contains 'fluorite' and name contains 'viola'
+      assign tone = '#33264a'
+    elsif terms contains 'citrino' or terms contains 'citrine' or terms contains 'occhio di tigre'
+      assign tone = '#39301a'
+    elsif terms contains 'corniola' or terms contains 'cornalina' or terms contains 'carneol'
+      assign tone = '#3e2617'
+    elsif terms contains 'lapis' or terms contains 'sodalite' or terms contains 'turchese' or terms contains 'acquamarina'
+      assign tone = '#19223a'
+    elsif terms contains 'ossidiana' or terms contains 'tormalina nera' or terms contains 'onice'
+      assign tone = '#26252a'
+    elsif terms contains 'diaspro rosso' or terms contains 'granato' or terms contains 'rubino'
+      assign tone = '#3c1b1e'
+    endif
+  endif
+
+  if tone == blank
+    assign type_key = product.type | handleize
+    assign handles = product.collections | map: 'handle'
+    if type_key == 'oli-e-profumi'
+      assign tone = '#3a281c'
+    elsif type_key == 'candele' or type_key == 'candela'
+      assign tone = '#3d2a16'
+    elsif handles contains 'profumi-in-olio'
+      assign tone = '#3a281c'
+      assign source = 'collection'
+    elsif handles contains 'candele-e-brucia-candele'
+      assign tone = '#3d2a16'
+      assign source = 'collection'
+    elsif product.handle contains 'ayurved'
+      assign tone = '#2e3121'
+    else
+      for handle in handles
+        if handle contains 'ayurved'
+          assign tone = '#2e3121'
+          assign source = 'collection'
+          break
+        endif
+      endfor
+    endif
+  endif
+
+  if tone == blank
+    assign tone = '#2a2725'
+    assign source = 'fallback'
+  endif
+  echo tone | append: '|' | append: source
+-%}

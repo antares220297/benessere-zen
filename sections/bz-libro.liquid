@@ -1,0 +1,27 @@
+{%- capture famiglia -%}{%- render 'bz-libro-famiglia', product: product -%}{%- endcapture -%}
+{%- case famiglia -%}
+  {%- when 'ametista' -%}{%- render 'bz-libro-ametista' -%}
+  {%- when 'quarzo-rosa' -%}{%- render 'bz-libro-quarzo-rosa' -%}
+  {%- when 'selenite' -%}{%- render 'bz-libro-selenite' -%}
+  {%- when 'cristallo-di-rocca' -%}{%- render 'bz-libro-cristallo-di-rocca' -%}
+  {%- when 'lapislazzuli' -%}{%- render 'bz-libro-lapislazzuli' -%}
+  {%- when 'occhio-di-tigre' -%}{%- render 'bz-libro-occhio-di-tigre' -%}
+  {%- when 'ossidiana' -%}{%- render 'bz-libro-ossidiana' -%}
+  {%- when 'tormalina-nera' -%}{%- render 'bz-libro-tormalina-nera' -%}
+  {%- when 'incensi' -%}{%- render 'bz-libro-incensi' -%}
+  {%- when 'amuleti' -%}{%- render 'bz-libro-amuleti' -%}
+  {%- when 'brucia-incensi' -%}{%- render 'bz-libro-brucia-incensi' -%}
+  {%- when 'saponi' -%}{%- render 'bz-libro-saponi' -%}
+  {%- when 'palo-santo' -%}{%- render 'bz-libro-palo-santo' -%}
+  {%- when 'salvia-e-smudge' -%}{%- render 'bz-libro-salvia-e-smudge' -%}
+  {%- when 'oli-e-profumi' -%}{%- render 'bz-libro-oli-e-profumi' -%}
+  {%- when 'candele' -%}{%- render 'bz-libro-candele' -%}
+{%- endcase -%}
+
+{% schema %}
+{
+  "name": "Libro del grimorio",
+  "enabled_on": { "templates": ["product"] },
+  "settings": []
+}
+{% endschema %}

@@ -46,14 +46,14 @@
 
 /* testo tappa */
 .ayt-stage{position:relative;min-width:0}
-.ayt-txt{position:relative;max-width:46ch}
+.ayt-txt{position:relative;max-width:29.49em}
 .ayt-ghost{position:absolute;z-index:-1;left:-.06em;top:-.62em;font:400 clamp(120px,13vw,200px)/1 var(--serif);
   color:rgba(201,169,110,.07);letter-spacing:-.02em;pointer-events:none;user-select:none}
 .ayt-when{display:flex;align-items:center;gap:10px;margin:0 0 14px;
   font:600 12px/1.35 var(--sans);letter-spacing:.17em;text-transform:uppercase;color:var(--gold)}
 .ayt-dot{display:none}
 .ayt .ayt-txt h3{margin:0 0 16px;font:400 clamp(30px,3vw,46px)/1.08 var(--serif);color:var(--ivory);letter-spacing:-.005em}
-.ayt-body{margin:0;font-size:clamp(15px,1.12vw,17px);line-height:1.7;color:var(--ivory2);max-width:44ch}
+.ayt-body{margin:0;font-size:clamp(15px,1.12vw,17px);line-height:1.7;color:var(--ivory2);max-width:28.20em}
 
 /* figure (versione statica e mobile) */
 .ayt-fig{position:relative;margin:0;border-radius:6px;overflow:hidden;background:#1d1a16;aspect-ratio:3/4;
@@ -141,3 +141,4 @@
 @media (min-width: 900px) and (max-width: 1100px) {
   .ayt-count { width: 42px; }
 }
+/* ch → em: larghezze indipendenti dal font di ripiego (giro G2) */

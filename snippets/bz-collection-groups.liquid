@@ -1,137 +1,236 @@
+{%- comment -%}
+  Map rows are label | child handles | Italian title fragments, or label | family for incense collections.
+  Output is group count, visible card count, chips and sections, in that order.
+{%- endcomment -%}
 {%- liquid
-  if collection.handle == 'cosmetica'
-    assign category = 'Viso'
-    assign accent = 'viso'
-    assign intro = section.settings.viso_intro
-    assign groups = 'Detergenti e scrub|latte-detergente;Prodotti viso|tonico,crema-giorno,contorno-occhi;Sieri|siero-viso;Maschere|maschera' | split: ';'
-  else
-    assign category = 'Corpo'
-    assign accent = 'corpo'
-    assign intro = section.settings.corpo_intro
-    assign groups = 'Oli e creme corpo|creme-e-latti-corpo;Scrub corpo|scrub-corpo;Balsami corpo|balsami-corpo;Mani e piedi|creme-mani-e-piedi;Solari|solari' | split: ';'
+  case collection.handle
+    when 'incensi-e-brucia-incensi', 'incensi-e-brucia-incensi-1', 'brucia-incensi-a-riflusso-e-coni-a-riflusso', 'brucia-incensi-e-incensi-a-mattoncino'
+      assign by_family = true
+      assign map = 'Incensi|incensi;Brucia incensi|brucia-incensi;Palo santo|palo-santo;Salvia e smudge|salvia-e-smudge;Oli e profumi|oli-e-profumi'
+    when 'cosmetica'
+      assign map = 'Detergenti e scrub|latte-detergente|detergent,struc,acqua micellare,scrub;Tonici|tonico|tonic;Sieri|siero-viso|siero,sieri;Creme giorno e notte|crema-giorno|crema,creme;Contorno occhi|contorno-occhi|contorno occhi,borse e occhiaie;Maschere|maschera|mascher'
+      assign keyword_priority = '1,2,3,5,6,4'
+    when 'cosmesi-corpo'
+      assign map = 'Oli e creme corpo|creme-e-latti-corpo|olio,oli ,crema,creme,latte;Scrub corpo|scrub-corpo|scrub,esfoliant;Balsami corpo|balsami-corpo|balsam;Mani e piedi|creme-mani-e-piedi|mani,piedi;Solari|solari|solare,solari,doposole,spf'
+      assign keyword_priority = '2,3,4,5,1'
+    when 'ayurveda'
+      assign map = 'Cosmesi viso|cosmesi-viso-ayurvedica|viso;Cosmesi corpo|cosmesi-corpo-ayurvedica|corpo;Gel doccia|gel-doccia-ayurvedici|gel doccia,bagnoschiuma;Igiene e cura della persona|igiene-e-cura-della-persona-ayurvedica|deodorant,dentifric,igiene;Capelli|prodotti-per-capelli-ayurvedici,prodotti-per-capelli-ayur|capelli,shampoo;Oil pulling|oil-pulling|oil pulling,oil-pulling;Roll-on|roll-on-ayurvedici|roll-on,roll on;Saponi naturali|saponi-naturali-ayurvedici,saponi-naturali-ayur|sapon;Tè e tisane|te-e-tisane-ayurvediche|tè,tisan,infuso'
+      assign keyword_priority = '3,4,5,6,7,8,9,1,2'
+    when 'cura-della-persona'
+      assign map = 'Bagnoschiuma|bagnoschiuma|bagnoschiuma,bagno schiuma,gel doccia;Deodoranti|deodoranti|deodorant;Sali da bagno|sali-da-bagno|sali da bagno,sale da bagno;Saponi naturali|saponi-naturali|sapon;Balsami labbra|balsamo-labbra|labbra,burrocacao'
+    when 'prodotti-per-capelli'
+      assign map = 'Shampoo||shampoo;Balsami||balsam,conditioner;Oli||olio,oli ;Maschere||mascher;Lozioni e trattamenti||lozion,siero,trattament'
+    when 'essenze-e-brucia-essenze'
+      assign map = 'Profumi in olio|profumi-in-olio|profum,olio;Roll-on viso e corpo|roll-on-viso-e-corpo|roll-on,roll on;Roll-on ai fiori di Bach|roll-on-ai-fiori-di-bach,roll-on-bach|bach;Diffusori per ambienti|diffusori-per-ambienti,diffusori|diffusor,brucia essenz,brucia-essenz,bruciaessenz'
+      assign keyword_priority = '3,4,2,1'
+    when 'te-tisane'
+      assign map = 'Tè e tisane||tè,tisan,infuso,rooibos;Tazze|tazze|tazza,tazze'
+      assign keyword_priority = '2,1'
+    when 'oggettistica-e-idee-regalo'
+      assign map = 'Statuette|statuette|statuett,statua;Lampade di sale|lampade-di-sale|lampada di sale,lampada al sale;Scatole portagioielli|scatole-porta-gioielli|scatola,portagioielli,porta gioielli;Cuscini per il benessere|cuscini-per-il-benessere|cuscin;Diffusori per ambienti|diffusori-per-ambienti,diffusori|diffusor,brucia essenz;Candele e bruciacandele|candele-e-brucia-candele|candela,candele;Incensi e smudge|incensi-e-brucia-incensi|incens,smudge,palo santo;Gioielli con pietre|gioielli-con-pietre|collana,bracciale,orecchin,ciondol;Pietre|pietre-burattate,pietre-grezze|burattat,pietra grezza,pietre grezze;Cosmesi viso|cosmetica|siero viso,crema viso,contorno occhi;Cosmesi corpo|cosmesi-corpo|crema corpo,scrub corpo,olio corpo;Tè e tisane|te-tisane|tè,tisan,infuso'
+    else
+      assign family_priority = true
+      assign map = 'Contorno occhi||contorno occhi;Detergenti||detergent,struc;Tonici||tonic;Sieri||siero,sieri;Maschere||mascher;Scrub||scrub,esfoliant;Balsami||balsam;Saponi||sapon;Creme||crema,creme;Oli||olio,oli ;Candele||candela,candele;Incensi e smudge||incens,smudge,palo santo;Tazze||tazza,tazze;Tè e tisane||tè,tisan,infuso'
+  endcase
+
+  assign types = products | map: 'type' | uniq
+  assign distinct_types = 0
+  for type in types
+    if type != blank
+      assign distinct_types = distinct_types | plus: 1
+    endif
+  endfor
+  assign by_type = false
+  if generic and distinct_types >= 2 and by_family != true
+    assign by_type = true
+    assign map = ''
   endif
+  assign rows = map | split: ';'
+  assign row_count = rows.size
+  assign keyword_priority = keyword_priority | split: ','
+  if keyword_priority == empty
+    assign default_priority = ''
+    for row in rows
+      assign default_priority = default_priority | append: forloop.index
+      unless forloop.last
+        assign default_priority = default_priority | append: ','
+      endunless
+    endfor
+    assign keyword_priority = default_priority | split: ','
+  endif
+  assign type_fallback = false
+  if by_type or collection.handle == 'ayurveda'
+    assign type_fallback = true
+  endif
+  assign department_urls = ''
+  if departments
+    for row in rows
+      assign fields = row | split: '|'
+      assign handles = fields[1] | split: ','
+      assign child_url = ''
+      for handle in handles
+        assign child = collections[handle]
+        if child.products_count > 0
+          assign child_url = child.url
+          break
+        endif
+      endfor
+      assign department_urls = department_urls | append: child_url | append: '|'
+    endfor
+    assign department_urls = department_urls | append: 'end' | split: '|'
+  endif
+  assign visible_count = 0
+  assign assignments = ''
 -%}
-{%- paginate collection.products by 48 -%}
-  {%- assign all_ids = '|' -%}
-  {%- assign page_ids = collection.products | map: 'id' -%}
-  {%- assign group_counts = '' -%}
-  {%- capture product_groups -%}
-    {%- for group in groups -%}
-      {%- liquid
-        assign fields = group | split: '|'
-        assign handles = fields.last | split: ','
-        assign group_ids = '|'
-        assign group_count = 0
-      -%}
-      {%- capture cards -%}
-        {%- for handle in handles -%}
-          {%- assign child = collections[handle] -%}
-          {%- for product in child.products -%}
-            {%- liquid
-              unless product.available
-                continue
-              endunless
-              assign product_key = product.id | append: '|'
-              assign delimiter_key = product_key | prepend: '|'
-              if group_ids contains delimiter_key
-                continue
-              endif
-              if paginate.pages > 1
-                assign parent_handles = product.collections | map: 'handle'
-                if parent_handles contains collection.handle
-                  unless page_ids contains product.id
-                    continue
-                  endunless
-                elsif paginate.current_page > 1
-                  continue
-                endif
-              endif
-              assign group_ids = group_ids | append: product_key
-              assign group_count = group_count | plus: 1
-              unless all_ids contains delimiter_key
-                assign all_ids = all_ids | append: product_key
-              endunless
-            -%}
-            {% render 'bz-product-card', card: product, style: 'grid', sortable: true %}
-          {%- endfor -%}
-        {%- endfor -%}
-      {%- endcapture -%}
-      {%- assign group_counts = group_counts | append: group_count | append: ',' -%}
-      {%- if group_count > 0 -%}
-        {% render 'bz-collection-group', id: forloop.index, title: fields.first, count: group_count, cards: cards %}
-      {%- endif -%}
-    {%- endfor -%}
-    {%- assign other_count = 0 -%}
-    {%- capture other_cards -%}
-      {%- for product in collection.products -%}
-        {%- liquid
-          assign product_key = product.id | append: '|'
-          assign delimiter_key = product_key | prepend: '|'
-          if all_ids contains delimiter_key or product.available == false
+
+{%- for product in products -%}
+  {%- liquid
+    assign key = 0
+    if by_family or family_priority and row_count > 0
+      capture family
+        render 'bz-libro-famiglia', product: product, dato: 'catalogo'
+      endcapture
+    endif
+    if by_family
+      # A burner can have a mineral as its book family.
+      if product.tags contains 'brucia-incenso'
+        assign family = 'brucia-incensi'
+      endif
+      for row in rows
+        assign fields = row | split: '|'
+        if fields[1] == family
+          assign key = forloop.index
+          break
+        endif
+      endfor
+    elsif family_priority and row_count > 0
+      case family
+        when 'incensi', 'brucia-incensi', 'palo-santo', 'salvia-e-smudge', 'carta-eritrea'
+          for row in rows
+            assign fields = row | split: '|'
+            if fields.first == 'Incensi e smudge'
+              assign key = forloop.index
+              break
+            endif
+          endfor
+      endcase
+    endif
+    if key == 0 and row_count > 0 and by_family != true
+      assign memberships = product.collections | map: 'handle'
+      for row in rows
+        assign position = forloop.index
+        assign fields = row | split: '|'
+        assign handles = fields[1] | split: ','
+        for handle in handles
+          if memberships contains handle
+            assign key = position
+            break
+          endif
+        endfor
+        if key > 0
+          break
+        endif
+      endfor
+
+      if key == 0
+        assign title = product.title | downcase | append: ' '
+        for position in keyword_priority
+          assign index = position | minus: 1
+          if departments and department_urls[index] == blank
             continue
           endif
-          assign all_ids = all_ids | append: product_key
-          assign other_count = other_count | plus: 1
-        -%}
-        {% render 'bz-product-card', card: product, style: 'grid', sortable: true %}
+          assign fields = rows[index] | split: '|'
+          assign keywords = fields[2] | split: ','
+          for keyword in keywords
+            if title contains keyword
+              assign key = index | plus: 1
+              break
+            endif
+          endfor
+          if key > 0
+            break
+          endif
+        endfor
+      endif
+    endif
+
+    if key == 0 and type_fallback and product.type != blank
+      for type in types
+        if type == product.type
+          assign key = row_count | plus: forloop.index
+          break
+        endif
+      endfor
+    endif
+    assign assignments = assignments | append: key
+    unless forloop.last
+      assign assignments = assignments | append: ','
+    endunless
+  -%}
+{%- endfor -%}
+
+{%- liquid
+  assign assignments = assignments | split: ','
+  assign populated_groups = assignments | uniq | size
+  assign last_key = row_count
+  if type_fallback
+    assign last_key = last_key | plus: types.size
+  endif
+  assign other_key = last_key | plus: 1
+-%}
+{%- if populated_groups >= 2 -%}
+{%- capture chips -%}{%- endcapture -%}
+{%- capture groups -%}
+  {%- for position in (1..other_key) -%}
+    {%- liquid
+      assign key = position | append: ''
+      if position == other_key
+        assign key = '0'
+      endif
+      assign count = 0
+      assign shown = 0
+    -%}
+    {%- capture cards -%}
+      {%- for assignment in assignments -%}
+        {%- if assignment == key -%}
+          {%- assign count = count | plus: 1 -%}
+          {%- if departments == false or shown < 12 -%}
+            {%- assign shown = shown | plus: 1 -%}
+            {%- assign card = products[forloop.index0] -%}
+            {% render 'bz-product-card', card: card, style: 'plp' %}
+          {%- endif -%}
+        {%- endif -%}
       {%- endfor -%}
     {%- endcapture -%}
-    {%- if other_count > 0 -%}
-      {% render 'bz-collection-group', id: 'other', title: 'Altri prodotti', count: other_count, cards: other_cards %}
+    {%- if count > 0 -%}
+      {%- liquid
+        assign visible_count = visible_count | plus: shown
+        assign child_url = nil
+        assign anchor = nil
+        if position == other_key
+          assign label = 'Altro'
+        elsif position <= row_count
+          assign index = position | minus: 1
+          assign fields = rows[index] | split: '|'
+          assign label = fields.first
+          if by_family and fields[1] == 'incensi'
+            assign anchor = 'gruppo-incensi'
+          endif
+          if departments
+            assign child_url = department_urls[index]
+          endif
+        else
+          assign index = position | minus: row_count | minus: 1
+          assign label = types[index]
+        endif
+      -%}
+      {%- capture chip -%}
+        <button class="filter-group-option" type="button" data-bz-chip="{{ key }}" data-count="{{ shown }}" aria-pressed="false">{{ label | escape }} <small>{{ count }}</small></button>
+      {%- endcapture -%}
+      {%- assign chips = chips | append: chip -%}
+      {% render 'bz-collection-group', id: key, title: label, count: count, shown: shown, cards: cards, child_url: child_url, anchor: anchor %}
     {%- endif -%}
-  {%- endcapture -%}
-  {%- liquid
-    assign unique_ids = all_ids | remove_first: '|' | split: '|'
-    assign total = unique_ids.size
-    assign counts = group_counts | split: ','
-  -%}
-  <div class="bz-grouped-plp" data-bz-grouped-plp>
-    <section class="plp-head" aria-labelledby="plp-title">
-      <nav class="crumbs" aria-label="Percorso">
-        <ol>
-          <li><a href="{{ routes.root_url }}">Home</a></li>
-          <li><a href="{{ pages['cura-di-se'].url | default: '/pages/cura-di-se' }}">Cura di sé</a></li>
-          <li><span aria-current="page">{{ category }}</span></li>
-        </ol>
-      </nav>
-      <h1 id="plp-title">Cosmesi <em>{{ accent }}</em></h1>
-      <p class="plp-desc">{{ intro | escape }}</p>
-    </section>
-
-    <div class="plp-bar" data-plp-bar hidden>
-      <div class="chips-scroll">
-        <div class="chips" role="group" aria-label="Sottocategorie di {{ category }}">
-          <button class="chip" type="button" data-bz-chip="all" data-count="{{ total }}" aria-pressed="true">Tutto <small>{{ total }}</small></button>
-          {%- for group in groups -%}
-            {%- assign fields = group | split: '|' -%}
-            {%- assign count = counts[forloop.index0] | plus: 0 -%}
-            {%- if count > 0 -%}
-              <button class="chip" type="button" data-bz-chip="{{ forloop.index }}" data-count="{{ count }}" aria-pressed="false">{{ fields.first }} <small>{{ count }}</small></button>
-            {%- endif -%}
-          {%- endfor -%}
-        </div>
-      </div>
-    </div>
-    <div class="plp-tools">
-      <p aria-live="polite"><span data-plp-total>{{ total }}</span> <span data-plp-unit>{% if total == 1 %}prodotto{% else %}prodotti{% endif %}</span></p>
-      <label class="sort" data-plp-sort hidden>
-        <span class="sr-only">Ordina per</span>
-        {% render 'bz-icon', name: 'swap_vert' %}
-        <select>
-          <option value="featured">In evidenza</option>
-          <option value="new">Novità</option>
-          <option value="price-up">Prezzo crescente</option>
-          <option value="price-down">Prezzo decrescente</option>
-          <option value="name">Nome A-Z</option>
-        </select>
-      </label>
-    </div>
-
-    <div class="plp-groups">{{ product_groups }}</div>
-    {%- if total == 0 -%}<p class="plp-group-empty">Nessun prodotto disponibile.</p>{%- endif -%}
-    {%- if paginate.pages > 1 -%}
-      <nav class="plp-pagination" aria-label="Pagine della collezione">{{ paginate | default_pagination }}</nav>
-    {%- endif -%}
-  </div>
-  <script src="{{ 'bz-collection-groups.js' | asset_url }}" defer></script>
-{%- endpaginate -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{{- populated_groups -}}<!--BZ:GROUPS-->{{- visible_count -}}<!--BZ:GROUPS-->{{- chips -}}<!--BZ:GROUPS-->{{- groups -}}
+{%- endif -%}

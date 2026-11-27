@@ -1,0 +1,2 @@
+{%- assign name = product.metafields.custom.nome_vetrina.value | strip -%}
+{{- name | default: product.title -}}

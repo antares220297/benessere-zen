@@ -1,0 +1,13 @@
+{%- liquid
+  assign variant = product.selected_or_first_available_variant
+  assign image = variant.featured_image | default: product.featured_image
+  assign name = short_name | default: product.title
+-%}
+{
+  "name": {{ name | json }},
+  "url": {{ product.url | json }},
+  "available": {% if product.available and variant.available %}true{% else %}false{% endif %},
+  "id": {{ variant.id | json }},
+  "price": {{ variant.price | json }},
+  "img": {% if image != blank %}{{ image | image_url: width: 480 | json }}{% else %}null{% endif %}
+}

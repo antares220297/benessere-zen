@@ -2,11 +2,11 @@
 .bz-coll {
   width: 100%;
   color: #eee7db;
-  font-family: Figtree, system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", system-ui, sans-serif;
   background: #141312;
 }
 .bz-coll h1, .bz-coll h2, .bz-coll h3 {
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
   font-weight: 400;
   color: #eee7db;
 }
@@ -44,7 +44,7 @@
 }
 .bz-chead__copy { position: relative; z-index: 1; padding: 36px 40px; display: flex; flex-direction: column; justify-content: flex-end; }
 .bz-chead h1 { margin: 0; font-size: clamp(42px, 4.4vw, 66px); line-height: 1; }
-.bz-chead p { margin: 12px 0 0; color: #cdc4b4; max-width: 46ch; }
+.bz-chead p { margin: 12px 0 0; color: #cdc4b4; max-width: 29.49em; }
 .bz-chips-row {
   position: relative; z-index: 1;
   display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: flex-start;
@@ -168,7 +168,7 @@ html.bz-sheet-open { overflow: hidden; }
 .bz-promo.is-solid { background: #201e1b; grid-template-columns: minmax(0,1fr); }
 .bz-promo.is-solid div { max-width: none; width: 100%; }
 .bz-promo.is-hours { background: #201e1b; border: 1px solid rgba(201,169,110,.45); }
-.bz-promo .bz-figure { font-family: Baskervville, Georgia, serif; font-size: 64px; line-height: 1; margin: 0; color: #e3cb95; }
+.bz-promo .bz-figure { font-family: Baskervville, "Baskervville Fallback", Georgia, serif; font-size: 64px; line-height: 1; margin: 0; color: #e3cb95; }
 .bz-promo .bz-figure small { font-size: 0.42em; line-height: 1; margin-left: 0.15em; }
 .bz-coll .bz-more { display: block; margin-top: 28px; color: #958d7f; text-align: center; }
 .bz-coll .bz-more p { margin: 0 0 12px; }
@@ -322,3 +322,4 @@ html.bz-sheet-open { overflow: hidden; }
   .bz-cgrid { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .bz-promo { grid-column: 1 / -1; grid-row: auto; aspect-ratio: 4 / 3; }
 }
+/* ch → em: larghezze indipendenti dal font di ripiego (giro G2) */

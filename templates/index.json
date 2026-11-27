@@ -4,19 +4,14 @@
       "type": "bz-hero",
       "settings": {
         "heading": "Un rituale",
-        "heading_accent": "da portare addosso",
-        "text": "Mala, bracciali e ciondoli in pietra naturale.",
-        "primary_label": "Vedi i mala →",
-        "primary_link": "/collections/mala-tibetani",
-        "secondary_label": "Tutti i gioielli",
-        "secondary_link": "/collections/gioielli-con-pietre",
+        "heading_accent": "per il tuo benessere quotidiano",
+        "text": "Bracciali, ciondoli, pietre, candele e creme naturali.",
+        "primary_label": "Tutti i gioielli",
+        "primary_link": "/collections/gioielli-con-pietre",
+        "secondary_label": "Ayurveda",
+        "secondary_link": "/collections/ayurveda",
         "featured_product": "mala-diaspro-rosso-108-perle",
         "rotation_collection": "gioielli-con-pietre",
-        "slide_2_products": [
-          "epidoto-4-varianti",
-          "pietra-di-luna-arcobaleno-4-varianti-1",
-          "giada"
-        ],
         "slide_2_link": "/collections/all?sort_by=created-descending",
         "slide_3_link": "/pages/cura-di-se"
       },
@@ -26,29 +21,17 @@
           "settings": {
             "badge": "Novità",
             "title": "Pietre",
-            "accent": "da tasca",
+            "accent": "tascabili",
             "text": "Burattate e grezze, da tenere vicino.",
-            "button_label": "Scegli la tua →",
+            "button_label": "Vedi le pietre",
             "link": "#stones",
-            "collection": "pietre-burattate"
-          }
-        },
-        "tile-regali": {
-          "type": "tile",
-          "settings": {
-            "title": "Regali",
-            "accent": "piccoli",
-            "text": "Pietre, ciondoli, scatole in velluto, sotto i 30 €.",
-            "button_label": "Idee regalo →",
-            "link": "/collections/oggettistica-e-idee-regalo",
-            "collection": "oggettistica-e-idee-regalo",
-            "image_asset": "bz-hero-regali.jpg"
+            "collection": "pietre-burattate",
+            "image_alt": "Pietre burattate in una vaschetta, viste da vicino"
           }
         }
       },
       "block_order": [
-        "tile-pietre",
-        "tile-regali"
+        "tile-pietre"
       ]
     },
     "bz_spheres": {
@@ -65,14 +48,16 @@
           "type": "sphere",
           "settings": {
             "label": "Bracciali",
-            "collection": "collane-e-braccialetti"
+            "collection": "collane-e-braccialetti",
+            "image_collection": "gioielli-con-pietre"
           }
         },
         "s2": {
           "type": "sphere",
           "settings": {
             "label": "Ciondoli",
-            "collection": "gioielli-con-pietre"
+            "collection": "gioielli-con-pietre",
+            "image_collection": "collane-e-braccialetti"
           }
         },
         "s3": {
@@ -413,13 +398,13 @@
     "bz_ritual": {
       "type": "bz-home-ritual",
       "settings": {
-        "bundle_discount": false
+        "bundle_discount": true
       },
       "blocks": {
         "set-0": {
           "type": "set",
           "settings": {
-            "label": "Serenità",
+            "label": "Intuizione",
             "caption": "Ametista da tenere vicino o portare addosso.",
             "image_asset": "bz-rituale-serenita.jpg",
             "bundle_product": "set-rituale-serenita",
@@ -455,7 +440,7 @@
         "set-3": {
           "type": "set",
           "settings": {
-            "label": "Affetti",
+            "label": "Amore",
             "caption": "Il quarzo rosa, in tre forme.",
             "image_asset": "bz-rituale-affetti.jpg",
             "bundle_product": "set-rituale-affetti",
@@ -467,7 +452,7 @@
         "set-4": {
           "type": "set",
           "settings": {
-            "label": "Concentrazione",
+            "label": "Comunicazione",
             "caption": "Il blu del lapislazzuli, al collo e al polso.",
             "image_asset": "bz-rituale-concentrazione.jpg",
             "bundle_product": "set-rituale-concentrazione",
@@ -498,135 +483,327 @@
         "set-5"
       ]
     },
-    "bz_stones": {
-      "type": "bz-stones",
+      "bz_cielo": {
+        "type": "bz-cielo",
+        "blocks": {
+          "gennaio": {
+            "type": "month",
+            "settings": {
+              "month": "1",
+              "stone": "Granato",
+              "note": "Il granato è nel bracciale; accanto, il diaspro rosso, dello stesso colore.",
+              "early": "Il granato è nel bracciale, insieme al diaspro rosso dello stesso colore. Per la tradizione il Capricorno è la terra di montagna, tenace: a lui il patchouli.",
+              "late": "Il granato è nel bracciale, insieme al diaspro rosso dello stesso colore. Si dice che l’Acquario sia l’aria che guarda lontano: per lui lavanda e palo santo.",
+              "st": "pietre-burattate-diaspro-rosso",
+              "st_name": "Diaspro rosso burattato",
+              "j": "bracciale-granato-quarzo-rosa-cuore",
+              "j_name": "Bracciale con granato"
+            }
+          },
+          "febbraio": {
+            "type": "month",
+            "settings": {
+              "month": "2",
+              "stone": "Ametista",
+              "note": "",
+              "early": "Si dice che l’Acquario sia l’aria che guarda lontano. Per lui, la lavanda con una nota di palo santo.",
+              "late": "I Pesci chiudono il giro dei segni e, si dice, sono l’acqua che sogna. Per loro, gelsomino e oud.",
+              "st": "pietre-burattate-ametista-1",
+              "st_name": "Ametista burattata",
+              "j": "bracciale-ametista-naturale",
+              "j_name": "Bracciale con ametista"
+            }
+          },
+          "marzo": {
+            "type": "month",
+            "settings": {
+              "month": "3",
+              "stone": "Acquamarina",
+              "note": "",
+              "early": "I Pesci chiudono il giro dei segni e, si dice, sono l’acqua che sogna. Per loro, gelsomino e oud.",
+              "late": "Nella tradizione l’Ariete apre il giro dei segni: è il fuoco che parte. Per lui, incenso e mirra.",
+              "st": "acquamarina",
+              "st_name": "Acquamarina grezza",
+              "j": "ciondolo-in-acquamarina-grezza",
+              "j_name": "Ciondolo acquamarina"
+            }
+          },
+          "aprile": {
+            "type": "month",
+            "settings": {
+              "month": "4",
+              "stone": "Diamante",
+              "note": "Ad aprile la tradizione affianca al diamante il cristallo di rocca.",
+              "early": "Ad aprile la tradizione affianca al diamante il cristallo di rocca, e all’Ariete, fuoco che apre il giro dei segni, incenso e mirra.",
+              "late": "Ad aprile la tradizione affianca al diamante il cristallo di rocca, e al Toro, terra che ama le cose buone e lente, il patchouli.",
+              "st": "pietre-burattate-cristallo-di-rocca",
+              "st_name": "Cristallo burattato",
+              "j": "ciondolo-cristallo-di-rocca-grezzo",
+              "j_name": "Ciondolo cristallo grezzo"
+            }
+          },
+          "maggio": {
+            "type": "month",
+            "settings": {
+              "month": "5",
+              "stone": "Smeraldo",
+              "note": "Lo smeraldo è nel ciondolo; accanto, l’avventurina verde.",
+              "early": "Lo smeraldo è nel ciondolo, insieme all’avventurina verde. Si dice che il Toro sia la terra che ama le cose buone e lente: il patchouli, intenso, gli somiglia.",
+              "late": "Lo smeraldo è nel ciondolo, insieme all’avventurina verde. Nella tradizione i Gemelli sono l’aria che si muove e chiacchiera: per loro, lavanda e palo santo.",
+              "st": "pietre-burattate-avventurina",
+              "st_name": "Avventurina burattata",
+              "j": "ciondolo-di-smeraldo-forato",
+              "j_name": "Ciondolo con smeraldo"
+            }
+          },
+          "giugno": {
+            "type": "month",
+            "settings": {
+              "month": "6",
+              "stone": "Perla",
+              "note": "A giugno la tradizione affianca alla perla la pietra di luna.",
+              "early": "A giugno la tradizione affianca alla perla la pietra di luna, e ai Gemelli, aria che si muove e chiacchiera, lavanda e palo santo.",
+              "late": "A giugno la tradizione affianca alla perla la pietra di luna, e al Cancro, segno della Luna e della casa, gelsomino e oud.",
+              "st": "pietra-di-luna-arcobaleno-4-varianti-1",
+              "st_name": "Pietra di luna arcobaleno",
+              "j": "braccialetto-pierre-de-lune-blanche",
+              "j_name": "Bracciale pietra di luna"
+            }
+          },
+          "luglio": {
+            "type": "month",
+            "settings": {
+              "month": "7",
+              "stone": "Rubino",
+              "note": "A luglio la tradizione affianca al rubino la corniola.",
+              "early": "A luglio la tradizione affianca al rubino la corniola, e al Cancro, segno della Luna e della casa, gelsomino e oud.",
+              "late": "A luglio la tradizione affianca al rubino la corniola, e al Leone, segno del Sole, la resina calda di incenso e mirra.",
+              "st": "pietre-burattate-corniola",
+              "st_name": "Corniola burattata",
+              "j": "braccialetto-con-perle-di-rubino-zoisite",
+              "j_name": "Bracciale rubino zoisite"
+            }
+          },
+          "agosto": {
+            "type": "month",
+            "settings": {
+              "month": "8",
+              "stone": "Peridoto",
+              "note": "Nel corredo giada e prehnite, scelte per il verde del peridoto.",
+              "early": "Nel corredo giada e prehnite, scelte per il verde del peridoto. Nella tradizione il Leone è il segno del Sole: al suo fuoco si dà la resina calda di incenso e mirra.",
+              "late": "Nel corredo giada e prehnite, scelte per il verde del peridoto. Si dice che la Vergine sia la terra del raccolto, paziente e precisa: per lei, il patchouli.",
+              "st": "giada",
+              "st_name": "Giada grezza",
+              "j": "braccialetto-prehnite",
+              "j_name": "Bracciale con prehnite"
+            }
+          },
+          "settembre": {
+            "type": "month",
+            "settings": {
+              "month": "9",
+              "stone": "Zaffiro",
+              "note": "Accanto allo zaffiro, settembre ha anche il lapislazzuli.",
+              "early": "Accanto allo zaffiro, settembre ha anche il lapislazzuli. Si dice che la Vergine sia la terra del raccolto, paziente e precisa: per lei, il patchouli.",
+              "late": "Accanto allo zaffiro, settembre ha anche il lapislazzuli. C’è chi vede nella Bilancia l’aria che cerca equilibrio: per lei, la candela a lavanda e palo santo.",
+              "st": "lapislazzuli",
+              "st_name": "Lapislazzuli grezzo",
+              "j": "ciondolo-in-lapis-lazuli",
+              "j_name": "Ciondolo in lapislazzuli"
+            }
+          },
+          "ottobre": {
+            "type": "month",
+            "settings": {
+              "month": "10",
+              "stone": "Opale",
+              "note": "",
+              "early": "C’è chi vede nella Bilancia l’aria che cerca equilibrio. Per lei, la candela a lavanda e palo santo.",
+              "late": "Si dice che lo Scorpione sia l’acqua profonda, quella che non si vede. Per lui, l’oud con il gelsomino.",
+              "st": "opale-blu",
+              "st_name": "Opale blu grezzo",
+              "j": "braccialetto-oplae-jaune",
+              "j_name": "Bracciale opale giallo"
+            }
+          },
+          "novembre": {
+            "type": "month",
+            "settings": {
+              "month": "11",
+              "stone": "Topazio",
+              "note": "A novembre la tradizione affianca al topazio il citrino.",
+              "early": "A novembre la tradizione affianca al topazio il citrino, e allo Scorpione, acqua profonda che non si vede, l’oud con il gelsomino.",
+              "late": "A novembre la tradizione affianca al topazio il citrino, e al Sagittario, fuoco che viaggia lontano, incenso e mirra.",
+              "st": "pietre-burattate-quarzo-citrino",
+              "st_name": "Citrino burattato",
+              "j": "braccialetto-citrine-naturelle",
+              "j_name": "Bracciale con citrino"
+            }
+          },
+          "dicembre": {
+            "type": "month",
+            "settings": {
+              "month": "12",
+              "stone": "Turchese",
+              "note": "A dicembre la tradizione affianca al turchese il lapislazzuli.",
+              "early": "A dicembre la tradizione affianca al turchese il lapislazzuli, e al Sagittario, fuoco che viaggia lontano, incenso e mirra.",
+              "late": "A dicembre la tradizione affianca al turchese il lapislazzuli, e al Capricorno, terra di montagna e tenace, il patchouli.",
+              "st": "pietre-burattate-lapislazzuli",
+              "st_name": "Lapislazzuli burattato",
+              "j": "ciondolo-a-cuore-in-lapislazzuli",
+              "j_name": "Cuore in lapislazzuli"
+            }
+          },
+          "fuoco": {
+            "type": "element",
+            "settings": {
+              "element": "fuoco",
+              "product": "stamford-premium-bastoncini-di-incenso-incenso-e-mirra",
+              "short_name": "Incenso e mirra"
+            }
+          },
+          "terra": {
+            "type": "element",
+            "settings": {
+              "element": "terra",
+              "product": "bastoncini-incenso-stamford-premium-patchouli",
+              "short_name": "Incenso al patchouli"
+            }
+          },
+          "aria": {
+            "type": "element",
+            "settings": {
+              "element": "aria",
+              "product": "candela-intenti-purifying-moon",
+              "short_name": "Candela Purifying Moon"
+            }
+          },
+          "acqua": {
+            "type": "element",
+            "settings": {
+              "element": "acqua",
+              "product": "candela-intenti-divine-goddess",
+              "short_name": "Candela Divine Goddess"
+            }
+          }
+        },
+        "block_order": [
+          "gennaio",
+          "febbraio",
+          "marzo",
+          "aprile",
+          "maggio",
+          "giugno",
+          "luglio",
+          "agosto",
+          "settembre",
+          "ottobre",
+          "novembre",
+          "dicembre",
+          "fuoco",
+          "terra",
+          "aria",
+          "acqua"
+        ],
+        "settings": {
+          "signs": "[{\"n\":\"Capricorno\",\"m\":12,\"d\":22,\"el\":\"terra\",\"pietre\":\"granato e rubino\",\"g\":\"♑\",\"fr\":\"Per la tradizione il Capricorno è la terra di montagna, tenace. Nel suo corredo c’è il patchouli.\"},{\"n\":\"Acquario\",\"m\":1,\"d\":20,\"el\":\"aria\",\"pietre\":\"ametista e granato\",\"g\":\"♒\",\"fr\":\"Si dice che l’Acquario sia l’aria che guarda lontano. Per lui, la lavanda con una nota di palo santo.\"},{\"n\":\"Pesci\",\"m\":2,\"d\":19,\"el\":\"acqua\",\"pietre\":\"acquamarina e ametista\",\"g\":\"♓\",\"fr\":\"I Pesci chiudono il giro dei segni e, si dice, sono l’acqua che sogna. Per loro, gelsomino e oud.\"},{\"n\":\"Ariete\",\"m\":3,\"d\":21,\"el\":\"fuoco\",\"pietre\":\"diamante ed eliotropio\",\"g\":\"♈\",\"fr\":\"Nella tradizione l’Ariete apre il giro dei segni: è il fuoco che parte. Per lui, incenso e mirra.\"},{\"n\":\"Toro\",\"m\":4,\"d\":20,\"el\":\"terra\",\"pietre\":\"smeraldo e zaffiro\",\"g\":\"♉\",\"fr\":\"Si dice che il Toro sia la terra che ama le cose buone e lente. Il patchouli, intenso, gli somiglia.\"},{\"n\":\"Gemelli\",\"m\":5,\"d\":21,\"el\":\"aria\",\"pietre\":\"perla e agata\",\"g\":\"♊\",\"fr\":\"Nella tradizione i Gemelli sono l’aria che si muove e chiacchiera: per loro, lavanda e palo santo.\"},{\"n\":\"Cancro\",\"m\":6,\"d\":21,\"el\":\"acqua\",\"pietre\":\"rubino e smeraldo\",\"g\":\"♋\",\"fr\":\"Per la tradizione il Cancro è il segno della Luna e della casa. Accanto a lui, gelsomino e oud.\"},{\"n\":\"Leone\",\"m\":7,\"d\":23,\"el\":\"fuoco\",\"pietre\":\"peridoto e onice\",\"g\":\"♌\",\"fr\":\"Nella tradizione il Leone è il segno del Sole. Al suo fuoco si dà la resina calda di incenso e mirra.\"},{\"n\":\"Vergine\",\"m\":8,\"d\":23,\"el\":\"terra\",\"pietre\":\"zaffiro e corniola\",\"g\":\"♍\",\"fr\":\"Si dice che la Vergine sia la terra del raccolto, paziente e precisa. Per lei, un profumo di patchouli.\"},{\"n\":\"Bilancia\",\"m\":9,\"d\":23,\"el\":\"aria\",\"pietre\":\"opale e crisolito\",\"g\":\"♎\",\"fr\":\"C’è chi vede nella Bilancia l’aria che cerca equilibrio. Per lei, la candela a lavanda e palo santo.\"},{\"n\":\"Scorpione\",\"m\":10,\"d\":23,\"el\":\"acqua\",\"pietre\":\"topazio e berillo\",\"g\":\"♏\",\"fr\":\"Si dice che lo Scorpione sia l’acqua profonda, quella che non si vede. Per lui, l’oud con il gelsomino.\"},{\"n\":\"Sagittario\",\"m\":11,\"d\":22,\"el\":\"fuoco\",\"pietre\":\"turchese e topazio\",\"g\":\"♐\",\"fr\":\"Nella tradizione il Sagittario è il fuoco che viaggia lontano. Con lui, incenso e mirra.\"}]"
+        }
+      },
+    "bz_officina": {
+      "type": "bz-officina",
+      "settings": {
+        "heading": "L'officina del",
+        "heading_accent": "corpo"
+      },
       "blocks": {
-        "stone-0": {
-          "type": "stone",
+        "olio": {
+          "type": "chapter",
           "settings": {
-            "name": "Quarzo rosa",
-            "intent": "amore",
-            "meaning": "La pietra del cuore e degli affetti",
-            "front": "bz-pietra-macro-quarzo-rosa.jpg",
-            "loose": "quarzo-rosa",
-            "bracelet": "braccialetto-gold-quarzo-rosa-e-rodonite",
-            "back": "bz-negozio-card-pietra-quarzo-rosa.jpg",
-            "pendant": "ciondolo-in-quarzo-rosa-con-gancio"
+            "label": "Olio",
+            "collection": "profumi-in-olio",
+            "products": [
+              "olio-profumato-ayurveda-ambra",
+              "olio-profumato-ayurveda-vaniglia",
+              "olio-profumato-naturale-sandalwood-10-ml"
+            ],
+            "veil": "#3a281c",
+            "caption": "Si lascia sui polsi, e resta sulla pelle per tutta la sera.",
+            "alt": "Un contagocce lascia cadere una goccia d'olio sul palmo di una mano",
+            "scene": "officina-scena-olio.webp"
           }
         },
-        "stone-1": {
-          "type": "stone",
+        "bagno": {
+          "type": "chapter",
           "settings": {
-            "name": "Ametista",
-            "intent": "meditazione",
-            "meaning": "Legata da sempre alla meditazione",
-            "front": "bz-pietra-macro-ametista.jpg",
-            "loose": "ametista",
-            "bracelet": "braccialetto-ametista-avventurina-cristallo-di-rocca-om",
-            "back": "bz-negozio-card-pietra-ametista.jpg",
-            "pendant": "ciondolo-ametista-cuore"
+            "label": "Bagno",
+            "collection": "sali-da-bagno",
+            "products": [
+              "mix-sali-himalayani-500g-relax",
+              "mix-sali-himalayani-500g-detox",
+              "sali-da-bagno-raffreddore-influenza-350g"
+            ],
+            "veil": "#1e272c",
+            "caption": "I sali si sciolgono nell'acqua calda, quando si chiude la porta.",
+            "alt": "Una mano versa i sali da una ciotola nell'acqua di una vasca di pietra",
+            "scene": "officina-scena-bagno.webp"
           }
         },
-        "stone-2": {
-          "type": "stone",
+        "candela": {
+          "type": "chapter",
           "settings": {
-            "name": "Ossidiana",
-            "intent": "protezione",
-            "meaning": "Vetro vulcanico, pietra di protezione",
-            "front": "bz-pietra-macro-ossidiana.jpg",
-            "loose": "ossidiana-nera",
-            "bracelet": "braccialetto-obsideinne-neige-perles",
-            "back": "bz-negozio-card-pietra-ossidiana.jpg",
-            "pendant": "ciondolo-larme-obsideinne-noire"
+            "label": "Candela",
+            "collection": "candele-e-brucia-candele",
+            "products": [
+              "candela-di-soia-profumata-song-of-india-sleep-in-vetro-1",
+              "candela-organic-goodness-rosa-geranio",
+              "candela-profumata-in-cera-di-soia-chakra-sahasrara-oud-e-ambra"
+            ],
+            "veil": "#3d2a16",
+            "caption": "Si accende e la stanza cambia odore.",
+            "alt": "Candela accesa in un bicchiere scuro accanto a due pietre viola",
+            "scene": "officina-scena-candela.webp"
           }
         },
-        "stone-3": {
-          "type": "stone",
+        "sapone": {
+          "type": "chapter",
           "settings": {
-            "name": "Tormalina nera",
-            "intent": "protezione",
-            "meaning": "Pietra di protezione spirituale",
-            "front": "bz-pietra-macro-tormalina-nera.jpg",
-            "loose": "tormalina-nera-grezza",
-            "bracelet": "bracciale-tormalina-nera-elastico",
-            "back": "bz-negozio-card-pietra-tormalina-nera.jpg"
+            "label": "Sapone",
+            "collection": "saponi-naturali-ayurvedici",
+            "products": [
+              "sapone-curcuma-holy-lama",
+              "sapone-yogi-di-holy-lama-alla-rosa",
+              "sapone-yogi-di-holy-lama-alla-lavanda"
+            ],
+            "veil": "#332415",
+            "caption": "Il gesto di ogni mattina, con oli e spezie.",
+            "alt": "Una saponetta bagnata su un portasapone in un lavabo di pietra",
+            "scene": "officina-scena-sapone.webp"
           }
         },
-        "stone-4": {
-          "type": "stone",
+        "tisana": {
+          "type": "chapter",
           "settings": {
-            "name": "Lapislazzuli",
-            "intent": "meditazione",
-            "meaning": "Il blu degli antichi Egizi, legato alla verità",
-            "front": "bz-pietra-macro-lapislazzuli.jpg",
-            "loose": "lapislazzuli",
-            "bracelet": "braccialetto-lapis-lazuli",
-            "back": "bz-negozio-card-pietra-lapislazzuli.jpg",
-            "pendant": "ciondolo-a-cuore-in-lapislazzuli"
-          }
-        },
-        "stone-5": {
-          "type": "stone",
-          "settings": {
-            "name": "Pirite",
-            "intent": "abbondanza",
-            "meaning": "L’oro degli sciocchi, simbolo di abbondanza",
-            "front": "bz-pietra-macro-pirite.jpg",
-            "loose": "pirite",
-            "bracelet": "braccialetto-pyrite-perles",
-            "back": "bz-negozio-card-pietra-pirite.jpg",
-            "pendant": "ciondolo-pirite-grezza"
-          }
-        },
-        "stone-6": {
-          "type": "stone",
-          "settings": {
-            "name": "Cristallo di rocca",
-            "intent": "meditazione",
-            "meaning": "Accompagna l’intenzione",
-            "front": "bz-pietra-macro-cristallo-di-rocca.jpg",
-            "loose": "cristallo-di-rocca",
-            "bracelet": "braccialetto-ametista-chevron-cristallo-di-rocca-loto",
-            "pendant": "ciondolo-ala-angelo-cristallo-di-rocca"
-          }
-        },
-        "stone-7": {
-          "type": "stone",
-          "settings": {
-            "name": "Occhio di tigre",
-            "intent": "protezione",
-            "meaning": "Protezione spirituale, nella tradizione",
-            "front": "bz-pietra-macro-occhio-di-tigre.jpg",
-            "loose": "occhio-di-tigre",
-            "bracelet": "mala-braccialetto-elastico-con-pietra-occhio-di-tigre-coraggio-iniziativa",
-            "pendant": "ciondolo-occhio-di-tigre-grezzo"
+            "label": "Tisana",
+            "collection": "te-e-tisane-ayurvediche",
+            "products": [
+              "te-yogi-speziato",
+              "te-verde-marrakech-e-petali-50gr",
+              "te-nero-pakistano-supremo-50gr"
+            ],
+            "veil": "#2e3121",
+            "caption": "Una tazza calda, quando si ha un momento solo per sé.",
+            "alt": "Tazza fumante accanto a bastoncini di cannella",
+            "scene": "officina-scena-tisana.webp"
           }
         }
       },
       "block_order": [
-        "stone-0",
-        "stone-1",
-        "stone-2",
-        "stone-3",
-        "stone-4",
-        "stone-5",
-        "stone-6",
-        "stone-7"
+        "olio",
+        "bagno",
+        "candela",
+        "sapone",
+        "tisana"
       ]
-    },
-    "bz_gifts": {
-      "type": "bz-gifts",
-      "settings": {
-        "link": "/collections/oggettistica-e-idee-regalo",
-        "products": [
-          "portacandela-mano-con-loto-color-oro",
-          "ciondolo-a-goccia-in-corniola",
-          "candele-da-tavola-profumate-chakra-set-da-7-3",
-          "portacandela-in-vetro-smerigliato-interno-metallizzato-mystical-albero-della-vita"
-        ],
-        "heading_accent": "sotto 30 €",
-        "product_labels": "portacandela-mano-con-loto-color-oro|Portacandela mano dorata, fiore di loto\nciondolo-a-goccia-in-corniola|Ciondolo in corniola, goccia\ncandele-da-tavola-profumate-chakra-set-da-7-3|Candele profumate a stelo, 7 Chakra\nportacandela-in-vetro-smerigliato-interno-metallizzato-mystical-albero-della-vita|Portacandela in vetro, Albero della Vita mystical"
-      }
     },
     "bz_store": {
       "type": "bz-store",
@@ -639,7 +816,7 @@
           "settings": {
             "tab": "0",
             "question": "Quanto costa la spedizione?",
-            "answer": "<p>La spedizione Express costa 5,90&nbsp;€, ed è gratuita da 50&nbsp;€ di spesa.</p>"
+            "answer": ""
           }
         },
         "faq-1": {
@@ -663,7 +840,7 @@
           "settings": {
             "tab": "0",
             "question": "Posso restituire un acquisto?",
-            "answer": "<p>Sì, entro 14 giorni dalla ricezione, con il pezzo non usato e nel suo imballo originale. Scrivi a <a href=\"mailto:info@benesserezen.shop\">info@benesserezen.shop</a>: se il reso è accettato ti mandiamo noi l’etichetta, e il rimborso arriva entro 10 giorni lavorativi.</p>"
+            "answer": "<p>Sì, entro 14 giorni dalla ricezione, con il pezzo non usato e nel suo imballo originale. Scrivi a <a href=\"mailto:info@benesserezen.shop\">info@benesserezen.shop</a>: se il reso è accettato ti mandiamo le istruzioni. La spedizione del reso è a carico tuo, e il rimborso arriva entro 10 giorni lavorativi dall'approvazione.</p>"
           }
         },
         "faq-4": {
@@ -703,7 +880,7 @@
           "settings": {
             "tab": "2",
             "question": "Ricevo la pietra della foto?",
-            "answer": "<p>Ricevi la stessa pietra, nella stessa misura. La natura però non fa copie: forma e venature cambiano da un pezzo all’altro.</p>"
+            "answer": "<p>Ricevi la stessa pietra, nella misura indicata in scheda. La foto mostra il tipo di pietra: forma e venature cambiano da un pezzo all’altro.</p>"
           }
         },
         "faq-9": {
@@ -770,8 +947,8 @@
     "bz_tarocchi",
     "bz_picked",
     "bz_ritual",
-    "bz_stones",
-    "bz_gifts",
+    "bz_cielo",
+    "bz_officina",
     "bz_store",
     "bz_newsletter"
   ]

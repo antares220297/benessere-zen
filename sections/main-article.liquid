@@ -206,12 +206,6 @@
                     </div>
                     <ul x-show="show_tab" x-collapse class="toc:my-0 toc:mr-0 toc:pl-5 pr-5 toc:md:pl-7 md:pr-7 rtl:toc:pl-7 pb-5 list-menu-article inline-flex flex-wrap items-center"></ul>    
                   </div>
-                  {% if section.settings.social_sharing %}
-                    <div x-intersect.once="$el.classList.add('is-visible')" class="anm-fade-element delay-200 toc mt-4 flex items-center">
-                      <p class="mr-2 toc:mt-0 toc:mb-0">{{ 'products.product.share_social' | t }}</p>
-                      {% render 'social-sharing', share_title: article.title, share_permalink: article.url, share_image: article %}
-                    </div>
-                  {% endif %}
                 </div>
               </div> 
               {% style %}
@@ -255,14 +249,6 @@
                     </li>
                   {%- endfor -%}
                 </ul>
-              {%- endif -%}
-            {%- endif -%}
-            {% if block.settings.blog_show_share_social %}
-              {%- if settings.share_facebook or settings.share_twitter or settings.share_pinterest -%}
-                <div class="flex justify-start md:justify-end items-center h-fit pt-2 pb-2 md:pb-0 md:pt-0 md:max-w-[33%]"{{ block.shopify_attributes }}>
-                  <p class="mr-1">{{ 'products.product.share_social' | t }}</p>
-                  {% render 'social-sharing' %}
-                </div>
               {%- endif -%}
             {%- endif -%}
           </div>

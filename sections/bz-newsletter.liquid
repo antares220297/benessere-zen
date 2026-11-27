@@ -1,6 +1,6 @@
 <section class="bz bz-bottom bz-news" id="newsletter">
   <div class="bz-news__card">
-    <h2>{{ section.settings.heading | default: 'Novità,' | escape }} <em>{{ section.settings.heading_accent | default: 'via email' | escape }}</em></h2>
+    <h2 class="bz-news__heading">{{ section.settings.heading | default: 'Novità,' | escape }} <em>{{ section.settings.heading_accent | default: 'via email' | escape }}</em></h2>
     <div>
       {%- form 'customer', id: 'newsletter-form', class: 'contact-form' -%}
         <input type="hidden" name="contact[tags]" value="newsletter">
@@ -13,7 +13,9 @@
           {%- if form.errors -%}<p role="alert">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>{%- endif -%}
         {%- endif -%}
       {%- endform -%}
-      <small>{{ section.settings.note | escape }}</small>
+      <small>{{ section.settings.note | escape }}
+        <a class="bz-news__privacy" href="{{ shop.privacy_policy.url | default: '/policies/privacy-policy' }}">Informativa sulla privacy</a>
+      </small>
     </div>
   </div>
 </section>

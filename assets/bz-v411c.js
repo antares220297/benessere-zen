@@ -41,12 +41,16 @@
 
   const hoursNode = q('#bz-hours');
   const hours = hoursNode ? JSON.parse(hoursNode.textContent) : { note: '', free: 50, days: ['', '', '', '', '', '', ''], exceptions: '' };
-  const parseRanges = value => String(value || '').split(',').map(part => part.trim()).filter(Boolean).map(part => {
-    const [a, b] = part.split('-');
-    const toMin = t => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
-    return [toMin(a), toMin(b)];
-  });
+  const parseRanges = value => String(value || '').split(',').flatMap(part => {
+    const range = /^(\d{1,2}):([0-5]\d)\s*-\s*(\d{1,2}):([0-5]\d)$/.exec(part.trim());
+    if (!range) return [];
+    const [, startHour, startMinute, endHour, endMinute] = range.map(Number);
+    const start = startHour * 60 + startMinute;
+    const end = endHour * 60 + endMinute;
+    return startHour < 24 && end <= 1440 && start < end ? [[start, end]] : [];
+  }).sort((a, b) => a[0] - b[0]);
   const H = hours.days.map(parseRanges);
+  const decemberRanges = parseRanges('09:30-12:30,16:00-19:30');
   const exceptions = String(hours.exceptions || '').split('\n').map(line => line.trim()).filter(Boolean);
   const DAYS = ['domenica', 'lunedì', 'martedì', 'mercoledì', 'giovedì', 'venerdì', 'sabato'];
   const SHORT = ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'];
@@ -71,23 +75,25 @@
     }
     return parts(new Date());
   }
+  function shiftDate(now, offset) {
+    const date = new Date(Date.UTC(now.y, now.mo - 1, now.d + offset));
+    return { day: date.getUTCDay(), y: date.getUTCFullYear(), mo: date.getUTCMonth() + 1, d: date.getUTCDate() };
+  }
   function rangesFor(now) {
     const key = `${now.y}-${String(now.mo).padStart(2, '0')}-${String(now.d).padStart(2, '0')}`;
-    const hit = exceptions.find(line => line.startsWith(key));
+    const hit = exceptions.find(line => line === key || line.startsWith(key + ' '));
     if (hit) {
       const rest = hit.slice(key.length).trim();
       if (!rest || rest === 'closed' || rest === 'chiuso') return [];
       return parseRanges(rest);
     }
-    return H[now.day] || [];
+    const ranges = H[now.day] || [];
+    if (!ranges.length && now.mo === 12 && now.d >= 1 && now.d <= 24) return decemberRanges;
+    return ranges;
   }
   function status(now = romeNow()) {
     const ranges = rangesFor(now);
     const { day, min } = now;
-    const sundayPending = day === 0 && !(H[0] || []).length && !ranges.length;
-    if (sundayPending) {
-      return { open: false, closing: false, state: hours.note, more: '', text: hours.note, key: 'sunday', day, min, ranges, sundayPending: true };
-    }
     for (const [start, end] of ranges) {
       if (min >= start && min < end) {
         const closing = end - min <= 30;
@@ -100,13 +106,12 @@
     let when = 'oggi';
     if (!next) {
       for (let offset = 1; offset <= 7; offset++) {
-        const nextDay = (day + offset) % 7;
-        const probe = { ...now, day: nextDay };
-        const nextRanges = nextDay === day ? ranges : (H[nextDay] || []);
-        if (nextRanges.length) { next = nextRanges[0]; when = DAYS[nextDay]; break; }
+        const date = shiftDate(now, offset);
+        const nextRanges = rangesFor(date);
+        if (nextRanges.length) { next = nextRanges[0]; when = DAYS[date.day]; break; }
       }
     }
-    if (!next) return { open: false, closing: false, state: hours.note || 'Orari in arrivo', more: '', text: hours.note, key: 'none', day, min, ranges };
+    if (!next) return { open: false, closing: false, state: 'Chiuso', more: '', text: 'Chiuso', key: 'none', day, min, ranges };
     const more = ' · riapre ' + when + ' alle ' + fmt(next[0]);
     return { open: false, closing: false, state: 'Chiuso', more, text: 'Chiuso' + more, key: 'closed-' + when, day, min, ranges };
   }
@@ -117,13 +122,13 @@
     qa('[data-open-badge]').forEach(el => {
       const full = el.dataset.openBadge === 'full';
       const showDetails = el.dataset.openBadge !== 'status';
-      const hoursLabel = s.ranges.length ? s.ranges.map(([start, end]) => {
+      const hoursLabel = s.ranges.map(([start, end]) => {
         const text = fmt(start) + '–' + fmt(end);
         return s.min >= start && s.min < end ? '<b>' + text + '</b>' : text;
-      }).join(' · ') : (s.sundayPending ? hours.note : '');
+      }).join(' · ');
       const html = '<span class="ob-dot" aria-hidden="true"></span><span class="ob-state">' + s.state + '</span>' +
         (showDetails && s.more ? '<span class="ob-more' + (s.open ? '' : ' ob-next') + '">' + s.more.replace(/^ /, '\u00a0') + '</span>' : '') +
-        (full && hoursLabel && !s.sundayPending ? '<span class="ob-sep" aria-hidden="true"></span><span class="ob-hours">Oggi ' + hoursLabel + '</span>' : '');
+        (full && hoursLabel ? '<span class="ob-sep" aria-hidden="true"></span><span class="ob-hours">Oggi ' + hoursLabel + '</span>' : '');
       const previous = badgeStates.get(el);
       if (!previous || previous.html !== html) el.innerHTML = html;
       el.classList.toggle('closed', !s.open);
@@ -138,23 +143,24 @@
   const chartDays = new WeakMap();
   function buildChart(el, now) {
     const first = !chartDays.has(el);
+    const monday = shiftDate(now, -((now.day + 6) % 7));
     const columns = [1, 2, 3, 4, 5, 6, 0].map((day, index) => {
       const today = day === now.day;
-      const ranges = H[day] || [];
+      const ranges = rangesFor(shiftDate(monday, index));
       const bars = ranges.map(([start, end], slot) => {
         const label = fmt(start) + '–' + fmt(end);
         return '<div class="bw-slot" tabindex="0" aria-label="' + DAYS[day] + ': ' + label + '" style="--bw-top:' + ((start - 540) / 660 * 100) + '%;--bw-size:' + ((end - start) / 660 * 100) + '%;--bw-delay:' + ((index * 2 + slot) * 40) + 'ms"><span class="bw-bar"></span><span class="bw-time">' + label + '</span></div>';
       }).join('');
-      const empty = ranges.length ? '' : (day === 0 ? '<span class="bw-note">in arrivo</span>' : '<span class="bw-closed">chiuso</span>');
+      const empty = ranges.length ? '' : '<span class="bw-closed">chiuso</span>';
       return '<div class="bw-day' + (today ? ' bw-today' : '') + '"><span class="bw-name">' + SHORT[day] + '</span><div class="bw-track">' + bars + empty + (today ? '<span class="bw-now" hidden><span></span></span>' : '') + '</div></div>';
     }).join('');
     el.innerHTML = '<p class="bw-heading">Questa settimana</p><div class="bw-plot" role="img" aria-label="Orari settimanali. ' + (q('[data-hours-summary]')?.textContent || hours.note) + '"><div class="bw-guides" aria-hidden="true">' + [540, 780, 1020, 1200].map(m => '<span style="--bw-guide:' + ((m - 540) / 660 * 100) + '%"><i>' + fmt(m) + '</i></span>').join('') + '</div><div class="bw-days">' + columns + '</div></div>';
-    chartDays.set(el, now.day);
+    chartDays.set(el, now.d);
     el.classList.add('bw-ready');
   }
   function paintCharts(now) {
     qa('[data-week-chart]').forEach(el => {
-      if (chartDays.get(el) !== now.day) buildChart(el, now);
+      if (chartDays.get(el) !== now.d) buildChart(el, now);
       const line = q('.bw-now', el);
       if (!line) return;
       line.hidden = now.min < 540 || now.min > 1200;
@@ -216,6 +222,7 @@
     menuSection.classList.toggle('is-menu-open', open);
     document.body.classList.toggle('menu-locked', open);
     mobile.toggleAttribute('inert', !open);
+    q('.brand', menuHeader)?.toggleAttribute('inert', open);
     mobile.setAttribute('aria-hidden', String(!open));
     toggle.setAttribute('aria-expanded', String(open));
     toggle.setAttribute('aria-label', open ? 'Chiudi menu' : 'Apri menu');
@@ -256,54 +263,227 @@
         q('summary', openGroup)?.focus();
       }
     }
-    if (event.key !== 'Tab' || !isMenuOpen()) return;
-    const items = qa('a[href], button:not(:disabled), summary', menuSection)
-      .filter(item => !item.closest('.cart-overlay') && item.getClientRects().length &&
-        getComputedStyle(item).visibility === 'visible' && (item.matches('summary') || !item.closest('details:not([open])')));
+    if (event.key === 'Tab' && isMenuOpen()) trapTab(event, menuSection);
+  });
+
+  function trapTab(event, root) {
+    const items = qa('a[href], button:not(:disabled), summary, input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [tabindex="0"]', root)
+      .filter(item => !item.closest('[inert]') && item.getClientRects().length &&
+        getComputedStyle(item).visibility === 'visible');
     const first = items[0], last = items[items.length - 1];
     const active = document.activeElement;
     if (!items.includes(active) || (event.shiftKey ? active === first : active === last)) {
       event.preventDefault();
       (event.shiftKey ? last : first)?.focus();
     }
-  });
+  }
 
   const overlay = q('.cart-overlay');
   const drawer = q('.drawer');
   let returnFocus;
   const routes = window.BZ || {};
-  async function refreshCart() {
-    if (!drawer || !routes.cart) return;
-    const cart = await fetch(routes.cart, { headers: { Accept: 'application/json' } }).then(r => r.json());
-    const rows = q('[data-cart-rows]', drawer);
-    if (rows) {
-      rows.innerHTML = cart.items.map(item => `<div class="cart-row"><img src="${item.image}" alt="${item.product_title.replace(/"/g, '&quot;')}" width="200" height="200"><div><a href="${item.url}">${item.product_title}</a><p>${item.quantity} × ${euro(item.final_price)}</p></div></div>`).join('') || '<p>Il carrello è vuoto.</p>';
+  function findCartLine(surface, key) {
+    return q('[data-cart-line][data-key="' + CSS.escape(key) + '"]', surface);
+  }
+
+  async function cartFetch(url, options) {
+    for (let attempt = 0; ; attempt++) {
+      const response = await fetch(url, options);
+      if (response.status !== 429 || attempt === 2) return response;
+      const retryAfter = response.headers.get('Retry-After');
+      const wait = retryAfter && (/^\d+$/.test(retryAfter) ? Number(retryAfter) * 1000 : Date.parse(retryAfter) - Date.now());
+      const delay = Math.max(350 * 2 ** attempt, wait || 0);
+      if (delay > 3000) return response;
+      await new Promise(resolve => setTimeout(resolve, delay));
     }
-    const total = q('[data-cart-total]', drawer);
-    if (total) total.textContent = euro(cart.total_price);
-    paintShipping(q('[data-shipping]', drawer), cart.total_price);
+  }
+
+  function postCart(url, payload, request = cartFetch) {
+    return request(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  }
+
+  async function readCart() {
+    const response = await cartFetch(routes.cart, { cache: 'no-store', headers: { Accept: 'application/json' } });
+    if (!response.ok) throw new Error('Cart unavailable', { cause: response.status });
+    return response.json();
+  }
+
+  async function cartAfterChange(response) {
+    if (response?.ok) {
+      const cart = await response.json().catch(() => null);
+      if (Array.isArray(cart?.items)) return cart;
+    }
+    return readCart();
+  }
+
+  function invalidRitualIds(items) {
+    const groups = new Map();
+    for (const item of items) {
+      const id = item.properties?._bz_rituale;
+      if (!id) continue;
+      if (!groups.has(id)) groups.set(id, []);
+      groups.get(id).push(item);
+    }
+    const invalid = new Set();
+    for (const [id, lines] of groups) {
+      const valid = lines.length === 3 && new Set(lines.map(line => line.variant_id)).size === 3 &&
+        lines.every(line => line.quantity >= 1);
+      if (!valid) invalid.add(id);
+    }
+    return invalid;
+  }
+
+  function withoutRitual(line) {
+    const { _bz_rituale, _bz_rituale_n, ...properties } = line.properties || {};
+    return properties;
+  }
+
+  async function clearRitualLine(cart, line) {
+    const { key, quantity, variant_id: variantId } = line;
+    const ritual = line.properties._bz_rituale;
+    const sellingPlan = line.selling_plan_allocation?.selling_plan?.id;
+    const properties = withoutRitual(line);
+    const entries = Object.entries(properties);
+    const matches = item => {
+      if (item.variant_id !== variantId || item.selling_plan_allocation?.selling_plan?.id !== sellingPlan) return false;
+      const other = withoutRitual(item);
+      return Object.keys(other).length === entries.length && entries.every(([name, value]) => other[name] === value);
+    };
+    const cleanLines = state => state.items.filter(item => matches(item) &&
+      (item.properties?._bz_rituale ?? '') === '' && (item.properties?._bz_rituale_n ?? '') === '');
+    const originalLines = state => state.items.filter(item => matches(item) && (
+      item.properties?._bz_rituale === ritual ||
+      (!item.properties?._bz_rituale && item.properties?._bz_rituale_n &&
+        (item.key === key || !cart.items.some(previous => previous.key === item.key)))
+    ));
+    const sum = lines => lines.reduce((total, item) => total + item.quantity, 0);
+    const before = cleanLines(cart);
+    const cleanQuantity = sum(before);
+    const originalQuantity = sum(originalLines(cart));
+    const replaced = state => sum(cleanLines(state)) === cleanQuantity + quantity &&
+      sum(originalLines(state)) === originalQuantity - quantity;
+    const findOriginal = state => {
+      const candidates = originalLines(state).filter(item => item.quantity === quantity);
+      return candidates.find(item => item.key === key) || (candidates.length === 1 ? candidates[0] : null);
+    };
+
+    // Shopify can't replace an existing properties object with an empty object.
+    const response = await postCart(routes.change, {
+      id: key, quantity, properties: entries.length ? properties : { _bz_rituale: '', _bz_rituale_n: '' }
+    }).catch(() => null);
+    if (response?.status === 429) throw new Error('Cart rate limited', { cause: 429 });
+    let updated = await cartAfterChange(response);
+    if (replaced(updated)) return updated;
+    if (!findOriginal(updated)) throw new Error('Ritual line unavailable');
+
+    // Verify the replacement was added in full before removing the tagged line.
+    const replacement = { id: variantId, quantity, properties };
+    if (sellingPlan) replacement.selling_plan = sellingPlan;
+    const added = await postCart(routes.add, { items: [replacement] }).catch(() => null);
+    if (added?.status === 429) throw new Error('Cart rate limited', { cause: 429 });
+    updated = await readCart();
+    const original = findOriginal(updated);
+    let removed;
+    if (original && sum(cleanLines(updated)) === cleanQuantity + quantity) {
+      removed = await postCart(routes.change, { id: original.key, quantity: 0 }).catch(() => null);
+      updated = await cartAfterChange(removed);
+      if (replaced(updated)) return updated;
+    }
+
+    // An add can be partial. Undo the extra units if the tagged line is still present.
+    const after = cleanLines(updated);
+    const extra = sum(after) - cleanQuantity;
+    if (extra > 0 && extra <= quantity && sum(originalLines(updated)) === originalQuantity) {
+      const changed = after.filter(item => item.quantity - (before.find(previous => previous.key === item.key)?.quantity || 0) === extra);
+      const rollback = after.length === 1 ? after[0] : changed.length === 1 ? changed[0] : null;
+      if (rollback) await postCart(routes.change, { id: rollback.key, quantity: rollback.quantity - extra }).catch(() => {});
+    }
+    throw new Error('Ritual line cleanup failed', { cause: removed?.status });
+  }
+
+  async function clearInvalidRituals(cart) {
+    const invalid = invalidRitualIds(cart.items);
+    const isInvalid = item => invalid.has(item.properties?._bz_rituale);
+    const failed = new Set();
+    const attempts = cart.items.filter(isInvalid).length;
+    for (let attempt = 0; attempt < attempts; attempt++) {
+      const line = cart.items.find(item => isInvalid(item) && !failed.has(item.key));
+      if (!line) break;
+      try {
+        cart = await clearRitualLine(cart, line);
+      } catch (error) {
+        if (error.cause === 429) throw error;
+        failed.add(line.key);
+        cart = await readCart();
+      }
+    }
+    if (failed.size || cart.items.some(isInvalid)) throw new Error('Ritual cart cleanup failed');
+  }
+
+  async function refreshCart() {
+    const surfaces = qa('[data-cart-section-id]');
+    if (!surfaces.length) return;
+    const url = new URL(location.href);
+    url.searchParams.delete('section_id');
+    url.searchParams.set('sections', surfaces.map(surface => surface.dataset.cartSectionId).join(','));
+    const response = await cartFetch(url, { cache: 'no-store' });
+    if (!response.ok) throw new Error('Cart sections unavailable');
+    const sections = await response.json();
+    const updates = surfaces.map(surface => {
+      const id = surface.dataset.cartSectionId;
+      const html = new DOMParser().parseFromString(sections[id] || '', 'text/html');
+      return q('[data-cart-section-id="' + CSS.escape(id) + '"]', html);
+    });
+    if (updates.some(update => !update)) throw new Error('Cart section missing');
+
+    surfaces.forEach((surface, i) => {
+      const update = updates[i];
+      const active = document.activeElement;
+      const row = active?.closest('[data-cart-line]');
+      const restoreFocus = row && surface.contains(row);
+      const oldRows = restoreFocus ? qa('[data-cart-line]', surface) : [];
+      const scroll = surface.closest('.drawer') || q('.bz-drawer__scroll', surface);
+      const top = scroll?.scrollTop;
+      surface.replaceChildren(...update.childNodes);
+      if (surface.matches('#CartDrawer')) {
+        const nextScroll = q('.bz-drawer__scroll', surface);
+        if (nextScroll && top != null) nextScroll.scrollTop = top;
+      } else if (scroll) {
+        scroll.scrollTop = top;
+      }
+      if (restoreFocus) {
+        const rows = qa('[data-cart-line]', surface);
+        const nextRow = findCartLine(surface, row.dataset.key) || rows[Math.min(oldRows.indexOf(row), rows.length - 1)];
+        const selector = active.hasAttribute('data-cart-remove') ? '[data-cart-remove]' :
+          '[data-cart-delta="' + CSS.escape(active.dataset.cartDelta || '') + '"]:not(:disabled)';
+        const next = nextRow ? q(selector, nextRow) || q('[data-cart-delta="1"]', nextRow) : q('a', surface);
+        next?.focus({ preventScroll: true });
+      }
+    });
+
+    const updated = updates.find(update => update.matches('[data-cart-content]'));
+    if (!updated) return;
+    paintBadges(romeNow());
+    const live = q('[data-cart-content]');
+    live.dataset.itemCount = updated.dataset.itemCount;
+    live.dataset.totalPrice = updated.dataset.totalPrice;
+    const itemCount = Number(updated.dataset.itemCount);
     const count = q('[data-cart-count]');
     if (count) {
-      count.textContent = String(cart.item_count);
-      count.hidden = cart.item_count < 1;
+      count.textContent = String(itemCount);
+      count.hidden = itemCount < 1;
     }
     const label = q('[data-bz-header-cart]');
-    if (label) label.setAttribute('aria-label', 'Carrello, ' + cart.item_count + (cart.item_count === 1 ? ' pezzo' : ' pezzi'));
-    return cart;
-  }
-  function paintShipping(box, cents) {
-    if (!box) return;
-    const goal = (hours.free || 50) * 100;
-    const missing = Math.max(0, goal - cents);
-    const text = q('[data-shipping-text]', box) || q('p', box);
-    if (text) text.innerHTML = missing === 0 ? 'Spedizione gratuita' : 'Ti mancano <strong>' + euro(missing) + '</strong> per la spedizione gratuita';
-    const bar = q('.track span', box);
-    if (bar) bar.style.transform = 'scaleX(' + Math.min(cents / goal, 1) + ')';
-    const track = q('.track', box);
-    if (track) track.setAttribute('aria-valuenow', String(Math.min(cents, goal)));
+    if (label) label.setAttribute('aria-label', label.dataset.bzHeaderCart + (itemCount ? ', ' + itemCount + (itemCount === 1 ? ' pezzo' : ' pezzi') : ''));
+    document.dispatchEvent(new CustomEvent('bz:cart-updated', { detail: { totalPrice: Number(updated.dataset.totalPrice) } }));
   }
   function openCart() {
     if (!overlay) return;
+    if (!overlay.hidden) return;
     if (isMenuOpen()) setMobileMenu(false);
     returnFocus = document.activeElement;
     overlay.hidden = false;
@@ -314,70 +494,159 @@
   qa('[data-cart-open]').forEach(button => button.addEventListener('click', openCart));
   qa('[data-cart-close]').forEach(button => button.addEventListener('click', closeCart));
   document.addEventListener('keydown', event => {
-    if (event.key === 'Escape' && overlay && !overlay.hidden) closeCart();
+    if (!drawer || overlay.hidden) return;
+    if (event.key === 'Escape') closeCart();
+    if (event.key === 'Tab') trapTab(event, drawer);
   });
-  async function addItems(items) {
-    const response = await fetch(routes.add, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({ items })
-    });
-    if (!response.ok) return false;
-    await refreshCart().catch(() => {});
-    openCart();
-    return true;
+
+  let cartQueue = Promise.resolve();
+  function queueCart(task) {
+    const operation = cartQueue.then(task);
+    cartQueue = operation.catch(() => {});
+    return operation;
   }
-  document.addEventListener('submit', async event => {
+
+  let cartLinePending = 0;
+  function queueCartLine(task) {
+    cartLinePending++;
+    qa('[data-cart-section-id]').forEach(node => node.setAttribute('data-cart-mutating', ''));
+    return queueCart(task).finally(() => {
+      cartLinePending--;
+      if (!cartLinePending) qa('[data-cart-mutating]').forEach(node => node.removeAttribute('data-cart-mutating'));
+    });
+  }
+
+  async function addQueuedItems(items, returnPayload) {
+    if (!items.length) {
+      openCart();
+      return true;
+    }
+    const ritual = items.some(item => item.properties?._bz_rituale);
+    let response;
+    try {
+      response = await postCart(routes.add, { items }, returnPayload ? fetch : cartFetch);
+    } finally {
+      if (ritual) {
+        // A rejected multi-item add can still leave some pieces in the cart.
+        try { await clearInvalidRituals(await readCart()); }
+        catch (error) { if (!returnPayload) throw error; }
+        finally {
+          await refreshCart().catch(error => { if (!returnPayload) throw error; });
+        }
+      }
+    }
+    const payload = returnPayload ? await response.json() : null;
+    if (returnPayload && !response.ok && !payload.status) payload.status = response.status;
+    if (!ritual && (response.ok || returnPayload)) await refreshCart().catch(() => {});
+    if (!response.ok || payload?.status || payload?.description) return returnPayload ? payload : false;
+    openCart();
+    return returnPayload ? payload : true;
+  }
+
+  function addItems(items, returnPayload = false) {
+    const ritual = items.some(item => item.properties?._bz_rituale);
+    const enqueue = ritual ? queueCartLine : queueCart;
+    return enqueue(() => addQueuedItems(items, returnPayload));
+  }
+
+  window.bzAddRitualItems = addItems;
+  window.bzAddProductItems = items => addItems(items, true);
+
+  const adding = new WeakSet();
+  async function submitItems(owner, anchor, items) {
+    if (adding.has(owner)) return;
+    adding.add(owner);
+    owner.setAttribute('aria-busy', 'true');
+    qa('.bz-ajax-error', owner.parentElement).forEach(message => { message.hidden = true; });
+    const sibling = anchor.nextElementSibling;
+    const status = sibling?.matches('.bz-ajax-error') ? sibling : document.createElement('p');
+    status.className = 'bz-cart-error bz-ajax-error';
+    status.setAttribute('role', 'alert');
+    status.hidden = true;
+    if (!status.isConnected) anchor.after(status);
+    try {
+      if (!await addItems(items)) {
+        status.textContent = 'Impossibile aggiungere al carrello. Verifica la disponibilità e riprova.';
+        status.hidden = false;
+      }
+    } catch {
+      status.textContent = 'Impossibile confermare l’aggiunta. Controlla il carrello prima di riprovare.';
+      status.hidden = false;
+    } finally {
+      adding.delete(owner);
+      owner.removeAttribute('aria-busy');
+    }
+  }
+
+  document.addEventListener('submit', event => {
     const form = event.target;
     if (!(form instanceof HTMLFormElement) || !form.classList.contains('bz-ajax-cart')) return;
     event.preventDefault();
     const data = new FormData(form);
     const id = Number(data.get('id'));
-    const quantity = Math.max(1, Number(data.get('quantity') || 1));
-    if (!id) { form.submit(); return; }
-    let added = false;
-    try { added = await addItems([{ id, quantity }]); } catch (error) { added = false; }
-    if (!added) form.submit();
+    const quantity = Math.max(1, Math.floor(Number(data.get('quantity')) || 1));
+    const variant = q('[name="id"][data-bz-variant]:checked, [type="hidden"][name="id"][data-bz-variant]', form);
+    if (id && variant?.dataset.available !== 'false') {
+      submitItems(form, form, [{ id, quantity }]);
+    }
   });
   document.addEventListener('click', event => {
     const button = event.target.closest('[data-bz-add]');
     if (!button || button.disabled) return;
     event.preventDefault();
-    addItems([{ id: Number(button.dataset.bzAdd), quantity: 1 }]);
+    submitItems(button, button.closest('.product-bottom') || button, [{ id: Number(button.dataset.bzAdd), quantity: 1 }]);
   });
 
   const hero = q('[data-bz-hero]');
   if (hero) {
     const slides = qa('.hero-slide', hero);
-    const mobile = matchMedia('(max-width: 767px), (hover: none)');
-    let index = 0, timer, loops = 0, stopped = false, seen = true, hiddenDoc = false;
-    const show = n => {
-      index = (n + slides.length) % slides.length;
-      slides.forEach((slide, i) => {
-        const on = i === index;
-        slide.classList.toggle('active', on);
-        slide.toggleAttribute('inert', !on);
-        slide.setAttribute('aria-hidden', String(!on));
-      });
-    };
-    const can = () => !stopped && seen && !hiddenDoc && !reduced.matches && params.get('static') !== '1' && !mobile.matches;
-    const arm = () => { clearInterval(timer); if (can()) timer = setInterval(() => {
-      const next = (index + 1) % slides.length;
-      if (next === 0) { loops += 1; show(0); if (loops >= 3) { stopped = true; clearInterval(timer); } return; }
-      show(next);
-    }, 7000); };
-    const stopForever = () => { stopped = true; clearInterval(timer); };
-    show(0);
-    arm();
-    hero.addEventListener('pointerenter', stopForever);
-    hero.addEventListener('focusin', stopForever);
-    hero.addEventListener('touchstart', stopForever, { passive: true });
-    document.addEventListener('visibilitychange', () => { hiddenDoc = document.hidden; arm(); });
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(entries => { seen = entries.some(entry => entry.intersectionRatio >= 0.3); arm(); }, { threshold: [0, 0.3, 1] }).observe(hero);
+    const navigation = q('.hero-navigation', hero);
+    const buttons = qa('[data-hero-target]', navigation);
+    let index = 0;
+    let timer;
+    let hovered = matchMedia('(any-hover: hover)').matches && hero.matches(':hover');
+
+    function schedule() {
+      clearTimeout(timer);
+      if (hovered || hero.contains(document.activeElement) || document.hidden || reduced.matches) return;
+      timer = setTimeout(() => showSlide((index + 1) % slides.length), 3000);
     }
-    mobile.addEventListener?.('change', arm);
-    reduced.addEventListener?.('change', arm);
+
+    function showSlide(next) {
+      index = next;
+      slides.forEach((slide, i) => {
+        const active = i === index;
+        slide.classList.toggle('active', active);
+        slide.toggleAttribute('inert', !active);
+        slide.setAttribute('aria-hidden', String(!active));
+      });
+      buttons.forEach((control, i) => {
+        if (i === index) control.setAttribute('aria-current', 'true');
+        else control.removeAttribute('aria-current');
+      });
+      schedule();
+    }
+
+    navigation.hidden = false;
+    navigation.addEventListener('click', event => {
+      const button = event.target.closest('[data-hero-target]');
+      if (button) showSlide(Number(button.dataset.heroTarget));
+    });
+    hero.addEventListener('pointerenter', event => {
+      if (event.pointerType === 'touch') return;
+      hovered = true;
+      schedule();
+    });
+    hero.addEventListener('pointerleave', event => {
+      if (event.pointerType === 'touch') return;
+      hovered = false;
+      schedule();
+    });
+    hero.addEventListener('focusin', schedule);
+    hero.addEventListener('focusout', () => queueMicrotask(schedule));
+    document.addEventListener('visibilitychange', schedule);
+    reduced.addEventListener('change', schedule);
+    schedule();
   }
 
   function warmHiddenImages(section) {
@@ -398,26 +667,81 @@
     observer.observe(section);
   });
 
+  const homeSetVariants = new WeakMap();
+
   function ritualSelection(panel) {
-    const inputs = qa('input[data-variant]', panel);
+    const inputs = qa('input[data-variant]:not(:disabled)', panel);
     const checked = inputs.filter(input => input.checked);
-    const bundle = panel.dataset.bundleVariant && checked.length > 0 && checked.length === inputs.length;
-    const sum = bundle ? Number(panel.dataset.bundlePrice) : checked.reduce((total, input) => total + Number(input.dataset.price), 0);
-    return { checked, bundle, sum };
+    const full = checked.reduce((total, input) => total + Number(input.dataset.price), 0);
+    if (homeSetVariants.has(panel)) {
+      const discount = checked.length === 3;
+      const bundleVariant = discount ? homeSetVariants.get(panel) : null;
+      return { checked, bundleVariant, sum: discount ? Math.round(full * 0.9) : full, full, discount };
+    }
+    const bundleVariant = checked.length > 0 && checked.length === inputs.length ? Number(panel.dataset.bundleVariant) : null;
+    const sum = bundleVariant ? Number(panel.dataset.bundlePrice) : full;
+    return { checked, bundleVariant, sum, full, discount: false };
   }
 
   function paintRitual(panel) {
-    const { checked, bundle, sum } = ritualSelection(panel);
+    const { checked, bundleVariant, sum, full, discount } = ritualSelection(panel);
     const count = checked.length;
+    const button = q('[data-bz-add-set]', panel);
+    const price = q('.ritual-sum', panel);
     q('.ritual-count', panel).textContent = count + (count === 1 ? ' pezzo scelto' : ' pezzi scelti');
-    q('.ritual-sum', panel).textContent = euro(sum);
-    qa('.ritual-compare, .ritual-saving', panel).forEach(node => { node.hidden = !bundle; });
-    q('[data-bz-add-set]', panel).disabled = count === 0 || panel.hasAttribute('aria-busy');
-    const selectAll = q('[data-select-all]', panel.closest('[data-bz-ritual]'));
-    selectAll?.setAttribute('aria-pressed', String(count === qa('input[data-variant]', panel).length));
-    paintShipping(q('[data-shipping]', panel), sum);
+    price.textContent = euro(sum);
+    button.textContent = discount ? 'Aggiungi il set · −10%' : 'Aggiungi al carrello';
+    if (discount) {
+      const original = document.createElement('s');
+      original.className = 'ritual-set-original';
+      original.textContent = euro(full);
+      price.prepend(original);
+    }
+    if (!homeSetVariants.has(panel)) {
+      qa('.ritual-compare, .ritual-saving', panel).forEach(node => { node.hidden = !bundleVariant; });
+    }
+    button.disabled = count === 0 || panel.hasAttribute('aria-busy');
   }
 
+  function initHomeSets(root) {
+    qa('[data-bz-home-sets]', root).forEach(config => {
+      const variants = JSON.parse(config.textContent);
+      qa('[data-ritual-set]', config.nextElementSibling).forEach(panel => {
+        homeSetVariants.set(panel, variants[panel.id]);
+        qa('.ritual-compare, .ritual-saving', panel).forEach(node => node.remove());
+        paintRitual(panel);
+      });
+    });
+  }
+
+  initHomeSets(document);
+  document.addEventListener('shopify:section:load', event => initHomeSets(event.target));
+
+  async function loadUpsell(marker) {
+    const product = marker.closest('[data-bz-product]');
+    const url = new URL(marker.dataset.bzUpsellUrl, location.origin);
+    const preview = new URL(location.href).searchParams.get('preview_theme_id');
+    if (preview) url.searchParams.set('preview_theme_id', preview);
+    try {
+      const response = await fetch(url);
+      if (!response.ok) return;
+      const html = new DOMParser().parseFromString(await response.text(), 'text/html');
+      const upsell = q('.bb-rit', html);
+      if (upsell) {
+        marker.replaceWith(upsell);
+        product?.dispatchEvent(new Event('bz:ritual-loaded'));
+      }
+    } catch {
+      // Complementary products are optional.
+    }
+  }
+
+  function initUpsells(root) {
+    qa('[data-bz-upsell-url]', root).forEach(loadUpsell);
+  }
+
+  initUpsells(document);
+  document.addEventListener('shopify:section:load', event => initUpsells(event.target));
   document.addEventListener('change', event => {
     if (!event.target.matches('.ritual-row input[data-variant]')) return;
     const panel = event.target.closest('[data-ritual-set]');
@@ -426,29 +750,27 @@
   });
 
   document.addEventListener('click', async event => {
-    const target = event.target.closest('[data-set], [data-select-all], [data-bz-add-set]');
+    const target = event.target.closest('[data-set], [data-bz-add-set]');
     const ritual = target?.closest('[data-bz-ritual]');
     if (!ritual) return;
     if (target.hasAttribute('data-set')) {
       qa('[data-ritual-set]', ritual).forEach(panel => { panel.hidden = panel.id !== target.dataset.set; });
       qa('[data-set]', ritual).forEach(pill => pill.setAttribute('aria-pressed', String(pill === target)));
+      qa('[data-ritual-background]', ritual).forEach(layer => {
+        layer.classList.toggle('on', layer.dataset.ritualBackground === target.dataset.set);
+      });
       return;
     }
 
     const panel = q('[data-ritual-set]:not([hidden])', ritual);
     ritual.setAttribute('data-ritual-interacted', '');
-    if (target.hasAttribute('data-select-all')) {
-      const select = target.getAttribute('aria-pressed') !== 'true';
-      qa('input[data-variant]', panel).forEach(input => { input.checked = select; });
-      paintRitual(panel);
-      return;
-    }
 
-    const { checked, bundle } = ritualSelection(panel);
+    const { checked, bundleVariant } = ritualSelection(panel);
     if (!checked.length || panel.hasAttribute('aria-busy')) return;
-    const items = bundle ? [{ id: Number(panel.dataset.bundleVariant), quantity: 1 }] :
+    const items = bundleVariant ? [{ id: bundleVariant, quantity: 1 }] :
       checked.map(input => ({ id: Number(input.dataset.variant), quantity: 1 }));
     panel.setAttribute('aria-busy', 'true');
+    target.disabled = true;
     const status = q('[data-ritual-status]', panel);
     status.textContent = '';
     try {
@@ -463,10 +785,12 @@
 
   const stoneGrid = q('#gem-grid');
   if (stoneGrid) {
+    let intent = 'all';
     qa('[data-stone-filter]').forEach(button => button.addEventListener('click', () => {
       qa('[data-stone-filter]').forEach(other => other.setAttribute('aria-pressed', String(other === button)));
-      const intent = button.dataset.stoneFilter;
+      intent = button.dataset.stoneFilter;
       qa('.gem', stoneGrid).forEach(card => { card.hidden = intent !== 'all' && card.dataset.intent !== intent; });
+      syncStones();
     }));
     let openCard = null;
     const setOpen = (card, open) => {
@@ -475,8 +799,8 @@
       const back = q('.gem-back', card);
       card.classList.toggle('flipped', open);
       button?.setAttribute('aria-expanded', String(open));
-      const label = q('span', button);
-      if (label) label.textContent = open ? 'Torna alla foto' : 'Scopri il significato';
+      const label = q('.stone__label', button);
+      if (label) label.textContent = open ? 'Foto' : 'Significato';
       front?.toggleAttribute('inert', open);
       back?.toggleAttribute('inert', !open);
       if (back) back.setAttribute('aria-hidden', String(!open));
@@ -495,9 +819,11 @@
     const mobileStones = matchMedia('(max-width: 767px)');
     const syncStones = () => {
       if (!more) return;
-      const collapsed = mobileStones.matches && more.dataset.expanded !== 'true';
+      const showToggle = mobileStones.matches && intent === 'all';
+      const collapsed = showToggle && more.dataset.expanded !== 'true';
       stoneGrid.classList.toggle('is-collapsed', collapsed);
-      more.hidden = !mobileStones.matches;
+      more.hidden = !showToggle;
+      more.setAttribute('aria-expanded', String(!collapsed));
     };
     more?.addEventListener('click', () => { more.dataset.expanded = more.dataset.expanded === 'true' ? 'false' : 'true'; more.textContent = more.dataset.expanded === 'true' ? 'Mostra meno' : 'Vedile tutte'; syncStones(); });
     syncStones();
@@ -525,7 +851,7 @@
   qa('[data-add-month]').forEach(button => button.addEventListener('click', () => {
     const panel = button.closest('[data-month-panel]');
     const items = qa('[data-bz-add]', panel).filter(node => !node.disabled).map(node => ({ id: Number(node.dataset.bzAdd), quantity: 1 }));
-    if (items.length) addItems(items);
+    if (items.length) submitItems(panel, button, items);
   }));
   qa('[data-birthstones]').forEach(root => {
     const row = q('.bz-pills', root);
@@ -660,10 +986,16 @@
     if (!link.href || link.getAttribute('aria-busy') === 'true') return;
     link.setAttribute('aria-busy', 'true');
     try {
-      const html = await fetch(link.href).then(r => r.text());
-      const doc = new DOMParser().parseFromString(html, 'text/html');
+      const response = await fetch(link.href);
+      if (!response.ok) throw new Error('Caricamento');
+      const doc = new DOMParser().parseFromString(await response.text(), 'text/html');
+      if (!q('[data-grid]', doc)) throw new Error('Griglia mancante');
+      link.textContent = 'Carica altri';
       const grid = q('[data-grid]');
-      doc.querySelectorAll('[data-grid] .product').forEach(card => grid?.append(card));
+      const firstSoldOut = grid?.hasAttribute('data-stock-first') ? q('[data-sold-out]', grid) : null;
+      doc.querySelectorAll('[data-grid] .product').forEach(card => {
+        grid?.insertBefore(card, card.hasAttribute('data-sold-out') ? null : firstSoldOut);
+      });
       const next = doc.querySelector('[data-load]');
       const shown = q('[data-shown]');
       const of = q('[data-of]');
@@ -674,6 +1006,8 @@
       const bar = q('[data-bar]');
       if (bar && shown && of) bar.style.transform = 'scaleX(' + (Number(shown.textContent) / Number(of.textContent) || 0) + ')';
       if (next) link.href = next.href; else link.hidden = true;
+    } catch {
+      link.textContent = 'Riprova';
     } finally {
       link.removeAttribute('aria-busy');
     }
@@ -681,31 +1015,96 @@
 
   qa('[data-sort]').forEach(select => select.addEventListener('change', () => select.form?.requestSubmit()));
 
-  qa('.cart-item [data-delta]').forEach(button => button.addEventListener('click', async () => {
-    const item = button.closest('.cart-item');
-    const key = item?.dataset.key;
-    const qty = Number(item?.dataset.quantity || 1) + Number(button.dataset.delta);
-    await fetch(routes.change, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ id: key, quantity: Math.max(0, qty) }) });
-    location.reload();
-  }));
-  qa('.remove-item').forEach(button => button.addEventListener('click', async () => {
-    const key = button.closest('.cart-item')?.dataset.key;
-    await fetch(routes.change, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ id: key, quantity: 0 }) });
-    location.reload();
-  }));
+  document.addEventListener('submit', event => {
+    if (cartLinePending && event.target.closest('[data-cart-section-id]')) event.preventDefault();
+  });
+  document.addEventListener('click', event => {
+    const button = event.target.closest('[data-cart-delta], [data-cart-remove]');
+    if (!button || button.disabled || cartLinePending) return;
+    const row = button.closest('[data-cart-line]');
+    const surface = row.closest('[data-cart-section-id]');
+    const key = row.dataset.key;
+    const removing = button.hasAttribute('data-cart-remove');
+    const delta = Number(button.dataset.cartDelta);
+    const stockError = 'Quantità non disponibile per questo prodotto.';
+    const updateError = 'Impossibile aggiornare il carrello. Riprova.';
+    queueCartLine(async () => {
+      const current = findCartLine(surface, key);
+      if (!current) return;
+      const quantity = removing ? 0 : Number(current.dataset.quantity) + delta;
+      if (!removing && quantity < 1) return;
+      const rowIndex = qa('[data-cart-line]', surface).indexOf(current);
+      const response = await postCart(routes.change, { id: key, quantity }).catch(() => null);
+      let message = response?.ok ? '' : (response?.status === 422 && !removing ? stockError : updateError);
+      try {
+        // Shopify can adjust the line even when it rejects the requested quantity.
+        const cart = await cartAfterChange(response);
+        const line = cart.items.find(entry => entry.key === key);
+        if (response?.ok && !removing && line && line.quantity !== quantity) message = stockError;
+        await clearInvalidRituals(cart);
+      } catch {
+        message = updateError;
+      }
+      await refreshCart().catch(() => { message ||= updateError; });
+      if (message) {
+        qa('[data-cart-section-id]').forEach(node => {
+          const rows = qa('[data-cart-line]', node);
+          const item = findCartLine(node, key) || rows[Math.min(rowIndex, rows.length - 1)];
+          const status = item ? q('[data-cart-line-error]', item) : q('.cart-empty, .bz-drawer__empty, [data-cart-content] > p', node);
+          if (status) status.textContent = message;
+        });
+      }
+    });
+  });
 
   const footerMedia = matchMedia('(max-width:600px)');
   const adjustFooter = () => qa('footer details').forEach(details => { if (footerMedia.matches) details.open = false; else details.open = true; });
   adjustFooter();
   footerMedia.addEventListener?.('change', adjustFooter);
+  function selectPickedTab(tab) {
+    const root = tab.closest('.picked');
+    qa('[data-picked]', root).forEach(other => {
+      other.setAttribute('aria-selected', String(other === tab));
+      other.tabIndex = other === tab ? 0 : -1;
+    });
+    qa('[data-picked-panel]', root).forEach(panel => { panel.hidden = panel.id !== tab.getAttribute('aria-controls'); });
+  }
+
   document.addEventListener('click', event => {
     const tab = event.target.closest('button[data-picked]');
-    if (!tab) return;
-    const root = tab.closest('section');
-    if (!root) return;
-    root.querySelectorAll('[data-picked]').forEach(other => other.setAttribute('aria-selected', String(other === tab)));
-    root.querySelectorAll('[data-picked-panel]').forEach(panel => { panel.hidden = panel.dataset.pickedPanel !== tab.dataset.picked; });
+    if (tab) selectPickedTab(tab);
   });
+
+  document.addEventListener('keydown', event => {
+    const tab = event.target.closest('button[data-picked]');
+    if (!tab) return;
+    const tabs = qa('[data-picked]', tab.closest('[role="tablist"]'));
+    const index = tabs.indexOf(tab);
+    let next;
+    switch (event.key) {
+      case 'ArrowLeft': next = (index - 1 + tabs.length) % tabs.length; break;
+      case 'ArrowRight': next = (index + 1) % tabs.length; break;
+      case 'Home': next = 0; break;
+      case 'End': next = tabs.length - 1; break;
+      default: return;
+    }
+    event.preventDefault();
+    selectPickedTab(tabs[next]);
+    tabs[next].focus();
+  });
+  qa('.shopify-policy__body table').forEach(table => {
+    table.classList.add('bz-policy-table');
+    table.setAttribute('role', 'table');
+    qa('thead, tbody, tfoot', table).forEach(group => group.setAttribute('role', 'rowgroup'));
+    [...table.rows].forEach(row => {
+      row.setAttribute('role', 'row');
+      [...row.cells].forEach(cell => {
+        const role = cell.tagName === 'TD' ? 'cell' : cell.scope === 'row' || cell.scope === 'rowgroup' ? 'rowheader' : 'columnheader';
+        cell.setAttribute('role', role);
+      });
+    });
+  });
+
   const tour = q('#shop-lightbox');
   const tourCards = qa('.tour-card');
   const tourOpener = q('[data-tour-open]');

@@ -1,3 +1,4 @@
+{%- capture display_name -%}{% render 'bz-product-name', product: product %}{%- endcapture -%}
 {% comment %}
   Renders product media gallery
 
@@ -119,7 +120,7 @@
                 <button class="relative block w-full h-full pb-[100%]{% if rounded_corner_image %} {% unless mobile_media_full %} rounded-[10px]{% endunless %} md:rounded-[10px] overflow-hidden{% endif %}" aria-label="image-thumbnai">
                   <img
                     src="{{ media.preview_image | image_url: width: 150 }}"
-                    alt="{{ media.preview_image.alt | split: "#" | first | escape }}"
+                    alt="{{ display_name | escape }}"
                     loading="lazy"
                     width="{{ media.preview_image.width }}"
                     height="{{ media.preview_image.height }}"
@@ -166,7 +167,7 @@
                 <button class="relative block w-full h-full pb-[100%]{% if rounded_corner_image %} {% unless mobile_media_full %} rounded-[10px]{% endunless %} md:rounded-[10px] overflow-hidden{% endif %}" aria-label="image-thumbnai">
                   <img
                     src="{{ media.preview_image | image_url: width: 150 }}"
-                    alt="{{ media.preview_image.alt | split: "#" | first | escape }}"
+                    alt="{{ display_name | escape }}"
                     loading="lazy"
                     width="{{ media.preview_image.width }}"
                     height="{{ media.preview_image.height }}"
@@ -501,7 +502,7 @@
                               {{ media.preview_image | image_url: width: 3840 }} 3840w,
                               {{ media.preview_image | image_url }} {{ media.preview_image.width }}w"
                               src="{{ media.preview_image | image_url: width: 1200 }}"
-                              alt="{{ media.preview_image.alt | split: "#" | first | escape }}"
+                              alt="{{ display_name | escape }}"
                               loading="lazy"
                               sizes="100vw"
                               width="{{ media.preview_image.width }}"
@@ -521,7 +522,7 @@
                                   class="cursor-pointer w-full h-full absolute top-0 left-0 video">
                                   <source type="image/webp" srcset="{{ media.external_id | prepend: 'https://i.ytimg.com/vi_webp/' | append: '/maxresdefault.webp' }}">
                                   <source type="image/jpeg" srcset="{{ media.external_id | prepend: 'https://i.ytimg.com/vi_webp/' | append: '/maxresdefault.webp' }}">
-                                  <img src="{{ media.external_id | prepend: 'https://i.ytimg.com/vi_webp/' | append: '/maxresdefault.webp' }}" loading="lazy" class="w-full h-full object-cover" alt="{{ product.title | escape }}" width="512" height="288"/>
+                                  <img src="{{ media.external_id | prepend: 'https://i.ytimg.com/vi_webp/' | append: '/maxresdefault.webp' }}" loading="lazy" class="w-full h-full object-cover" alt="{{ display_name | escape }}" width="512" height="288"/>
                                 </picture>
                                 {% comment %}theme-check-enable RemoteAsset{% endcomment %}
                                 <button 
@@ -537,7 +538,7 @@
                             {%- else -%}
                               {%- capture options -%}
                                 {
-                                  'alt': '{{ media.preview_image | default: product.title | escape }}',
+                                  'alt': '{{ display_name | escape }}',
                                   'width': 1280
                                 }
                               {%- endcapture -%}
@@ -586,7 +587,7 @@
                                     loading="lazy"
                                     width="{{ media.preview_image.width }}"
                                     height="{{ media.preview_image.height }}"
-                                    alt="{{ media.preview_image.alt | split: "#" | first | escape }}"
+                                    alt="{{ display_name | escape }}"
                                     class="w-full h-full object-cover"
                                   >
                                 </button>
@@ -646,7 +647,7 @@
                               {{ media.preview_image | image_url: width: 3840 }} 3840w,
                               {{ media.preview_image | image_url }} {{ media.preview_image.width }}w"
                               src="{{ media.preview_image | image_url: width: 1200 }}"
-                              alt="{{ media.preview_image.alt | split: "#" | first | escape }}"
+                              alt="{{ display_name | escape }}"
                               loading="lazy"
                               sizes="100vw"
                               width="{{ media.preview_image.width }}"
@@ -666,7 +667,7 @@
                                   class="cursor-pointer w-full h-full absolute top-0 left-0 video">
                                   <source type="image/webp" srcset="{{ media.external_id | prepend: 'https://i.ytimg.com/vi_webp/' | append: '/maxresdefault.webp' }}">
                                   <source type="image/jpeg" srcset="{{ media.external_id | prepend: 'https://i.ytimg.com/vi_webp/' | append: '/maxresdefault.webp' }}">
-                                  <img src="{{ media.external_id | prepend: 'https://i.ytimg.com/vi_webp/' | append: '/maxresdefault.webp' }}" loading="lazy" class="w-full h-full object-cover" alt="{{ product.title | escape }}" width="512" height="288"/>
+                                  <img src="{{ media.external_id | prepend: 'https://i.ytimg.com/vi_webp/' | append: '/maxresdefault.webp' }}" loading="lazy" class="w-full h-full object-cover" alt="{{ display_name | escape }}" width="512" height="288"/>
                                 </picture>
                                 {% comment %}theme-check-enable RemoteAsset{% endcomment %}
                                 <button 
@@ -682,7 +683,7 @@
                             {%- else -%}
                               {%- capture options -%}
                                 {
-                                  'alt': '{{ media.preview_image | default: product.title | escape }}',
+                                  'alt': '{{ display_name | escape }}',
                                   'width': 1280
                                 }
                               {%- endcapture -%}
@@ -731,7 +732,7 @@
                                     loading="lazy"
                                     width="{{ media.preview_image.width }}"
                                     height="{{ media.preview_image.height }}"
-                                    alt="{{ media.preview_image.alt | split: "#" | first | escape }}"
+                                    alt="{{ display_name | escape }}"
                                     class="w-full h-full object-cover"
                                   >
                                 </button>
@@ -846,7 +847,7 @@
                                       {{ media.preview_image | image_url: width: 3840 }} 3840w,
                                       {{ media.preview_image | image_url }} {{ media.preview_image.width }}w"
                                       src="{{ media.preview_image | image_url: width: 1200 }}"
-                                      alt="{{ media.preview_image.alt | split: "#" | first | escape }}"
+                                      alt="{{ display_name | escape }}"
                                       loading="lazy"
                                       sizes="100vw"
                                       width="{{ media.preview_image.width }}"
@@ -866,7 +867,7 @@
                                           class="cursor-pointer w-full h-full absolute top-0 left-0 video">
                                           <source type="image/webp" srcset="{{ media.external_id | prepend: 'https://i.ytimg.com/vi_webp/' | append: '/maxresdefault.webp' }}">
                                           <source type="image/jpeg" srcset="{{ media.external_id | prepend: 'https://i.ytimg.com/vi_webp/' | append: '/maxresdefault.webp' }}">
-                                          <img src="{{ media.external_id | prepend: 'https://i.ytimg.com/vi_webp/' | append: '/maxresdefault.webp' }}" loading="lazy" class="w-full h-full object-cover" alt="{{ product.title | escape }}" width="512" height="288"/>
+                                          <img src="{{ media.external_id | prepend: 'https://i.ytimg.com/vi_webp/' | append: '/maxresdefault.webp' }}" loading="lazy" class="w-full h-full object-cover" alt="{{ display_name | escape }}" width="512" height="288"/>
                                         </picture>
                                         {% comment %}theme-check-enable RemoteAsset{% endcomment %}
                                         <button 
@@ -882,7 +883,7 @@
                                     {%- else -%}
                                       {%- capture options -%}
                                         {
-                                          'alt': '{{ media.preview_image | default: product.title | escape }}',
+                                          'alt': '{{ display_name | escape }}',
                                           'width': 1280
                                         }
                                       {%- endcapture -%}
@@ -931,7 +932,7 @@
                                             loading="lazy"
                                             width="{{ media.preview_image.width }}"
                                             height="{{ media.preview_image.height }}"
-                                            alt="{{ media.preview_image.alt | split: "#" | first | escape }}"
+                                            alt="{{ display_name | escape }}"
                                             class="w-full h-full object-cover"
                                           >
                                         </button>
@@ -992,7 +993,7 @@
                                       {{ media.preview_image | image_url: width: 3840 }} 3840w,
                                       {{ media.preview_image | image_url }} {{ media.preview_image.width }}w"
                                       src="{{ media.preview_image | image_url: width: 1200 }}"
-                                      alt="{{ media.preview_image.alt | split: "#" | first | escape }}"
+                                      alt="{{ display_name | escape }}"
                                       loading="lazy"
                                       sizes="100vw"
                                       width="{{ media.preview_image.width }}"
@@ -1012,7 +1013,7 @@
                                           class="cursor-pointer w-full h-full absolute top-0 left-0 video">
                                           <source type="image/webp" srcset="{{ media.external_id | prepend: 'https://i.ytimg.com/vi_webp/' | append: '/maxresdefault.webp' }}">
                                           <source type="image/jpeg" srcset="{{ media.external_id | prepend: 'https://i.ytimg.com/vi_webp/' | append: '/maxresdefault.webp' }}">
-                                          <img src="{{ media.external_id | prepend: 'https://i.ytimg.com/vi_webp/' | append: '/maxresdefault.webp' }}" loading="lazy" class="w-full h-full object-cover" alt="{{ product.title | escape }}" width="512" height="288"/>
+                                          <img src="{{ media.external_id | prepend: 'https://i.ytimg.com/vi_webp/' | append: '/maxresdefault.webp' }}" loading="lazy" class="w-full h-full object-cover" alt="{{ display_name | escape }}" width="512" height="288"/>
                                         </picture>
                                         {% comment %}theme-check-enable RemoteAsset{% endcomment %}
                                         <button 
@@ -1028,7 +1029,7 @@
                                     {%- else -%}
                                       {%- capture options -%}
                                         {
-                                          'alt': '{{ media.preview_image | default: product.title | escape }}',
+                                          'alt': '{{ display_name | escape }}',
                                           'width': 1280
                                         }
                                       {%- endcapture -%}
@@ -1077,7 +1078,7 @@
                                             loading="lazy"
                                             width="{{ media.preview_image.width }}"
                                             height="{{ media.preview_image.height }}"
-                                            alt="{{ media.preview_image.alt | split: "#" | first | escape }}"
+                                            alt="{{ display_name | escape }}"
                                             class="w-full h-full object-cover"
                                           >
                                         </button>
@@ -1142,7 +1143,7 @@
                                 <button class="relative block w-14 md:w-24 h-full{% if rounded_corner_image %}{% unless mobile_media_full %} rounded-[10px]{% endunless %} md:rounded-[10px] overflow-hidden{% endif %}" aria-label="image-thumbnai">
                                   <img
                                     src="{{ media.preview_image | image_url: width: 150 }}"
-                                    alt="{{ media.preview_image.alt | split: "#" | first | escape }}"
+                                    alt="{{ display_name | escape }}"
                                     loading="lazy"
                                     width="{{ media.preview_image.width }}"
                                     height="{{ media.preview_image.height }}"
@@ -1188,7 +1189,7 @@
                                 <button class="relative block w-14 md:w-24 h-full{% if rounded_corner_image %}{% unless mobile_media_full %} rounded-[10px]{% endunless %} md:rounded-[10px] overflow-hidden{% endif %}" aria-label="image-thumbnai">
                                   <img
                                     src="{{ media.preview_image | image_url: width: 150 }}"
-                                    alt="{{ media.preview_image.alt | split: "#" | first | escape }}"
+                                    alt="{{ display_name | escape }}"
                                     loading="lazy"
                                     width="{{ media.preview_image.width }}"
                                     height="{{ media.preview_image.height }}"

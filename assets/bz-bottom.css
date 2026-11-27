@@ -7,13 +7,13 @@
 
 .bz-bottom {
   color: #211c16;
-  font-family: Figtree, var(--sans), system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", var(--sans), system-ui, sans-serif;
   background: #ebe3d5;
 }
 
 .bz-bottom h2,
 .bz-foot h4 {
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
   font-weight: 400;
 }
 
@@ -80,7 +80,7 @@
 }
 
 .bz-visit__lead {
-  max-width: 38ch;
+  max-width: 24.36em;
   font-size: 15.5px;
   line-height: 1.45;
 }
@@ -310,7 +310,7 @@ body:has(.bz-foot) {
 .bz-foot {
   background: #0d0c0b;
   color: #cdc4b4;
-  font-family: Figtree, system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", system-ui, sans-serif;
   border-top: 1px solid rgba(238, 231, 219, 0.12);
 }
 
@@ -319,7 +319,7 @@ body:has(.bz-foot) {
 .bz-foot li,
 .bz-foot__bar,
 .bz-foot__pay span {
-  font-family: Figtree, system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", system-ui, sans-serif;
 }
 
 .bz-foot__grid {
@@ -344,7 +344,7 @@ body:has(.bz-foot) {
 }
 
 .bz-foot__word {
-  font-family: "Zen Old Mincho", Baskervville, serif;
+  font-family: "Zen Old Mincho", Baskervville, "Baskervville Fallback", serif;
   font-weight: 900;
   font-size: 26px;
   line-height: 1;
@@ -357,10 +357,10 @@ body:has(.bz-foot) {
 }
 
 .bz-foot__brand + p {
-  max-width: 32ch;
+  max-width: 20.51em;
   margin: 14px 0 0;
   color: #958d7f;
-  font-family: Figtree, system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", system-ui, sans-serif;
   font-size: 14px;
   line-height: 1.55;
 }
@@ -368,7 +368,7 @@ body:has(.bz-foot) {
 .bz-foot h4 {
   margin: 0 0 14px;
   color: #e3cb95;
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
   font-weight: 400;
   font-size: 19px;
   line-height: 1.2;
@@ -380,7 +380,7 @@ body:has(.bz-foot) {
   padding: 0;
   display: grid;
   gap: 0;
-  font-family: Figtree, system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", system-ui, sans-serif;
   font-size: 14px;
   line-height: 22px;
   color: #cdc4b4;
@@ -413,7 +413,7 @@ body:has(.bz-foot) {
   padding: 18px 24px;
   border-top: 1px solid rgba(238, 231, 219, 0.11);
   color: #958d7f;
-  font-family: Figtree, system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", system-ui, sans-serif;
   font-size: 12.5px;
   line-height: 1.4;
 }
@@ -486,3 +486,4 @@ body:has(.bz-foot) {
     height: 38px;
   }
 }
+/* ch → em: larghezze indipendenti dal font di ripiego (giro G2) */

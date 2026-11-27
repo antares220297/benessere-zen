@@ -3,7 +3,7 @@
 #CartDrawer,
 .bz-drawer {
   color: #eee7db;
-  font-family: Figtree, system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", system-ui, sans-serif;
 }
 
 #CartDrawer-Overlay,
@@ -29,13 +29,13 @@
   background: #201e1b !important;
   color: #eee7db !important;
   border: 1px solid rgba(238, 231, 219, 0.24);
-  font-family: Figtree, system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", system-ui, sans-serif;
   box-shadow: none;
 }
 
 #update-cart h2,
 .bz-drawer__panel h3 {
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
   font-weight: 400;
   font-size: 28px;
   color: #eee7db;
@@ -46,7 +46,7 @@
 #update-cart button,
 #update-cart input,
 #update-cart td {
-  font-family: Figtree, system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", system-ui, sans-serif;
   color: #eee7db;
 }
 
@@ -75,7 +75,7 @@
   align-items: flex-end;
   justify-self: end;
   margin: 0;
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
   font-size: 19px;
   white-space: nowrap;
 }
@@ -83,7 +83,7 @@
 .bz-line-price__each {
   margin-top: 2px;
   color: #958d7f;
-  font-family: Figtree, system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", system-ui, sans-serif;
   font-size: 12px;
   font-weight: 400;
 }
@@ -104,7 +104,7 @@
   border-radius: 999px;
   background: linear-gradient(180deg, #e3cb95, #c9a96e) !important;
   color: #17130d !important;
-  font-family: Figtree, system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", system-ui, sans-serif;
   font-weight: 600;
 }
 
@@ -160,7 +160,7 @@
 .theme-template-cart {
   background: #141312;
   color: #eee7db;
-  font-family: Figtree, system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", system-ui, sans-serif;
 }
 
 .theme-template-cart #main-cart-items,
@@ -186,13 +186,13 @@
 .theme-template-cart #main-cart-footer p,
 .theme-template-cart #main-cart-items {
   color: #eee7db;
-  font-family: Figtree, system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", system-ui, sans-serif;
 }
 
 .theme-template-cart #total-price,
 .theme-template-cart .price,
 .theme-template-cart .h4 {
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
 }
 
 .theme-template-cart #x-estimate-delivery-cart,
@@ -202,7 +202,7 @@
 
 #total-price,
 .bz-drawer__sum {
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
   font-size: 26px;
   color: #eee7db;
 }
@@ -348,7 +348,7 @@
 
 .bz-drawer__item {
   display: grid;
-  grid-template-columns: 76px 1fr auto;
+  grid-template-columns: 76px minmax(0, 1fr);
   gap: 14px;
   align-items: start;
   padding: 14px 0;
@@ -375,56 +375,85 @@
   font-size: 12.5px;
 }
 
-.bz-drawer__qty {
+.bz-cart-line-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--bz-sp-4) var(--bz-sp-8);
+  margin-block-start: var(--bz-sp-8);
+}
+
+.bz-cart-line-quantity {
   display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  width: auto;
-  min-width: 132px;
-  max-width: none;
-  height: auto;
-  min-height: 44px;
-  margin-top: 8px;
-  flex: 0 0 auto;
+  border: 1px solid var(--bz-line-field);
+  border-radius: var(--bz-r-pill);
+  background: var(--bz-surface);
+  color: var(--bz-text);
+  font: 500 var(--bz-fs-body)/1 var(--bz-font-sans);
+  font-variant-numeric: tabular-nums;
+}
+
+.bz-cart-line-quantity output {
+  min-width: 2.5em;
+  text-align: center;
+}
+
+.bz-cart-line-actions button {
+  min-width: var(--bz-control-h);
+  min-height: var(--bz-control-h);
   padding: 0;
-  border: 1px solid #c9a96e;
-  border-radius: 999px;
-  background: #201e1b;
-  overflow: hidden;
-}
-
-.bz-drawer__qty button {
-  flex: 0 0 44px;
-  width: 44px;
-  height: 44px;
   border: 0;
-  background: transparent !important;
-  color: #eee7db !important;
-  font-size: 16px;
-  line-height: 1;
+  background: transparent;
+  color: var(--bz-gold);
+  font-family: var(--bz-font-sans);
+  cursor: pointer;
 }
 
-.bz-drawer__qty input,
-#update-cart .bz-drawer__qty input,
-.bz-cartpage .bz-drawer__qty input,
-input.bz-drawer__qty-input {
-  flex: 0 0 28px;
-  width: 28px !important;
-  min-width: 0 !important;
-  max-width: 28px !important;
-  height: 44px !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  color: #eee7db !important;
-  box-shadow: none !important;
-  text-align: center !important;
-  font-size: 14px !important;
-  line-height: 44px !important;
-  appearance: none;
-  -webkit-appearance: none;
+.bz-cart-line-quantity button {
+  border-radius: var(--bz-r-pill);
+  font-size: 20px;
+}
+
+.bz-cart-line-quantity button:disabled {
+  opacity: .45;
+  cursor: default;
+}
+
+.bz-cart-line-actions button.bz-cart-line-remove {
+  min-width: 64px;
+  color: var(--bz-text-2);
+  font-size: var(--bz-fs-xs);
+  text-align: start;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (hover: hover) {
+  .bz-cart-line-quantity button:hover:not(:disabled) {
+    background: var(--bz-surface-2);
+  }
+}
+
+[data-cart-mutating] .bz-cart-line-actions button:not(:disabled) {
+  opacity: .65;
+  cursor: progress;
+}
+
+[data-cart-line] p.bz-cart-line-error {
+  margin: var(--bz-sp-4) 0 0;
+  color: var(--bz-gold-hover);
+  font: 400 var(--bz-fs-xs)/1.4 var(--bz-font-sans);
+  overflow-wrap: anywhere;
+}
+
+[data-cart-line] p.bz-cart-line-error:empty {
+  position: absolute;
+  margin: 0;
+}
+
+.bz-drawer__item .bz-line-price {
+  grid-column: 2;
 }
 
 .bz-drawer__upsell {
@@ -435,7 +464,7 @@ input.bz-drawer__qty-input {
 
 .bz-drawer__upsell h4 {
   margin: 0 0 8px;
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
   font-weight: 400;
   font-size: 18px;
   color: #eee7db;
@@ -447,7 +476,7 @@ input.bz-drawer__qty-input {
   gap: 8px;
 }
 
-.bz-upsell {
+:where(.bz-drawer__upsell) .bz-upsell {
   display: grid;
   grid-template-columns: 48px minmax(0, 1fr) auto 44px;
   gap: 12px;
@@ -457,14 +486,14 @@ input.bz-drawer__qty-input {
   font-size: 13.5px;
 }
 
-.bz-upsell a:nth-child(2) {
+:where(.bz-drawer__upsell) .bz-upsell a:nth-child(2) {
   min-width: 0;
   hyphens: manual;
   word-break: normal;
   overflow-wrap: normal;
 }
 
-.bz-upsell img,
+:where(.bz-drawer__upsell) .bz-upsell img,
 .bz-drawer__upsell img {
   width: 48px;
   height: 48px;
@@ -481,7 +510,7 @@ input.bz-drawer__qty-input {
   background: #201e1b;
   color: #eee7db;
   border-radius: 28px;
-  font-family: Figtree, system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", system-ui, sans-serif;
 }
 
 .bz-cartpage__head {
@@ -494,7 +523,7 @@ input.bz-drawer__qty-input {
 
 .bz-cartpage h1 {
   margin: 0;
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
   font-weight: 400;
   font-size: 40px;
 }
@@ -525,7 +554,7 @@ input.bz-drawer__qty-input {
 }
 
 .bz-cartpage__summary strong {
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
   font-size: 32px;
   font-weight: 400;
 }
@@ -573,7 +602,7 @@ input.bz-drawer__qty-input {
 }
 
 .bz-drawer__foot strong {
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
   font-size: 28px;
   font-weight: 400;
 }
@@ -661,7 +690,7 @@ a.bz-drawer__go.bz-drawer__shop {
   border-radius: 999px;
   background: linear-gradient(180deg, #e3cb95, #c9a96e);
   color: #17130d;
-  font-family: Figtree, system-ui, sans-serif;
+  font-family: Figtree, "Figtree Fallback", system-ui, sans-serif;
   font-weight: 600;
   text-decoration: none;
 }

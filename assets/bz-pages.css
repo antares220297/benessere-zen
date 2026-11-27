@@ -56,7 +56,7 @@
 .bz-values > h2,
 .bz-shopnote h2 {
   margin: 0 0 10px;
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
   font-weight: 400;
   color: #eee7db;
   line-height: 1.05;
@@ -72,8 +72,8 @@
 .bz-dosha p,
 .bz-shopnote p {
   margin: 0 0 12px;
-  max-width: 58ch;
-  font-family: Figtree, system-ui, sans-serif;
+  max-width: 37.18em;
+  font-family: Figtree, "Figtree Fallback", system-ui, sans-serif;
   font-size: 16px;
   line-height: 1.5;
   color: #cdc4b4;
@@ -167,7 +167,7 @@
   bottom: 0;
   padding: 36px 14px 14px;
   background: linear-gradient(transparent, rgba(13, 12, 11, 0.92));
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
   font-size: 26px;
   line-height: 1.1;
 }
@@ -177,7 +177,7 @@
 .bz-dosha__card h3,
 .bz-compare h3 {
   margin: 0 0 8px;
-  font-family: Baskervville, Georgia, serif;
+  font-family: Baskervville, "Baskervville Fallback", Georgia, serif;
   font-weight: 400;
   font-size: 28px;
   color: #eee7db;
@@ -417,7 +417,7 @@
 }
 
 :is(.theme-template-suffix-cura-di-se, .theme-template-suffix-cose-layurveda, .theme-template-suffix-cos-e-ayurveda) .bz-story p {
-  max-width: 62ch;
+  max-width: 39.74em;
   font-size: 15.5px;
   line-height: 1.6;
 }
@@ -618,7 +618,7 @@
 .bz-contact h2,
 .bz-shop-details h2 {
   margin: 0 0 24px;
-  font: 400 clamp(28px, 3.4vw, 42px)/1.15 Baskervville, Georgia, serif;
+  font: 400 clamp(28px, 3.4vw, 42px)/1.15 Baskervville, "Baskervville Fallback", Georgia, serif;
   color: var(--ivory);
 }
 .bz-contact__form { max-width: 820px; }
@@ -641,7 +641,7 @@
 .bz-contact textarea { resize: vertical; }
 .bz-contact input[aria-invalid="true"] { border-color: var(--goldl); }
 .bz-contact p,
-.bz-shop-details p { max-width: 70ch; margin: 0 0 20px; line-height: 1.6; color: var(--ivory); }
+.bz-shop-details p { max-width: 44.87em; margin: 0 0 20px; line-height: 1.6; color: var(--ivory); }
 .bz-shop-details h2 { margin-top: 32px; }
 .bz-shop-details a,
 .bz-contact [role="alert"] a { color: var(--goldl); text-decoration: underline; text-underline-offset: 3px; }
@@ -653,3 +653,4 @@
   .bz-contact__fields { grid-template-columns: minmax(0, 1fr); }
   .bz-contact .bz-btn { width: 100%; }
 }
+/* ch → em: larghezze indipendenti dal font di ripiego (giro G2) */

@@ -1,3 +1,44 @@
+{%- if menu != blank and menu.links.size > 0 -%}
+  <ul class="bz-menu-list">
+    {%- for link in menu.links -%}
+      {%- if link.type == 'blog_link' or link.type == 'article_link' or link.url contains '/blogs' -%}{%- continue -%}{%- endif -%}
+      <li class="bz-menu-item">
+        {%- capture children -%}
+          {%- for child in link.links -%}
+            {%- if child.type == 'blog_link' or child.type == 'article_link' or child.url contains '/blogs' -%}{%- continue -%}{%- endif -%}
+            <li>
+              {% render 'bz-menu-link', url: child.url, label: child.title %}
+              {%- if child.links.size > 0 -%}
+                {%- capture grandchildren -%}
+                  {%- for grandchild in child.links -%}
+                    {%- if grandchild.type == 'blog_link' or grandchild.type == 'article_link' or grandchild.url contains '/blogs' -%}{%- continue -%}{%- endif -%}
+                    <li>{% render 'bz-menu-link', url: grandchild.url, label: grandchild.title %}</li>
+                  {%- endfor -%}
+                {%- endcapture -%}
+                {%- if grandchildren != blank -%}
+                  <ul class="bz-menu-sub3">{{ grandchildren }}</ul>
+                {%- endif -%}
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        {%- endcapture -%}
+        {%- if children != blank -%}
+          <details class="bz-menu-group">
+            <summary class="bz-menu-top">{{ link.title | escape }} {% render 'bz-icon', name: 'expand_more' %}</summary>
+            <ul class="bz-menu-sub">
+              {%- unless link.url == '#' -%}
+                <li class="bz-menu-all">{% render 'bz-menu-link', url: link.url, label: link.title %}</li>
+              {%- endunless -%}
+              {{ children }}
+            </ul>
+          </details>
+        {%- else -%}
+          {% render 'bz-menu-link', url: link.url, label: link.title, top: true %}
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+  </ul>
+{%- else -%}
 {%- comment -%} Signed two-level menu. A group starts with its title, followed by label/route pairs. {%- endcomment -%}
 {%- capture items -%}
   Pietre e rituali~Tutto Pietre e rituali|/pages/pietre-e-rituali~Gioielli con pietre|/collections/gioielli-con-pietre~Mala tibetani|/collections/mala-tibetani~Pietre e cristalli|/collections/pietre-burattate~Pendoli|/collections/pendoli~Candele|/collections/candele-e-brucia-candele~Incensi e smudge|/collections/incensi-e-brucia-incensi~Statuette e casa|/collections/statuette~Ultimi pezzi|/collections/ultimi-pezzi;
@@ -35,3 +76,4 @@
     </li>
   {%- endfor -%}
 </ul>
+{%- endif -%}

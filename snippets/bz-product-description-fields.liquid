@@ -1,0 +1,255 @@
+{%- liquid
+  assign description = product.metafields.custom.descrizione_bz
+  assign benefits = product.metafields.custom.benefici_bz.value
+  assign specs = product.metafields.custom.dettagli_bz.value
+  assign notes = product.metafields.custom.note_bz
+-%}
+{%- capture line_break %}
+{% endcapture -%}
+{%- liquid
+  assign description_text = ''
+  if description != blank
+    assign description_text = description | metafield_text | replace: line_break, ' ' | strip
+  endif
+  assign sentence_length = description_text.size
+  assign sentence_endings = '. ! ?' | split: ' '
+  for ending in sentence_endings
+    assign boundary = ending | append: ' '
+    if description_text contains boundary
+      assign before_ending = description_text | split: boundary | first
+      assign length = before_ending.size | plus: 1
+      if length < sentence_length
+        assign sentence_length = length
+      endif
+    endif
+  endfor
+  assign preview_description = description_text | slice: 0, sentence_length
+
+  assign preview_tradition = ''
+  assign first_benefit = ''
+  for benefit in benefits
+    if benefit == blank
+      continue
+    endif
+    if first_benefit == blank
+      assign first_benefit = benefit | strip
+    endif
+    if benefit contains ': '
+      assign title = benefit | split: ': ' | first | strip
+      if title != blank
+        unless preview_tradition == blank
+          assign preview_tradition = preview_tradition | append: ' · '
+        endunless
+        assign preview_tradition = preview_tradition | append: title
+      endif
+    endif
+  endfor
+  assign preview_tradition = preview_tradition | default: first_benefit
+
+  assign preview_details = ''
+  assign preview_count = 0
+  assign priorities = 'formato|contenuto|materiale|misura/misure/dimensioni/diametro|provenienza/origine|peso'
+  assign priority_labels = priorities | replace: '|', '/' | split: '/'
+  assign groups = priorities | append: '|altre' | split: '|'
+  for group in groups
+    assign limit = 3
+    if group == 'altre'
+      assign limit = 2
+    endif
+    if preview_count >= limit
+      break
+    endif
+    assign labels = group | split: '/'
+    for spec in specs
+      unless spec contains ':'
+        continue
+      endunless
+      assign raw_label = spec | split: ':' | first
+      assign label = raw_label | strip | downcase
+      if label == 'ingredienti' or label == 'inci' or label contains '(segue)'
+        continue
+      endif
+      if group == 'altre'
+        if priority_labels contains label
+          continue
+        endif
+      else
+        unless labels contains label
+          continue
+        endunless
+      endif
+      assign prefix = raw_label | append: ':'
+      assign value = spec | remove_first: prefix | strip
+      if value == blank
+        continue
+      endif
+      unless preview_details == blank
+        assign preview_details = preview_details | append: ' · '
+      endunless
+      assign preview_details = preview_details | append: value
+      assign preview_count = preview_count | plus: 1
+      if preview_count == limit
+        break
+      endif
+    endfor
+  endfor
+  if preview_details == blank and notes != blank
+    assign preview_details = notes | metafield_text | strip
+  endif
+-%}
+{%- capture chevron -%}
+  {%- render 'bb-icon', name: 'expand_more', icon_class: 'bzs-ch' -%}
+{%- endcapture -%}
+
+{%- comment -%}Apply the product-wide fallback after classifying both title and sentence for each benefit.{%- endcomment -%}
+{%- capture tradition_icons -%}
+  {%- for benefit in benefits -%}
+    {%- if benefit == blank -%}{%- continue -%}{%- endif -%}
+    {%- render 'bb-benefit-icon', benefit: benefit -%};
+  {%- endfor -%}
+{%- endcapture -%}
+{%- assign tradition_icon_rows = tradition_icons | split: ';' -%}
+{%- assign use_reserve_icon = false -%}
+{%- if tradition_icon_rows contains 'riserva|check-circle' -%}
+  {%- assign use_reserve_icon = true -%}
+{%- endif -%}
+{%- assign icon_index = 0 -%}
+{%- capture tradition_rows -%}
+  {%- for benefit in benefits -%}
+    {%- liquid
+      if benefit == blank
+        continue
+      endif
+      assign title = ''
+      assign sentence = benefit
+      if benefit contains ': '
+        assign candidate = benefit | split: ': ' | first
+        if candidate != blank and candidate.size <= 60
+          assign title = candidate | strip
+          assign prefix = candidate | append: ': '
+          assign sentence = benefit | remove_first: prefix | strip
+        endif
+      endif
+    -%}
+    {%- liquid
+      assign category_icon = tradition_icon_rows[icon_index]
+      assign icon_index = icon_index | plus: 1
+      if use_reserve_icon
+        assign category_icon = 'riserva|check-circle'
+      endif
+      assign icon_fields = category_icon | split: '|'
+    -%}
+    <li class="bb-ben" data-cat="{{ icon_fields[0] }}">
+      <span class="bb-ben__ic">{% render 'bb-phosphor-icon', name: icon_fields[1] %}</span>
+      <div class="bb-ben__tx">
+      {%- if title != blank -%}<p class="bzs-benefit-title">{{ title | escape }}</p>{%- endif -%}
+      <p>{{ sentence | escape }}</p>
+      </div>
+    </li>
+  {%- endfor -%}
+{%- endcapture -%}
+
+{%- assign next_row = 0 -%}
+{%- capture detail_rows -%}
+  {%- for spec in specs -%}
+    {%- liquid
+      if forloop.index0 < next_row or spec == blank
+        continue
+      endif
+      assign raw_label = spec | split: ':' | first
+      assign label = raw_label | strip
+      assign value = ''
+      if spec contains ':'
+        assign prefix = raw_label | append: ':'
+        assign value = spec | remove_first: prefix | strip
+      endif
+
+      assign next_row = forloop.index
+      assign continuation_label = label | append: ' (segue)'
+      for continuation in specs offset: next_row
+        assign raw_following_label = continuation | split: ':' | first
+        assign following_label = raw_following_label | strip
+        if following_label != continuation_label
+          break
+        endif
+        assign prefix = raw_following_label | append: ':'
+        assign piece = continuation | remove_first: prefix | strip
+        assign first_character = piece | slice: 0, 1
+        if first_character == ','
+          assign piece = piece | remove_first: ',' | strip
+        endif
+        if piece != blank
+          assign last_character = value | slice: -1, 1
+          if last_character == ','
+            assign length = value.size | minus: 1
+            assign value = value | slice: 0, length | strip
+          endif
+          unless value == blank
+            assign value = value | append: ', '
+          endunless
+          assign value = value | append: piece
+        endif
+        assign next_row = next_row | plus: 1
+      endfor
+    -%}
+    <div>
+      <dt>{{ label | remove: ' (segue)' | escape }}</dt>
+      <dd>{{ value | escape }}</dd>
+    </div>
+  {%- endfor -%}
+{%- endcapture -%}
+
+{%- if description != blank or tradition_rows != blank or detail_rows != blank or notes != blank or care_faq != blank -%}
+  <div class="bzs bz-description bz-description--fields">
+    {%- if description != blank -%}
+      <details class="bzs-item" open>
+        <summary class="bzs-head">
+          <h2 class="bzs-hd">Cos’è</h2>
+          {{ chevron }}
+          <span class="bzs-pv" aria-hidden="true">{{ preview_description | escape_once }}</span>
+        </summary>
+        <div class="bzs-prose">{{ description | metafield_tag }}</div>
+      </details>
+    {%- endif -%}
+
+    {%- if tradition_rows != blank -%}
+      <details class="bzs-item" open>
+        <summary class="bzs-head">
+          <h2 class="bzs-hd">{% render 'bz-product-benefits-title', product: product %}</h2>
+          {{ chevron }}
+          <span class="bzs-pv" aria-hidden="true">{{ preview_tradition | escape }}</span>
+        </summary>
+        <ul class="bzs-tr" role="list">{{ tradition_rows }}</ul>
+      </details>
+    {%- endif -%}
+
+    {%- if detail_rows != blank or notes != blank -%}
+      <details class="bzs-item" open>
+        <summary class="bzs-head">
+          <h2 class="bzs-hd">Dettagli</h2>
+          {{ chevron }}
+          <span class="bzs-pv" aria-hidden="true">{{ preview_details | escape_once }}</span>
+        </summary>
+        <div class="bzs-details">
+          {%- if detail_rows != blank -%}
+            <dl class="bzs-dl">{{ detail_rows }}</dl>
+          {%- endif -%}
+          {%- if notes != blank -%}
+            {%- liquid
+              assign notes_html = notes | metafield_tag
+              assign heading_levels = '1 2 4 5 6' | split: ' '
+              for level in heading_levels
+                assign heading = 'h' | append: level
+                assign opening = '<' | append: heading
+                assign closing = '</' | append: heading | append: '>'
+                assign notes_html = notes_html | replace: opening, '<h3' | replace: closing, '</h3>'
+              endfor
+            -%}
+            <div class="bzs-note">{{ notes_html }}</div>
+          {%- endif -%}
+        </div>
+      </details>
+    {%- endif -%}
+    {{ care_faq }}
+  </div>
+{%- endif -%}

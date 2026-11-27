@@ -2,6 +2,36 @@
 {{ 'bz-home.css' | asset_url | stylesheet_tag }}
 {{ 'bz-product.css' | asset_url | stylesheet_tag }}
 
+{%- capture family -%}{%- render 'bz-libro-famiglia', product: product -%}{%- endcapture -%}
+{%- liquid
+  assign family_collection = ''
+  case family
+    when 'incensi'
+      assign family_collection = 'incensi-e-brucia-incensi-1'
+      assign family_heading = 'Altri incensi'
+    when 'brucia-incensi'
+      assign family_collection = 'incensi-e-brucia-incensi'
+      assign family_heading = 'Altri portaincensi'
+    when 'salvia-e-smudge'
+      assign family_collection = 'smudge-e-paolo-santo'
+      assign family_heading = 'Altri smudge e salvia'
+    when 'palo-santo'
+      assign family_collection = 'smudge-e-paolo-santo'
+      assign family_heading = 'Altri prodotti al palo santo'
+    when 'amuleti'
+      assign family_collection = 'collane-e-braccialetti'
+      assign family_heading = 'Altri amuleti'
+    when 'saponi'
+      assign family_collection = 'saponi-naturali'
+      assign family_heading = 'Altri saponi'
+    when 'oli-e-profumi'
+      assign family_collection = 'essenze-e-brucia-essenze'
+      assign family_heading = 'Altri oli e profumi'
+    when 'candele'
+      assign family_collection = 'candele-e-brucia-candele'
+      assign family_heading = 'Altre candele'
+  endcase
+-%}
 {%- liquid
   assign type_key = product.type | downcase | strip
   assign related_limit = section.settings.limit | default: 5
@@ -9,7 +39,34 @@
   assign picked = blank
   assign picked_score = 0
 
-  if template_collection != blank and product != blank
+  assign preferred = collections[family_collection]
+  if family_collection != blank
+    assign candidate_handles = preferred.handle | append: ',' | append: template_collection.handle | split: ','
+    assign product_collections = product.collections | map: 'handle'
+    assign candidate_handles = candidate_handles | concat: product_collections | uniq
+    for candidate in candidate_handles
+      assign col = collections[candidate]
+      if col == blank or col.handle == 'all' or col.handle == 'frontpage'
+        continue
+      endif
+      for item in col.products
+        unless item.available and item.id != product.id
+          continue
+        endunless
+        capture item_family
+          render 'bz-libro-famiglia', product: item
+        endcapture
+        if item_family == family
+          assign picked = col
+          assign picked_score = 1
+          break
+        endif
+      endfor
+      if picked != blank
+        break
+      endif
+    endfor
+  elsif template_collection != blank and product != blank
     assign score = 0
     for item in template_collection.products limit: 16
       assign item_type = item.type | downcase | strip
@@ -23,7 +80,7 @@
     endif
   endif
 
-  if picked == blank and product != blank
+  if family_collection == blank and picked == blank and product != blank
     for col in product.collections
       if col.handle != 'all' and col.handle != 'frontpage'
         assign score = 0
@@ -43,7 +100,9 @@
 
   assign related_heading = 'Della stessa famiglia'
   assign related_accent = blank
-  if picked == template_collection and section.settings.heading != blank and picked_score > 0
+  if family_collection != blank
+    assign related_heading = family_heading
+  elsif picked == template_collection and section.settings.heading != blank and picked_score > 0
     assign related_heading = section.settings.heading
     assign related_accent = section.settings.heading_accent
   elsif type_key != blank
@@ -68,14 +127,20 @@
     <div class="bz-grid bz-product-group">
       {%- assign shown = 0 -%}
       {%- for item in picked.products -%}
-        {%- assign item_type = item.type | downcase | strip -%}
-        {%- if shown < related_limit and item.available and item.id != product.id and item_type == type_key -%}
-          {% render 'bz-card', product: item %}
-          {%- assign shown = shown | plus: 1 -%}
+        {%- if shown == related_limit -%}{%- break -%}{%- endif -%}
+        {%- unless item.available and item.id != product.id -%}{%- continue -%}{%- endunless -%}
+        {%- if family_collection != blank -%}
+          {%- capture item_family -%}{%- render 'bz-libro-famiglia', product: item -%}{%- endcapture -%}
+          {%- unless item_family == family -%}{%- continue -%}{%- endunless -%}
+        {%- else -%}
+          {%- assign item_type = item.type | downcase | strip -%}
+          {%- unless item_type == type_key -%}{%- continue -%}{%- endunless -%}
         {%- endif -%}
+        {% render 'bz-card', product: item, show_variant: true %}
+        {%- assign shown = shown | plus: 1 -%}
       {%- endfor -%}
     </div>
-    <a class="bz-row-link" href="{{ picked.url }}">{% render 'bz-nav-label', label: 'Vedi la collezione' %}</a>
+    <a class="bz-row-link" href="{{ preferred.url | default: picked.url }}{% if family == 'incensi' and preferred != blank %}#gruppo-incensi{% endif %}">{% render 'bz-nav-label', label: 'Vedi la collezione' %}</a>
   </div>
 </section>
 {%- endif -%}

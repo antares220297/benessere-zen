@@ -1,3 +1,4 @@
+{%- capture display_name -%}{% render 'bz-product-name', product: card_product %}{%- endcapture -%}
 {% comment %}
     Renders a product card
 
@@ -102,7 +103,7 @@
 {%- capture dataForCustomerEvent -%}
   {
     "product": {
-      "title": "{{ card_product.title | escape }}",
+      "title": "{{ display_name | escape }}",
       "listName": "{{ collection.title | default: list_name | escape }}",
       "sku": "{{ card_product.id }}",
       "currencyCode": "{{ cart.currency.iso_code }}",
@@ -116,7 +117,7 @@
     {
       "id": {{ card_product.id }},
       "available": {{ card_product.available }},
-      "title": "{{ card_product.title | escape }}",
+      "title": "{{ display_name | escape }}",
       "compare_at_price": {{ card_product.selected_or_first_available_variant.compare_at_price | default: 0 }},
       "price": {{ card_product.selected_or_first_available_variant.price }},
       "price_with_currency": "{% if settings.currency_code_enable %}{{ card_product.selected_or_first_available_variant.price | money_with_currency | escape }}{% else %}{{ card_product.selected_or_first_available_variant.price | money | escape }}{% endif %}",
@@ -159,7 +160,7 @@
         })'
         x-labels-data="{{ dataForLabel | escape }}"
       {% endunless %} 
-      aria-label="{{ card_product.title }}"
+      aria-label="{{ display_name | escape }}"
       class="ltr group link-product-variant overflow-hidden block relative z-20 cursor-pointer{% if collage %} grow{% else %} no-collage{% endif %} overflow-hidden{% if show_rounded_image %} md:rounded-[10px]{% unless card_full_width %} rounded-[10px]{% endunless %}{% endif %} before:h-0 before:block z-0{% unless media_aspect_ratio == "natural"  %} pb-[{{ ratio | times: 100.0 }}%]{% else %}{% if card_product.featured_media.media_type == "model" %} pb-[100%]{% endif %}{% endunless %}{% if settings.product_image_type == "slide_img" and count_media > 1 and class_slide != 'recommendations' and settings.show_arrow == false %} disable-label-hover{% endif %}"
       {% if media_aspect_ratio == "natural" and card_product.featured_media and card_product.featured_media.media_type != "model" %} style="height:0; padding-bottom: {{ 1 | divided_by: card_product.featured_media.aspect_ratio | times: 100 }}%;"{% endif %}>
       <div class="w-full h-full z-0 overflow-hidden absolute top-0 left-0{% if animation_loading and loading != 'eager' %} animate_transition_card__image{% endif %}">
@@ -219,7 +220,7 @@
             {%- endcapture -%}
             {%- if loading == 'eager' -%}
               <div class="hidden">
-                {% assign featured_media_alt = card_product.featured_media.alt | split: "#" | first | escape %}
+                {% assign featured_media_alt = display_name | escape %}
                 {{ card_product.featured_media | image_url: width: 1500 | image_tag: widths: '375, 450, 750, 900, 1100, 1500', preload: true, loading: 'lazy', sizes: sizes, alt: featured_media_alt }}
               </div>
             {%- endif -%}
@@ -235,7 +236,7 @@
                   {% if card_product.featured_media.width %},{{ card_product.featured_media | image_url }} {{ card_product.featured_media.width }}w{% endif %}" 
                   src="{{ card_product.featured_media | image_url: width: 1500 }}"
                   sizes="{{ sizes }}"
-                  alt="{{ card_product.featured_media.alt | split: "#" | first | escape }}"
+                  alt="{{ display_name | escape }}"
                   class="w-full preview-img motion-reduce aspect-{{ media_aspect_ratio }} relative{% if media_aspect_ratio != "natural" %} h-full min-h-full{% endif %} object-cover{% if card_product.media[1] != nil and settings.product_image_type == 'hover_to_reveal_second_image' %} image-first-hover group-hover:opacity-0{% elsif settings.product_image_type != 'slide_img' %} image-hover{% endif %}{% if animation_loading and loading != 'eager' %} animate_transition_image{% endif %}"
                   loading="{{ loading | default: 'lazy' }}"
                   width="{{ card_product.featured_media.width }}"
@@ -257,7 +258,7 @@
                         {% if card_product.media[1].width %},{{ card_product.media[1] | image_url }} {{ card_product.media[1].width }}w{% endif %}"
                       src="{{ card_product.media[1] | image_url: width: 1500 }}"
                       sizes="{{ sizes }}"
-                      alt="{{ card_product.media[1].alt | split: "#" | first | escape }}"
+                      alt="{{ display_name | escape }}"
                       class="motion-reduce{% if media_aspect_ratio == "natural" %} aspect-auto{% endif %} min-w-full h-full object-cover group-hover:cursor-pointer image-second-hover opacity-0 group-hover:opacity-100"
                       loading="lazy"
                       width="{{ card_product.media[1].width }}"
@@ -282,7 +283,7 @@
                               {% if media.width %},{{ media | image_url }} {{ media.width }}w{% endif %}"
                             src="{{ media | image_url: width: 1500 }}"
                             sizes="{{ sizes }}"
-                            alt="{{ media.alt | split: "#" | first | escape }}"
+                            alt="{{ display_name | escape }}"
                             class="w-full motion-reduce{% if media_aspect_ratio == "natural" %} aspect-auto{% else %} h-full min-h-full{% endif %} object-cover"
                             loading="lazy"
                             width="{{ media.width }}"
@@ -487,7 +488,7 @@
               @click='$store.xCustomerEvent.fire("product_selected", $el)'
               x-customer-event-data="{{ dataForCustomerEvent | escape }}"
             >
-              {{ card_product.title | escape }}
+              {{ display_name | escape }}
             </a>
           {% if product_complementary %}</p>{% else %}</h3>{% endif %}
           <div{% unless product_complementary %} class="mt-2.5 flex items-center mb-1 flex-wrap gap-1{% unless content_alignment == 'right' %} justify-{{ content_alignment }} rtl:flex-row-reverse md:rtl:list-layout:flex-row md:list-layout:justify-start{% endunless %}{% if content_alignment == 'right' %} flex-row-reverse rtl:flex-row md:list-layout:flex-row{% endif %}"{% endunless %}>

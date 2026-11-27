@@ -1,0 +1,9 @@
+<div class="bz-cart-line-actions">
+  <div class="bz-cart-line-quantity" role="group" aria-label="Quantità: {{ item_name | escape }}">
+    <button type="button" data-cart-delta="-1" aria-label="Diminuisci quantità: {{ item_name | escape }}"{% if item.quantity <= 1 %} disabled{% endif %}>−</button>
+    <output aria-label="Quantità: {{ item_name | escape }}">{{ item.quantity }}</output>
+    <button type="button" data-cart-delta="1" aria-label="Aumenta quantità: {{ item_name | escape }}">+</button>
+  </div>
+  <button type="button" class="bz-cart-line-remove" data-cart-remove aria-label="Rimuovi {{ item_name | escape }}">Rimuovi</button>
+</div>
+<p class="bz-cart-line-error" data-cart-line-error role="alert"></p>

@@ -12,10 +12,6 @@
     "bz_product": {
       "type": "bz-product",
       "settings": {
-        "store_badge": "Anche in negozio",
-        "photo_note": "Pietra naturale: ogni pezzo è un po' diverso",
-        "shipping_note": "Spedizione gratuita da 50 €",
-        "pickup_link": "",
         "bento_title": "La nappa",
         "bento_accent": "chiude il giro",
         "bento_text": "Annodata a mano, con l'anello che separa il grano guru.",
@@ -32,12 +28,7 @@
         "related_heading": "Altri mala,",
         "related_accent": "stessi 108 grani",
         "related_link": "Tutti i mala",
-        "pair": "bracciale-tormalina-nera-elastico",
-        "free_shipping": 50,
-        "pickup_hours": "",
-        "visit_title": "Vuoi vederlo prima?",
-        "visit_text": "È anche in negozio, in via Provenzali 1.",
-        "visit_link": "Orari"
+        "pair": "bracciale-tormalina-nera-elastico"
       },
       "blocks": {
         "fact-1": {
@@ -93,8 +84,7 @@
         "det-4": {
           "type": "detail",
           "settings": {
-            "title": "Spedizione, ritiro e reso",
-            "text": "<p>Gratuita da 50 €. Ritiro gratuito in negozio, Reso entro 14 giorni.</p>"
+            "title": "Spedizione e reso"
           }
         },
         "cap-1": {
@@ -167,6 +157,10 @@
         "det-3",
         "det-4"
       ]
+    },
+    "bz_libro": {
+      "type": "bz-libro",
+      "settings": {}
     },
     "bz_ritual": {
       "type": "bz-ritual",
@@ -312,6 +306,7 @@
   },
   "order": [
     "bz_product",
+    "bz_libro",
     "bz_ritual",
     "bz_related"
   ]

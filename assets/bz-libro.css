@@ -1,0 +1,177 @@
+/* «Il libro» · prototipo WebGL 20/11/2026. Il libro vero è disegnato da three.js (assets/libro-3d.min.js, caricato solo vicino alla sezione).
+   Qui: poster del libro chiuso, nastro fotografico, linguette, pagine HTML (SEO, riduzione del movimento, niente WebGL), testo intero.
+   Le nostre animazioni DOM usano solo transform e opacity. Nessun SVG decorativo. */
+@font-face{font-family:"IM Fell English";src:url(libro-im-fell-english-latin-400.woff2?v=1) format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"IM Fell English";src:url(libro-im-fell-english-latin-400-italic.woff2?v=1) format("woff2");font-weight:400;font-style:italic;font-display:swap}
+@font-face{font-family:"Pirata One";src:url(libro-pirata-one-latin-400.woff2?v=1) format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"BZ Fraktur";src:url(libro-bz-fraktur-latin.woff2?v=1) format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"BZ Fleuron";src:url(libro-bz-fleuron.woff2?v=1) format("woff2");font-weight:400;font-style:normal;font-display:block}
+
+.lb{--pw:367px;--ph:514px;--fs:16.7px;--sw:430px;--sh:580px;--cx:21px;--cy:12px;--cw:374px;--ch:521px;--tx:21px;--ty:12px;--tdx:0px;position:relative;padding:var(--bz-section-gap) 0 0;overflow-x:hidden;overflow-x:clip}
+.lb::before{content:"";position:absolute;left:50%;top:calc(var(--bz-section-gap) + 60px);width:min(1500px,180vw);height:calc(var(--sh) + 120px);transform:translateX(-50%);background:radial-gradient(closest-side,rgba(201,169,110,.12),rgba(201,169,110,.045) 55%,transparent);pointer-events:none}
+.lb-wrap{position:relative}
+#libro .lb-kick{margin:0 0 6px;color:var(--bz-gold);font:600 11px/1.4 var(--bz-font-sans);letter-spacing:.22em;text-transform:uppercase}
+#libro .lb-head h2{margin:0;font:400 var(--bz-fs-h2)/var(--bz-lh-h2) var(--bz-font-serif)}
+#libro .lb-head h2 em{color:var(--bz-gold)}
+#libro .lb-lead{margin:8px 0 0;color:var(--bz-text-2);font-size:15px;line-height:1.45}
+.lb-hint-o{display:none}.lb:not([data-state="closed"]) .lb-hint-c{display:none}.lb:not([data-state="closed"]) .lb-hint-o{display:inline}
+
+/* palco: largo quanto la pagina (a pieno schermo su mobile), alto quanto serve */
+.lb-stage{position:relative;width:var(--sw);height:var(--sh);margin:8px 0 0 calc(50% - var(--sw) / 2);font-size:var(--fs);outline:none;-webkit-tap-highlight-color:transparent}
+.lb-stage:focus-visible{outline:2px solid var(--bz-gold);outline-offset:-2px;border-radius:8px}
+.lb-gl{position:absolute;inset:0;z-index:1}
+.lb-poster{position:absolute;z-index:2;pointer-events:none;transition:opacity 500ms linear}
+.lb.is-3d .lb-poster{opacity:0}
+.lb.is-plain:not([data-state="closed"]) .lb-poster{opacity:0}
+
+/* nastro fotografico (WebP con trasparenza), poggiato sulla copertina */
+.lb-ribbon,.lb-open{position:absolute;left:var(--cx);top:var(--cy);width:var(--cw);height:var(--ch);z-index:4}
+.lb-ribbon{pointer-events:none}
+.lb-ribbon>*{position:absolute;display:block;max-width:none;transition:transform 620ms cubic-bezier(.3,.6,.3,1),opacity 480ms linear}
+.lb-ribbon{--k:calc(var(--cw) * .000625);overflow:hidden;border-radius:0 .2em .2em 0}
+/* nastro in obliquo sul piatto (−60°): entra dal taglio inferiore ed esce da quello superiore, così non passa mai sulle linguette */ .lb .rb-rot{position:absolute;left:50%;top:50%;width:calc(var(--ch) * 1.3);height:calc(var(--k) * 114);margin:calc(var(--k) * -57) 0 0 calc(var(--ch) * -.65);transform:rotate(-60deg)} .lb .rb-rot .rb-band{position:absolute;display:block;top:0!important;height:100%!important;transition:transform 620ms cubic-bezier(.3,.6,.3,1),opacity 480ms linear} .lb .rb-band{top:calc(56% - var(--k) * 57);height:calc(var(--k) * 114);background:url(libro-nastro-fascia2.webp?v=1) center/200% 100% no-repeat;filter:drop-shadow(0 .1em .14em rgba(0,0,0,.5))} .lb .rb-band--l{left:-.6%;width:50.8%;transform-origin:left center;background-position:left center} .lb .rb-band--r{right:-.6%;width:50.8%;transform-origin:right center;background-position:right center} .lb .rb-knot{left:calc(50% - var(--k) * 174);top:calc(50% - var(--k) * 57);transform:rotate(-34deg);transform-origin:48% 16%;width:calc(var(--k) * 360);height:calc(var(--k) * 354)} .lb .rb-knot img{position:absolute;inset:0;width:100%;height:100%;filter:drop-shadow(0 .12em .16em rgba(0,0,0,.5));transform-origin:48% 16%;transition:transform 560ms cubic-bezier(.3,.6,.3,1),opacity 420ms linear} .lb.is-untying .rb-nodo{transform:translateY(10%) rotate(-7deg) scale(.72);opacity:0} .lb.is-untying .rb-band--l{transform:translateX(-14%) scaleX(.3);opacity:0;transition-delay:150ms} .lb.is-untying .rb-band--r{transform:translateX(14%) scaleX(.3);opacity:0;transition-delay:150ms}
+.lb:not([data-state="closed"]) .lb-ribbon{visibility:hidden}
+.lb:not([data-state="closed"]) .lb-open{display:none}
+.lb-open{border:0;padding:0;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.lb .lb-open:focus-visible{outline:2px solid var(--bz-gold);outline-offset:4px;border-radius:6px}
+
+/* linguette: nastri di seta fotografici, bottoni veri; con il libro chiuso seguono la copertina */
+.lb-tabs{position:absolute;left:var(--tx);top:var(--ty);width:var(--pw);height:var(--ph);z-index:3;pointer-events:none;transition:transform 1150ms cubic-bezier(.65,0,.35,1),opacity 300ms linear}
+.lb[data-state="closed"] .lb-tabs{transform:translateX(var(--tdx))}
+/* tutte sul taglio destro: segnapagina di seta infilati tra i fogli, a filo del bordo, sfalsati in altezza */
+.lb-tabs--v{position:absolute;left:100%;top:5.5%;display:flex;flex-direction:column;gap:.62em} .lb .tab{position:relative;pointer-events:auto;margin:0;padding:0;border:0;cursor:pointer;color:#efe3cc;font:inherit;-webkit-tap-highlight-color:transparent;
+  background:linear-gradient(90deg,rgba(20,10,8,.62),rgba(20,10,8,.22) 28%,rgba(20,10,8,0) 55%),var(--tbg) center/100% 100% no-repeat;
+  box-shadow:.05em .08em .14em rgba(0,0,0,.45);filter:saturate(.62) brightness(.8);transition:transform 260ms cubic-bezier(.2,.7,.2,1),filter 260ms} .lb .tab span{display:block;font:italic 400 .72em/1 "IM Fell English",Baskervville,"Baskervville Fallback",serif;letter-spacing:.02em;white-space:nowrap;color:#f7eedd;text-shadow:0 0 2px rgba(0,0,0,.7),0 1px 1px rgba(0,0,0,.6)} .lb .tab::before{content:"";position:absolute;top:-6px;bottom:-6px;left:-16px;right:-10px} .lb .tab--v{width:1.45em;height:6.3em;margin-left:-.42em;border-radius:0 .12em .12em 0;writing-mode:vertical-rl;display:flex;align-items:center;justify-content:center} .lb .tab--v span{transform:translateX(.14em)} .lb .tab--v:nth-child(2){margin-left:-.36em} .lb .tab--v:nth-child(3){margin-left:-.46em} .lb .tab--v:nth-child(4){margin-left:-.39em} .lb .tab-0{--tbg:url(libro-linguetta-0.webp?v=1)} .lb .tab-1{--tbg:url(libro-linguetta-1.webp?v=1)} .lb .tab-2{--tbg:url(libro-linguetta-2.webp?v=1)} .lb .tab-3{--tbg:url(libro-linguetta-3.webp?v=1)} .lb .tab-4{--tbg:url(libro-linguetta-0.webp?v=1)} .lb .tab-5{--tbg:url(libro-linguetta-1.webp?v=1)} .lb .tab[aria-current="true"]{filter:saturate(.85) brightness(.95);transform:translateX(.12em)} .lb .tab[aria-current="true"]::after{content:"";position:absolute;right:.22em;top:.7em;bottom:.7em;width:1px;background:rgba(239,227,204,.7)}
+@media (hover:hover){ .lb .tab:hover{filter:saturate(.8) brightness(.92)}} .lb .tab:focus-visible{outline:2px solid var(--bz-gold);outline-offset:2px}
+
+/* Il reset dei paragrafi prevale sul tema, lasciando priorità alle classi tipografiche del libro. */
+html section.lb :where(.lb-stage, .lb-dlg-b) p{color:inherit;margin-top:0;max-width:none;font-size:inherit;line-height:inherit;hyphens:inherit}
+
+/* bz-ds.css usa !important sui font dei titoli. */
+/* pagine HTML: in WebGL restano nel DOM solo per i motori di ricerca e i lettori di schermo */
+.lb-flip{position:absolute;left:var(--tx);top:var(--ty);width:var(--pw);height:var(--ph);z-index:2}
+.lb.is-3d .lb-flip,.lb.is-enhanced:not(.is-plain) .lb-flip{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+.lb-flip .pg{position:absolute;top:0;left:0;width:var(--pw);height:var(--ph);overflow:hidden;background:#efe4cc;opacity:0;visibility:hidden;transition:opacity 220ms linear,visibility 0s 220ms}
+.lb-flip .pg.is-on{opacity:1;visibility:visible;transition:opacity 220ms linear}
+.lb-flip .pg.at-l{left:calc(var(--pw) * -1)} .lb .pg--text{background:#eee2c8 url(libro-carta-antica.webp?v=1) center/100% 100%} .lb .pg--text::after{content:"";position:absolute;inset:0;pointer-events:none;background:
+  linear-gradient(90deg,rgba(70,46,20,.30),rgba(84,58,28,.07) 6%,transparent 15%),
+  radial-gradient(130% 100% at 60% 45%,transparent 62%,rgba(120,86,42,.16));} .lb .pg--l::after{background:
+  linear-gradient(270deg,rgba(70,46,20,.32),rgba(84,58,28,.08) 6%,transparent 15%),
+  radial-gradient(130% 100% at 40% 45%,transparent 62%,rgba(120,86,42,.16))} .lb.is-portrait .pg--l::after{background:linear-gradient(90deg,rgba(70,46,20,.30),rgba(84,58,28,.07) 6%,transparent 15%),radial-gradient(130% 100% at 60% 45%,transparent 62%,rgba(120,86,42,.16))} .lb .pg-in{position:absolute;inset:0;padding:2.15em 1.45em 2.2em 1.85em;display:flex;flex-direction:column;color:#2e2119;font-family:"IM Fell English",Baskervville,"Baskervville Fallback",Georgia,serif} .lb .pg--l .pg-in{padding-left:1.45em;padding-right:1.85em} .lb.is-portrait .pg--l .pg-in{padding-left:1.85em;padding-right:1.45em} .lb .pg-rh{position:absolute;top:1.05em;left:0;right:0;margin:0;text-align:center;font-size:.8em;letter-spacing:.03em;font-style:italic;color:#8b6c4c} .lb .pg-fo{position:absolute;bottom:.95em;left:0;right:0;margin:0;text-align:center;font-size:.72em;color:#7b5f43;font-variant-numeric:oldstyle-nums} .lb .pg-body{font-size:1em;line-height:1.36;text-align:justify;-webkit-hyphens:manual;hyphens:manual;text-wrap:pretty;hanging-punctuation:first} .lb .pg-body p{margin:0 0 .45em} .lb .pg-cap{margin:.1em 0 .15em!important;text-align:center;font-size:.9em;letter-spacing:.03em;font-style:italic;color:#9a3a2b} .lb .pg-h{margin:0 0 .5em;text-align:center;font:400 1.5em/1.1 "Pirata One","IM Fell English",serif!important;color:#9a3a2b;text-wrap:balance;-webkit-hyphens:manual;hyphens:manual} .lb .pg-h4{margin:0 0 .35em;font:400 1.2em/1.15 "Pirata One","IM Fell English",serif!important;color:#9a3a2b;text-align:left} .lb .dc::first-letter{float:left;font-family:"BZ Fraktur","Pirata One",serif;font-size:3.3em;line-height:.8;margin:.07em .09em 0 0;color:#9a3a2b;font-weight:400;text-shadow:.03em .03em 0 rgba(154,58,43,.35)} .lb .pg-fig{margin:.35em auto .15em;text-align:center} .lb .pg-fig img{display:block;margin:0 auto;width:auto;max-width:100%;height:auto;max-height:10.6em;mix-blend-mode:multiply} .lb .pg-fig figcaption{margin-top:.2em;font-size:.76em;font-style:italic;line-height:1.25;color:#6d5640;text-align:center} .lb .pg-dl{margin:.15em 0 .6em;border-top:1px solid rgba(139,108,76,.4)} .lb .pg-dl div{display:flex;justify-content:space-between;gap:.8em;padding:.22em 0;border-bottom:1px dotted rgba(139,108,76,.55)} .lb .pg-dl dt{font-size:.74em;letter-spacing:.14em;text-transform:uppercase;color:#9a3a2b;padding-top:.22em;white-space:nowrap} .lb .pg-dl dd{margin:0;font-style:italic;text-align:right} .lb .pg-ul{margin:.2em 0 0;padding:0;list-style:none} .lb .pg-ul li{position:relative;margin:0 0 .5em;padding-left:1.05em;text-align:left} .lb .pg-ul li::before{content:"¶";position:absolute;left:0;top:0;color:#9a3a2b} .lb .pg-note{margin-top:.7em!important;padding:.35em 0 .35em .7em;border-left:1px solid rgba(154,58,43,.6);font-style:italic;font-size:.92em;color:#7a3a2c;text-align:left} .lb .pg-ex{margin-top:1.2em!important;text-align:center!important;font-style:italic;color:#6e2d5c} .lb .pg-ex::before{content:"";display:block;width:4em;height:1px;margin:0 auto .7em;background:rgba(110,45,92,.5)} .lb .pg .ph{font-family:var(--bz-font-sans);font-size:.62em;letter-spacing:0;white-space:nowrap;vertical-align:.15em}
+/* frontespizio */ .lb .pg--front .pg-in{padding-top:2.4em;justify-content:center} .lb .pg--front .pg-body{text-align:center;-webkit-hyphens:manual;hyphens:manual} .lb .fr-k{letter-spacing:.03em;color:#9a3a2b} .lb .fr-t{margin:.05em 0 0!important;font-family:"Pirata One","IM Fell English",serif;font-size:2.6em;line-height:1;color:#9a3a2b} .lb .fr-s{font-style:italic;color:#6d5640} .lb .fig--front img{max-height:17em}
+/* [g9b] frontespizio senza indice: titolo arioso, illustrazione al centro ottico, fregio tipografico (IM Fell Flowers 2, OFL) in fondo */ .lb .pg--front .pg-body{display:flex;flex-direction:column;flex:1} .lb .pg--front .fr-s{margin-top:.5em} .lb .pg--front .fig--front{margin:auto 0 !important;padding:.6em 0 1em} .lb .fr-f{display:flex;align-items:center;justify-content:center;gap:.6em;height:1.2em;margin:.4em 0 0!important;color:#9a3a2b} .lb .fr-f span{display:block;font-family:"BZ Fleuron";font-size:2.6em;line-height:1;height:1em;transform:translateY(.33em)} .lb .fr-f::before, .lb .fr-f::after{content:"";width:2.2em;height:1px;background:rgba(154,58,43,.55)}
+/* copertina, sguardie */ .lb .pg--cover{background:#2b1832} .lb .cv{position:absolute;inset:0;border-radius:0 .32em .32em 0;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(0,0,0,.5),inset .45em 0 .6em -.2em rgba(0,0,0,.55),inset -1px 0 0 rgba(255,220,160,.12)} .lb .cv-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover} .lb .cv::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.45),rgba(0,0,0,.08) 4%,rgba(255,235,200,.06) 5.2%,transparent 8%),linear-gradient(160deg,rgba(255,230,190,.10),transparent 40%,rgba(0,0,0,.22));pointer-events:none} .lb .cv-t{position:absolute;left:0;right:0;top:15.5%;margin:0;text-align:center;font:italic 400 1.62em/1 "IM Fell English",Baskervville,"Baskervville Fallback",serif;letter-spacing:.02em} .lb .cv-t span{background:linear-gradient(180deg,#f1dca6,#c9a96e 45%,#8f6f3a);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 1px 0 rgba(0,0,0,.7)) drop-shadow(0 -1px 0 rgba(255,236,190,.18))} .lb .pg--back .cv{border-radius:.32em 0 0 .32em} .lb .pg--back .cv-img{transform:scaleX(-1)} .lb .end{position:absolute;inset:0;background:#5b4b55 url(libro-sguardia.webp?v=1) center/cover} .lb .pg--l .end{box-shadow:inset -.9em 0 1.2em -.6em rgba(0,0,0,.45),inset .5em 0 0 #2b1832} .lb .pg--r .end{box-shadow:inset .9em 0 1.2em -.6em rgba(0,0,0,.45),inset -.5em 0 0 #2b1832} .lb .pg-h::after{content:"";display:block;width:2.2em;height:1px;margin:.35em auto 0;background:rgba(154,58,43,.75)} .lb .pg-in{font-size:var(--fs)} .lb .fig--sm img{max-height:7.4em} .lb .fig--fin{margin-top:.6em} .lb .fig--fin img{max-height:5.6em}
+/* comandi */
+section.lb .lb-ctrl{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:2px}
+/* Prevale sul reset .bz-scope, sui pulsanti Eurus e sul focus globale. */
+section.lb :is(.lb-nav,.lb-all,.lb-x){
+  -webkit-appearance:none;appearance:none;position:static;z-index:auto;margin:0;padding:0;border:0;background:none;box-shadow:none;
+  font:inherit;letter-spacing:normal;text-transform:none;transform:none;cursor:pointer;
+}
+section.lb :is(.lb-nav,.lb-x){display:grid;place-items:center;flex:none;width:44px;height:44px;border-radius:50%}
+section.lb .lb-nav{border:1px solid var(--bz-line-2);color:var(--bz-text)}
+section.lb .lb-nav:disabled{opacity:.35;cursor:default}
+section.lb .lb-all{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 6px;color:var(--bz-gold);font:500 14px/1 var(--bz-font-sans)}
+section.lb :is(.lb-nav,.lb-all,.lb-x) .ic{width:20px;height:20px;fill:currentColor;flex:none}
+section.lb :is(.lb-nav,.lb-all,.lb-x):focus-visible{outline:2px solid var(--bz-gold);outline-offset:2px}
+@media (hover:hover){
+  section.lb .lb-nav:not(:disabled):hover{border-color:var(--bz-gold)}
+  section.lb .lb-all:hover span{text-decoration:underline;text-underline-offset:3px}
+}
+
+/* testo intero */
+.lb-dlg{width:min(720px,100vw);max-width:100vw;height:min(88vh,900px);max-height:100dvh;margin:auto;padding:0;border:0;border-radius:14px;background:#efe4cc;color:#2e2119}
+.lb-dlg::backdrop{background:rgba(10,9,8,.72)}
+.lb-dlg-in{display:flex;flex-direction:column;height:100%}
+.lb-dlg-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px 12px 22px;border-bottom:1px solid rgba(139,108,76,.35)}
+.lb .lb-dlg-top h2{margin:0;font:italic 400 24px/1.2 "IM Fell English",serif!important;letter-spacing:normal;color:#3b1f3f}
+section.lb .lb-x{color:#3b1f3f}
+.lb-dlg-b{overflow:auto;padding:8px 22px 40px;font:400 18px/1.5 "IM Fell English",serif}
+.lb-dlg-b .pg-body{text-align:left}
+.lb-dlg-b section{padding:14px 0;border-bottom:1px solid rgba(139,108,76,.25)}
+.lb-dlg-b .pg-fig img{max-height:180px}
+@media (max-width:767px){.lb-dlg{width:100vw;height:100dvh;border-radius:0}}
+
+/* senza JS: le pagine una sotto l'altra, leggibili */
+.lb:not(.is-enhanced)-stage{width:auto;height:auto;margin-left:0}
+.lb:not(.is-enhanced)-gl,.lb:not(.is-enhanced)-ribbon,.lb:not(.is-enhanced)-open,.lb:not(.is-enhanced)-tabs,.lb:not(.is-enhanced)-ctrl,.lb:not(.is-enhanced)-poster{display:none}
+.lb:not(.is-enhanced)-flip{position:static;width:auto;height:auto}
+.lb:not(.is-enhanced)-flip .pg{position:relative;width:auto;max-width:520px;height:auto;margin:0 auto 12px;opacity:1;visibility:visible}.lb:not(.is-enhanced) .pg-in{position:relative}.lb:not(.is-enhanced) .pg--hard{display:none}
+@media (prefers-reduced-motion:reduce){.lb-tabs, .lb .tab,.lb-ribbon>*, .lb .rb-knot img{transition:opacity 220ms linear!important;transform:none!important}.lb[data-state="closed"] .lb-tabs{transform:translateX(var(--tdx))!important}}
+
+/* WebGL: i segnapagina veri sono nella scena (incollati ai fogli); i bottoni restano, invisibili, sopra di loro */
+.lb:not(.is-plain) .lb-tabs{left:0;top:0;width:100%;height:100%;transform:none!important;transition:none}
+.lb:not(.is-plain) .lb-tabs--v{position:static;display:block}
+.lb:not(.is-plain) .tab{position:absolute;margin:0;background:none;box-shadow:none;filter:none;transform:none;border-radius:4px;color:transparent}
+.lb:not(.is-plain) .tab span,.lb:not(.is-plain) .tab::after{opacity:0}
+.lb:not(.is-plain) .tab::before{inset:0}
+
+/* giro 4: si tocca la linguetta anche a libro chiuso (sopra il bottone «apri») */
+.lb:not(.is-plain) .lb-tabs{z-index:5}
+.lb:not(.is-plain) .tab{pointer-events:auto}
+/* giro 4: indice dei capitoli sotto il libro */
+/* [g9d] selettore leggero: pillole a misura di testo, centrate; bordo oro sottile e tenue, IM Fell corsivo avorio smorzato;
+   altezza visiva 33px, area di tocco 45px con un ::before invisibile; attiva piena avorio con testo scuro */
+.lb-chap{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 8px;margin:14px 0 0}
+#libro .lb-ch{position:relative;display:inline-flex;align-items:center;height:33px;margin:0;padding:0 14px;border:1px solid rgba(201,169,110,.28);border-radius:999px;background:transparent;font:italic 400 15px/1 "IM Fell English",var(--bz-font-serif,Georgia),serif;color:rgba(238,231,219,.72);white-space:nowrap;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background-color .18s ease,color .18s ease,border-color .18s ease}
+#libro .lb-ch::before{content:"";position:absolute;left:0;right:0;top:50%;height:46px;margin-top:-23px}
+@media (min-resolution:2dppx){#libro .lb-ch{border-width:.5px}}
+#libro .lb-ch[aria-current]{background:var(--bz-text,#eee7db);border-color:var(--bz-text,#eee7db);color:var(--bz-bg,#141312)}
+#libro .lb-ch:active{background:rgba(201,169,110,.14)}#libro .lb-ch[aria-current]:active{background:#d9d1c3}
+#libro .lb-ch:focus-visible{outline:2px solid var(--bz-gold,#c9a96e);outline-offset:2px}
+@media (hover:hover){#libro .lb-ch:not([aria-current]):hover{border-color:rgba(201,169,110,.6);color:var(--bz-text,#eee7db)}}
+.lb-br{display:none}
+@media (width < 360px){.lb-br{display:block;flex-basis:100%;height:0}}
+@media (360px <= width < 768px){
+  .lb-chap{flex-wrap:nowrap}
+  #libro .lb-ch{
+    padding-inline:clamp(5px,calc(5px + (100% - 360px) * .13),14px);
+    font-family:"IM Fell English","Times New Roman",serif;
+  }
+}
+@media (min-width:768px){#libro .lb-ch{padding:0 18px}}
+@media (prefers-reduced-motion:reduce){#libro .lb-ch{transition:none}}
+
+/* [g9d] a 430 la sezione resta in uno schermo: aria sopra la sezione 50px (tema 56) */
+@media (max-width:767px){.lb{padding-top:50px}.lb::before{top:110px}}
+
+@font-face{font-family:"EB Garamond";src:url(libro-eb-garamond-latin-400-normal.woff2?v=1) format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"EB Garamond";src:url(libro-eb-garamond-latin-400-italic.woff2?v=1) format("woff2");font-weight:400;font-style:italic;font-display:swap}
+@font-face{font-family:"EB Garamond";src:url(libro-eb-garamond-latin-500-normal.woff2?v=1) format("woff2");font-weight:500;font-style:normal;font-display:swap}
+.lb{padding-bottom:var(--bz-section-gap,56px);font-family:var(--bz-font-sans,Figtree,"Figtree Fallback",sans-serif)}
+.lb .lb-wrap{width:min(100% - 32px,1360px);margin-inline:auto}
+@media (width < 1024px){
+  /* Compensa il padding di main.bz-main e applica il margine del mockup al titolo. */
+  section.lb{--sw:100%;margin-inline:calc(-1 * var(--side,20px))}
+  .lb .lb-wrap{width:100%}
+  .lb .lb-head{padding-inline:var(--bz-margin,20px)}
+}
+.lb .lb-live{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.lb .lb-poster{left:var(--cx);top:var(--cy);width:var(--cw);height:var(--ch);overflow:hidden;border-radius:0 .32em .32em 0;box-shadow:.25em .5em .85em #0008}
+.lb .lb-poster img{display:block;width:100%;height:100%;object-fit:fill}
+.lb .lb-poster .cv-t{width:34%;inset-inline:33%;top:14.5%;font-size:1.42em;text-wrap:balance}
+.lb .lb-flip .pg--text,.lb .lb-flip .pg--blank{background:#eee2c8 url(libro-carta-antica.webp?v=1) center/100% 100%}
+.lb .pg-in{box-sizing:border-box}
+.lb .pg-body{font-family:"EB Garamond",Georgia,serif}
+.lb .fr-k{margin:0 0 .45em;font:italic 400 .92em/1.36 "IM Fell English",serif!important}
+.lb .pg--unillustrated .pg-in{justify-content:center}
+.lb .pg--front.pg--unillustrated .pg-body{flex:none}
+.lb .pg--unillustrated .fr-f{margin-top:1.1em!important}
+.lb .lb-dlg-b .pg-body{font-size:1.1em}
+.lb .lb-dlg-b .fr-f{display:none}
+.lb:not(.is-enhanced) .lb-stage .pg--blank,.lb:not(.is-enhanced) .lb-chap,.lb:not(.is-enhanced) .lb-lead{display:none}
+.lb.is-3d .lb-flip .pg--text{visibility:visible;white-space:normal}
+.lb.is-plain .lb-tabs{z-index:5}
+@media (prefers-reduced-motion:reduce){.lb .rb-rot{transform:rotate(-60deg)!important}}
+.lb.is-reduced .rb-rot{transform:rotate(-60deg)!important}
+.lb.is-reduced .lb-ribbon>*,.lb.is-reduced .rb-band,.lb.is-reduced .rb-knot img{transition:opacity 220ms linear!important}
+.lb.is-reduced.is-untying .rb-band,.lb.is-reduced.is-untying .rb-nodo{transform:none;transition-delay:0s}
+
+/* Mantiene le dissolvenze del libro con movimento ridotto anche sopra il reset globale di bz-ds.css. */
+@media (prefers-reduced-motion:reduce){
+  .lb .lb-poster{transition-duration:500ms!important}
+  .lb .lb-flip .pg{transition-duration:220ms,0s!important}
+  .lb .lb-flip .pg.is-on{transition-duration:220ms!important}
+}
+
+#libro{scroll-margin-top:calc(var(--lb-sticky-h,var(--bz-sticky-h,120px)) + var(--bz-sp-8,8px))}
