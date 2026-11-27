@@ -590,6 +590,10 @@ html .bzs .bzs-head {
   cursor: pointer;
 }
 
+html .bzs .bzs-item:not([open]) > .bzs-head {
+  padding: 16px 0;
+}
+
 html .bzs .bzs-pv {
   grid-column: 1;
   grid-row: 2;
@@ -621,10 +625,6 @@ html .bzs .bzs-head:focus-visible {
   justify-self: center;
   color: var(--bz-gold);
   transition: transform var(--bz-dur-ui) var(--bz-ease-standard);
-}
-
-.bzs-item[open] > .bzs-head .bzs-ch {
-  transform: rotate(180deg);
 }
 
 @media (prefers-reduced-motion: reduce) {
