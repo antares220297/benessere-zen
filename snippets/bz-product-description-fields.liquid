@@ -214,7 +214,7 @@
     {%- if tradition_rows != blank -%}
       <details class="bzs-item" open>
         <summary class="bzs-head">
-          <h2 class="bzs-hd">Nella tradizione</h2>
+          <h2 class="bzs-hd">{% render 'bz-product-benefits-title', product: product %}</h2>
           {{ chevron }}
           <span class="bzs-pv" aria-hidden="true">{{ preview_tradition | escape }}</span>
         </summary>

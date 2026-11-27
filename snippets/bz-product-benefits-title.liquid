@@ -1,0 +1,31 @@
+{%- liquid
+  assign handle = product.handle
+  assign handle_prefix = handle | slice: 0, 19
+  assign title = 'In breve'
+
+  if handle == 'hem-incenso-esagonale-antitabacco'
+    echo title
+  elsif handle contains 'eritrea'
+    echo title
+  elsif handle_prefix == 'mattoncini-dincenso'
+    echo 'Nella tradizione'
+  else
+    case product.type
+      when 'Incensi e smudge', 'Pietre grezze', 'Pietre burattate', 'Bracciali', 'Collane', 'Ciondoli', 'Mala', 'Pendoli'
+        assign title = 'Nella tradizione'
+      when 'Oggettistica'
+        if handle contains 'buddha' or handle contains 'feng-shui' or handle contains 'telo-divinatorio'
+          assign title = 'Nella tradizione'
+        elsif handle contains 'selenite'
+          if handle contains 'piatto' or handle contains 'ciotola' or handle contains 'piastra'
+            assign title = 'Nella tradizione'
+          endif
+        endif
+      when 'Oli e profumi'
+        if handle contains 'ancient-witch' or handle contains 'esoteric-collection' or handle contains 'attar'
+          assign title = 'Nella tradizione'
+        endif
+    endcase
+    echo title
+  endif
+-%}
