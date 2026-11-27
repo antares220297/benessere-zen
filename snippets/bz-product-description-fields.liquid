@@ -4,6 +4,99 @@
   assign specs = product.metafields.custom.dettagli_bz.value
   assign notes = product.metafields.custom.note_bz
 -%}
+{%- capture line_break %}
+{% endcapture -%}
+{%- liquid
+  assign description_text = ''
+  if description != blank
+    assign description_text = description | metafield_text | replace: line_break, ' ' | strip
+  endif
+  assign sentence_length = description_text.size
+  assign sentence_endings = '. ! ?' | split: ' '
+  for ending in sentence_endings
+    assign boundary = ending | append: ' '
+    if description_text contains boundary
+      assign before_ending = description_text | split: boundary | first
+      assign length = before_ending.size | plus: 1
+      if length < sentence_length
+        assign sentence_length = length
+      endif
+    endif
+  endfor
+  assign preview_description = description_text | slice: 0, sentence_length
+
+  assign preview_tradition = ''
+  assign first_benefit = ''
+  for benefit in benefits
+    if benefit == blank
+      continue
+    endif
+    if first_benefit == blank
+      assign first_benefit = benefit | strip
+    endif
+    if benefit contains ': '
+      assign title = benefit | split: ': ' | first | strip
+      if title != blank
+        unless preview_tradition == blank
+          assign preview_tradition = preview_tradition | append: ' · '
+        endunless
+        assign preview_tradition = preview_tradition | append: title
+      endif
+    endif
+  endfor
+  assign preview_tradition = preview_tradition | default: first_benefit
+
+  assign preview_details = ''
+  assign preview_count = 0
+  assign priorities = 'formato|contenuto|materiale|misura/misure/dimensioni/diametro|provenienza/origine|peso'
+  assign priority_labels = priorities | replace: '|', '/' | split: '/'
+  assign groups = priorities | append: '|altre' | split: '|'
+  for group in groups
+    assign limit = 3
+    if group == 'altre'
+      assign limit = 2
+    endif
+    if preview_count >= limit
+      break
+    endif
+    assign labels = group | split: '/'
+    for spec in specs
+      unless spec contains ':'
+        continue
+      endunless
+      assign raw_label = spec | split: ':' | first
+      assign label = raw_label | strip | downcase
+      if label == 'ingredienti' or label == 'inci' or label contains '(segue)'
+        continue
+      endif
+      if group == 'altre'
+        if priority_labels contains label
+          continue
+        endif
+      else
+        unless labels contains label
+          continue
+        endunless
+      endif
+      assign prefix = raw_label | append: ':'
+      assign value = spec | remove_first: prefix | strip
+      if value == blank
+        continue
+      endif
+      unless preview_details == blank
+        assign preview_details = preview_details | append: ' · '
+      endunless
+      assign preview_details = preview_details | append: value
+      assign preview_count = preview_count | plus: 1
+      if preview_count == limit
+        break
+      endif
+    endfor
+  endfor
+  if preview_details == blank and notes != blank
+    assign preview_details = notes | metafield_text | strip
+  endif
+-%}
 {%- capture chevron -%}
   <svg class="bzs-ch" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true" focusable="false">
     <path d="m4 7 5 5 5-5"/>
@@ -91,6 +184,7 @@
         <summary class="bzs-head">
           <h2 class="bzs-hd">Cos’è</h2>
           {{ chevron }}
+          <span class="bzs-pv" aria-hidden="true">{{ preview_description | escape_once }}</span>
         </summary>
         <div class="bzs-prose">{{ description | metafield_tag }}</div>
       </details>
@@ -101,6 +195,7 @@
         <summary class="bzs-head">
           <h2 class="bzs-hd">Nella tradizione</h2>
           {{ chevron }}
+          <span class="bzs-pv" aria-hidden="true">{{ preview_tradition | escape }}</span>
         </summary>
         <ul class="bzs-tr" role="list">{{ tradition_rows }}</ul>
       </details>
@@ -111,6 +206,7 @@
         <summary class="bzs-head">
           <h2 class="bzs-hd">Dettagli</h2>
           {{ chevron }}
+          <span class="bzs-pv" aria-hidden="true">{{ preview_details | escape_once }}</span>
         </summary>
         <div class="bzs-details">
           {%- if detail_rows != blank -%}

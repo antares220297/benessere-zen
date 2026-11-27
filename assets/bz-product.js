@@ -23,29 +23,33 @@
     });
     var mainAdd = root.querySelector("[data-bz-atc] button[type='submit']");
     var sticky = root.querySelector(".bz-sticky");
+    var stickyButton = sticky && sticky.querySelector("button[type='submit']");
     if (mainAdd && sticky && "IntersectionObserver" in window) {
-      var mobile = window.matchMedia("(max-width: 860px)");
       var book = document.querySelector("section.lb#libro");
+      var footers = Array.from(document.querySelectorAll(".shopify-section-group-footer-group, #shopify-section-footer"));
+      if (!footers.length) {
+        var footer = document.querySelector("footer.bz-foot") || document.querySelector("footer");
+        if (footer) footers.push(footer);
+      }
+      var blockers = book ? footers.concat(book) : footers;
+
       function updateSticky() {
-        var show = mobile.matches && mainAdd.getBoundingClientRect().bottom <= 0;
-        if (show && book) {
-          var bookRect = book.getBoundingClientRect();
-          show = !(bookRect.height > 0 && bookRect.bottom >= 0 && bookRect.top <= window.innerHeight);
-        }
+        var show = mainAdd.getBoundingClientRect().bottom <= 0 && !blockers.some(function (element) {
+          var rect = element.getBoundingClientRect();
+          return rect.height > 0 && rect.bottom >= 0 && rect.top <= window.innerHeight;
+        });
         sticky.classList.toggle("is-on", show);
         sticky.toggleAttribute("inert", !show);
       }
 
       var stickyObserver = new IntersectionObserver(updateSticky, { threshold: 0 });
       stickyObserver.observe(mainAdd);
-      if (book) stickyObserver.observe(book);
+      blockers.forEach(function (element) { stickyObserver.observe(element); });
       var stickyFrame;
       window.addEventListener("scroll", function () {
-        if (!mobile.matches) return;
         cancelAnimationFrame(stickyFrame);
         stickyFrame = requestAnimationFrame(updateSticky);
       }, { passive: true });
-      mobile.addEventListener("change", updateSticky);
       updateSticky();
     }
     var shipping = root.querySelector("[data-bz-shipping]");
@@ -54,15 +58,17 @@
     var cartTotal = Number(root.dataset.bzCartTotal || 0);
     var variantPrice = Number(shipping.dataset.price);
     var threshold = Number(shipping.dataset.threshold);
-    var decrease = root.querySelector("[data-bz-atc] [data-bz-qty='-1']");
+    var stickyQuantity = sticky && sticky.querySelector(".bz-qty input");
+    var quantityInputs = stickyQuantity ? [quantity, stickyQuantity] : [quantity];
+    var decreaseButtons = root.querySelectorAll("[data-bz-atc] [data-bz-qty='-1'], .bz-sticky [data-bz-qty='-1']");
 
-    function quantityValue() {
-      return Math.max(1, Math.floor(quantity.valueAsNumber || 1));
+    function quantityValue(input) {
+      return Math.max(1, Math.floor(input.valueAsNumber || 1));
     }
 
     function updateShipping() {
-      var count = quantityValue();
-      decrease.disabled = count <= 1;
+      var count = quantityValue(quantity);
+      decreaseButtons.forEach(function (button) { button.disabled = count <= 1; });
       var projected = cartTotal + variantPrice * count;
       var missing = Math.max(0, threshold - projected);
       var text = shipping.querySelector("p");
@@ -76,11 +82,28 @@
       shipping.querySelector(".bz-ship__track i").style.width = Math.min(100, 100 * projected / threshold) + "%";
     }
 
-    quantity.addEventListener("input", updateShipping);
-    quantity.addEventListener("change", function () {
-      quantity.value = String(quantityValue());
+    function syncQuantity(value) {
+      quantityInputs.forEach(function (input) {
+        if (input.value !== value) input.value = value;
+      });
       updateShipping();
+    }
+
+    quantityInputs.forEach(function (input) {
+      input.addEventListener("input", function () { syncQuantity(input.value); });
+      input.addEventListener("change", function () {
+        syncQuantity(String(quantityValue(input)));
+      });
     });
+    if (stickyButton && stickyQuantity) {
+      function copyStickyQuantity() {
+        syncQuantity(String(quantityValue(stickyQuantity)));
+      }
+      stickyButton.addEventListener("click", copyStickyQuantity);
+      quantity.form.addEventListener("submit", function (event) {
+        if (event.submitter === stickyButton) copyStickyQuantity();
+      });
+    }
     document.addEventListener("bz:cart-updated", function (event) {
       cartTotal = event.detail.totalPrice;
       updateShipping();
@@ -96,18 +119,15 @@
         if (thumb) thumb.click();
         var galleryVariant = root.querySelector("[data-bz-gallery-variant]");
         if (galleryVariant) galleryVariant.textContent = radio.dataset.variantTitle;
-        var stickyButton = root.querySelector(".bz-sticky button");
-        if (mainAdd) {
-          mainAdd.disabled = unavailable;
-          mainAdd.classList.toggle("bz-stock--soldout", unavailable);
-          mainAdd.querySelector("[data-bz-add-label]").textContent = unavailable ? "Esaurito" : "Aggiungi al carrello";
-          mainAdd.setAttribute("aria-label", (unavailable ? "Esaurito: " : "Aggiungi al carrello: ") + root.querySelector("h1").textContent);
-        }
-        if (stickyButton) {
-          stickyButton.disabled = unavailable;
-          stickyButton.textContent = unavailable ? "Esaurito" : "Aggiungi";
-          stickyButton.setAttribute("aria-label", (unavailable ? "Esaurito: " : "Aggiungi al carrello: ") + root.querySelector("h1").textContent);
-        }
+        var addLabel = unavailable ? "Esaurito" : "Aggiungi al carrello";
+        var addAriaLabel = addLabel + ": " + root.querySelector("h1").textContent;
+        [mainAdd, stickyButton].forEach(function (button) {
+          if (!button) return;
+          button.disabled = unavailable;
+          button.querySelector("[data-bz-add-label]").textContent = addLabel;
+          button.setAttribute("aria-label", addAriaLabel);
+        });
+        if (mainAdd) mainAdd.classList.toggle("bz-stock--soldout", unavailable);
         var cents = Number(radio.getAttribute("data-bz-variant"));
         if (Number.isFinite(cents) && cents >= 0) {
           variantPrice = cents;
@@ -121,13 +141,12 @@
         }
       });
     });
-    root.querySelectorAll("[data-bz-atc] [data-bz-qty]").forEach(function (button) {
+    root.querySelectorAll("[data-bz-atc] [data-bz-qty], .bz-sticky [data-bz-qty]").forEach(function (button) {
       button.addEventListener("click", function () {
-        var next = Math.max(1, quantityValue() + Number(button.dataset.bzQty));
-        quantity.value = String(next);
-        updateShipping();
+        var next = Math.max(1, quantityValue(quantity) + Number(button.dataset.bzQty));
+        syncQuantity(String(next));
       });
     });
-    updateShipping();
+    syncQuantity(String(quantityValue(quantity)));
   });
 })();

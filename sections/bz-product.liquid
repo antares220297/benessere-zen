@@ -433,11 +433,17 @@
   {%- endif -%}
 
   <div class="bz-sticky" inert>
-    {%- if product.featured_image -%}
-      {{ product.featured_image | image_url: width: 100 | image_tag: alt: '', loading: 'lazy', width: 44, height: 44 }}
-    {%- endif -%}
-    <span><em class="bz-sticky__name">{{ display_name | escape }}</em><b data-bz-price>{% render 'bz-money', cents: current.price %}</b></span>
-    <button type="submit" form="{{ main_form_id }}"{% if current.available %} aria-label="Aggiungi al carrello: {{ display_name | escape }}"{% else %} disabled{% endif %}>{% if current.available %}Aggiungi{% else %}Esaurito{% endif %}</button>
+    <div class="bz-sticky__controls">
+      <div class="bz-qty" role="group" aria-label="Quantità">
+        <button type="button" data-bz-qty="-1" aria-label="Diminuisci quantità" disabled>−</button>
+        <input type="number" value="1" min="1" step="1" inputmode="numeric" aria-label="Quantità">
+        <button type="button" data-bz-qty="1" aria-label="Aumenta quantità">+</button>
+      </div>
+      <button class="bz-btn bz-btn--gold" type="submit" form="{{ main_form_id }}" aria-label="{% if current.available %}Aggiungi al carrello{% else %}Esaurito{% endif %}: {{ display_name | escape }}"{% unless current.available %} disabled{% endunless %}>
+        {% render 'bz-icon', name: 'shopping_bag', icon_class: 'bz-ico' %}
+        <span data-bz-add-label>{% if current.available %}Aggiungi al carrello{% else %}Esaurito{% endif %}</span>
+      </button>
+    </div>
   </div>
 </div>
 <script type="application/ld+json">
