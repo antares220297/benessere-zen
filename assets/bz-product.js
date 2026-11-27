@@ -140,13 +140,25 @@
       if (!root.querySelector('[data-bz-upsell-url]')) linkReferences();
     }
 
+    function selectAllPairs(ritual) {
+      ritual.querySelectorAll('[data-pair]').forEach(pair => {
+        pair.dataset.q = Math.max(1, Number(pair.dataset.q));
+      });
+    }
+
+    function renderRitual() {
+      const ritual = root.querySelector('.bb-rit');
+      if (demoOffer && ritual) selectAllPairs(ritual);
+      render();
+    }
+
     function render() {
       const variant = root.querySelector(variantSelector);
       const available = variant?.dataset.available === 'true';
       const quantity = mainQuantity();
       const unit = Number(variant?.dataset.bzVariant ?? form.dataset.unit);
       const ritual = root.querySelector('.bb-rit');
-      const offerEnabled = ritual?.dataset.offer === 'on';
+      const offerEnabled = ritual?.dataset.offer === 'on' || demoOffer;
       if (ritual) ritual.hidden = !available;
 
       const pairs = [...(ritual?.querySelectorAll('[data-pair]') ?? [])];
@@ -179,13 +191,6 @@
       const complete = items.length === 3 && new Set(items.map(item => item.id)).size === 3;
       const discounted = complete && offerEnabled;
       const total = discounted ? discountedTotal(full) : full;
-      const previewSet = demoOffer && available && pairs.length === 2 &&
-        pairs.every(pair => pair.dataset.available === 'true') &&
-        new Set([variant.value, ...pairs.map(pair => pair.dataset.variant)]).size === 3;
-      const displayDiscounted = discounted || previewSet;
-      const displayFull = previewSet ? setFull : full;
-      const displayTotal = previewSet ? discountedTotal(displayFull) : total;
-      const displayPieces = previewSet ? pieces + missing.length : pieces;
       root.querySelectorAll('[data-step]').forEach(step => {
         const limitReached = step.dataset.step === '-1' ? quantity === 1 : quantity === 99;
         step.setAttribute('aria-disabled', String(limitReached));
@@ -195,21 +200,21 @@
       const label = !available ? 'Esaurito' : state === 'done' ? 'Aggiunto' :
         pieces > quantity ? 'Aggiungi · ' + money(total) : 'Aggiungi al carrello';
       const ariaLabel = state === 'done' || !available ? label :
-        'Aggiungi ' + pieces + (pieces === 1 ? ' pezzo' : ' pezzi') + ' di ' + productName +
+        'Aggiungi ' + pieces + (pieces === 1 ? ' pezzo' : ' pezzi') + (discounted ? '' : ' di ' + productName) +
         ' al carrello, totale ' + money(total) + (discounted ? ', sconto del 10% incluso' : '');
       form.querySelector('[data-atc-label]').textContent = label;
       if (bottom) {
-        const paired = displayPieces - quantity;
+        const paired = pieces - quantity;
         const stateLabel = state === 'done' || !available ? label : '';
-        const totalLabel = money(displayTotal);
+        const totalLabel = money(total);
         bottomAction.hidden = Boolean(stateLabel);
         bottomState.hidden = !stateLabel;
         bottomState.textContent = stateLabel;
         bottomPrefix.hidden = paired > 0;
         bottomQuantity.textContent = quantity + ' pz' + (paired ? ' · +' + paired + ' dal rituale' : '');
-        bottomFull.hidden = !displayDiscounted;
-        bottomFull.textContent = displayDiscounted ? money(displayFull) : '';
-        bottomDiscount.hidden = !displayDiscounted;
+        bottomFull.hidden = !discounted;
+        bottomFull.textContent = discounted ? money(full) : '';
+        bottomDiscount.hidden = !discounted;
         if (bottomTotal.textContent !== totalLabel) bottomTotal.textContent = totalLabel;
       }
       buttons.forEach(button => {
@@ -227,20 +232,20 @@
       });
 
       const offer = ritual?.querySelector('.bb-set');
-      if (offer) offer.hidden = !offerEnabled && !previewSet;
+      if (offer) offer.hidden = !offerEnabled;
       if (offer && !offer.hidden) {
         const setDiscounted = discountedTotal(setFull);
-        offer.querySelector('[data-set-full]').textContent = money(displayDiscounted ? displayFull : setFull);
-        offer.querySelector('[data-set-disc]').textContent = money(displayDiscounted ? displayTotal : setDiscounted);
-        offer.querySelector('[data-set-save]').textContent = 'Risparmi ' + money(displayDiscounted ? displayFull - displayTotal : setFull - setDiscounted);
-        offer.querySelector('[data-set-hint]').textContent = displayDiscounted ? 'Su tutti i ' + displayPieces + ' pezzi dei tre prodotti' :
+        offer.querySelector('[data-set-full]').textContent = money(setFull);
+        offer.querySelector('[data-set-disc]').textContent = money(setDiscounted);
+        offer.querySelector('[data-set-save]').textContent = 'Risparmi ' + money(setFull - setDiscounted);
+        offer.querySelector('[data-set-hint]').textContent = discounted ? 'Su tutti i ' + pieces + ' pezzi dei tre prodotti' :
           missing.length === 1 ? 'Manca solo ' + missing[0] + ' per lo sconto' :
             'Con ' + productName + ' e i due abbinati, almeno un pezzo ciascuno';
         const chooseAll = offer.querySelector('[data-set-all]');
-        chooseAll.hidden = displayDiscounted;
+        chooseAll.hidden = discounted;
         chooseAll.disabled = pairs.some(pair => pair.dataset.available !== 'true');
         chooseAll.setAttribute('aria-disabled', String(chooseAll.disabled));
-        offer.querySelector('[data-set-ok]').hidden = !displayDiscounted;
+        offer.querySelector('[data-set-ok]').hidden = !discounted;
       }
 
       const projected = cartTotal + total;
@@ -281,9 +286,7 @@
         if (render().discounted) announce('Sconto del 10% applicato a tutti e tre');
       } else {
         const ritual = control.closest('.bb-rit');
-        ritual.querySelectorAll('[data-pair]').forEach(pair => {
-          pair.dataset.q = Math.max(1, Number(pair.dataset.q));
-        });
+        selectAllPairs(ritual);
         render();
         const confirmation = ritual.querySelector('[data-set-ok]');
         confirmation.classList.remove('bb-in');
@@ -311,7 +314,7 @@
       cartTotal = Number(event.detail.totalPrice);
       render();
     });
-    root.addEventListener('bz:ritual-loaded', render);
+    root.addEventListener('bz:ritual-loaded', renderRitual);
 
     form.addEventListener('submit', async event => {
       event.preventDefault();
@@ -359,7 +362,7 @@
     }
     observeBottom();
     resolveCareLinks();
-    render();
+    renderRitual();
   }
 
   document.querySelectorAll('[data-bz-product]').forEach(init);

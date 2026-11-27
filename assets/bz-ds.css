@@ -1567,7 +1567,7 @@ html .bz-scope .ritual-section--product .row-price {align-self:center}
   html .bz-scope .ritual-section--product .row-price {text-align:end}
 }
 
-/* Product badges share the same gold pill. */
+/* Product badges share the same pill shape. */
 html .bz-scope .bz-badge{
   display:inline-flex;
   align-items:center;
@@ -1580,6 +1580,12 @@ html .bz-scope .bz-badge{
   letter-spacing:var(--bz-ls-badge);
   white-space:nowrap;
   flex:none;
+}
+html .bz-scope .bz-badge:where(.bz-stock--low){
+  box-sizing:border-box;
+  background:rgba(20,19,18,.72);
+  border:1px solid var(--bz-gold);
+  color:var(--bz-gold);
 }
 html .bz-scope .bz-badge__dot{display:none}
 html .bz-scope .bz-product-tile__media>.bz-badge{

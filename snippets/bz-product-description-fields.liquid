@@ -101,6 +101,7 @@
   {%- render 'bb-icon', name: 'expand_more', icon_class: 'bzs-ch' -%}
 {%- endcapture -%}
 
+{%- comment -%}Apply the product-wide fallback after classifying both title and sentence for each benefit.{%- endcomment -%}
 {%- capture tradition_icons -%}
   {%- for benefit in benefits -%}
     {%- if benefit == blank -%}{%- continue -%}{%- endif -%}
