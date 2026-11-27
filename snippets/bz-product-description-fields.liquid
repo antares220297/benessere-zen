@@ -1,0 +1,63 @@
+{%- liquid
+  assign description = product.metafields.custom.descrizione_bz
+  assign benefits = product.metafields.custom.benefici_bz.value
+  assign specs = product.metafields.custom.dettagli_bz.value
+  assign notes = product.metafields.custom.note_bz
+-%}
+<div class="bz-description bz-description--fields">
+  {%- if description != blank -%}
+    <div class="bz-buy__open rte">{{ description | metafield_tag }}</div>
+  {%- endif -%}
+
+  {%- if benefits.size > 0 -%}
+    <div class="bz-brief">
+      <h2>In breve</h2>
+      <ul role="list">
+        {%- for benefit in benefits -%}
+          <li><span>
+            {%- if benefit contains ':' -%}
+              {%- assign title = benefit | split: ':' | first -%}
+              {%- assign prefix = title | append: ':' -%}
+              <strong>{{ title | strip | escape }}:</strong> {{ benefit | remove_first: prefix | strip | escape }}
+            {%- else -%}
+              {{ benefit | escape }}
+            {%- endif -%}
+          </span></li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  {%- endif -%}
+
+  {%- if specs.size > 0 or notes != blank -%}
+    <details class="bz-description__more">
+      <summary class="bz-description__toggle" aria-controls="BzDescription-{{ section_id }}">
+        <span>Leggi tutto</span>
+        <span>Mostra meno</span>
+      </summary>
+      <div id="BzDescription-{{ section_id }}">
+        {%- if specs.size > 0 -%}
+          <table class="bz-specs">
+            <tbody>
+              {%- for spec in specs -%}
+                {%- assign label = spec | split: ':' | first -%}
+                {%- assign value = '' -%}
+                {%- if spec contains ':' -%}
+                  {%- assign prefix = label | append: ':' -%}
+                  {%- assign value = spec | remove_first: prefix | strip -%}
+                {%- endif -%}
+                <tr>
+                  <th scope="row">{{ label | strip | escape }}</th>
+                  <td>{{ value | escape }}</td>
+                </tr>
+              {%- endfor -%}
+            </tbody>
+          </table>
+        {%- endif -%}
+
+        {%- if notes != blank -%}
+          <div class="bz-description__body rte">{{ notes | metafield_tag }}</div>
+        {%- endif -%}
+      </div>
+    </details>
+  {%- endif -%}
+</div>

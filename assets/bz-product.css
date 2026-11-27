@@ -1086,3 +1086,65 @@ html .bz-scope .bz-description__body :is(h2, h3, h4, h5, h6) {
   .bz-product .bz-upsell__add:active:not(:disabled),
   .bz-product .bz-upsell__cta:active:not(:disabled) { transform: none; }
 }
+
+.bz-description__more > .bz-description__toggle {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  list-style: none;
+  cursor: pointer;
+}
+
+.bz-description__more > summary::-webkit-details-marker {
+  display: none;
+}
+
+.bz-description__more:not([open]) > summary span:last-child,
+.bz-description__more[open] > summary span:first-child {
+  display: none;
+}
+
+.bz-description__more[open] > .bz-description__toggle::after {
+  transform: rotate(225deg);
+}
+
+.bz-specs {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  color: var(--bz-text);
+  font-size: var(--bz-fs-body);
+}
+
+.bz-specs :is(th, td) {
+  padding: var(--bz-sp-8) 0;
+  vertical-align: top;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+.bz-specs th {
+  width: 38%;
+  padding-inline-end: var(--bz-sp-8);
+  font-weight: 600;
+}
+
+.bz-specs tr + tr {
+  border-top: 1px solid var(--bz-line);
+}
+
+.bz-specs + .bz-description__body {
+  margin-block-start: var(--bz-sp-16);
+}
+
+.bz-description--fields {
+  overflow-wrap: anywhere;
+}
+
+.bz-description__more .rte h3:not(:first-child) {
+  margin-block-start: var(--bz-sp-16);
+}
+
+.bz-description__more .rte h3 + p {
+  margin-block-start: var(--bz-sp-8);
+}
