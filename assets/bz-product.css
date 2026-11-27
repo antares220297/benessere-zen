@@ -1049,267 +1049,42 @@ html .bz-scope .bz-description__body :is(h2, h3, h4, h5, h6) {
 }
 
 .bzs.bz-description {
-  margin-block: var(--bz-sp-24) var(--bz-sp-8);
-  color: var(--bz-text);
+  margin-block: 16px 0;
+  border-top: 1px solid var(--bz-line-2);
+  color: var(--bz-text-2);
   font: 400 16px/1.6 var(--bz-font-sans);
   overflow-wrap: anywhere;
 }
 
-.bzs * {
-  box-sizing: border-box;
+.bz-product .bzs + .bz-buy__disclaimer {
+  margin: 16px 0 0;
+  font-family: var(--bz-font-sans);
+  line-height: 26px;
+  color: var(--bz-text-2);
 }
 
-html .bzs p {
+html .bzs .bzs-item {
   margin: 0;
-  font-size: inherit;
-}
-
-.bzs svg {
-  display: block;
-}
-
-.bzs :is(b, strong) {
-  font-weight: 600;
-  color: var(--bz-text);
-}
-
-.bzs-list {
-  border-top: 1px solid var(--bz-line-2);
-}
-
-.bzs-item {
   border-bottom: 1px solid var(--bz-line-2);
 }
 
 html .bzs .bzs-hd {
   margin: 0;
-  font: 400 24px/1.15 var(--bz-font-serif) !important;
+  font: 400 23px/1.15 var(--bz-font-serif) !important;
+  letter-spacing: 0;
+  color: var(--bz-text);
   text-wrap: wrap;
 }
 
 html .bzs .bzs-head {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 28px;
-  column-gap: 16px;
-  align-items: start;
-  width: 100%;
-  min-height: 64px;
+  grid-template-columns: minmax(0, 1fr) 32px;
+  gap: 16px;
+  align-items: center;
   margin: 0;
-  padding: 20px 0 18px;
+  padding: 17px 0 3px;
   list-style: none;
   cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.bzs-lb {
-  font: 400 24px/1.15 var(--bz-font-serif);
-  letter-spacing: 0;
-  color: var(--bz-text);
-}
-
-html .bzs .bzs-pv {
-  grid-column: 1;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  margin-top: 6px;
-  font: 400 16px/1.5 var(--bz-font-sans) !important;
-  color: var(--bz-text-3);
-}
-
-.bzs-ch {
-  grid-column: 2;
-  grid-row: 1;
-  display: grid;
-  place-items: center;
-  width: 28px;
-  height: 28px;
-  color: var(--bz-gold);
-  transition: transform var(--bz-dur-ui) var(--bz-ease-standard);
-}
-
-.bzs-item[open] > .bzs-head .bzs-ch {
-  transform: rotate(180deg);
-}
-
-html .bzs .bzs-item[open] > .bzs-head .bzs-pv {
-  display: none;
-}
-
-.bzs-body {
-  padding: 0 0 24px;
-}
-
-/* Cos'è: prosa a misura di lettura */
-.bzs-prose {
-  max-width: 36em;
-  color: var(--bz-text-2);
-}
-
-.bzs-prose p + p {
-  margin-top: 12px;
-}
-
-html .bzs .bzs-prose p:first-child {
-  font-size: 17px;
-  line-height: 1.6;
-  color: var(--bz-text);
-}
-
-/* Cos'è: riga di sintesi in maiuscoletto */
-html .bzs .bzs-kw {
-  margin: 0 0 14px;
-  font: 500 14px/1.4 var(--bz-font-sans);
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--bz-text-3);
-}
-
-html .bzs .bzs-kw i {
-  font-style: normal;
-  color: var(--bz-line-2);
-}
-
-/* Nella tradizione: voci d'erbario, numero romano + titolo in corsivo oro tenue */
-.bzs-tr {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.bzs-tr li {
-  display: grid;
-  grid-template-columns: 32px minmax(0, 1fr);
-  align-items: baseline;
-  padding: 14px 0;
-}
-
-.bzs-tr li + li {
-  border-top: 1px solid var(--bz-line-divider);
-}
-
-.bzs-tr li:first-child {
-  padding-top: 2px;
-}
-
-.bzs-tr li:last-child {
-  padding-bottom: 0;
-}
-
-.bzs-tr .n {
-  grid-column: 1;
-  grid-row: 1 / span 2;
-  font: 400 16px/1.35 var(--bz-font-serif);
-  color: var(--bz-text-3);
-  letter-spacing: .04em;
-}
-
-.bzs-tr .t {
-  grid-column: 2;
-  display: block;
-  margin-bottom: 4px;
-  font: italic 400 21px/1.25 var(--bz-font-serif);
-  color: color-mix(in srgb, var(--bz-gold) 82%, var(--bz-text));
-}
-
-.bzs-tr .s {
-  grid-column: 2;
-  display: block;
-  color: var(--bz-text-2);
-}
-
-.bzs-tr li.no-t .s {
-  color: var(--bz-text);
-}
-
-.bzs-tr li.no-t .n {
-  line-height: 1.6;
-}
-
-/* Dettagli: indice a puntini guida, valori a destra; valori lunghi vanno a capo sotto l'etichetta */
-.bzs-dl {
-  margin: 0;
-  padding: 0;
-}
-
-.bzs-dl > div {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  padding: 8px 0;
-}
-
-.bzs-dl > div:first-child {
-  padding-top: 0;
-}
-
-.bzs-dl dt {
-  flex: none;
-  max-width: 45%;
-  font-size: 16px;
-  line-height: 1.55;
-  color: var(--bz-text-3);
-}
-
-.bzs-dl > div::after {
-  content: "";
-  order: 1;
-  flex: 1 1 24px;
-  min-width: 24px;
-  border-bottom: 1px dotted color-mix(in srgb, var(--bz-text-3) 70%, transparent);
-  transform: translateY(-4px);
-}
-
-.bzs-dl dd {
-  order: 2;
-  margin: 0;
-  max-width: 68%;
-  min-width: 0;
-  text-align: right;
-  text-wrap: balance;
-  color: var(--bz-text);
-  font-variant-numeric: tabular-nums lining-nums;
-  overflow-wrap: anywhere;
-}
-
-.bzs-dl > div.is-long {
-  display: block;
-}
-
-.bzs-dl > div.is-long dt {
-  max-width: none;
-}
-
-.bzs-dl > div.is-long::after {
-  display: none;
-}
-
-.bzs-dl > div.is-long dd {
-  max-width: none;
-  text-align: left;
-  margin-top: 2px;
-}
-
-.bzs-note {
-  margin-top: 20px;
-  padding-top: 16px;
-  border-top: 1px solid var(--bz-line-2);
-}
-
-html .bzs .bzs-note h3 {
-  margin: 0 0 4px !important;
-  font: 600 16px/1.4 var(--bz-font-sans) !important;
-  letter-spacing: 0 !important;
-  color: var(--bz-text) !important;
-}
-
-.bzs-note p {
-  color: var(--bz-text-2);
-}
-
-html .bzs .bzs-note :is(p, ul, ol) + h3 {
-  margin-top: 18px !important;
 }
 
 .bzs-head::-webkit-details-marker {
@@ -1322,21 +1097,151 @@ html .bzs .bzs-head:focus-visible {
   border-radius: 6px;
 }
 
-html .bzs .bzs-note ul {
-  margin: 0;
-  padding-inline-start: var(--bz-sp-24);
-  list-style: disc outside;
-  color: var(--bz-text-2);
+.bzs-ch {
+  display: block;
+  justify-self: center;
+  color: var(--bz-gold);
+  transition: transform var(--bz-dur-ui) var(--bz-ease-standard);
 }
 
-@media (hover: hover) {
-  .bzs-head:hover .bzs-lb {
-    color: var(--bz-gold-hover);
-  }
+html .bzs .bzs-ch,
+html .bzs .bzs-ch path {
+  fill: none !important;
+  stroke: currentColor !important;
+}
+
+html .bzs .bzs-ch path {
+  stroke-width: 1.2px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.bzs-item:not([open]) > .bzs-head .bzs-ch {
+  transform: rotate(-90deg);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .bzs-ch {
     transition: none;
   }
+}
+
+html .bzs p {
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  text-wrap: wrap;
+  overflow-wrap: anywhere;
+}
+
+.bzs-prose {
+  padding-bottom: 12px;
+  padding-inline-end: 44px;
+}
+
+html .bzs .bzs-prose {
+  line-height: 1.5;
+}
+
+html .bzs .bzs-prose p + p {
+  margin-top: 12px;
+}
+
+html .bzs .bzs-prose :is(strong, b) {
+  font-weight: inherit;
+  color: inherit;
+}
+
+html .bzs .bzs-tr {
+  margin: 0;
+  padding: 22px 0 18px;
+  list-style: none;
+}
+
+html .bzs .bzs-tr > li {
+  margin: 0;
+  padding: 10px 0;
+}
+
+html .bzs .bzs-tr > li + li,
+html .bzs .bzs-dl > div + div {
+  border-top: 1px solid var(--bz-line-divider);
+}
+
+html .bzs .bzs-tr > li:first-child,
+html .bzs .bzs-dl > div:first-child {
+  padding-top: 0;
+}
+
+html .bzs .bzs-tr > li:last-child,
+html .bzs .bzs-dl > div:last-child {
+  padding-bottom: 0;
+}
+
+html .bzs .bzs-benefit-title,
+html .bzs .bzs-dl dt {
+  font-weight: 600;
+  color: var(--bz-text);
+}
+
+html .bzs .bzs-benefit-title + p {
+  margin-top: 2px;
+}
+
+html .bzs .bzs-tr > li > p:not(.bzs-benefit-title) {
+  line-height: 25px;
+}
+
+.bzs-details {
+  padding: 26px 0 27px;
+}
+
+html .bzs .bzs-dl {
+  margin: 0;
+  padding: 0;
+}
+
+html .bzs .bzs-dl > div {
+  display: grid;
+  grid-template-columns: minmax(0, min(128px, 48%)) minmax(0, 1fr);
+  align-items: baseline;
+  padding: 10px 0;
+}
+
+html .bzs .bzs-dl dt {
+  padding-inline-end: 18px;
+}
+
+html .bzs .bzs-dl dd {
+  margin: 0;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+.bzs-dl + .bzs-note {
+  margin-top: 20px;
+}
+
+html .bzs .bzs-note h3 {
+  margin: 0 0 4px !important;
+  font: 600 16px/1.4 var(--bz-font-sans) !important;
+  letter-spacing: 0 !important;
+  color: var(--bz-text) !important;
+}
+
+html .bzs .bzs-note :is(p, ul, ol) + h3 {
+  margin-top: 18px !important;
+}
+
+html .bzs .bzs-note :is(ul, ol) {
+  margin: 0;
+  padding-inline-start: var(--bz-sp-24);
+}
+
+html .bzs .bzs-note ul {
+  list-style: disc outside;
+}
+
+html .bzs .bzs-note ol {
+  list-style: decimal outside;
 }

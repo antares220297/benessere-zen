@@ -3,21 +3,19 @@
   assign benefits = product.metafields.custom.benefici_bz.value
   assign specs = product.metafields.custom.dettagli_bz.value
   assign notes = product.metafields.custom.note_bz
-  assign roman = 'I II III IV V VI VII VIII IX X' | split: ' '
-  assign skip_words = 'gestione supporto aiuto fonte senso stato momenti della delle del dei di e la il lo le in per con' | split: ' '
-  assign keyword_punctuation = ".,;:'’"
-  assign keyword_separator = ' <i aria-hidden="true">·</i> '
-  assign keywords = ''
-  assign tradition_preview = ''
-  assign all_titled = true
 -%}
 {%- capture chevron -%}
-  <span class="bzs-ch" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" aria-hidden="true" focusable="false" fill="currentColor" viewBox="0 -960 960 960"><path d="M480-357.85 253.85-584l32.61-32.61L480-423.08l193.54-193.53L706.15-584 480-357.85Z"/></svg></span>
+  <svg class="bzs-ch" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true" focusable="false">
+    <path d="m4 7 5 5 5-5"/>
+  </svg>
 {%- endcapture -%}
 
 {%- capture tradition_rows -%}
   {%- for benefit in benefits -%}
     {%- liquid
+      if benefit == blank
+        continue
+      endif
       assign title = ''
       assign sentence = benefit
       if benefit contains ': '
@@ -28,69 +26,19 @@
           assign sentence = benefit | remove_first: prefix | strip
         endif
       endif
-
-      if forloop.first
-        assign first_benefit = benefit
-      endif
-      if title == blank
-        assign all_titled = false
-      else
-        unless tradition_preview == blank
-          assign tradition_preview = tradition_preview | append: ' · '
-        endunless
-        assign tradition_preview = tradition_preview | append: title
-        if forloop.index <= 3 and description != blank
-          assign words = title | split: ' '
-          for word in words
-            assign characters = word | split: ''
-            assign start = 0
-            for character in characters
-              unless keyword_punctuation contains character
-                break
-              endunless
-              assign start = forloop.index
-            endfor
-            assign length = word.size | minus: start
-            for character in characters reversed
-              if length == 0
-                break
-              endif
-              unless keyword_punctuation contains character
-                break
-              endunless
-              assign length = length | minus: 1
-            endfor
-            assign keyword = word | slice: start, length
-            assign lower_keyword = keyword | downcase
-            if keyword != blank
-              unless skip_words contains lower_keyword
-                unless keywords == blank
-                  assign keywords = keywords | append: keyword_separator
-                endunless
-                assign keyword = keyword | escape
-                assign keywords = keywords | append: keyword
-                break
-              endunless
-            endif
-          endfor
-        endif
-      endif
     -%}
-    <li{% if title == blank %} class="no-t"{% endif %}>
-      <span class="n" aria-hidden="true">{{ roman[forloop.index0] | default: forloop.index }}</span>
-      {%- if title != blank -%}<span class="t">{{ title | escape }}</span>{%- endif -%}
-      <span class="s">{{ sentence | escape }}</span>
+    <li>
+      {%- if title != blank -%}<p class="bzs-benefit-title">{{ title | escape }}</p>{%- endif -%}
+      <p>{{ sentence | escape }}</p>
     </li>
   {%- endfor -%}
 {%- endcapture -%}
 
-{%- assign details_preview = '' -%}
-{%- assign preview_count = 0 -%}
 {%- assign next_row = 0 -%}
 {%- capture detail_rows -%}
   {%- for spec in specs -%}
     {%- liquid
-      if forloop.index0 < next_row
+      if forloop.index0 < next_row or spec == blank
         continue
       endif
       assign raw_label = spec | split: ':' | first
@@ -128,80 +76,43 @@
         endif
         assign next_row = next_row | plus: 1
       endfor
-
-      if value != blank and preview_count < 2
-        unless details_preview == blank
-          assign details_preview = details_preview | append: ' · '
-        endunless
-        assign details_preview = details_preview | append: value
-        assign preview_count = preview_count | plus: 1
-      endif
     -%}
-    <div{% if value.size > 34 %} class="is-long"{% endif %}>
+    <div>
       <dt>{{ label | remove: ' (segue)' | escape }}</dt>
       <dd>{{ value | escape }}</dd>
     </div>
   {%- endfor -%}
 {%- endcapture -%}
 
-<div class="bzs bz-description bz-description--fields">
-  <div class="bzs-list">
+{%- if description != blank or tradition_rows != blank or detail_rows != blank or notes != blank -%}
+  <div class="bzs bz-description bz-description--fields">
     {%- if description != blank -%}
-      {%- liquid
-        assign description_preview = description | metafield_text | strip
-        assign sentence_length = description_preview.size
-        assign punctuation = '.!?' | split: ''
-        for mark in punctuation
-          if description_preview contains mark
-            assign head = description_preview | prepend: ' ' | split: mark | first
-            if head.size < sentence_length
-              assign sentence_length = head.size
-            endif
-          endif
-        endfor
-      -%}
       <details class="bzs-item" open>
         <summary class="bzs-head">
-          <h2 class="bzs-hd"><span class="bzs-lb">Cos’è</span></h2>
+          <h2 class="bzs-hd">Cos’è</h2>
           {{ chevron }}
-          <span class="bzs-pv" aria-hidden="true">{{ description_preview | slice: 0, sentence_length | escape }}</span>
         </summary>
-        <div class="bzs-body">
-          {%- if all_titled and keywords != blank -%}
-            <p class="bzs-kw">{{ keywords }}</p>
-          {%- endif -%}
-          <div class="bzs-prose">{{ description | metafield_tag }}</div>
-        </div>
+        <div class="bzs-prose">{{ description | metafield_tag }}</div>
       </details>
     {%- endif -%}
 
     {%- if tradition_rows != blank -%}
-      {%- unless all_titled -%}
-        {%- assign tradition_preview = first_benefit -%}
-      {%- endunless -%}
-      <details class="bzs-item">
+      <details class="bzs-item" open>
         <summary class="bzs-head">
-          <h2 class="bzs-hd"><span class="bzs-lb">Nella tradizione</span></h2>
+          <h2 class="bzs-hd">Nella tradizione</h2>
           {{ chevron }}
-          <span class="bzs-pv" aria-hidden="true">{{ tradition_preview | escape }}</span>
         </summary>
-        <div class="bzs-body">
-          <ul class="bzs-tr" role="list">{{ tradition_rows }}</ul>
-        </div>
+        <ul class="bzs-tr" role="list">{{ tradition_rows }}</ul>
       </details>
     {%- endif -%}
 
     {%- if detail_rows != blank or notes != blank -%}
-      {%- if details_preview == blank and notes != blank -%}
-        {%- assign details_preview = notes | metafield_text | strip | slice: 0, 80 -%}
-      {%- endif -%}
-      <details class="bzs-item">
+      <details class="bzs-item" open>
         <summary class="bzs-head">
-          <h2 class="bzs-hd"><span class="bzs-lb">Dettagli</span></h2>
+          <h2 class="bzs-hd">Dettagli</h2>
           {{ chevron }}
-          <span class="bzs-pv" aria-hidden="true">{{ details_preview | escape }}</span>
         </summary>
-        <div class="bzs-body">
+        <div class="bzs-details">
           {%- if detail_rows != blank -%}
             <dl class="bzs-dl">{{ detail_rows }}</dl>
           {%- endif -%}
@@ -222,4 +133,4 @@
       </details>
     {%- endif -%}
   </div>
-</div>
+{%- endif -%}
